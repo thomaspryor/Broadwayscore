@@ -1,110 +1,30 @@
 {
-  "generatedAt": "2026-10-31T21:25:15.129Z",
+  "generatedAt": "2026-10-31T21:46:02.742Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 295,
-  "defective": 6,
+  "clean": 300,
+  "defective": 1,
   "byType": {
-    "score-drift": 6
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "hayward-regional-2026",
-      "title": "Hayward",
-      "openingDate": "2026-10-20",
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "openingDate": "2026-10-22",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.81 vs local 83.39 (Δ0.58)"
+          "detail": "deployed cs 66.2 vs local 67.24 (Δ1.04)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-10-31T21:25:07.552Z"
-    },
-    {
-      "showId": "twelfth-night-crucible-regional-2026",
-      "title": "Twelfth Night",
-      "openingDate": "2026-10-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.18 vs local 77.39 (Δ0.79)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-10-31T21:25:07.552Z"
-    },
-    {
-      "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-      "title": "ANON – a tempest at our kitchen table",
-      "openingDate": "2026-10-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.71 vs local 67.16 (Δ0.55)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-10-31T21:25:07.552Z"
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "title": "Oh, Mary!",
-      "openingDate": "2025-12-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.37 vs local 73.08 (Δ0.29)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 41,
-      "deployedCount": 41,
-      "firstDefectAt": "2026-10-31T21:25:07.552Z"
-    },
-    {
-      "showId": "titanique-west-end-2024",
-      "title": "Titanique",
-      "openingDate": "2025-01-08",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.05 vs local 78.84 (Δ0.21)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26,
-      "firstDefectAt": "2026-10-31T21:25:07.552Z"
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "title": "Oliver!",
-      "openingDate": "2024-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.68 vs local 82.61 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-10-31T21:25:07.552Z"
+      "localCount": 23,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-31T21:45:53.711Z"
     }
   ],
   "persistentDefective": 0,

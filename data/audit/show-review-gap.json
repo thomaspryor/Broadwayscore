@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-31T21:21:46.538Z",
+  "generatedAt": "2026-10-31T21:45:18.470Z",
   "windowDays": 21,
-  "targets": 44,
-  "auditedThisRun": 44,
-  "carriedForward": 1514,
+  "targets": 63,
+  "auditedThisRun": 63,
+  "carriedForward": 1495,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 616,
-    "missingCurrentRun": 1343,
+    "withGap": 621,
+    "missingCurrentRun": 1334,
     "totalCitedNoUrl": 1,
-    "totalFlaggedMisses": 831,
-    "totalRecoverable": 56,
-    "totalRecovered": 77,
+    "totalFlaggedMisses": 854,
+    "totalRecoverable": 58,
+    "totalRecovered": 79,
     "humanExcluded": 12,
-    "automatedExcluded": 757,
-    "automatedExcludedListed": 581,
-    "priorProductionCitations": 5933
+    "automatedExcluded": 785,
+    "automatedExcludedListed": 605,
+    "priorProductionCitations": 5988
   },
   "results": [
     {
@@ -4832,7 +4832,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "a-dogs-house-regional-2026",
@@ -8723,7 +8723,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "a-simulacrum-off-broadway-2023",
@@ -11333,13 +11333,220 @@
       "openingDate": "2026-02-17",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-admissions-at-lincoln-center-theater",
+        "https://playbill.com/article/what-did-critics-think-of-joshua-harmons-admissions-in-london",
+        "https://www.broadwayworld.com/article/Review-Roundup-Joshua-Harmons-ADMISSIONS-at-Lincoln-Center-Theater-20180313"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.thedailybeast.com/this-is-what-white-middle-class-race-hypocrisy-looks-like-review-of-admissions",
+        "http://dcmetrotheaterarts.com/2018/03/12/review-admissions-at-the-mitzi-e-newhouse-theater/",
+        "http://www.hollywoodreporter.com/review/admissions-theater-1093935",
+        "http://www.newsday.com/entertainment/theater/admissions-review-lincoln-center-1.17230798",
+        "http://www.nydailynews.com/entertainment/theater-arts/admissions-review-lincoln-center-diversity-drama-lacks-shading-article-1.3870637",
+        "http://www.vulture.com/2018/03/theater-review-why-i-cant-accept-admissions.html",
+        "http://www.nytimes.com/2018/03/12/theater/admissions-joshua-harmon-review.html",
+        "http://www.timeout.com/newyork/theater/admissions",
+        "http://www.towleroad.com/2018/03/admissions-play/",
+        "http://www.thewrap.com/admissions-theater-review-joshua-harmons-comedy-dissects-one-familys-yale-bust-insanity/",
+        "https://www.nytimes.com/2019/03/12/us/college-admissions-cheating-scandal.html",
+        "https://www.standard.co.uk/go/london/theatre/admissions-review-trafalgar-studios-theatre-a4090231.html",
+        "https://www.express.co.uk/entertainment/theatre/1099200/Admissions-play-review-Alex-Kingston-theatres-london-dates-stars-arrested-Sarah-Hadland",
+        "https://www.londontheatre.co.uk/reviews/review-admissions-starring-alex-kingston-at-trafalgar-studios",
+        "https://www.thestage.co.uk/reviews/2019/admissions-starring-alex-kingston-review-trafalgar-studios-london/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/admissions-review-trafalgar-studios-astute-improvable-skewering/",
+        "https://www.timeout.com/london/theatre/admissions-review",
+        "https://www.thetimes.co.uk/article/review-admissions-at-trafalgar-studios-sw1-rfl962b7f",
+        "https://www.nytimes.com/2018/03/12/theater/admissions-joshua-harmon-review.html",
+        "https://www.thedailybeast.com/this-is-what-white-middle-class-race-hypocrisy-looks-like-review-of-admissions",
+        "https://www.newsday.com/entertainment/theater/admissions-review-lincoln-center-1.17230798",
+        "https://www.hollywoodreporter.com/review/admissions-theater-1093935"
+      ],
+      "dirFiles": 7,
+      "dirClean": 6,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "http://www.thedailybeast.com/this-is-what-white-middle-class-race-hypocrisy-looks-like-review-of-admissions",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://dcmetrotheaterarts.com/2018/03/12/review-admissions-at-the-mitzi-e-newhouse-theater/",
+          "host": "dcmetrotheaterarts.com",
+          "knownOutletId": "dc-theater-arts",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/admissions-theater-1093935",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/admissions-review-lincoln-center-1.17230798",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/admissions-review-lincoln-center-diversity-drama-lacks-shading-article-1.3870637",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2018/03/theater-review-why-i-cant-accept-admissions.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2018/03/12/theater/admissions-joshua-harmon-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/admissions",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.towleroad.com/2018/03/admissions-play/",
+          "host": "towleroad.com",
+          "knownOutletId": "towleroad",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/admissions-theater-review-joshua-harmons-comedy-dissects-one-familys-yale-bust-insanity/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2019/03/12/us/college-admissions-cheating-scandal.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/admissions-review-trafalgar-studios-theatre-a4090231.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/1099200/Admissions-play-review-Alex-Kingston-theatres-london-dates-stars-arrested-Sarah-Hadland",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-admissions-starring-alex-kingston-at-trafalgar-studios",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2019/admissions-starring-alex-kingston-review-trafalgar-studios-london/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/admissions-review-trafalgar-studios-astute-improvable-skewering/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/admissions-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/review-admissions-at-trafalgar-studios-sw1-rfl962b7f",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2018/03/12/theater/admissions-joshua-harmon-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/this-is-what-white-middle-class-race-hypocrisy-looks-like-review-of-admissions",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/admissions-review-lincoln-center-1.17230798",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/admissions-theater-1093935",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "buzznews.net",
+          "count": 1
+        },
+        {
+          "host": "chicagotheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoonstage.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheaterandarts.com",
+          "count": 1
+        },
+        {
+          "host": "spotlightonlake.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -11348,11 +11555,192 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 492,
+        "byReason": {
+          "not-http-url": 61,
+          "non-review-host": 55,
+          "aggregator-internal-nav": 332,
+          "aggregator-section-root": 13,
+          "production-database-listing": 23,
+          "non-stage-review": 2,
+          "roundup-page": 6
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-admissions-at-lincoln-center-theater",
+          "publishDate": "2018-03-13"
+        },
+        {
+          "url": "https://playbill.com/article/what-did-critics-think-of-joshua-harmons-admissions-in-london",
+          "publishDate": "2019-03-13"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Joshua-Harmons-ADMISSIONS-at-Lincoln-Center-Theater-20180313",
+          "publishDate": "2018-03-13"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.thedailybeast.com/this-is-what-white-middle-class-race-hypocrisy-looks-like-review-of-admissions",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://dcmetrotheaterarts.com/2018/03/12/review-admissions-at-the-mitzi-e-newhouse-theater/",
+          "host": "dcmetrotheaterarts.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/admissions-theater-1093935",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/admissions-review-lincoln-center-1.17230798",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/admissions-review-lincoln-center-diversity-drama-lacks-shading-article-1.3870637",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/03/theater-review-why-i-cant-accept-admissions.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2018/03/12/theater/admissions-joshua-harmon-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/admissions",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.towleroad.com/2018/03/admissions-play/",
+          "host": "towleroad.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/admissions-theater-review-joshua-harmons-comedy-dissects-one-familys-yale-bust-insanity/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2019/03/12/us/college-admissions-cheating-scandal.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/admissions-review-trafalgar-studios-theatre-a4090231.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/1099200/Admissions-play-review-Alex-Kingston-theatres-london-dates-stars-arrested-Sarah-Hadland",
+          "host": "express.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-admissions-starring-alex-kingston-at-trafalgar-studios",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2019/admissions-starring-alex-kingston-review-trafalgar-studios-london/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/admissions-review-trafalgar-studios-astute-improvable-skewering/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/admissions-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/review-admissions-at-trafalgar-studios-sw1-rfl962b7f",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2018/03/12/theater/admissions-joshua-harmon-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/this-is-what-white-middle-class-race-hypocrisy-looks-like-review-of-admissions",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/admissions-review-lincoln-center-1.17230798",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/admissions-theater-1093935",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -11362,7 +11750,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "adolescent-salvation-regional-2026",
@@ -21296,7 +21684,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "animal-wisdom-off-broadway-2022",
@@ -37581,7 +37969,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "black-girl-from-a-white-suburb-regional-2026",
@@ -42076,7 +42464,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "broken-glass-off-west-end-2026",
@@ -42375,7 +42763,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "buena-vista-social-club-2025",
@@ -49949,7 +50337,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "cats-the-jellicle-ball-2026",
@@ -52338,7 +52726,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "charm-off-broadway-2017",
@@ -57112,13 +57500,184 @@
       "openingDate": "2026-02-09",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-CHINESE-REPUBLICANS-Opens-at-Roundabout-Theatre-Company-20260226",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727",
+        "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209"
+      ],
+      "aggregatorListedUrls": [
+        "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
+        "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-company-review-20211210-nlzpcv7br5bgtjbmp4n7jy732y-story.html",
+        "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/",
+        "https://www.amny.com/entertainment/theater/review-company-sondheim-revival/",
+        "https://observer.com/2021/12/rise-rise-rise-this-gender-swapped-company-wins-our-hearts-review/",
+        "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-lenk-patti-lupone-1234886532/",
+        "https://variety.com/2021/legit/reviews/company-review-broadway-patti-lupone-1235129438/",
+        "https://www.washingtonpost.com/theater-dance/2021/12/09/company-sondheim-broadway-revival/",
+        "https://www.timeout.com/newyork/theater/company-broadway-revival-review-stephen-sondheim-katrina-lenk-patti-lupone",
+        "http://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/",
+        "http://nystagereview.com/2021/12/09/company-that-invincible-bunch-reconsidered/",
+        "https://www.theatrely.com/post/a-hopeless-bachelorette-in-excellent-company-review",
+        "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/",
+        "https://www.slantmagazine.com/theater/review-the-gender-flipped-company-is-a-beautifully-imperfect-toast-to-a-classic/",
+        "https://broadwaynews.com/2021/12/09/review-company-delivers-a-near-perfect-revival/",
+        "https://www.thewrap.com/company-broadway-review-katrina-lenk-patti-lupone/",
+        "https://www.newyorktheatreguide.com/reviews/company-broadway-review",
+        "https://nypost.com/2021/12/09/company-review-this-is-the-broadway-show-to-see-right-now/"
+      ],
+      "dirFiles": 3,
+      "dirClean": 3,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-company-review-20211210-nlzpcv7br5bgtjbmp4n7jy732y-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/theater/review-company-sondheim-revival/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2021/12/rise-rise-rise-this-gender-swapped-company-wins-our-hearts-review/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-lenk-patti-lupone-1234886532/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2021/legit/reviews/company-review-broadway-patti-lupone-1235129438/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2021/12/09/company-sondheim-broadway-revival/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/company-broadway-revival-review-stephen-sondheim-katrina-lenk-patti-lupone",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2021/12/09/company-that-invincible-bunch-reconsidered/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hopeless-bachelorette-in-excellent-company-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/review-the-gender-flipped-company-is-a-beautifully-imperfect-toast-to-a-classic/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://broadwaynews.com/2021/12/09/review-company-delivers-a-near-perfect-revival/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/company-broadway-review-katrina-lenk-patti-lupone/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/company-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2021/12/09/company-review-this-is-the-broadway-show-to-see-right-now/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoonstage.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheaterandarts.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -57127,11 +57686,165 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 875,
+        "byReason": {
+          "not-http-url": 171,
+          "non-review-host": 45,
+          "aggregator-internal-nav": 642,
+          "aggregator-section-root": 15,
+          "tag-index-page": 2
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-SAVIORS-Opens-at-Atlantic-Theater-Company-20260727",
+          "publishDate": "2026-07-27"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Stephen-Sondheims-COMPANY-Opens-On-Broadway--See-What-the-Critics-Are-Saying-20211209",
+          "publishDate": "2021-12-09"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-the-saviors-at-atlantic-theater-company/",
+          "host": "exeuntnyc.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2021/12/09/theater/company-review-sondheim.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-company-review-20211210-nlzpcv7br5bgtjbmp4n7jy732y-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/theater/review-company-sondheim-revival/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2021/12/rise-rise-rise-this-gender-swapped-company-wins-our-hearts-review/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-lenk-patti-lupone-1234886532/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2021/legit/reviews/company-review-broadway-patti-lupone-1235129438/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/theater-dance/2021/12/09/company-sondheim-broadway-revival/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/company-broadway-revival-review-stephen-sondheim-katrina-lenk-patti-lupone",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2021/12/09/company-everybody-rise-for-this-smashing-sondheim-revival/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2021/12/09/company-that-invincible-bunch-reconsidered/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-hopeless-bachelorette-in-excellent-company-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2021/12/09/company-on-broadway-review-sondheim-helps-us-survive-being-alive/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/review-the-gender-flipped-company-is-a-beautifully-imperfect-toast-to-a-classic/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://broadwaynews.com/2021/12/09/review-company-delivers-a-near-perfect-revival/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/company-broadway-review-katrina-lenk-patti-lupone/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/company-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2021/12/09/company-review-this-is-the-broadway-show-to-see-right-now/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -57141,7 +57854,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "confederates-off-broadway-2022",
@@ -57392,13 +58105,110 @@
       "openingDate": "2026-02-04",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-dominique-morisseaus-confederates-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "http://nystagereview.com/2022/03/27/confederates-black-women-keenly-observed-in-the-ketanji-brown-jackson-era/",
+        "https://newyorktheater.me/2022/03/27/confederates-review-two-black-women-160-years-apart-fight-for-freedom/",
+        "https://www.nytimes.com/2022/03/27/theater/review-confederates.html",
+        "https://www.theatrely.com/post/confederates-sets-the-plantation-on-campus-review",
+        "https://theaterlife.com/confederates/",
+        "https://www.thewrap.com/confederates-off-broadway-review-dominique-morisseau/",
+        "https://www.vulture.com/2022/03/theater-review-dominique-morisseaus-confederates.html"
+      ],
+      "dirFiles": 9,
+      "dirClean": 9,
+      "inReviewsJson": 8,
+      "missing": [
+        {
+          "url": "http://nystagereview.com/2022/03/27/confederates-black-women-keenly-observed-in-the-ketanji-brown-jackson-era/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2022/03/27/confederates-review-two-black-women-160-years-apart-fight-for-freedom/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/03/27/theater/review-confederates.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/confederates-sets-the-plantation-on-campus-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theaterlife.com/confederates/",
+          "host": "theaterlife.com",
+          "knownOutletId": "theater-life",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/confederates-off-broadway-review-dominique-morisseau/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2022/03/theater-review-dominique-morisseaus-confederates.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoreader.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheaterandarts.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "newcitystage.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "thefourthwalsh.com",
+          "count": 1
+        },
+        {
+          "host": "thirdcoastreview.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -57407,11 +58217,79 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 143,
+        "byReason": {
+          "not-http-url": 6,
+          "non-review-host": 21,
+          "aggregator-internal-nav": 52,
+          "aggregator-section-root": 4,
+          "production-database-listing": 11,
+          "non-stage-review": 1,
+          "roundup-page": 48
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-dominique-morisseaus-confederates-off-broadway",
+          "publishDate": "2022-03-28"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://nystagereview.com/2022/03/27/confederates-black-women-keenly-observed-in-the-ketanji-brown-jackson-era/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2022/03/27/confederates-review-two-black-women-160-years-apart-fight-for-freedom/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/03/27/theater/review-confederates.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/confederates-sets-the-plantation-on-campus-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theaterlife.com/confederates/",
+          "host": "theaterlife.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/confederates-off-broadway-review-dominique-morisseau/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2022/03/theater-review-dominique-morisseaus-confederates.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -57421,7 +58299,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "conflicted-off-broadway-2026",
@@ -58786,7 +59664,7 @@
       ],
       "dirFiles": 18,
       "dirClean": 16,
-      "inReviewsJson": 0,
+      "inReviewsJson": 16,
       "missing": [
         {
           "url": "https://www.vulture.com/2023/10/theater-review-covenant-at-the-roundabout.html",
@@ -58917,6 +59795,45 @@
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.vulture.com/2023/10/theater-review-covenant-at-the-roundabout.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/covenant-offers-briskly-entertaining-food-for-thought-about-the-demons-that-haunt-us-all",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/covenant-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/27/theater/covenant-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-covenant-is-a-spooky-horror-play-for-the-halloween-season_1719337/https://www.theatermania.com/news/review-covenant-is-a-spooky-horror-play-for-the-halloween-season_1719337/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -58926,7 +59843,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "cowbois-west-end-2024",
@@ -69302,7 +70219,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "deep-azure-globe-west-end-2026",
@@ -74030,7 +74947,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "double-bill-tell-me-straight-and-aggy-off-west-end-2026",
@@ -78481,6 +79398,20 @@
       },
       "dedupedVariants": [],
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.broadwayworld.com/chicago/article/Review-Shattered-Globe-Theatres-EELPOUT-at-Theater-Wit-20260422",
+          "host": "broadwayworld.com",
+          "file": "broadwayworld--emily-werner.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -78490,7 +79421,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "eggs-arent-that-easy-to-make-off-west-end-2026",
@@ -85417,7 +86348,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "everybodys-talking-about-jamie-west-end-2024",
@@ -93954,7 +94885,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "gerry-and-sewell-west-end-2026",
@@ -102449,7 +103380,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "grindr-mom-off-west-end-2026",
@@ -110944,7 +111875,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "hangmen-off-broadway-2018",
@@ -118189,7 +119120,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "hedwig-and-the-angry-inch-regional-2026",
@@ -125676,7 +126607,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "i-love-you-because-regional-2026",
@@ -125713,7 +126644,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "i-made-you-a-mixtape-off-west-end-2026",
@@ -139163,7 +140094,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "job-2024",
@@ -139509,7 +140440,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "joe-turners-come-and-gone-2026",
@@ -147265,7 +148196,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -149795,337 +150726,13 @@
       "openingDate": "2026-06-18",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-broadways-leopoldstadt",
-        "https://playbill.com/article/read-reviews-for-the-world-premiere-of-leopoldstadt-by-tom-stoppard",
-        "https://www.broadwayworld.com/article/Review-Roundup-LEOPOLDSTADT-Opens-on-Broadway--Updating-Live-20221002",
-        "https://www.broadwayworld.com/article/Review-Roundup-Tom-Stoppards-LEOPOLDSTADT-Opens-at-Wyndhams-Theatre-20200212"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/review-tom-stoppard-leopoldstadt/",
-        "https://cititour.com/NYC_Broadway/Leopoldstadt/1097",
-        "https://www.thedailybeast.com/leopoldstadt-on-broadway-brings-jewish-history-to-haunting-urgent-life",
-        "https://deadline.com/2022/10/leopoldstadt-broadway-review-tom-stoppard-1235132736/",
-        "https://didtheylikeit.com/shows/leopoldstadt/loss-and-remembrance-are-at-the-heart-of-the-magnificent-leopoldstadt/",
-        "https://www.nydailynews.com/entertainment/broadway/ny-leopoldstadt-review-tom-stoppard-20221003-sozou6fsxnbmjg6k2vwma7mjum-story.html",
-        "https://nypost.com/2022/10/02/leopoldstadt-broadway-review-stoppard-play-is-too-big-and-icy/",
-        "https://nystagereview.com/2022/10/02/leopoldstadt-stoppard-examines-his-roots-in-extraordinary-fashion/",
-        "https://nystagereview.com/2022/10/02/leopoldstadt-tom-stoppard-at-his-absolute-autobiographical-best/",
-        "https://www.nysun.com/article/in-leopoldstadt-a-master-of-the-stage-confronts-his-own-ghosts",
-        "https://newyorktheater.me/2022/10/02/leopoldstadt-review/",
-        "https://www.newyorktheatreguide.com/reviews/leopoldstadt-broadway-review-tom-stoppard",
-        "https://www.nytimes.com/2022/10/02/theater/leopoldstadt-review.html",
-        "https://www.newyorker.com/magazine/2022/10/17/tom-stoppard-resurrects-the-past-in-leopoldstadt",
-        "https://www.newsweek.com/leopoldstadt-tom-stoppards-broadway-drama-jews-vienna-bows-1748245",
-        "https://www.talkinbroadway.com/page/world/Leopoldstadt.html",
-        "https://www.theatrely.com/post/leopoldstadt-makes-it-to-broadway-with-more-work-to-go-review",
-        "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard-1235390899/",
-        "https://www.vogue.com/article/leopoldstadt-tom-stoppard-broadway-review",
-        "https://www.vulture.com/2022/10/theater-review-tom-stoppards-leopoldstadt-on-broadway.html",
-        "https://www.wsj.com/articles/leopoldstadt-review-tom-stoppard-betsy-aidem-david-krumholtz-faye-castelow-joshua-satine-caissie-levy-brandon-uranowitz-jena-augen-aaron-neil-colleen-litchfield-patrick-marber-seth-numrich-sara-topham-richard-hudson-brigitte-reiffenstuel-arty-froushan-11664573184",
-        "https://www.washingtonpost.com/theater-dance/2022/10/02/tom-stoppard-leopoldstadt/",
-        "https://www.thewrap.com/leopoldstadt-broadway-review-tom-stoppard/",
-        "https://theartsdesk.com/theatre/leopoldstadt-wyndhams-theatre-review-stoppard-once-personal-and-accessible",
-        "https://www.standard.co.uk/go/london/theatre/leopoldstadt-review-tom-stoppard-west-end-wyndhams-a4360871.html",
-        "https://www.theguardian.com/stage/2020/feb/12/leopoldstadt-review-stoppards-family-portrait-is-an-elegiac-epic",
-        "https://www.independent.co.uk/independentpremium/culture/leopoldstadt-wyndham-theatre-review-tom-stoppard-vienna-jewish-a9332221.html",
-        "https://www.thejc.com/culture/theatre/theatre-review-leopoldstadt-1.496746",
-        "https://www.londontheatre.co.uk/reviews/review-tom-stoppards-leopoldstadt-at-the-wyndhams-theatre",
-        "https://www.metro.news/theatre-review-leopoldstadt/1907790/",
-        "https://www.newstatesman.com/culture/music-theatre/2020/02/tom-stoppard-new-play-leopoldstadt-biography-review",
-        "https://www.nytimes.com/2020/02/12/theater/leopoldstadt-review-tom-stoppard.html",
-        "https://www.spectator.co.uk/2020/02/a-brilliant-unrevivable-undertaking-tom-stoppards-leopoldstadt-reviewed/",
-        "https://www.thestage.co.uk/reviews/2020/leopoldstadt-tom-stoppard-review-at-wyndhams-theatre-london/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/leopoldstadt-review-wyndhams-theatre-tom-stoppard-delivers-unforgettable/",
-        "https://www.timeout.com/london/theatre/leopoldstadt",
-        "https://www.thetimes.co.uk/article/leopoldstadt-review-moments-of-poignancy-cannot-save-tom-stoppard-epic-6035pr7lf",
-        "https://variety.com/2020/legit/reviews/leopoldstadt-review-tom-stoppard-1203502699/",
-        "https://www.theguardian.com/stage/2020/feb/08/tom-stoppard-reveals-leopoldstadt-will-be-his-last-play"
-      ],
-      "dirFiles": 3,
-      "dirClean": 1,
-      "inReviewsJson": 1,
-      "missing": [
-        {
-          "url": "https://www.amny.com/entertainment/review-tom-stoppard-leopoldstadt/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Leopoldstadt/1097",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/leopoldstadt-on-broadway-brings-jewish-history-to-haunting-urgent-life",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://deadline.com/2022/10/leopoldstadt-broadway-review-tom-stoppard-1235132736/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://didtheylikeit.com/shows/leopoldstadt/loss-and-remembrance-are-at-the-heart-of-the-magnificent-leopoldstadt/",
-          "host": "didtheylikeit.com",
-          "knownOutletId": "dtli",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-leopoldstadt-review-tom-stoppard-20221003-sozou6fsxnbmjg6k2vwma7mjum-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nypost.com/2022/10/02/leopoldstadt-broadway-review-stoppard-play-is-too-big-and-icy/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2022/10/02/leopoldstadt-stoppard-examines-his-roots-in-extraordinary-fashion/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2022/10/02/leopoldstadt-tom-stoppard-at-his-absolute-autobiographical-best/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nysun.com/article/in-leopoldstadt-a-master-of-the-stage-confronts-his-own-ghosts",
-          "host": "nysun.com",
-          "knownOutletId": "new-york-sun",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/10/02/leopoldstadt-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/leopoldstadt-broadway-review-tom-stoppard",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/10/02/theater/leopoldstadt-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorker.com/magazine/2022/10/17/tom-stoppard-resurrects-the-past-in-leopoldstadt",
-          "host": "newyorker.com",
-          "knownOutletId": "newyorker",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newsweek.com/leopoldstadt-tom-stoppards-broadway-drama-jews-vienna-bows-1748245",
-          "host": "newsweek.com",
-          "knownOutletId": "newsweek",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/world/Leopoldstadt.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/leopoldstadt-makes-it-to-broadway-with-more-work-to-go-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard-1235390899/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vogue.com/article/leopoldstadt-tom-stoppard-broadway-review",
-          "host": "vogue.com",
-          "knownOutletId": "vogue",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2022/10/theater-review-tom-stoppards-leopoldstadt-on-broadway.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/leopoldstadt-review-tom-stoppard-betsy-aidem-david-krumholtz-faye-castelow-joshua-satine-caissie-levy-brandon-uranowitz-jena-augen-aaron-neil-colleen-litchfield-patrick-marber-seth-numrich-sara-topham-richard-hudson-brigitte-reiffenstuel-arty-froushan-11664573184",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/theater-dance/2022/10/02/tom-stoppard-leopoldstadt/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/leopoldstadt-broadway-review-tom-stoppard/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/leopoldstadt-wyndhams-theatre-review-stoppard-once-personal-and-accessible",
-          "host": "theartsdesk.com",
-          "knownOutletId": "artsdesk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/go/london/theatre/leopoldstadt-review-tom-stoppard-west-end-wyndhams-a4360871.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2020/feb/12/leopoldstadt-review-stoppards-family-portrait-is-an-elegiac-epic",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/independentpremium/culture/leopoldstadt-wyndham-theatre-review-tom-stoppard-vienna-jewish-a9332221.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thejc.com/culture/theatre/theatre-review-leopoldstadt-1.496746",
-          "host": "thejc.com",
-          "knownOutletId": "the-jewish-chronicle",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/review-tom-stoppards-leopoldstadt-at-the-wyndhams-theatre",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.metro.news/theatre-review-leopoldstadt/1907790/",
-          "host": "metro.news",
-          "knownOutletId": "metro-uk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newstatesman.com/culture/music-theatre/2020/02/tom-stoppard-new-play-leopoldstadt-biography-review",
-          "host": "newstatesman.com",
-          "knownOutletId": "new-statesman",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2020/02/12/theater/leopoldstadt-review-tom-stoppard.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.spectator.co.uk/2020/02/a-brilliant-unrevivable-undertaking-tom-stoppards-leopoldstadt-reviewed/",
-          "host": "spectator.co.uk",
-          "knownOutletId": "the-spectator-uk",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2020/leopoldstadt-tom-stoppard-review-at-wyndhams-theatre-london/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/leopoldstadt-review-wyndhams-theatre-tom-stoppard-delivers-unforgettable/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/leopoldstadt",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/leopoldstadt-review-moments-of-poignancy-cannot-save-tom-stoppard-epic-6035pr7lf",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2020/legit/reviews/leopoldstadt-review-tom-stoppard-1203502699/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2020/feb/08/tom-stoppard-reveals-leopoldstadt-will-be-his-last-play",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
-      "dirOnly": [
-        {
-          "host": "buzznews.net",
-          "count": 1
-        }
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -150134,39 +150741,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 914,
-        "byReason": {
-          "aggregator-internal-nav": 562,
-          "not-http-url": 148,
-          "production-database-listing": 60,
-          "aggregator-section-root": 18,
-          "non-review-host": 70,
-          "non-stage-review": 2,
-          "roundup-page": 50,
-          "bare-host": 2,
-          "tag-index-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-broadways-leopoldstadt",
-          "publishDate": "2022-10-02"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-the-world-premiere-of-leopoldstadt-by-tom-stoppard",
-          "publishDate": "2020-02-13"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-LEOPOLDSTADT-Opens-on-Broadway--Updating-Live-20221002",
-          "publishDate": "2022-10-02"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Tom-Stoppards-LEOPOLDSTADT-Opens-at-Wyndhams-Theatre-20200212",
-          "publishDate": "2020-02-12"
-        }
-      ],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -150177,7 +150755,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "les-enfants-terribles-off-broadway-2026",
@@ -156139,9 +156717,9 @@
         "https://www.pasadenastarnews.com/2019/10/01/theater-review-pasadena-playhouses-little-shop-of-horrors-doesnt-make-the-cut/",
         "https://www.stageandcinema.com/2019/09/27/little-shop-pasadena-playhouse/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 12,
+      "dirClean": 12,
+      "inReviewsJson": 12,
       "missing": [
         {
           "url": "https://www.thedailybeast.com/mary-louise-parker-confronts-the-sound-inside-and-little-shop-of-horrors-is-back-for-blood",
@@ -156258,7 +156836,7 @@
         {
           "url": "https://www.pasadenastarnews.com/2019/10/01/theater-review-pasadena-playhouses-little-shop-of-horrors-doesnt-make-the-cut/",
           "host": "pasadenastarnews.com",
-          "knownOutletId": null,
+          "knownOutletId": "pasadena-star-news",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -156270,7 +156848,56 @@
           "priorRunSource": "aggregator-article-date"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "buzznews.net",
+          "count": 1
+        },
+        {
+          "host": "chicagoreader.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoonstage.com",
+          "count": 1
+        },
+        {
+          "host": "chicagostageandscreen.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "dailyherald.com",
+          "count": 1
+        },
+        {
+          "host": "entertainingchicago.com",
+          "count": 1
+        },
+        {
+          "host": "newcitystage.com",
+          "count": 1
+        },
+        {
+          "host": "splashmags.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -156283,11 +156910,11 @@
         "byReason": {
           "not-http-url": 13,
           "non-review-host": 41,
-          "aggregator-internal-nav": 130,
+          "aggregator-internal-nav": 134,
           "aggregator-section-root": 8,
+          "production-database-listing": 35,
           "non-stage-review": 2,
-          "roundup-page": 52,
-          "production-database-listing": 35
+          "roundup-page": 48
         }
       },
       "dedupedVariants": [],
@@ -156303,6 +156930,136 @@
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.thedailybeast.com/mary-louise-parker-confronts-the-sound-inside-and-little-shop-of-horrors-is-back-for-blood",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-jonathan-groff-tammy-blanchard-off-broadway-classic-1202762354/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/oct/17/little-shop-of-horrors-review-musical-off-broadway",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/little-shop-horrors-theater-review-1248089",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2019/10/17/little-shop-of-horrors-review-jonathan-groff-tammy-blanchard-get-real/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/17/little-shop-of-horrors-a-bloody-good-time/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/10/17/little-shop-of-horrors-be-careful-what-you-wish-for/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2019/10/17/theater/little-shop-of-horrors-review-jonathan-groff-feeds-the-beast.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/little-shop-of-horrors-review-revival-jonathan-groff-tammy-blanchard-christian-borle",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2019/legit/reviews/little-shop-of-horrors-review-jonathan-groff-1203370043/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2019/10/review-little-shop-of-horrors-with-jonathan-groff-westside.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/little-shop-of-horrors-theater-review-once-christian-borle-jonathan-groff-tammy-blanchard/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2019/10/little-shop-of-horrors-review-pasdena-playhouse-mj-rodriguez-george-salazar-amber-riley-1202748229/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/little-shop-horrors-theater-1243611",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.losangelesblade.com/2019/09/17/little-shop-delivers-on-diversity/",
+          "host": "losangelesblade.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2019-09-27/little-shop-horrors-pasadena-review",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.pasadenastarnews.com/2019/10/01/theater-review-pasadena-playhouses-little-shop-of-horrors-doesnt-make-the-cut/",
+          "host": "pasadenastarnews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.stageandcinema.com/2019/09/27/little-shop-pasadena-playhouse/",
+          "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -156312,7 +157069,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "little-women-the-musical-off-broadway-2026",
@@ -156657,7 +157414,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "london-assurance-off-broadway-2019",
@@ -173535,7 +174292,7 @@
       ],
       "dirFiles": 9,
       "dirClean": 6,
-      "inReviewsJson": 0,
+      "inReviewsJson": 6,
       "missing": [
         {
           "url": "https://www.amny.com/entertainment/mean-girls-review-1.17922529",
@@ -173830,8 +174587,8 @@
           "non-review-host": 61,
           "aggregator-internal-nav": 187,
           "aggregator-section-root": 12,
-          "non-stage-review": 3,
-          "production-database-listing": 48
+          "production-database-listing": 48,
+          "non-stage-review": 3
         }
       },
       "dedupedVariants": [],
@@ -173851,6 +174608,300 @@
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.amny.com/entertainment/mean-girls-review-1.17922529",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://broadway.news/2018/04/08/review-mean-girls-funny-not-fresh/",
+          "host": "broadway.news",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-mean-girls-broadway-review-0408-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/its-fetch-but-it-could-be-fetcher-review-of-tina-feys-mean-girls-on-broadway",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2018/04/mean-girls-broadway-review-tina-fey-musical-honor-roll-1202359804/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://ew.com/theater/2018/04/08/mean-girls-broadway-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2018/apr/08/mean-girls-review-tina-feys-comedy-hits-broadway-with-a-soft-landing",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/mean-girls-theater-review-1100814",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2018/04/mean_girls_on_broadway_review_this_show_is_so_not.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newsday.com/entertainment/theater/mean-girls-review-1.17895669",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.ny1.com/nyc/all-boroughs/news/2018/04/09/mean-girls-broadway-tina-fey-roma-torre-theater-review",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/04/on-wednesdays-we-do-two-shows-mean-girls-awarely-onstage.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2018/04/08/how-tina-fey-messed-up-mean-girls-musical/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2018/04/08/mean-girls-tina-feys-little-foxes-slay-broadway/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2018/04/08/theater/mean-girls-review-broadway-musical.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/mean-girls-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.towleroad.com/2018/04/mean-girls-musical-review/",
+          "host": "towleroad.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2018/legit/reviews/mean-girls-review-musical-broadway-1202744938/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/mean-girls-broadway-review-tina-fey-nasty-teens-sing-dance-recycle/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.avclub.com/mean-girls-review-fetch-cant-happen-twice-1851154445",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.bloomberg.com/news/articles/2024-01-10/mean-girls-movie-review-fun-fresh-and-not-so-mean",
+          "host": "bloomberg.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://collider.com/mean-girls-2024-movie-review/",
+          "host": "collider.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thecosmiccircus.com/review-mean-girls-musical-falls-flat/",
+          "host": "thecosmiccircus.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2024/01/mean-girls-review-musical-adaptation-struggles-shadow-of-its-predecessor-1235704917/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/mean-girls-review-tina-fey-musical-update-of-teen-classic-8424303",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/mean-girls-review-tina-fey-musical-remake-1235784164/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/criticism/movies/mean-girls-film-review-2024-musical-remake-1234941564/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mashable.com/article/mean-girls-musical-review-movie",
+          "host": "mashable.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://people.com/mean-girls-2024-musical-movie-review-renee-rapp-is-fetch-8424072",
+          "host": "people.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/film/mean-girls-review-angourie-rice-renee-rapp-tina-fey/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slashfilm.com/1489450/mean-girls-2024-movie-musical-review/",
+          "host": "slashfilm.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/movies/2024/01/10/mean-girls-2024-movie-review/72148697007/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2024/film/reviews/mean-girls-review-angourie-rice-renee-rapp-tina-fey-1235865805/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/renee-rapp-mean-girls-2024-review/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/mean-girls-pre-broadway-review-1202618735/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.washingtonpost.com/entertainment/theater_dance/mean-girls-fans-tina-feys-musical-is-a-singing-dancing-revenge-party-and-its-funny/2017/11/19/e52aa21c-cce4-11e7-b244-2d22ac912500_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.broadwayworld.com/albuquerque/article/Review-MEAN-GIRLS-at-Albuquerque-Little-Theater-20260908",
+          "host": "broadwayworld.com",
+          "file": "broadwayworld--richard-sasanow.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "https://observer.com/2024/01/mean-girls-movie-review-worst-film-of-2024/",
+          "host": "observer.com",
+          "file": "observer--david-cote.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "filled text dated 2024-01-15 — outside production window, flagged wrongProduction",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-beauty-pageant-dreams-on-broadway-cc0aa5c3",
+          "host": "wsj.com",
+          "file": "wsj--charles-isherwood.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -173860,7 +174911,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "measure-for-measure-off-west-end-2026",
@@ -179094,7 +180145,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
@@ -182686,7 +183737,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "mother-courage-and-her-children-globe-west-end-2026",
@@ -186148,7 +187199,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
@@ -188760,7 +189811,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "my-neighbour-totoro-west-end-2025",
@@ -192927,7 +193978,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "oasis-vs-blur-comedy-the-battle-birmingham-rep-regional-2026",
@@ -192973,30 +194024,31 @@
       "status": "closed",
       "category": "regional",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-off-broadways-octet-from-great-comet-tony-nominee-dave-malloy"
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-Dave-Malloys-OCTET-at-Signature-Theatre-20190520"
       ],
       "aggregatorListedUrls": [
-        "https://www.hollywoodreporter.com/review/octet-1211753",
         "https://www.nytimes.com/2019/05/19/theater/octet-review.html",
+        "https://www.hollywoodreporter.com/review/octet-1211753",
         "https://observer.com/2019/05/octet-review-eight-internet-addicts-make-beautiful-music-together/",
         "https://www.vulture.com/2019/05/theater-review-octet-takes-flight-on-8-bit-wings.html",
-        "https://www.thewrap.com/octet-theater-review-dave-malloy-internet-addict-musical/"
+        "https://www.thewrap.com/octet-theater-review-dave-malloy-internet-addict-musical/",
+        "https://www.timeout.com/newyork/theater/octet-review-musical-dave-malloy"
       ],
       "dirFiles": 16,
       "dirClean": 13,
-      "inReviewsJson": 0,
+      "inReviewsJson": 13,
       "missing": [
-        {
-          "url": "https://www.hollywoodreporter.com/review/octet-1211753",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.nytimes.com/2019/05/19/theater/octet-review.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/octet-1211753",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -193018,6 +194070,13 @@
           "url": "https://www.thewrap.com/octet-theater-review-dave-malloy-internet-addict-musical/",
           "host": "thewrap.com",
           "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/octet-review-musical-dave-malloy",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -193084,26 +194143,69 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 151,
+        "count": 292,
         "byReason": {
-          "not-http-url": 7,
-          "non-review-host": 20,
-          "aggregator-internal-nav": 59,
-          "aggregator-section-root": 4,
-          "production-database-listing": 12,
-          "non-stage-review": 1,
-          "roundup-page": 48
+          "not-http-url": 57,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 216,
+          "aggregator-section-root": 4
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-reviews-for-off-broadways-octet-from-great-comet-tony-nominee-dave-malloy",
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-Dave-Malloys-OCTET-at-Signature-Theatre-20190520",
           "publishDate": "2019-05-20"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2019/05/19/theater/octet-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/octet-1211753",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2019/05/octet-review-eight-internet-addicts-make-beautiful-music-together/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2019/05/theater-review-octet-takes-flight-on-8-bit-wings.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/octet-theater-review-dave-malloy-internet-addict-musical/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/octet-review-musical-dave-malloy",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -193113,7 +194215,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "ode-to-the-wasp-woman-off-broadway-2023",
@@ -214211,7 +215313,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "planet-omar-leeds-regional-2026",
@@ -215036,7 +216138,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "por-knockers-regional-2026",
@@ -215178,7 +216280,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "prayer-circle-regional-2026",
@@ -217509,7 +218611,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "proximo-off-broadway-2026",
@@ -227931,7 +229033,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "sabrage-off-west-end-2026",
@@ -239956,7 +241058,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "snow-mice-egg-regional-2025",
@@ -246120,19 +247222,20 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://thespyinthestalls.com/2026/10/stoker-wilde/",
         "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
         "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
+        "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
+        "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
         "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
-        "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
         "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
         "https://www.whatsonstage.com/news/wiltons-music-hall-autumn-season-led-by-new-stoker-wilde-glam-rock-musical_1726600/",
         "https://thespyinthestalls.com/2026/10/stoker-wilde/",
+        "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
         "https://www.whatsonstage.com/news/jamie-bogyo-and-glenn-adamson-to-star-in-new-musical-about-bram-stoker-and-oscar-wilde_1731734/",
         "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
         "https://theatreweekly.com/jamie-bogyo-and-glenn-adamson-to-star-in-world-premiere-glam-rock-musical-stoker-wilde-at-wiltons-music-hall/"
       ],
-      "dirFiles": 7,
+      "dirFiles": 9,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
@@ -246140,12 +247243,6 @@
           "url": "https://thespyinthestalls.com/2026/10/stoker-wilde/",
           "host": "thespyinthestalls.com",
           "knownOutletId": "the-spy-in-the-stalls",
-          "serpCensus": true
-        },
-        {
-          "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
-          "host": "everything-theatre.co.uk",
-          "knownOutletId": "everything-theatre",
           "serpCensus": true
         },
         {
@@ -246158,6 +247255,75 @@
       "dirOnly": [],
       "flaggedMisses": [
         {
+          "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "recoverable": true,
+          "recoverableFile": "everything-theatre--everything-theatre.json",
+          "recoverableOutletId": "everything-theatre",
+          "recoverableCritic": "Everything Theatre",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "everything-theatre--everything-theatre.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--ella-dunmore.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+          "host": "susanelkin.co.uk",
+          "knownOutletId": "susanelkin",
+          "recoverable": true,
+          "recoverableFile": "susanelkin--unknown.json",
+          "recoverableOutletId": "susanelkin",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "susanelkin--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
           "host": "theatreweekly.com",
           "knownOutletId": "theatre-weekly",
@@ -246165,7 +247331,7 @@
           "recoverableFile": "theatre-weekly--unknown.json",
           "recoverableOutletId": "theatre-weekly",
           "recoverableCritic": "Staff Writer",
-          "recoverableCount": 0,
+          "recoverableCount": 2,
           "dirFlags": [
             {
               "file": "theatre-weekly--unknown.json",
@@ -246264,29 +247430,6 @@
           "reverify": false
         },
         {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--ella-dunmore.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
           "host": "westendwilma.com",
           "knownOutletId": "west-end-wilma",
@@ -246321,7 +247464,7 @@
           "recoverableFile": "theatre-weekly--unknown.json",
           "recoverableOutletId": "theatre-weekly",
           "recoverableCritic": "Staff Writer",
-          "recoverableCount": 0,
+          "recoverableCount": 2,
           "dirFlags": [
             {
               "file": "theatre-weekly--unknown.json",
@@ -246398,8 +247541,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 3,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 4,
             "error": null
           },
           {
@@ -246408,8 +247551,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 2,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -246445,44 +247588,26 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 35,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 18,
+          "non-review-host": 22,
+          "aggregator-internal-nav": 1,
           "non-stage-review": 1,
-          "show-listing-page": 1,
-          "write-path-blocked": 3,
-          "non-review-path": 1,
+          "write-path-blocked": 2,
+          "ticketing-reseller": 3,
+          "no-review-evidence": 4,
           "news-article": 1,
-          "ticketing-listing": 1,
-          "ticketing-reseller": 1,
-          "census-junk-host": 1,
-          "no-review-evidence": 1
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 5,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
-          "host": "theatreboard.co.uk",
-          "outletId": "theatreboard",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "stoker-wilde-off-west-end-2026: https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
         {
           "url": "https://thespyinthestalls.com/2026/10/stoker-wilde/",
           "host": "thespyinthestalls.com",
@@ -246499,23 +247624,45 @@
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=thespyinthestalls.com): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=thespyinthestalls.com): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html lang=\"en-GB\">\n<head>\n\t<meta charset=\"UTF-8\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, viewport-fit=cover\" />\t\t\t<title>\n\t\t\tPage not found - thespyint\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
-          "url": "https://thespyinthestalls.com/2026/10/stoker-wilde/",
-          "host": "thespyinthestalls.com",
-          "outletId": "the-spy-in-the-stalls",
+          "url": "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
+          "host": "theatreboard.co.uk",
+          "outletId": "theatreboard",
           "provisional": false,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=everything-theatre.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=everything-theatre.co.uk): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html lang=\"en-GB\" class=\"\" data-skin=\"light\">\n<head>\n\t<meta charset=\"UTF-8\" />\n\t<link rel=\"profile\" href=\"https://gmpg.org/xfn/11\" />\n\t<meta name='robots' content='noindex, follow' />\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "zeroChar": false,
+          "reason": "stoker-wilde-off-west-end-2026: https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
       "recoveryResults": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+          "host": "everything-theatre.co.uk",
+          "file": "everything-theatre--everything-theatre.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=everything-theatre.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=everything-theatre.co.uk): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html lang=\"en-GB\" class=\"\" data-skin=\"light\">\n<head>\n\t<meta charset=\"UTF-8\" />\n\t<link rel=\"profile\" href=\"https://gmpg.org/xfn/11\" />\n\t<meta name='robots' content='noindex, follow' />\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1
+        },
+        {
+          "url": "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+          "host": "susanelkin.co.uk",
+          "file": "susanelkin--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=susanelkin.co.uk): Scrapingdog HTTP 404: {\"message\":\"This URL does not exist or the url is wrong.\"}\n⚠️  ScrapingBee failed (render_js=false, domain=susanelkin.co.uk): ScrapingBee HTTP 404: <!DOCTYPE html>\n<html lang=\"en\">\n<head>\n\t<meta charset=\"UTF-8\">\n\t<meta name=\"viewport\" content=\"width=device-width\">\n    \n\t<link rel=\"profile\" href=\"https://gmpg.org/xfn/11\">\n\t<link rel=\"pingback\" hre\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1
+        },
         {
           "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
           "host": "theatreweekly.com",
@@ -246525,18 +247672,14 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 1
-        },
+          "recoveryCount": 3
+        }
+      ],
+      "recoverySkippedByCap": [
         {
           "url": "https://theatreweekly.com/jamie-bogyo-and-glenn-adamson-to-star-in-world-premiere-glam-rock-musical-stoker-wilde-at-wiltons-music-hall/",
           "host": "theatreweekly.com",
-          "file": "theatre-weekly--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "❌ Refusing to ingest — collision with theatre-weekly--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/\",\n  \"existingFlags\": {\n    \"wrongProduction\": false,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": true\n  },\n  \"existingPublishDate\": \"2026-10-28\",\n  \"incomingUrl\": \"https://theatreweekly.com/jamie-bogyo-and-glenn-adamson-to-star-in-world-premiere-glam-rock-musical-stoker-wilde-at-wiltons-music-hall/\",\n  \"incomingPublishDate\": \"2026-09-15\"\n}\n\nManual remediation required: rename o",
-          "recoveryCount": 2
+          "file": "theatre-weekly--unknown.json"
         }
       ],
       "censusVerdict": {
@@ -246550,13 +247693,6 @@
             "url": "https://thespyinthestalls.com/2026/10/stoker-wilde/"
           },
           {
-            "outletId": "everything-theatre",
-            "outlet": "everything-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/"
-          },
-          {
             "outletId": "theatreboard",
             "outlet": "theatreboard",
             "critic": "Unknown",
@@ -246564,11 +247700,11 @@
             "url": "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall"
           },
           {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/"
+            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/"
           },
           {
             "outletId": "bestoftheatre",
@@ -246576,6 +247712,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons"
+          },
+          {
+            "outletId": "susanelkin",
+            "outlet": "susanelkin",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/"
           },
           {
             "outletId": "bestoftheatre",
@@ -246622,13 +247772,6 @@
             "firstSeenAt": "2026-10-31T10:20:07.676Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
-            "outletId": "everything-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
-          },
-          {
             "url": "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
             "outletId": "theatreboard",
             "state": "GAP",
@@ -246636,11 +247779,11 @@
             "firstSeenAt": "2026-10-31T17:58:22.702Z"
           },
           {
-            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
-            "outletId": "theatre-weekly",
+            "url": "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+            "outletId": "everything-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:58:22.702Z"
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
@@ -246648,6 +247791,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T17:27:09.401Z"
+          },
+          {
+            "url": "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+            "outletId": "susanelkin",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T21:45:18.470Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T17:58:22.702Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
@@ -246659,13 +247816,6 @@
           {
             "url": "https://www.whatsonstage.com/news/jamie-bogyo-and-glenn-adamson-to-star-in-new-musical-about-bram-stoker-and-oscar-wilde_1731734/",
             "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T17:27:09.401Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
-            "outletId": "bestoftheatre",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T17:27:09.401Z"
@@ -246687,9 +247837,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 8
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-31T17:58:22.702Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
@@ -251487,72 +252637,12 @@
       "openingDate": "2025-11-13",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-New-CBS-Comedy-SUPERIOR-DONUTS-Based-on-Tracy-Letts-Play-20170202"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.nytimes.com/2017/02/01/arts/television/review-in-superior-donuts-wisecracks-galore-but-little-substance.html",
-        "http://nypost.com/2017/01/31/cbs-serves-up-funny-fresh-superior-donuts/",
-        "http://variety.com/2017/tv/reviews/superior-donuts-cbs-review-1201970820/",
-        "http://www.chicagotribune.com/entertainment/tv/ct-superior-donuts-tv-rev-0202-20170201-column.html",
-        "http://www.newsday.com/entertainment/tv/superior-donuts-review-cbs-comedy-doesn-t-offer-many-laughs-1.13044333",
-        "http://www.usatoday.com/story/life/tv/2017/02/01/review-powerless-superior-donuts-vanessa-hudgens-judd-hirsch/97295570/",
-        "http://ew.com/tv/2017/02/01/superior-donuts-ew-review/"
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.nytimes.com/2017/02/01/arts/television/review-in-superior-donuts-wisecracks-galore-but-little-substance.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nypost.com/2017/01/31/cbs-serves-up-funny-fresh-superior-donuts/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2017/tv/reviews/superior-donuts-cbs-review-1201970820/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.chicagotribune.com/entertainment/tv/ct-superior-donuts-tv-rev-0202-20170201-column.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/tv/superior-donuts-review-cbs-comedy-doesn-t-offer-many-laughs-1.13044333",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.usatoday.com/story/life/tv/2017/02/01/review-powerless-superior-donuts-vanessa-hudgens-judd-hirsch/97295570/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://ew.com/tv/2017/02/01/superior-donuts-ew-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -251562,23 +252652,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 254,
-        "byReason": {
-          "not-http-url": 28,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 204,
-          "aggregator-section-root": 5,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-New-CBS-Comedy-SUPERIOR-DONUTS-Based-on-Tracy-Letts-Play-20170202",
-          "publishDate": "2017-02-02"
-        }
-      ],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -251589,7 +252666,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "surinderella-off-west-end-2026",
@@ -262420,7 +263497,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:36:14.445Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -264320,23 +265397,60 @@
       "openingDate": null,
       "status": "previews",
       "category": "off-west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314"
+      ],
       "aggregatorListedUrls": [
-        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
-        "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
-        "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
+        "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+        "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+        "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+        "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
+        "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
         "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
         "https://www.timeout.com/london/theatre/the-bridge-4",
-        "https://list.co.uk/event/the-bridge-603121",
-        "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
         "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-the-bridge",
         "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
+        "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
+        "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
+        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
+        "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
+        "https://list.co.uk/event/the-bridge-603121",
+        "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
+        "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
         "https://ayoungishperspective.co.uk/2026/08/30/review-the-bridge/"
       ],
       "dirFiles": 10,
-      "dirClean": 1,
+      "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
           "host": "theguardian.com",
@@ -264350,14 +265464,102 @@
           "serpCensus": true
         },
         {
+          "url": "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-11-03",
+          "serpCensus": true
+        },
+        {
+          "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
+          "host": "sierz.co.uk",
+          "knownOutletId": "sierz-co-uk",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
           "host": "theskinny.co.uk",
-          "knownOutletId": null,
+          "knownOutletId": "the-skinny",
           "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": true,
+          "recoverableFile": "thestage--siobhan-murphy.json",
+          "recoverableOutletId": "thestage",
+          "recoverableCritic": "Siobhan Murphy",
+          "recoverableCount": 2,
+          "dirFlags": [
+            {
+              "file": "thestage--siobhan-murphy.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://thestage.co.uk/reviews/london-city-ballet-firebird-a-double-bill-review-sadlers-well-london"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-the-bridge",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--arthur-fisher.json",
+              "flag": "clean",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-the-bridge"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "british-theatre--keith-mckenna.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
           "host": "newyorktheater.me",
@@ -264405,9 +265607,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
+          "url": "https://list.co.uk/event/the-bridge-603121",
+          "host": "list.co.uk",
+          "knownOutletId": "the-list",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -264415,32 +265617,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "bestoftheatre--milo-garth.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-the-bridge",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--arthur-fisher.json",
+              "file": "the-list--unknown.json",
               "flag": "clean",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-the-bridge"
+              "urlInDir": "https://list.co.uk/event/the-bridge-603121"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -264455,9 +265634,9 @@
           "reverify": false
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
+          "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -264465,9 +265644,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "british-theatre--keith-mckenna.json",
+              "file": "bestoftheatre--milo-garth.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855"
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -264578,7 +265757,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 5,
             "error": null
           },
           {
@@ -264588,7 +265767,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -264598,39 +265777,106 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 21,
+        "count": 352,
         "byReason": {
-          "non-review-host": 15,
-          "bare-host": 1,
+          "not-http-url": 81,
+          "non-review-host": 27,
+          "aggregator-internal-nav": 227,
+          "aggregator-section-root": 4,
+          "no-review-evidence": 1,
           "ticketing-listing": 1,
-          "census-junk-host": 1,
-          "no-review-evidence": 2,
-          "event-listing": 1
+          "bare-host": 1,
+          "census-junk-host": 2,
+          "event-listing": 8
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314",
+          "publishDate": "2023-03-14"
+        }
+      ],
       "automatedExcludedListed": 5,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
-          "host": "theskinny.co.uk",
-          "priorRun": false,
-          "reason": "unregistered-host",
+          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
+          "host": "sierz.co.uk",
+          "outletId": "sierz-co-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-bridge-off-west-end-2026: https://sierz.co.uk/reviews/old-bridge-bush-theatre/ dated 2021-11-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
+          "host": "theskinny.co.uk",
+          "outletId": "the-skinny",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-bridge-off-west-end-2026: https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
           "host": "theguardian.com",
@@ -264663,20 +265909,6 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://thestage.co.uk/reviews/london-city-ballet-firebird-a-double-bill-review-sadlers-well-london",
-          "host": "thestage.co.uk",
-          "file": "thestage--siobhan-murphy.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Score-only fallback refused: show title \"The Bridge\" not found in page HTML — cannot verify this is the right show without body text.",
-          "recoveryCount": 2,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -264695,32 +265927,18 @@
             "url": "https://www.timeout.com/london/theatre/the-bridge-4"
           },
           {
-            "outletId": "theskinny.co.uk",
-            "outlet": "theskinny.co.uk",
+            "outletId": "sierz-co-uk",
+            "outlet": "sierz-co-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/"
+          },
+          {
+            "outletId": "the-skinny",
+            "outlet": "the-skinny",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy"
-          },
-          {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/"
-          },
-          {
-            "outletId": "snackmag.co.uk",
-            "outlet": "snackmag.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre"
           },
           {
             "outletId": "bestoftheatre",
@@ -264737,6 +265955,34 @@
             "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855"
           },
           {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/"
+          },
+          {
+            "outletId": "snackmag.co.uk",
+            "outlet": "snackmag.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge"
+          },
+          {
+            "outletId": "the-list",
+            "outlet": "the-list",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://list.co.uk/event/the-bridge-603121"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre"
+          },
+          {
             "outletId": "a-youngish-perspective",
             "outlet": "a-youngish-perspective",
             "critic": "Unknown",
@@ -264746,12 +265992,6 @@
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://list.co.uk/event/the-bridge-603121",
-            "outletId": "list.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T13:54:34.822Z"
-          },
           {
             "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
             "outletId": "guardian",
@@ -264767,29 +266007,15 @@
             "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
+            "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
+            "outletId": "sierz-co-uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-31T21:45:18.470Z"
+          },
+          {
             "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
-            "outletId": "theskinny.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-29T07:30:38.899Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
-            "outletId": "nyt-theater",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-29T07:30:38.899Z"
-          },
-          {
-            "url": "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
-            "outletId": "snackmag.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-29T07:30:38.899Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
-            "outletId": "bestoftheatre",
+            "outletId": "the-skinny",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-29T07:30:38.899Z"
@@ -264809,6 +266035,34 @@
             "firstSeenAt": "2026-10-29T07:30:38.899Z"
           },
           {
+            "url": "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
+            "outletId": "nyt-theater",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-29T07:30:38.899Z"
+          },
+          {
+            "url": "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
+            "outletId": "snackmag.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-29T07:30:38.899Z"
+          },
+          {
+            "url": "https://list.co.uk/event/the-bridge-603121",
+            "outletId": "the-list",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-30T13:54:34.822Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
+            "outletId": "bestoftheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-29T07:30:38.899Z"
+          },
+          {
             "url": "https://ayoungishperspective.co.uk/2026/08/30/review-the-bridge/",
             "outletId": "a-youngish-perspective",
             "state": "IN_FLIGHT",
@@ -264817,10 +266071,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 1,
-        "candidateCount": 9
+        "liveCount": 0,
+        "candidateCount": 10
       },
-      "computedAt": "2026-10-31T17:58:22.702Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -268655,7 +269909,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-dasslers-off-west-end-2026",
@@ -269511,40 +270765,12 @@
       "openingDate": "2026-03-15",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Goodspeeds-THE-DROWSY-CHAPERONE-20181012"
-      ],
-      "aggregatorListedUrls": [
-        "http://www.courant.com/entertainment/arts-theater/hc-fea-review-drowsy-chaperone-goodspeed-20181011-story.html",
-        "https://thewestfieldnews.com/review-goodspeed-stages-the-drowsy-chaperone/",
-        "https://showriz.com/blogcategoryreviews/2018/9/25/review-goodspeeds-the-drowsy-chaperone"
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "http://www.courant.com/entertainment/arts-theater/hc-fea-review-drowsy-chaperone-goodspeed-20181011-story.html",
-          "host": "courant.com",
-          "knownOutletId": "hartford-courant",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thewestfieldnews.com/review-goodspeed-stages-the-drowsy-chaperone/",
-          "host": "thewestfieldnews.com",
-          "knownOutletId": "westfield-news",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://showriz.com/blogcategoryreviews/2018/9/25/review-goodspeeds-the-drowsy-chaperone",
-          "host": "showriz.com",
-          "knownOutletId": "showriz",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -269554,23 +270780,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 273,
-        "byReason": {
-          "not-http-url": 45,
-          "non-review-host": 16,
-          "aggregator-internal-nav": 205,
-          "aggregator-section-root": 5,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Goodspeeds-THE-DROWSY-CHAPERONE-20181012",
-          "publishDate": "2018-10-12"
-        }
-      ],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -269581,7 +270794,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-emperor-jones-off-broadway-2017",
@@ -276360,21 +277573,28 @@
       "status": "closed",
       "category": "regional",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-the-off-broadway-premiere-of-the-house-that-will-not-stand"
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-About-New-York-Theatre-Workshops-THE-HOUSE-THAT-WILL-NOT-STAND-20180731"
       ],
       "aggregatorListedUrls": [
-        "http://www.hollywoodreporter.com/review/house-that-will-not-stand-theater-1130746",
+        "https://www.nytimes.com/2018/07/30/theater/the-house-that-will-not-stand-review-marcus-gardley.html",
+        "https://www.hollywoodreporter.com/review/house-that-will-not-stand-theater-1130746",
         "http://www.vulture.com/2018/07/theater-on-fertile-ground-the-house-that-will-not-stand.html",
-        "http://www.nytimes.com/2018/07/30/theater/the-house-that-will-not-stand-review-marcus-gardley.html",
-        "http://www.timeout.com/newyork/theater/the-house-that-will-not-stand",
-        "http://www.thewrap.com/house-that-will-not-stand-theater-review-blame-marcus-gardley-play/"
+        "https://www.timeout.com/newyork/theater/the-house-that-will-not-stand",
+        "https://www.thewrap.com/house-that-will-not-stand-theater-review-blame-marcus-gardley-play/"
       ],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 10,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [
         {
-          "url": "http://www.hollywoodreporter.com/review/house-that-will-not-stand-theater-1130746",
+          "url": "https://www.nytimes.com/2018/07/30/theater/the-house-that-will-not-stand-review-marcus-gardley.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/house-that-will-not-stand-theater-1130746",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
           "priorRun": true,
@@ -276388,28 +277608,58 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.nytimes.com/2018/07/30/theater/the-house-that-will-not-stand-review-marcus-gardley.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.timeout.com/newyork/theater/the-house-that-will-not-stand",
+          "url": "https://www.timeout.com/newyork/theater/the-house-that-will-not-stand",
           "host": "timeout.com",
           "knownOutletId": "timeout",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.thewrap.com/house-that-will-not-stand-theater-review-blame-marcus-gardley-play/",
+          "url": "https://www.thewrap.com/house-that-will-not-stand-theater-review-blame-marcus-gardley-play/",
           "host": "thewrap.com",
           "knownOutletId": "thewrap",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "allieandtheafterparty.com",
+          "count": 1
+        },
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "buzznews.net",
+          "count": 1
+        },
+        {
+          "host": "chicagoreader.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheaterandarts.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "newcitystage.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "wernerstheatrereviews.wordpress.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -276418,25 +277668,62 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 109,
+        "count": 295,
         "byReason": {
-          "not-http-url": 6,
-          "non-review-host": 21,
-          "aggregator-internal-nav": 67,
-          "aggregator-section-root": 4,
-          "production-database-listing": 10,
-          "non-stage-review": 1
+          "not-http-url": 67,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 208,
+          "aggregator-section-root": 5
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://playbill.com/article/read-reviews-for-the-off-broadway-premiere-of-the-house-that-will-not-stand",
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Do-The-Critics-Think-About-New-York-Theatre-Workshops-THE-HOUSE-THAT-WILL-NOT-STAND-20180731",
           "publishDate": "2018-07-31"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2018/07/30/theater/the-house-that-will-not-stand-review-marcus-gardley.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/house-that-will-not-stand-theater-1130746",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/07/theater-on-fertile-ground-the-house-that-will-not-stand.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-house-that-will-not-stand",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/house-that-will-not-stand-theater-review-blame-marcus-gardley-play/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -276446,7 +277733,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-hulahoopin-queen-the-musical-off-broadway-2026",
@@ -278339,7 +279626,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
@@ -279671,7 +280958,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-last-days-of-liz-truss-off-west-end-2026",
@@ -296948,7 +298235,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
@@ -303767,88 +305054,12 @@
       "openingDate": "2026-02-19",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-did-critics-think-of-the-seagull-woodstock-ny"
-      ],
-      "aggregatorListedUrls": [
-        "https://joshatthemovies.com/2023/02/28/theater-review-the-seagull-woodstock-ny/",
-        "https://nystagereview.com/2023/02/28/the-seagull-woodstock-ny-the-chekhov-updating-you-didnt-need/",
-        "https://nystagereview.com/2023/02/28/the-seagull-not-your-great-great-great-grandmothers-chekhov/",
-        "https://newyorktheater.me/2023/02/28/the-seagull-woodstock-ny-review/",
-        "https://www.nytimes.com/2023/02/28/theater/the-seagull-woodstock-ny-review.html",
-        "https://observer.com/2023/02/review-anton-chekhov-gets-an-r-rating-with-the-seagull-woodstock-ny/",
-        "https://thequeerreview.com/2023/02/28/theatre-review-the-seagull-woodstock-ny-romulus-linney-courtyard-theatre-pershing-square-signature-center-off-broadway/",
-        "https://www.theatermania.com/off-broadway/reviews/review-parker-posey-bradshaw-seagull-woodstock_94919.html",
-        "https://www.thewrap.com/the-seagull-woodstock-ny-off-broadway-review-parker-posey/"
-      ],
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://joshatthemovies.com/2023/02/28/theater-review-the-seagull-woodstock-ny/",
-          "host": "joshatthemovies.com",
-          "knownOutletId": "josh-at-the-movies",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2023/02/28/the-seagull-woodstock-ny-the-chekhov-updating-you-didnt-need/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2023/02/28/the-seagull-not-your-great-great-great-grandmothers-chekhov/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2023/02/28/the-seagull-woodstock-ny-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2023/02/28/theater/the-seagull-woodstock-ny-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2023/02/review-anton-chekhov-gets-an-r-rating-with-the-seagull-woodstock-ny/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://thequeerreview.com/2023/02/28/theatre-review-the-seagull-woodstock-ny-romulus-linney-courtyard-theatre-pershing-square-signature-center-off-broadway/",
-          "host": "thequeerreview.com",
-          "knownOutletId": "the-queer-review",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/off-broadway/reviews/review-parker-posey-bradshaw-seagull-woodstock_94919.html",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/the-seagull-woodstock-ny-off-broadway-review-parker-posey/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
@@ -303858,25 +305069,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 195,
-        "byReason": {
-          "not-http-url": 6,
-          "non-review-host": 21,
-          "aggregator-internal-nav": 146,
-          "aggregator-section-root": 4,
-          "production-database-listing": 11,
-          "non-stage-review": 1,
-          "roundup-page": 6
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-the-seagull-woodstock-ny",
-          "publishDate": "2023-03-01"
-        }
-      ],
-      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
@@ -303887,7 +305083,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-seance-off-west-end-2026",
@@ -305205,7 +306401,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-shitheads-west-end-2026",
@@ -307791,7 +308987,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-tragedy-of-coriolanus-off-broadway-2026",
@@ -309463,7 +310659,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "the-urmetazoan-off-west-end-2026",
@@ -319304,7 +320500,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "topdog-underdog-regional-2026",
@@ -325333,7 +326529,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "two-sisters-and-a-piano-regional-2026",
@@ -325370,7 +326566,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "two-strangers-bway-2025",
@@ -327887,7 +329083,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "urinetown-regional-2025",
@@ -327924,7 +329120,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "vanya-off-broadway-2025",
@@ -334674,13 +335870,388 @@
       "openingDate": "2026-08-17",
       "status": "closed",
       "category": "regional",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Steven-Spielbergs-WEST-SIDE-STORY-Film-Remake-20211202",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810",
+        "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220"
+      ],
+      "aggregatorListedUrls": [
+        "https://variety.com/2021/film/reviews/west-side-story-review-steven-spielberg-ansel-elgort-rachel-zegler-1235122664/",
+        "https://deadline.com/video/west-side-story-review-steven-spielberg-remove-term-ansel-elgort-rachel-zegler/",
+        "https://nypost.com/2021/12/02/west-side-story-review-spielberg-does-decent-job-with-classic/",
+        "https://www.theguardian.com/film/2021/dec/02/west-side-story-review-steven-spielberg",
+        "https://www.vanityfair.com/hollywood/2021/12/steven-spielbergs-west-side-story-updates-and-enlivens-a-classic",
+        "https://www.hollywoodreporter.com/movies/movie-reviews/west-side-story-steven-spielberg-1235056068/",
+        "https://www.latimes.com/entertainment-arts/movies/story/2021-12-02/west-side-story-review-steven-spielberg-remake",
+        "https://www.telegraph.co.uk/films/2021/12/02/west-side-story-review-spielbergs-magnificent-remake-finest/",
+        "https://ew.com/movies/movie-reviews/west-side-story-steven-spielberg-review/",
+        "https://www.independent.co.uk/arts-entertainment/films/reviews/west-side-story-spielberg-review-b1968472.html",
+        "https://time.com/6125178/west-side-story-review/",
+        "https://www.seattletimes.com/entertainment/movies/west-side-story-review-steven-spielbergs-new-version-of-the-musical-creates-a-magic-of-its-own/",
+        "https://www.thejc.com/culture/film/film-review-west-side-story-1.523176",
+        "https://www.indiewire.com/2021/12/west-side-story-movie-review-2021-1234682914/",
+        "https://www.amny.com/news/review-west-side-story-shines-despite-draggy-screenplay/",
+        "https://www.ign.com/articles/west-side-story-review-steven-spielberg",
+        "https://datebook.sfchronicle.com/movies-tv/review-steven-spielbergs-transcendent-west-side-story-improves-on-originals-greatness",
+        "https://www.empireonline.com/movies/reviews/west-side-story-2021/",
+        "https://www.timesunion.com/7day-arts/article/Review-West-Side-Story-Barrington-Stage-13140872.php",
+        "https://theberkshireedge.com/theatre-review-west-side-story-at-barrington-stage-is-one-of-the-most-rapturous-thrilling-evenings-of-musical-theater-anywhere/",
+        "https://thewestfieldnews.com/review-west-side-story-at-barrington-stage/",
+        "http://www.iberkshires.com/story/58094/Review-West-Side-Story-at-Barrington-Stage-Wow-.html",
+        "https://www.nytimes.com/2020/02/20/theater/west-side-story-review-sharks-vs-jets-vs-video.html",
+        "https://www.thetimes.co.uk/article/west-side-story-review-tense-and-angry-a-story-retold-for-our-time-2dbb9qrff",
+        "http://nystagereview.com/2020/02/20/west-side-story-a-new-time-for-us/",
+        "http://nystagereview.com/2020/02/20/west-side-story-damp-desolate-and-usually-distracting/",
+        "https://www.thewrap.com/west-side-story-broadway-review-ivo-van-hove/",
+        "https://www.latimes.com/entertainment-arts/story/2020-02-20/ivo-van-hove-west-side-story-broadway-review",
+        "https://nypost.com/2020/02/20/west-side-story-broadway-review-radical-revival-is-a-triumph/",
+        "https://variety.com/2020/legit/reviews/west-side-story-review-broadway-ivo-van-hove-1203507979/",
+        "https://www.rollingstone.com/music/music-live-reviews/west-side-story-broadway-review-ivo-van-hove-955669/",
+        "https://ew.com/theater-reviews/2020/02/20/west-side-story-broadway-review/",
+        "https://www.amny.com/news/arts-entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/amp/",
+        "https://deadline.com/2020/02/west-side-story-rumbles-full-force-into-a-new-century-broadway-review-1202863868/",
+        "https://www.thedailybeast.com/ivo-van-hoves-west-side-story-broadway-revival-aims-to-shock-but-ends-up-lost-in-time",
+        "https://www.telegraph.co.uk/theatre/what-to-see/west-side-story-review-broadway-theatre-new-york-bernsteins/",
+        "https://www.thestage.co.uk/reviews/2020/west-side-story-ivo-van-hove-review-at-broadway-theatre-new-york/",
+        "https://www.vulture.com/2020/02/theater-review-a-new-west-side-story-onscreen-all-the-way.html",
+        "https://www.hollywoodreporter.com/review/west-side-story-theater-1280016",
+        "https://www.theguardian.com/stage/2020/feb/20/west-side-story-review-broadway-revival",
+        "https://www.timeout.com/newyork/theater/west-side-story-broadway-review-revival-ivo-van-hove",
+        "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2020/02/20/theater-review---west-side-story-"
+      ],
+      "dirFiles": 8,
+      "dirClean": 8,
+      "inReviewsJson": 8,
+      "missing": [
+        {
+          "url": "https://variety.com/2021/film/reviews/west-side-story-review-steven-spielberg-ansel-elgort-rachel-zegler-1235122664/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/video/west-side-story-review-steven-spielberg-remove-term-ansel-elgort-rachel-zegler/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2021/12/02/west-side-story-review-spielberg-does-decent-job-with-classic/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/dec/02/west-side-story-review-steven-spielberg",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/12/steven-spielbergs-west-side-story-updates-and-enlivens-a-classic",
+          "host": "vanityfair.com",
+          "knownOutletId": "vanityfair",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/west-side-story-steven-spielberg-1235056068/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-12-02/west-side-story-review-steven-spielberg-remake",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/films/2021/12/02/west-side-story-review-spielbergs-magnificent-remake-finest/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/west-side-story-steven-spielberg-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/films/reviews/west-side-story-spielberg-review-b1968472.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://time.com/6125178/west-side-story-review/",
+          "host": "time.com",
+          "knownOutletId": "time",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/movies/west-side-story-review-steven-spielbergs-new-version-of-the-musical-creates-a-magic-of-its-own/",
+          "host": "seattletimes.com",
+          "knownOutletId": "seattle-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thejc.com/culture/film/film-review-west-side-story-1.523176",
+          "host": "thejc.com",
+          "knownOutletId": "the-jewish-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2021/12/west-side-story-movie-review-2021-1234682914/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/news/review-west-side-story-shines-despite-draggy-screenplay/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ign.com/articles/west-side-story-review-steven-spielberg",
+          "host": "ign.com",
+          "knownOutletId": "ign",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-steven-spielbergs-transcendent-west-side-story-improves-on-originals-greatness",
+          "host": "sfchronicle.com",
+          "knownOutletId": "san-francisco-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/west-side-story-2021/",
+          "host": "empireonline.com",
+          "knownOutletId": "empire",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timesunion.com/7day-arts/article/Review-West-Side-Story-Barrington-Stage-13140872.php",
+          "host": "timesunion.com",
+          "knownOutletId": "albany-times-union",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theberkshireedge.com/theatre-review-west-side-story-at-barrington-stage-is-one-of-the-most-rapturous-thrilling-evenings-of-musical-theater-anywhere/",
+          "host": "theberkshireedge.com",
+          "knownOutletId": "berkshire-edge",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thewestfieldnews.com/review-west-side-story-at-barrington-stage/",
+          "host": "thewestfieldnews.com",
+          "knownOutletId": "westfield-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.iberkshires.com/story/58094/Review-West-Side-Story-at-Barrington-Stage-Wow-.html",
+          "host": "iberkshires.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2020/02/20/theater/west-side-story-review-sharks-vs-jets-vs-video.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/west-side-story-review-tense-and-angry-a-story-retold-for-our-time-2dbb9qrff",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/02/20/west-side-story-a-new-time-for-us/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/02/20/west-side-story-damp-desolate-and-usually-distracting/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/west-side-story-broadway-review-ivo-van-hove/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-02-20/ivo-van-hove-west-side-story-broadway-review",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2020/02/20/west-side-story-broadway-review-radical-revival-is-a-triumph/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/west-side-story-review-broadway-ivo-van-hove-1203507979/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.rollingstone.com/music/music-live-reviews/west-side-story-broadway-review-ivo-van-hove-955669/",
+          "host": "rollingstone.com",
+          "knownOutletId": "rollingstone",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2020/02/20/west-side-story-broadway-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/news/arts-entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/amp/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2020/02/west-side-story-rumbles-full-force-into-a-new-century-broadway-review-1202863868/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/ivo-van-hoves-west-side-story-broadway-revival-aims-to-shock-but-ends-up-lost-in-time",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/west-side-story-review-broadway-theatre-new-york-bernsteins/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/west-side-story-ivo-van-hove-review-at-broadway-theatre-new-york/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2020/02/theater-review-a-new-west-side-story-onscreen-all-the-way.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/west-side-story-theater-1280016",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/20/west-side-story-review-broadway-revival",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/west-side-story-broadway-review-revival-ivo-van-hove",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2020/02/20/theater-review---west-side-story-",
+          "host": "ny1.com",
+          "knownOutletId": "ny1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "aroundthetownchicago.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoreader.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "chicagotheaterandarts.com",
+          "count": 1
+        },
+        {
+          "host": "newcitystage.com",
+          "count": 1
+        },
+        {
+          "host": "conversationswithedtracy.com",
+          "count": 1
+        },
+        {
+          "host": "splashmags.com",
+          "count": 1
+        },
+        {
+          "host": "thirdcoastreview.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -334689,11 +336260,330 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 875,
+        "byReason": {
+          "not-http-url": 153,
+          "non-review-host": 47,
+          "aggregator-internal-nav": 662,
+          "aggregator-section-root": 12,
+          "unparseable-url": 1
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Steven-Spielbergs-WEST-SIDE-STORY-Film-Remake-20211202",
+          "publishDate": "2021-12-02"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-On-Barrington-Stages-WEST-SIDE-STORY-20180810",
+          "publishDate": "2018-08-10"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-WEST-SIDE-STORY-Opens-On-Broadway-See-What-the-Critics-Are-Saying-20200220",
+          "publishDate": "2020-02-20"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://variety.com/2021/film/reviews/west-side-story-review-steven-spielberg-ansel-elgort-rachel-zegler-1235122664/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/video/west-side-story-review-steven-spielberg-remove-term-ansel-elgort-rachel-zegler/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2021/12/02/west-side-story-review-spielberg-does-decent-job-with-classic/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2021/dec/02/west-side-story-review-steven-spielberg",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vanityfair.com/hollywood/2021/12/steven-spielbergs-west-side-story-updates-and-enlivens-a-classic",
+          "host": "vanityfair.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/movies/movie-reviews/west-side-story-steven-spielberg-1235056068/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2021-12-02/west-side-story-review-steven-spielberg-remake",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/films/2021/12/02/west-side-story-review-spielbergs-magnificent-remake-finest/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/west-side-story-steven-spielberg-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/films/reviews/west-side-story-spielberg-review-b1968472.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://time.com/6125178/west-side-story-review/",
+          "host": "time.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.seattletimes.com/entertainment/movies/west-side-story-review-steven-spielbergs-new-version-of-the-musical-creates-a-magic-of-its-own/",
+          "host": "seattletimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thejc.com/culture/film/film-review-west-side-story-1.523176",
+          "host": "thejc.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/2021/12/west-side-story-movie-review-2021-1234682914/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/news/review-west-side-story-shines-despite-draggy-screenplay/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ign.com/articles/west-side-story-review-steven-spielberg",
+          "host": "ign.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://datebook.sfchronicle.com/movies-tv/review-steven-spielbergs-transcendent-west-side-story-improves-on-originals-greatness",
+          "host": "sfchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/west-side-story-2021/",
+          "host": "empireonline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timesunion.com/7day-arts/article/Review-West-Side-Story-Barrington-Stage-13140872.php",
+          "host": "timesunion.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theberkshireedge.com/theatre-review-west-side-story-at-barrington-stage-is-one-of-the-most-rapturous-thrilling-evenings-of-musical-theater-anywhere/",
+          "host": "theberkshireedge.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thewestfieldnews.com/review-west-side-story-at-barrington-stage/",
+          "host": "thewestfieldnews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.iberkshires.com/story/58094/Review-West-Side-Story-at-Barrington-Stage-Wow-.html",
+          "host": "iberkshires.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2020/02/20/theater/west-side-story-review-sharks-vs-jets-vs-video.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/west-side-story-review-tense-and-angry-a-story-retold-for-our-time-2dbb9qrff",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/02/20/west-side-story-a-new-time-for-us/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/02/20/west-side-story-damp-desolate-and-usually-distracting/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/west-side-story-broadway-review-ivo-van-hove/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2020-02-20/ivo-van-hove-west-side-story-broadway-review",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2020/02/20/west-side-story-broadway-review-radical-revival-is-a-triumph/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2020/legit/reviews/west-side-story-review-broadway-ivo-van-hove-1203507979/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.rollingstone.com/music/music-live-reviews/west-side-story-broadway-review-ivo-van-hove-955669/",
+          "host": "rollingstone.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/theater-reviews/2020/02/20/west-side-story-broadway-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/news/arts-entertainment/theater/review-west-side-story-revival-gets-lost-in-brutal-violence-and-overwhelming-video-imagery/amp/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2020/02/west-side-story-rumbles-full-force-into-a-new-century-broadway-review-1202863868/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/ivo-van-hoves-west-side-story-broadway-revival-aims-to-shock-but-ends-up-lost-in-time",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/west-side-story-review-broadway-theatre-new-york-bernsteins/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/west-side-story-ivo-van-hove-review-at-broadway-theatre-new-york/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2020/02/theater-review-a-new-west-side-story-onscreen-all-the-way.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/west-side-story-theater-1280016",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/20/west-side-story-review-broadway-revival",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/west-side-story-broadway-review-revival-ivo-van-hove",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ny1.com/nyc/all-boroughs/theater-reviews/2020/02/20/theater-review---west-side-story-",
+          "host": "ny1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -334703,7 +336593,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "weve-been-here-before-a-one-woman-musical-off-broadway-2026",
@@ -336201,7 +338091,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "who-killed-marilyn-off-west-end-2026",
@@ -344091,7 +345981,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
       "showId": "yoah-off-broadway-2026",

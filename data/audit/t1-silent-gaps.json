@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T21:22:08.405Z",
+  "generatedAt": "2026-10-31T21:45:33.042Z",
   "windowDays": 45,
   "showsScanned": 218,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 147.4916511111111,
+      "fileAgeHours": 147.88178166666665,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 132.94778833333334,
+      "nonTerminalAgeHours": 133.337965,
       "needsManualRecovery": false
     },
     {
@@ -40,29 +40,32 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 176.0113577777778,
+      "fileAgeHours": 176.40149277777778,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 162.05967972222223,
+      "nonTerminalAgeHours": 162.4498563888889,
       "needsManualRecovery": true
     },
     {
-      "showId": "kowalski-regional-2026",
-      "title": "Kowalski",
-      "openingDate": "2026-09-23",
-      "file": "talkinbroadway--savannah-brooks.json",
-      "outletId": "talkinbroadway",
+      "showId": "twelfth-night-crucible-regional-2026",
+      "title": "Twelfth Night",
+      "openingDate": "2026-10-17",
+      "file": "thereviewshub--unknown.json",
+      "outletId": "thereviewshub",
       "tier": 2,
       "type": "empty-body",
-      "recoverable": false,
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch925.html",
-      "recovery": null,
-      "recoveryCount": 3,
+      "recoverable": true,
+      "url": "https://www.thereviewshub.com/twelfth-night-crucible-theatre-sheffield/",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
       "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=kowalski-regional-2026 --url=https://www.talkinbroadway.com/page/regional/chicago/ch925.html --outlet=talkinbroadway --critic=\"Savannah Brooks\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-31T13:59:51.230Z",
-      "fileAgeHours": 7.371433055555555,
-      "gapSeenAt": "2026-10-31T18:23:22.548Z",
-      "nonTerminalAgeHours": 2.979404722222222,
+      "fix": "node scripts/ingest-review-from-url.js --show=twelfth-night-crucible-regional-2026 --url=https://www.thereviewshub.com/twelfth-night-crucible-theatre-sheffield/ --outlet=thereviewshub   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-31T21:23:31.880Z",
+      "fileAgeHours": 0.3669766666666667,
+      "gapSeenAt": "2026-10-31T21:45:33.041Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     }
   ],
