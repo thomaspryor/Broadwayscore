@@ -27,6 +27,10 @@ const DEMO_FEATURES = new Set(['showtimes']);
 // and add it back here. BRO-5007: boxOfficeV2 is not public yet
 // (owner, 2026-10-10). vercel-demo.yml also leaves held flags off the public
 // demo build unless DEMO_HELD_ALLOWLIST names them.
+// BEFORE adding a flag here: production's NEXT_PUBLIC_FEATURES (Vercel env, encrypted, so
+// check the dashboard) must not already list it, or the guard fails EVERY production deploy
+// (fantasyLeague did, 2026-10-31, BRO-6712). For a flag that was once launched, hard-code
+// its getter to `return false` instead of holding it.
 export const PROD_HELD_FEATURES = new Set(['boxOfficeV2']);
 
 function isDemo(): boolean {
