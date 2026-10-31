@@ -1844321,21 +1844321,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T18:55:30.161Z",
-    "completedAt": "2026-10-31T18:56:18.636Z",
-    "totalReviews": 10,
+    "startedAt": "2026-10-31T18:57:11.233Z",
+    "completedAt": "2026-10-31T18:58:07.130Z",
+    "totalReviews": 11,
     "processed": 10,
-    "skipped": 0,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 63960,
-      "output": 2946,
+      "input": 62853,
+      "output": 3183,
       "cacheRead": 38070,
       "cacheWrite": 0,
-      "total": 156492
+      "total": 155244
     },
-    "costUsd": 0.23668619999999996,
-    "runId": "41231317565",
+    "costUsd": 0.2370354,
+    "runId": "41231283194",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1849240,6 +1849240,16 @@
           "flat": 5,
           "down": 0,
           "total": 18
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "ashland-avenue-regional-2025",
+        "ourDistribution": {
+          "up": 13,
+          "flat": 3,
+          "down": 0,
+          "total": 16
         },
         "hasDisagreement": false
       },
@@ -1858426,16 +1858436,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Up thumbs differ by 38% (ours: 71%, theirs: 33%)"
-      },
-      {
-        "showId": "ghost-fetus-regional-2025",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 1,
-          "down": 1,
-          "total": 3
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "ghost-light-off-broadway-2017",
@@ -1885263,6 +1885263,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "things-with-friends-regional-2025",
+        "ourDistribution": {
+          "up": 8,
+          "flat": 1,
+          "down": 1,
+          "total": 10
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "this-aint-no-disco-off-broadway-2018",
         "ourDistribution": {
           "up": 2,
@@ -1888605,8 +1888615,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T19:01:14.732Z",
-    "completedAt": "2026-10-31T19:01:14.733Z",
+    "startedAt": "2026-10-31T19:03:03.638Z",
+    "completedAt": "2026-10-31T19:03:03.640Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1888619,7 +1888629,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41231317565",
+    "runId": "41231283194",
     "source": "comparative-rescore",
     "errorDetails": []
   }
