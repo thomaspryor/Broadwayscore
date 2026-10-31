@@ -1602620,21 +1602620,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T15:29:56.283Z",
-    "completedAt": "2026-10-31T15:30:39.753Z",
-    "totalReviews": 8,
-    "processed": 8,
-    "skipped": 0,
+    "startedAt": "2026-10-31T15:36:44.462Z",
+    "completedAt": "2026-10-31T15:37:23.846Z",
+    "totalReviews": 7,
+    "processed": 5,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 50795,
-      "output": 2555,
-      "cacheRead": 30456,
-      "cacheWrite": 0,
-      "total": 125048
+      "input": 52448,
+      "output": 2151,
+      "cacheRead": 19035,
+      "cacheWrite": 3807,
+      "total": 115190
     },
-    "costUsd": 0.1907962,
-    "runId": "41214386563",
+    "costUsd": 0.20169715000000002,
+    "runId": "41214988639",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1606163,20 +1606163,10 @@
       {
         "showId": "always-patsy-cline-regional-2025",
         "ourDistribution": {
-          "up": 11,
-          "flat": 1,
+          "up": 4,
+          "flat": 0,
           "down": 0,
-          "total": 12
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "always-patsy-cline-regional-2026",
-        "ourDistribution": {
-          "up": 11,
-          "flat": 1,
-          "down": 0,
-          "total": 12
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1613591,6 +1613581,16 @@
           "flat": 0,
           "down": 0,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "do-something-pretty-regional-2026",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -1636180,10 +1636180,10 @@
       {
         "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
         "ourDistribution": {
-          "up": 28,
+          "up": 29,
           "flat": 3,
           "down": 2,
-          "total": 33
+          "total": 34
         },
         "bwwDistribution": {
           "up": 9,
@@ -1645771,6 +1645771,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "work-hard-have-fun-make-history-regional-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 2,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "work-it-out-home-regional-2024",
         "ourDistribution": {
           "up": 1,
@@ -1646080,8 +1646090,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T15:35:37.897Z",
-    "completedAt": "2026-10-31T15:35:37.899Z",
+    "startedAt": "2026-10-31T15:42:19.179Z",
+    "completedAt": "2026-10-31T15:42:19.181Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1646094,7 +1646104,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41214386563",
+    "runId": "41214988639",
     "source": "comparative-rescore",
     "errorDetails": []
   }
