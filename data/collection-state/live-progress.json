@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-31T02:45:51.211Z",
+  "updatedAt": "2026-10-31T02:59:41.145Z",
   "processed": 495,
-  "failed": 285,
-  "successRate": "63.5%",
+  "failed": 292,
+  "successRate": "62.9%",
   "tierBreakdown": {
     "playwright": 228,
     "amp": 7,
@@ -11,33 +11,11 @@
     "scrapingdog": 31,
     "scrapingbee": 17,
     "brightdata": 2,
-    "archiveToday": 38,
+    "archiveToday": 42,
     "archive": 150
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-30T21:03:44.883Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-10-30T21:49:54.592Z",
-      "event": "bb-session",
-      "session": "6adec66a",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-30T21:49:55.405Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-30T22:39:53.372Z",
-      "event": "bb-session",
-      "session": "fc352287",
-      "url": "https://www.talkinbroadway.com/page/ob/10_30_26.html"
-    },
     {
       "t": "2026-10-30T22:39:54.142Z",
       "event": "bb-cookie-inject",
@@ -125,6 +103,28 @@
       "t": "2026-10-31T01:21:28.679Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T02:51:29.114Z",
+      "event": "bb-session",
+      "session": "b641a6db",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T02:51:29.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T02:53:20.933Z",
+      "event": "bb-session",
+      "session": "1a05a25c",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T02:53:21.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

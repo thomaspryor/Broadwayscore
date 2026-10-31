@@ -781,7 +781,14 @@
     "romeo-and-juliet-west-end-2026/nbcny--unknown.json",
     "romeo-and-juliet-west-end-2026/ny1--unknown.json",
     "romeo-and-juliet-west-end-2026/voice-magazine--unknown.json",
-    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json"
+    "romeo-and-juliet-west-end-2026/hollywood-reporter--david-rooney.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1128,7 +1135,11 @@
       "data/review-texts/the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/lyceum--unknown.json",
       "data/review-texts/the-price-off-west-end-2026/times-uk--unknown.json",
       "data/review-texts/proof-2026/times-uk--unknown.json",
-      "data/review-texts/les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
     ],
     "archive": [
       "frozen-2018/village-voice--michael-feingold.json",
@@ -1284,7 +1295,7 @@
     ]
   },
   "startTime": "2026-10-30T19:50:43.255Z",
-  "lastProcessed": "dog-day-afternoon-2026/people--dave-quinn.json",
+  "lastProcessed": "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
   "log": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -1424,6 +1435,28 @@
       "t": "2026-10-31T01:21:28.679Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T02:51:29.114Z",
+      "event": "bb-session",
+      "session": "b641a6db",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T02:51:29.744Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T02:53:20.933Z",
+      "event": "bb-session",
+      "session": "1a05a25c",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T02:53:21.521Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
