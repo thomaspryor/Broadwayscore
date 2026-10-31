@@ -248,6 +248,7 @@ function writeJsonAtomic(filePath, obj) {
 const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, gapRowShowIds, schedulingCheckpoint, reserveStalestSlots, oldestGapRow, pickDueLane, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
 const { mergeGapAudit, countsFor, priorCensusUrls, seedPriorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
+const { corpusDirProblem } = require('./lib/list-show-dirs');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -2308,8 +2309,11 @@ async function main(argv = process.argv.slice(2)) {
   // has no data/review-texts, so every show reads dirFiles=0 and the audit
   // reports reviews that are already collected as "missing", then checkpoints
   // and routes alerts off that. Refuse instead of auditing an empty directory.
-  if ((!fs.existsSync(REVIEW_TEXTS_DIR) || fs.readdirSync(REVIEW_TEXTS_DIR).length === 0) && process.env.GAP_AUDIT_ALLOW_EMPTY_DIR !== '1') {
-    console.error(`::error::gap audit preflight failed — review-texts dir missing or empty: ${REVIEW_TEXTS_DIR}. Set REVIEW_TEXTS_DIR (e.g. $HOME/broadway-review-texts) or run ./scripts/setup-local-data.sh. Override: GAP_AUDIT_ALLOW_EMPTY_DIR=1`);
+  // BRO-6687: a PARTIAL dir (sparse clone) is as bad as an empty one: every
+  // show outside it reads 0 live. corpusDirProblem covers missing, empty and partial.
+  const corpusProblem = process.env.GAP_AUDIT_ALLOW_EMPTY_DIR === '1' ? null : corpusDirProblem(REVIEW_TEXTS_DIR);
+  if (corpusProblem) {
+    console.error(`::error::gap audit preflight failed — ${corpusProblem}. Point REVIEW_TEXTS_DIR at a full checkout or run ./scripts/setup-local-data.sh. Override: GAP_AUDIT_ALLOW_EMPTY_DIR=1`);
     process.exit(1);
   }
 

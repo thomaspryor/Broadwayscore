@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { listShowDirs } = require('./list-show-dirs.js');
+const { listShowDirs, corpusDirProblem } = require('./list-show-dirs.js');
 
 function makeTmpCorpus() {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'list-show-dirs-test-'));
@@ -108,6 +108,24 @@ test('skipHolding excludes all underscore dirs and preserves real show dirs and 
       ['_future-holding', '_pending', '_superseded-misattributed', ...expected]);
     assert.deepEqual(listShowDirs(root, { skipHolding: false, silent: true }).sort(),
       listShowDirs(root, { silent: true }).sort());
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+// BRO-6687: a sparse clone (29 of ~4,200 show dirs) passed the old
+// "exists and non-empty" preflight and zeroed live counts on 348 shows.
+test('corpusDirProblem flags missing, empty and partial corpora, passes a whole one', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'corpus-'));
+  try {
+    assert.match(corpusDirProblem(path.join(root, 'nope')), /missing/);
+    assert.match(corpusDirProblem(root), /empty/);
+    for (let i = 0; i < 29; i++) fs.mkdirSync(path.join(root, `show-${i}`));
+    fs.mkdirSync(path.join(root, '_pending'));
+    assert.match(corpusDirProblem(root), /only 29 show folder/);
+    for (let i = 29; i < 200; i++) fs.mkdirSync(path.join(root, `show-${i}`));
+    assert.equal(corpusDirProblem(root), null);
+    assert.equal(corpusDirProblem(root, 500) !== null, true);
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }
