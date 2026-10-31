@@ -1,23 +1,29 @@
 {
-  "updatedAt": "2026-10-31T11:53:17.176Z",
-  "processed": 206,
-  "failed": 44,
-  "successRate": "82.4%",
+  "updatedAt": "2026-10-31T12:24:27.109Z",
+  "processed": 620,
+  "failed": 287,
+  "successRate": "68.4%",
   "tierBreakdown": {
-    "playwright": 92,
+    "playwright": 254,
     "amp": 0,
-    "browserbase": 22,
+    "browserbase": 23,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 12,
-    "brightdata": 12,
-    "archiveToday": 23,
-    "archive": 80
+    "scrapingdog": 32,
+    "scrapingbee": 19,
+    "brightdata": 13,
+    "archiveToday": 35,
+    "archive": 214
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 22,
   "recentActivity": [
     {
-      "t": "2026-10-31T10:14:04.269Z",
+      "t": "2026-10-31T09:45:25.480Z",
+      "event": "bb-session",
+      "session": "41a36af0",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-31T09:45:26.151Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -114,28 +120,17 @@
     {
       "t": "2026-10-31T11:22:34.323Z",
       "event": "bb-session",
-      "session": "4415e859",
-      "url": "http://www.hollywoodreporter.com/review/how-transcend-a-happy-marriage-theater-r"
+      "session": "cf4fc64f",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
     },
     {
-      "t": "2026-10-31T11:35:34.952Z",
+      "t": "2026-10-31T12:01:17.949Z",
       "event": "bb-session",
-      "session": "bbcdaeca",
-      "url": "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society"
+      "session": "261c9e29",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
     },
     {
-      "t": "2026-10-31T11:35:35.505Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:36:24.916Z",
-      "event": "bb-session",
-      "session": "291ffdb5",
-      "url": "https://www.nytimes.com/2017/03/13/theater/the-moors-review.html"
-    },
-    {
-      "t": "2026-10-31T11:36:25.357Z",
+      "t": "2026-10-31T12:01:18.678Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
