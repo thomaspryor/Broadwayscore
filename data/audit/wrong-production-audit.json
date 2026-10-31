@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T15:24:16.679Z",
+  "timestamp": "2026-10-31T15:45:50.894Z",
   "stats": {
-    "totalReviews": 74667,
-    "alreadyFlagged": 22479,
-    "dateGuardCatches": 234,
+    "totalReviews": 74831,
+    "alreadyFlagged": 22496,
+    "dateGuardCatches": 235,
     "directorMismatch": 3118,
-    "tvFilmSignals": 2108,
+    "tvFilmSignals": 2109,
     "londonSignals": 3428,
-    "offBroadwaySignals": 687,
-    "yearMismatch": 306,
-    "noPublishDate": 8358
+    "offBroadwaySignals": 688,
+    "yearMismatch": 312,
+    "noPublishDate": 8316
   },
   "findings": [
     {
@@ -4788,6 +4788,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "an-enemy-of-the-people-regional-2026",
+      "file": "wernerstheatrereviews--unknown.json",
+      "score": 87,
+      "publishDate": "2026-05-16",
+      "url": "https://wernerstheatrereviews.wordpress.com/2026/05/16/an-enemy-of-the-people-delivers-a-powerful-opening-for-timelines-new-home/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (0x). 2024 matches production: an-enemy-of-the-people-2024"
         }
       ]
     },
@@ -13143,6 +13157,20 @@
       ]
     },
     {
+      "showId": "covenant-regional-2026",
+      "file": "splash-magazines--emily-werner.json",
+      "score": 89,
+      "publishDate": "2026-05-15",
+      "url": "https://splashmags.com/2026/05/covenant-haunts-the-goodman-stage-with-music-and-supernatural-terror/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2026 (1x). 2023 matches production: covenant-off-broadway-2023"
+        }
+      ]
+    },
+    {
       "showId": "crazy-for-you-west-end-2023",
       "file": "artsdesk--matt-wolf.json",
       "score": 92,
@@ -17915,6 +17943,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "nytimes--charles-isherwood.json",
+      "score": null,
       "publishDate": "2015-10-14",
       "url": "http://www.nytimes.com/2015/10/15/theater/review-in-eclipsed-female-captives-in-liberias-civil-war-seek-sustenance.html?partner=rss&emc=rss",
       "findings": [
@@ -29533,7 +29562,7 @@
     {
       "showId": "incident-at-vichy-off-broadway-2015",
       "file": "newsday--linda-winer.json",
-      "publishDate": null,
+      "publishDate": "November 19th, 2015",
       "url": "http://www.newsday.com/entertainment/theater/incident-at-vichy-review-signature-s-heavy-handed-drama-1.11136296",
       "findings": [
         {
@@ -37469,6 +37498,11 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2021 (2x) more than 1999 (0x). 2021 matches production: mamma-mia-regional-2021"
         }
       ]
     },
@@ -40333,7 +40367,7 @@
       "file": "whatsonstage--mickey-jo-boucher.json",
       "score": 48,
       "publishDate": "2022-07-19",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-at-the-national-theatre-review_56950/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -43214,6 +43248,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"lear debessonet\" from once-upon-a-mattress-2024"
+        }
+      ]
+    },
+    {
+      "showId": "once-upon-a-mattress-2024",
+      "file": "ew--emlyn-travis.json",
+      "score": 79,
+      "publishDate": "August 12, 2024",
+      "url": "https://ew.com/once-upon-a-mattress-review-sutton-foster-shines-broadway-revival-8694003",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2024 (0x). 2022 matches production: once-upon-a-mattress-regional-2022"
         }
       ]
     },
@@ -51366,6 +51414,20 @@
       "score": null,
       "publishDate": "February 26th, 2016",
       "url": "https://centerontheaisle.com/3244/review-smart-people-at-second-stage/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "smart-people-off-broadway-2016",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": "2016-02-24",
+      "url": "http://www.theaterscene.net/plays/smart-people/victor-gluck/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -64420,6 +64482,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (3x) more than 2025 (0x). 2022 matches production: the-notebook-regional-2022"
         }
       ]
     },
@@ -64439,6 +64506,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2025 (0x). 2022 matches production: the-notebook-regional-2022"
         }
       ]
     },
@@ -68137,7 +68209,7 @@
       "file": "express-uk--neil-norman.json",
       "score": 85,
       "publishDate": "2021-10-29",
-      "url": null,
+      "url": "https://www.express.co.uk/entertainment/theatre/1512227/the-shark-is-broken-ambassadors-theatre",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -68305,7 +68377,7 @@
       "file": "whatsonstage--alun-hood.json",
       "score": 91,
       "publishDate": "2021-10-22",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/the-shark-is-broken-review-jaws-comedy-sails-into-the-west-end_55180/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -104789,6 +104861,19 @@
       ]
     },
     {
+      "showId": "octet-regional-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2026-05-10",
+      "url": "https://www.chicagotribune.com/2026/05/10/review-octet-raven-theatre/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "oedipus-2025",
       "file": "frontmezzjunkies--ross.json",
       "score": 90,
@@ -111425,6 +111510,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 156d before show (2026-05-25 vs 2026-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "specimen-off-broadway-2026",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "score": 81,
+      "publishDate": "May 20th, 2026",
+      "url": "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 161d before show (May 20th, 2026 vs 2026-10-28)"
         }
       ]
     },
