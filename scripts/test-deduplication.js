@@ -79,12 +79,13 @@ test('normalizeTitle: handles curly apostrophe', () => {
 });
 
 test('normalizeTitle: keeps integral possessives (single-word)', () => {
-  // Single-word possessive that IS the title's own structure,
-  // we still strip — collisions are caught downstream by isMultiProduction.
+  // A one-word possessive is the title's own structure unless it is a known
+  // brand/author (AUTHOR_PREFIXES); "Hell's Kitchen" must not collide with
+  // "The Kitchen" (BRO-6547).
   assertEqual(
     normalizeTitle("Hell's Kitchen"),
-    'kitchen',
-    "Hell's Kitchen → kitchen (collision risk handled by venue/year check)"
+    'hells kitchen',
+    "Hell's Kitchen keeps its possessive"
   );
 });
 
@@ -149,8 +150,8 @@ test('normalizeTitle: keeps integral genre words (Slave Play, Goes Wrong)', () =
 test('normalizeTitle: keeps bare "a <genre>" with no marketing signal', () => {
   assertEqual(
     normalizeTitle("It's Only a Play"),
-    'only a play',
-    "It's Only a Play kept as 'only a play' (NOT collapsed to bare 'only')"
+    'its only a play',
+    "It's Only a Play kept whole (NOT collapsed to bare 'only')"
   );
   assertEqual(
     normalizeTitle('The Real Thing a Play'),
