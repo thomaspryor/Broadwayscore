@@ -1644,7 +1644,7 @@ function isRoundupUrl(url) {
   // revival-reviews was scored 60 as goldderby--ethan-alter on 2026-10-31 after
   // its url replaced a pre-opening news page). Gold Derby publishes no first-party
   // criticism, so a /theater/ slug carrying -review(s) (ending in it, or followed by more words) is the aggregate.
-  if (/goldderby\.com\/theater\/[^?#]*-reviews?(?:-|\/|[?#]|$)/i.test(url)) {
+  if (/goldderby\.com\/theater\/[^?#]*-reviews(?:-|\/|[?#]|$)/i.test(url)) {
     return { isRoundup: true, reason: 'Gold Derby critics-reviews roundup page' };
   }
 
