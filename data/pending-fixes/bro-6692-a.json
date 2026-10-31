@@ -1,0 +1,618 @@
+{
+  "issueNumber": "bro-6692-a",
+  "planId": "7a3fe248-3dbe-4b87-b68e-08f3ad1b4d42",
+  "status": "pending",
+  "createdAt": "2026-10-31T06:46:58.877Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: add UK hub productions found in the outlet census",
+    "steps": [
+      "BRO-6541: add community-birmingham-rep-regional-2025 (2 census reviews)",
+      "BRO-6541: add noises-off-stephen-joseph-regional-2025 (2 census reviews)",
+      "BRO-6541: add the-accountants-aviva-studios-regional-2024 (2 census reviews)",
+      "BRO-6541: add the-house-party-leeds-regional-2025 (2 census reviews)",
+      "BRO-6541: add animal-farm-leeds-regional-2025 (2 census reviews)",
+      "BRO-6541: add little-women-york-royal-regional-2024 (2 census reviews)",
+      "BRO-6541: add the-constant-wife-york-royal-regional-2026 (2 census reviews)",
+      "BRO-6541: add good-for-a-girl-birmingham-rep-regional-2025 (2 census reviews)",
+      "BRO-6541: add tambo-and-bones-leeds-regional-2025 (2 census reviews)",
+      "BRO-6541: add starter-for-ten-birmingham-rep-regional-2025 (2 census reviews)",
+      "BRO-6541: add the-school-for-scandal-royal-shakespeare-regional-2024 (2 census reviews)",
+      "BRO-6541: add lizzie-the-musical-hope-mill-regional-2024 (2 census reviews)",
+      "BRO-6541: add the-grand-babylon-hotel-hull-truck-regional-2026 (2 census reviews)",
+      "BRO-6541: add the-lieutenant-of-inishmore-liverpool-everyman-regional-2024 (2 census reviews)",
+      "BRO-6541: add austens-women-lady-susan-york-royal-regional-2025 (2 census reviews)",
+      "BRO-6541: add the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024 (2 census reviews)",
+      "BRO-6541: add the-night-larry-kramer-kissed-me-hope-mill-regional-2026 (2 census reviews)",
+      "BRO-6541: add the-lion-the-witch-and-the-wardrobe-leeds-regional-2024 (2 census reviews)",
+      "BRO-6541: add beautiful-the-carole-king-musical-pitlochry-festival-regional-2024 (2 census reviews)",
+      "BRO-6541: add the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026 (2 census reviews)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "community-birmingham-rep-regional-2025",
+          "title": "Community",
+          "slug": "community-birmingham-rep-regional-2025",
+          "venue": "Birmingham Rep, Birmingham",
+          "city": "birmingham-uk",
+          "openingDate": "2025-02-05",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:14.874Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/community-birmingham-rep/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add community-birmingham-rep-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "noises-off-stephen-joseph-regional-2025",
+          "title": "Noises Off",
+          "slug": "noises-off-stephen-joseph-regional-2025",
+          "venue": "Stephen Joseph Theatre, Scarborough",
+          "city": "scarborough-uk",
+          "openingDate": "2025-08-14",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:14.993Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/noises-off-stephen-joseph-theatre-scarborough/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add noises-off-stephen-joseph-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-accountants-aviva-studios-regional-2024",
+          "title": "The Accountants",
+          "slug": "the-accountants-aviva-studios-regional-2024",
+          "venue": "Aviva Studios, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2024-05-08",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:15.032Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-accountants-aviva-studios-manchester/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-accountants-aviva-studios-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-house-party-leeds-regional-2025",
+          "title": "The House Party",
+          "slug": "the-house-party-leeds-regional-2025",
+          "venue": "Leeds Playhouse, Leeds",
+          "city": "leeds-uk",
+          "openingDate": "2025-02-27",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:17.624Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-house-party-leeds-playhouse/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-house-party-leeds-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "animal-farm-leeds-regional-2025",
+          "title": "Animal Farm",
+          "slug": "animal-farm-leeds-regional-2025",
+          "venue": "Leeds Playhouse, Leeds",
+          "city": "leeds-uk",
+          "openingDate": "2025-03-14",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:20.656Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/animal-farm-leeds-playhouse/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add animal-farm-leeds-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "little-women-york-royal-regional-2024",
+          "title": "Little Women",
+          "slug": "little-women-york-royal-regional-2024",
+          "venue": "York Theatre Royal, York",
+          "city": "york-uk",
+          "openingDate": "2024-09-28",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:20.684Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/little-women-york-theatre-royal/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add little-women-york-royal-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-constant-wife-york-royal-regional-2026",
+          "title": "The Constant Wife",
+          "slug": "the-constant-wife-york-royal-regional-2026",
+          "venue": "York Theatre Royal, York",
+          "city": "york-uk",
+          "openingDate": "2026-01-27",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:20.728Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-constant-wife-york-theatre-royal/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-constant-wife-york-royal-regional-2026 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "good-for-a-girl-birmingham-rep-regional-2025",
+          "title": "Good for a Girl",
+          "slug": "good-for-a-girl-birmingham-rep-regional-2025",
+          "venue": "Birmingham Rep, Birmingham",
+          "city": "birmingham-uk",
+          "openingDate": "2025-02-21",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:23.426Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/good-for-a-girl-birmingham-rep/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add good-for-a-girl-birmingham-rep-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "tambo-and-bones-leeds-regional-2025",
+          "title": "Tambo and Bones",
+          "slug": "tambo-and-bones-leeds-regional-2025",
+          "venue": "Leeds Playhouse, Leeds",
+          "city": "leeds-uk",
+          "openingDate": "2025-05-16",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:23.479Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/tambo-bones-leeds-playhouse/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add tambo-and-bones-leeds-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "starter-for-ten-birmingham-rep-regional-2025",
+          "title": "Starter for Ten",
+          "slug": "starter-for-ten-birmingham-rep-regional-2025",
+          "venue": "Birmingham Rep, Birmingham",
+          "city": "birmingham-uk",
+          "openingDate": "2025-10-24",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:23.578Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/starter-for-ten-birmingham-rep/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add starter-for-ten-birmingham-rep-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-school-for-scandal-royal-shakespeare-regional-2024",
+          "title": "The School for Scandal",
+          "slug": "the-school-for-scandal-royal-shakespeare-regional-2024",
+          "venue": "Royal Shakespeare Theatre, Stratford-upon-Avon",
+          "city": "stratford-upon-avon-uk",
+          "openingDate": "2024-07-10",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:23.633Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.whatsonstage.com/news/the-school-for-scandal-at-the-rscs-royal-shakespeare-theatre-review_1613289/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-school-for-scandal-royal-shakespeare-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "lizzie-the-musical-hope-mill-regional-2024",
+          "title": "LIZZIE The Musical",
+          "slug": "lizzie-the-musical-hope-mill-regional-2024",
+          "venue": "Hope Mill Theatre, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2024-10-22",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:26.779Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/lizzie-the-musical-hope-mill-theatre-manchester-2/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add lizzie-the-musical-hope-mill-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-grand-babylon-hotel-hull-truck-regional-2026",
+          "title": "The Grand Babylon Hotel",
+          "slug": "the-grand-babylon-hotel-hull-truck-regional-2026",
+          "venue": "Hull Truck Theatre, Hull",
+          "city": "hull-uk",
+          "openingDate": "2026-03-12",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:29.805Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-grand-babylon-hotel-hull-truck-theatre/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-grand-babylon-hotel-hull-truck-regional-2026 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-lieutenant-of-inishmore-liverpool-everyman-regional-2024",
+          "title": "The Lieutenant of Inishmore",
+          "slug": "the-lieutenant-of-inishmore-liverpool-everyman-regional-2024",
+          "venue": "Liverpool Everyman, Liverpool",
+          "city": "liverpool-uk",
+          "openingDate": "2024-09-26",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:32.459Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thestage.co.uk/reviews/the-lieutenant-of-inishmore-review-everyman-theatre-liverpool-martin-mcdonagh-chris-sonnex"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-lieutenant-of-inishmore-liverpool-everyman-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "austens-women-lady-susan-york-royal-regional-2025",
+          "title": "Austens Women Lady Susan",
+          "slug": "austens-women-lady-susan-york-royal-regional-2025",
+          "venue": "York Theatre Royal, York",
+          "city": "york-uk",
+          "openingDate": "2025-09-19",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:35.394Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/austens-women-lady-susan-york-theatre-royal-studio/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add austens-women-lady-susan-york-royal-regional-2025 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024",
+          "title": "The Rock ‘n' Roll Panto: Rapunzel",
+          "slug": "the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024",
+          "venue": "Liverpool Everyman, Liverpool",
+          "city": "liverpool-uk",
+          "openingDate": "2024-11-22",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:35.459Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-rock-n-roll-panto-rapunzel-liverpool-everyman/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-rock-n-roll-panto-rapunzel-liverpool-everyman-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+          "title": "The Night Larry Kramer Kissed Me",
+          "slug": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+          "venue": "Hope Mill Theatre, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2026-02-13",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:41.528Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-night-larry-kramer-kissed-me-hope-mill-theatre-manchester/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-night-larry-kramer-kissed-me-hope-mill-regional-2026 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-lion-the-witch-and-the-wardrobe-leeds-regional-2024",
+          "title": "The Lion, The Witch and The Wardrobe",
+          "slug": "the-lion-the-witch-and-the-wardrobe-leeds-regional-2024",
+          "venue": "Leeds Playhouse, Leeds",
+          "city": "leeds-uk",
+          "openingDate": "2024-11-23",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:46.967Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-lion-the-witch-and-the-wardrobe-leeds-playhouse/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-lion-the-witch-and-the-wardrobe-leeds-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "beautiful-the-carole-king-musical-pitlochry-festival-regional-2024",
+          "title": "Beautiful: The Carole King Musical",
+          "slug": "beautiful-the-carole-king-musical-pitlochry-festival-regional-2024",
+          "venue": "Pitlochry Festival Theatre, Pitlochry",
+          "city": "pitlochry-uk",
+          "openingDate": "2024-06-16",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "musical",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:50.181Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/beautiful-the-carole-king-musical-pitlochry-festival-theatre/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add beautiful-the-carole-king-musical-pitlochry-festival-regional-2024 (2 census reviews)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026",
+          "title": "The Assassination of Margaret Thatcher",
+          "slug": "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026",
+          "venue": "Liverpool Everyman, Liverpool",
+          "city": "liverpool-uk",
+          "openingDate": "2026-05-08",
+          "openingDateSource": "census-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-census-backfill",
+          "discoveredAt": "2026-10-31T06:46:53.180Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.thereviewshub.com/the-assassination-of-margaret-thatcher-liverpool-everyman-theatre/"
+          ],
+          "statusSource": "census-review-age"
+        },
+        "description": "BRO-6541: add the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026 (2 census reviews)"
+      }
+    ]
+  }
+}
