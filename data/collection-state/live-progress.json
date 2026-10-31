@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-31T05:55:12.049Z",
-  "processed": 91,
-  "failed": 41,
-  "successRate": "68.9%",
+  "updatedAt": "2026-10-31T06:22:35.329Z",
+  "processed": 225,
+  "failed": 45,
+  "successRate": "83.3%",
   "tierBreakdown": {
-    "playwright": 66,
+    "playwright": 143,
     "amp": 0,
-    "browserbase": 8,
+    "browserbase": 24,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 3,
-    "brightdata": 2,
-    "archiveToday": 11,
-    "archive": 20
+    "scrapingdog": 12,
+    "scrapingbee": 11,
+    "brightdata": 3,
+    "archiveToday": 15,
+    "archive": 57
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-10-31T04:45:56.945Z",
-      "event": "bb-session",
-      "session": "2d9a600b",
-      "url": "https://www.nytimes.com/2018/04/15/theater/mlimas-tale-review-lynn-nottage.html"
-    },
-    {
-      "t": "2026-10-31T04:45:57.565Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-31T04:55:05.609Z",
       "event": "bb-session",
@@ -86,25 +75,57 @@
     {
       "t": "2026-10-31T05:41:35.047Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T05:47:16.174Z",
+      "t": "2026-10-31T05:51:58.830Z",
       "event": "bb-session",
-      "session": "1a10b377",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "c475dafe",
+      "url": "https://www.nytimes.com/2017/10/24/theater/the-last-match-review.html?_r=0"
     },
     {
-      "t": "2026-10-31T05:48:42.903Z",
-      "event": "bb-session",
-      "session": "63b7b8fb",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "t": "2026-10-31T05:51:59.440Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T05:49:35.340Z",
+      "t": "2026-10-31T05:52:49.409Z",
       "event": "bb-session",
-      "session": "76f848ee",
-      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+      "session": "be9a46a8",
+      "url": "https://www.nytimes.com/2017/10/24/theater/review-the-portuguese-kid-jason-alexa"
+    },
+    {
+      "t": "2026-10-31T05:52:50.032Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T06:06:27.834Z",
+      "event": "bb-session",
+      "session": "7af7b8fb",
+      "url": "https://www.nytimes.com/2017/10/25/theater/people-places-things-review.html"
+    },
+    {
+      "t": "2026-10-31T06:06:28.467Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T06:11:07.752Z",
+      "event": "bb-session",
+      "session": "46b0d51e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/treasurer-theater-rev"
+    },
+    {
+      "t": "2026-10-31T06:11:49.748Z",
+      "event": "bb-session",
+      "session": "5ab1a0fc",
+      "url": "https://www.nytimes.com/2017/09/26/theater/the-treasurer-review-max-posner.html"
+    },
+    {
+      "t": "2026-10-31T06:11:50.295Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
