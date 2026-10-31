@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5595",
+  "planId": "ec69933e-f329-4a8f-bb24-09c642258119",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5595: Maryland Theatre Guide review covers the NextStop Theatre (Herndon, VA) run that closed Oct 11, not the SoHo Playhouse Off-Broadway production opening 2026-10-17; flag wrongProduction.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-second-best-school-shooting-off-broadway-2026/maryland-theatre-guide--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5595: page text says the production runs through October 11, 2026 at NextStop Theatre, Herndon, Virginia; a different production from the SoHo Playhouse NYC run"
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T02:57:09.615Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-second-best-school-shooting-off-broadway-2026/maryland-theatre-guide--unknown.json wrongProduction: null -> true"
+    }
+  ]
+}

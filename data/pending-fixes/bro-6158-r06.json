@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6158-r06",
+  "planId": "0cb610e0-ed3e-4288-8a1e-671f4f14512e",
+  "status": "applied",
+  "createdAt": "2026-10-24T21:57:05.063Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Did Not Recoup shows get our estimate, Flop or Fizzle (owner 2026-10-24)",
+    "steps": [
+      "commercial.json: head-over-heels-2018.designation",
+      "commercial.json: head-over-heels-2018.designationBasis",
+      "commercial.json: summer-2018.designation",
+      "commercial.json: summer-2018.designationBasis",
+      "commercial.json: the-lightning-thief-2019.designation",
+      "commercial.json: the-lightning-thief-2019.designationBasis",
+      "commercial.json: les-liaisons-dangereuses-2016.designation",
+      "commercial.json: les-liaisons-dangereuses-2016.designationBasis",
+      "commercial.json: the-encounter-2016.designation",
+      "commercial.json: the-encounter-2016.designationBasis",
+      "commercial.json: cats-2016.designation",
+      "commercial.json: cats-2016.designationBasis",
+      "commercial.json: cirque-du-soleil-paramour-2016.designation",
+      "commercial.json: cirque-du-soleil-paramour-2016.designationBasis",
+      "commercial.json: shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016.designation",
+      "commercial.json: shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016.designationBasis",
+      "commercial.json: tuck-everlasting-2016.designation",
+      "commercial.json: tuck-everlasting-2016.designationBasis",
+      "commercial.json: fully-committed-2016.designation",
+      "commercial.json: fully-committed-2016.designationBasis",
+      "commercial.json: the-crucible-2016.designation",
+      "commercial.json: the-crucible-2016.designationBasis",
+      "commercial.json: bright-star-2016.designation",
+      "commercial.json: bright-star-2016.designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: head-over-heels-2018.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "head-over-heels-2018",
+        "field": "designationBasis",
+        "oldValue": "reported-loss",
+        "newValue": "model-estimate",
+        "description": "commercial.json: head-over-heels-2018.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "summer-2018",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: summer-2018.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "summer-2018",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: summer-2018.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-lightning-thief-2019.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lightning-thief-2019",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-lightning-thief-2019.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "les-liaisons-dangereuses-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "commercial.json: les-liaisons-dangereuses-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "les-liaisons-dangereuses-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: les-liaisons-dangereuses-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-encounter-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-encounter-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-encounter-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-encounter-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Fizzle",
+        "description": "commercial.json: cats-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cats-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: cats-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cirque-du-soleil-paramour-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: cirque-du-soleil-paramour-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cirque-du-soleil-paramour-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: cirque-du-soleil-paramour-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tuck-everlasting-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: tuck-everlasting-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tuck-everlasting-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: tuck-everlasting-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fully-committed-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: fully-committed-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fully-committed-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: fully-committed-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-crucible-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: the-crucible-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-crucible-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: the-crucible-2016.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bright-star-2016",
+        "field": "designation",
+        "oldValue": "Did Not Recoup",
+        "newValue": "Flop",
+        "description": "commercial.json: bright-star-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bright-star-2016",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: bright-star-2016.designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T23:24:06.098Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for head-over-heels-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for summer-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for summer-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lightning-thief-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-lightning-thief-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for les-liaisons-dangereuses-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for les-liaisons-dangereuses-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-encounter-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-encounter-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for cats-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for cats-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for cirque-du-soleil-paramour-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for cirque-du-soleil-paramour-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for shuffle-along-or-the-making-of-the-musical-sensation-of-1921-and-all-that-followed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for tuck-everlasting-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for tuck-everlasting-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fully-committed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for fully-committed-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-crucible-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-crucible-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for bright-star-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for bright-star-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

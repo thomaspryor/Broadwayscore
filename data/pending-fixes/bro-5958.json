@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5958",
+  "planId": "ae138d91-43cc-4208-bb91-e10a9181ce74",
+  "status": "applied",
+  "createdAt": "2026-10-22T14:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5958: the BroadwayWorld piece on Arias with a Twist (Peter Danish, 2026-09-18) is a 'Previews:' article published five days before the 2026-09-23 opening, with a ticket link and isFullReview false. Owner decided it stops counting as a critic review.",
+    "steps": [
+      "mark isNonReviewReason with the manual marker",
+      "set isNonReview true"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "arias-with-a-twist-off-broadway-2026/broadwayworld--peter-danish.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BroadwayWorld 'Previews:' feature dated 2026-09-18, before the 2026-09-23 opening, promotional preview with a ticket link, isFullReview false. Owner decision, BRO-5958.",
+        "description": "BRO-5958: manual marker so a fresh CV pass does not demote the flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "arias-with-a-twist-off-broadway-2026/broadwayworld--peter-danish.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5958: owner chose to stop counting the pre-opening preview as a review."
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T14:04:11.349Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/broadwayworld--peter-danish.json isNonReviewReason: null -> \"manual (not a review): BroadwayWorld 'Previews:' feature dated 2026-09-18, before the 2026-09-23 opening, promotional preview with a ticket link, isFullReview false. Owner decision, BRO-5958.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arias-with-a-twist-off-broadway-2026/broadwayworld--peter-danish.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

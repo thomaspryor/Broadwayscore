@@ -1,0 +1,60 @@
+name: Linear Decision Reply Drain
+
+# BRO-6168: the owner answers a DECISION NEEDED card by replying on it ("A").
+# This reads those replies once a day and either moves the card to Todo for the
+# cloud workers, records that the owner has to do the step, or asks one plain
+# follow-up question. Selection and limits live in
+# scripts/linear-decision-reply-drain.js; this only runs it. Sends no email.
+# Kill switch: repo variable LINEAR_DECISION_REPLY_DRAIN_DISABLED=1.
+
+on:
+  schedule:
+    - cron: '41 6,14 * * *'  # 06:41 and 14:41 UTC, off the round minute
+  workflow_dispatch:
+    inputs:
+      cap:
+        description: 'Most cards to act on this run'
+        required: false
+        default: '5'
+      dry_run:
+        description: 'Only print what would happen'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: linear-decision-reply-drain
+  cancel-in-progress: false
+
+jobs:
+  drain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Act on owner replies to decision cards
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          LINEAR_DECISION_REPLY_DRAIN_DISABLED: ${{ vars.LINEAR_DECISION_REPLY_DRAIN_DISABLED }}
+          CAP: ${{ inputs.cap || '5' }}
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/linear-decision-reply-drain.js --cap "$CAP"
+          else
+            node scripts/linear-decision-reply-drain.js --apply --cap "$CAP"
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Linear Decision Reply Drain Failed'
+          severity: 'warning'

@@ -1,0 +1,129 @@
+{
+  "_meta": {
+    "description": "Golden-truth Reddit-style comments for buzz classifier eval. Each case targets a specific decision boundary documented in the classifier prompt (scripts/lib/buzz-classifier.js). Hand-labeled 2026-04-15 based on the prompt's own YES/NO enumerated rules.",
+    "show": "Wicked",
+    "labelingNotes": "Label reflects what the prompt EXPLICITLY instructs. If a case fails, either the LLM is wrong OR the prompt is ambiguous — treat failures as prompt-improvement opportunities."
+  },
+  "cases": [
+    {
+      "id": 1,
+      "body": "Saw Wicked last night and it was absolutely incredible. Cynthia's voice is otherworldly.",
+      "expected": { "is_relevant": true, "sentiment": "enthusiastic" },
+      "rationale": "past-tense attendance + superlative"
+    },
+    {
+      "id": 2,
+      "body": "Going to see Wicked tomorrow, so excited!",
+      "expected": { "is_relevant": false },
+      "rationale": "future tense — prompt: 'planning to see it' = NOT relevant"
+    },
+    {
+      "id": 3,
+      "body": "I refuse to see Wicked until Cynthia apologizes for her comments.",
+      "expected": { "is_relevant": false },
+      "rationale": "boycott sentiment, did not attend"
+    },
+    {
+      "id": 4,
+      "body": "Hamilton is way better than Wicked, it's not even close.",
+      "expected": { "is_relevant": false },
+      "rationale": "comment references a different show by name"
+    },
+    {
+      "id": 5,
+      "body": "I saw it opening week and felt underwhelmed. The second act dragged.",
+      "expected": { "is_relevant": true, "sentiment": "negative" },
+      "rationale": "attended, negative verdict — 'the second act dragged' is negative"
+    },
+    {
+      "id": 6,
+      "body": "The book this is based on is terrible so I'm skipping the show.",
+      "expected": { "is_relevant": false },
+      "rationale": "opinion about source material, not the production; did not attend"
+    },
+    {
+      "id": 7,
+      "body": "Saw it twice already, taking my mom next month.",
+      "expected": { "is_relevant": true, "sentiment": "positive" },
+      "rationale": "'saw it twice' + returning = implicit positive per prompt guidance"
+    },
+    {
+      "id": 8,
+      "body": "Loved the performances but the story didn't really work for me.",
+      "expected": { "is_relevant": true, "sentiment": "mixed" },
+      "rationale": "both positive and negative aspects explicitly in same comment"
+    },
+    {
+      "id": 9,
+      "body": "The ushers at the Gershwin were so rude, worst theater experience.",
+      "expected": { "is_relevant": false },
+      "rationale": "venue/logistics/usher behavior — about the venue, not the show"
+    },
+    {
+      "id": 10,
+      "body": "My partner and I saw it in May and we were completely blown away.",
+      "expected": { "is_relevant": true, "sentiment": "enthusiastic" },
+      "rationale": "past attendance + 'blown away' = enthusiastic"
+    },
+    {
+      "id": 11,
+      "body": "The show opens April 3rd and runs through September.",
+      "expected": { "is_relevant": false },
+      "rationale": "meta/scheduling discussion, no audience reaction"
+    },
+    {
+      "id": 12,
+      "body": "We saw it last week. Glad I went but I don't think I'd pay full price again.",
+      "expected": { "is_relevant": true, "sentiment": "mixed" },
+      "rationale": "attended, positive ('glad I went') AND negative ('wouldn't pay full price') = mixed"
+    },
+    {
+      "id": 13,
+      "body": "Heard the lead was out this week due to illness.",
+      "expected": { "is_relevant": false },
+      "rationale": "industry talk — cast illness/contracts, not an audience reaction"
+    },
+    {
+      "id": 14,
+      "body": "10/10 absolutely life-changing experience, everyone needs to see this.",
+      "expected": { "is_relevant": true, "sentiment": "enthusiastic" },
+      "rationale": "implied attendance + '10/10' + 'life-changing' = enthusiastic"
+    },
+    {
+      "id": 15,
+      "body": "I've heard it's pretty good but haven't seen it myself.",
+      "expected": { "is_relevant": false },
+      "rationale": "did not attend ('haven't seen it myself')"
+    },
+    {
+      "id": 16,
+      "body": "Tickets are insanely expensive now, might wait for the tour.",
+      "expected": { "is_relevant": false },
+      "rationale": "meta discussion about ticket prices, not an audience reaction"
+    },
+    {
+      "id": 17,
+      "body": "Saw it last night. It was fine. Not sure why everyone raves about it.",
+      "expected": { "is_relevant": true, "sentiment": "negative" },
+      "rationale": "attended + 'fine' + undercutting hype = negative verdict disguised as lukewarm"
+    },
+    {
+      "id": 18,
+      "body": "My kids came home from the matinee yesterday singing Defying Gravity all night. They loved it.",
+      "expected": { "is_relevant": true, "sentiment": "positive" },
+      "rationale": "second-hand but clear attendance + 'loved it' = positive"
+    },
+    {
+      "id": 19,
+      "body": "About to head into the theater now, reporting back after!",
+      "expected": { "is_relevant": false },
+      "rationale": "pre-show, has not yet attended"
+    },
+    {
+      "id": 20,
+      "body": "Saw it Saturday. The spectacle was incredible but the pacing was rough in act 2.",
+      "expected": { "is_relevant": true, "sentiment": "mixed" },
+      "rationale": "attended, explicit both ('spectacle incredible', 'pacing rough') = mixed"
+    }
+  ]
+}

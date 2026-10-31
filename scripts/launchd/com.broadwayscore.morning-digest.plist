@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- The owner's ONE scheduled daily email (loop retirement, 2026-07-27).
+         Runs scripts/send-morning-digest.js, which folds the four digest
+         snapshots (site health, score drift, opening-night radar, Reddit)
+         into a single morning email. It reads NO autonomous-loop state and
+         never renders a triage list — see the script header.
+
+         StartCalendarInterval Hour/Minute is LOCAL TIME on this Mac
+         (America/New_York, DST-safe — launchd reads the system clock).
+         07:30 ET keeps the owner's 7-9 AM email convention.
+
+         Secrets (RESEND_API_KEY, OWNER_EMAIL) come from the repo's .env via
+         the script's own preamble — launchd does NOT inherit shell env.
+
+         Delivery watch: monitor-scheduled-email-count.yml (CI, 15:00 UTC
+         daily) alerts if a complete ET day passes with zero scheduled
+         sends — that check replaced the retired autonomous-deadman.
+
+         Install:  cp scripts/launchd/com.broadwayscore.morning-digest.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.morning-digest.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.morning-digest
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.morning-digest
+         Manual send (Mac down at 07:30): node scripts/send-morning-digest.js --send-to-owner
+
+         BSC_RUNNER_DISABLED=1 (task #1311, added directly to the live plist
+         without ever landing here — task #1563 found the drift while
+         redeploying this template and fixing it here closes that gap): kill
+         switch for scripts/lib/bsc-runner.js's headless spawn path, kept off
+         only for this cron context so a stray digest-triggered auto-fix run
+         never launches a headless bsc-next job from this job. See
+         scripts/resume-headless-job.js:53-54 and bsc-runner.js:167-171 for
+         why this one plist carries it and no other launchd job here does.
+
+         SEMICOLON not && before the final exec (task #1818): this is the
+         ONLY launchd job that both runs sync-audit-checkout.sh AND is the
+         sole reader (readSyncRefused, scripts/lib/digest-snapshots.js) of
+         the refusal snapshot that call writes on failure. Chaining with &&
+         like the mutating jobs (backlog-drain/autonomous-shadow/predispatch-
+         queue-audit.plist — deliberately left on && here, they must fail
+         closed) meant a blocked sync silently ate the owner's only email,
+         including the one email whose job is to report the block. This
+         digest is read-only reporting, so running it against a stale/dirty
+         checkout is strictly safer than not running it — its own
+         sections.syncRefused block (send-morning-digest.js) surfaces the
+         staleness in the email itself instead of the owner getting silence. -->
+    <key>Label</key>
+    <string>com.broadwayscore.morning-digest</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; export SYNC_TAG=digest &amp;&amp; bash scripts/lib/sync-audit-checkout.sh; exec node scripts/send-morning-digest.js --send-to-owner</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>30</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/morning-digest-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/morning-digest-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>BSC_RUNNER_DISABLED</key>
+        <string>1</string>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

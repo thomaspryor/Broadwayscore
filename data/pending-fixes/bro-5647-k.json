@@ -1,0 +1,547 @@
+{
+  "issueNumber": "bro-5647-k",
+  "planId": "d33e662d-f713-4c14-8027-9baf09634f81",
+  "status": "applied",
+  "createdAt": "2026-10-21T14:46:19.761Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From Dots' audit of the nine Oct 21 ChatGPT Deep Research reports (773 records), each figure re-checked here at its SEC filing or article. SEC Form D maximums for four shows that had no budget: The Fear of 13 ($7.25M; $5.16M sold), Oedipus ($6.5M), Bob Fosse's Dancin' ($15M), Dog Day Afternoon ($7.5M; $400K sold). New entries for six 2021-23 shows with a reported capitalization: Diana ($17.75M Form D/A maximum), Chicken & Biscuits (up to $3.5M), Ain't No Mo' (up to $5.5M), for colored girls ($4.85M), Ohio State Murders (up to $5.1M), Walking with Ghosts ($2.3M sold). New entries start TBD so the standard closed-show rule labels them. Not applied: All Out (Dots: issuer match not established), Dana H. / Is This a Room (one $3.5M ceiling shared by two plays), Pass Over ($2.8M target, Forbes unreachable), The Little Prince (issuer link not established), Old Friends' $12M (Merrily We Roll Along's vehicle). Old values from the private core data at 17fc339.",
+    "steps": [
+      "SEC maximums for The Fear of 13, Oedipus, Dancin' and Dog Day Afternoon",
+      "Entries for six 2021-23 shows"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "showId": "the-fear-of-13",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7250000,
+        "description": "the-fear-of-13: SEC Form D maximum $7.25M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "showId": "the-fear-of-13",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Harry Houdini Broadway LLC, CIK 0002110756, filed Mar 25, 2026): total offering amount $7,250,000 ($5,162,501 sold by then). Production counsel Loeb & Loeb names the vehicle as The Fear of 13's; its related persons include Seaview and Wessex Grove, the show's producers. https://www.sec.gov/Archives/edgar/data/2110756/000211075626000001/xslFormDX01/primary_doc.xml",
+        "description": "the-fear-of-13: cite the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "showId": "the-fear-of-13",
+        "field": "notes",
+        "oldValue": "Play starring Adrien Brody and Tessa Thompson at the James Earl Jones; opened Apr 15, 2026 and closed early on Jun 28, 2026. No capitalization reported and no recoupment announced.",
+        "newValue": "Play starring Adrien Brody and Tessa Thompson at the James Earl Jones; opened Apr 15, 2026 and closed early on Jun 28, 2026. Its SEC Form D (Mar 2026) offered up to $7.25 million, with $5.16 million raised by then. No recoupment announced.",
+        "description": "the-fear-of-13: notes mention the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-fear-of-13",
+        "showId": "the-fear-of-13",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/THE-FEAR-OF-13",
+            "date": "2026-10-10"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": "2026-06-14"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/THE-FEAR-OF-13",
+            "date": "2026-10-10"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": "2026-06-14"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2110756/000211075626000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-03-25"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.loeb.com/en/people/m/manella-david",
+            "date": null
+          }
+        ],
+        "description": "the-fear-of-13: add the SEC filing and counsel page"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 6500000,
+        "description": "oedipus: SEC Form D maximum $6.5M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Boyo Productions LP, CIK 0002073494, filed Jun 26, 2025): total offering amount $6,500,000 ($0 sold by then). An Actors' Equity notice for the Studio 54 production names Boyo Productions LP as its employer. https://www.sec.gov/Archives/edgar/data/2073494/000207349425000001/xslFormDX01/primary_doc.xml",
+        "description": "oedipus: cite the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "notes",
+        "oldValue": "Robert Icke's production with Mark Strong and Lesley Manville, transferred from London. Closed Feb 8, 2026, setting a Studio 54 house record of $1,212,949 in its final week (Playbill). No capitalization reported and no recoupment announced.",
+        "newValue": "Robert Icke's production with Mark Strong and Lesley Manville, transferred from London. Closed Feb 8, 2026, setting a Studio 54 house record of $1,212,949 in its final week (Playbill). Its SEC Form D (Jun 2025) offered up to $6.5 million, with nothing raised by then. No recoupment announced.",
+        "description": "oedipus: notes mention the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "showId": "oedipus",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/oedipus-sets-a-house-record-in-its-final-performances-and-more-from-last-weeks-broadway-grosses",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/02/oedipus-broadway-mark-strong-lesley-manville-1236713664/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/oedipus-sets-a-house-record-in-its-final-performances-and-more-from-last-weeks-broadway-grosses",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/02/oedipus-broadway-mark-strong-lesley-manville-1236713664/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2073494/000207349425000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-06-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/equity-audition/OEDIPUS-Broadway-Boyo-Productions-LP-2025-47184",
+            "date": null
+          }
+        ],
+        "description": "oedipus: add the SEC filing and Equity notice"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "showId": "bob-fosses-dancin-2023",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 15000000,
+        "description": "bob-fosses-dancin-2023: SEC Form D maximum $15M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "showId": "bob-fosses-dancin-2023",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Broadway Rhythm & Rhyme LLC, CIK 0001899007, filed Dec 14, 2021): total offering amount $15,000,000 ($0 sold by then); related person Joey Parnes, the lead producer. Broadway Journal (May 29, 2025) reports the up-to-$15 million figure and says no later filing showed how much was raised. https://www.sec.gov/Archives/edgar/data/1899007/000189900721000001/xslFormDX01/primary_doc.xml",
+        "description": "bob-fosses-dancin-2023: cite the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "showId": "bob-fosses-dancin-2023",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaystars.com/news/2010/index.php?author=Philip+Boroff",
+            "date": "2025-05-16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thewrap.com/bob-fosse-dancin-broadway-review/",
+            "date": "2023-03-20"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2023/legit/reviews/dancin-review-broadway-1235559028/",
+            "date": "2023-12-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwayjournal.com/dancin-designers-due-more-than-200000/",
+            "date": "2025-05-29",
+            "excerpt": "retrieved about 10 percent of his money, due to the tax credit."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaystars.com/news/2010/index.php?author=Philip+Boroff",
+            "date": "2025-05-16"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.thewrap.com/bob-fosse-dancin-broadway-review/",
+            "date": "2023-03-20"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2023/legit/reviews/dancin-review-broadway-1235559028/",
+            "date": "2023-12-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwayjournal.com/dancin-designers-due-more-than-200000/",
+            "date": "2025-05-29",
+            "excerpt": "retrieved about 10 percent of his money, due to the tax credit."
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1899007/000189900721000001/xslFormDX01/primary_doc.xml",
+            "date": "2021-12-14"
+          }
+        ],
+        "description": "bob-fosses-dancin-2023: add the SEC filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "showId": "dog-day-afternoon",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 7500000,
+        "description": "dog-day-afternoon: SEC Form D maximum $7.5M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "showId": "dog-day-afternoon",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D filing (Dog Days of Spring LLC, CIK 0002095154, filed Nov 6, 2025): total offering amount $7,500,000 ($400,000 sold by then). Matched to the show by its related persons Warner Bros. Theatre Ventures, WJ Theatricals (Sue Wagner, John Johnson) and P-Cat (Patrick Catullo), its credited producers. https://www.sec.gov/Archives/edgar/data/2095154/000149315225021056/xslFormDX01/primary_doc.xml",
+        "description": "dog-day-afternoon: cite the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "showId": "dog-day-afternoon",
+        "field": "notes",
+        "oldValue": "Commercial play (Warner Bros. Theatre Ventures), opened Mar 30, 2026 and closed Jul 12, 2026. No capitalization reported and no recoupment announced.",
+        "newValue": "Commercial play (Warner Bros. Theatre Ventures), opened Mar 30, 2026 and closed Jul 12, 2026. Its SEC Form D (Nov 2025) offered up to $7.5 million, with $400,000 raised by then. No recoupment announced.",
+        "description": "dog-day-afternoon: notes mention the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dog-day-afternoon",
+        "showId": "dog-day-afternoon",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/DOG-DAY-AFTERNOON",
+            "date": "2026-09-06"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": "2026-06-16"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "date": "2026-04-05"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/DOG-DAY-AFTERNOON",
+            "date": "2026-09-06"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": "2026-06-16"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "date": "2026-04-05"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2095154/000149315225021056/xslFormDX01/primary_doc.xml",
+            "date": "2025-11-06"
+          }
+        ],
+        "description": "dog-day-afternoon: add the SEC filing"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "diana-the-musical-2021",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 17750000,
+          "capitalizationSource": "SEC Form D/A filing (Diana Broadway LLC, CIK 0001740510, filed May 24, 2019): maximum offering amount $17,750,000 (minimum $15,575,000), $8,212,500 sold by then. https://www.sec.gov/Archives/edgar/data/1740510/000174051019000001/xslFormDX01/primary_doc.xml",
+          "notes": "Musical about Princess Diana at the Longacre; opened Nov 17, 2021 (after its filmed version streamed on Netflix) and closed Dec 19, 2021. Its 2019 SEC filing offered up to $17.75 million, with $8.2 million raised by then.",
+          "sources": [
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/1740510/000174051019000001/xslFormDX01/primary_doc.xml",
+              "date": "2019-05-24"
+            }
+          ]
+        },
+        "description": "diana-the-musical-2021: add entry (Form D/A maximum $17.75M)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "chicken-and-biscuits-2021",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 3500000,
+          "capitalizationSource": "Broadway News (Nov 11, 2021): \"The play was capitalized for up to $3.5 million, according to documents filed with the Securities Exchange Commission.\" https://www.broadwaynews.com/chicken-biscuits-posts-broadway-closing-notice-after-covid-19-cancellations/",
+          "notes": "Comedy by Douglas Lyons at Circle in the Square; opened Oct 10, 2021 and closed early on Nov 28, 2021 after COVID-19 cancellations. Capitalized for up to $3.5 million.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/chicken-biscuits-posts-broadway-closing-notice-after-covid-19-cancellations/",
+              "date": "2021-11-11"
+            }
+          ]
+        },
+        "description": "chicken-and-biscuits-2021: add entry (up to $3.5M)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "aint-no-mo-2022",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 5500000,
+          "capitalizationSource": "New York Times (Dec 9, 2022), on its early closing: \"The show was capitalized for up to $5.5 million,\" based on an SEC filing. https://www.nytimes.com/2022/12/09/theater/aint-no-mo-broadway-closing.html",
+          "notes": "Jordan E. Cooper's comedy at the Belasco, produced by Lee Daniels; opened Dec 1, 2022 and closed Dec 23, 2022. Capitalized for up to $5.5 million.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.nytimes.com/2022/12/09/theater/aint-no-mo-broadway-closing.html",
+              "date": "2022-12-09"
+            }
+          ]
+        },
+        "description": "aint-no-mo-2022: add entry (up to $5.5M)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 4850000,
+          "capitalizationSource": "New York Times (May 3, 2022), via Artdaily: the producers said it would remain necessary to close \"the show, which was capitalized for $4.85 million.\" https://artdaily.com/news/146129/-For-Colored-Girls--to-close-on-Broadway--reflecting-tough-season",
+          "notes": "Camille A. Brown's revival at the Booth; opened Apr 20, 2022 and closed Jun 5, 2022 after an extension past its first closing notice. Capitalized for $4.85 million.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.nytimes.com/2022/05/03/theater/for-colored-girls-broadway-closing.html",
+              "date": "2022-05-03"
+            },
+            {
+              "type": "trade",
+              "url": "https://artdaily.com/news/146129/-For-Colored-Girls--to-close-on-Broadway--reflecting-tough-season",
+              "date": null
+            }
+          ]
+        },
+        "description": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022: add entry ($4.85M)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "ohio-state-murders-2022",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 5100000,
+          "capitalizationSource": "New York Times (Jan 5, 2023), via Artdaily: \"Produced by Jeffrey Richards, the play was capitalized for up to $5.1 million, according to a filing with the Securities and Exchange Commission; that money has not been recouped.\" https://artdaily.com/news/153364/-Ohio-State-Murders---starring-Audra-McDonald--to-close-on-Broadway",
+          "notes": "Adrienne Kennedy's play starring Audra McDonald at the James Earl Jones; opened Dec 8, 2022 and closed early on Jan 15, 2023. Capitalized for up to $5.1 million; the Times reported before closing that it had not recouped.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.nytimes.com/2023/01/05/theater/ohio-state-murders-broadway-closing.html",
+              "date": "2023-01-05"
+            },
+            {
+              "type": "trade",
+              "url": "https://artdaily.com/news/153364/-Ohio-State-Murders---starring-Audra-McDonald--to-close-on-Broadway",
+              "date": null
+            }
+          ]
+        },
+        "description": "ohio-state-murders-2022: add entry (up to $5.1M)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "walking-with-ghosts-2022",
+        "entry": {
+          "designation": "TBD",
+          "capitalization": 2300000,
+          "capitalizationSource": "SEC Form D/A filing (Walking With Ghosts LP, CIK 0001944087, filed Oct 25, 2022): $2,300,000 sold of $2,300,000 offered (fully sold). https://www.sec.gov/Archives/edgar/data/1944087/000194408722000002/xslFormDX01/primary_doc.xml",
+          "notes": "Gabriel Byrne's solo memoir play at the Music Box; opened Oct 27, 2022 and closed Nov 20, 2022 (a limited run). Its SEC filing shows $2.3 million raised.",
+          "sources": [
+            {
+              "type": "sec",
+              "url": "https://www.sec.gov/Archives/edgar/data/1944087/000194408722000002/xslFormDX01/primary_doc.xml",
+              "date": "2022-10-25"
+            }
+          ]
+        },
+        "description": "walking-with-ghosts-2022: add entry ($2.3M sold)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T15:00:02.091Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-fear-of-13"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dog-day-afternoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dog-day-afternoon"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added diana-the-musical-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added chicken-and-biscuits-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added aint-no-mo-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added ohio-state-murders-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added walking-with-ghosts-2022 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
+}

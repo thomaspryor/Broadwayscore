@@ -1,0 +1,343 @@
+{
+  "issueNumber": "bro-4722-c",
+  "planId": "50a7c1be-2918-4053-b9f9-c176be84fa4b",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4722 follow-up: 11 capitalizations shown as fact had a correct citation but no source link. Adds the link, and for 6 rewrites the source line to name the linked article.",
+    "steps": [
+      "Append one trade/sec source per show",
+      "Rewrite capitalizationSource where the old line named a different or vague outlet"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/stereophonic-makes-tony-history-in-hazardous-season",
+            "date": null
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "water-for-elephants",
+        "showId": "water-for-elephants",
+        "field": "capitalizationSource",
+        "oldValue": "SEC filing / NY Times",
+        "newValue": "Broadway Journal (Apr 2024), citing production documents: \"its $25 million capitalization\"",
+        "description": "name the linked source and quote it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "suffs",
+        "showId": "suffs",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1953229/000195322924000001/primary_doc.xml",
+            "date": null
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "back-to-the-future",
+        "showId": "back-to-the-future",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/10/24/skyrocketing-broadway-show-budgets-scare-producers/",
+            "date": "2024-10-24"
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "back-to-the-future",
+        "showId": "back-to-the-future",
+        "field": "capitalizationSource",
+        "oldValue": "NYT / SEC filing (Oct 2024)",
+        "newValue": "Forbes (Oct 24, 2024): \"Back to the Future at $23.5 million\"",
+        "description": "name the linked source and quote it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "our-town",
+        "showId": "our-town",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2020520/000202052025000001/primary_doc.xml",
+            "date": "2025-01-15"
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stranger-things",
+        "showId": "stranger-things",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2040672/000204067224000001/primary_doc.xml",
+            "date": "2024-10-11"
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "buena-vista-social-club",
+        "showId": "buena-vista-social-club",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/operation-mincemeat-targets-golden-theatre",
+            "date": null
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "buena-vista-social-club",
+        "showId": "buena-vista-social-club",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Al Día News, Sept 2024)",
+        "newValue": "Broadway Journal, citing SEC filings: \"Buena Vista Social Club is at $17 million\"",
+        "description": "name the linked source and quote it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "showId": "parade-2023",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/ben-platt-to-lead-6-5-million-parade-exclusive",
+            "date": null
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "smash-2025",
+        "showId": "smash-2025",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1995780/000199578025000002/primary_doc.xml",
+            "date": "2025-06-04"
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "smash-2025",
+        "showId": "smash-2025",
+        "field": "capitalizationSource",
+        "oldValue": "NYT / SEC filing / trade press",
+        "newValue": "SEC Form D/A, SMASH Broadway LLC (Jun 4, 2025): $20,000,000 sold of a $23,000,000 offering",
+        "description": "name the linked source and quote it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2098417/000209841725000001/primary_doc.xml",
+            "date": "2025-12-09"
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shucked-2023",
+        "showId": "shucked-2023",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2022/legit/news/shucked-musical-comedy-broadway-1235432321/",
+            "date": "2022-11-14"
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "shucked-2023",
+        "showId": "shucked-2023",
+        "field": "capitalizationSource",
+        "oldValue": "Trade press (among Tony-nominated shows)",
+        "newValue": "Variety (Nov 14, 2022): \"being capitalized for up to $16 million, according to a Securities and Exchange Commission filing\"",
+        "description": "name the linked source and quote it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "almost-famous-2022",
+        "showId": "almost-famous-2022",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/shubert-produced-some-like-it-hot-to-close",
+            "date": null
+          }
+        ],
+        "description": "add a link to the source that states the capitalization (BRO-4722 audit)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "almost-famous-2022",
+        "showId": "almost-famous-2022",
+        "field": "capitalizationSource",
+        "oldValue": "The New York Times",
+        "newValue": "Broadway Journal (Sep 2023): \"Almost Famous (produced by Lia Vollack and Michael Cassel, $18 million)\"",
+        "description": "name the linked source and quote it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T17:45:49.539Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for suffs"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for back-to-the-future"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for back-to-the-future"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for our-town"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for stranger-things"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for buena-vista-social-club"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for buena-vista-social-club"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for parade-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for smash-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for smash-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for shucked-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for shucked-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for almost-famous-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for almost-famous-2022"
+    }
+  ]
+}

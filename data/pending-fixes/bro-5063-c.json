@@ -1,0 +1,317 @@
+{
+  "issueNumber": "bro-5063-c",
+  "planId": "33610f89-6e34-463e-a6fb-ef138e29eed1",
+  "status": "applied",
+  "createdAt": "2026-10-11T15:50:28.005Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Part 3 of 3. Synopsis cleanup (BRO-5063). 71 live synopses carried Wikipedia scrape debris (image captions, \";Act I\" headings, cut-off song lists) or producer pitch copy (\"Don’t miss\", \"Join us\", \"invites you\", press quotes, cast billing). This part trims 21 to their story text and clears 0 with no usable story so the verified writer refills them (backfill-historical-metadata.yml, shows= the cleared ids).",
+    "steps": [
+      "Trim 21 synopses to their story text",
+      "Clear 0 pitch/billing/song-list synopses"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "lucky-guy-2013",
+        "field": "synopsis",
+        "oldValue": "Act I Mike McAlary, from 1985 to 1993, bounds from one New York City newsroom to another as he achieves career success, covering such stories as the tainted Tylenol case and the Buddy Boys of the 7-7 scandal. His salary increases as he ascends from being a cub reporter to star crime reporter to star columnist.",
+        "newValue": "Mike McAlary, from 1985 to 1993, bounds from one New York City newsroom to another as he achieves career success, covering such stories as the tainted Tylenol case and the Buddy Boys of the 7-7 scandal. His salary increases as he ascends from being a cub reporter to star crime reporter to star columnist.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evita-2012",
+        "field": "synopsis",
+        "oldValue": "Act I On 26 July 1952, a crowd in a Buenos Aires, Argentina theatre is watching a movie (\"A Cinema in Buenos Aires, 26 July 1952\") that is interrupted when news breaks of the death of First Lady Eva Perón. Both the crowd and the nation go into a period of public mourning (\"Requiem for Evita\") as Che, a member of the public, marvels at the spectacle and promises to show how Eva did \"nothing for years\" (\"Oh What a Circus\").",
+        "newValue": "On 26 July 1952, a crowd in a Buenos Aires, Argentina theatre is watching a movie (\"A Cinema in Buenos Aires, 26 July 1952\") that is interrupted when news breaks of the death of First Lady Eva Perón. Both the crowd and the nation go into a period of public mourning (\"Requiem for Evita\") as Che, a member of the public, marvels at the spectacle and promises to show how Eva did \"nothing for years\" (\"Oh What a Circus\").",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "once-2012",
+        "field": "synopsis",
+        "oldValue": "Act I A thirty-something Dublin busker (identified only as \"Guy\") sings a heartfelt ballad of unrequited love on a Dublin street, accompanying himself on guitar (\"Leave\"). He then puts his guitar in its case and turns to leave without it but a young Czech woman (identified only as \"Girl\"), who has been listening to him sing approaches.",
+        "newValue": "A thirty-something Dublin busker (identified only as \"Guy\") sings a heartfelt ballad of unrequited love on a Dublin street, accompanying himself on guitar (\"Leave\"). He then puts his guitar in its case and turns to leave without it but a young Czech woman (identified only as \"Girl\"), who has been listening to him sing approaches.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-a-clear-day-you-can-see-forever-2011",
+        "field": "synopsis",
+        "oldValue": "Act I Quirky Daisy Gamble sees herself as an unremarkable person and has low self-esteem, even though she can (1) make plants grow remarkably, (2) predict when a telephone will ring or someone will drop in, and (3) tell where to find an object that someone else is looking for. Her current problem, though, is her nasty smoking habit, which will interfere with the chances of her fiancé, Warren, for a job with great benefits.",
+        "newValue": "Quirky Daisy Gamble sees herself as an unremarkable person and has low self-esteem, even though she can (1) make plants grow remarkably, (2) predict when a telephone will ring or someone will drop in, and (3) tell where to find an object that someone else is looking for. Her current problem, though, is her nasty smoking habit, which will interfere with the chances of her fiancé, Warren, for a job with great benefits.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "big-1996",
+        "field": "synopsis",
+        "oldValue": "Act I Josh Baskin, a 12-year-old New Jersey boy, finds that whenever he sees 13-year-old Cynthia Benson, he is unaccountably speechless. He doesn't understand his new feelings, but every family on the street knows what has occurred. For him, childhood has ended; adolescence has occurred, and the long complex process of growing up has begun.",
+        "newValue": "Josh Baskin, a 12-year-old New Jersey boy, finds that whenever he sees 13-year-old Cynthia Benson, he is unaccountably speechless. He doesn't understand his new feelings, but every family on the street knows what has occurred. For him, childhood has ended; adolescence has occurred, and the long complex process of growing up has begun.",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gentlemen-prefer-blondes-1995",
+        "field": "synopsis",
+        "oldValue": "Act I In the 1920s, Lorelei Lee, a blonde from Little Rock, Arkansas, and her friend Dorothy Shaw board the ocean liner Ile de France, to embark for France (\"It's High Time\"). Lorelei and her boyfriend, Gus Esmond, are parting for a while (\"Bye, Bye Baby\"); Gus is going to Little Rock, and Dorothy is Lorelei's chaperone.",
+        "newValue": "In the 1920s, Lorelei Lee, a blonde from Little Rock, Arkansas, and her friend Dorothy Shaw board the ocean liner Ile de France, to embark for France (\"It's High Time\"). Lorelei and her boyfriend, Gus Esmond, are parting for a while (\"Bye, Bye Baby\"); Gus is going to Little Rock, and Dorothy is Lorelei's chaperone.",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-will-rogers-follies-1991",
+        "field": "synopsis",
+        "oldValue": "Act I Rogers frequently speaks directly to the audience and to Florenz Ziegfeld himself, who often interjects to question the progress of the show and to give some directorial advice. After introducing the audience to his friends and family, Rogers discusses leaving home at 19 to become a cowboy in Argentina.",
+        "newValue": "Rogers frequently speaks directly to the audience and to Florenz Ziegfeld himself, who often interjects to question the progress of the show and to give some directorial advice. After introducing the audience to his friends and family, Rogers discusses leaving home at 19 to become a cowboy in Argentina.",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "steel-pier-1997",
+        "field": "synopsis",
+        "oldValue": "Act I Stunt pilot Bill Kelly lies face down on the 1933 Atlantic City shore, his flight jacket torn. He manages to stand up, looking at a raffle ticket he holds in his hand and then to the sky, and exclaims, \"Alright! I understand! I've got three weeks! Three weeks! \" before hurrying off. He asks if she has a partner yet and reluctantly walks away when she says she does.",
+        "newValue": "Stunt pilot Bill Kelly lies face down on the 1933 Atlantic City shore, his flight jacket torn. He manages to stand up, looking at a raffle ticket he holds in his hand and then to the sky, and exclaims, \"Alright! I understand! I've got three weeks! Three weeks! \" before hurrying off. He asks if she has a partner yet and reluctantly walks away when she says she does.",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "youre-a-good-man-charlie-brown-1999",
+        "field": "synopsis",
+        "oldValue": "Act I Charlie Brown and Linus are together, as his friends give their various opinions of him (\"Opening\"). Today everyone is calling him a \"good man\". They state he could be king. Lucy, however says he could be king if he wasn't so wishy-washy (\"You're A Good Man, Charlie Brown\"). Lucy expresses her deep infatuation with Schroeder and asks him what he thinks of the idea of marriage.",
+        "newValue": "Charlie Brown and Linus are together, as his friends give their various opinions of him (\"Opening\"). Today everyone is calling him a \"good man\". They state he could be king. Lucy, however says he could be king if he wasn't so wishy-washy (\"You're A Good Man, Charlie Brown\"). Lucy expresses her deep infatuation with Schroeder and asks him what he thinks of the idea of marriage.",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "42nd-street-1980",
+        "field": "synopsis",
+        "oldValue": "Act I Auditions for 1933's newest show, Pretty Lady, are nearly over when Peggy Sawyer, fresh off the bus from Allentown, Pennsylvania, arrives in New York City with valise in hand. Billy Lawlor, already cast as one of the juvenile leads, notices her and hopes to charm her into accepting a date with him (\"Young and Healthy\").",
+        "newValue": "Auditions for 1933's newest show, Pretty Lady, are nearly over when Peggy Sawyer, fresh off the bus from Allentown, Pennsylvania, arrives in New York City with valise in hand. Billy Lawlor, already cast as one of the juvenile leads, notices her and hopes to charm her into accepting a date with him (\"Young and Healthy\").",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "evita-1979",
+        "field": "synopsis",
+        "oldValue": "Act I On 26 July 1952, a crowd in a Buenos Aires, Argentina theatre is watching a movie (\"A Cinema in Buenos Aires, 26 July 1952\") that is interrupted when news breaks of the death of First Lady Eva Perón. Both the crowd and the nation go into a period of public mourning (\"Requiem for Evita\") as Che, a member of the public, marvels at the spectacle and promises to show how Eva did \"nothing for years\" (\"Oh What a Circus\").",
+        "newValue": "On 26 July 1952, a crowd in a Buenos Aires, Argentina theatre is watching a movie (\"A Cinema in Buenos Aires, 26 July 1952\") that is interrupted when news breaks of the death of First Lady Eva Perón. Both the crowd and the nation go into a period of public mourning (\"Requiem for Evita\") as Che, a member of the public, marvels at the spectacle and promises to show how Eva did \"nothing for years\" (\"Oh What a Circus\").",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mourning-becomes-electra-1972",
+        "field": "synopsis",
+        "oldValue": "Act I It is late spring in front of the Mannon house. The master of the house, Brigadier-General Ezra Mannon, is soon to return from the Civil War. Lavinia, Ezra's daughter, like her mother Christine, has just returned from a trip to New York. Seth, the gardener, takes Lavinia aside.",
+        "newValue": "It is late spring in front of the Mannon house. The master of the house, Brigadier-General Ezra Mannon, is soon to return from the Civil War. Lavinia, Ezra's daughter, like her mother Christine, has just returned from a trip to New York. Seth, the gardener, takes Lavinia aside.",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-your-toes-1983",
+        "field": "synopsis",
+        "oldValue": "Act I On a vaudeville stage, Phil Dolan II, his wife Lili, and his son Junior perform their nightly routine, but afterwards in the dressing room, the parents tell Junior that he must go to school—his mother is worried that the chorus girls taking an interest in him will corrupt him, since he has an exceptionally strong libido.",
+        "newValue": "On a vaudeville stage, Phil Dolan II, his wife Lili, and his son Junior perform their nightly routine, but afterwards in the dressing room, the parents tell Junior that he must go to school—his mother is worried that the chorus girls taking an interest in him will corrupt him, since he has an exceptionally strong libido.",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "big-fish-2013",
+        "field": "synopsis",
+        "oldValue": "Act 1 In Alabama, Edward Bloom and his son, Will, discuss Will's impending wedding. Entering a flashback to when Will was a child, Edward tells him a story. Edward is walking down the river when he meets a man trying to catch fish to no avail. So Edward teaches him the proper way to catch fish (\"Be the Hero\").",
+        "newValue": "In Alabama, Edward Bloom and his son, Will, discuss Will's impending wedding. Entering a flashback to when Will was a child, Edward tells him a story. Edward is walking down the river when he meets a man trying to catch fish to no avail. So Edward teaches him the proper way to catch fish (\"Be the Hero\").",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dont-dress-for-dinner-2012",
+        "field": "synopsis",
+        "oldValue": "Act 1 In a renovated French farmhouse about a two-hour drive from Paris, Bernard is hoping to send his wife, Jacqueline, to her mother's for the weekend, in hopes he can romance his mistress, Suzanne, a Parisian model. Bernard has hired a Cordon Bleu cook, Suzette, and as an alibi invited his friend Robert to dinner.",
+        "newValue": "In a renovated French farmhouse about a two-hour drive from Paris, Bernard is hoping to send his wife, Jacqueline, to her mother's for the weekend, in hopes he can romance his mistress, Suzanne, a Parisian model. Bernard has hired a Cordon Bleu cook, Suzette, and as an alibi invited his friend Robert to dinner.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sister-act-2011",
+        "field": "synopsis",
+        "oldValue": "Act 1 In Philadelphia, the Mother superior declares that the convent is in need (Prologue) before Deloris Van Cartier, crowned 'Lady Fabulous' of 1978, is seen performing in the night club run by her gangster boyfriend Curtis Shank (\"Take Me to Heaven\"). Deloris is overjoyed as she believes her boyfriend is going to introduce her to a record producer on that day (her birthday), although she soon learns that this is not to be.",
+        "newValue": "In Philadelphia, the Mother superior declares that the convent is in need (Prologue) before Deloris Van Cartier, crowned 'Lady Fabulous' of 1978, is seen performing in the night club run by her gangster boyfriend Curtis Shank (\"Take Me to Heaven\"). Deloris is overjoyed as she believes her boyfriend is going to introduce her to a record producer on that day (her birthday), although she soon learns that this is not to be.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2002",
+        "field": "synopsis",
+        "oldValue": "Act 1 Following a brief courtship, Elyot and Sibyl are honeymooning at a hotel in Deauville, France, although her curiosity about his first marriage is not helping his romantic mood. In the adjoining suite Amanda and Victor are starting their new life together, although he cannot stop thinking of the cruelty Amanda's ex-husband displayed towards her.",
+        "newValue": "Following a brief courtship, Elyot and Sibyl are honeymooning at a hotel in Deauville, France, although her curiosity about his first marriage is not helping his romantic mood. In the adjoining suite Amanda and Victor are starting their new life together, although he cannot stop thinking of the cruelty Amanda's ex-husband displayed towards her.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-1992",
+        "field": "synopsis",
+        "oldValue": "Act 1 Following a brief courtship, Elyot and Sibyl are honeymooning at a hotel in Deauville, France, although her curiosity about his first marriage is not helping his romantic mood. In the adjoining suite Amanda and Victor are starting their new life together, although he cannot stop thinking of the cruelty Amanda's ex-husband displayed towards her.",
+        "newValue": "Following a brief courtship, Elyot and Sibyl are honeymooning at a hotel in Deauville, France, although her curiosity about his first marriage is not helping his romantic mood. In the adjoining suite Amanda and Victor are starting their new life together, although he cannot stop thinking of the cruelty Amanda's ex-husband displayed towards her.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "private-lives-2025",
+        "field": "synopsis",
+        "oldValue": "Act 1 Following a brief courtship, Elyot and Sibyl are honeymooning at a hotel in Deauville, France, although her curiosity about his first marriage is not helping his romantic mood. In the adjoining suite Amanda and Victor are starting their new life together, although he cannot stop thinking of the cruelty Amanda's ex-husband displayed towards her.",
+        "newValue": "Following a brief courtship, Elyot and Sibyl are honeymooning at a hotel in Deauville, France, although her curiosity about his first marriage is not helping his romantic mood. In the adjoining suite Amanda and Victor are starting their new life together, although he cannot stop thinking of the cruelty Amanda's ex-husband displayed towards her.",
+        "description": "Trimmed to the story text: leading act heading"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-most-happy-fella-1979",
+        "field": "synopsis",
+        "oldValue": "Act 1 In the Golden Gate Restaurant in San Francisco in 1927, tired and harassed young waitress Cleo commiserates with her friend. Cleo's feet hurt (\"Ooh My Feet\") and her friend has had to fend off the cashier's advances (\"I Know How It Is\"). As they clean up (\"Seven Million Crumbs\"), Cleo's friend finds a jeweled tie pin and a note addressed to the friend as \"Rosabella\", written in odd broken English (\"I Don't Know (The Letter)\").",
+        "newValue": "In the Golden Gate Restaurant in San Francisco in 1927, tired and harassed young waitress Cleo commiserates with her friend. Cleo's feet hurt (\"Ooh My Feet\") and her friend has had to fend off the cashier's advances (\"I Know How It Is\"). As they clean up (\"Seven Million Crumbs\"), Cleo's friend finds a jeweled tie pin and a note addressed to the friend as \"Rosabella\", written in odd broken English (\"I Don't Know (The Letter)\").",
+        "description": "Trimmed to the story text: leading act heading (oldValue from the 2026-10-06 core-data snapshot)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-addams-family-2010",
+        "field": "synopsis",
+        "oldValue": "Setting: The Addams Family Mansion, Central Park, New York City The ghoulish Addams family are visiting the graveyard for an annual gathering of all family members (living, dead, and undecided) to celebrate what it is to be an Addams (\"When You're an Addams\").",
+        "newValue": "In their mansion in Central Park, New York City, the ghoulish Addams family are visiting the graveyard for an annual gathering of all family members (living, dead, and undecided) to celebrate what it is to be an Addams (\"When You're an Addams\").",
+        "description": "Trimmed to the story text: Wikipedia \"Setting:\" label glued to the first sentence"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T16:44:53.118Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for lucky-guy-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for evita-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for once-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for on-a-clear-day-you-can-see-forever-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for big-1996"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for gentlemen-prefer-blondes-1995"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-will-rogers-follies-1991"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for steel-pier-1997"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for youre-a-good-man-charlie-brown-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for 42nd-street-1980"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for evita-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for mourning-becomes-electra-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for on-your-toes-1983"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for big-fish-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dont-dress-for-dinner-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for sister-act-2011"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for private-lives-2002"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for private-lives-1992"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for private-lives-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-most-happy-fella-1979"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-addams-family-2010"
+    }
+  ]
+}

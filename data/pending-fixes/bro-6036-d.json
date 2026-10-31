@@ -1,0 +1,127 @@
+{
+  "issueNumber": "bro-6036-d",
+  "planId": "899f5256-bc52-437d-9b78-35d47cfaf126",
+  "status": "applied",
+  "createdAt": "2026-10-25T11:57:08.985Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036 part d: date 3 more closed West End rows from stated press nights found by a fresh source sweep. The other 25 dateless rows have no page stating a press night (or sources conflict: Shitheads, Why Am I So Single, Dorian Gray, Pigeon English, Dazzlers) and stay undated; no date invented.",
+    "steps": [
+      "shows.json: the-name-off-west-end-2026.openingDate",
+      "shows.json: the-name-off-west-end-2026.openingDateSource",
+      "shows.json: dr-semmelweis-west-end-2023.openingDate",
+      "shows.json: dr-semmelweis-west-end-2023.openingDateSource",
+      "shows.json: dr-semmelweis-west-end-2023.previewsStartDate",
+      "shows.json: jersey-boys-west-end-2021.openingDate",
+      "shows.json: jersey-boys-west-end-2021.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-name-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-21",
+        "description": "shows.json: the-name-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-name-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Thursday 21 May 2026 (theatreweekly.com: UK stage premiere of The Name opens at White Bear Theatre)",
+        "description": "shows.json: the-name-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dr-semmelweis-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-07-11",
+        "description": "shows.json: dr-semmelweis-west-end-2023.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dr-semmelweis-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "opening 11 July 2023 (britishtheatre.com cast announcement; playbill.com)",
+        "description": "shows.json: dr-semmelweis-west-end-2023.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dr-semmelweis-west-end-2023",
+        "field": "previewsStartDate",
+        "oldValue": "2023-07-11",
+        "newValue": "2023-06-29",
+        "description": "shows.json: dr-semmelweis-west-end-2023.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jersey-boys-west-end-2021",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2021-08-17",
+        "description": "shows.json: jersey-boys-west-end-2021.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jersey-boys-west-end-2021",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Tuesday 17 August 2021 (theatre-news.com press-night report, 18 Aug 2021)",
+        "description": "shows.json: jersey-boys-west-end-2021.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T12:14:12.727Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-name-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-name-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dr-semmelweis-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for dr-semmelweis-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for dr-semmelweis-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jersey-boys-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for jersey-boys-west-end-2021"
+    }
+  ],
+  "executedIn": "ci"
+}

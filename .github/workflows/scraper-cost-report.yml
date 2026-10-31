@@ -1,0 +1,487 @@
+name: Weekly Scraper Cost Report
+
+on:
+  schedule:
+    - cron: '0 14 * * 1'  # Monday 2 PM UTC (9 AM EST)
+  workflow_dispatch: {}
+
+# BRO-2957: this workflow no longer creates issues, so it no longer needs
+# issues: write. The run-history queries (gh_runs_query) and `gh run view` calls
+# in the first step still need actions: read, and checkout needs contents: read.
+#
+# BRO-6391: red Action-needed lines are filed as worker cards through
+# owner-alert-router.js (scripts/route-cost-report-alerts.js) and the email
+# names the card instead of asking the owner to investigate. contents: write
+# is for the alert-router state push at the end.
+concurrency:
+  group: scraper-cost-report
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    # 30 min: the 10-min limit timeout-cancelled EVERY weekly run May 25 - Jul 13
+    # 2026 (log-scanning outgrew it), and cancelled runs are invisible to the
+    # failure digest. Also registered in check-cron-health.yml CRITICAL_CRONS.
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          # The alert-router state is pushed to main at the end.
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Collect data and build report
+        id: report
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          COST_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+        run: |
+          # BRO-2780: never `gh run list --limit=N` for run history on this repo — it returns
+          # arbitrary, sometimes months-stale result SETS (BRO-2767/BRO-2771). The two
+          # latest-run lookups below read the Actions REST endpoint through this helper instead.
+          . scripts/lib/gh-runs-query.sh
+
+          SINCE=$(date -d '7 days ago' '+%Y-%m-%dT00:00:00Z' 2>/dev/null || date -v-7d '+%Y-%m-%dT00:00:00Z')
+          PERIOD_START=$(date -d '7 days ago' '+%b %d' 2>/dev/null || date -v-7d '+%b %d')
+          PERIOD_END=$(date '+%b %d')
+
+          # --- Collect workflow run counts ---
+          # BRO-2792: one paginated REST query per workflow FILE, both counts derived
+          # from that one array. Was two `gh run list --workflow="<display name>"`
+          # calls: capped at 20 runs (Collect Review Texts alone runs 100+ a week)
+          # and uncorrelated, so FAILED=RUNS-SUCCESS could go negative. The display
+          # name is read from the file's own `name:` line, so no map can drift.
+          wf_display_name() {
+            grep -m1 '^name:' ".github/workflows/$1" | sed -E "s/^name:[[:space:]]*//; s/^['\"]//; s/['\"][[:space:]]*$//"
+          }
+          # All runs created since $SINCE, as one JSON array. GitHub caps a filtered
+          # listing at 1000 results (10 pages of 100), so 1000 means "capped".
+          wf_runs_since() {
+            local file="$1" page=1 all='[]' batch n
+            while [ "$page" -le 10 ]; do
+              if ! batch=$(gh_runs_query "$GITHUB_REPOSITORY" "$file" 100 "created=%3E$SINCE" "page=$page"); then
+                return 1
+              fi
+              # unique_by: page=N is an offset into a newest-first listing, so a
+              # run created between page fetches shifts the last run of page N
+              # onto page N+1 and it would be counted twice.
+              all=$(jq -s 'add | unique_by(.databaseId)' <(printf '%s' "$all") <(printf '%s' "$batch"))
+              n=$(printf '%s' "$batch" | jq 'length')
+              if [ "$n" -lt 100 ]; then break; fi
+              page=$((page + 1))
+            done
+            printf '%s\n' "$all"
+          }
+          # One list for both loops below: the cost sampling adds two workflows
+          # whose runs are not shown in the counts table.
+          COUNT_WFS=(collect-review-texts.yml gather-reviews.yml opening-night-poller.yml opening-night-reviews.yml enrich-ibdb-dates.yml bulk-show-score.yml check-show-freshness.yml scrape-bww-reviews.yml update-commercial.yml fix-platform-ticket-links.yml)
+          SAMPLE_WFS=("${COUNT_WFS[@]}" audit-aggregator-gap.yml scrape-new-aggregators.yml)
+          WORKFLOW_ROWS=""
+          TOTAL_RUNS=0
+          TOTAL_FAILED=0
+          TOTAL_CANCELLED=0
+          FAILED_BY_WF=""
+          RUNS_QUERY_FAILED=""
+          for wf_file in "${COUNT_WFS[@]}"; do
+            wf=$(wf_display_name "$wf_file")
+            [ -n "$wf" ] || wf="$wf_file"
+            if ! RUNS_JSON=$(wf_runs_since "$wf_file"); then
+              echo "::warning::run history query failed for $wf_file; its row shows '?'"
+              RUNS_QUERY_FAILED="$RUNS_QUERY_FAILED${RUNS_QUERY_FAILED:+, }$wf_file"
+              WORKFLOW_ROWS="$WORKFLOW_ROWS<tr><td style='padding:4px 12px'>$wf</td><td style='padding:4px 12px;text-align:center'>?</td><td style='padding:4px 12px;text-align:center'>query failed</td></tr>"
+              continue
+            fi
+            RUNS=$(printf '%s' "$RUNS_JSON" | jq 'length')
+            RUNS_CAPPED=""
+            if [ "$RUNS" -ge 1000 ]; then RUNS_CAPPED=" (capped at 1000)"; fi
+            # A timeout-minutes overrun ends `cancelled`, not `timed_out` (see the
+            # timeout note at the top of this job), so cancelled runs get their
+            # own column count rather than vanishing.
+            FAILED=$(printf '%s' "$RUNS_JSON" | jq '[.[] | select(.conclusion=="failure" or .conclusion=="timed_out" or .conclusion=="startup_failure")] | length')
+            CANCELLED=$(printf '%s' "$RUNS_JSON" | jq '[.[] | select(.conclusion=="cancelled")] | length')
+            if [ "$RUNS" -gt 0 ]; then
+              TOTAL_RUNS=$((TOTAL_RUNS + RUNS))
+              TOTAL_FAILED=$((TOTAL_FAILED + FAILED))
+              TOTAL_CANCELLED=$((TOTAL_CANCELLED + CANCELLED))
+              if [ "$FAILED" -gt 0 ]; then FAILED_BY_WF="$FAILED_BY_WF${FAILED_BY_WF:+,}$wf_file:$FAILED"; fi
+              FAIL_BADGE=""
+              if [ "$FAILED" -gt 0 ]; then
+                FAIL_BADGE="<span style='color:#dc2626;font-weight:bold'>$FAILED failed</span>"
+              fi
+              if [ "$CANCELLED" -gt 0 ]; then
+                FAIL_BADGE="$FAIL_BADGE <span style='color:#b45309'>$CANCELLED cancelled</span>"
+              fi
+              WORKFLOW_ROWS="$WORKFLOW_ROWS<tr><td style='padding:4px 12px'>$wf</td><td style='padding:4px 12px;text-align:center'>$RUNS$RUNS_CAPPED</td><td style='padding:4px 12px;text-align:center'>$FAIL_BADGE</td></tr>"
+            fi
+          done
+
+          # --- Collect [Scraper Summary] data (SAMPLED) ---
+          # Bounded to the known scraping workflows × last 5 completed runs each
+          # (~50 log downloads). The previous version walked ALL 100+ workflows ×
+          # up to 100 runs each and timeout-cancelled every weekly run May 25 -
+          # Jul 13 2026. Telemetry here is sampled ATTRIBUTION; the
+          # provider-reported numbers below are the billing ground truth.
+          PW_TOTAL=0; BD_TOTAL=0; SB_TOTAL=0; SB_CREDITS_TOTAL=0
+          for wf_file in "${SAMPLE_WFS[@]}"; do
+            wf=$(wf_display_name "$wf_file")
+            [ -n "$wf" ] || wf="$wf_file"
+            for run_id in $(gh_runs_query "$GITHUB_REPOSITORY" "$wf_file" 5 "created=%3E$SINCE" "status=completed" 2>/dev/null | jq -r '.[].databaseId' 2>/dev/null); do
+              # Sum ALL summary lines per log (multi-call scripts emit multiple)
+              while IFS= read -r SUMMARY; do
+                [ -z "$SUMMARY" ] && continue
+                PW=$(echo "$SUMMARY" | grep -oP '\d+/\d+ Playwright' | head -1 | grep -oP '^\d+' || echo "0")
+                BD=$(echo "$SUMMARY" | grep -oP '\d+ BD' | head -1 | grep -oP '^\d+' || echo "0")
+                SB=$(echo "$SUMMARY" | grep -oP '\d+ SB' | head -1 | grep -oP '^\d+' || echo "0")
+                SB_CR=$(echo "$SUMMARY" | grep -oP '\d+ credits' | head -1 | grep -oP '^\d+' || echo "0")
+                PW_TOTAL=$((PW_TOTAL + PW)); BD_TOTAL=$((BD_TOTAL + BD))
+                SB_TOTAL=$((SB_TOTAL + SB)); SB_CREDITS_TOTAL=$((SB_CREDITS_TOTAL + SB_CR))
+              done < <(gh run view "$run_id" --log 2>/dev/null | grep '\[Scraper Summary\]' || true)
+            done
+          done
+          # BD Web Unlocker rate comes from scripts/config/provider-pricing.json,
+          # never a literal here (BRO-3009 S1-T6). This value was wrong once
+          # already — 0.001 vs the real 0.0015, a 50% under-report that stood
+          # because four files each held their own copy of the rate. `bc` still
+          # does the arithmetic so the printed figure is unchanged; only the
+          # rate's source moved. Empty/zero rate fails the step loudly rather
+          # than reporting $0.00 BD spend, which reads as "nothing to see".
+          # Read through provider-pricing.js's usdFor() rather than reaching into
+          # the JSON shape from YAML — usdFor already validates the provider
+          # exists and the rate is finite and non-negative, so this step gets the
+          # same guarantee every JS caller gets instead of a second, weaker copy
+          # of it. `|| true` keeps `bash -e` from killing the step before the
+          # ::error:: annotation below can explain what went wrong.
+          BD_RATE=$(node -e "const {usdFor}=require('./scripts/lib/provider-pricing');process.stdout.write(String(usdFor('brightdata',1)))" 2>/dev/null || true)
+          if echo "$BD_RATE" | grep -qE '^[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$'; then
+            BD_COST=$(echo "scale=2; $BD_TOTAL * $BD_RATE" | bc)
+          else
+            # Report an unknown rate as unknown. Do NOT exit: this step's whole
+            # design (see `set +e` below) is that a partial report still sends,
+            # and killing it here would blank the Browserbase and ScrapingBee
+            # billing sections too. A visible "rate unavailable" is honest; a
+            # silent $0.00 BD line would read as "nothing to see", which is the
+            # exact under-report this rate move exists to prevent.
+            echo "::error::scraper-cost-report: could not read a usable brightdata rate via provider-pricing.js (got '$BD_RATE') — BD cost shown as unavailable"
+            BD_COST="rate unavailable"
+          fi
+
+          # Disable `bash -e` for the rest of this step. Everything from here on is
+          # observability — partial data is acceptable, but a failed report email is
+          # not. Original report ran for weeks with -e on for the workflow-summing
+          # loop above; the new BB+SB API calls below have many fragile dependencies
+          # (jq versions, curl exit codes, bc edge cases) where one silent failure
+          # should not blank the entire Monday report.
+          set +e
+
+          # BRO-3011: the spend-guard audit (trip days per breaker, rerouted
+          # spend, cap drift, DEFECT rule) replaces the old "Top SB Credit
+          # Consumers" awk tally. It prints only; it writes nothing and
+          # routes no alerts (the daily data-health-check run owns those):
+          # render-guard-audit.js has no owner-alert-router in its require graph.
+          GUARD_AUDIT_HTML=$(node scripts/render-guard-audit.js 2>/dev/null || echo "<p>Spend guard audit unavailable this run.</p>")
+
+          # --- Browserbase last 7 days (sessions × \$0.10) ---
+          # Previously invisible. Feb 2026 spike was 12,876 sessions = \$1,287 in
+          # one week, missed entirely by this report. Now tracked explicitly.
+          #
+          # The /v1/sessions endpoint returns ALL project sessions in a single call
+          # (verified: 22,809 sessions returned across all time in one response).
+          # We compute a TOTAL_ITEMS sanity check — if BB later adds default
+          # pagination, an unusually small response (<7-day baseline) would trigger
+          # the API_DEGRADED flag rather than silently undercounting and missing
+          # the exact catastrophic-spike scenario this code exists to catch.
+          BB_SESSIONS=0; BB_COST="0.00"; BB_TOTAL_ITEMS=0
+          API_DEGRADED=""
+          if [ -n "$BROWSERBASE_API_KEY" ] && [ -n "$BROWSERBASE_PROJECT_ID" ]; then
+            BB_HTTP_CODE=$(curl -s -o /tmp/bb_raw.json -w "%{http_code}" -H "X-BB-API-Key: $BROWSERBASE_API_KEY" "https://api.browserbase.com/v1/sessions?projectId=$BROWSERBASE_PROJECT_ID" 2>/dev/null || echo "000")
+            if [ "$BB_HTTP_CODE" = "200" ]; then
+              BB_PARSED=$(python3 -c "import sys,json; from datetime import datetime,timedelta,timezone; d=json.load(open('/tmp/bb_raw.json')); items=d if isinstance(d,list) else d.get('data',[]); cutoff=(datetime.now(timezone.utc)-timedelta(days=7)).isoformat(); recent=sum(1 for s in items if s.get('createdAt','')>=cutoff); print(f'{recent}|{len(items)}')" 2>/dev/null || echo "0|0")
+              BB_SESSIONS=$(echo "$BB_PARSED" | cut -d'|' -f1)
+              BB_TOTAL_ITEMS=$(echo "$BB_PARSED" | cut -d'|' -f2)
+              BB_COST=$(echo "scale=2; $BB_SESSIONS * 0.10" | bc 2>/dev/null || echo "0.00")
+              # Suspicious-pagination check: if total items returned is suspiciously
+              # round (100, 500, 1000, 10000) AND we have any sessions in window,
+              # treat as possible pagination cap.
+              case "$BB_TOTAL_ITEMS" in
+                100|500|1000|5000|10000) API_DEGRADED="$API_DEGRADED Browserbase API returned exactly $BB_TOTAL_ITEMS items — possible pagination cap, count may be low. ";;
+              esac
+            else
+              API_DEGRADED="$API_DEGRADED Browserbase API HTTP $BB_HTTP_CODE — cost data missing this week. "
+            fi
+          fi
+
+          # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
+          # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute
+
+          # --- ScrapingBee cap % direct from API (replaces log-scraping) ---
+          # Outputs: pct_used | proj_pct_of_current_cap | used | cap | projected_absolute
+          SB_PCT="—"; SB_PROJECTED="—"; SB_PROJECTED_ABS=0; SB_CAP_NUM=0; SB_USED_NUM=0; SB_RENEWAL="unknown"
+          if [ -n "$SCRAPINGBEE_API_KEY" ]; then
+            SB_USAGE=$(curl -s "https://app.scrapingbee.com/api/v1/usage?api_key=$SCRAPINGBEE_API_KEY" 2>/dev/null || echo "{}")
+            # BRO-3010: parsed by provider-billing.js (the one /usage field reader), not inline python.
+            SB_RENEWAL=$(echo "$SB_USAGE" | node scripts/lib/provider-billing.js --sb-renewal 2>/dev/null || echo "unknown")
+            SB_PARSED=$(echo "$SB_USAGE" | node scripts/lib/provider-billing.js --sb-report-line 2>/dev/null || echo "—|—|0|0|0")
+            SB_PCT=$(echo "$SB_PARSED" | cut -d'|' -f1)
+            SB_PROJECTED=$(echo "$SB_PARSED" | cut -d'|' -f2)
+            SB_USED_NUM=$(echo "$SB_PARSED" | cut -d'|' -f3)
+            SB_CAP_NUM=$(echo "$SB_PARSED" | cut -d'|' -f4)
+            SB_PROJECTED_ABS=$(echo "$SB_PARSED" | cut -d'|' -f5)
+          fi
+
+          # --- Provider-reported ground truth (billing APIs, not log-sampled) ---
+          # These are exact numbers straight from each provider — the telemetry
+          # tables above are sampled attribution only. When these disagree with
+          # the sampled sums, the burn is coming from an untelemetried path
+          # (the 2026-07 SB SERP invisible-burn failure mode).
+          SD_LINE="—"
+          if [ -n "$SCRAPINGDOG_API_KEY" ]; then
+            SD_RAW=$(curl -s --max-time 15 "https://api.scrapingdog.com/account?api_key=$SCRAPINGDOG_API_KEY" 2>/dev/null || echo "{}")
+            SD_LINE=$(echo "$SD_RAW" | python3 -c "import sys,json; d=json.load(sys.stdin); u=d.get('requestUsed',0); l=d.get('requestLimit',0) or 1; v=d.get('validity','?'); print(f'{u:,} / {l:,} credits used ({u/l*100:.0f}%) · renews in {v}d · pack {d.get(\"pack\",\"?\")}')" 2>/dev/null || echo "API error")
+          fi
+          BD_LINE="—"
+          if [ -n "$BRIGHTDATA_TOKEN" ]; then
+            BD_BAL=$(curl -s --max-time 15 -H "Authorization: Bearer $BRIGHTDATA_TOKEN" "https://api.brightdata.com/customer/balance" 2>/dev/null || echo "{}")
+            MONTH_FROM=$(date '+%Y-%m-01')
+            TODAY=$(date '+%Y-%m-%d')
+            BD_MONTH_COST=0
+            for zone in serp_api1 "${BRIGHTDATA_ZONE:-web_unlocker2}"; do
+              ZC=$(curl -s --max-time 15 -H "Authorization: Bearer $BRIGHTDATA_TOKEN" "https://api.brightdata.com/zone/cost?zone=$zone&from=$MONTH_FROM&to=$TODAY" 2>/dev/null || echo "{}")
+              Z=$(echo "$ZC" | python3 -c "import sys,json; d=json.load(sys.stdin); print(sum((c.get('custom') or {}).get('cost',0) for c in d.values() if isinstance(c,dict)))" 2>/dev/null || echo "0")
+              BD_MONTH_COST=$(echo "$BD_MONTH_COST + $Z" | bc 2>/dev/null || echo "$BD_MONTH_COST")
+            done
+            BD_LINE=$(echo "$BD_BAL" | python3 -c "import sys,json; d=json.load(sys.stdin); print(f'balance \${d.get(\"balance\",0):.2f} · pending \${d.get(\"pending_costs\",0):.2f}')" 2>/dev/null || echo "API error")
+            BD_LINE="$BD_LINE · month-to-date \$$BD_MONTH_COST (serp+unlocker)"
+          fi
+
+          # --- SB credit status ---
+          HEALTH_RUN=""
+          if HEALTH_RUNS_JSON=$(gh_runs_query "$GITHUB_REPOSITORY" "check-secrets-health.yml" 1); then
+            HEALTH_RUN=$(echo "$HEALTH_RUNS_JSON" | jq -r '.[0].databaseId // empty')
+          fi
+          SB_STATUS="Unknown"
+          SB_COLOR="#6b7280"
+          if [ -n "$HEALTH_RUN" ]; then
+            SB_RAW=$(gh run view "$HEALTH_RUN" --log 2>&1 | grep -oP 'ScrapingBee: .*' | head -1 || echo "")
+            if echo "$SB_RAW" | grep -qi "exhausted\|0%\|fail"; then
+              SB_STATUS="Exhausted — renews $SB_RENEWAL"
+              SB_COLOR="#dc2626"
+            elif echo "$SB_RAW" | grep -qi "warn\|90%"; then
+              SB_STATUS=$(echo "$SB_RAW" | sed 's/ScrapingBee: //')
+              SB_COLOR="#f59e0b"
+            elif [ -n "$SB_RAW" ]; then
+              SB_STATUS=$(echo "$SB_RAW" | sed 's/ScrapingBee: //')
+              SB_COLOR="#10b981"
+            fi
+          fi
+
+          # --- SB page/SERP split ---
+          SB_PAGE="-"; SB_SERP="-"
+          LATEST_COLLECT=""
+          if COLLECT_RUNS_JSON=$(gh_runs_query "$GITHUB_REPOSITORY" "collect-review-texts.yml" 5 "status=completed"); then
+            LATEST_COLLECT=$(echo "$COLLECT_RUNS_JSON" | jq -r '.[].databaseId')
+          fi
+          for run_id in $LATEST_COLLECT; do
+            SB_LINES=$(gh run view "$run_id" --log 2>/dev/null | grep -E "SB page credits:|SB SERP credits:" 2>/dev/null || true)
+            if [ -n "$SB_LINES" ]; then
+              SB_PAGE=$(echo "$SB_LINES" | grep "page" | grep -oP '\d+' | tail -1 || echo "0")
+              SB_SERP=$(echo "$SB_LINES" | grep "SERP" | grep -oP '\d+' | tail -1 || echo "0")
+              break
+            fi
+          done
+
+          # --- Determine if action needed ---
+          # SB_TARGET_CAP: post-downgrade cap to project against (default 1M = Startup
+          # plan). Lets the report scream "you'll exceed the new cap" weeks before the
+          # downgrade takes effect, instead of finding out mid-month when the site
+          # degrades. Override via repo secret if plan changes.
+          SB_TARGET_CAP=${SB_TARGET_CAP:-1000000}
+          # BRO-6391: the Action-needed rules live in scripts/lib/cost-report-alerts.js
+          # (same thresholds this step used inline). Each red line is filed as a
+          # worker card; the HTML it writes names that card. It always writes the
+          # file, so a Linear failure (exit 3) still sends the report and fails
+          # the job afterwards ("Fail if a worker card could not be filed").
+          set +e
+          COST_TOTAL_FAILED="$TOTAL_FAILED" COST_TOTAL_CANCELLED="$TOTAL_CANCELLED" \
+          COST_FAILED_BY_WF="$FAILED_BY_WF" COST_BB_COST="$BB_COST" COST_BB_SESSIONS="$BB_SESSIONS" \
+          COST_SB_PROJECTED="$SB_PROJECTED_ABS" COST_SB_CAP="$SB_TARGET_CAP" COST_SB_STATUS="$SB_STATUS" \
+          COST_SB_CREDITS_TOTAL="$SB_CREDITS_TOTAL" COST_API_DEGRADED="$API_DEGRADED" COST_RUNS_QUERY_FAILED="$RUNS_QUERY_FAILED" \
+            node scripts/route-cost-report-alerts.js --html-out=/tmp/action-needed.html
+          ROUTE_EXIT=$?
+          set -e
+          echo "route_exit=$ROUTE_EXIT" >> "$GITHUB_OUTPUT"
+          if [ -f /tmp/action-needed.html ]; then
+            ACTION_NEEDED=$(cat /tmp/action-needed.html)
+          else
+            ACTION_NEEDED="<li style='color:#dc2626'>Action-needed check did not run this week (see the workflow log)</li>"
+          fi
+
+          BANNER=""
+          if [ -n "$ACTION_NEEDED" ]; then
+            # BRO-6391: red lines carry a worker card, so the owner only acts
+            # when a card could not be filed or the check itself did not run.
+            if [[ "$ACTION_NEEDED" == *"Could not file"* || "$ACTION_NEEDED" == *"did not run"* ]]; then
+              BANNER_HEAD="Action needed:"
+            elif [[ "$ACTION_NEEDED" != *"#dc2626"* ]]; then
+              BANNER_HEAD="Watch list (nothing needed from you):"
+            else
+              BANNER_HEAD="Flagged this week (worker sessions handle the red items, nothing needed from you):"
+            fi
+            BANNER="<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:16px'><strong style='color:#dc2626'>$BANNER_HEAD</strong><ul style='margin:8px 0 0 0;padding-left:20px'>$ACTION_NEEDED</ul></div>"
+          else
+            BANNER="<div style='background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:12px 16px;margin-bottom:16px'><strong style='color:#16a34a'>All clear.</strong> No action needed this week.</div>"
+          fi
+
+          # --- Build HTML email ---
+          cat > /tmp/report.html << HTMLEOF
+          <div style="font-family:-apple-system,system-ui,sans-serif;max-width:560px;color:#1f2937">
+            <h2 style="margin:0 0 4px 0;font-size:20px">Scraper Cost Report</h2>
+            <p style="color:#6b7280;margin:0 0 16px 0;font-size:13px">$PERIOD_START – $PERIOD_END</p>
+
+            $BANNER
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Cost This Week</h3>
+            <table style="font-size:14px;border-collapse:collapse;width:100%">
+              <tr><td style="padding:6px 0;color:#6b7280">Playwright (free)</td><td style="padding:6px 0;text-align:right;font-weight:600">$PW_TOTAL requests</td><td style="padding:6px 0 6px 8px;color:#10b981;text-align:right">\$0</td></tr>
+              <tr><td style="padding:6px 0;color:#6b7280">BrightData</td><td style="padding:6px 0;text-align:right;font-weight:600">$BD_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">~\$$BD_COST</td></tr>
+              <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">ScrapingBee</td><td style="padding:6px 0;text-align:right;font-weight:600">$SB_TOTAL requests</td><td style="padding:6px 0 6px 8px;text-align:right">$SB_CREDITS_TOTAL credits</td></tr>
+              <tr style="border-top:1px solid #e5e7eb"><td style="padding:6px 0;color:#6b7280">Browserbase</td><td style="padding:6px 0;text-align:right;font-weight:600">$BB_SESSIONS sessions</td><td style="padding:6px 0 6px 8px;text-align:right">\$$BB_COST</td></tr>
+            </table>
+
+            <p style="font-size:12px;color:#9ca3af;margin:4px 0 0 0">SB breakdown (last collect run): page=$SB_PAGE, SERP=$SB_SERP</p>
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Provider-Reported (billing ground truth)</h3>
+            <table style="font-size:13px;border-collapse:collapse;width:100%">
+              <tr><td style="padding:4px 0;color:#6b7280">ScrapingDog</td><td style="padding:4px 0 4px 8px">$SD_LINE</td></tr>
+              <tr><td style="padding:4px 0;color:#6b7280">Bright Data</td><td style="padding:4px 0 4px 8px">$BD_LINE</td></tr>
+            </table>
+            <p style="font-size:11px;color:#9ca3af;margin:4px 0 0 0">Telemetry tables above are sampled attribution; when they disagree with these numbers, an untelemetried path is burning.</p>
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">ScrapingBee Cycle Usage</h3>
+            <p style="font-size:14px;margin:0 0 4px 0"><strong>${SB_PCT}% used</strong> ($SB_USED_NUM / $SB_CAP_NUM credits). Projected end-of-cycle: <strong>${SB_PROJECTED}%</strong> of current cap.</p>
+            <p style="font-size:13px;color:#6b7280;margin:0 0 8px 0">Target cap: <strong>$SB_TARGET_CAP credits.</strong> Projection compares trajectory ($SB_PROJECTED_ABS credits) against the target cap, not the current $SB_CAP_NUM-credit cap.</p>
+            <p style="font-size:14px;margin:0"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:$SB_COLOR;margin-right:6px"></span>$SB_STATUS</p>
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Spend Guards (last 7 days)</h3>
+            $GUARD_AUDIT_HTML
+
+            <h3 style="font-size:15px;margin:20px 0 8px 0;border-bottom:1px solid #e5e7eb;padding-bottom:4px">Workflow Runs ($TOTAL_RUNS total)</h3>
+            <table style="font-size:13px;border-collapse:collapse;width:100%">
+              <tr style="color:#6b7280"><th style="text-align:left;padding:4px 12px;font-weight:normal">Workflow</th><th style="padding:4px 12px;font-weight:normal">Runs</th><th style="padding:4px 12px;font-weight:normal">Issues</th></tr>
+              $WORKFLOW_ROWS
+            </table>
+
+            <p style="font-size:11px;color:#9ca3af;margin:20px 0 0 0">Broadway Scorecard automated report</p>
+          </div>
+          HTMLEOF
+
+          # BRO-2957 follow-up: this used to be `cat /tmp/report.html`, which
+          # printed the entire report — provider spend, credit balances,
+          # top-consumer breakdown, failure counts — into the workflow log.
+          # This repository is PUBLIC (`gh repo view --json isPrivate` => false),
+          # and workflow logs on a public repo are readable by anyone. Removing
+          # the weekly public ISSUE while still printing the same numbers to a
+          # public LOG would have left the owner's stated goal unmet. Print only
+          # a size confirmation; the report travels by email.
+          echo "Report built: $(wc -c < /tmp/report.html) bytes of HTML"
+
+      - name: Email report
+        if: success()
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          # BRO-2957: this step used to end in
+          #   | curl -s ... -d @- || echo "Email send failed (non-fatal)"
+          # which could not report its own failure. `curl -s` without `-f`
+          # exits 0 on an HTTP 401/422/429, so the `||` branch never ran, the
+          # step went green, "Notify on failure" never fired, and
+          # check-cron-health.yml saw a successful run and stayed quiet. That
+          # was survivable only because the public GitHub issue happened to be
+          # a second copy of the report. BRO-2957 removed the issue, so a
+          # silent Resend rejection would now lose the week's report outright.
+          # Capture the status code and fail loudly instead.
+          jq -n \
+            --arg to "$OWNER_EMAIL" \
+            --arg subject "Scraper Cost Report — $(date '+%b %d')" \
+            --rawfile html /tmp/report.html \
+            '{from: "Broadway Scorecard <alerts@broadwayscorecard.com>", to: [$to], subject: $subject, html: $html}' \
+            > /tmp/resend-payload.json
+
+          HTTP_CODE=$(curl -s -o /tmp/resend-response.json -w '%{http_code}' \
+            -X POST https://api.resend.com/emails \
+            -H "Authorization: Bearer $RESEND_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/resend-payload.json)
+
+          HTTP_CODE="${HTTP_CODE:-000}"
+          if [ "$HTTP_CODE" -lt 200 ] || [ "$HTTP_CODE" -ge 300 ]; then
+            echo "::error::Resend rejected the cost report email (HTTP $HTTP_CODE)"
+            head -c 500 /tmp/resend-response.json || true
+            echo
+            echo "Re-run this workflow to regenerate and resend; the report is derived, not stored."
+            exit 1
+          fi
+          echo "Cost report emailed (HTTP $HTTP_CODE)"
+
+      # BRO-6391: the ledger records which card each condition filed and when a
+      # clear week resolved it; the cards' VERIFY line reads it.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+            if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist scraper-cost-report alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Fail if a worker card could not be filed
+        if: always() && steps.report.outputs.route_exit != '' && steps.report.outputs.route_exit != '0'
+        run: |
+          echo "::error::route-cost-report-alerts.js exited ${{ steps.report.outputs.route_exit }}: a red line has no worker card (check LINEAR_API_KEY). The report email said so."
+          exit 1
+
+      # BRO-2957 follow-up: notify-failure defaults to severity 'low'
+      # (.github/actions/notify-failure/action.yml:15) and BOTH of its steps are
+      # gated `if: inputs.severity == 'critical'` (:59, :164), so with no
+      # severity passed this step runs and does nothing. That is the intended
+      # channel here, not an oversight: a weekly cost report that failed to send
+      # is not worth a real-time page (memory/email-broadcast-rules.md — alerts
+      # are for ACTION only). The failure still reaches the owner through
+      # health-check.js's daily digest, which reads workflow run status
+      # independently of this action. Stated explicitly because the first pass
+      # of BRO-2957 claimed in its commit message that exit 1 made this step
+      # "actually fire" — it fails the job, which is what the digest reads, but
+      # this action itself sends nothing.
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly Scraper Cost Report Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

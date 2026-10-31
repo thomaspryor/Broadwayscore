@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Dead-dispatch completion reconciler schedule (card #1157, follow-up
+         to #1144). scripts/reconcile-dead-completions.js finds tasks in the
+         shared task list marked 'completed' while their most recent
+         bsc-next/bsc-runner dispatch was journaled dead, reopens them
+         locally, and (as of #1157) also corrects the mirrored Notion card's
+         status back off "Done" if notion-tasks-sync's push had already
+         closed it. Previously only ran when someone remembered to type the
+         command by hand — 4 real false-completions sat uncorrected in Notion
+         until a session noticed and fixed them manually on 2026-08-09.
+
+         MUST run on this Mac, not GitHub Actions — the task-store JSON lives
+         under ~/.claude/tasks/<listId>/ and the dispatch ledger is a
+         gitignored, Mac-local file (data/audit/dispatch-ledger.jsonl); a CI
+         runner never sees either. Mirrors com.broadwayscore.task-store-
+         archive.plist's StartInterval cadence (6h) for the sibling task-store
+         maintenance job.
+
+         Secrets (NOTION_API_KEY for `notion-brain.js get/update`) come from
+         the repo's .env via notion-brain.js's own scripts/lib/load-env.js —
+         launchd does NOT inherit shell env; no secrets are read directly by
+         this plist (same as com.broadwayscore.bsc-autoprune.plist, which
+         already calls notion-brain.js from bsc-prune.js's parkCard() on this
+         same schedule mechanism with no NOTION_API_KEY in its Environment-
+         Variables block).
+
+         Install:  cp scripts/launchd/com.broadwayscore.reconcile-dead-completions.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.reconcile-dead-completions.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.reconcile-dead-completions
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.reconcile-dead-completions
+         Manual check (dry-run, no writes): node scripts/reconcile-dead-completions.js -->
+    <key>Label</key>
+    <string>com.broadwayscore.reconcile-dead-completions</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; exec node scripts/reconcile-dead-completions.js --fix</string>
+    </array>
+    <key>StartInterval</key>
+    <integer>21600</integer>
+    <key>StandardOutPath</key>
+    <string>/Users/tompryor/Library/Logs/reconcile-dead-completions.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/tompryor/Library/Logs/reconcile-dead-completions.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

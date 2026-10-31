@@ -1,0 +1,116 @@
+{
+  "issueNumber": "bro-5739-b",
+  "planId": "9816f687-e524-46df-966c-93f6e56f1810",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5739-b: mark the 5 shows noReliableArt so the twice-weekly image sweep does not fetch the same wrong art back.",
+    "steps": [
+      "north-star-off-broadway-2026: add noReliableArt marker.",
+      "petra-off-broadway-2026: add noReliableArt marker.",
+      "the-grocers-evening-off-west-end-2026: add noReliableArt marker.",
+      "the-last-vikings-off-west-end-2026: add noReliableArt marker.",
+      "compost-whats-left-off-west-end-2026: add noReliableArt marker."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "north-star-off-broadway-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another work (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "north star|irish arts center|"
+        },
+        "description": "north-star-off-broadway-2026: mark noReliableArt so the image sweep does not re-attach the same wrong art (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "petra-off-broadway-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another work (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "petra|vineyard theatre|"
+        },
+        "description": "petra-off-broadway-2026: mark noReliableArt so the image sweep does not re-attach the same wrong art (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-grocers-evening-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another work (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "the grocers evening|finborough theatre|"
+        },
+        "description": "the-grocers-evening-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach the same wrong art (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-last-vikings-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another work (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "the last vikings|kiln theatre|"
+        },
+        "description": "the-last-vikings-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach the same wrong art (BRO-5739)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "compost-whats-left-off-west-end-2026",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-20",
+          "reason": "the art found was another work (BRO-5739); do not re-fetch until title/venue/date change or --retry-no-art",
+          "key": "compost whats left|southwark playhouse|"
+        },
+        "description": "compost-whats-left-off-west-end-2026: mark noReliableArt so the image sweep does not re-attach the same wrong art (BRO-5739)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T03:05:07.642Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for petra-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-grocers-evening-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-last-vikings-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for compost-whats-left-off-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

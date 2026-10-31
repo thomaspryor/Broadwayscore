@@ -1,0 +1,208 @@
+{
+  "generatedAt": "2026-10-31T11:42:58.941Z",
+  "base": "https://broadwayscorecard.com",
+  "daysChecked": 21,
+  "skippedForBudget": 0,
+  "checked": 302,
+  "clean": 290,
+  "defective": 12,
+  "byType": {
+    "score-drift": 12
+  },
+  "shows": [
+    {
+      "showId": "middlemarch-rsc-regional-2026",
+      "title": "Middlemarch",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.73 vs local 81.26 (Δ2.53)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 6,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "the-39-steps-hull-truck-regional-2026",
+      "title": "The 39 Steps",
+      "openingDate": "2026-10-07",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.76 vs local 84.89 (Δ0.13)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "franz-and-marie-west-end-2026",
+      "title": "Franz & Marie",
+      "openingDate": "2026-10-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.44 vs local 68.33 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 24,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "title": "Operation Mincemeat",
+      "openingDate": "2026-09-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.85 vs local 83.96 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 14,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "title": "Oh, Mary!",
+      "openingDate": "2026-09-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.66 vs local 85.25 (Δ0.41)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "title": "Going Bacharach: The Songs of an Icon",
+      "openingDate": "2026-09-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.82 vs local 80.9 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 9,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "the-sound-of-music-tour-2025",
+      "title": "The Sound of Music",
+      "openingDate": "2025-09-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.5 vs local 85.34 (Δ0.16)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
+      "title": "Mrs. Doubtfire",
+      "openingDate": "2025-09-04",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 73.86 vs local 73.53 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "maybe-happy-ending-2024",
+      "title": "Maybe Happy Ending",
+      "openingDate": "2024-11-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.91 vs local 85.98 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 37,
+      "deployedCount": 38,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "title": "Hadestown",
+      "openingDate": "2024-10-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.07 vs local 84.86 (Δ0.21)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2024-09-10",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79 vs local 78.78 (Δ0.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 23,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "title": "The Book of Mormon",
+      "openingDate": "2022-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.56 vs local 85.88 (Δ0.32)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-10-31T11:42:55.300Z"
+    }
+  ],
+  "persistentDefective": 0,
+  "staleGraceHours": 6
+}

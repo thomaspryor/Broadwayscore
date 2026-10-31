@@ -1,0 +1,62 @@
+{
+  "issueNumber": "bro-4432-c",
+  "planId": "c3f1a2d4-7e5b-4c19-9a0d-4432c0ffee01",
+  "status": "partial",
+  "createdAt": "2026-09-30T18:05:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Follow-up to bro-4432 (run 36750073501): three flags were refused because the files held wrongProduction=false from an earlier auto-clear, not null. Sets them from false. The Oliver! file is a review of a different show (The Other Place), so it also gets wrongShow, which the UK-outlet auto-clear no longer strips when the URL names another show.",
+    "steps": [
+      "As You Like It 2026 Globe: flag the Guardian 2022 Sohoplace review (wrongProduction false -> true; reason already applied)",
+      "Oliver!: flag The Stage's review of The Other Place (wrongProduction false -> true, wrongShow null -> true)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Guardian review of the 2022 Sohoplace As You Like It (URL /stage/2022/dec/15/), live on the 2026 Globe production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/thestage--dave-fargnoli.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of The Other Place (Lyttelton, 2024), not Oliver!"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "Same file; the stored contentTierReason already says Wrong production"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T18:01:08.965Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oliver-west-end-2024/thestage--dave-fargnoli.json wrongShow: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowAutoCleared)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

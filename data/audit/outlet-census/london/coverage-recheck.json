@@ -1,0 +1,3352 @@
+{
+  "issue": "BRO-6488",
+  "checkedAt": "2026-10-31T00:59:10.902Z",
+  "since": "2012-09-01",
+  "method": "Offline presence recheck of saved gap classifications. Same outlet and at least one saved matched show must hold the normalized URL or an explicit altUrls alias. Held includes flagged or unscored files; published means present in reviews.json. No new enumeration, metadata extraction, vetting, ingest or scoring.",
+  "scopeRule": "Configured London sources plus registry region=london, tier<=3 outlets with a West End/Off-West End row in review-texts or reviews.json. Does not claim to identify unregistered outlets.",
+  "totals": {
+    "savedGaps": 1728,
+    "nowHeld": 117,
+    "nowPublished": 110,
+    "stillMissing": 1611
+  },
+  "outlets": [
+    {
+      "outletId": "all-that-dazzles-uk",
+      "enumerationGeneratedAt": "2026-10-29T06:33:58.056Z",
+      "manifestSha256": "a116282a986a230e71fd751549de36232fa488bc9e67232522c43cfa4d021661",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 137,
+      "nowHeld": 0,
+      "nowPublished": 0,
+      "stillMissing": 137,
+      "seasons": {
+        "2019-20": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2020-21": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2021-22": {
+          "savedGaps": 6,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 6
+        },
+        "2022-23": {
+          "savedGaps": 14,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 14
+        },
+        "2023-24": {
+          "savedGaps": 14,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 14
+        },
+        "2024-25": {
+          "savedGaps": 19,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 19
+        },
+        "2025-26": {
+          "savedGaps": 73,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 73
+        },
+        "2026-27": {
+          "savedGaps": 6,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 6
+        }
+      }
+    },
+    {
+      "outletId": "artsdesk",
+      "enumerationGeneratedAt": "2026-10-29T06:34:03.363Z",
+      "manifestSha256": "2d5b8e0e33e5b78871506c3fc68d60f805abf16dd767eb51ec7ef9d9ac41af30",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 51,
+      "nowHeld": 24,
+      "nowPublished": 21,
+      "stillMissing": 27,
+      "seasons": {
+        "2016-17": {
+          "savedGaps": 4,
+          "nowHeld": 4,
+          "nowPublished": 4,
+          "stillMissing": 0
+        },
+        "2017-18": {
+          "savedGaps": 16,
+          "nowHeld": 14,
+          "nowPublished": 13,
+          "stillMissing": 2
+        },
+        "2018-19": {
+          "savedGaps": 8,
+          "nowHeld": 3,
+          "nowPublished": 2,
+          "stillMissing": 5
+        },
+        "2019-20": {
+          "savedGaps": 6,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 5
+        },
+        "2021-22": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2022-23": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2023-24": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2024-25": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        },
+        "2025-26": {
+          "savedGaps": 7,
+          "nowHeld": 2,
+          "nowPublished": 1,
+          "stillMissing": 5
+        },
+        "2026-27": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        }
+      }
+    },
+    {
+      "outletId": "british-theatre",
+      "enumerationGeneratedAt": "2026-10-29T06:37:08.577Z",
+      "manifestSha256": "0edaff1f9bb2e388a34d0638f8681c0a3b84c92bcbf2aae744f0e3c2ec8f6a30",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 530,
+      "nowHeld": 0,
+      "nowPublished": 0,
+      "stillMissing": 530,
+      "seasons": {
+        "2020-21": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2021-22": {
+          "savedGaps": 2,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 2
+        },
+        "2022-23": {
+          "savedGaps": 7,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 7
+        },
+        "2023-24": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        },
+        "2024-25": {
+          "savedGaps": 8,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 8
+        },
+        "2025-26": {
+          "savedGaps": 33,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 33
+        },
+        "2026-27": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "undated": {
+          "savedGaps": 472,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 472
+        }
+      }
+    },
+    {
+      "outletId": "britishtheatrecom",
+      "enumerationGeneratedAt": "2026-10-29T06:33:55.916Z",
+      "manifestSha256": "e500fe98cb9809807a88d21ccb59b171c12ba8f8031a1388136e736437bb8846",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 204,
+      "nowHeld": 0,
+      "nowPublished": 0,
+      "stillMissing": 204,
+      "seasons": {
+        "2012-13": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2013-14": {
+          "savedGaps": 19,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 19
+        },
+        "2014-15": {
+          "savedGaps": 23,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 23
+        },
+        "2015-16": {
+          "savedGaps": 28,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 28
+        },
+        "2016-17": {
+          "savedGaps": 26,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 26
+        },
+        "2017-18": {
+          "savedGaps": 14,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 14
+        },
+        "2018-19": {
+          "savedGaps": 19,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 19
+        },
+        "2019-20": {
+          "savedGaps": 18,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 18
+        },
+        "2020-21": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2021-22": {
+          "savedGaps": 21,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 21
+        },
+        "2022-23": {
+          "savedGaps": 12,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 12
+        },
+        "2023-24": {
+          "savedGaps": 10,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 10
+        },
+        "2024-25": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2025-26": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        },
+        "2026-27": {
+          "savedGaps": 2,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 2
+        }
+      }
+    },
+    {
+      "outletId": "everything-theatre",
+      "enumerationGeneratedAt": "2026-10-29T06:35:32.711Z",
+      "manifestSha256": "090fee1c8f97c49390d190b0b7588d67826f6c6c7182e68aba30f2ab13890c19",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 111,
+      "nowHeld": 1,
+      "nowPublished": 1,
+      "stillMissing": 110,
+      "seasons": {
+        "2013-14": {
+          "savedGaps": 14,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 14
+        },
+        "2014-15": {
+          "savedGaps": 6,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 6
+        },
+        "2015-16": {
+          "savedGaps": 5,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 5
+        },
+        "2016-17": {
+          "savedGaps": 13,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 13
+        },
+        "2017-18": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2018-19": {
+          "savedGaps": 2,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 2
+        },
+        "2019-20": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        },
+        "2021-22": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2022-23": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2023-24": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        },
+        "2024-25": {
+          "savedGaps": 5,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 5
+        },
+        "2025-26": {
+          "savedGaps": 47,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 46
+        },
+        "2026-27": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        }
+      }
+    },
+    {
+      "outletId": "london-box-office",
+      "enumerationGeneratedAt": "2026-10-29T06:34:24.377Z",
+      "manifestSha256": "d00be58436a56beec81e1baaaa2f0f09a651c85558b2b5e96e2cd37cfeb15e77",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 11,
+      "nowHeld": 11,
+      "nowPublished": 11,
+      "stillMissing": 0,
+      "seasons": {
+        "2014-15": {
+          "savedGaps": 1,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 0
+        },
+        "2017-18": {
+          "savedGaps": 1,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 0
+        },
+        "2018-19": {
+          "savedGaps": 2,
+          "nowHeld": 2,
+          "nowPublished": 2,
+          "stillMissing": 0
+        },
+        "2020-21": {
+          "savedGaps": 2,
+          "nowHeld": 2,
+          "nowPublished": 2,
+          "stillMissing": 0
+        },
+        "2022-23": {
+          "savedGaps": 2,
+          "nowHeld": 2,
+          "nowPublished": 2,
+          "stillMissing": 0
+        },
+        "2024-25": {
+          "savedGaps": 1,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 0
+        },
+        "2025-26": {
+          "savedGaps": 2,
+          "nowHeld": 2,
+          "nowPublished": 2,
+          "stillMissing": 0
+        }
+      }
+    },
+    {
+      "outletId": "london-theatre",
+      "enumerationGeneratedAt": "2026-10-29T06:34:36.387Z",
+      "manifestSha256": "c3087447e713fde58ba742799daee481289179c9bee867c3871bee76cfb168c0",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 220,
+      "nowHeld": 0,
+      "nowPublished": 0,
+      "stillMissing": 220,
+      "seasons": {
+        "undated": {
+          "savedGaps": 220,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 220
+        }
+      }
+    },
+    {
+      "outletId": "theatre-weekly",
+      "enumerationGeneratedAt": "2026-10-29T06:35:19.957Z",
+      "manifestSha256": "b98885439afa33d375e65e97ef75b8c1241ebf0abd0ad4f647a05bfbcdec50dd",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 112,
+      "nowHeld": 0,
+      "nowPublished": 0,
+      "stillMissing": 112,
+      "seasons": {
+        "2015-16": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2016-17": {
+          "savedGaps": 19,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 19
+        },
+        "2017-18": {
+          "savedGaps": 11,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 11
+        },
+        "2018-19": {
+          "savedGaps": 23,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 23
+        },
+        "2019-20": {
+          "savedGaps": 11,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 11
+        },
+        "2020-21": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        },
+        "2021-22": {
+          "savedGaps": 2,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 2
+        },
+        "2022-23": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        },
+        "2023-24": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2024-25": {
+          "savedGaps": 4,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 4
+        },
+        "2025-26": {
+          "savedGaps": 25,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 25
+        },
+        "2026-27": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        }
+      }
+    },
+    {
+      "outletId": "thereviewshub",
+      "enumerationGeneratedAt": "2026-10-29T06:35:49.816Z",
+      "manifestSha256": "db6d68c7f26a0e747912cbe9243342d64dd332376d5d3475d45fbda466aaece1",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 1,
+      "nowHeld": 0,
+      "nowPublished": 0,
+      "stillMissing": 1,
+      "seasons": {
+        "2024-25": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        }
+      }
+    },
+    {
+      "outletId": "thestage",
+      "enumerationGeneratedAt": "2026-10-29T06:45:41.827Z",
+      "manifestSha256": "f8153a1d577dc90c8655a7de665e30e4a580a9f456787d30204170680fe1f235",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 26,
+      "nowHeld": 1,
+      "nowPublished": 1,
+      "stillMissing": 25,
+      "seasons": {
+        "2021-22": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2022-23": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2023-24": {
+          "savedGaps": 4,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 3
+        },
+        "2025-26": {
+          "savedGaps": 18,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 18
+        },
+        "2026-27": {
+          "savedGaps": 2,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 2
+        }
+      }
+    },
+    {
+      "outletId": "timeout-london",
+      "enumerationGeneratedAt": "2026-10-29T06:37:31.451Z",
+      "manifestSha256": "af282dad09bd6d7217ddbd4d9157d32ba1bba833b507ee7a5142c4b450292aef",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 8,
+      "nowHeld": 6,
+      "nowPublished": 6,
+      "stillMissing": 2,
+      "seasons": {
+        "2016-17": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        },
+        "2017-18": {
+          "savedGaps": 2,
+          "nowHeld": 2,
+          "nowPublished": 2,
+          "stillMissing": 0
+        },
+        "2019-20": {
+          "savedGaps": 1,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 0
+        },
+        "2021-22": {
+          "savedGaps": 1,
+          "nowHeld": 1,
+          "nowPublished": 1,
+          "stillMissing": 0
+        },
+        "2024-25": {
+          "savedGaps": 2,
+          "nowHeld": 2,
+          "nowPublished": 2,
+          "stillMissing": 0
+        },
+        "2025-26": {
+          "savedGaps": 1,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 1
+        }
+      }
+    },
+    {
+      "outletId": "west-end-best-friend",
+      "enumerationGeneratedAt": "2026-10-29T06:36:29.403Z",
+      "manifestSha256": "3b0544a0260aaee53405a8f26015f98f1df8b34087ead0289098e6513e24b15b",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 241,
+      "nowHeld": 0,
+      "nowPublished": 0,
+      "stillMissing": 241,
+      "seasons": {
+        "2020-21": {
+          "savedGaps": 14,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 14
+        },
+        "2021-22": {
+          "savedGaps": 35,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 35
+        },
+        "2022-23": {
+          "savedGaps": 25,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 25
+        },
+        "2023-24": {
+          "savedGaps": 42,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 42
+        },
+        "2024-25": {
+          "savedGaps": 54,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 54
+        },
+        "2025-26": {
+          "savedGaps": 68,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 68
+        },
+        "2026-27": {
+          "savedGaps": 3,
+          "nowHeld": 0,
+          "nowPublished": 0,
+          "stillMissing": 3
+        }
+      }
+    },
+    {
+      "outletId": "whatsonstage",
+      "enumerationGeneratedAt": "2026-10-29T06:41:25.827Z",
+      "manifestSha256": "5bfce320edf941b91afe9c14b76737df4113ac63117723c142c04b75b381798e",
+      "enumerationIncomplete": false,
+      "enumerationNotes": [],
+      "savedGaps": 76,
+      "nowHeld": 74,
+      "nowPublished": 70,
+      "stillMissing": 2,
+      "seasons": {
+        "2016-17": {
+          "savedGaps": 29,
+          "nowHeld": 28,
+          "nowPublished": 28,
+          "stillMissing": 1
+        },
+        "2017-18": {
+          "savedGaps": 18,
+          "nowHeld": 18,
+          "nowPublished": 17,
+          "stillMissing": 0
+        },
+        "2018-19": {
+          "savedGaps": 11,
+          "nowHeld": 11,
+          "nowPublished": 9,
+          "stillMissing": 0
+        },
+        "2019-20": {
+          "savedGaps": 5,
+          "nowHeld": 5,
+          "nowPublished": 5,
+          "stillMissing": 0
+        },
+        "2020-21": {
+          "savedGaps": 2,
+          "nowHeld": 2,
+          "nowPublished": 2,
+          "stillMissing": 0
+        },
+        "2021-22": {
+          "savedGaps": 3,
+          "nowHeld": 3,
+          "nowPublished": 3,
+          "stillMissing": 0
+        },
+        "2023-24": {
+          "savedGaps": 3,
+          "nowHeld": 3,
+          "nowPublished": 3,
+          "stillMissing": 0
+        },
+        "2025-26": {
+          "savedGaps": 5,
+          "nowHeld": 4,
+          "nowPublished": 3,
+          "stillMissing": 1
+        }
+      }
+    }
+  ],
+  "scope": [
+    {
+      "outletId": "1883magazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "a-younger-theatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "abundantart",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "adventuresintheatreland",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "all-allam",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "all-that-dazzles-uk",
+      "tier": 3,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "allthingstheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "almeidacouk",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "alt-africa",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "amomentwithfranca",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "amyleighchandler",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "arbuturian",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "artsdesk",
+      "tier": 2,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "artshub",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "aviewfromrowjay",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "aviewfromthebox",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "bbc-news",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "bestoftheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "beyondthecurtain",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "bigissue",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "bnn",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "british-theatre",
+      "tier": 2,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "britishtheatrecom",
+      "tier": 2,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "burnham-dramaturgy",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "buzzmag",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "camdennewjournal",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "chelmsfordtheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "cherylmarkosky",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "chichester-observer",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "chiswickcalendar",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "cineramafilm",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "city-am",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "click-liverpool",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "closeupculture",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "co",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "counselmagazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "crazychris",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "culture-whisper",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "curtaincallbway",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "curtainsup",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "daily-echo",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "daily-mail",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "dailyinfo",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "dancetabs",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "darkusmagazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "dayoutwiththekids",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "dress-circle-antics",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "east-midlands-theatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "elementaltheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "empire",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "essentialsurrey",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "evening-chronicle",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "everything-theatre",
+      "tier": 3,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "express-uk",
+      "tier": 3,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "far-out-magazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "financialtimes",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "flicker-magazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "fringereview",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "frostmagazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "gay-times",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "getthechance",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "gramilano",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "grandgoldman",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "guardian",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "hackneycitizen",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "hampstead-highgate-express",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "herald",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "i-paper",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "ikonlondonmagazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "immersiverumours",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "independent",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "indiependent",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "inspiringtravelexperiences",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "islington-gazette",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "islingtontribune",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "itgirlworld",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "jackstage",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "jacktheladmag",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "jazzwise",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "jewishnews",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "jupiterhadley",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "just-retiring",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "kiddoadventures",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "liamodell",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "liftedleg",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "live-theatre-uk",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "liverpool-echo",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "london-box-office",
+      "tier": 2,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "london-theatre",
+      "tier": 2,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "london-with-a-toddler",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "londonatlarge",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "londonbornandbred",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "londongrip",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "londonlivinglarge",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "londonmumsmagazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "londonpubtheatres",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "londontheatre1",
+      "tier": 2,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "londontheatrehub",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "louder-than-war",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "loureviews",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "lsbo",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "mail-on-sunday",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "manchester-evening-news",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "manic-mumdays",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "markaspen",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "marquee",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "matttrueman",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "maturetimes",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "metro-uk",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "micablackwell",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "mirror",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "mrcarlwoodward",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "muddystilettos",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "musicalmanda",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "musicaltheatremusings",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "musicomh",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "mycultural",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "myreviewer",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "nick-holmes-music",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "north-west-end",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "northernartsreview",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "notesfromrowh",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "nowthenmagazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "nub-news",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "number9reviews",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "observer",
+      "tier": 2,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "oldvictheatrecom",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "onceaweektheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "openairtheatreheritage",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "operationlivetheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "oxfordshire-guardian",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "plays-international",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "plays-to-see",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "primarytimes",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "quays-life",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "radio-times",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "ratedreviewed",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "redbuslondinium",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "reviewsgate",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "rhombus-rota",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "seeing-dance",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "shinylife",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "shy-strange-manic",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "sierz-co-uk",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "songsbehindthemusic",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "soundbehindcurtain",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "soundsandstage",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "soundsphere-magazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "south-london",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "stagetopage",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "standard",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "strandmagazine",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "sueterryvoices",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "sunday-express",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "sunday-telegraph",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "sunday-times",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "susanelkin",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "tabinthecity",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "telegraph",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-bucks-herald",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-culture-pages",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-jewish-chronicle",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-journal",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-list",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-morning-star",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-recs",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-rendition",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-scotsman",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-spectator-uk",
+      "tier": 2,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "the-sun",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theamerican",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theartsdispatch",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatre-south-east",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatre-vibe",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatre-village",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatre-weekly",
+      "tier": 3,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "theatreandtonic",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatreboard",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatrebookings",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatrecat",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatreinedinburgh",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatremonkey",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theatrereviewsnorth",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "thechelseacitizen",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "thelivereview",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "thenerve",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "thepegreview",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theprsd",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "theqr",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "thereviewshub",
+      "tier": 2,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "thesetheatrethoughts",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "thestage",
+      "tier": 1,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "thetheatreflyer-co-uk",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "ticketswitch",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "tim-talks-theatre-uk",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "timcrouchtheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "timeandleisure",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "timeout-london",
+      "tier": 1,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "times-uk",
+      "tier": 1,
+      "configured": true,
+      "hasReport": false
+    },
+    {
+      "outletId": "timesbookshop",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "travelbeginsat40",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "tribune",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "uktw",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "unknownkentandsussex",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "visit-london",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "west-end-best-friend",
+      "tier": 3,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "westend",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "westendtheatre",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "western-mail",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "westminsterextra",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "westwaleschronicle",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "whatsgoodtodo",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "whatsonstage",
+      "tier": 2,
+      "configured": true,
+      "hasReport": true
+    },
+    {
+      "outletId": "wheeliegoodshow",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    },
+    {
+      "outletId": "writewatchwork",
+      "tier": 3,
+      "configured": false,
+      "hasReport": false
+    }
+  ],
+  "suppliedComment": {
+    "declaredRemaining": 31,
+    "completeUrlsSupplied": 12,
+    "omittedOrTruncated": 19,
+    "items": [
+      {
+        "showId": "once-west-end-2013",
+        "outletId": "london-box-office",
+        "url": "https://www.londonboxoffice.co.uk/news/post/once-musical-review",
+        "held": true,
+        "published": true
+      },
+      {
+        "showId": "the-philanthropist-west-end-2017",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/philanthropist-trafalgar-studios-review-simon-callows-direction-underpowered",
+        "held": true,
+        "published": true
+      },
+      {
+        "showId": "network-west-end-2017",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/network-national-theatre-review-bryan-cranstons-searing-london-stage-debut",
+        "held": true,
+        "published": true
+      },
+      {
+        "showId": "goats-west-end-2017",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/goats-royal-court-review-unfocused-and-muddled",
+        "held": true,
+        "published": true
+      },
+      {
+        "showId": "pinocchio-west-end-2017",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/pinocchio-national-theatre-review-boy-puppet-lifts-eventually",
+        "held": true,
+        "published": true
+      },
+      {
+        "showId": "the-moderate-soprano-west-end-2018",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/moderate-soprano-duke-yorks-theatre-review-love-and-opera-flinty-edge",
+        "held": true,
+        "published": true
+      },
+      {
+        "showId": "mood-music-west-end-2018",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/mood-music-old-vic-review-riveting-critique-music-biz",
+        "held": false,
+        "published": false
+      },
+      {
+        "showId": "foxfinder-west-end-2018",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/foxfinder-ambassadors-theatre-review-too-ponderous-half",
+        "held": false,
+        "published": false
+      },
+      {
+        "showId": "true-west-west-end-2018",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/true-west-vaudeville-theatre-review-sizzling-take-seminal-sam-shepard",
+        "held": false,
+        "published": false
+      },
+      {
+        "showId": "superhoe-west-end-2019",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/superhoe-royal-court-review-smart-sassy-and-full-feeling",
+        "held": false,
+        "published": false
+      },
+      {
+        "showId": "all-about-eve-west-end-2019",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/all-about-eve-noel-coward-theatre-review-less-bumpy-night-erratically-arresting-one",
+        "held": false,
+        "published": false
+      },
+      {
+        "showId": "fiddler-on-the-roof-west-end-2019",
+        "outletId": "artsdesk",
+        "url": "https://theartsdesk.com/theatre/fiddler-roof-playhouse-theatre-review-energetic-production-whips-emotional-storm",
+        "held": false,
+        "published": false
+      }
+    ],
+    "excluded": "Hamlet Glyndebourne was rejected as the wrong production. Hansard URL is truncated in the supplied comment; do not infer it."
+  },
+  "recoveredSavedGaps": [
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/philanthropist-trafalgar-studios-review-simon-callows-direction-underpowered",
+      "matched": [
+        "the-philanthropist-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/mosquitoes-national-theatre-review-olivias-colman-and-williams-dazzle-amid-dramatic-excess",
+      "matched": [
+        "mosquitoes-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/apologia-trafalgar-studios-review-stockard-channing-shines-bright-1960s-radical",
+      "matched": [
+        "apologia-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/majority-national-theatre-review-minority-interest",
+      "matched": [
+        "the-majority-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/follies-national-theatre-review-imelda-staunton-equal-first-stunning-company",
+      "matched": [
+        "follies-west-end-2017"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": false
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/network-national-theatre-review-bryan-cranstons-searing-london-stage-debut",
+      "matched": [
+        "network-west-end-2017"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/goats-royal-court-review-unfocused-and-muddled",
+      "matched": [
+        "goats-west-end-2017"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/pinocchio-national-theatre-review-boy-puppet-lifts-eventually",
+      "matched": [
+        "pinocchio-west-end-2017"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/fanny-and-alexander-old-vic-review-agile-shallow-bergman-adaptation",
+      "matched": [
+        "fanny-and-alexander-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/great-wave-national-theatre-review-moving-epic-global-loss",
+      "matched": [
+        "the-great-wave-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/moderate-soprano-duke-yorks-theatre-review-love-and-opera-flinty-edge",
+      "matched": [
+        "the-moderate-soprano-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/strictly-ballroom-musical-piccadilly-theatre-review-largely-naff",
+      "matched": [
+        "strictly-ballroom-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/absolute-hell-national-theatre-review-high-gloss-show-saves-over-rated-classic",
+      "matched": [
+        "absolute-hell-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/nine-night-national-theatre-review-jamaican-family-drama-full-spirit",
+      "matched": [
+        "nine-night-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/translations-national-theatre-review-irish-classic-returns-cascading-force",
+      "matched": [
+        "translations-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/julie-national-theatre-review-vacuous-and-unilluminating",
+      "matched": [
+        "julie-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/imperium-gielgud-theatre-review-eventful-very-eventful-roman-epic",
+      "matched": [
+        "imperium-the-cicero-plays-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/lehman-trilogy-national-theatre-review-acting-tour-de-force",
+      "matched": [
+        "the-lehman-trilogy-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/stories-national-theatre-review-comic-conception-capers",
+      "matched": [
+        "stories-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/war-horse-national-theatre-review-still-touching-after-all-these-years",
+      "matched": [
+        "war-horse-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": false
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/tell-tale-heart-national-theatre-review-bloody-good-fun-well-bloody",
+      "matched": [
+        "the-tell-tale-heart-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/small-island-national-theatre-review-fun-epic-takes-ages-warm",
+      "matched": [
+        "small-island-west-end-2019"
+      ],
+      "season": "2019-20",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/lifeline-southwark-playhouse-review-science-and-song-south-london",
+      "matched": [
+        "lifeline-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": false
+    },
+    {
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/here-comes-j-edgar-kings-head-theatre-review-mad-man-fbi",
+      "matched": [
+        "here-comes-j-edgar-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "everything-theatre",
+      "url": "https://everything-theatre.co.uk/2026/05/review-return-to-the-forest-sadlers-wells/",
+      "matched": [
+        "return-to-the-forest-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/hole-soho-theatre-review",
+      "matched": [
+        "hole-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-name-white-bear",
+      "matched": [
+        "the-name-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/word-play-review",
+      "matched": [
+        "word-play-west-end-2023"
+      ],
+      "season": "2022-23",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/we-will-rock-you-review-2023",
+      "matched": [
+        "we-will-rock-you-west-end-2023"
+      ],
+      "season": "2022-23",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/pretty-woman-musical-review-2021",
+      "matched": [
+        "pretty-woman-the-musical-west-end-2021"
+      ],
+      "season": "2020-21",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/hairspray-review-2021",
+      "matched": [
+        "hairspray-the-musical-west-end-2021"
+      ],
+      "season": "2020-21",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-9-to-5-musical",
+      "matched": [
+        "9-to-5-the-musical-west-end-2019"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/reviews-stories-nt",
+      "matched": [
+        "stories-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-pity-royal-court",
+      "matched": [
+        "pity-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/phantom-review",
+      "matched": [
+        "the-phantom-of-the-opera-west-end-1986"
+      ],
+      "season": "2024-25",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "london-box-office",
+      "url": "https://www.londonboxoffice.co.uk/news/post/once-musical-review",
+      "matched": [
+        "once-west-end-2013"
+      ],
+      "season": "2014-15",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "thestage",
+      "url": "https://www.thestage.co.uk/reviews/bronco-billy-the-musical-review-charing-cross-theatre-london-clint-eastwood-dennis-hackin-hunter-bird-tarinn-callender-victoria-hamilton-barritt-emily-benjamin",
+      "matched": [
+        "bronco-billy-the-musical-west-end-2024"
+      ],
+      "season": "2023-24",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "timeout-london",
+      "url": "https://www.timeout.com/london/theatre/the-last-laugh-review",
+      "matched": [
+        "the-last-laugh-west-end-2025"
+      ],
+      "season": "2024-25",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "timeout-london",
+      "url": "https://www.timeout.com/london/theatre/a-tupperware-of-ashes-review",
+      "matched": [
+        "a-tupperware-of-ashes-west-end-2024"
+      ],
+      "season": "2024-25",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "timeout-london",
+      "url": "https://www.timeout.com/london/theatre/what-if-if-only-review",
+      "matched": [
+        "what-if-if-only-west-end-2021"
+      ],
+      "season": "2021-22",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "timeout-london",
+      "url": "https://www.timeout.com/london/theatre/three-sisters-review-3",
+      "matched": [
+        "three-sisters-west-end-2019"
+      ],
+      "season": "2019-20",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "timeout-london",
+      "url": "https://www.timeout.com/london/theatre/imperium-review",
+      "matched": [
+        "imperium-the-cicero-plays-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "timeout-london",
+      "url": "https://www.timeout.com/london/theatre/the-great-wave-review",
+      "matched": [
+        "the-great-wave-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/here-comes-j-edgar-musical-comedy-at-kings-head-theatre-review_1727592/",
+      "matched": [
+        "here-comes-j-edgar-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/two-halves-of-guinness-at-the-park-theatre-review_1718945/",
+      "matched": [
+        "two-halves-of-guinness-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": false
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/lifeline-musical-at-southwark-playhouse-elephant-review_1717330/",
+      "matched": [
+        "lifeline-off-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/the-rat-trap-at-the-park-theatre-review_1710929/",
+      "matched": [
+        "the-rat-trap-west-end-2026"
+      ],
+      "season": "2025-26",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/your-lie-in-april-review-west-end-manga-musical-has-a-showstopping-moment_1612428/",
+      "matched": [
+        "your-lie-in-april-west-end-2024"
+      ],
+      "season": "2023-24",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/dugsi-dayz-at-the-royal-court-review_1598234/",
+      "matched": [
+        "dugsi-dayz-west-end-2024"
+      ],
+      "season": "2023-24",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/bronco-billy-the-musical-at-the-charing-cross-theatre-review_1568109/",
+      "matched": [
+        "bronco-billy-the-musical-west-end-2024"
+      ],
+      "season": "2023-24",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/pride-and-prejudice-sort-of-review-regency-west-end-romp-is-an-austen-pop-tacular_55264/",
+      "matched": [
+        "pride-and-prejudice-sort-of-west-end-2021"
+      ],
+      "season": "2021-22",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/get-up-stand-up-the-bob-marley-musical-review-reggae-rocks-the-west-end_55170/",
+      "matched": [
+        "get-up-stand-up-the-bob-marley-story-west-end-2021"
+      ],
+      "season": "2021-22",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/what-if-if-only-review-caryl-churchills-20-minute-play-premieres-at-the-royal-court_55043/",
+      "matched": [
+        "what-if-if-only-west-end-2021"
+      ],
+      "season": "2021-22",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/hairspray-the-musical-at-the-london-coliseum-review_54390/",
+      "matched": [
+        "hairspray-the-musical-west-end-2021"
+      ],
+      "season": "2020-21",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/heathers-the-musical-at-theatre-royal-haymarket-review_54381/",
+      "matched": [
+        "heathers-the-musical-west-end-2021"
+      ],
+      "season": "2020-21",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-girl-from-the-north-country-gielgud-theatre_50587/",
+      "matched": [
+        "girl-from-the-north-country-west-end-2019"
+      ],
+      "season": "2019-20",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-three-sisters-national-theatre_50551/",
+      "matched": [
+        "three-sisters-west-end-2019"
+      ],
+      "season": "2019-20",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-my-brilliant-friend-national-theatre_50446/",
+      "matched": [
+        "my-brilliant-friend-part-1-part-2-west-end-2019"
+      ],
+      "season": "2019-20",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-antipodes-national-theatre_50255/",
+      "matched": [
+        "the-antipodes-west-end-2019"
+      ],
+      "season": "2019-20",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-hansard-national-theatre_49808/",
+      "matched": [
+        "hansard-west-end-2019"
+      ],
+      "season": "2019-20",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-fleabag-wyndhams-theatre_49765/",
+      "matched": [
+        "fleabag-west-end-2019"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-seven-methods-of-killing-kylie-jenner-royal-court_49421/",
+      "matched": [
+        "seven-methods-of-killing-kylie-jenner-west-end-2019"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-present-laughter-old-vic_49335/",
+      "matched": [
+        "present-laughter-west-end-2019"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-small-island-national-theatre_48987/",
+      "matched": [
+        "small-island-west-end-2019"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-inside-bitch-royal-court_48641/",
+      "matched": [
+        "inside-bitch-west-end-2019"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-follies-national-theatre_48574/",
+      "matched": [
+        "follies-west-end-2019"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-tell-tale-heart-national-theatre_48175/",
+      "matched": [
+        "the-tell-tale-heart-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-a-christmas-carol-the-old-vic_48132/",
+      "matched": [
+        "a-christmas-carol-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": false
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-war-horse-national-theatre_47973/",
+      "matched": [
+        "war-horse-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": false
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-im-not-running-national-theatre_47767/",
+      "matched": [
+        "im-not-running-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-prisoner-national-theatre_47621/",
+      "matched": [
+        "the-prisoner-west-end-2018"
+      ],
+      "season": "2018-19",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-home-im-darling-national-theatre_47251/",
+      "matched": [
+        "home-im-darling-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-king-lear-duke-of-yorks-theatre_47216/",
+      "matched": [
+        "king-lear-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-pity-royal-court_47166/",
+      "matched": [
+        "pity-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-lehman-trilogy-national-theatre_47099/",
+      "matched": [
+        "the-lehman-trilogy-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-julie-national-theatre_46791/",
+      "matched": [
+        "julie-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-killer-joe-trafalgar-studios_46751/",
+      "matched": [
+        "killer-joe-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-translations-national-theatre_46713/",
+      "matched": [
+        "translations-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-consent-harold-pinter-theatre_46697/",
+      "matched": [
+        "consent-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-nine-night-national-theatre_46445/",
+      "matched": [
+        "nine-night-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-absolute-hell-national-theatre_46403/",
+      "matched": [
+        "absolute-hell-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-strictly-ballroom-piccadilly-theatre_46386/",
+      "matched": [
+        "strictly-ballroom-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-instructions-for-correct-assembly-royal-court_46307/",
+      "matched": [
+        "instructions-for-correct-assembly-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-ruthless-arts-theatre_46155/",
+      "matched": [
+        "ruthless-the-musical-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-great-wave-national-theatre_46073/",
+      "matched": [
+        "the-great-wave-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-fanny-and-alexander-old-vic_45919/",
+      "matched": [
+        "fanny-and-alexander-west-end-2018"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-hamlet-glyndebourne-and-tour_44965/",
+      "matched": [
+        "hamlet-west-end-2017"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-labour-of-love-noel-coward-theatre_44779/",
+      "matched": [
+        "labour-of-love-west-end-2017"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-follies-national-theatre-olivier_44552/",
+      "matched": [
+        "follies-west-end-2017"
+      ],
+      "season": "2017-18",
+      "held": true,
+      "published": false
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-hamlet-park-theatre_44498/",
+      "matched": [
+        "hamlet-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-majority-national-theatre_44383/",
+      "matched": [
+        "the-majority-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-apologia-trafalgar-studios_44283/",
+      "matched": [
+        "apologia-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-girl-from-the-north-country-old-vic_44209/",
+      "matched": [
+        "girl-from-the-north-country-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-mosquitoes-dorfman-national-theatre_44199/",
+      "matched": [
+        "mosquitoes-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-queen-anne-theatre-royal-haymarket_44083/",
+      "matched": [
+        "queen-anne-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-wind-in-the-willows-london-palladium_44003/",
+      "matched": [
+        "the-wind-in-the-willows-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-hamlet-harold-pinter-theatre_43889/",
+      "matched": [
+        "hamlet-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-twelfth-night-shakespeares-globe_43684/",
+      "matched": [
+        "twelfth-night-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-goat-or-who-is-sylvia-theatre-royal-haymarket_43301/",
+      "matched": [
+        "the-goat-or-who-is-sylvia-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-kid-stays-in-the-picture-royal-court_43191/",
+      "matched": [
+        "the-kid-stays-in-the-picture-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-rosencrantz-and-guildenstern-are-dead-the-old-vic_43069/",
+      "matched": [
+        "rosencrantz-and-guildenstern-are-dead-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-a-profoundly-affectionate-passionate-devotion-to-someone-noun-royal-court_43057/",
+      "matched": [
+        "a-profoundly-affectionate-passionate-devotion-to-someone-noun-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-twelfth-night-olivier-national-theatre_42961/",
+      "matched": [
+        "twelfth-night-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-girls-phoenix-theatre_42953/",
+      "matched": [
+        "the-girls-west-end-2017"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-art-old-vic_42545/",
+      "matched": [
+        "art-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-hedda-gabler-lyttelton-national-theatre_42481/",
+      "matched": [
+        "hedda-gabler-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-buried-child-trafalgar-studios_42390/",
+      "matched": [
+        "buried-child-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-this-house-garrick-theatre_42382/",
+      "matched": [
+        "this-house-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-nice-fish-harold-pinter-theatre_42352/",
+      "matched": [
+        "nice-fish-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-children-royal-court_42338/",
+      "matched": [
+        "the-children-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-half-a-sixpence-noel-coward-theatre_42286/",
+      "matched": [
+        "half-a-sixpence-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-dead-funny-vaudeville-theatre_42174/",
+      "matched": [
+        "dead-funny-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-red-barn-lyttelton-national-theatre_42037/",
+      "matched": [
+        "the-red-barn-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-the-dresser-duke-of-yorks_42004/",
+      "matched": [
+        "the-dresser-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-nos-knife-old-vic-theatre_41930/",
+      "matched": [
+        "nos-knife-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-dominic-cooper-in-the-libertine-theatre-royal-haymarket_41877/",
+      "matched": [
+        "the-libertine-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    },
+    {
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/review-no-mans-land-wyndhams-theatre_41818/",
+      "matched": [
+        "no-mans-land-west-end-2016"
+      ],
+      "season": "2016-17",
+      "held": true,
+      "published": true
+    }
+  ]
+}

@@ -1,0 +1,418 @@
+{
+  "issueNumber": "bro-4722-b",
+  "planId": "212363a4-793c-4c90-b1b3-346ae5cc10ee",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4722: commercial figures shown as fact, each checked against its cited source (168 figures). Corrects 8 wrong figures/dates, re-cites 3 whose cited page was silent but another outlet states them, and relabels 4 with no public source as estimates. Part 2 of 2.",
+    "steps": [
+      "Wrong figure or date: Moulin Rouge recoup month, Harry Potter recoup month (year only), Our Town and Purlie Victorious capitalization (SEC), Jersey Boys capitalization ($7.8M per AP).",
+      "Another production's figures removed: Dana H. ($3.5M was joint with Is This A Room), Sunset Boulevard 2017 (2024 revival data), Fela! 2012 (2009 run data).",
+      "Re-cited: Appropriate (Forbes), Harmony (the actual SEC filing), Purlie (sec.gov filing).",
+      "No public source, now printed as estimates: Call Me Izzy and Little Bear Ridge Road capitalization; Chicago and Phantom recoupment dates."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "showId": "fela-2012",
+        "field": "capitalization",
+        "oldValue": 11000000,
+        "newValue": null,
+        "description": "$11M (Variety 2009, Barron's) is the 2009-11 original run, not the 2012 return engagement"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "showId": "fela-2012",
+        "field": "capitalizationSource",
+        "oldValue": "Barrons article stating the show cost $11 million",
+        "newValue": null,
+        "description": "2009 run figure"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "showId": "fela-2012",
+        "field": "recoupedSource",
+        "oldValue": "Barrons article stating the show 'closed at a loss after 15 months'",
+        "newValue": null,
+        "description": "\"closed at a loss after 15 months\" is the 2009-11 run"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "showId": "fela-2012",
+        "field": "notes",
+        "oldValue": "The show had an $11 million capitalization but closed at a loss after 15 months on Broadway. Despite being an off-Broadway smash in 2008, the Broadway version was not financially successful.",
+        "newValue": "Three-week 2012 return engagement (Jul to Aug 2012) of the 2009 Broadway production. No capitalization or recoupment figures for this engagement have been published. The original 2009-11 production was reported to cost about $11 million (Variety, 2009) and closed at a loss.",
+        "description": "old notes described the 2009 run"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fela-2012",
+        "showId": "fela-2012",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://online.barrons.com/articles/how-to-make-money-on-broadway-1417232812",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2010/12/01/theater/01musical.html",
+            "date": "2010-12-01"
+          }
+        ],
+        "newValue": [],
+        "description": "both sources are about the 2009-11 run"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "showId": "appropriate",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway News / Broadway Direct",
+        "newValue": "Forbes (Feb 9, 2024): the commercial transfer to the Belasco \"is expected to cost about $3.75 million\"",
+        "description": "cited pages give no figure; Forbes states it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "showId": "appropriate",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://broadwaydirect.com/sarah-paulson-led-appropriate-to-extend-and-transfer-broadway-theatres/",
+            "date": "2024-01-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/APPROPRIATE",
+            "date": "2024-06-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/appropriate-will-get-commercial-transfer-to-broadways-belasco-theatre/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-appropriate-announces-2nd-extension-transfer-to-belasco-theatre",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/appropriate-ends-broadway-run-june-30",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/marchershberg/2024/02/09/commercial-transfer-of-best-selling-broadway-play-prompts-questions/",
+            "date": "2024-02-09"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaydirect.com/sarah-paulson-led-appropriate-to-extend-and-transfer-broadway-theatres/",
+            "date": "2024-01-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/APPROPRIATE",
+            "date": "2024-06-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/appropriate-will-get-commercial-transfer-to-broadways-belasco-theatre/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-appropriate-announces-2nd-extension-transfer-to-belasco-theatre",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/appropriate-ends-broadway-run-june-30",
+            "date": null
+          }
+        ],
+        "description": "cite the capitalization report"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harmony",
+        "showId": "harmony",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D (max offering $15M)",
+        "newValue": "SEC Form D, Harmony Musical LLC (2022): total offering $15,000,000",
+        "description": "cite the filing (link was the sec.gov home page)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harmony",
+        "showId": "harmony",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov",
+            "date": "2023-01-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1934045/000193404522000002/primary_doc.xml",
+            "date": "2022-06-15"
+          }
+        ],
+        "description": "replace generic sec.gov link with the filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "showId": "call-me-izzy",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "only a BroadwayWorld forum post states $4.9M; no trade report found, so print as an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "showId": "call-me-izzy",
+        "field": "capitalizationSource",
+        "oldValue": "Trade-reported capitalization; $5.4M figure also cited (may include overcall/reserve)",
+        "newValue": null,
+        "description": "\"Trade-reported\" was not true"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "showId": "call-me-izzy",
+        "field": "notes",
+        "oldValue": "Rented Studio 54 from Roundabout — NOT a Roundabout production. $4.9M cap for a solo show ($5.4M with overcall). Jean Smart knee injury (Jul 7-21) devastated box office, dropping to 28-30% capacity during summer tourist peak. Avg 61.6% capacity at 1,000-seat house made recoupment impossible.",
+        "newValue": "Rented Studio 54 from Roundabout — NOT a Roundabout production. No trade report of the capitalization; the ~$4.9M figure is an estimate. Jean Smart knee injury (Jul 7-21) devastated box office, dropping to 28-30% capacity during summer tourist peak. Avg 61.6% capacity at 1,000-seat house made recoupment impossible.",
+        "description": "notes stated the unsourced capitalization as fact"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "showId": "little-bear-ridge-road",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "capitalization": true
+        },
+        "description": "no public source states $4.1M (cited Variety/Deadline silent; the NYT quote could not be found), so print as an estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "little-bear-ridge-road",
+        "showId": "little-bear-ridge-road",
+        "field": "capitalizationSource",
+        "oldValue": "NYT reported $4.1 million capitalization, described as 'a relative bargain on today's Broadway'",
+        "newValue": null,
+        "description": "unverifiable attribution"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recouped": true
+        },
+        "description": "no public source gives the recoupment date"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago",
+        "field": "recoupedSource",
+        "oldValue": "Industry reports",
+        "newValue": "New York Theatre Guide: Chicago earned back its $2.5 million cost \"faster than any other musical in history.\" No public report gives the date; March 1997 is our estimate.",
+        "description": "replace \"Industry reports\""
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "showId": "chicago",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/chicago-theatrical-records-how-the-trailblazing-musical-set-a-new-broadway-standard",
+            "date": null
+          }
+        ],
+        "description": "link the source for cost and fast recoupment"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-phantom-of-the-opera-1988",
+        "showId": "the-phantom-of-the-opera-1988",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recouped": true
+        },
+        "description": "no trade source gives a recoupment date"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-phantom-of-the-opera-1988",
+        "showId": "the-phantom-of-the-opera-1988",
+        "field": "recoupedDate",
+        "oldValue": "1990",
+        "newValue": "1989",
+        "description": "the only dated account (Financing Broadway, history of recoups) says about 13 months after the Jan 1988 opening; 1990 had no source"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-phantom-of-the-opera-1988",
+        "showId": "the-phantom-of-the-opera-1988",
+        "field": "recoupedSource",
+        "oldValue": "UPI article from 1995 mentions Phantom as one of the 'long-running, profit-making shows' alongside other successful productions",
+        "newValue": "No public announcement found. Financing Broadway (history of recoups) says it recouped after about 13 months; the 1989 date is our estimate.",
+        "description": "say the date is an estimate"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T16:08:11.949Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for fela-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for harmony"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for harmony"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for little-bear-ridge-road"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for the-phantom-of-the-opera-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for the-phantom-of-the-opera-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for the-phantom-of-the-opera-1988"
+    }
+  ]
+}

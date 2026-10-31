@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-10-29T16:58:32.578Z",
+  "shows": {},
+  "lastUpdated": "2026-10-31T01:33:44.894Z",
+  "hardTruthFindings": {
+    "collectedAt": "2026-10-11",
+    "card": "BRO-5017",
+    "note": "Research only. Not applied to commercial.json. Rows without a quote are searched-none-found.",
+    "findings": [
+      {
+        "slug": "maybe-happy-ending",
+        "kind": "capitalization+breakeven",
+        "quote": "Richards told Broadway Journal that it was capitalized for $16 million on Broadway. ... it needed published weekly box office grosses of about $820,000 to break even",
+        "outlet": "Broadway Journal",
+        "url": "https://broadwayjournal.com/intimate-maybe-happy-ending-engineers-turnaround/",
+        "date": "2025-06-09",
+        "sourceType": "trade",
+        "capitalization": 16000000,
+        "weeklyBreakevenGross": 820000,
+        "recouped": null
+      },
+      {
+        "slug": "operation-mincemeat",
+        "kind": "capitalization",
+        "quote": "raising at least $11.5 million to transfer the critically acclaimed show to Broadway; maximum capitalization $14.5 million",
+        "outlet": "Broadway Journal",
+        "url": "https://broadwayjournal.com/operation-mincemeat-targets-golden-theatre/",
+        "date": "2024-09-25",
+        "sourceType": "trade",
+        "capitalizationMin": 11500000,
+        "capitalizationMax": 14500000,
+        "recouped": null
+      },
+      {
+        "slug": "just-in-time",
+        "kind": "recouped",
+        "quote": "has recouped its initial $12.5 million investment, becoming the first musical of the 2024-2025 season to do so",
+        "outlet": "Playbill",
+        "url": "https://playbill.com/article/just-in-time-recoups-on-broadway",
+        "date": "2026-05-18",
+        "sourceType": "trade",
+        "recouped": true,
+        "capitalization": 12500000,
+        "alreadyInCommercialJson": true,
+        "weeklyRunningCost": "searched, none found"
+      }
+    ],
+    "searchedNoneFound": {
+      "buena-vista-social-club": [
+        "Buena Vista Social Club Broadway recoup weekly running cost"
+      ],
+      "stranger-things": [
+        "Stranger Things The First Shadow Broadway not recouped weekly running cost (secondary summaries cite Deadline/THR, primary text not retrieved, so not counted)"
+      ],
+      "the-great-gatsby": [
+        "The Great Gatsby Broadway musical recoup weekly running costs 2026"
+      ],
+      "schmigadoon": [
+        "Schmigadoon Broadway capitalization running at a loss Broadway Journal"
+      ],
+      "two-strangers": [
+        "Two Strangers Carry a Cake Broadway closing recoup capitalization"
+      ],
+      "the-lost-boys": [
+        "not searched this pass, cost cap"
+      ],
+      "the-lion-king": [
+        "The Lion King Broadway recouped investment Disney announcement (only Toronto run recoup found)"
+      ],
+      "aladdin, the-phantom-of-the-opera-1988, sweeney-todd-2023, appropriate": [
+        "not searched this pass"
+      ]
+    },
+    "spendNote": "about 9 standard web searches and 4 fetches, well under the $10 cap"
+  }
+}

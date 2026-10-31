@@ -1,0 +1,136 @@
+{
+  "issueNumber": "bro-6306-b",
+  "planId": "8c097b50-7125-46c1-ba78-75a75000f517",
+  "status": "superseded",
+  "createdAt": "2026-10-26T12:10:18.343Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6306: fill The Glass Menagerie 2017 (sourced capitalization and loss)",
+    "steps": [
+      "commercial.json: the-glass-menagerie-2017.recouped",
+      "commercial.json: the-glass-menagerie-2017.capitalization",
+      "commercial.json: the-glass-menagerie-2017.capitalizationBasis",
+      "commercial.json: the-glass-menagerie-2017.capitalizationSource",
+      "commercial.json: the-glass-menagerie-2017.weeklyRunningCost",
+      "commercial.json: the-glass-menagerie-2017.weeklyRunningCostBasis",
+      "commercial.json: the-glass-menagerie-2017.costMethodology",
+      "commercial.json: the-glass-menagerie-2017.weeklyRunningCostSource",
+      "commercial.json: the-glass-menagerie-2017.recoupedSource",
+      "commercial.json: the-glass-menagerie-2017.notes",
+      "commercial.json: the-glass-menagerie-2017.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "commercial.json: the-glass-menagerie-2017.recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3350000,
+        "description": "commercial.json: the-glass-menagerie-2017.capitalization"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "commercial.json: the-glass-menagerie-2017.capitalizationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Feb 8, 2018): \"According to offering documents for the revival, which was capitalized at $3.35 million\" https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit",
+        "description": "commercial.json: the-glass-menagerie-2017.capitalizationSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "weeklyRunningCost",
+        "oldValue": null,
+        "newValue": 437500,
+        "description": "commercial.json: the-glass-menagerie-2017.weeklyRunningCost"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "running",
+        "description": "commercial.json: the-glass-menagerie-2017.weeklyRunningCostBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "costMethodology",
+        "oldValue": null,
+        "newValue": "trade-reported",
+        "description": "commercial.json: the-glass-menagerie-2017.costMethodology"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Feb 8, 2018): it \"appeared to lose money every week, given projected running costs of $437,500.\" https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit",
+        "description": "commercial.json: the-glass-menagerie-2017.weeklyRunningCostSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Feb 8, 2018): \"It ran 15 weeks including previews and appeared to lose money every week ... It closed six weeks earlier than planned.\" https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit",
+        "description": "commercial.json: the-glass-menagerie-2017.recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Sally Field-led revival directed by Sam Gold at the Belasco (opened Mar 9, 2017, closed May 21, 2017, six weeks early). The $3.35M is the offering documents' figure.",
+        "description": "commercial.json: the-glass-menagerie-2017.notes"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-glass-menagerie-2017",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit",
+            "date": "2018-02-08"
+          }
+        ],
+        "description": "commercial.json: the-glass-menagerie-2017.sources"
+      }
+    ]
+  },
+  "supersededAt": "2026-10-26T14:30:00.000Z",
+  "supersededReason": "Applied locally (executedIn: local) and pushed straight to broadway-scorecard-data on 2026-10-26 at the owner's request to skip the landing queue; the data-edit oldValues no longer match current commercial.json, so dispatching would change nothing or fail (BRO-6332; same applied-locally state as this plan's siblings)."
+}

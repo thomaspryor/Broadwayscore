@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-5080-d",
+  "planId": "19e8ad31-b8b7-4fd4-ab11-0e2f37b5a3a3",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:34:08.880Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 part 4 (apply after part 3): fix wrong basic facts the sourced sample audit found on the historical backfills (7 edits, each description carrying its source URL).",
+    "steps": [
+      "Dates: set the sourced value",
+      "Type/venue/credits: set the sourced value",
+      "Synopsis: clear marketing / other-production / wrong-work text so the production-verified enricher refills it",
+      "Posters of other productions: clear, reject the source, mark no reliable art"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "leader-of-the-pack-1985",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Jimmy Vivino",
+            "role": "Playwright"
+          },
+          {
+            "name": "Michael Peters",
+            "role": "Director"
+          },
+          {
+            "name": "Michael Peters",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Robert DeMora",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Pamela Cooper",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Abe Jacob",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jimmy Vivino",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Ellie Greenwich",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Ellie Greenwich",
+            "role": "Music"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Michael Peters",
+            "role": "Director"
+          },
+          {
+            "name": "Michael Peters",
+            "role": "Choreographer"
+          },
+          {
+            "name": "Robert DeMora",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Pamela Cooper",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Abe Jacob",
+            "role": "Sound Design"
+          },
+          {
+            "name": "Jimmy Vivino",
+            "role": "Music Direction"
+          },
+          {
+            "name": "Ellie Greenwich",
+            "role": "Lyrics"
+          },
+          {
+            "name": "Ellie Greenwich",
+            "role": "Music"
+          }
+        ],
+        "description": "leader-of-the-pack-1985: writers: other: Jimmy Vivino is not credited; Ellie Greenwich is duplicated. Credited: Greenwich (music/lyrics), Anne Beatts (book), Jack Heifner (additional material), Melanie Mintz (concept). (https://en.wikipedia.org/wiki/Leader_of_the_Pack_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cymbeline-2007",
+        "field": "creativeTeam",
+        "oldValue": [
+          {
+            "name": "Daniel Sullivan",
+            "role": "Director"
+          },
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Michael Yeargan",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Brian MacDevitt",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Tony Smolenski IV and Walter Trarbach",
+            "role": "Sound Design"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Mark Lamos",
+            "role": "Director"
+          },
+          {
+            "name": "William Shakespeare",
+            "role": "Playwright"
+          },
+          {
+            "name": "Michael Yeargan",
+            "role": "Scenic Design"
+          },
+          {
+            "name": "Jess Goldstein",
+            "role": "Costume Design"
+          },
+          {
+            "name": "Brian MacDevitt",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Tony Smolenski IV and Walter Trarbach",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "cymbeline-2007: directors: wrong-person: Lincoln Center Theater's 2007 Cymbeline at the Vivian Beaumont was directed by Mark Lamos. (https://www.newyorktheatreguide.com/theatre-news/news/cymbeline-directed-by-mark-lamos-to-play-at-the-vivian-beaumont)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "uncle-vanya-west-end-2020",
+        "field": "closingDate",
+        "oldValue": "2020-03-16",
+        "newValue": "2020-03-14",
+        "description": "uncle-vanya-west-end-2020: closingDate -> 2020-03-14, the last performance before the March 2020 Covid shutdown, not the scheduled date (https://www.londontheatre.co.uk/show/uncle-vanya)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "leopoldstadt-west-end-2020",
+        "field": "closingDate",
+        "oldValue": "2020-06-13",
+        "newValue": "2020-03-14",
+        "description": "leopoldstadt-west-end-2020: closingDate -> 2020-03-14, the last performance before the March 2020 Covid shutdown, not the scheduled date (https://www.londontheatre.co.uk/theatre-news/news/tom-stoppards-leopoldstadt-to-return-to-wyndhams-theatre)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "9-to-5-the-musical-west-end-2019",
+        "field": "closingDate",
+        "oldValue": "2020-03-16",
+        "newValue": "2020-03-14",
+        "description": "9-to-5-the-musical-west-end-2019: closingDate -> 2020-03-14, the last performance before the March 2020 Covid shutdown, not the scheduled date (https://en.wikipedia.org/wiki/9_to_5_(musical))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "waitress-west-end-2019",
+        "field": "closingDate",
+        "oldValue": "2020-03-16",
+        "newValue": "2020-03-14",
+        "description": "waitress-west-end-2019: closingDate -> 2020-03-14, the last performance before the March 2020 Covid shutdown, not the scheduled date (https://www.londontheatre.co.uk/theatre-news/news/west-end-production-of-waitress-announces-early-closure)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whos-afraid-of-virginia-woolf-2020",
+        "field": "closingDate",
+        "oldValue": "2020-03-17",
+        "newValue": "2020-03-11",
+        "description": "whos-afraid-of-virginia-woolf-2020: closingDate -> 2020-03-11, the last performance before the March 2020 Covid shutdown, not the scheduled date (https://broadway.com/buzz/198787/whos-afraid-of-virginia-woolf-starring-laurie-metcalf-rupert-everett-will-not-continue-on-broadway/)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:35:47.843Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for leader-of-the-pack-1985"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for cymbeline-2007"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for uncle-vanya-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for leopoldstadt-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for 9-to-5-the-musical-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for waitress-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for whos-afraid-of-virginia-woolf-2020"
+    }
+  ]
+}

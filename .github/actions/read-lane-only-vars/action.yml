@@ -1,0 +1,31 @@
+name: Read lane-only variables
+description: >-
+  BRO-6620. Live-read LANE_ONLY_MARKETS and LANE_STANDDOWN with read-actions-variable.sh into the job env, each with a
+  *_READ=ok|unknown flag. GITHUB_TOKEN cannot read repo variables (BRO-6639), so pass REVIEW_TEXTS_TOKEN. A failed read
+  (or one past 25s) sets *_READ=unknown, and scripts/lib/opening-night-lane/lane-only-markets.js then keeps the old path on.
+
+inputs:
+  token:
+    description: Token with variables:read (REVIEW_TEXTS_TOKEN)
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Read LANE_ONLY_MARKETS and LANE_STANDDOWN
+      shell: bash
+      env:
+        VARS_TOKEN: ${{ inputs.token }}
+      run: |
+        for NAME in LANE_ONLY_MARKETS LANE_STANDDOWN; do
+          if VALUE=$(GH_TOKEN="$VARS_TOKEN" timeout 25 bash "$GITHUB_WORKSPACE/scripts/lib/read-actions-variable.sh" "$NAME"); then
+            READ=ok
+          else
+            READ=unknown
+            VALUE=""
+          fi
+          VALUE=$(printf '%s' "$VALUE" | tr -d '\r\n')
+          echo "${NAME}=${VALUE}" >> "$GITHUB_ENV"
+          echo "${NAME}_READ=${READ}" >> "$GITHUB_ENV"
+          echo "${NAME}: read=${READ} value=${VALUE:-<unset>}"
+        done

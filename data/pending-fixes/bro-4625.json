@@ -1,0 +1,422 @@
+{
+  "issueNumber": "bro-4625",
+  "planId": "0e6240e0-147f-4e4b-aa91-e80a53bd7f20",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623 part 2: correct Just for Us (marked recouped, none announced), Two Strangers (labelled Flop while still running), The Rocky Horror Show (a Roundabout production), and add the reported capitalizations for The Lost Boys and Schmigadoon!, each with a source link. Corrected outcomes are locked with humanReviewedDesignation so the daily classifier cannot revert them.",
+    "steps": [
+      "Just for Us: Broadway Journal reports distributions to investors but no recoupment; none announced since.",
+      "Two Strangers: still running, closing Nov 29, 2026 (BroadwayWorld, Sep 16, 2026); not a closed Flop.",
+      "Rocky Horror: Roundabout Theatre Company production at Studio 54 (roundabouttheatre.org).",
+      "The Lost Boys and Schmigadoon!: capitalizations from Broadway Journal (May 6, 2026)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "showId": "just-for-us",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "TBD",
+        "description": "just-for-us: designation (no recoupment announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "showId": "just-for-us",
+        "field": "recouped",
+        "oldValue": true,
+        "newValue": null,
+        "description": "just-for-us: recouped (no recoupment announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "showId": "just-for-us",
+        "field": "recoupedDate",
+        "oldValue": "2023-10",
+        "newValue": null,
+        "description": "just-for-us: recoupedDate (no recoupment announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "showId": "just-for-us",
+        "field": "recoupedSource",
+        "oldValue": "Broadway Journal article stating that 'Just For Us (produced by Jenny Gersten, Rachel Sussman and Nobile) made distributions to investors' and mentions 'Backers may be fully repaid should their lauded shows receive a New York State theater production tax credit of up to $3 million'",
+        "newValue": "No recoupment announced. Broadway Journal (Aug 2023): the $2.25M production made distributions to investors, and backers may be fully repaid if it receives the NY State tax credit.",
+        "description": "just-for-us: recoupedSource (no recoupment announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "showId": "just-for-us",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway Journal article stating 'Just for Us, Alex Edelman's monologue about antisemitism and identity that ended its run on Saturday, was capitalized for $2.25 million'",
+        "newValue": "Broadway Journal (Aug 2023): capitalized for $2.25M",
+        "description": "just-for-us: capitalizationSource (no recoupment announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "showId": "just-for-us",
+        "field": "notes",
+        "oldValue": "Limited run solo show that recouped and made distributions to investors. Capitalized at $2.25 million, much lower than typical Broadway productions. Show benefited from being a one-person show which have been 'a relative safe haven for investors' according to the source.",
+        "newValue": "Alex Edelman solo show at the Hudson Theatre (Jun 26 to Aug 19, 2023), capitalized at $2.25M. Made distributions to investors; no recoupment has been announced.",
+        "description": "just-for-us: notes (no recoupment announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "just-for-us",
+        "showId": "just-for-us",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "just-for-us: humanReviewedDesignation (no recoupment announced)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "TBD",
+        "description": "two-strangers: designation (still running, closes Nov 29 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "capitalizationSource",
+        "oldValue": "Forbes analysis",
+        "newValue": "Forbes (Nov 2025)",
+        "description": "two-strangers: capitalizationSource (still running, closes Nov 29 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "notes",
+        "oldValue": "Based on Forbes report and Reddit gross analyses, the show had an $8M cap, weekly costs of ~$480k, ran at breakeven but never recouped and closed without repaying investors.",
+        "newValue": "Two-person musical at the Longacre, capitalized at $8M (Forbes). Closing announced for Nov 29, 2026 (BroadwayWorld); no recoupment announced.",
+        "description": "two-strangers: notes (still running, closes Nov 29 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "two-strangers",
+        "showId": "two-strangers",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "two-strangers: humanReviewedDesignation (still running, closes Nov 29 2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "showId": "the-rocky-horror-show",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "the-rocky-horror-show: designation (Roundabout production)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "showId": "the-rocky-horror-show",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "the-rocky-horror-show: nonprofitOrg (Roundabout production)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "showId": "the-rocky-horror-show",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "the-rocky-horror-show: recouped (Roundabout production)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "showId": "the-rocky-horror-show",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "manual",
+            "url": "https://www.roundabouttheatre.org/production/2025-2026-season/richard-o-brien-s-the-rocky-horror-show/",
+            "date": null
+          }
+        ],
+        "description": "the-rocky-horror-show: sources (Roundabout production)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "showId": "the-rocky-horror-show",
+        "field": "notes",
+        "oldValue": "Auto-enrolled stub; awaiting model + curation.",
+        "newValue": "Roundabout Theatre Company revival at Studio 54 (opened Apr 23, 2026).",
+        "description": "the-rocky-horror-show: notes (Roundabout production)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-rocky-horror-show",
+        "showId": "the-rocky-horror-show",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-rocky-horror-show: humanReviewedDesignation (Roundabout production)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lost-boys",
+        "showId": "the-lost-boys",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 25000000,
+        "description": "the-lost-boys: capitalization (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lost-boys",
+        "showId": "the-lost-boys",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (May 6, 2026), citing a 2024 SEC filing",
+        "description": "the-lost-boys: capitalizationSource (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lost-boys",
+        "showId": "the-lost-boys",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          }
+        ],
+        "description": "the-lost-boys: sources (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lost-boys",
+        "showId": "the-lost-boys",
+        "field": "notes",
+        "oldValue": "Auto-enrolled stub; awaiting model + curation.",
+        "newValue": "New musical at the Palace, opened Apr 26, 2026. Capitalized at $25M per a 2024 SEC filing; Broadway Journal (May 2026) reported it running at a loss.",
+        "description": "the-lost-boys: notes (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "schmigadoon",
+        "showId": "schmigadoon",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 15000000,
+        "description": "schmigadoon: capitalization (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "schmigadoon",
+        "showId": "schmigadoon",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (May 6, 2026): capitalized for up to $15M",
+        "description": "schmigadoon: capitalizationSource (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "schmigadoon",
+        "showId": "schmigadoon",
+        "field": "sources",
+        "oldValue": [],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
+            "date": "2026-05-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/05/schmigadoon-broadway-closing-date-1236885280/",
+            "date": null
+          }
+        ],
+        "description": "schmigadoon: sources (cap reported)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "schmigadoon",
+        "showId": "schmigadoon",
+        "field": "notes",
+        "oldValue": "Auto-enrolled stub; awaiting model + curation.",
+        "newValue": "New musical at the Nederlander, opened Apr 20, 2026. Capitalized for up to $15M; Broadway Journal (May 2026) reported it running at a loss.",
+        "description": "schmigadoon: notes (cap reported)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T00:49:51.859Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for just-for-us"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-rocky-horror-show"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-lost-boys"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-lost-boys"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-lost-boys"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-lost-boys"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for schmigadoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for schmigadoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for schmigadoon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for schmigadoon"
+    }
+  ]
+}

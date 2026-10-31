@@ -1,0 +1,92 @@
+{
+  "issueNumber": "bro-4504",
+  "planId": "58ae66c9-4790-4f00-8415-151ba9b59d6f",
+  "status": "applied",
+  "createdAt": "2026-10-25T11:28:52.115Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Mark both misfiled Mark Kennedy Yahoo copies as duplicates of their AP siblings, preserving the existing High non-review flag. Correct the surviving Exeunt review byline without pointing it at its excluded twin.",
+    "steps": [
+      "ann-2013/abscbnnewscom--mark-kennedy.json: duplicateReason",
+      "ann-2013/abscbnnewscom--mark-kennedy.json: duplicateOf",
+      "high-2011/abscbnnewscom--mark-kennedy.json: duplicateReason",
+      "high-2011/abscbnnewscom--mark-kennedy.json: duplicateOf",
+      "the-saviors-off-broadway-2026/exeunt-magazine--read-more-articles-by-lane-williamson.json: criticName"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "ann-2013/abscbnnewscom--mark-kennedy.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-4504: AP syndicated Mark Kennedy review misfiled as ABS-CBN; the AP sibling is the canonical copy.",
+        "description": "ann-2013/abscbnnewscom--mark-kennedy.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ann-2013/abscbnnewscom--mark-kennedy.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ap--mark-kennedy.json",
+        "description": "ann-2013/abscbnnewscom--mark-kennedy.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-2011/abscbnnewscom--mark-kennedy.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-4504: AP syndicated Mark Kennedy review misfiled as ABS-CBN; the AP sibling is the canonical copy. Its existing non-review flag is preserved.",
+        "description": "high-2011/abscbnnewscom--mark-kennedy.json: duplicateReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-2011/abscbnnewscom--mark-kennedy.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "ap--mark-kennedy.json",
+        "description": "high-2011/abscbnnewscom--mark-kennedy.json: duplicateOf"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "field": "criticName",
+        "oldValue": "Read more articles by Lane Williamson",
+        "newValue": "Lane Williamson",
+        "description": "the-saviors-off-broadway-2026/exeunt-magazine--read-more-articles-by-lane-williamson.json: criticName"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T12:10:04.279Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ann-2013/abscbnnewscom--mark-kennedy.json duplicateReason: null -> \"BRO-4504: AP syndicated Mark Kennedy review misfiled as ABS-CBN; the AP sibling is the canonical copy.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ann-2013/abscbnnewscom--mark-kennedy.json duplicateOf: null -> \"ap--mark-kennedy.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-2011/abscbnnewscom--mark-kennedy.json duplicateReason: null -> \"BRO-4504: AP syndicated Mark Kennedy review misfiled as ABS-CBN; the AP sibling is the canonical copy. Its existing non-review flag is preserved.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-2011/abscbnnewscom--mark-kennedy.json duplicateOf: null -> \"ap--mark-kennedy.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/exeunt-magazine--read-more-articles-by-lane-williamson.json criticName: \"Read more articles by Lane Williamson\" -> \"Lane Williamson\""
+    }
+  ],
+  "executedIn": "ci"
+}

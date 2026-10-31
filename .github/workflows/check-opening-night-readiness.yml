@@ -1,0 +1,128 @@
+name: Opening Night Readiness Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show ID to check (e.g., dog-day-afternoon-2026)'
+        required: true
+        type: string
+      market:
+        description: 'Market (auto-detected from show data if omitted)'
+        required: false
+        type: choice
+        default: auto
+        options:
+          - auto
+          - broadway
+          - west-end
+      triggered_by:
+        description: 'Set by update-show-status.yml for its unattended run; leave empty when dispatching by hand'
+        required: false
+        type: string
+        default: ''
+
+# contents: write — the routing step below commits the alert ledger (BRO-3038).
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    # Above the 600s push deadline of the ledger commit step.
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          fetch-depth: 1
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Run readiness check
+        id: readiness
+        env:
+          SHOW_ID: ${{ inputs.show_id }}
+          MARKET: ${{ inputs.market }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          FORMSPREE_SUBSCRIBER_API_KEY: ${{ secrets.FORMSPREE_SUBSCRIBER_API_KEY }}
+          FORMSPREE_SUBSCRIBER_FORM_ID: ${{ secrets.FORMSPREE_SUBSCRIBER_FORM_ID }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          MARKET_FLAG=""
+          if [ -n "$MARKET" ] && [ "$MARKET" != "auto" ]; then
+            MARKET_FLAG="--market=$MARKET"
+          fi
+          node scripts/check-opening-night-readiness.js --show="$SHOW_ID" $MARKET_FLAG
+
+      # BRO-3038: notify-failure below is 'warning' (digest only), which is
+      # right for a run someone dispatched and is watching, but too late for
+      # update-show-status.yml's unattended run the day before opening. That
+      # one files a High Linear card for the board workers instead (not an
+      # email: BRO-4603, a worker can fix this). A passing run that covered the
+      # show's own market resolves the condition; the card's VERIFY reads that,
+      # and the Mac-side red-first follow-up acts on the card. Gated on
+      # the check step's own outcome so a failed checkout never files a
+      # "readiness failed" card. A filing failure is an ::error:: annotation
+      # plus a step-summary line (the step stays continue-on-error).
+      - name: Route unattended failure / resolve on pass
+        if: always() && (steps.readiness.outcome == 'success' || steps.readiness.outcome == 'failure')
+        continue-on-error: true
+        env:
+          SHOW_ID: ${{ inputs.show_id }}
+          TRIGGERED_BY: ${{ inputs.triggered_by }}
+          MARKET: ${{ inputs.market }}
+          OUTCOME: ${{ steps.readiness.outcome }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          node scripts/route-readiness-failure.js --show="$SHOW_ID" --outcome="$OUTCOME" \
+            --triggered-by="$TRIGGERED_BY" --market="$MARKET" --run-id="$RUN_ID" --run-url="$RUN_URL"
+
+      # The router's cooldown ledger + attempt log must be committed by the
+      # job that wrote them (same shape as audit-imageless-scored-shows.yml).
+      - name: Commit alert ledger
+        if: always() && (steps.readiness.outcome == 'success' || steps.readiness.outcome == 'failure')
+        continue-on-error: true
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: opening-night readiness alert ledger [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Night Readiness Check Failed'
+          severity: 'warning'

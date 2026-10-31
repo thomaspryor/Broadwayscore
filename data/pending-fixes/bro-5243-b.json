@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5243-b",
+  "planId": "be209a28-0ba6-4106-b358-729d0f32646c",
+  "status": "applied",
+  "createdAt": "2026-10-13T11:27:49.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (b): the-music-man-2022 WSJ row is not a real WSJ review; mark isNonReview (the duplicateOf edit in plan bro-5243 was refused by the write guard because the URLs differ).",
+    "steps": [
+      "isNonReview for a review that does not exist (BRO-5232 precedent)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/wsj--charles-isherwood.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243: no such WSJ review. Isherwood reviewed The Music Man (2022) for Broadway News on 2022-02-10 (sibling broadwaynews--charles-isherwood.json, negative), and the stored WSJ URL returns no page (Browserbase 0 chars with WSJ subscriber cookies, Scrapingdog 404, run 38379575315). Evidence: https://www.broadwaynews.com/2022/02/10/review-a-mechanical-music-man-misses-its-heart/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/wsj--charles-isherwood.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: no such review by this critic at this outlet (fabricated WSJ URL); real review is broadwaynews--charles-isherwood.json",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T13:02:27.375Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/wsj--charles-isherwood.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/wsj--charles-isherwood.json isNonReviewReason: null -> \"BRO-5243: no such review by this critic at this outlet (fabricated WSJ URL); real review is broadwaynews--charles-isherwood.json\""
+    }
+  ]
+}

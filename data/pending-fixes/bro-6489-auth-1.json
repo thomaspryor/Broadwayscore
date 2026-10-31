@@ -1,0 +1,292 @@
+{
+  "issueNumber": "bro-6489-auth-1",
+  "planId": "05d9263e-adef-4c54-ac9e-8e187a23b603",
+  "status": "applied",
+  "createdAt": "2026-10-29T17:44:41.128Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "bro-6489-auth: 18 edits where the audit judged the stored value wrong from non-Playbill pages (or held it), re-verified on an authoritative page (Playbill production page, IBDB, the theatre or producer own page)",
+    "steps": [
+      "shows.json: jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026.type",
+      "shows.json: broadway-magic-hour-off-broadway-2026.type",
+      "shows.json: kilgallen-off-broadway-2026.type",
+      "shows.json: whats-eating-gilbert-grape-off-broadway-2026.type",
+      "shows.json: chasing-grace-off-broadway-2026.type",
+      "shows.json: the-apple-boys-off-broadway-2027.type",
+      "shows.json: walk-on-through-confessions-of-a-museum-novice-off-broadway-2023.type",
+      "shows.json: the-gardens-of-anuncia-off-broadway-2023.type",
+      "shows.json: the-connector-off-broadway-2024.type",
+      "shows.json: the-big-gay-jamboree-off-broadway-2024.type",
+      "shows.json: wesley-off-broadway-2025.type",
+      "shows.json: the-black-mirror-experience-off-broadway-2026.type",
+      "shows.json: that-math-show-off-broadway-2026.type",
+      "shows.json: animal-wisdom-off-broadway-2022.type",
+      "shows.json: animal-wisdom-off-broadway-2022.isRevival",
+      "shows.json: going-bacharach-the-songs-of-an-icon-off-broadway-2026.type",
+      "shows.json: milk-and-honey-amt-theater-off-broadway-2026.type",
+      "shows.json: cat-cohen-broad-strokes-off-broadway-2026.type"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026.type (authoritative page https://www.newvictory.org/events/2526-live-performance-fraggle-rock-back-to-the-rock)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "broadway-magic-hour-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "special",
+        "description": "shows.json: broadway-magic-hour-off-broadway-2026.type (authoritative page https://broadwaymagichour.com/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kilgallen-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: kilgallen-off-broadway-2026.type (authoritative page https://www.yorktheatre.org/2026-2027-season)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whats-eating-gilbert-grape-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: whats-eating-gilbert-grape-off-broadway-2026.type (authoritative page https://mcctheater.org/tix/wegg/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "chasing-grace-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: chasing-grace-off-broadway-2026.type (authoritative page https://shenycarts.org/chasinggrace/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-apple-boys-off-broadway-2027",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-apple-boys-off-broadway-2027.type (authoritative page https://theappleboysmusical.com/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: walk-on-through-confessions-of-a-museum-novice-off-broadway-2023.type (authoritative page https://mcctheater.org/tix/walk-on-through-confessions-of-a-museum-novice/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gardens-of-anuncia-off-broadway-2023",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-gardens-of-anuncia-off-broadway-2023.type (authoritative page https://www.lct.org/explore/blog/just-announced-gardens-anuncia/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-connector-off-broadway-2024",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-connector-off-broadway-2024.type (authoritative page https://mcctheater.org/tix/the-connector/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-big-gay-jamboree-off-broadway-2024",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: the-big-gay-jamboree-off-broadway-2024.type (authoritative page https://biggayjamboreethemusical.com/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wesley-off-broadway-2025",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: wesley-off-broadway-2025.type (authoritative page https://playbill.com/production/wesley-off-broadway-the-theater-center-anne-l-bernstein-theater-2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-black-mirror-experience-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "special",
+        "description": "shows.json: the-black-mirror-experience-off-broadway-2026.type (authoritative page https://group.banijay.com/wp-content/uploads/2026/05/ArrivalofTheBlackMirrorExperienceinNYC.pdf)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "that-math-show-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "special",
+        "description": "shows.json: that-math-show-off-broadway-2026.type (authoritative page https://www.thatmathshow.com/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "animal-wisdom-off-broadway-2022",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: animal-wisdom-off-broadway-2022.type (authoritative page https://playbill.com/production/animal-wisdom-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "animal-wisdom-off-broadway-2022",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: animal-wisdom-off-broadway-2022.isRevival (authoritative page https://playbill.com/production/animal-wisdom-off-broadway-the-pershing-square-signature-center-romulus-linney-courtyard-theatre-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: going-bacharach-the-songs-of-an-icon-off-broadway-2026.type (authoritative page https://playbill.com/production/going-bacharach-off-broadway-marjorie-s-deane-little-theater-the-west-side-y-2026)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "milk-and-honey-amt-theater-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: milk-and-honey-amt-theater-off-broadway-2026.type (authoritative page https://www.ibdb.com/broadway-production/milk-and-honey-2882)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "shows.json: cat-cohen-broad-strokes-off-broadway-2026.type (authoritative page https://lortel.org/broad-strokes)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T18:45:48.682Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for jim-hensons-fraggle-rock-back-to-the-rock-live-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for broadway-magic-hour-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for kilgallen-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for whats-eating-gilbert-grape-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for chasing-grace-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-apple-boys-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for walk-on-through-confessions-of-a-museum-novice-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-gardens-of-anuncia-off-broadway-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-connector-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-big-gay-jamboree-off-broadway-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for wesley-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-black-mirror-experience-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for that-math-show-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for animal-wisdom-off-broadway-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for animal-wisdom-off-broadway-2022 (tags: [\"revival\"])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for going-bacharach-the-songs-of-an-icon-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for milk-and-honey-amt-theater-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for cat-cohen-broad-strokes-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

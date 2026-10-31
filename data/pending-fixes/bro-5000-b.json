@@ -1,0 +1,283 @@
+{
+  "issueNumber": "bro-5000-b",
+  "planId": "036b0f46-b4a5-4534-9829-1cfeac7e522e",
+  "status": "applied",
+  "createdAt": "2026-10-11T10:20:36.066Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5000 (2/2): flag other-run reviews on Fences and An Oak Tree, fix the Affluenza Time Out date, override the unsupported Jupiterhadley score, delete the duplicate Rent Reviews Hub row.",
+    "steps": [
+      "Flag other-run reviews wrongProduction on Fences and An Oak Tree.",
+      "Correct the Affluenza Time Out date.",
+      "Override the unsupported Jupiterhadley score.",
+      "Delete the duplicate Reviews Hub Rent row."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "cross-production-audit",
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/british-theatre--david-woodward.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/british-theatre--david-woodward.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "cross-production-audit",
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/northernartsreview--shannaz.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/northernartsreview--shannaz.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "cross-production-audit",
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/myviewfromthestalls--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/myviewfromthestalls--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "cross-production-audit",
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/oxfordshire-guardian--samantha-mcgregor.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/oxfordshire-guardian--samantha-mcgregor.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "cross-production-audit",
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/guardian--catherine-love.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": true,
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/guardian--catherine-love.json",
+        "field": "wrongProductionReason",
+        "oldValue": "anticipatory_pre_opening_post",
+        "newValue": "cross-production-audit",
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/thestage--matt-barton.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "cross-production-audit",
+        "description": "Review of an earlier tour stop (Oxford Playhouse or Leeds Playhouse), published before the Lyric Hammersmith previews of 2026-10-06."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/timeout-london--tim-bano.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Time Out page states it is a 2025 review (earlier production); this run previewed 2026-10-07."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-oak-tree-off-west-end-2026/timeout-london--tim-bano.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "cross-production-audit",
+        "description": "Time Out page states it is a 2025 review (earlier production); this run previewed 2026-10-07."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "affluenza-off-west-end-2026/timeout-london--andrzej-lukowski.json",
+        "field": "publishDate",
+        "oldValue": "2026-09-21",
+        "newValue": "2026-10-09",
+        "description": "Time Out page is dated 9 Oct 2026; the stored 2026-09-21 predates previews."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 86,
+        "description": "The page shows no star rating, so the 5/5 (100) is unsupported; keep the text-based LLM score of 86."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Page has no star rating (empty rating widget); 5/5 original score is unsupported, using text-based score 86.",
+        "description": "Provenance for the score override."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "rent-west-end-2026/thereviewshub--a-tran-ngoc.json",
+        "description": "No-url duplicate of thereviewshub--the-reviews-hub-london.json (same review, bylined A. Tran Ngoc)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T11:42:43.931Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/a-youngish-perspective--ella-thornburn.json wrongProductionReason: null -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/british-theatre--david-woodward.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/british-theatre--david-woodward.json wrongProductionReason: null -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/northernartsreview--shannaz.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/northernartsreview--shannaz.json wrongProductionReason: null -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/myviewfromthestalls--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/myviewfromthestalls--unknown.json wrongProductionReason: null -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/oxfordshire-guardian--samantha-mcgregor.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/oxfordshire-guardian--samantha-mcgregor.json wrongProductionReason: null -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/guardian--catherine-love.json wrongProduction: true -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/guardian--catherine-love.json wrongProductionReason: \"anticipatory_pre_opening_post\" -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/thestage--matt-barton.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fences-off-west-end-2026/thestage--matt-barton.json wrongProductionReason: null -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/timeout-london--tim-bano.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-oak-tree-off-west-end-2026/timeout-london--tim-bano.json wrongProductionReason: null -> \"cross-production-audit\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "affluenza-off-west-end-2026/timeout-london--andrzej-lukowski.json publishDate: \"2026-09-21\" -> \"2026-10-09\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json humanReviewScore: null -> 86"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "franz-and-marie-west-end-2026/jupiterhadley--jupiter.json humanReviewNote: null -> \"Page has no star rating (empty rating widget); 5/5 original score is unsupported, using text-based score 86.\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rent-west-end-2026/thereviewshub--a-tran-ngoc.json"
+    }
+  ]
+}

@@ -1,0 +1,673 @@
+{
+  "issueNumber": "bro-6160",
+  "planId": "aa81e6e1-0fa3-4c6e-ae02-4b9b2f14683a",
+  "status": "partial",
+  "createdAt": "2026-10-24T19:00:04.856Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6160: cite NY AG-filed financials quoted in Broadway Journal posts for 10 Broadway shows, add entries for Hello Dolly 2017 and In Transit",
+    "steps": [
+      "hamilton: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "hamilton: record AG-sourced figures (BRO-6160)",
+      "book-of-mormon: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "book-of-mormon: record AG-sourced figures (BRO-6160)",
+      "cabaret-2024: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "cabaret-2024: record AG-sourced figures (BRO-6160)",
+      "cabaret-2024: weekly cost source (AG statement)",
+      "moulin-rouge: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "moulin-rouge: record AG-sourced figures (BRO-6160)",
+      "harry-potter: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "harry-potter: record AG-sourced figures (BRO-6160)",
+      "chicago: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "chicago: record AG-sourced figures (BRO-6160)",
+      "king-kong-2018: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "king-kong-2018: record AG-sourced figures (BRO-6160)",
+      "beautiful-the-carole-king-musical-2014: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "beautiful-the-carole-king-musical-2014: record AG-sourced figures (BRO-6160)",
+      "dear-evan-hansen-2016: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)",
+      "dear-evan-hansen-2016: record AG-sourced figures (BRO-6160)",
+      "hello-dolly-2017: add entry from AG-sourced Broadway Journal figures (BRO-6160)",
+      "in-transit-2016: add entry from AG-budget figures (BRO-6160)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hamilton",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2016/06/12/theater/hamilton-inc-the-path-to-a-billion-dollar-show.html",
+            "date": "2016-06-12"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2016/06/12/theater/hamilton-inc-the-path-to-a-billion-dollar-show.html",
+            "date": "2016-06-12"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/hamilton-inc-update-creators-producers-clean-up-as-muzzled-cast-waits-for-it",
+            "date": "2018-04-25",
+            "excerpt": "Broadway production distributed more than $102M of profit through Nov 2017, per documents filed with NY State; raised $12.5M, recouped and made first distribution six months after opening."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/hamilton-pays-miranda-seller-tens-of-millions-a-year",
+            "date": "2018-04-26",
+            "excerpt": "Annual statement filed with NY AG: Miranda $12.7M author royalties and profit participation in 12 months to July 2017; producers 3% of adjusted box office ($3.8M) plus $200,000 office charges."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/hamilton-producer-received-emergency-small-business-loan-exclusive",
+            "date": "2020-07-07",
+            "excerpt": "Broadway production distributed $72M of profit in the year ending July 2019, per papers filed with NY AG; producers earned a further $10M in royalties, office charges and off-the-top profit."
+          }
+        ],
+        "description": "hamilton: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hamilton",
+        "field": "notes",
+        "oldValue": "Recouped its $12.5M Broadway capitalization ~8 months after first preview (Jul 2015 → Mar 2016; often misreported as 10 weeks). By mid-2016 grossing ~$600k/week in profit. Multiple productions worldwide; estimated total profit exceeds $1B.",
+        "newValue": "Recouped its $12.5M Broadway capitalization ~8 months after first preview (Jul 2015 → Mar 2016; often misreported as 10 weeks). By mid-2016 grossing ~$600k/week in profit. Multiple productions worldwide; estimated total profit exceeds $1B. AG-filed figures (Broadway Journal Apr 25 2018, Apr 26 2018, Jul 7 2020): distributed over $102M profit through Nov 2017; weekly operating profit averaged $1.15M in the year to July 2017 (48% of box office); $72M distributed in the year to July 2019 (producers take half of adjusted net profit); the Broadway producers also earned $10M of royalties, office charges and off-the-top profit in 2018-19. Per the Apr 2018 post the production recouped six months after opening night (recoupedDate left unchanged, within the ~8 months from first preview already recorded).",
+        "description": "hamilton: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "book-of-mormon",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/news/general-news/book-of-mormon-recoup-267128/",
+            "date": "2011-11-29"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.hollywoodreporter.com/news/general-news/book-of-mormon-recoup-267128/",
+            "date": "2011-11-29"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/book-of-mormon-black-actors-push-to-change-portrayal-of-africans-exclusive",
+            "date": "2021-02-27",
+            "excerpt": "The $9.4M production distributed $81M of profits from its first four years on Broadway, per financial statements filed with the state; weekly expenses excluding royalties averaged $760,000 in the 12 months to Feb 2015."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/mormon-pays-millions-to-workshop-cast-as-actors-lament-rise-of-royalty-free-developmental-labs",
+            "date": "2016-04-15",
+            "excerpt": "Estimate of about $3M paid to workshop actors on the Broadway run, based on Mormon financial results obtained from the NY AG via FOIL."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/rudin-angles-to-retain-mormon-profits-as-lawsuits-flourish-exclusive",
+            "date": "2021-09-22",
+            "excerpt": "Paid out $81M of adjusted net profit to producers and investors over its first four years on Broadway, per papers filed with the state; production costs $9.4M."
+          }
+        ],
+        "description": "book-of-mormon: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "book-of-mormon",
+        "field": "notes",
+        "oldValue": "Recouped in ~9 months. Multiple touring and international productions. Investors received multiple returns. Received $9.9M SVOG grant (per NY Business Journal Jul 2021).",
+        "newValue": "Recouped in ~9 months. Multiple touring and international productions. Investors received multiple returns. Received $9.9M SVOG grant (per NY Business Journal Jul 2021). AG-filed figures (Broadway Journal Feb 27 2021, Sep 22 2021, Apr 15 2016): paid out $81M of adjusted net profit over its first four years on Broadway; weekly expenses excluding royalties averaged $760,000 in the 12 months to Feb 2015 (the last year available); about $3M of royalties paid to workshop cast on the Broadway run (FOIL). Conflict noted, not resolved: those posts give production costs of $9.4M while the recorded capitalization is $11.4M (Hollywood Reporter); capitalization left unchanged.",
+        "description": "book-of-mormon: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
+            "date": "2025-09-07",
+            "excerpt": "Initial capitalization $24.25M; $7.5M spent transforming the August Wilson into the Kit Kat Club. The production has not returned any money to investors, a total loss to date."
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
+            "date": "2025-09-07",
+            "excerpt": "Initial capitalization $24.25M; $7.5M spent transforming the August Wilson into the Kit Kat Club. The production has not returned any money to investors, a total loss to date."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/cabaret-producers-investor-tried-to-extort-us",
+            "date": "2025-09-25",
+            "excerpt": "Closed after grossing $90.3M over 610 performances; has returned no money to Broadway backers, a total loss of its $24.25M capitalization. Expenses averaged $1.5M a week in the first seven weeks after opening, per a financial statement filed with NY AG."
+          }
+        ],
+        "description": "cabaret-2024: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "notes",
+        "oldValue": "Closed Oct 2025 without recouping. Actual capitalization $24.25M (not $26M). $7.5M of investor money used to convert Kit Kat Club venue owned by ATG (the lead producer's parent company). Active investor lawsuit alleging producers used investor funds to improve their own real estate. Weekly nut $1.5M proved unsustainable. Investors received 0% recovery. Playbill (Sep 10, 2025): the producers said the production \"has not been in a position fiscally to make any distribution to investors.\" https://playbill.com/article/facing-lawsuit-cabaret-producers-say-they-are-not-able-to-repay-investors",
+        "newValue": "Closed Oct 2025 without recouping. Actual capitalization $24.25M (not $26M). $7.5M of investor money used to convert Kit Kat Club venue owned by ATG (the lead producer's parent company). Active investor lawsuit alleging producers used investor funds to improve their own real estate. Weekly nut $1.5M proved unsustainable. Investors received 0% recovery. Playbill (Sep 10, 2025): the producers said the production \"has not been in a position fiscally to make any distribution to investors.\" https://playbill.com/article/facing-lawsuit-cabaret-producers-say-they-are-not-able-to-repay-investors Per financial statement filed with NY AG (Broadway Journal Sep 25 2025): expenses averaged $1.5M a week over the first seven weeks after official opening; closed Oct 2025 after grossing $90.3M over 610 performances with nothing returned to Broadway backers (total loss of the $24.25M).",
+        "description": "cabaret-2024: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Sep 25, 2025): in the first seven weeks after officially opening, expenses averaged $1.5 million a week, per a financial statement filed with NY AG. https://www.broadwayjournal.com/p/cabaret-producers-investor-tried-to-extort-us",
+        "description": "cabaret-2024: weekly cost source (AG statement)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/moulin-rouge-recoups-on-broadway/",
+            "date": "2023-08-03"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/moulin-rouge-the-musical-will-close-on-broadway-this-summer",
+            "date": "2026-02-05"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/moulin-rouge-recoups-on-broadway/",
+            "date": "2023-08-03"
+          },
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/moulin-rouge-the-musical-will-close-on-broadway-this-summer",
+            "date": "2026-02-05"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/moulin-rouge-strange-loop-test-tony-tradition-of-goosing-grosses",
+            "date": "2022-06-11",
+            "excerpt": "MRB Musical LLC had returned 70 percent of its $28M capitalization to investors as of May 31, 2022, per papers filed with NY AG; $15M performance disruption insurance plus $10M SVOG exceeded the $18M spent shuttering and reopening."
+          }
+        ],
+        "description": "moulin-rouge: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "moulin-rouge",
+        "field": "notes",
+        "oldValue": "Recouped ~3 years after opening (Nov 2022, per SEC filing via Broadway News). Has grossed $194M+ on Broadway. Closing July 26, 2026 after 7 years (2,265 regular performances + 24 previews). Will be 36th longest-running show in Broadway history. Received $9.9M SVOG grant.",
+        "newValue": "Recouped ~3 years after opening (Nov 2022, per SEC filing via Broadway News). Has grossed $194M+ on Broadway. Closing July 26, 2026 after 7 years (2,265 regular performances + 24 previews). Will be 36th longest-running show in Broadway history. Received $9.9M SVOG grant. Per papers filed with NY AG (Broadway Journal Jun 11 2022): MRB Musical LLC had returned 70% of its $28M capitalization as of May 31 2022, helped by $15M of performance-disruption insurance proceeds and $10M of federal SVOG relief, which exceeded the $18M spent shuttering (Mar 2020) and reopening (Sep 2021). Consistent with the later Nov 2022 recoupment.",
+        "description": "moulin-rouge: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harry-potter",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/harry-potters-cursed-returns",
+            "date": "2025-12-16",
+            "excerpt": "Investors earned 6% total return (11% with NY tax credit). Total profit distributions of $2.3M on $35.5M capitalization. Show posted $3.5M operating loss year ending Feb 2025."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2018/04/14/theater/harry-potter-broadway.html",
+            "date": "2018-04-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.seattletimes.com/nation-world/harry-potter-is-coming-to-broadway-for-68m/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.wral.com/story/harry-potter-feathers-his-nest-68-million-on-broadway/17486978/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/harry-potter-and-the-cursed-child-recoups-investment/",
+            "date": "2023-04-18"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/harry-potters-cursed-returns",
+            "date": "2025-12-16",
+            "excerpt": "Investors earned 6% total return (11% with NY tax credit). Total profit distributions of $2.3M on $35.5M capitalization. Show posted $3.5M operating loss year ending Feb 2025."
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2018/04/14/theater/harry-potter-broadway.html",
+            "date": "2018-04-14"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.seattletimes.com/nation-world/harry-potter-is-coming-to-broadway-for-68m/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.wral.com/story/harry-potter-feathers-his-nest-68-million-on-broadway/17486978/",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/harry-potter-and-the-cursed-child-recoups-investment/",
+            "date": "2023-04-18"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/harry-potter-the-cursed-box-office-yardstick",
+            "date": "2019-12-01",
+            "excerpt": "Excluding royalties, weekly expenses were $1.1M immediately after the April 2018 opening, per financial statements filed with NY AG."
+          }
+        ],
+        "description": "harry-potter: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "harry-potter",
+        "field": "notes",
+        "oldValue": "Most expensive play ever to recoup, but investor returns are minimal. Per Broadway Journal (Boroff, Dec 2025), only $2.3M in profit distributions to investors (6% return over 7 years). High insider profit share (31% of net profits), $34M+ in theater rent to ATG, and $10M+ in producer royalties/fees absorbed most of the $456M gross. Posted $3.5M operating loss year ending Feb 2025. [Merged from duplicate harry-potter-2021 entry: Record-breaking $68 million investment for Broadway nonmusical play, primarily for theater renovations and production setup. Show opened in 2018 and remains open, but no recoupment information available.]",
+        "newValue": "Most expensive play ever to recoup, but investor returns are minimal. Per Broadway Journal (Boroff, Dec 2025), only $2.3M in profit distributions to investors (6% return over 7 years). High insider profit share (31% of net profits), $34M+ in theater rent to ATG, and $10M+ in producer royalties/fees absorbed most of the $456M gross. Posted $3.5M operating loss year ending Feb 2025. [Merged from duplicate harry-potter-2021 entry: Record-breaking $68 million investment for Broadway nonmusical play, primarily for theater renovations and production setup. Show opened in 2018 and remains open, but no recoupment information available.] Per financial statements filed with NY AG (Broadway Journal Dec 1 2019): weekly expenses excluding royalties were $1.1M immediately after the April 2018 opening; consistent with the $1M+ weeklyRunningCost already recorded, which is unchanged.",
+        "description": "harry-potter: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/chicago-theatrical-records-how-the-trailblazing-musical-set-a-new-broadway-standard",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+            "date": "2022-08-23"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/chicago-theatrical-records-how-the-trailblazing-musical-set-a-new-broadway-standard",
+            "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive",
+            "date": "2022-08-23"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/waitress-scores-10-million-tip-from-feds",
+            "date": "2021-07-07",
+            "excerpt": "Chicago earned a net profit of $91M on Broadway as of Jan 2019, per production financial statements filed with the NY AG; gross sales $681M."
+          }
+        ],
+        "description": "chicago: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chicago",
+        "field": "notes",
+        "oldValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. Weekly expenses were just under $600,000 at the beginning of 2020, per its financial statement filed with the New York Attorney General (Broadway Journal). Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26).",
+        "newValue": "Longest-running American musical in Broadway history. $700M+ Broadway gross. Low-cost concert staging was revolutionary. Weekly expenses were just under $600,000 at the beginning of 2020, per its financial statement filed with the New York Attorney General (Broadway Journal). Recouped. Whitney Leavitt's Feb-Mar 2026 run set highest grossing period in show's 29-year history ($1.46M week of 3/15/26). Per production financial statements filed with NY AG (Broadway Journal Jul 7 2021): net profit of $91M on Broadway as of Jan 2019 on gross sales of $681M.",
+        "description": "chicago: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm",
+            "date": "2018-04-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2019/06/king-kong-the-cher-show-broadway-closing-notices-tony-awards-1202638102/",
+            "date": "2019-06-26",
+            "excerpt": "That massive $36.5M will not be recouped when the show closes Aug. 18"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/creating-the-stage-spectacular-of-moulin-rouge/",
+            "date": "2019-07-22"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm",
+            "date": "2018-04-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2019/06/king-kong-the-cher-show-broadway-closing-notices-tony-awards-1202638102/",
+            "date": "2019-06-26",
+            "excerpt": "That massive $36.5M will not be recouped when the show closes Aug. 18"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/creating-the-stage-spectacular-of-moulin-rouge/",
+            "date": "2019-07-22"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/lavish-dolly-earns-modest-returns",
+            "date": "2018-08-23",
+            "excerpt": "King Kong capitalized at $33.5 million to $36.5 million, according to financial papers filed with the state."
+          }
+        ],
+        "description": "king-kong-2018: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "field": "notes",
+        "oldValue": "Spectacle musical featuring a 20-foot, 2,000-pound animatronic puppet. Opened Nov 2018, closed Aug 2019 after 324 performances. Most expensive Broadway debut of its season at $35-36.5M (SEC filing). Weekly costs $1M+ due to massive puppet and crew. Only hit breakeven during holiday peaks. Grossed $36.71M total — barely equal to its budget. Near-total loss.",
+        "newValue": "Spectacle musical featuring a 20-foot, 2,000-pound animatronic puppet. Opened Nov 2018, closed Aug 2019 after 324 performances. Most expensive Broadway debut of its season at $35-36.5M (SEC filing). Weekly costs $1M+ due to massive puppet and crew. Only hit breakeven during holiday peaks. Grossed $36.71M total — barely equal to its budget. Near-total loss. Per financial papers filed with the state (Broadway Journal Aug 23 2018): capitalized at $33.5M to $36.5M, consistent with the recorded $35M; capitalization unchanged.",
+        "description": "king-kong-2018: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beautiful-the-carole-king-musical-2014",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/beautiful-is-broadway-box-office-gold-carole-king-musical-recoups-com-330554",
+            "date": "2014-09-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/carole-king-beautiful-recoups-broadway-1201306008/",
+            "date": "2014-09-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/09/carole-king-musical-beautiful-recoups-13-million-broadway-capitalization-as-tony-winner-mueller-re-ups-834495/",
+            "date": "2014-09-15"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/beautiful-is-broadway-box-office-gold-carole-king-musical-recoups-com-330554",
+            "date": "2014-09-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://variety.com/2014/legit/news/carole-king-beautiful-recoups-broadway-1201306008/",
+            "date": "2014-09-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2014/09/carole-king-musical-beautiful-recoups-13-million-broadway-capitalization-as-tony-winner-mueller-re-ups-834495/",
+            "date": "2014-09-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/rick-miramontez-says-hes-done-with-broadway-pr",
+            "date": "2016-03-18",
+            "excerpt": "Beautiful on Broadway LLC paid rent of $3.6M (not including expenses) in the year ending Oct 2014, per a production report filed with NY AG; the Roundabout subleased the Sondheim to the production."
+          }
+        ],
+        "description": "beautiful-the-carole-king-musical-2014: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beautiful-the-carole-king-musical-2014",
+        "field": "notes",
+        "oldValue": "Recouped $13 million capitalization in approximately 10 months after opening in January 2014. Ran for nearly 6 years until 2019, indicating strong commercial success.",
+        "newValue": "Recouped $13 million capitalization in approximately 10 months after opening in January 2014. Ran for nearly 6 years until 2019, indicating strong commercial success. Per production report filed with NY AG (Broadway Journal Mar 18 2016): Beautiful on Broadway LLC paid $3.6M rent, not including expenses, in the year ending Oct 2014 for the Roundabout-owned Sondheim.",
+        "description": "beautiful-the-carole-king-musical-2014: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dear-evan-hansen-2016",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2017/legit/news/dear-evan-hansen-recoup-1202497331/",
+            "date": "2017-07-17"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2017/07/17/tony-winner-dear-evan-hansen-is-first-to-turn-profit/",
+            "date": "2017-07-17"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://variety.com/2017/legit/news/dear-evan-hansen-recoup-1202497331/",
+            "date": "2017-07-17"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.forbes.com/sites/leeseymour/2017/07/17/tony-winner-dear-evan-hansen-is-first-to-turn-profit/",
+            "date": "2017-07-17"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/mindichs-history-making-win-other-tony-takeaways",
+            "date": "2017-06-12",
+            "excerpt": "Arena Stage and Second Stage each receive an undisclosed share of net profits, per financial papers filed with NY AG."
+          }
+        ],
+        "description": "dear-evan-hansen-2016: cite Broadway Journal post(s) quoting AG-filed financials (BRO-6160)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dear-evan-hansen-2016",
+        "field": "notes",
+        "oldValue": "Tony-winning musical that recouped its $9.5 million investment in July 2017, approximately 7 months after opening. Ran for nearly 6 years (2016-2022) with strong box office performance.",
+        "newValue": "Tony-winning musical that recouped its $9.5 million investment in July 2017, approximately 7 months after opening. Ran for nearly 6 years (2016-2022) with strong box office performance. Per financial papers filed with NY AG (Broadway Journal Jun 12 2017): the nonprofits Arena Stage and Second Stage each receive an undisclosed share of net profits.",
+        "description": "dear-evan-hansen-2016: record AG-sourced figures (BRO-6160)"
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "hello-dolly-2017: add entry from AG-sourced Broadway Journal figures (BRO-6160)",
+        "slug": "hello-dolly-2017",
+        "entry": {
+          "designation": "TBD",
+          "recouped": null,
+          "notes": "Per financial statements filed with NY State (Broadway Journal Apr 20 2021): weekly expenses exceeded $1.3M in some weeks of the 2017 Bette Midler revival. Per financial papers (Aug 23 2018): Jerry Herman and the Michael Stewart estate received a one-time $350,000 fee, 20% of weekly operating profit and 10% of net profit after recoupment. Investors reportedly earned a 5% profit by Aug 2018 (people familiar, not an AG figure). Outcome label left TBD pending a cited capitalization.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/lavish-dolly-earns-modest-returns",
+              "date": "2018-08-23",
+              "excerpt": "Investors in Scott Rudin's revival of Hello, Dolly! have earned a profit of 5 percent, according to two people familiar with the production; royalty terms per financial papers."
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/producers-weigh-reducing-performance-week-for-restart",
+              "date": "2021-04-20",
+              "excerpt": "Expenses in some weeks exceeded $1.3 million, according to financial statements filed with New York state."
+            }
+          ]
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "in-transit-2016: add entry from AG-budget figures (BRO-6160)",
+        "slug": "in-transit-2016",
+        "entry": {
+          "designation": "TBD",
+          "recouped": false,
+          "notes": "Per a budget filed with the NY AG in summer 2016 (Broadway Journal Feb 2 2017): the production needed minimum weekly sales of $439,000 to pay expenses (includes credit card commissions and other extras that count toward League grosses); lead producer Janet Rosen said actual breakeven was below $400,000 because of conservative budgeting. Sales the week before were $338,000. Capitalized at just under $7M. Closed Feb 2017 without a reported recoupment.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.broadwayjournal.com/p/economical-in-transit-seeks-boost-from-clinton-endorsement",
+              "date": "2017-02-02",
+              "excerpt": "Budget filed with the NY AG: minimum weekly sales of $439,000 needed; capitalized at just under $7 million."
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T21:43:04.542Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for hamilton"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for hamilton"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for book-of-mormon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for book-of-mormon"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for moulin-rouge"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for moulin-rouge"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for harry-potter"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for harry-potter"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for chicago"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for beautiful-the-carole-king-musical-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for beautiful-the-carole-king-musical-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dear-evan-hansen-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dear-evan-hansen-2016"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added hello-dolly-2017 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: \"in-transit-2016\" already has a commercial entry (use data-edit)"
+    }
+  ],
+  "executedIn": "ci"
+}

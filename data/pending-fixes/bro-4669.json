@@ -1,0 +1,301 @@
+{
+  "issueNumber": "bro-4669",
+  "planId": "a7a46385-ceb6-4b77-9b21-0617cb796fb2",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4669 (BRO-4623 owner decision 3A): Appropriate, Sweeney Todd (2023) and Into the Woods (2022) stay recouped and are flagged as never publicly announced, so the show page prints \"Not publicly announced\". Nine records lose internal wording that reached the public page (\"Per policy applied 2026-05-24\", \"recouped:null because no public citation\", \"Kept recouped:true per owner review\").",
+    "steps": [
+      "isEstimate {recouped: true} on appropriate, into-the-woods-2022 and sweeney-todd-2023 (none had isEstimate).",
+      "Sweeney Todd: recoupedSource rewritten as a public citation of the Broadway Journal projection; notes no longer state the recoupment as fact.",
+      "Five nonprofit/enhancement records: the \"Per policy applied\" sentence is cut from notes and recoupedSource says no outcome was announced.",
+      "Three more recoupedSource lines drop \"recouped:null because no public citation\"."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "showId": "appropriate",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recouped": true
+        },
+        "description": "appropriate: isEstimate (owner decision 3A: recouped, never announced; prints \"Not publicly announced\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "into-the-woods-2022",
+        "showId": "into-the-woods-2022",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recouped": true
+        },
+        "description": "into-the-woods-2022: isEstimate (owner decision 3A: recouped, never announced; prints \"Not publicly announced\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "showId": "sweeney-todd-2023",
+        "field": "isEstimate",
+        "oldValue": null,
+        "newValue": {
+          "recouped": true
+        },
+        "description": "sweeney-todd-2023: isEstimate (owner decision 3A: recouped, never announced; prints \"Not publicly announced\")"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "showId": "sweeney-todd-2023",
+        "field": "recoupedSource",
+        "oldValue": "No producer announcement; Broadway Journal (Aug 25 2023) projected recoupment ~fall 2023 (~33 weeks, $14.5M cap). Kept recouped:true per owner review 2026-07-13 — editorial judgment from trade projection + sustained $1M+ weeks.",
+        "newValue": "No producer announcement. Broadway Journal (Aug 25, 2023) projected recoupment by fall 2023, about 33 weeks into the run, on a $14.5M capitalization. Counted as recouped on that projection and the run's sustained $1M+ weekly grosses.",
+        "description": "sweeney-todd-2023: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "sweeney-todd-2023",
+        "showId": "sweeney-todd-2023",
+        "field": "notes",
+        "oldValue": "Smash hit revival with Josh Groban and Annaleigh Ashford, then Sutton Foster. Opened Mar 2023, ran 487 performances through Jan 2025. Capitalized at $14.5M with ~$840K weekly nut. Often grossed $1.5-2M weekly at ~97% average capacity. Recouped entire investment in under a year. Grossed $100.12M total — a major commercial success.",
+        "newValue": "Smash hit revival with Josh Groban and Annaleigh Ashford, then Sutton Foster. Opened Mar 2023, ran 487 performances through Jan 2025. Capitalized at $14.5M with ~$840K weekly nut. Often grossed $1.5-2M weekly at ~97% average capacity. Broadway Journal projected it would recoup by fall 2023; the producers never announced a recoupment. Grossed $100.12M total — a major commercial success.",
+        "description": "sweeney-todd-2023: notes (an unannounced recoupment was stated as fact)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "floyd-collins-2025",
+        "showId": "floyd-collins-2025",
+        "field": "notes",
+        "oldValue": "LCT enhancement deal at Vivian Beaumont — commercial co-producers Creative Partners Productions + Mark Cortale + Charles D. Urstadt \"in association with Lincoln Center Theater\" (canonical LCT enhancement structure). Adam Guettel musical revival; 6 Tony noms including Best Revival of a Musical. Ran limited LCT subscription engagement; closed 2025-06-22 on schedule. Per policy applied 2026-05-24: demoted from Flop → Nonprofit because no explicit \"did not recoup\" trade-press citation. Limited run on schedule + 6 Tony noms doesn't match Flop framing.",
+        "newValue": "LCT enhancement deal at Vivian Beaumont — commercial co-producers Creative Partners Productions + Mark Cortale + Charles D. Urstadt \"in association with Lincoln Center Theater\" (canonical LCT enhancement structure). Adam Guettel musical revival; 6 Tony noms including Best Revival of a Musical. Ran limited LCT subscription engagement; closed 2025-06-22 on schedule.",
+        "description": "floyd-collins-2025: notes (drop the internal \"Per policy applied\" sentence from public notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "floyd-collins-2025",
+        "showId": "floyd-collins-2025",
+        "field": "recoupedSource",
+        "oldValue": "(no explicit recoupment-failure citation located; LCT season closed on schedule, 6 Tony noms — Flop tag appears to be inherited mislabel)",
+        "newValue": "No recoupment outcome has been announced. The Lincoln Center Theater limited engagement closed on schedule on 2025-06-22.",
+        "description": "floyd-collins-2025: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pirates-the-penzance-musical-2025",
+        "showId": "pirates-the-penzance-musical-2025",
+        "field": "notes",
+        "oldValue": "Roundabout enhancement deal at Todd Haimes Theatre — commercial co-producers James L. Nederlander, Fran and Paul Turner, ATG Productions/Gavin Kalin Productions \"in association with Roundabout Theatre Company\". Rupert Holmes/Joe Iconis adaptation. Extended 4 weeks past originally scheduled close; ran through 2025-07-27. Per policy applied 2026-05-24: demoted from Flop → Nonprofit because no explicit \"did not recoup\" citation. Extension + popular demand contradicts Flop framing.",
+        "newValue": "Roundabout enhancement deal at Todd Haimes Theatre — commercial co-producers James L. Nederlander, Fran and Paul Turner, ATG Productions/Gavin Kalin Productions \"in association with Roundabout Theatre Company\". Rupert Holmes/Joe Iconis adaptation. Extended 4 weeks past originally scheduled close; ran through 2025-07-27.",
+        "description": "pirates-the-penzance-musical-2025: notes (drop the internal \"Per policy applied\" sentence from public notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "pirates-the-penzance-musical-2025",
+        "showId": "pirates-the-penzance-musical-2025",
+        "field": "recoupedSource",
+        "oldValue": "(no explicit recoupment-failure citation located; Roundabout limited run EXTENDED 4 weeks past original close, ending 2025-07-27 — Flop tag not supported)",
+        "newValue": "No recoupment outcome has been announced. The Roundabout limited run was extended four weeks and closed 2025-07-27.",
+        "description": "pirates-the-penzance-musical-2025: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stephen-sondheims-old-friends-2025",
+        "showId": "stephen-sondheims-old-friends-2025",
+        "field": "notes",
+        "oldValue": "West End-origin Sondheim revue brought to Broadway by Cameron Mackintosh (CMI) and Daryl Roth in partnership with MTC at the Friedman — explicit enhancement arrangement. Bernadette Peters and Lea Salonga reprised West End roles. Two extensions; final 12+-week run closed 2025-06-29. 91.86% avg capacity on $7.67M total gross. Per policy applied 2026-05-24: demoted from Flop → Nonprofit because no explicit \"did not recoup\" citation. Strong capacity + extensions contradict Flop framing.",
+        "newValue": "West End-origin Sondheim revue brought to Broadway by Cameron Mackintosh (CMI) and Daryl Roth in partnership with MTC at the Friedman — explicit enhancement arrangement. Bernadette Peters and Lea Salonga reprised West End roles. Two extensions; final 12+-week run closed 2025-06-29. 91.86% avg capacity on $7.67M total gross.",
+        "description": "stephen-sondheims-old-friends-2025: notes (drop the internal \"Per policy applied\" sentence from public notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "stephen-sondheims-old-friends-2025",
+        "showId": "stephen-sondheims-old-friends-2025",
+        "field": "recoupedSource",
+        "oldValue": "(no explicit recoupment-failure citation located; extended twice, 91.86% avg capacity on $7.67M gross — Flop tag not supported)",
+        "newValue": "No recoupment outcome has been announced. The run was extended twice and averaged 91.86% capacity on $7.67M total gross.",
+        "description": "stephen-sondheims-old-friends-2025: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "my-fair-lady-2018",
+        "showId": "my-fair-lady-2018",
+        "field": "notes",
+        "oldValue": "LCT 2017-18 season at Vivian Beaumont with commercial enhancement (Nederlander Presentations Inc.). Bartlett Sher Lerner-Loewe revival; Lauren Ambrose, Harry Hadden-Paton, Norbert Leo Butz. 548 performances over 15 months; national tour followed. Per policy applied 2026-05-24: designation=Nonprofit because no hard recoupment citation, despite long run + tour suggesting commercial success.",
+        "newValue": "LCT 2017-18 season at Vivian Beaumont with commercial enhancement (Nederlander Presentations Inc.). Bartlett Sher Lerner-Loewe revival; Lauren Ambrose, Harry Hadden-Paton, Norbert Leo Butz. 548 performances over 15 months; national tour followed.",
+        "description": "my-fair-lady-2018: notes (drop the internal \"Per policy applied\" sentence from public notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "my-fair-lady-2018",
+        "showId": "my-fair-lady-2018",
+        "field": "recoupedSource",
+        "oldValue": "(no explicit recoupment citation located; long Beaumont run + national tour suggests commercial success but no Playbill confirmation)",
+        "newValue": "No recoupment outcome has been announced. The production played 548 performances at the Vivian Beaumont and was followed by a national tour.",
+        "description": "my-fair-lady-2018: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "camelot-2023",
+        "showId": "camelot-2023",
+        "field": "notes",
+        "oldValue": "LCT shell + commercial co-producers Trafalgar Entertainment (Howard Panter/Rosemary Squire) and The Dodgers. Aaron Sorkin/Bartlett Sher revival. Closed early 2023-07-23 (~5 weeks short of LCT typical run) after softening grosses and capacity slipping to 80%. Total gross ~$15.2M. Per policy applied 2026-05-24: recouped:null because no explicit \"did not recoup\" trade-press citation, only indirect signals (early closing notice + soft grosses).",
+        "newValue": "LCT shell + commercial co-producers Trafalgar Entertainment (Howard Panter/Rosemary Squire) and The Dodgers. Aaron Sorkin/Bartlett Sher revival. Closed early 2023-07-23 (~5 weeks short of LCT typical run) after softening grosses and capacity slipping to 80%. Total gross ~$15.2M.",
+        "description": "camelot-2023: notes (drop the internal \"Per policy applied\" sentence from public notes)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "camelot-2023",
+        "showId": "camelot-2023",
+        "field": "recoupedSource",
+        "oldValue": "(no explicit recoupment-failure citation located; closed early after 5 weeks short of LCT typical run with capacity declining and 0/5 Tony conversion — indirect signals only)",
+        "newValue": "No recoupment outcome has been announced. The production closed early, on 2023-07-23, with capacity down to about 80%.",
+        "description": "camelot-2023: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "jajas-african-hair-braiding",
+        "showId": "jajas-african-hair-braiding",
+        "field": "recoupedSource",
+        "oldValue": "Closed 2023-11-19 after limited run; no recoupment announcement located. MTC + Madison Wells Live + LaChanze + Taraji P. Henson enhancement. recouped:null because no public outcome citation either way.",
+        "newValue": "Closed 2023-11-19 after a limited run. MTC production with commercial enhancement from Madison Wells Live, LaChanze and Taraji P. Henson. No recoupment outcome was announced either way.",
+        "description": "jajas-african-hair-braiding: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "field": "recoupedSource",
+        "oldValue": "Limited LCT engagement closed 2023-01-15; later filmed as Netflix special. No Broadway recoupment announcement either way. recouped:null because no public citation.",
+        "newValue": "Limited LCT engagement closed 2023-01-15; later filmed as a Netflix special. No Broadway recoupment outcome was announced either way.",
+        "description": "mike-birbiglia-the-old-man-and-the-pool-2022: recoupedSource (public wording, no internal field names)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "how-i-learned-to-drive-2022",
+        "showId": "how-i-learned-to-drive-2022",
+        "field": "recoupedSource",
+        "oldValue": "MTC + Daryl Roth + Cody Lassen enhancement. Closed 2022-05-29 after limited engagement. No recoupment announcement located. recouped:null because no public citation.",
+        "newValue": "MTC production with commercial enhancement from Daryl Roth and Cody Lassen. Closed 2022-05-29 after a limited engagement. No recoupment outcome was announced either way.",
+        "description": "how-i-learned-to-drive-2022: recoupedSource (public wording, no internal field names)"
+      }
+    ],
+    "changes": []
+  },
+  "executedAt": "2026-10-05T05:50:40.653Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for into-the-woods-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for sweeney-todd-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for floyd-collins-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for floyd-collins-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for pirates-the-penzance-musical-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for pirates-the-penzance-musical-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for stephen-sondheims-old-friends-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for my-fair-lady-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for my-fair-lady-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for camelot-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for camelot-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for jajas-african-hair-braiding"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for mike-birbiglia-the-old-man-and-the-pool-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for how-i-learned-to-drive-2022"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "creatorId": "theatreislife",
+  "platform": "tiktok",
+  "videoId": "7545919381641973022",
+  "videoUrl": "https://www.tiktok.com/@theatreislife/video/7545919381641973022",
+  "title": "Shoutout to the guy next to me in the theatre who was having the time...",
+  "publishedAt": "20250903",
+  "views": "8106",
+  "duration": "1:15",
+  "transcript": "Guess who just got to see shucked in the right order. Oh, my gosh, what a treat. Just got to L A. Today and found out that the Shucked Tour was in town, so obviously, I had to go see it Act 1 to Act 2 as opposed to the other way around. As a treat, got to see the incredible Zakeya Baptista's Lulu today and got to see Tyler Joseph Ellis for the first time because he was out the entire Atlanta run. Also, I absolutely love getting to see shucked in different cities because, uh, all of the different cities kind of react differently. And I realized that I'm definitely from LA because I feel like people were laughing at jokes that I used to be the only one laughing at, and I was like, oh, oh, humor is culture based. 우후",
+  "wordCount": 144,
+  "transcriptSource": "tiktok-subs",
+  "extractedAt": "2026-04-13T03:09:35.851Z",
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "single",
+    "candidateKey": "7545919381641973022",
+    "at": "2026-10-24T01:24:42.875Z"
+  },
+  "score": 88,
+  "bucket": "Rave",
+  "confidence": "medium",
+  "reasoning": "Creator expresses clear enthusiasm ('what a treat', 'incredible', 'absolutely love') about seeing Shucked again, this time in correct act order with standout performers. Clearly a positive first-hand review from an attended performance.",
+  "keyQuote": "Oh, my gosh, what a treat.",
+  "explicitRating": null,
+  "scoredAt": "2026-10-24T01:33:55.163Z",
+  "scoringModel": "claude-opus-4-7",
+  "promptVersion": 2,
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Just got to L A. Today and found out that the Shucked Tour was in town",
+    "reason": "The video explicitly mentions seeing the Shucked Tour in Los Angeles, which is a different city from the assigned production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The assigned production is a North American Tour, and the video explicitly states seeing the Shucked Tour in Los Angeles, which is a valid stop for a North American tour.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-10-24T01:38:43.267Z"
+  }
+}

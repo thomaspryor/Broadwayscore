@@ -1,0 +1,98 @@
+{
+  "issueNumber": "bro-5647-f",
+  "planId": "5a6dae92-54b1-49cc-a98c-256640fcfe61",
+  "status": "applied",
+  "createdAt": "2026-10-19T02:32:50.032Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Two capitalization fixes from Dots' audit of the Deep Research answers (Oct 18), each checked against the primary source: Liberation gets the $5,525,000 its SEC Form D/A states as the amount capitalized; Dolly moves from the $30M tryout-plus-Broadway total to the $17M the NY Post reports for Broadway. Resubmits bro-5647-e, which landed already marked applied (a local simulation wrote its status) and so never ran in CI.",
+    "steps": [
+      "Set Liberation capitalization and source from the SEC Form D/A",
+      "Set Dolly capitalization to the Broadway-only $17M, with source and notes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "showId": "liberation",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 5525000,
+        "description": "SEC Form D/A states the offering capitalized at $5,525,000."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "liberation",
+        "showId": "liberation",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "SEC Form D/A for Knitting Circle Broadway LLC, the producing company of Liberation (managing members Daryl Roth, Eva Price and Rachel Sussman), filed Jan 5, 2026: \"Offering capitalized at $5,525,000\" (minimum $5,000,000, maximum $6,250,000). https://www.sec.gov/Archives/edgar/data/2075411/000207541126000001/primary_doc.xml",
+        "description": "Primary filing; the LLC's managing members are Liberation's lead producers."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "showId": "dolly-an-original-musical",
+        "field": "capitalization",
+        "oldValue": 30000000,
+        "newValue": 17000000,
+        "description": "$30M is the Nashville tryout plus Broadway; NY Post gives $17M for Broadway."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "showId": "dolly-an-original-musical",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway Journal (Philip Boroff, Aug 12, 2026): \"The Dolly Parton musical Dolly ($30 million)\"; the figure includes its out-of-town tryout. https://www.broadwayjournal.com/p/broadway-stages-a-musical-comeback",
+        "newValue": "New York Post (Johnny Oleksinski, Jul 22, 2026): \"Dolly\"'s combined price tag for its Nashville tryout and New York productions is a hefty $30 million, including $17 million for Broadway. This is the Broadway figure; the $30 million (Broadway Journal, Aug 12, 2026) includes the tryout. https://nypost.com/2026/07/22/entertainment/two-risky-30-million-musicals-are-battling-on-broadway-dolly-and-paddington/",
+        "description": "Broadway-only figure, keeps the combined total for context."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dolly-an-original-musical",
+        "showId": "dolly-an-original-musical",
+        "field": "notes",
+        "oldValue": "Capitalized at $30 million including its out-of-town tryout (Broadway Journal, Aug 2026).",
+        "newValue": "Capitalized at $17 million for Broadway (NY Post, Jul 2026); $30 million including the Nashville tryout (Broadway Journal, Aug 2026).",
+        "description": "Notes match the new figure."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T02:47:13.068Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for liberation"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dolly-an-original-musical"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dolly-an-original-musical"
+    }
+  ]
+}

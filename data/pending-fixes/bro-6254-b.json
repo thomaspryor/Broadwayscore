@@ -1,0 +1,310 @@
+{
+  "issueNumber": "bro-6254-b",
+  "planId": "56da6123-03e0-4569-bce6-0777a9712223",
+  "status": "partial",
+  "createdAt": "2026-10-26T02:20:02.344Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear the stale wrong-production verdicts on the 8 Playwrights Horizons Prince Faggot reviews moved by plan bro-6254, so they score on prince-faggot-playwrights-horizons-off-broadway-2025.",
+    "steps": [
+      "clear ensemble rejection fields on the exeunt and theatre-reviews-limited files (first, so the retier can run)",
+      "wrongProductionManualClear true, then wrongProduction false (retiers the wrong_content tier) on all 8 files"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json: ensemble rejection was wrong_production against the Seaview row; review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json: ensemble rejection was wrong_production against the Seaview row; review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-25T22:41:49.153Z",
+        "newValue": null,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json: ensemble rejection was wrong_production against the Seaview row; review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json: ensemble rejection was wrong_production against the Seaview row; review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json: ensemble rejection was wrong_production against the Seaview row; review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-25T22:41:52.332Z",
+        "newValue": null,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json: ensemble rejection was wrong_production against the Seaview row; review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json: review of the Playwrights Horizons run (May 30-Aug 3 2025), now filed on that run's own row by plan bro-6254; the wrong-production verdict named the Studio Seaview row it sat on"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T06:28:32.770Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json rejectedAt: \"2026-10-25T22:41:49.153Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json rejectedAt: \"2026-10-25T22:41:52.332Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ],
+  "executedIn": "ci"
+}

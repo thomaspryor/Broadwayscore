@@ -1,0 +1,382 @@
+{
+  "issueNumber": "bro-6487-pn-f",
+  "planId": "1d043948-73fb-4c2f-b417-ba4b305a5283",
+  "status": "applied",
+  "createdAt": "2026-10-29T02:36:44.822Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6487: sourced West End press nights, set f of 11 (2012-13..2015-16 opening rows)",
+    "steps": [
+      "shows.json: the-war-of-the-worlds-west-end-2016.openingDate",
+      "shows.json: the-war-of-the-worlds-west-end-2016.openingDateSource",
+      "shows.json: the-taming-of-the-shrew-west-end-2016.openingDateSource",
+      "shows.json: our-boys-west-end-2012.openingDate",
+      "shows.json: our-boys-west-end-2012.openingDateSource",
+      "shows.json: twelfth-night-west-end-2012.openingDate",
+      "shows.json: twelfth-night-west-end-2012.openingDateSource",
+      "shows.json: old-times-west-end-2013.openingDate",
+      "shows.json: old-times-west-end-2013.openingDateSource",
+      "shows.json: peter-and-alice-west-end-2013.openingDate",
+      "shows.json: peter-and-alice-west-end-2013.openingDateSource",
+      "shows.json: the-hothouse-west-end-2013.openingDate",
+      "shows.json: the-hothouse-west-end-2013.openingDateSource",
+      "shows.json: dirty-dancing-west-end-2013.openingDateSource",
+      "shows.json: routes-west-end-2013.openingDate",
+      "shows.json: routes-west-end-2013.openingDateSource",
+      "shows.json: tell-me-on-a-sunday-west-end-2014.openingDateSource",
+      "shows.json: handbagged-west-end-2014.previewsStartDate",
+      "shows.json: handbagged-west-end-2014.openingDate",
+      "shows.json: handbagged-west-end-2014.openingDateSource",
+      "shows.json: richard-iii-west-end-2014.openingDate",
+      "shows.json: richard-iii-west-end-2014.openingDateSource",
+      "shows.json: king-charles-iii-west-end-2014.openingDate",
+      "shows.json: king-charles-iii-west-end-2014.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-war-of-the-worlds-west-end-2016",
+        "field": "openingDate",
+        "oldValue": "2016-02-08",
+        "newValue": "2016-02-17",
+        "description": "shows.json: the-war-of-the-worlds-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-war-of-the-worlds-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2016-02-17 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: the-war-of-the-worlds-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-taming-of-the-shrew-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: the-taming-of-the-shrew-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-boys-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-09-26",
+        "newValue": "2012-10-03",
+        "description": "shows.json: our-boys-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "our-boys-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-10-03 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: our-boys-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-west-end-2012",
+        "field": "openingDate",
+        "oldValue": "2012-11-02",
+        "newValue": "2012-11-17",
+        "description": "shows.json: twelfth-night-west-end-2012.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-west-end-2012",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2012-11-17 (soniafriedman.com; BRO-6487)",
+        "description": "shows.json: twelfth-night-west-end-2012.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "old-times-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-01-12",
+        "newValue": "2013-01-31",
+        "description": "shows.json: old-times-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "old-times-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-01-31 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: old-times-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-and-alice-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-03-09",
+        "newValue": "2013-03-25",
+        "description": "shows.json: peter-and-alice-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peter-and-alice-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-03-25 (whatsonstage.com; BRO-6487)",
+        "description": "shows.json: peter-and-alice-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hothouse-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-05-04",
+        "newValue": "2013-05-09",
+        "description": "shows.json: the-hothouse-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-hothouse-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-05-09 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: the-hothouse-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dirty-dancing-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: dirty-dancing-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "routes-west-end-2013",
+        "field": "openingDate",
+        "oldValue": "2013-09-20",
+        "newValue": "2013-09-25",
+        "description": "shows.json: routes-west-end-2013.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "routes-west-end-2013",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2013-09-25 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: routes-west-end-2013.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tell-me-on-a-sunday-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "theatricalia-first-performance",
+        "newValue": "first-performance-no-press-night-found",
+        "description": "shows.json: tell-me-on-a-sunday-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "handbagged-west-end-2014",
+        "field": "previewsStartDate",
+        "oldValue": "2014-04-10",
+        "newValue": "2014-04-03",
+        "description": "shows.json: handbagged-west-end-2014.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "handbagged-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-04-10",
+        "newValue": "2014-04-10",
+        "description": "shows.json: handbagged-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "handbagged-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-04-10 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: handbagged-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "richard-iii-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-07-01",
+        "newValue": "2014-07-08",
+        "description": "shows.json: richard-iii-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "richard-iii-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-07-08 (broadwayworld.com; BRO-6487)",
+        "description": "shows.json: richard-iii-west-end-2014.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-charles-iii-west-end-2014",
+        "field": "openingDate",
+        "oldValue": "2014-09-02",
+        "newValue": "2014-09-11",
+        "description": "shows.json: king-charles-iii-west-end-2014.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-charles-iii-west-end-2014",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night 2014-09-11 (londontheatre.co.uk; BRO-6487)",
+        "description": "shows.json: king-charles-iii-west-end-2014.openingDateSource"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T14:13:57.681Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-war-of-the-worlds-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-war-of-the-worlds-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-taming-of-the-shrew-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for our-boys-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for our-boys-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for twelfth-night-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for twelfth-night-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for old-times-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for old-times-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for peter-and-alice-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for peter-and-alice-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-hothouse-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-hothouse-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for dirty-dancing-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for routes-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for routes-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for tell-me-on-a-sunday-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for handbagged-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for handbagged-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for handbagged-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for richard-iii-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for richard-iii-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for king-charles-iii-west-end-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for king-charles-iii-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
+}

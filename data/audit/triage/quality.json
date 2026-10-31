@@ -1,0 +1,80 @@
+{
+  "system": "quality",
+  "status": "warn",
+  "lastChecked": "2026-10-31T08:29:12.837Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Quality: opening date vs review dates",
+      "status": "warn",
+      "message": "10 show(s) store an opening date later than their reviews: an-american-in-paris-west-end-2017 (stored 2017-04-01, reviews 2017-03-22); a-man-for-all-seasons-royal-bath-regional-2025 (stored 2025-01-26, reviews 2025-01-23); a-small-and-quiet-light-chichester-festival-regional-2026 (stored 2026-08-31, reviews 2026-08-28)"
+    },
+    {
+      "name": "Quality: star-vs-score mismatch",
+      "status": "warn",
+      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: cardinal-off-broadway-2018 Theatre's Leiter Side A→90 vs LLM 36, gap 54)"
+    },
+    {
+      "name": "Quality: scored review ratio",
+      "status": "pass",
+      "message": "94.0% scored (41439/44085)"
+    },
+    {
+      "name": "Quality: corpus drift",
+      "status": "pass",
+      "message": "26 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
+    },
+    {
+      "name": "Quality: DMARC deliverability",
+      "status": "pass",
+      "message": "16538 messages, 0 auth failures (p=reject)"
+    },
+    {
+      "name": "Quality: missing contentTier",
+      "status": "pass",
+      "message": "No scored reviews missing contentTier"
+    },
+    {
+      "name": "Quality: outlet domain moves",
+      "status": "warn",
+      "message": "1 unregistered host(s) name-match a registered outlet (e.g. slleiter.blogspot.fr → theatres-leiter-side) — probable domain move dropping reviews via domain-mismatch"
+    },
+    {
+      "name": "Quality: Show Score gap",
+      "status": "pass",
+      "message": "Every opened Broadway/off-Broadway show with a cached Show Score URL has a Show Score audience score"
+    },
+    {
+      "name": "Quality: outlet stub rate",
+      "status": "pass",
+      "message": "No broken-extractor signature in 1779 outlet(s), 73797 review(s)"
+    },
+    {
+      "name": "Quality: outlet invalid-content rate",
+      "status": "warn",
+      "message": "2 outlet(s) show a broken-extractor signature (worst: bristol247 — 4/6 recent invalid, 67% vs 0% baseline)"
+    },
+    {
+      "name": "Quality: standingCoverage drift",
+      "status": "pass",
+      "message": "No standingCoverage drift"
+    },
+    {
+      "name": "Quality: coverageExpectation drift",
+      "status": "pass",
+      "message": "No coverageExpectation re-probes needed"
+    },
+    {
+      "name": "Quality: outlet-heartbeat red flags",
+      "status": "warn",
+      "message": "Heartbeat monitor last ran 12d ago (>8d)"
+    },
+    {
+      "name": "Quality: outlet feed staleness",
+      "status": "pass",
+      "message": "64 feed(s) checked, none stale or failing"
+    }
+  ]
+}

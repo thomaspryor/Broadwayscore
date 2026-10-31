@@ -1,0 +1,347 @@
+{
+  "issueNumber": "bro-5420-g3",
+  "planId": "17861cc0-f615-4c32-bb20-40693f0677bf",
+  "status": "partial",
+  "createdAt": "2026-10-16T04:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (g3): London reviews live on Broadway shows (audit-uk-rows-on-broadway: UK outlet or Theatre Record, dated outside the Broadway opening window and priorRuns; each url hand-checked and names a London venue or production). This plan: flag wrongProduction (no London show holds the date), 25 actions.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/artsdesk--helen-hawkins.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: artsdesk 2024-08-29 review of a London production (https://theartsdesk.com/theatre/night-janis-joplin-musical-peacock-theatre-review-belting-blues-singing-oddly-sanitised), not the Broadway run 2013-10-10..2014-02-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/artsdesk--helen-hawkins.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/london-theatre--matt-wolf.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2024-08-28 review of a London production (https://www.londontheatre.co.uk/reviews/a-night-with-janis-joplin-review-peacock-theatre), not the Broadway run 2013-10-10..2014-02-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/london-theatre--matt-wolf.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/standard--nick-curtis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: standard 2024-08-28 review of a London production (https://www.standard.co.uk/culture/theatre/a-night-with-janis-joplin-peacock-theatre-review-b1178689.html), not the Broadway run 2013-10-10..2014-02-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/theatre-weekly--magdalena-pulit.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: theatre-weekly 2024-08-27 review of a London production (https://theatreweekly.com/review-a-night-with-janis-joplin-at-peacock-theatre/), not the Broadway run 2013-10-10..2014-02-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-night-with-janis-joplin-2013/theatre-weekly--magdalena-pulit.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bengal-tiger-at-the-baghdad-zoo-2011/london-theatre--matt-wolf.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2025-12-10 review of a London production (https://www.londontheatre.co.uk/reviews/bengal-tiger-at-the-baghdad-zoo-review-young-vic), not the Broadway run 2011-03-31..2011-07-03.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bengal-tiger-at-the-baghdad-zoo-2011/london-theatre--matt-wolf.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bengal-tiger-at-the-baghdad-zoo-2011/standard--nick-curtis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: standard 2025-12-10 review of a London production (https://www.standard.co.uk/culture/theatre/bengal-tiger-at-the-baghdad-zoo-review-young-vic-b1261922.html), not the Broadway run 2011-03-31..2011-07-03.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bengal-tiger-at-the-baghdad-zoo-2011/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chess-2025/artsdesk--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: artsdesk 2018-05-02 review of a London production (https://theartsdesk.com/theatre/chess-london-coliseum-review-powerfully-sung-still-problematic), not the Broadway run 2025-11-16..2026-06-21.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chess-2025/artsdesk--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-2012/artsdesk--helen-hawkins.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: artsdesk 2022-03-26 review of a London production (https://theartsdesk.com/theatre/clybourne-park-park-theatre-review-excellent-revival-bruce-norriss-award-winner), not the Broadway run 2012-04-19..2012-09-02.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-2012/artsdesk--helen-hawkins.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-2012/london-theatre--matt-wolf.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2022-03-29 review of a London production (https://www.londontheatre.co.uk/reviews/clybourne-park-review-park-theatre), not the Broadway run 2012-04-19..2012-09-02.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-2012/london-theatre--matt-wolf.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-2012/standard--nick-curtis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: standard 2022-03-25 review of a London production (https://www.standard.co.uk/culture/theatre/clybourne-park-review-bruce-norris-park-theatre-revival-b990407.html), not the Broadway run 2012-04-19..2012-09-02.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clybourne-park-2012/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "english-2025/independent--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: the stored url is an Independent review of Marnie at English National Opera (http://www.independent.co.uk/arts-entertainment/classical/reviews/marnie-english-national-opera-review-a8065141.html), not English."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fela-2009/guardian--michael-billington.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: guardian 2010-11-17 review of a London production (http://www.guardian.co.uk/stage/2010/nov/17/fela-review), not the Broadway run 2009-11-23..2011-01-02.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fela-2009/guardian--michael-billington.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/daily-mail--michael-coveney.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: daily-mail 2000-02-09 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/daily-mail--michael-coveney.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:20:26.647Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-night-with-janis-joplin-2013/artsdesk--helen-hawkins.json wrongProductionReason: null -> \"BRO-5420: artsdesk 2024-08-29 review of a London production (https://theartsdesk.com/theatre/night-janis-joplin-musical-peacock-theatre-review-belting-blues-singing-oddly-sanitised), not the Broadway run 2013-10-10..2014-02-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-night-with-janis-joplin-2013/london-theatre--matt-wolf.json wrongProductionReason: null -> \"BRO-5420: london-theatre 2024-08-28 review of a London production (https://www.londontheatre.co.uk/reviews/a-night-with-janis-joplin-review-peacock-theatre), not the Broadway run 2013-10-10..2014-02-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-night-with-janis-joplin-2013/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-5420: standard 2024-08-28 review of a London production (https://www.standard.co.uk/culture/theatre/a-night-with-janis-joplin-peacock-theatre-review-b1178689.html), not the Broadway run 2013-10-10..2014-02-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-night-with-janis-joplin-2013/theatre-weekly--magdalena-pulit.json wrongProductionReason: null -> \"BRO-5420: theatre-weekly 2024-08-27 review of a London production (https://theatreweekly.com/review-a-night-with-janis-joplin-at-peacock-theatre/), not the Broadway run 2013-10-10..2014-02-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bengal-tiger-at-the-baghdad-zoo-2011/london-theatre--matt-wolf.json wrongProductionReason: null -> \"BRO-5420: london-theatre 2025-12-10 review of a London production (https://www.londontheatre.co.uk/reviews/bengal-tiger-at-the-baghdad-zoo-review-young-vic), not the Broadway run 2011-03-31..2011-07-03.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bengal-tiger-at-the-baghdad-zoo-2011/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-5420: standard 2025-12-10 review of a London production (https://www.standard.co.uk/culture/theatre/bengal-tiger-at-the-baghdad-zoo-review-young-vic-b1261922.html), not the Broadway run 2011-03-31..2011-07-03.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clybourne-park-2012/artsdesk--helen-hawkins.json wrongProductionReason: null -> \"BRO-5420: artsdesk 2022-03-26 review of a London production (https://theartsdesk.com/theatre/clybourne-park-park-theatre-review-excellent-revival-bruce-norriss-award-winner), not the Broadway run 2012-04-19..2012-09-02.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clybourne-park-2012/london-theatre--matt-wolf.json wrongProductionReason: null -> \"BRO-5420: london-theatre 2022-03-29 review of a London production (https://www.londontheatre.co.uk/reviews/clybourne-park-review-park-theatre), not the Broadway run 2012-04-19..2012-09-02.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clybourne-park-2012/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-5420: standard 2022-03-25 review of a London production (https://www.standard.co.uk/culture/theatre/clybourne-park-review-bruce-norris-park-theatre-revival-b990407.html), not the Broadway run 2012-04-19..2012-09-02.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongShow: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fela-2009/guardian--michael-billington.json wrongProductionReason: null -> \"BRO-5420: guardian 2010-11-17 review of a London production (http://www.guardian.co.uk/stage/2010/nov/17/fela-review), not the Broadway run 2009-11-23..2011-01-02.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fela-2009/guardian--michael-billington.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/daily-mail--michael-coveney.json wrongProductionReason: null -> \"BRO-5420: daily-mail 2000-02-09 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/daily-mail--michael-coveney.json wrongProduction: null -> true"
+    }
+  ]
+}

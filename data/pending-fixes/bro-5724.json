@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-5724",
+  "planId": "c927edfa-555d-437e-bdcc-935df1ed7802",
+  "status": "partial",
+  "createdAt": "2026-10-19T22:05:13.019Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5724: flag 4 class A cross-market leaks wrongProduction; each review already exists under the sibling production.",
+    "steps": [
+      "into-the-woods-noel-coward-west-end-2026/i-paper--fiona-mountford.json: Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder.",
+      "into-the-woods-noel-coward-west-end-2026/independent--louis-chilton.json: Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder.",
+      "into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json: Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder.",
+      "the-comedy-about-spies-west-end-2026/london-box-office--stuart-king.json: Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/i-paper--fiona-mountford.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/independent--louis-chilton.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-comedy-about-spies-west-end-2026/london-box-office--stuart-king.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Cross-market leak (class A): publishDate matches the sibling 2025 production opening, not this 2026 production; the same review is already filed under the sibling show folder."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T22:13:35.045Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "into-the-woods-noel-coward-west-end-2026/i-paper--fiona-mountford.json wrongProduction: write guard reverted wrongProductionClearedNote"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "into-the-woods-noel-coward-west-end-2026/independent--louis-chilton.json wrongProduction: write guard reverted wrongProductionClearedNote"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "into-the-woods-noel-coward-west-end-2026/the-jewish-chronicle--john-nathan.json wrongProduction: write guard reverted wrongProductionClearedNote"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-comedy-about-spies-west-end-2026/london-box-office--stuart-king.json wrongProduction: write guard reverted wrongProductionClearedNote"
+    }
+  ],
+  "executedIn": "ci"
+}

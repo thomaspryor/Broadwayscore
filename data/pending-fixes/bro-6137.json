@@ -1,0 +1,412 @@
+{
+  "issueNumber": "bro-6137",
+  "planId": "5858d7ac-886c-4a2d-9d65-4b6e7cc91cd1",
+  "status": "partial",
+  "createdAt": "2026-10-24T14:26:22.323Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137: Money Scorecard launch data cleanup. Drop orphan key 860, record 8 announced recoupments with citations, Did Not Recoup for silent closures per BRO-5645, Once On This Island capitalization. (part 1 of 5)",
+    "steps": [
+      "drop-orphan-key",
+      "the-front-page-2016: capitalization from the recoupment announcement.",
+      "the-front-page-2016: where the capitalization comes from.",
+      "the-front-page-2016: recoupment announced publicly (BRO-6137 item 2).",
+      "the-front-page-2016: month the recoupment was announced.",
+      "the-front-page-2016: quote from the cited announcement.",
+      "the-front-page-2016: citation for the recoupment.",
+      "the-front-page-2016: designation checked against the cited announcement.",
+      "the-front-page-2016: recouped, so the designation can no longer be TBD.",
+      "the-humans-2016: capitalization from the recoupment announcement.",
+      "the-humans-2016: where the capitalization comes from.",
+      "the-humans-2016: recoupment announced publicly (BRO-6137 item 2).",
+      "the-humans-2016: month the recoupment was announced.",
+      "the-humans-2016: quote from the cited announcement.",
+      "the-humans-2016: citation for the recoupment.",
+      "the-humans-2016: designation checked against the cited announcement.",
+      "the-humans-2016: recouped, so the designation can no longer be TBD.",
+      "oh-hello-on-broadway-2016: capitalization from the recoupment announcement.",
+      "oh-hello-on-broadway-2016: where the capitalization comes from.",
+      "oh-hello-on-broadway-2016: recoupment announced publicly (BRO-6137 item 2).",
+      "oh-hello-on-broadway-2016: month the recoupment was announced.",
+      "oh-hello-on-broadway-2016: quote from the cited announcement.",
+      "oh-hello-on-broadway-2016: citation for the recoupment.",
+      "oh-hello-on-broadway-2016: designation checked against the cited announcement.",
+      "oh-hello-on-broadway-2016: recouped, so the designation can no longer be TBD."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "drop-orphan-key",
+        "file": "commercial.json",
+        "showId": "860",
+        "reason": "BRO-6137: duplicate TBD key for the Billy Crystal 860 show; the real entry is billy-crystal-860-2026 and shows.json has no '860' id."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 4875000,
+        "description": "the-front-page-2016: capitalization from the recoupment announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "https://www.theatermania.com/news/the-front-page-recoups-on-broadway_79604",
+        "description": "the-front-page-2016: where the capitalization comes from."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-front-page-2016: recoupment announced publicly (BRO-6137 item 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2017-01",
+        "description": "the-front-page-2016: month the recoupment was announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Recouped its $4.875M capitalization (week ending 2017-01-01), announced 2017-01-09.",
+        "description": "the-front-page-2016: quote from the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.theatermania.com/news/the-front-page-recoups-on-broadway_79604",
+            "date": "2017-01-09"
+          }
+        ],
+        "description": "the-front-page-2016: citation for the recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-front-page-2016: designation checked against the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-front-page-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "the-front-page-2016: recouped, so the designation can no longer be TBD."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 3800000,
+        "description": "the-humans-2016: capitalization from the recoupment announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "https://playbill.com/article/broadways-the-humans-recoups-investment",
+        "description": "the-humans-2016: where the capitalization comes from."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-humans-2016: recoupment announced publicly (BRO-6137 item 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2016-09",
+        "description": "the-humans-2016: month the recoupment was announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Recouped its $3.8M investment (incl. $600K theatre move), week ending 2016-09-04, announced 2016-09-19.",
+        "description": "the-humans-2016: quote from the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/broadways-the-humans-recoups-investment",
+            "date": "2016-09-19"
+          }
+        ],
+        "description": "the-humans-2016: citation for the recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-humans-2016: designation checked against the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "the-humans-2016: recouped, so the designation can no longer be TBD."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "capitalization",
+        "oldValue": null,
+        "newValue": 2900000,
+        "description": "oh-hello-on-broadway-2016: capitalization from the recoupment announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "capitalizationSource",
+        "oldValue": null,
+        "newValue": "https://playbill.com/article/oh-hello-recoups-investment-and-will-be-filmed",
+        "description": "oh-hello-on-broadway-2016: where the capitalization comes from."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": true,
+        "description": "oh-hello-on-broadway-2016: recoupment announced publicly (BRO-6137 item 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "recoupedDate",
+        "oldValue": null,
+        "newValue": "2017-01",
+        "description": "oh-hello-on-broadway-2016: month the recoupment was announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Playbill: 'Oh, Hello recoups investment and will be filmed' ($2.9M capitalization).",
+        "description": "oh-hello-on-broadway-2016: quote from the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/oh-hello-recoups-investment-and-will-be-filmed",
+            "date": "2017-01-18"
+          }
+        ],
+        "description": "oh-hello-on-broadway-2016: citation for the recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "oh-hello-on-broadway-2016: designation checked against the cited announcement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oh-hello-on-broadway-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Easy Winner",
+        "description": "oh-hello-on-broadway-2016: recouped, so the designation can no longer be TBD."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T14:33:46.607Z",
+  "results": [
+    {
+      "action": "drop-orphan-key",
+      "ok": true,
+      "msg": "commercial.json: dropped orphan key 860"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-front-page-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for oh-hello-on-broadway-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for oh-hello-on-broadway-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recouped: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedDate: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for oh-hello-on-broadway-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for oh-hello-on-broadway-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

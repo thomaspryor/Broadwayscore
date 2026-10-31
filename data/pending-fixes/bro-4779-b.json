@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-4779-b",
+  "planId": "d2f4a7e0-5b1c-4c8e-9a36-0e7b3f9c2a14",
+  "status": "applied",
+  "createdAt": "2026-10-16T04:05:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4779 (retry): delete the sibling-misfiled Show Score/DTLI aggregator-archive pages and tombstone their ids in _not-found.json. The first plan aborted safely because CI's archive holds 61 such pages, not the 60 the cloud copy showed.",
+    "steps": [
+      "Run audit-sibling-misfile-archive.js --delete --expect=61 on the checked-out private archive (aborts, deleting nothing, if the count differs)",
+      "The workflow pushes the deletions and tombstones to the private repo"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "audit-sibling-misfile-archive.js",
+        "args": "--delete --expect=61",
+        "description": "Delete sibling-misfiled archive pages and tombstone their ids"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T04:42:06.514Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran audit-sibling-misfile-archive.js successfully"
+    }
+  ]
+}

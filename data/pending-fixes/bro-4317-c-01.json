@@ -1,0 +1,330 @@
+{
+  "issueNumber": "bro-4317-c-01",
+  "planId": "59ee922a-3733-477a-bca0-d203be181dc6",
+  "status": "partial",
+  "createdAt": "2026-10-13T01:59:32.266Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 1/4: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete animal-wisdom-2022/nytimes--ben-brantley.json",
+      "move back-to-the-future-west-end/nysr--elysa-gardner.json -> back-to-the-future-2023/nysr--elysa-gardner.json",
+      "delete betty-buckley-random-notes-off-broadway-2026/ew--unknown.json",
+      "delete betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
+      "delete betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
+      "delete betty-buckley-random-notes-off-broadway-2026/newsday--unknown.json",
+      "delete betty-buckley-random-notes-off-broadway-2026/ny1--unknown.json",
+      "delete betty-buckley-random-notes-off-broadway-2026/nydailynews--unknown.json",
+      "delete betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+      "move can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json",
+      "move can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json",
+      "move can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+      "move can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+      "move can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json",
+      "move can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json",
+      "move can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+      "move can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json -> morgan-bassichis-can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json",
+      "delete harry-connick-jr-off-broadway/nysr--melissa-rose-bernardo.json",
+      "delete harry-connick-jr-off-broadway/nysr--steven-suskin.json",
+      "delete harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
+      "delete harry-potter-and-the-cursed-child/dtli--ana-zambrana.json",
+      "delete harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+      "delete harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "animal-wisdom-2022/nytimes--ben-brantley.json",
+        "description": "0-text or already-flagged copy of an earlier production that is not tracked (October 13, 2017)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "back-to-the-future-west-end/nysr--elysa-gardner.json",
+        "destPath": "back-to-the-future-2023/nysr--elysa-gardner.json",
+        "description": "publishDate 2023-08-03T21:53:55 within 9 days of back-to-the-future-2023 opening 2023-08-03; other hits are other cities"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "betty-buckley-random-notes-off-broadway-2026/ew--unknown.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "betty-buckley-random-notes-off-broadway-2026/newsday--unknown.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "betty-buckley-random-notes-off-broadway-2026/ny1--unknown.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "betty-buckley-random-notes-off-broadway-2026/nydailynews--unknown.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "betty-buckley-random-notes-off-broadway-2026/variety--unknown.json",
+        "description": "show id deliberately retired (2026 data audit S8-T2 (owner D3): Concerts, cabaret, music v)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json",
+        "description": "show id was renamed; publishDate August 4th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json",
+        "description": "show id was renamed; publishDate August 5th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "description": "show id was renamed; publishDate August 5th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json",
+        "description": "show id was renamed; publishDate August 4th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json",
+        "description": "show id was renamed; publishDate August 4th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json",
+        "description": "show id was renamed; publishDate August 6th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
+        "description": "show id was renamed; publishDate August 27th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json",
+        "destPath": "morgan-bassichis-can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json",
+        "description": "show id was renamed; publishDate August 4th, 2025 inside its run (opened 2025-08-04)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-connick-jr-off-broadway/nysr--melissa-rose-bernardo.json",
+        "description": "2019 Broadway concert; concerts are out of scope (owner D3)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-connick-jr-off-broadway/nysr--steven-suskin.json",
+        "description": "2019 Broadway concert; concerts are out of scope (owner D3)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
+        "description": "0-text copy; harry-potter-2021 already holds this outlet+critic"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child/dtli--ana-zambrana.json",
+        "description": "0-text copy; harry-potter-2021 already holds this outlet+critic"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
+        "description": "0-text copy; harry-potter-2021 already holds this outlet+critic"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json",
+        "description": "0-text copy; harry-potter-2021 already holds this outlet+critic"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json",
+        "description": "0-text copy; harry-potter-2021 already holds this outlet+critic"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json",
+        "description": "0-text copy; harry-potter-2021 already holds this outlet+critic"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:48:52.028Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted animal-wisdom-2022/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved back-to-the-future-west-end/nysr--elysa-gardner.json → back-to-the-future-2023/nysr--elysa-gardner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted betty-buckley-random-notes-off-broadway-2026/ew--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted betty-buckley-random-notes-off-broadway-2026/hollywood-reporter--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted betty-buckley-random-notes-off-broadway-2026/huffpost--steven-suskin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted betty-buckley-random-notes-off-broadway-2026/newsday--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted betty-buckley-random-notes-off-broadway-2026/ny1--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted betty-buckley-random-notes-off-broadway-2026/nydailynews--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted betty-buckley-random-notes-off-broadway-2026/variety--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/culturesauce--thom-geier.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/exeunt-magazine--nicole-serratore.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/lighting-and-sound-america--david-barbour.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--melissa-rose-bernardo.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/nytg--amelia-merrill.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/off-off-online--deirdre-donovan.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/pages-on-stages--mason-pilevsky.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: morgan-bassichis-can-i-be-frank-off-broadway-2026/theater-scene--darryl-reilly.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-connick-jr-off-broadway/nysr--melissa-rose-bernardo.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-connick-jr-off-broadway/nysr--steven-suskin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child/dtli--ana-zambrana.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child-parts-one-and-two/nytimes--ben-brantley.json"
+    }
+  ]
+}

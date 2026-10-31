@@ -1,0 +1,50 @@
+{
+  "generatedAt": "2026-10-31T11:42:34.037Z",
+  "windowDays": 45,
+  "showsScanned": 218,
+  "gaps": [
+    {
+      "showId": "lincoln-in-the-bardo-off-broadway-2026",
+      "title": "Lincoln in the Bardo",
+      "openingDate": "2026-10-19",
+      "file": "washpost--philip-kennicott.json",
+      "outletId": "washpost",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": false,
+      "recoverable": false,
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
+      "firstSeen": "2026-10-25T17:52:33.957Z",
+      "fileAgeHours": 137.8321075,
+      "gapSeenAt": "2026-10-26T08:25:16.367Z",
+      "nonTerminalAgeHours": 123.28824166666666,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "high-school-musical-off-west-end-2026",
+      "title": "High School Musical",
+      "openingDate": "2026-10-12",
+      "file": "daily-mail--patrick-marmion.json",
+      "outletId": "daily-mail",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": false,
+      "recoverable": false,
+      "url": null,
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
+      "firstSeen": "2026-10-24T13:21:23.310Z",
+      "fileAgeHours": 166.35181416666666,
+      "gapSeenAt": "2026-10-25T03:18:33.558Z",
+      "nonTerminalAgeHours": 152.40013305555556,
+      "needsManualRecovery": false
+    }
+  ],
+  "contradictions": []
+}

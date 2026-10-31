@@ -1,0 +1,195 @@
+name: Rename Show IDs
+
+# Renames a batch of show ids across the three repos (web, core-data,
+# review-texts) with scripts/rename-show-ids-batch.js (BRO-4315, 2026 data
+# audit S8-T1: Off West End rows minted with a -west-end suffix). The batch
+# is a reviewed file under data/show-id-renames/, at most 25 pairs.
+#
+# mode=dry-run (default) plans every pair and writes nothing. mode=apply
+# renames, validates, then pushes core-data first (the shows.json row with
+# the old id in `aliases` is what lets a rerun resume), review-texts second,
+# the web files last, and finally re-checks all three trees rebased onto
+# origin. Old URLs keep working: build-slug-redirects.js turns the aliases
+# into 301s at every prebuild. The Supabase UPDATEs are printed in the log
+# and run by hand once the deploy is live.
+
+on:
+  workflow_dispatch:
+    inputs:
+      batch:
+        description: 'Batch file, e.g. data/show-id-renames/bro-4315-batch-1.json'
+        required: true
+        type: string
+      mode:
+        description: 'dry-run plans only; apply renames and pushes'
+        required: true
+        default: 'dry-run'
+        type: choice
+        options:
+          - 'dry-run'
+          - 'apply'
+
+concurrency:
+  # shows-json-writer-exempt: manual, rare dispatch; GitHub keeps one pending run per group, so queueing in shows-json-writer could silently cancel this run or a sibling's scheduled one. push-core-data reconciles concurrent shows.json pushes and the post-push --check fails loudly if a merge undid a rename.
+  group: rename-show-ids
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+# A step without `shell:` runs `bash -e` with no pipefail, so
+# `validate-data.js | tail` could never fail it; validate-data's push-skip
+# sentinel would then let review-texts and web push while core-data stayed put.
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  rename:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    env:
+      BATCH: ${{ inputs.batch }}
+      MODE: ${{ inputs.mode }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check batch file
+        run: |
+          case "$BATCH" in
+            data/show-id-renames/*.json) ;;
+            *) echo "::error::batch must be a file under data/show-id-renames/ (got $BATCH)"; exit 1 ;;
+          esac
+          test -f "$BATCH" || { echo "::error::$BATCH not found on this ref"; exit 1; }
+
+      - name: Validate data before the rename
+        run: |
+          # blanket-sweep-audit-ok: data/audit/validation-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          node scripts/validate-data.js 2>&1 | tail -30
+
+      - name: Rename (dry run or apply)
+        run: |
+          FLAG=""
+          [ "$MODE" = "apply" ] && FLAG="--apply"
+          node scripts/rename-show-ids-batch.js --batch="$BATCH" \
+            --core-data=/tmp/core-data-checkout --review-texts=data/review-texts $FLAG
+
+      # The renamer wrote the core-data clone; refresh the data/ copies from it
+      # (the same plan checkout-core-data used) so redirects, validation and
+      # push-core-data's changed-file detection all see the renamed files.
+      - name: Refresh data/ from the core-data clone
+        if: inputs.mode == 'apply'
+        run: |
+          COPY_PLAN=$(node scripts/lib/core-data-files.js plan /tmp/core-data-checkout "$PWD")
+          for basename in $COPY_PLAN; do
+            cp -f "/tmp/core-data-checkout/$basename" data/
+          done
+          node scripts/build-slug-redirects.js
+
+      - name: Validate data after the rename
+        if: inputs.mode == 'apply'
+        run: |
+          # blanket-sweep-audit-ok: data/audit/validation-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/same-url-duplicate-baseline.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/tony-coverage-gaps.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          # blanket-sweep-audit-ok: data/audit/london-only-nyc-accumulation.json validate-data side output; the web commit step restores it before staging, so it is never committed
+          node scripts/validate-data.js 2>&1 | tail -30
+
+      # validate-data writes this when the data is bad; push-core-data then
+      # skips quietly, so refuse here before any of the three repos moves.
+      - name: Refuse to push flagged data
+        if: inputs.mode == 'apply'
+        run: |
+          if [ -f "${RUNNER_TEMP}/.skip-push-core-data" ]; then
+            echo "::error::validate-data flagged the renamed data; nothing pushed"; exit 1
+          fi
+
+      - name: Push core data
+        if: success() && inputs.mode == 'apply'
+        timeout-minutes: 15
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data(BRO-4315): rename show ids (${{ inputs.batch }})'
+
+      - name: Push review-texts
+        if: success() && inputs.mode == 'apply'
+        timeout-minutes: 15
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data(BRO-4315): rename show ids (${{ inputs.batch }})'
+
+      - name: Commit and push web files
+        if: success() && inputs.mode == 'apply'
+        timeout-minutes: 15
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # validate-data's side outputs are not part of the rename.
+          for f in validation-baseline.json same-url-duplicate-baseline.json tony-coverage-gaps.json london-only-nyc-accumulation.json; do git checkout -q -- "data/audit/$f" 2>/dev/null || true; done
+          bash scripts/lib/stage-data-changes.sh data/ public/
+          if git diff --staged --quiet; then
+            echo "No web changes"
+          else
+            git commit -m "data(BRO-4315): rename show ids ($BATCH)
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Re-check all three trees after the pushes
+        if: success() && inputs.mode == 'apply'
+        run: |
+          # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
+          . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
+          # Each tree must be on its remote, or --check would pass on an unpushed copy.
+          for repo in /tmp/core-data-checkout data/review-texts .; do
+            git_net 180 -C "$repo" fetch -q origin HEAD
+            ahead=$(git -C "$repo" rev-list --count FETCH_HEAD..HEAD)
+            [ "$ahead" = 0 ] || { echo "::error::$repo has $ahead unpushed commit(s)"; exit 1; }
+          done
+          node scripts/rename-show-ids-batch.js --batch="$BATCH" \
+            --core-data=/tmp/core-data-checkout --review-texts=data/review-texts --check
+
+      - name: Dispatch reviews rebuild
+        if: success() && inputs.mode == 'apply'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run rebuild-reviews.yml -f reason="Show-id renames ($BATCH)"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Rename Show IDs Failed'
+          severity: 'warning'

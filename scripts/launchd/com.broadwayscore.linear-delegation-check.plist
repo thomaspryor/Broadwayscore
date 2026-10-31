@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.broadwayscore.linear-delegation-check</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/tompryor/Broadwayscore/scripts/check-linear-delegations.js</string>
+  </array>
+  <!-- Every 30 min. A delegated agent that dies should be known the same day,
+       and the morning digest reads whatever the last run wrote. -->
+  <key>StartInterval</key>
+  <integer>1800</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/tompryor/.cyrus/linear-delegation-check.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tompryor/.cyrus/linear-delegation-check.log</string>
+  <key>WorkingDirectory</key>
+  <string>/Users/tompryor/Broadwayscore</string>
+</dict>
+</plist>
