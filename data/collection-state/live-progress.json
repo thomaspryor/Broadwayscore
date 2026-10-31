@@ -1,19 +1,53 @@
 {
-  "updatedAt": "2026-10-31T04:23:19.765Z",
-  "processed": 19,
-  "failed": 6,
-  "successRate": "76.0%",
+  "updatedAt": "2026-10-31T05:15:33.611Z",
+  "processed": 75,
+  "failed": 15,
+  "successRate": "83.3%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 51,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 6
+    "scrapingdog": 4,
+    "scrapingbee": 3,
+    "brightdata": 2,
+    "archiveToday": 3,
+    "archive": 19
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-31T04:45:56.945Z",
+      "event": "bb-session",
+      "session": "2d9a600b",
+      "url": "https://www.nytimes.com/2018/04/15/theater/mlimas-tale-review-lynn-nottage.html"
+    },
+    {
+      "t": "2026-10-31T04:45:57.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T04:55:05.609Z",
+      "event": "bb-session",
+      "session": "91a38f05",
+      "url": "https://www.nytimes.com/2018/03/01/theater/amy-and-the-orphans-review.html"
+    },
+    {
+      "t": "2026-10-31T04:55:06.220Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T05:03:49.222Z",
+      "event": "bb-session",
+      "session": "e4536406",
+      "url": "https://www.nytimes.com/2018/02/06/theater/in-the-body-of-the-world-review-eve-e"
+    },
+    {
+      "t": "2026-10-31T05:03:49.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
