@@ -22,6 +22,9 @@ const heldBoxOfficeBuild = builtFeatures.includes('boxOfficeV2');
 
 const nextConfig = {
   reactStrictMode: true,
+  // AGENTS.md contains project instructions. Next dev must not append its
+  // generated agent rules to that tracked file (BRO-6568).
+  agentRules: false,
   deploymentId,
   env: { HELD_BOX_OFFICE_BUILD: heldBoxOfficeBuild ? 'true' : 'false' },
   trailingSlash: false,

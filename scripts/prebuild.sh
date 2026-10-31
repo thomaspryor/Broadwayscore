@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
-# prebuild.sh — Runs prebuild scripts with optional skip for code-only changes.
+# prebuild.sh: Prepare ignored prerequisites for every build. Local builds use
+# the committed published artifacts; CI/Vercel regenerate them for deployment.
+# REGENERATE_BUILD_DATA=true opts a local build into those tracked data writes.
 #
-# When SKIP_HEAVY_PREBUILD=true, skips most heavy scripts but ALWAYS runs:
+# On the publishing path, SKIP_HEAVY_PREBUILD=true skips heavy scripts but runs:
 #   - validate-shows-prebuild.js (fast validation gate)
 #   - generate-show-lookup.js (output is gitignored, must always regenerate)
 #   - generate-diary-data.js, build-slug-redirects.js
@@ -30,6 +32,20 @@ node scripts/build-cast-manifest.js
 # functions, so pages re-rendered at runtime read this slim copy of the
 # floor's verdicts/stamps/acks instead (BRO-5811; traced via next.config.js).
 node scripts/build-coverage-floor-snapshot.js
+
+# A normal local build is a consumer of published data, like next dev. Rebuilding
+# committed artifacts from a newer private-data snapshot dirties thousands of
+# files (and timestamp-only changes dirty even an otherwise identical snapshot).
+# Keep local builds read-only for those artifacts. Direct generator commands and
+# the explicit refresh flag remain available for intentional data updates.
+if [ "${CI:-}" != "true" ] && [ "${CI:-}" != "1" ] && \
+   [ "${VERCEL:-}" != "1" ] && [ "${VERCEL:-}" != "true" ] && \
+   [ "${REGENERATE_BUILD_DATA:-}" != "true" ]; then
+  node scripts/generate-stats-shows.js
+  echo "Using committed build data (local build). Set REGENERATE_BUILD_DATA=true to refresh it."
+  exit 0
+fi
+
 # Slug redirects — AFTER the cast manifest: the "cast:" family of
 # data/slug-redirects-compact.json (retired pre-fold /cast/<slug> URLs, S7-T3
 # follow-up) is derived from data/cast-manifest.json, so this build's manifest

@@ -51,6 +51,18 @@ Full methodology: [broadwayscorecard.com/methodology](https://broadwayscorecard.
 
 The application code and scoring engine live in this repository. Review texts and core data are stored separately to respect copyright and keep the public repo clean.
 
+### Local builds
+
+`npm run build` validates local data and regenerates ignored prerequisites. Local
+builds and `next dev` use the committed published artifacts, including
+`public/data/shows/`. Next's automatic `AGENTS.md` generation is disabled.
+
+To preview changes to data or its generators, run
+`REGENERATE_BUILD_DATA=true npm run prebuild`, then build normally. This explicit
+refresh intentionally rewrites published artifacts, so inspect the resulting
+diff. CI and Vercel still regenerate them during prebuild, including show details
+on the `SKIP_HEAVY_PREBUILD=true` path.
+
 ## License
 
 Copyright 2024–2026 Broadway Scorecard LLC. All rights reserved.
