@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T10:07:21.424Z",
+  "timestamp": "2026-10-31T10:24:38.430Z",
   "stats": {
-    "totalReviews": 73842,
-    "alreadyFlagged": 22449,
+    "totalReviews": 74139,
+    "alreadyFlagged": 22465,
     "dateGuardCatches": 229,
-    "directorMismatch": 3030,
+    "directorMismatch": 3032,
     "tvFilmSignals": 2074,
     "londonSignals": 3419,
     "offBroadwaySignals": 662,
     "yearMismatch": 303,
-    "noPublishDate": 8459
+    "noPublishDate": 8338
   },
   "findings": [
     {
@@ -24843,9 +24843,23 @@
     },
     {
       "showId": "hadestown-off-broadway-2016",
+      "file": "907-wfuv--john-platt.json",
+      "score": null,
+      "publishDate": "May 24th, 2016",
+      "url": "http://www.wfuv.org/content/anais-mitchells-hadestown",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
       "file": "act-three-the-reviews--doug-marino.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "May 11th, 2016",
       "url": "https://dougmarino.blogspot.com/2016/05/hadestown.html",
       "findings": [
         {
@@ -24861,6 +24875,20 @@
       "score": null,
       "publishDate": "2016-05-23",
       "url": "http://www.amny.com/entertainment/hadestown-review-a-folk-music-take-on-an-ancient-greek-tale-1.11831751",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "June 1st, 2016",
+      "url": "http://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -24887,7 +24915,7 @@
       "showId": "hadestown-off-broadway-2016",
       "file": "cititour--brian-scott-lipton.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "May 23rd, 2016",
       "url": "http://cititour.com/NYC_Broadway/Hadestown/346",
       "findings": [
         {
@@ -24915,7 +24943,7 @@
       "showId": "hadestown-off-broadway-2016",
       "file": "epoch-times--judd-hollander.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "July 11th, 2016",
       "url": "http://www.theepochtimes.com/n3/2111039-theater-review-hadestown/",
       "findings": [
         {
@@ -24931,6 +24959,20 @@
       "score": null,
       "publishDate": "2016-05-31",
       "url": "http://exeuntmagazine.com/reviews/hadestown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-off-broadway-2016",
+      "file": "financialtimes--max-mcguinness.json",
+      "score": null,
+      "publishDate": "May 23rd, 2016",
+      "url": "https://next.ft.com/content/049c2c34-20c9-11e6-9d4d-c11776a5124d",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25292,19 +25334,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2024 (0x). 2019 matches production: hadestown-2019"
-        }
-      ]
-    },
-    {
-      "showId": "hadestown-tour-2024",
-      "file": "wkrn--colleen-guerry.json",
-      "publishDate": "2025-03-06",
-      "url": "https://www.wkrn.com/news/local-news/nashville/hadestown-brings-mixture-of-music-mythology-to-tpac/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
         }
       ]
     },
@@ -29189,8 +29218,8 @@
     {
       "showId": "incident-at-vichy-off-broadway-2015",
       "file": "newsday--linda-winer.json",
-      "publishDate": "2015-11-30",
-      "url": "https://www.newsday.com/entertainment/theater/incident-at-vichy-review-signature-s-heavy-handed-drama-p54909",
+      "publishDate": null,
+      "url": "http://www.newsday.com/entertainment/theater/incident-at-vichy-review-signature-s-heavy-handed-drama-1.11136296",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -50568,7 +50597,7 @@
       "showId": "smart-people-off-broadway-2016",
       "file": "center-on-the-aisle--shari-lifland.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "February 26th, 2016",
       "url": "https://centerontheaisle.com/3244/review-smart-people-at-second-stage/",
       "findings": [
         {
@@ -91318,7 +91347,7 @@
       "showId": "hangmen-off-broadway-2018",
       "file": "theater-scene--david-schultz.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "February 28th, 2018",
       "url": "http://theaterscene.com/hangmen.html",
       "findings": [
         {
