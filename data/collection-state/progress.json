@@ -732,7 +732,14 @@
     "titanique-2026/cititour--brian-scott-lipton.json",
     "death-of-a-salesman-2026/theatrely--kobi-kassal.json",
     "inter-alia-west-end-2026/telegraph--unknown.json",
-    "cats-the-jellicle-ball-2026/vulture--sara-holdren.json"
+    "cats-the-jellicle-ball-2026/vulture--sara-holdren.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1066,7 +1073,11 @@
       "data/review-texts/the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
       "data/review-texts/high-society-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/magic-chichester-festival-regional-2026/thewrap--robert-hofler.json",
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
     ],
     "archive": [
       "frozen-2018/village-voice--michael-feingold.json",
@@ -1211,7 +1222,7 @@
     ]
   },
   "startTime": "2026-10-30T19:50:43.255Z",
-  "lastProcessed": "the-authenticator-west-end-2026/camdennewjournal--unknown.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
   "log": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -1351,6 +1362,17 @@
       "t": "2026-10-31T01:21:28.679Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T01:48:19.904Z",
+      "event": "bb-session",
+      "session": "5943fa9f",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T01:48:20.390Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
