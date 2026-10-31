@@ -1857,20 +1857,6 @@
     "queuedAt": "2026-10-31T22:30:56.936Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T22:31:19.015Z"
-  },
-  {
     "conditionKey": "t1-coverage:new-gaps-24h",
     "title": "T1 Coverage — new gaps past 24h (still open — BRO-5532)",
     "description": "Still firing after 71 notifications since it was filed. Tracked at BRO-5532.\n\n2 T1/T2 outlet(s) still missing >24h after they became measurable.",
@@ -1892,5 +1878,19 @@
       }
     ],
     "queuedAt": "2026-10-31T22:31:49.847Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T22:45:06.891Z"
   }
 ]

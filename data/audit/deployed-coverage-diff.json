@@ -1,62 +1,30 @@
 {
-  "generatedAt": "2026-10-31T22:31:49.461Z",
+  "generatedAt": "2026-10-31T22:45:24.261Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 301,
-  "clean": 298,
-  "defective": 3,
+  "checked": 302,
+  "clean": 301,
+  "defective": 1,
   "byType": {
-    "score-drift": 3
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "openingDate": "2026-10-22",
+      "showId": "mud-row-regional-2026",
+      "title": "Mud Row",
+      "openingDate": "2026-10-19",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.94 vs local 82.1 (Δ0.16)"
+          "detail": "deployed cs 75.38 vs local 75.19 (Δ0.19)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-10-31T22:31:40.471Z"
-    },
-    {
-      "showId": "twelfth-night-crucible-regional-2026",
-      "title": "Twelfth Night",
-      "openingDate": "2026-10-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.06 vs local 78.18 (Δ2.88)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-10-31T22:31:40.471Z"
-    },
-    {
-      "showId": "a-dark-wood-regional-2026",
-      "title": "A Dark Wood",
-      "openingDate": "2026-10-16",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 70.58 vs local 71.36 (Δ0.78)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 7,
-      "firstDefectAt": "2026-10-31T22:31:40.471Z"
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-31T22:45:19.387Z"
     }
   ],
   "persistentDefective": 0,
