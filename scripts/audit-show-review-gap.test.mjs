@@ -679,6 +679,16 @@ test('acceptSerpCensusResult drops BWW city editions and story-collection book r
     assert.equal(classifyFlaggedMiss([gate], explain).confirmedNonReview, true);
   });
 
+  test('BRO-6689: other rule-based reasons (wrongShowReason, prior-run-republish) stay confirmed; mixed list is a gap', () => {
+    const base = { _file: 'x--u.json', outletId: 'x', url: 'https://x.example/a', fullText: '', originalScore: '4/5 stars',
+      isNonReview: true, rejectionReason: 'not_a_review',
+      contentVerification: { isValid: false, confidence: 'high', articleType: 'preview', articleTypeConfidence: 'high' } };
+    assert.equal(classifyFlaggedMiss([{ ...base, wrongProduction: true, wrongProductionReason: 'prior-run-republish' }], explain).confirmedNonReview, true);
+    assert.equal(classifyFlaggedMiss([{ ...base, wrongShow: true, wrongShowReason: 'dateless-revival' }], explain).confirmedNonReview, true);
+    const llm = { ...base, wrongShow: true, wrongShowReason: 'CV-promoted: feature' };
+    assert.equal(classifyFlaggedMiss([llm, { ...base, _file: 'y--u.json', wrongProduction: true, wrongProductionReason: 'prior-run-republish' }], explain).confirmedNonReview, false);
+  });
+
   test('BRO-5391: mixed list with one unconfirmed automated file stays a gap', () => {
     const ens = { _file: 'e--u.json', outletId: 'e', url: 'https://e.example/a', fullText: body,
       rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'not_a_review', rejectionAgreeCount: 3 };
