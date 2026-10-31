@@ -244,7 +244,7 @@ function writeJsonAtomic(filePath, obj) {
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
-const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, reserveStalestSlots, oldestGapRow, pickDueLane, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
+const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, gapRowShowIds, schedulingCheckpoint, reserveStalestSlots, oldestGapRow, pickDueLane, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
 const { mergeGapAudit, countsFor, priorCensusUrls, seedPriorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
@@ -2315,12 +2315,34 @@ async function main(argv = process.argv.slice(2)) {
   let catalogueReservedIds = [];
   let neverAuditedDueAtStart = 0;
   let oldestDueAtStart = null;
+  // Read-only peek at the gap file (BRO-5655 stale lane, BRO-6687 scheduling
+  // view); absent/corrupt → no reservation and the raw checkpoint (the locked
+  // read-modify-write at the end of main() reports corruption).
+  let gapRowIdsAtStart = new Set();
+  if (useCheckpoint) {
+    try {
+      if (fs.existsSync(AUDIT_PATH)) {
+        const gapAtStart = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+        gapRowTsAtStart = gapRowTimestamps(gapAtStart);
+        gapRowIdsAtStart = gapRowShowIds(gapAtStart);
+      }
+    } catch (e) {
+      console.log(`  (stale-slot reservation skipped: ${AUDIT_PATH} unreadable — ${(e.message || '').slice(0, 80)})`);
+    }
+  }
+  // BRO-6687: scheduling reads a view without legacy rowless entries (they
+  // schedule as never audited); stamps are still written to `checkpoint`.
+  const schedCheckpoint = useCheckpoint ? schedulingCheckpoint(checkpoint, gapRowIdsAtStart) : checkpoint;
+  if (useCheckpoint) {
+    const dropped = Object.keys(checkpoint).length - Object.keys(schedCheckpoint).length;
+    if (dropped > 0) console.log(`audit-show-review-gap: ${dropped} checkpoint entr${dropped === 1 ? 'y' : 'ies'} without a gap row scheduled as never audited`);
+  }
   if (useCheckpoint && !showFilter) {
     const now = Date.now();
     const before = targets.length;
     targets = targets
       .filter((s) => {
-        const e = checkpoint[s.id];
+        const e = schedCheckpoint[s.id];
         if (!e) return true; // never audited → always include
         // WE reference invalidation: entries written before the WE reference
         // existed recorded vacuous gaps:0 (59 shows) and closed-clean shows get a
@@ -2331,23 +2353,16 @@ async function main(argv = process.argv.slice(2)) {
         return (now - checkpointTs(e)) >= freshnessMsFor(s, e, { freshnessHours: FRESHNESS_HOURS, now });
       })
       // Opening-window shows first (reviews landing NOW), then oldest-audited.
-      .sort((a, b) => compareAuditPriority(a, b, checkpoint, now));
+      .sort((a, b) => compareAuditPriority(a, b, schedCheckpoint, now));
     console.log(`audit-show-review-gap: ${targets.length}/${before} due for audit (checkpoint, freshness skip applied)`);
     // BRO-5655: every STALE_RESERVE_EVERY-th slot goes to the due show with
     // the oldest gap row, so opening-week shows can't starve row refreshes.
-    // Read-only peek at the gap file; absent/corrupt → no reservation (the
-    // locked read-modify-write at the end of main() reports corruption).
-    try {
-      if (fs.existsSync(AUDIT_PATH)) gapRowTsAtStart = gapRowTimestamps(JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8')));
-    } catch (e) {
-      console.log(`  (stale-slot reservation skipped: ${AUDIT_PATH} unreadable — ${(e.message || '').slice(0, 80)})`);
-    }
     // BRO-5489: rows the opening-window alert still reads (tier 1) refresh first.
-    const alertingIds = new Set(targets.filter(s => auditTier(s, checkpoint[s.id], now) === 1).map(s => s.id));
+    const alertingIds = new Set(targets.filter(s => auditTier(s, schedCheckpoint[s.id], now) === 1).map(s => s.id));
     // BRO-4061: tier-2 back catalogue gets its own lane, so never-audited
     // shows (no gap row, invisible to the stale lane) still get audited.
-    const catalogueIds = new Set(targets.filter(s => auditTier(s, checkpoint[s.id], now) === 2).map(s => s.id));
-    neverAuditedDueAtStart = targets.filter(s => !checkpoint[s.id]).length;
+    const catalogueIds = new Set(targets.filter(s => auditTier(s, schedCheckpoint[s.id], now) === 2).map(s => s.id));
+    neverAuditedDueAtStart = targets.filter(s => !schedCheckpoint[s.id]).length;
     const reserved = reserveStalestSlots(targets, gapRowTsAtStart, { preferIds: alertingIds, catalogueIds });
     targets = reserved.targets;
     staleReservedIds = reserved.reservedIds;
@@ -2363,7 +2378,7 @@ async function main(argv = process.argv.slice(2)) {
   // and in-window slow-market shows. Kill switch: GAP_AUDIT_DUE_LANE=0.
   const dueLaneIds = new Set();
   if (useCheckpoint && showFilter && process.env.GAP_AUDIT_DUE_LANE !== '0') {
-    const lane = pickDueLane(allShows, checkpoint, targets.map((s) => s.id), { now: Date.now(), freshnessHours: FRESHNESS_HOURS });
+    const lane = pickDueLane(allShows, schedCheckpoint, targets.map((s) => s.id), { now: Date.now(), freshnessHours: FRESHNESS_HOURS });
     for (const s of lane) dueLaneIds.add(s.id);
     targets = targets.concat(lane);
     console.log(`audit-show-review-gap: due lane appended ${lane.length} overdue show(s) after the requested list: ${lane.map((s) => s.id).join(', ') || 'none'}`);

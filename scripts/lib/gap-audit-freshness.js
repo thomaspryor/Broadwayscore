@@ -62,6 +62,23 @@ function isSlowMarketDailyWindow(show, now = Date.now()) {
   return SLOW_MARKETS.has(show?.category) && inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS);
 }
 
+// BRO-6687 (owner scope 2026-10-31: every show from the last year, every
+// market): of ~920 shows that opened in the last 365 days, ~280 had never been
+// audited and ~300 had a checkpoint older than 14 days, because a closed show
+// that audited clean earned a 365-day skip and the rest sat in tier 2 behind
+// the 3-year back catalogue. A last-year show that is never audited or whose
+// last audit is >= 14 days old now sorts in its own tier after the slow-market
+// window and ahead of the back catalogue, and no last-year show is skipped
+// for more than 30 days. The time-boxed run only reorders; the catalogue and
+// stale lanes keep their reserved slots.
+const LAST_YEAR_DAYS = 365;
+const LAST_YEAR_TIER = 1.75;
+const LAST_YEAR_STALE_MS = 14 * 24 * 60 * 60 * 1000;
+const LAST_YEAR_MAX_FRESHNESS_MS = 30 * 24 * 60 * 60 * 1000;
+function inLastYear(show, now = Date.now()) {
+  return inOpeningWindow(show, now, LAST_YEAR_DAYS);
+}
+
 function inOpeningPriorityWindow(show, now = Date.now()) {
   if (show?.status === 'closed') return false;
   if (inOpeningWindow(show, now, OPENING_PRIORITY_WINDOW_DAYS)) return true;
@@ -74,8 +91,9 @@ function inOpeningPriorityWindow(show, now = Date.now()) {
 // and shows with gaps are re-checked sooner so newly-published reviews are
 // caught; opening-week shows re-check every run.
 function freshnessMsFor(show, lastEntry, opts = {}) {
-  const base = baseFreshnessMs(show, lastEntry, opts);
   const now = opts.now ?? Date.now();
+  let base = baseFreshnessMs(show, lastEntry, opts);
+  if (inLastYear(show, now)) base = Math.min(base, LAST_YEAR_MAX_FRESHNESS_MS); // BRO-6687
   // BRO-6687: in-window slow-market shows re-audit at least daily, whatever the
   // closed/clean skip or the configured freshness would otherwise allow.
   if (!isSlowMarketDailyWindow(show, now)) return base;
@@ -138,6 +156,7 @@ function auditTier(show, entry, now = Date.now()) {
   if (show?.status !== 'closed' && inOpeningWindow(show, now) && (!entry || entry.uncollected > 0)) return 1;
   if (show?.status === 'closed' && alertReadsRow(show, entry, now)) return 1; // BRO-5513
   if (isSlowMarketDailyWindow(show, now)) return SLOW_MARKET_TIER; // BRO-6687
+  if (inLastYear(show, now) && (!entry || now - checkpointTs(entry) >= LAST_YEAR_STALE_MS)) return LAST_YEAR_TIER; // BRO-6687
   return 2;
 }
 
@@ -152,7 +171,7 @@ const DUE_LANE_CAP = 3;
 function pickDueLane(allShows, checkpoint, requestedIds, { now = Date.now(), cap = DUE_LANE_CAP, freshnessHours = 12 } = {}) {
   const requested = new Set(requestedIds);
   return allShows
-    .filter((s) => s && !requested.has(s.id) && auditTier(s, checkpoint[s.id], now) < 2)
+    .filter((s) => s && !requested.has(s.id) && auditTier(s, checkpoint[s.id], now) < LAST_YEAR_TIER)
     .filter((s) => {
       const e = checkpoint[s.id];
       return !e || (now - checkpointTs(e)) >= freshnessMsFor(s, e, { freshnessHours, now });
@@ -216,6 +235,29 @@ function gapRowTimestamps(gapAudit) {
     const t = Date.parse(r.computedAt);
     if (Number.isFinite(t)) out.set(r.showId, t);
   }
+  return out;
+}
+
+// BRO-6687: ids of every show with a row in show-review-gap.json (quarantined
+// rows included: the show has been audited, its row is just frozen).
+function gapRowShowIds(gapAudit) {
+  const rows = gapAudit && Array.isArray(gapAudit.results) ? gapAudit.results : [];
+  return new Set(rows.filter((r) => r && r.showId).map((r) => r.showId));
+}
+
+// BRO-6687: the checkpoint as the scheduler should see it. A checkpoint entry
+// whose show has no gap row is a legacy stamp (June-July 2026 `gaps: 0`
+// entries written before every audit wrote a row; all 151 such entries were
+// over 30 days old on 2026-10-31): the grade reads the show as never audited,
+// but the stamp earned it a 365-day skip. Those entries are dropped so the
+// show schedules as never audited. Every audit writes a row, so this cannot
+// re-queue a show forever. No gap file (or an empty one) changes nothing.
+// Returns a shallow copy; the persisted checkpoint is never modified.
+function schedulingCheckpoint(checkpoint, rowShowIds) {
+  const cp = checkpoint || {};
+  if (!rowShowIds || rowShowIds.size === 0) return { ...cp };
+  const out = {};
+  for (const [id, e] of Object.entries(cp)) if (rowShowIds.has(id)) out[id] = e;
   return out;
 }
 
@@ -306,6 +348,13 @@ module.exports = {
   CATALOGUE_RESERVE_EVERY,
   CATALOGUE_RESERVE_AT,
   gapRowTimestamps,
+  gapRowShowIds,
+  schedulingCheckpoint,
+  inLastYear,
+  LAST_YEAR_DAYS,
+  LAST_YEAR_TIER,
+  LAST_YEAR_STALE_MS,
+  LAST_YEAR_MAX_FRESHNESS_MS,
   reserveStalestSlots,
   oldestGapRow,
   freshnessMsFor,
