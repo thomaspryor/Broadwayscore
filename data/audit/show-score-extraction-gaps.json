@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-30T15:34:39.998Z",
+    "generatedAt": "2026-10-31T05:07:42.786Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 371,
+  "totalGaps": 372,
   "errorSeverity": 261,
-  "warningSeverity": 110,
+  "warningSeverity": 111,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -2445,6 +2445,15 @@
       "gap": 79,
       "ratio": 0.09,
       "severity": "error"
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "category": "off-broadway",
+      "expected": 50,
+      "extracted": 48,
+      "gap": 2,
+      "ratio": 0.96,
+      "severity": "warning"
     },
     {
       "showId": "swept-away-2024",
