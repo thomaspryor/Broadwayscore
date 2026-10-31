@@ -3773,5 +3773,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T03:45:46.658Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6684-opus-budget",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6684-opus-budget",
+    "description": "land.yml did not land land/bro-6684-opus-budget: the unit-tests-node gate went red at 94e3cfde36. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41165290998",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6684-opus-budget"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "94e3cfde36ab833d58c1f579c092eca48095745d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41165290998"
+      }
+    ],
+    "queuedAt": "2026-10-31T03:54:37.149Z"
   }
 ]
