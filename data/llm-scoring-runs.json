@@ -1507898,21 +1507898,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T14:20:37.526Z",
-    "completedAt": "2026-10-31T14:21:15.644Z",
-    "totalReviews": 7,
-    "processed": 7,
-    "skipped": 0,
+    "startedAt": "2026-10-31T14:22:22.212Z",
+    "completedAt": "2026-10-31T14:22:48.425Z",
+    "totalReviews": 6,
+    "processed": 5,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 41356,
-      "output": 2207,
-      "cacheRead": 26649,
+      "input": 35652,
+      "output": 1577,
+      "cacheRead": 19035,
       "cacheWrite": 0,
-      "total": 104825
+      "total": 83663
     },
-    "costUsd": 0.1578462,
-    "runId": "41209152726",
+    "costUsd": 0.13030449999999996,
+    "runId": "41209307624",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1514362,16 +1514362,6 @@
           "up": 4,
           "flat": 2,
           "down": 1,
-          "total": 7
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "blood-of-the-lamb-regional-2026",
-        "ourDistribution": {
-          "up": 6,
-          "flat": 1,
-          "down": 0,
           "total": 7
         },
         "hasDisagreement": false
@@ -1530194,6 +1530184,16 @@
         },
         "dtliDistribution": {
           "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "mean-girls-regional-2026",
+        "ourDistribution": {
+          "up": 5,
           "flat": 0,
           "down": 0,
           "total": 5
@@ -1551128,8 +1551128,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T14:26:11.999Z",
-    "completedAt": "2026-10-31T14:26:12.000Z",
+    "startedAt": "2026-10-31T14:27:45.829Z",
+    "completedAt": "2026-10-31T14:27:45.831Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1551142,7 +1551142,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41209152726",
+    "runId": "41209307624",
     "source": "comparative-rescore",
     "errorDetails": []
   }
