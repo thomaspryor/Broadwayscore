@@ -478,7 +478,11 @@
     "tiny-beautiful-things-off-broadway-2016/frontmezzjunkies--steven-ross.json",
     "sweat-off-broadway-2016/broadwayworld--michael-dale.json",
     "1776-2022/theatermania--david-gordon.json",
-    "the-wiz-tour-2026/channel3000--samantha-calderon.json"
+    "the-wiz-tour-2026/channel3000--samantha-calderon.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
   ],
   "failed": [
     "the-heart-off-broadway-2026/thewrap--robert-hofler.json",
@@ -752,8 +756,15 @@
     "ruthless-the-musical-off-broadway-2015/stagezine--scott-harrah.json",
     "_superseded-misattributed/all-my-sons-west-end-2019--timeout-london--andrzej-lukowski.json",
     "beetlejuice-2025/dailybeast--tim-teeman.json",
-    "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
-    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/lyceum--unknown.json"
+    "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/lyceum--unknown.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+    "surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -981,7 +992,10 @@
       "the-high-life-the-musical-dundee-rep-regional-2026/thestage--arusa-qureshi.json",
       "tiny-beautiful-things-off-broadway-2016/frontmezzjunkies--steven-ross.json",
       "1776-2022/theatermania--david-gordon.json",
-      "the-wiz-tour-2026/channel3000--samantha-calderon.json"
+      "the-wiz-tour-2026/channel3000--samantha-calderon.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
     ],
     "amp": [
       "data/review-texts/a-view-from-the-bridge-2010/variety--david-rooney.json",
@@ -1032,7 +1046,8 @@
       "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
       "jeeves-takes-charge-west-end-2026/ground--unknown.json",
-      "becky-shaw-2026/cote-notices--david-cote.json"
+      "becky-shaw-2026/cote-notices--david-cote.json",
+      "memoriam-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "medea-west-end-2014/daily-mail--quentin-letts.json",
@@ -1091,7 +1106,13 @@
       "data/review-texts/high-society-west-end-2026/times-uk--clive-davis.json",
       "data/review-texts/magic-chichester-festival-regional-2026/thewrap--robert-hofler.json",
       "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
-      "data/review-texts/the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/lyceum--unknown.json"
+      "data/review-texts/the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026/lyceum--unknown.json",
+      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+      "data/review-texts/surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+      "data/review-texts/murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
     ],
     "archive": [
       "frozen-2018/village-voice--michael-feingold.json",
@@ -1237,7 +1258,7 @@
     ]
   },
   "startTime": "2026-10-30T19:50:43.255Z",
-  "lastProcessed": "book-of-mormon-2011/ap--mark-kennedy.json",
+  "lastProcessed": "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
   "log": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -1388,6 +1409,24 @@
       "t": "2026-10-31T01:48:20.390Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T02:21:30.468Z",
+      "event": "bb-session",
+      "session": "615fcc3e",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-31T02:22:37.261Z",
+      "event": "bb-session",
+      "session": "9e63aaf3",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-31T02:23:15.875Z",
+      "event": "bb-session",
+      "session": "77dc5caa",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ],
   "recoveredAfterFailure": [
