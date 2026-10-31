@@ -1246,19 +1246,24 @@ test('flagged-miss-basis: rule-confirmed exclusions (BRO-6687 a-e) and their neg
   ok(run({ crossOutletDuplicate: true, crossOutletPrimaryFile: 'show-a/held--x.json' }, 'crossOutletDuplicate'), 'cross-outlet-duplicate-of-held');
   no(run({ crossOutletDuplicate: false, crossOutletPrimaryFile: 'show-a/held--x.json' }, 'crossOutletDuplicate'));
   no(run({ crossOutletDuplicate: true, crossOutletPrimaryFile: 'show-b/held--x.json' }, 'crossOutletDuplicate'));
-  // (d) deterministic non-date wrongProduction confirms; LLM and date-family reasons do not
-  ok(run({ wrongProduction: true, wrongProductionReason: 'Venue mismatch: London Palladium vs Broadway' }, 'wrongProduction'), 'deterministic-rule');
-  no(run({ wrongProduction: true, wrongProductionReason: 'Collector LLM verdict: different production' }, 'wrongProduction'));
-  for (const r of ['anticipatory_pre_opening_post', 'Pre-opening guard: pre-window date', 'Date guard: review 2026 is 9d before opening', 'Auto-flagged: URL date 2019 is 900 days', 'Cross-market: US outlet']) {
+  // (d) automated wrongProduction/wrongShow never confirms by itself, whatever the reason text
+  for (const r of ['Venue mismatch: London Palladium vs Broadway', 'Collector LLM verdict: different production', 'anticipatory_pre_opening_post',
+    'Pre-opening guard: pre-window date', 'Date guard: review 2026 is 9d before opening', 'Auto-flagged: URL date 2019 is 900 days', 'Cross-market: US outlet',
+    'Review published 9 days before show opened', 'Date/URL year mismatch: 2019', 'Tour transfer', 'prior-run-republish', 'Touring/non-NYC audit (openai)',
+    'contamination-adjudicated: x', 'Cross-show URL collision (revival, no signal): defaulting to most recent production']) {
     no(run({ wrongProduction: true, wrongProductionReason: r }, 'wrongProduction'));
+    no(run({ wrongShow: true, wrongShowReason: r }, 'wrongShow'));
   }
-  no(run({ wrongShow: false, wrongShowReason: 'Venue mismatch' }, 'wrongShow'));
   // (e) ensemble 3-agree wrong_production confirms; agree-2 and garbage_text do not
   const ens = { rejectedBy: 'ensemble-scoreability-check', rejectionAgreeCount: 3, rejectionReason: 'wrong_production' };
-  ok(run(ens, 'ensembleRejected'), 'ensemble-3-agree');
-  ok(run({ ...ens, rejectionReason: 'wrong_show' }, 'ensembleRejected'), 'ensemble-3-agree');
-  no(run({ ...ens, rejectionAgreeCount: 2 }, 'ensembleRejected'));
-  no(run({ ...ens, rejectionReason: 'garbage_text' }, 'ensembleRejected'));
+  ok(run(ens, 'rejectionReason'), 'ensemble-3-agree');
+  ok(run(ens, 'wrongProduction'), 'ensemble-3-agree');
+  ok(run({ ...ens, rejectionReason: 'wrong_show' }, 'wrongShow'), 'ensemble-3-agree');
+  no(run({ ...ens, rejectionAgreeCount: 2 }, 'rejectionReason'));
+  no(run({ ...ens, rejectionReason: 'garbage_text' }, 'rejectionReason'));
+  // stale ensemble fields under an unrelated exclusion reason do not confirm
+  no(run(ens, 'previewPlaceholder'));
+  no(run(ens, 'contentTierInvalid'));
   no(run(ens, null));
   // every file must be confirmed; human wrongProduction assertion blocks
   const mixed = classifyFlaggedMiss([{ outletId: 'a' }, { outletId: 'b' }], d => d.outletId === 'a' ? 'knownSyndicationSecondary' : 'contentTierInvalid', isHeld, isRoundupUrl);

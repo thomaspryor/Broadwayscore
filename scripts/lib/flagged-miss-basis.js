@@ -151,21 +151,18 @@ function isConfirmedNonReviewFile(d, isHeldFile) {
 //  (b) isRoundupArticle set by a rule: roundup URL pattern or an 'auto:' reason.
 //  (c) duplicateOf / crossOutletDuplicate whose pointer names a held, counted file of
 //      the same owning show (a copy of something already counted).
-//  (d) wrongProduction/wrongShow from a deterministic non-LLM rule, EXCEPT the date
-//      family (pre-opening/date/URL-date/cross-market guards), which can misfire on a
-//      real preview-period review an aggregator cites; those stay reverify.
+//  (d) wrongProduction/wrongShow from an automated rule is deliberately NOT confirmed: the
+//      setters write free-text reasons (date guards, tour/transfer, URL-year, adjudicator
+//      provider tags) that no pattern can tell apart from LLM or date-family verdicts, and a
+//      real preview-period review an aggregator cites must reach a person (ship-check review
+//      2026-10-31 found 9+ unlisted reason shapes across 559 files). Those stay reverify.
 //  (e) wrong_production/wrong_show rejected by the scoreability ensemble with >=3 models
-//      agreeing (BRO-5391 precedent for not_a_review). garbage_text deliberately excluded.
-const DATE_FAMILY_REASON = /anticipatory_pre_opening_post|Pre-opening guard|Date guard|Auto-flagged: URL date|Cross-market/i;
-function isDeterministicNonDateExclusion(d) {
-  return [['wrongProduction', 'wrongProductionReason', 'wrongProductionNote'], ['wrongShow', 'wrongShowReason', 'wrongShowNote']]
-    .some(([flag, reason, note]) => {
-      if (d[flag] !== true) return false;
-      const text = [d[reason], d[note]].filter(x => typeof x === 'string' && x.trim()).join(' ');
-      return text !== '' && !LLM_REASON.test(text) && !DATE_FAMILY_REASON.test(text);
-    });
-}
+//      agreeing (BRO-5391 precedent for not_a_review), and only when that rejection is the
+//      reason the rebuild excludes the file (stale ensemble fields under another reason do
+//      not count). garbage_text deliberately excluded.
 const ENSEMBLE_WRONG_REASONS = new Set(['wrong_production', 'wrong_show']);
+// explain() reasons an ensemble wrong_production/wrong_show rejection surfaces as.
+const ENSEMBLE_EXCLUSION_REASONS = new Set(['rejectionReason', 'wrongProduction', 'wrongShow']);
 function ruleConfirmedBasis(d, reason, isHeldFile, isRoundupUrl) {
   if (!d || !reason) return null;
   if (reason === 'knownSyndicationSecondary') return 'syndication-primary-held';
@@ -177,8 +174,7 @@ function ruleConfirmedBasis(d, reason, isHeldFile, isRoundupUrl) {
   const held = p => typeof isHeldFile === 'function' && typeof p === 'string' && !!isHeldFile(p, d);
   if (reason === 'duplicateOf') return held(d.duplicateOf) ? 'duplicate-of-held' : null;
   if (reason === 'crossOutletDuplicate') return d.crossOutletDuplicate === true && held(d.crossOutletPrimaryFile) ? 'cross-outlet-duplicate-of-held' : null;
-  if ((reason === 'wrongProduction' || reason === 'wrongShow') && isDeterministicNonDateExclusion(d)) return 'deterministic-rule';
-  if (d.rejectedBy === 'ensemble-scoreability-check' && Number(d.rejectionAgreeCount) >= 3
+  if (ENSEMBLE_EXCLUSION_REASONS.has(reason) && d.rejectedBy === 'ensemble-scoreability-check' && Number(d.rejectionAgreeCount) >= 3
     && ENSEMBLE_WRONG_REASONS.has(d.rejectionReason)) return 'ensemble-3-agree';
   return null;
 }

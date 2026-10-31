@@ -252,12 +252,17 @@ function gapRowShowIds(gapAudit) {
 // but the stamp earned it a 365-day skip. Those entries are dropped so the
 // show schedules as never audited. Every audit writes a row, so this cannot
 // re-queue a show forever. No gap file (or an empty one) changes nothing.
-// Returns a shallow copy; the persisted checkpoint is never modified.
-function schedulingCheckpoint(checkpoint, rowShowIds) {
+// Only stamps older than LAST_YEAR_STALE_MS are dropped: a recent rowless stamp
+// (a cancelled run stamps per show but writes rows at the end, or a gap file
+// that holds only a few rows) keeps its normal freshness instead of flooding
+// the queue. Returns a shallow copy; the persisted checkpoint is never modified.
+function schedulingCheckpoint(checkpoint, rowShowIds, now = Date.now()) {
   const cp = checkpoint || {};
   if (!rowShowIds || rowShowIds.size === 0) return { ...cp };
   const out = {};
-  for (const [id, e] of Object.entries(cp)) if (rowShowIds.has(id)) out[id] = e;
+  for (const [id, e] of Object.entries(cp)) {
+    if (rowShowIds.has(id) || now - checkpointTs(e) < LAST_YEAR_STALE_MS) out[id] = e;
+  }
   return out;
 }
 

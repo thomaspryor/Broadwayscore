@@ -313,4 +313,8 @@ test('schedulingCheckpoint drops entries with no gap row', () => {
   assert.deepEqual(schedulingCheckpoint(cp, new Set()), cp);
   assert.deepEqual(schedulingCheckpoint(cp, null), cp);
   assert.deepEqual(schedulingCheckpoint(undefined, ids), {});
+  // a recent rowless stamp (cancelled run, partial gap file) is kept; only old ones drop
+  const now = Date.parse('2026-10-31T12:00:00Z');
+  const cp2 = { a: { at: '2026-06-01T00:00:00Z' }, recent: { at: '2026-10-25T00:00:00Z' }, old: { at: '2026-07-01T00:00:00Z' } };
+  assert.deepEqual(Object.keys(schedulingCheckpoint(cp2, ids, now)).sort(), ['a', 'recent']);
 });

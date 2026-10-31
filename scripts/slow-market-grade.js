@@ -104,6 +104,10 @@ function main(argv = process.argv.slice(2)) {
   }
   const maxAgeArg = argv.find((a) => a.startsWith('--max-age-hours='));
   const maxAgeHours = maxAgeArg ? Number(maxAgeArg.split('=')[1]) : DEFAULT_MAX_AGE_HOURS;
+  if (!Number.isFinite(maxAgeHours) || maxAgeHours <= 0) {
+    console.error(`--max-age-hours must be a positive number (got ${maxAgeArg})`);
+    process.exit(2);
+  }
   const nowMs = Date.now();
   const audit = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', 'show-review-gap.json'), 'utf8'));
   const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8')).reviews || [];
@@ -134,7 +138,7 @@ function main(argv = process.argv.slice(2)) {
     return {
       showId: id, ...g, grade: d.grade, auditGrade: g.grade, stale: d.stale,
       auditAgeHours: d.ageHours === null ? null : Math.round(d.ageHours * 10) / 10,
-      quarantined: !!row?.quarantined,
+      quarantined: !!(row?.quarantine || row?.quarantined), // rows store `quarantine` (BRO-3002)
       frequentMissing: freq.map((f) => f.outletId),
     };
   });
@@ -143,7 +147,7 @@ function main(argv = process.argv.slice(2)) {
     console.log(`gap audit generated ${audit.generatedAt}`);
     for (const s of out) {
       const staleNote = s.stale ? ` (stale: ${s.auditAgeHours === null ? 'no audit time' : `${s.auditAgeHours}h old`}${s.quarantined ? ', row quarantined so its time is frozen' : ''})` : '';
-      console.log(`${s.grade.padEnd(8)} ${s.showId}: ${s.live} live, ${s.cited || 0} cited not live${s.capped ? ` (${s.capped} behind the ingest cap)` : ''}${s.reverify ? `, ${s.reverify} automated exclusion(s) to re-verify` : ''}; info: ${s.census} census candidate(s), ${s.hiddenAsNonReview} excluded as non-review${s.auditedAt ? `; audited ${s.auditedAt}` : ''}${staleNote}`);
+      console.log(`${s.grade.padEnd(8)} ${s.showId}: ${s.live} live, ${s.cited || 0} cited not live${s.capped ? ` (${s.capped} behind the ingest cap)` : ''}${s.reverify ? `, ${s.reverify} automated exclusion(s) to re-verify` : ''}; info: ${s.census} census candidate(s), ${s.hiddenAsNonReview} exclusion(s) confirmed correct${s.auditedAt ? `; audited ${s.auditedAt}` : ''}${staleNote}`);
       for (const u of s.notLive) console.log(`         - ${u}`);
       if (s.frequentMissing.length) console.log(`         frequent outlets with nothing for this show: ${s.frequentMissing.join(', ')}`);
     }
