@@ -969,7 +969,19 @@ function renderActionCard(it, safeUrl) {
     body += `<div style="font-size:12px;color:#666;margin:0 0 2px;">${esc(cleanOwnerText(it.detail))}</div>`;
   }
   const label = it.actionLabel || (d ? 'Read and answer \u2192' : 'Open \u2192');
-  const button = href
+  // BRO-6715: one signed button per option (confirm page first), the recommended pick filled in.
+  const answers = (Array.isArray(it.answerButtons) ? it.answerButtons : []).filter((b) => b && safeUrl(b.url));
+  const answerHtml = answers.length
+    ? `<div style="margin:10px 0 0;">${answers.map((b) => {
+      const primary = b.key !== 'own' && (pick ? String(pick).toLowerCase() === String(b.key).toLowerCase() : b === answers[0]);
+      const style = b.key === 'own'
+        ? 'color:#1d4ed8;background-color:#ffffff;border:1px solid #1d4ed8;font-weight:600;'
+        : primary ? 'color:#ffffff;background-color:#1d4ed8;border:1px solid #1d4ed8;font-weight:700;'
+          : 'color:#1d4ed8;background-color:#ffffff;border:2px solid #1d4ed8;font-weight:700;';
+      return `<a href="${esc(b.url)}" style="display:block;text-align:center;text-decoration:none;font-size:14px;padding:10px 12px;border-radius:8px;margin:0 0 6px;${style}">${esc(cleanOwnerText(b.label))}</a>`;
+    }).join('')}${cardHref ? `<div style="margin:2px 0 0;"><a href="${esc(cardHref)}" style="font-size:12px;color:#1d4ed8;">see the full card</a></div>` : ''}</div>`
+    : '';
+  const button = answerHtml ? answerHtml : href
     ? `<div style="margin:8px 0 0;"><a href="${esc(href)}" style="display:inline-block;font-size:13px;font-weight:700;color:#ffffff;background-color:#1d4ed8;text-decoration:none;padding:7px 16px;border-radius:8px;">${esc(label)}</a>${cardHref && cardHref !== href ? ` <a href="${esc(cardHref)}" style="font-size:12px;color:#1d4ed8;margin-left:10px;">see the full card</a>` : ''}</div>`
     : '';
   return `<div style="border-left:4px solid ${accent};background-color:${bg};border-radius:6px;padding:10px 14px;margin:0 0 10px;">

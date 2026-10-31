@@ -102,15 +102,24 @@ function formatAge(ms) {
 // than inventing a second item shape. Sorted oldest-first (BRO-420) so a
 // stale row surfaces at the top of the digest block instead of wherever
 // Linear's own ordering happened to place it.
-function buildAwaitingOwnerRows(issues, { now = new Date() } = {}) {
+function buildAwaitingOwnerRows(issues, { now = new Date(), secret = process.env.APPROVAL_HMAC_SECRET } = {}) {
+  const { parseDecisionDescription, cleanOwnerText } = require('./decision-card-parse.js');
+  const { answerButtonsFor } = require('./digest-answer-buttons.js');
   return (issues || [])
     .filter(isAwaitingOwner)
     .map((issue) => {
       const age = ageMs(issue, now);
       const stale = age !== null && age >= STALE_AFTER_MS;
       const ageLabel = formatAge(age);
+      // BRO-6715: a card with a DECISION NEEDED block shows its options, and every card gets signed answer buttons.
+      const decision = parseDecisionDescription(issue.description || '');
       return {
         title: `${issue.identifier}: ${issue.title}`,
+        identifier: issue.identifier,
+        headline: cleanOwnerText(String(issue.title || '')) || null,
+        cardUrl: issue.url,
+        decision: decision || null,
+        answerButtons: answerButtonsFor(issue, { secret, now: now.getTime() }),
         detail: stale
           ? `⚠ Waiting on your approval — ${ageLabel} (stale)`
           : ageLabel
@@ -138,8 +147,8 @@ function buildAwaitingOwnerRows(issues, { now = new Date() } = {}) {
 // nothing is waiting so the digest omits the block entirely — a standing
 // zero-row trains the eye to skip it, which is the exact failure mode BRO-282
 // exists to fix.
-function buildAwaitingOwnerSection(issues, { now = new Date() } = {}) {
-  const items = buildAwaitingOwnerRows(issues, { now });
+function buildAwaitingOwnerSection(issues, { now = new Date(), secret } = {}) {
+  const items = buildAwaitingOwnerRows(issues, { now, ...(secret ? { secret } : {}) });
   if (!items.length) return null;
   const staleCount = items.filter((i) => i.stale).length;
   return {
@@ -185,7 +194,7 @@ async function enrichWithComments(issues, { getIssue, timeoutMs = 15_000, onErro
         issues.map(async (issue) => {
           try {
             const full = await getIssue(issue.identifier);
-            return full ? { ...issue, comments: full.comments, labels: full.labels || issue.labels } : issue;
+            return full ? { ...issue, comments: full.comments, labels: full.labels || issue.labels, description: full.description || issue.description } : issue;
           } catch (err) {
             if (onError) onError(issue, err);
             return issue;
