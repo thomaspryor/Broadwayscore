@@ -1046,20 +1046,6 @@
     "queuedAt": "2026-10-31T16:15:13.042Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T17:11:24.600Z"
-  },
-  {
     "conditionKey": "cron-health-failed:Test Suite",
     "title": "Cron's latest run failed (not yet stale): Test Suite",
     "description": "Test Suite: Latest run failed (last success 1h ago). Not stale yet; fix it before it is.",
@@ -1108,6 +1094,20 @@
       }
     ],
     "queuedAt": "2026-10-31T16:51:55.017Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T17:36:35.238Z"
   },
   {
     "conditionKey": "arm-yield:workflow:scoring-audit",
