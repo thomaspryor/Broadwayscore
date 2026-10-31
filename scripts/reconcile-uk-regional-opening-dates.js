@@ -33,6 +33,10 @@ function plan(shows, reviews) {
 }
 
 if (require.main === module) {
+  if (hasHelpFlag(process.argv.slice(2))) {
+    console.log('Usage: node scripts/reconcile-uk-regional-opening-dates.js [--plan=bro-N]\nPrints how many review-seeded UK regional opening dates should move; --plan writes pending-fix plans.');
+    process.exit(0);
+  }
   const raw = require(path.join(root, 'data/shows.json'));
   const shows = Array.isArray(raw) ? raw : raw.shows;
   const { moves, manual } = plan(shows, require(path.join(root, 'data/reviews.json')).reviews);
