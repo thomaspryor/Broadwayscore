@@ -157,7 +157,7 @@ function createBrowserbaseFetcher({
  */
 function laneFetchPage({ fetchPage, browserbase }) {
   return async (url, opts) => {
-    if (browserbase && routesThroughBrowserbase(url) && browserbase.available()) {
+    if (!opts?.directOnly && browserbase && routesThroughBrowserbase(url) && browserbase.available()) {
       try {
         return await browserbase.fetch(url);
       } catch (e) {

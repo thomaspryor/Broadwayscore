@@ -10,12 +10,12 @@
  */
 const discovery = require('./discovery');
 
-function laneAdapters({ showScoreGuards = {}, adaptersConfig = {}, search, decodeImpl = null, now = Date.now } = {}) {
+function laneAdapters({ showScoreGuards = {}, adaptersConfig = {}, search, decodeImpl = null, now = Date.now, ledgerDir } = {}) {
   return [
     discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards), discovery.playbillVerdictAdapter(),
     discovery.talkinBroadwayAdapter({ now }), discovery.googleNewsAdapter({ decodeImpl, now }),
-    discovery.rssAdapter({ feeds: adaptersConfig.feeds }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets || [] }),
-    discovery.serpAdapter({ search: adaptersConfig.search || search }),
+    discovery.rssAdapter({ feeds: adaptersConfig.feeds }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets }),
+    discovery.serpAdapter({ search: adaptersConfig.search || search, now, ledgerDir }),
   ];
 }
 

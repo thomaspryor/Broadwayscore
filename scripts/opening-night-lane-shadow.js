@@ -63,7 +63,7 @@ async function main() {
   const serpSearch = async (query) => {
     if (!env.BRIGHTDATA_TOKEN && !env.SCRAPINGBEE_API_KEY) throw new Error('SERP: no BRIGHTDATA_TOKEN or SCRAPINGBEE_API_KEY');
     const { serpQuery } = require('./lib/url-discovery');
-    return (await serpQuery(query, { nbResults: 10, brightDataKey: env.BRIGHTDATA_TOKEN, scrapingBeeKey: env.SCRAPINGBEE_API_KEY, log: () => {} })) || [];
+    return (await serpQuery(query, { nbResults: 10, emptyAuthoritative: false, brightDataKey: env.BRIGHTDATA_TOKEN, scrapingBeeKey: env.SCRAPINGBEE_API_KEY, log: () => {} })) || [];
   };
 
   const out = path.resolve(outDir);
@@ -96,13 +96,9 @@ async function main() {
       show, night, openingDate: show.openingDate, timeZone: show.market === 'west-end' ? 'Europe/London' : 'America/New_York',
       ledgerDir, fetchText, windowMs: windowMin * 60 * 1000, dryRun: true,
       adapters: require('./lib/opening-night-lane/adapters').laneAdapters({
-        showScoreGuards, adaptersConfig, search: serpSearch, decodeImpl: require('./lib/google-news-decode').decodeGoogleNewsLink, now: Date.now,
+        showScoreGuards, adaptersConfig, search: serpSearch, decodeImpl: require('./lib/google-news-decode').decodeGoogleNewsLink, now: Date.now, ledgerDir,
       }),
-      missingOutlets: ({ seen }) => {
-        const { resolveOutletFromUrl } = require('./lib/review-normalization');
-        const have = new Set([...seen].map((u) => (resolveOutletFromUrl(u) || {}).outletId).filter(Boolean));
-        return (adaptersConfig.missingOutlets || []).filter((id) => !have.has(id));
-      },
+      missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
       fetchReview: scoring.fetchReview, scoreReview: scores.wrapScore(scoring.scoreReview),
       // No reviewTextsDir and no onDiskUrls: the shadow must find every review itself, including ones the regular
       // pipeline already published, and must not write review files the regular pipeline also writes. onDiskRows

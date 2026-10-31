@@ -1504,6 +1504,7 @@ function pageChainOrder(flags) {
  * @param {boolean} [options.preferPlaywright]
  * @param {string} [options.playwrightWaitForSelector]
  * @param {string[]} [options.tiers] - only run these chain tiers (e.g. ['brightdata'])
+ * @param {boolean} [options.directOnly] - free HTTP only, no paid or browser fallback (section indexes)
  * @param {number} [options.wait] - ms settle time (SD/SB, JS-render only)
  * @param {string} [options.countryCode] - 2-letter geo pin (SD country / SB country_code)
  * @returns {Promise<{content: string, format: string, source: string}>}
@@ -1511,6 +1512,13 @@ function pageChainOrder(flags) {
 async function fetchPage(url, options = {}) {
   _lastUrlMismatchUrl = null; // BRO-6089: per-call state, never leaks from an earlier fetch
   url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
+  if (options.directOnly) {
+    const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    if (!response.ok) throw new Error(`Direct fetch failed: ${response.status}`);
+    const content = await response.text();
+    if (!content.trim() || _isChallengeOrGarbage(content)) throw new Error('Direct fetch returned empty or blocked content');
+    return { content, format: 'html', source: 'direct', finalUrl: response.url || url };
+  }
   // EDGAR XML needs an identifying admin contact, and must retain its tags.
   // Keep SEC access behind the same fetchPage entry point as other sources.
   let requestedUrl = null;

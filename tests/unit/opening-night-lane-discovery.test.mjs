@@ -12,6 +12,120 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const d = require('../../scripts/lib/opening-night-lane/discovery.js');
 const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
+const { laneAdapters } = require('../../scripts/lib/opening-night-lane/adapters.js');
+
+test('unconfigured lane factory sweeps T1 indexes using free requests', async () => {
+  const calls = [];
+  const index = laneAdapters({ search: async () => [] }).find(a => a.name === 'section-index');
+  await index.discover({ show: { title: 'Test', category: 'broadway' }, fetchText: async (url, opts) => {
+    calls.push({ url, opts }); return '<main></main>';
+  } });
+  assert.ok(calls.some(c => c.url === 'https://www.nytimes.com/section/theater'));
+  assert.ok(calls.every(c => c.opts.directOnly === true));
+});
+
+test('unconfigured missing T1 at +3h gets one query, then cooldown survives adapter restart', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lane-serp-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  let clock = T0 + 3 * HOUR;
+  let queries = 0;
+  const seen = new Set(d.defaultLaneMissingOutlets(SHOW).filter(id => id !== 'nytimes').map(id => {
+    const o = require('../../data/outlet-registry.json').outlets[id];
+    return `https://${o.domain}/test-review`;
+  }));
+  // Use the canonical registry to remove every other outlet, including domain aliases.
+  const missingOutlets = d.laneMissingOutlets({ show: SHOW, seen });
+  assert.deepEqual(missingOutlets, ['nytimes']);
+  const make = () => laneAdapters({ ledgerDir: dir, now: () => clock, search: async () => { queries++; return []; } }).filter(a => a.phase === 'serp');
+  const pass = adapters => d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: clock, startedAt: T0,
+    adapters, missingOutlets, fetchText: async () => '' });
+  await pass(make());
+  assert.equal(queries, 1);
+  clock += 2 * 60000;
+  await pass(make());
+  assert.equal(queries, 1);
+  clock += 28 * 60000;
+  await pass(make());
+  assert.equal(queries, 2);
+});
+
+test('default targets follow registry tiers and markets; captured domains and explicit empty lists are skipped', async () => {
+  const registry = require('../../data/outlet-registry.json').outlets;
+  const bw = d.defaultLaneMissingOutlets({ category: 'broadway' });
+  const we = d.defaultLaneMissingOutlets({ category: 'west-end' });
+  assert.ok(bw.includes('vulture') && bw.includes('cititour') && bw.includes('lighting-and-sound-america'));
+  assert.ok(!we.includes('vulture') && we.includes('thestage') && we.includes('artsdesk'));
+  assert.ok(!bw.includes('artsdesk') && !bw.includes('chicagotribune'));
+  for (const ids of [bw, we]) {
+    assert.ok(ids.every(id => registry[id].tier <= 2));
+    assert.equal(new Set(ids.map(id => registry[id].domain)).size, ids.length);
+    assert.deepEqual(ids.map(id => registry[id].tier), ids.map(id => registry[id].tier).sort());
+  }
+  assert.deepEqual(d.defaultLaneMissingOutlets({ category: 'off-broadway' }), bw);
+  assert.ok(!d.defaultLaneSectionIndexes({ category: 'west-end' }).some(o => o.outletId === 'vulture'));
+  assert.ok(d.defaultLaneSectionIndexes({ category: 'west-end' }).some(o => o.outletId === 'guardian'));
+  const seen = new Set(['https://www.nytimes.com/2026/10/19/theater/test-review.html', 'https://www.timeout.com/london/theatre/test']);
+  const missing = d.laneMissingOutlets({ show: { category: 'west-end' }, seen });
+  assert.ok(!missing.includes('nytimes') && !missing.includes('timeout-london'));
+  assert.deepEqual(d.laneMissingOutlets({ show: SHOW, seen, adaptersConfig: { missingOutlets: [] } }), []);
+  const index = laneAdapters({ search: async () => [], adaptersConfig: { outlets: [] } }).find(a => a.name === 'section-index');
+  await index.discover({ show: SHOW, fetchText: async () => assert.fail('explicit empty list must disable index fetching') });
+});
+
+test('SERP night budget caps failed searches, persists, and resets for a different night', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lane-serp-cap-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  let clock = T0;
+  let calls = 0;
+  const make = () => d.serpAdapter({ ledgerDir: dir, now: () => clock, domainFor: id => `${id}.example.com`,
+    search: async () => { calls++; throw new Error('provider unavailable'); } });
+  const missingOutlets = Array.from({ length: 30 }, (_, i) => `outlet-${i}`);
+  for (let i = 0; i < 8; i++) {
+    await make().discover({ show: SHOW, night: NIGHT, missingOutlets }).catch(e => assert.match(e.message, /provider unavailable/));
+    assert.equal(calls, Math.min((i + 1) * 5, d.SERP_NIGHT_MAX));
+    clock += d.SERP_COOLDOWN_MS;
+  }
+  const saved = JSON.parse(fs.readFileSync(path.join(dir, `${SHOW.id}-${NIGHT}.serp.json`), 'utf8'));
+  assert.equal(saved.length, d.SERP_NIGHT_MAX);
+  await make().discover({ show: SHOW, night: '2026-10-19', missingOutlets }).catch(e => assert.match(e.message, /provider unavailable/));
+  assert.equal(calls, d.SERP_NIGHT_MAX + 5);
+});
+
+test('SERP refuses corrupt, locked, or unwritable budget storage without spending', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lane-serp-invalid-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const file = path.join(dir, `${SHOW.id}-${NIGHT}.serp.json`);
+  const make = ledgerDir => d.serpAdapter({ ledgerDir, search: async () => assert.fail('must not spend') });
+  const args = { show: SHOW, night: NIGHT, missingOutlets: ['nytimes'] };
+  for (const content of ['{', '{}', '[{"outletId":"nytimes","at":null}]']) {
+    fs.writeFileSync(file, content);
+    await assert.rejects(make(dir).discover(args));
+  }
+  fs.writeFileSync(`${file}.lock`, '');
+  await assert.rejects(make(dir).discover(args), /EEXIST/);
+  fs.unlinkSync(`${file}.lock`);
+  await assert.rejects(make(file).discover(args), /EEXIST|ENOTDIR/);
+});
+
+test('SERP provider spend ledger inherits show and outlet attribution', async (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'lane-serp-spend-'));
+  const previous = process.env.SCRAPER_SPEND_LEDGER_PATH;
+  process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(dir, 'spend.jsonl');
+  t.after(() => {
+    if (previous === undefined) delete process.env.SCRAPER_SPEND_LEDGER_PATH;
+    else process.env.SCRAPER_SPEND_LEDGER_PATH = previous;
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+  const { recordBdCall } = require('../../scripts/lib/provider-telemetry');
+  const adapter = d.serpAdapter({ ledgerDir: dir, search: async () => {
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 200 });
+    return [];
+  } });
+  await adapter.discover({ show: SHOW, night: NIGHT, missingOutlets: ['nytimes'] });
+  const row = JSON.parse(fs.readFileSync(process.env.SCRAPER_SPEND_LEDGER_PATH, 'utf8').trim());
+  assert.equal(row.showId, SHOW.id);
+  assert.equal(row.outletId, 'nytimes');
+});
 
 const SHOW = { id: 'other-desert-cities-2026', title: 'Other Desert Cities', openingDate: '2026-10-18' };
 const NIGHT = '2026-10-18';

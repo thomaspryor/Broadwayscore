@@ -163,7 +163,7 @@ function realSerpSearch(env) {
     // serpQuery returns nothing when no key is set; that must read as a failure, not as "no results".
     if (!env.BRIGHTDATA_TOKEN && !env.SCRAPINGBEE_API_KEY) throw new Error('SERP: no BRIGHTDATA_TOKEN or SCRAPINGBEE_API_KEY');
     const { serpQuery } = require('../url-discovery');
-    return (await serpQuery(query, { nbResults: 10, brightDataKey: env.BRIGHTDATA_TOKEN, scrapingBeeKey: env.SCRAPINGBEE_API_KEY, log: () => {} })) || [];
+    return (await serpQuery(query, { nbResults: 10, emptyAuthoritative: false, brightDataKey: env.BRIGHTDATA_TOKEN, scrapingBeeKey: env.SCRAPINGBEE_API_KEY, log: () => {} })) || [];
   };
 }
 
@@ -263,13 +263,9 @@ function wireLaneNight({
       ...(windowMs > 0 ? { windowMs } : {}),
       ...tuning,
       reviewTextsDir,
-      adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig, search, decodeImpl, now }),
+      adapters: laneAdapters({ showScoreGuards: guards, adaptersConfig, search, decodeImpl, now, ledgerDir }),
       // Outlets already captured (any seen URL resolving to them) drop out, so SERP stops searching for them.
-      missingOutlets: ({ seen }) => {
-        const { resolveOutletFromUrl } = require('../review-normalization');
-        const have = new Set([...seen].map((u) => (resolveOutletFromUrl(u) || {}).outletId).filter(Boolean));
-        return (adaptersConfig.missingOutlets || []).filter((id) => !have.has(id));
-      },
+      missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
       fetchReview: scoring.fetchReview, scoreReview: scoring.scoreReview,
       ...(publishPorts ? { publishPorts } : { makePublishPorts, forkClock }),
       onDiskUrls, onDiskRows, now, wait,

@@ -36,6 +36,8 @@ const { admitLaneCandidate } = require('./trust-model');
 const ledger = require('./ledger');
 
 const SERP_AFTER_MS = 3 * 60 * 60 * 1000;
+const SERP_COOLDOWN_MS = 30 * 60 * 1000;
+const SERP_NIGHT_MAX = 20;
 const DEFAULT_MAX_DATE_CHECKS = 10;
 const DEFAULT_FETCH_TIMEOUT_MS = 15000;
 const DEFAULT_PASS_DEADLINE_MS = 90000;
@@ -354,6 +356,46 @@ function defaultLaneFeeds(show) {
   return ALL_FEEDS.filter((f) => !f.market || f.market === market).map((f) => ({ url: f.url, outletId: f.outletId, name: f.name }));
 }
 
+// Explicit section URLs, never inferred from article URLs. Vulture and Variety reuse the
+// sections swept by site-search-discovery.js. The registry owns tiers and market coverage.
+const T1_SECTION_INDEXES = {
+  nytimes: 'https://www.nytimes.com/section/theater',
+  wsj: 'https://www.wsj.com/arts-culture',
+  vulture: 'https://www.vulture.com/theater/',
+  variety: 'https://variety.com/v/legit/reviews/',
+  guardian: 'https://www.theguardian.com/stage',
+  newyorker: 'https://www.newyorker.com/culture/the-theatre',
+  thestage: 'https://www.thestage.co.uk/reviews',
+};
+
+function defaultLaneMissingOutlets(show) {
+  const london = /west[-\s]?end/i.test(`${show?.market || ''} ${show?.category || ''}`);
+  const domains = new Set();
+  return Object.entries(require('../../../data/outlet-registry.json').outlets)
+    .filter(([, o]) => o.tier <= 2 && o.domain && (o.isDualMarket || o.region === 'dual' ||
+      (london ? o.region === 'london' : !o.region || ['us', 'nyc'].includes(o.region))))
+    .sort((a, b) => a[1].tier - b[1].tier)
+    // Sunday editions sharing a domain would issue the exact same site query.
+    .filter(([, o]) => { if (domains.has(o.domain)) return false; domains.add(o.domain); return true; })
+    .map(([id]) => id);
+}
+
+function defaultLaneSectionIndexes(show) {
+  const eligible = new Set(defaultLaneMissingOutlets(show));
+  const registry = require('../../../data/outlet-registry.json').outlets;
+  return Object.entries(T1_SECTION_INDEXES).filter(([id]) => eligible.has(id) && registry[id].tier === 1)
+    .map(([outletId, indexUrl]) => ({ outletId, indexUrl }));
+}
+
+/** Shared by driver and shadow: only still-missing outlets can spend a SERP query. */
+function laneMissingOutlets({ show, seen, adaptersConfig = {} }) {
+  const have = new Set([...seen].map(u => (resolveOutletFromUrl(u) || {}).outletId).filter(Boolean));
+  const registry = require('../../../data/outlet-registry.json').outlets;
+  const haveDomains = new Set([...have].map(id => registry[id]?.domain).filter(Boolean));
+  return (adaptersConfig.missingOutlets ?? defaultLaneMissingOutlets(show))
+    .filter(id => !have.has(id) && !haveDomains.has(registry[id]?.domain));
+}
+
 /** `feeds` omitted: defaultLaneFeeds(show). More feeds than MAX_SOURCES_PER_ADAPTER are read in turn, a window per pass. */
 function rssAdapter({ feeds } = {}) {
   let turn = 0;
@@ -384,14 +426,14 @@ function rssAdapter({ feeds } = {}) {
 }
 
 /** Plain sweep of an outlet's own section index page(s): same-host links that name the show. Dates are confirmed per article. */
-function sectionIndexAdapter({ outlets }) {
+function sectionIndexAdapter({ outlets } = {}) {
   return {
     name: 'section-index', kind: 'outlet-index', phase: 'cheap',
     async discover({ show, fetchText }) {
       const out = [];
-      for (const o of (outlets || []).slice(0, MAX_SOURCES_PER_ADAPTER)) {
+      for (const o of (outlets ?? defaultLaneSectionIndexes(show)).slice(0, MAX_SOURCES_PER_ADAPTER)) {
         let html;
-        try { html = await fetchText(o.indexUrl); } catch { continue; }
+        try { html = await fetchText(o.indexUrl, { directOnly: true }); } catch { continue; }
         const host = hostOf(o.indexUrl);
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
@@ -670,25 +712,66 @@ function talkinBroadwayAdapter({
  * is injected and returns [{url,title}]. `limit` caps both the SEARCHES run and the results returned, so a burst of
  * missing outlets cannot burn SERP credits. Results carry no trustworthy date: it is read from the article.
  */
-function serpAdapter({ search, domainFor } = {}) {
+function serpAdapter({ search, domainFor, ledgerDir, now = Date.now } = {}) {
   if (typeof search !== 'function') throw new Error('serpAdapter: search(query) is required');
   const domain = domainFor || ((id) => {
     if (/\./.test(String(id))) return String(id).replace(/^www\./, '');
     const o = require('../../../data/outlet-registry.json').outlets[id];
     return o && o.domain ? String(o.domain).replace(/^www\./, '') : null;
   });
+  const budgets = new Map();
+  // Reserve before spending, including failed searches. The lane has one writer, but a
+  // lock also makes overlapping restarts fail closed. Corrupt/unwritable state never resets
+  // the budget. Keep this file alongside the night's ledger when resuming a run.
+  function reserve(show, night, id) {
+    const key = `${show.id}:${night}`;
+    const file = ledgerDir && ledger.ledgerPath(ledgerDir, show.id, night).replace(/\.jsonl$/, '.serp.json');
+    let lock;
+    try {
+      if (file) {
+        fs.mkdirSync(path.dirname(file), { recursive: true });
+        lock = fs.openSync(`${file}.lock`, 'wx');
+      }
+      let rows = budgets.get(key) || [];
+      if (file) {
+        try { rows = JSON.parse(fs.readFileSync(file, 'utf8')); }
+        catch (e) { if (e.code !== 'ENOENT') throw e; }
+      }
+      if (!Array.isArray(rows) || rows.some(r => !r || typeof r.outletId !== 'string' || !Number.isFinite(r.at))) {
+        throw new Error('SERP: invalid night budget');
+      }
+      const at = Number(now());
+      if (!Number.isFinite(at)) throw new Error('SERP: invalid clock');
+      if (rows.length >= SERP_NIGHT_MAX || rows.some(r => r.outletId === id && at - r.at < SERP_COOLDOWN_MS)) return false;
+      rows = [...rows, { outletId: id, at }];
+      if (file) {
+        const tmp = `${file}.${process.pid}.tmp`;
+        try { fs.writeFileSync(tmp, JSON.stringify(rows)); fs.renameSync(tmp, file); }
+        finally { fs.rmSync(tmp, { force: true }); }
+      }
+      budgets.set(key, rows);
+      return true;
+    } finally {
+      if (lock !== undefined) { fs.closeSync(lock); fs.unlinkSync(`${file}.lock`); }
+    }
+  }
   return {
     name: 'serp', kind: 'serp', phase: 'serp',
-    async discover({ show, missingOutlets = [], limit = 5 }) {
+    async discover({ show, night = show.openingDate || new Date(now()).toISOString().slice(0, 10), missingOutlets = [], limit = 5 }) {
       const out = [];
       let searches = 0; let failures = 0; let lastError = null;
       for (const id of missingOutlets) {
         if (searches >= limit || out.length >= limit) break;
         const dom = domain(id);
         if (!dom) continue;
+        if (!reserve(show, night, id)) continue;
         searches++;
         let results;
-        try { results = await search(`site:${dom} "${show.title}" review`); } catch (e) { failures++; lastError = e; continue; }
+        try {
+          // serpQuery's provider calls write the spend ledger, including retries/fallback.
+          const { withSpendShow, withSpendOutlet } = require('../provider-telemetry');
+          results = await withSpendShow(show.id, () => withSpendOutlet(id, () => search(`site:${dom} "${show.title}" review`)));
+        } catch (e) { failures++; lastError = e; continue; }
         for (const r of results || []) {
           if (!r || !r.url || !(hostOf(r.url) === dom || (hostOf(r.url) || '').endsWith(`.${dom}`))) continue;
           if (!titleMatchesShow(r.title || '', show.title, { fuzzy: true }) && !urlSlugMatchesShow(r.url, show.title, { fuzzy: true })) continue;
@@ -899,7 +982,8 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 }
 
 module.exports = {
-  SERP_AFTER_MS, NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
+  SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
+  NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
   nonReviewReason, hasReviewSignal, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
