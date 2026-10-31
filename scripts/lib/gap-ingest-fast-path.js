@@ -11,7 +11,7 @@
  *
  * Fast path: right after the ingest step, push review-texts and dispatch the
  * per-show scoring lane (dispatchRescore: scoring + fast rebuild) for every
- * show that gained or changed a review file and is urgent (in or near its opening
+ * show that gained a NEW review file and is urgent (in or near its opening
  * night window). It only ADDS speed: the end-of-job full rebuild trigger is
  * unchanged, so a review with nothing to score (stub, relay) is still published
  * by the slow path. Non-urgent shows (back-catalogue) rely on that path alone.
@@ -66,7 +66,7 @@ async function fastPublish({ showIds, urgentIds, dispatch, reason = LANE_REASON,
   return { dispatched, notUrgent, deferred, failed };
 }
 
-function listAddedPaths(repoDir, beforeSha, filter = 'AM') {
+function listAddedPaths(repoDir, beforeSha, filter = 'A') {
   const out = execFileSync('git', ['-C', repoDir, 'diff', '--name-only', `--diff-filter=${filter}`, `${beforeSha}..HEAD`], { encoding: 'utf8' });
   return out.split('\n').filter(Boolean);
 }
@@ -88,10 +88,9 @@ if (require.main === module) {
       const before = process.env.BEFORE_SHA;
       if (!before) throw new Error('BEFORE_SHA not set');
       const rtDir = path.join(__dirname, '..', '..', 'data', 'review-texts');
-      // New files first: the per-run cap should go to tonight's ingests, not to
-      // other writers' edits that arrived with the same pull.
-      const added = newShowIdsFromPaths(listAddedPaths(rtDir, before, 'A'));
-      const showIds = [...added, ...newShowIdsFromPaths(listAddedPaths(rtDir, before, 'M')).filter((id) => !added.includes(id))];
+      // New files only: in-place edits (other writers' updates, stub fills) are
+      // left to the end-of-job rebuild so they cannot burn the per-run cap.
+      const showIds = newShowIdsFromPaths(listAddedPaths(rtDir, before));
       const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'shows.json'), 'utf8'));
       const shows = Array.isArray(raw) ? raw : (raw.shows || []);
       const urgentIds = urgentScoringShowIds(shows, { evidence: loadReviewEvidence() });

@@ -7,10 +7,12 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import os from 'node:os';
+import { execFileSync } from 'node:child_process';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { newShowIdsFromPaths, fastPublish } = require('./gap-ingest-fast-path.js');
+const { newShowIdsFromPaths, fastPublish, listAddedPaths } = require('./gap-ingest-fast-path.js');
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('newShowIdsFromPaths: show dirs only, unique, skips _pending and non-json', () => {
@@ -61,6 +63,21 @@ test('fastPublish shares the verify-all-scored concurrency lane (no parallel dou
   const seen = [];
   await fastPublish({ showIds: ['a'], urgentIds: new Set(['a']), dispatch: async (id, o) => { seen.push(o.reason); return { ok: true }; } });
   assert.deepEqual(seen, ['verify-all-scored']);
+});
+
+test('listAddedPaths: new files only, other writers\' edits to existing files are ignored', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gapfp-'));
+  const git = (...a) => execFileSync('git', ['-C', dir, '-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { encoding: 'utf8' });
+  git('init', '-q');
+  fs.mkdirSync(path.join(dir, 'old-show'));
+  fs.writeFileSync(path.join(dir, 'old-show', 'a--b.json'), '{}');
+  git('add', '-A'); git('commit', '-qm', 'base');
+  const before = git('rev-parse', 'HEAD').trim();
+  fs.writeFileSync(path.join(dir, 'old-show', 'a--b.json'), '{"edited":1}');
+  fs.mkdirSync(path.join(dir, 'the-moth'));
+  fs.writeFileSync(path.join(dir, 'the-moth', 'fringereview--unknown.json'), '{}');
+  git('add', '-A'); git('commit', '-qm', 'ingest');
+  assert.deepEqual(newShowIdsFromPaths(listAddedPaths(dir, before)), ['the-moth']);
 });
 
 test('audit-aggregator-gap.yml publishes ingests right after the ingest step', () => {
