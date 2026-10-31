@@ -689,6 +689,17 @@ test('acceptSerpCensusResult drops BWW city editions and story-collection book r
     assert.equal(classifyFlaggedMiss([llm, { ...base, _file: 'y--u.json', wrongProduction: true, wrongProductionReason: 'prior-run-republish' }], explain).confirmedNonReview, false);
   });
 
+  test('BRO-6689: LLM-written reasons and cleared-flag breadcrumbs are not deterministic; date-guard notes are', () => {
+    const base = { _file: 'x--u.json', outletId: 'x', url: 'https://x.example/b', fullText: '', originalScore: '4/5 stars',
+      isNonReview: true, rejectionReason: 'not_a_review',
+      contentVerification: { isValid: false, confidence: 'high', articleType: 'feature', articleTypeConfidence: 'high' } };
+    for (const r of ['LLM: feature', 'LLM (medium): feature', 'Retroactive LLM verify: feature']) {
+      assert.equal(classifyFlaggedMiss([{ ...base, wrongShow: true, wrongShowReason: r }], explain).confirmedNonReview, false, r);
+    }
+    assert.equal(classifyFlaggedMiss([{ ...base, wrongProduction: false, wrongProductionReason: 'superseded: body replaced' }], explain).confirmedNonReview, false);
+    assert.equal(classifyFlaggedMiss([{ ...base, wrongProduction: true, wrongProductionNote: 'Date guard: review is 200d after close' }], explain).confirmedNonReview, true);
+  });
+
   test('BRO-5391: mixed list with one unconfirmed automated file stays a gap', () => {
     const ens = { _file: 'e--u.json', outletId: 'e', url: 'https://e.example/a', fullText: body,
       rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'not_a_review', rejectionAgreeCount: 3 };
