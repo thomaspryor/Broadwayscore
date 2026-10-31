@@ -40,7 +40,7 @@ const LOW_CONF_SCORE_SOURCES = new Set([
 ]);
 
 // Audience grade thresholds (from src/lib/audience-grade-utils.ts)
-const MIN_AUDIENCE_REVIEWS = 15;
+const MIN_AUDIENCE_REVIEWS = require('../src/config/audience-grade.json').minReviews; // shared with src/lib/audience-grade-utils.ts
 
 function getAudienceGrade(score) {
   if (score == null) return null;

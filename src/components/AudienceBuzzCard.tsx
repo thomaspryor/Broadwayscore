@@ -4,6 +4,7 @@ import Link from 'next/link';
 import {
   getAudienceGrade,
   getTotalAudienceReviews,
+  SMALL_SAMPLE_AUDIENCE_REVIEWS,
 } from '@/lib/audience-grade-utils';
 import type { AudienceBuzzData } from '@/lib/data-types';
 import type { ShowRanks } from '@/lib/data-show-ranks';
@@ -229,6 +230,14 @@ export default function AudienceBuzzCard({
         <div className="grid grid-cols-3 gap-2 sm:gap-2.5">
           {renderedTiles}
         </div>
+      )}
+
+      {/* Small-sample note: grades are shown from MIN_AUDIENCE_REVIEWS, but a
+          handful of reviews can swing the grade, so say how many it rests on. */}
+      {totalReviews < SMALL_SAMPLE_AUDIENCE_REVIEWS && (
+        <p className="text-xs text-fg-muted mt-3" data-testid="audience-small-sample-note">
+          Based on {totalReviews.toLocaleString('en-US')} audience reviews. A small sample, so treat this grade as a rough read.
+        </p>
       )}
 
       {/* Limited sources note for historical shows */}

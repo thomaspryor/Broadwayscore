@@ -66,7 +66,7 @@ const MAX_REFRESHES_PER_RUN = 5; // redrafts of already-emailed drafts, outside 
 const MAX_UPDATE_EMAILS = 3;
 const CAPPED_UPDATE_GAP_HOURS = 6;
 
-const MIN_AUDIENCE_REVIEWS = 15; // parity with src/lib/audience-grade-utils.ts
+const MIN_AUDIENCE_REVIEWS = require('../../src/config/audience-grade.json').minReviews; // shared with src/lib/audience-grade-utils.ts
 
 function marketOf(show) {
   return show.category || show.market || 'broadway';

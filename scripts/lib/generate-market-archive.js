@@ -20,7 +20,7 @@ const dataDir = path.join(__dirname, '../../data');
 const outputDir = path.join(__dirname, '../../public/data');
 
 const SCORE_DISPLAY_YEAR_CUTOFF = 2005;
-const MIN_AUDIENCE_REVIEWS = 15;
+const MIN_AUDIENCE_REVIEWS = require('../../src/config/audience-grade.json').minReviews; // shared with src/lib/audience-grade-utils.ts
 
 function getAudienceGrade(score) {
   if (score == null) return null;

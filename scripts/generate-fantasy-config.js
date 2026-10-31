@@ -210,7 +210,7 @@ function computeCriticScore(showId) {
 // Tier mappers shared with compute-fantasy-scores.js; pinned to the site's
 // scoring.ts / audience-grade-utils.ts by tests/unit/fantasy-tier-parity.test.ts.
 const { criticLabelForScore: getCriticLabel, audienceGradeForScore: gradeFromAudienceScore } = require('./lib/fantasy-helpers');
-const MIN_AUDIENCE_REVIEWS = 15;
+const MIN_AUDIENCE_REVIEWS = require('../src/config/audience-grade.json').minReviews; // shared with src/lib/audience-grade-utils.ts
 function getAudienceGrade(showId) {
   const data = audienceData[showId];
   if (!data || !data.sources) return null;

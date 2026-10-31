@@ -63,7 +63,7 @@ function getAudienceGrade(score) {
   return { g: 'F', l: 'Loathing It', c: '#6b7280' };
 }
 
-const MIN_AUDIENCE_REVIEWS = 15;
+const MIN_AUDIENCE_REVIEWS = require('../src/config/audience-grade.json').minReviews; // shared with src/lib/audience-grade-utils.ts
 
 // `ps` is documented to the app as a plain calendar date; anything else is left out.
 function isIsoDate(v) {

@@ -208,7 +208,7 @@ export default function ShowPageBelowFold({
       {/* Audience Scorecard */}
       <div id="audience" className="scroll-mt-20" />
       {/* Match the main show page's audience gate exactly (same helper) — a card
-          built on <15 reviews (e.g. "100/Loving" from a single review) is
+          built on too few reviews (e.g. "100/Loving" from a single review) is
           misleading, so hide it rather than display a low-confidence grade. */}
       {audienceBuzz && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz) ? (() => {
         const sourceCount = Object.values(audienceBuzz.sources || {}).filter(Boolean).length;

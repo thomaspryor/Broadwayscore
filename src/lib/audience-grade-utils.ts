@@ -1,13 +1,21 @@
-// Pure audience grade utility functions — ZERO JSON imports.
+// Pure audience grade utility functions — no data-file imports (only the tiny
+// src/config/audience-grade.json threshold file).
 // Safe for 'use client' components. See data-audience.ts for data-fetching functions.
 
 import type { AudienceBuzzData } from './data-types';
+import audienceGradeConfig from '../config/audience-grade.json';
 
 /**
  * Minimum total audience reviews required to display a grade.
  * Shows with fewer reviews get no grade (too unreliable).
+ * Value lives in src/config/audience-grade.json so scripts share it.
  */
-export const MIN_AUDIENCE_REVIEWS = 15;
+export const MIN_AUDIENCE_REVIEWS: number = audienceGradeConfig.minReviews;
+
+/**
+ * Grades built on fewer reviews than this carry a "small sample" note.
+ */
+export const SMALL_SAMPLE_AUDIENCE_REVIEWS: number = audienceGradeConfig.smallSampleBelow;
 
 /**
  * Get total audience review count across all sources.

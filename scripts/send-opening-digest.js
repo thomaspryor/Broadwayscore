@@ -95,12 +95,12 @@ function publishThresholds(market) {
 //   Critic score: scripts/lib/min-reviews.js getMarketMinReviews() — the single
 //                 source of truth (mirror of src/config/score-buckets.ts):
 //                 West End / Broadway = 5, Off-West End / Off-Broadway = 3.
-//   Audience grade: src/lib/audience-grade-utils.ts MIN_AUDIENCE_REVIEWS = 15.
+//   Audience grade: src/lib/audience-grade-utils.ts MIN_AUDIENCE_REVIEWS (src/config/audience-grade.json).
 // Below these, the digest shows "TBD" / "Audience: —" rather than a firm verdict.
 function minReviewsToShowScore(market) {
   return getMarketMinReviews(market);
 }
-const MIN_AUDIENCE_REVIEWS = 15;
+const MIN_AUDIENCE_REVIEWS = require('../src/config/audience-grade.json').minReviews; // shared with src/lib/audience-grade-utils.ts
 
 // ---------------------------------------------------------------------------
 // CLI
