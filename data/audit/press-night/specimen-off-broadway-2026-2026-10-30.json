@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-10-31T01:30:03.295Z",
-    "endedAt": null,
+    "endedAt": "2026-10-31T08:00:29.805Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-10-31T03:55:11.687Z",
-    "lastOkSampleAt": "2026-10-31T03:55:11.687Z"
+    "lastSampleAt": "2026-10-31T07:56:20.969Z",
+    "lastOkSampleAt": "2026-10-31T07:56:20.969Z"
   },
   "firstLiveAt": null,
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 0,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 0,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-10-31T03:00:08.717Z",
-    "2h": null,
+    "2h": "2026-10-31T04:06:09.011Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -55,6 +55,25 @@
       "liveCount": 0,
       "fetchedAt": "2026-10-31T04:00:23.393Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "incomplete",
+      "source": [
+        "show-score"
+      ],
+      "count": 4,
+      "covered": 0,
+      "coverage": 0,
+      "missing": [
+        "theater-scene",
+        "front-row-center",
+        "this-week-in-new-york",
+        "off-off-online"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-10-31T08:00:26.315Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -67,11 +86,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-10-31T08:00:26.367Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-10-31T04:00:27.215Z",
+    "capturedAt": "2026-10-31T08:00:29.509Z",
     "files": [
       {
         "file": "front-row-center--david-walters.json",
