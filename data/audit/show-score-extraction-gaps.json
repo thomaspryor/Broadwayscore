@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-31T10:01:44.258Z",
+    "generatedAt": "2026-10-31T15:02:56.166Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 372,
+  "totalGaps": 373,
   "errorSeverity": 261,
-  "warningSeverity": 111,
+  "warningSeverity": 112,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -446,6 +446,15 @@
       "extracted": 8,
       "gap": 4,
       "ratio": 0.67,
+      "severity": "warning"
+    },
+    {
+      "showId": "cagney-off-broadway-2016",
+      "category": "off-broadway",
+      "expected": 51,
+      "extracted": 48,
+      "gap": 3,
+      "ratio": 0.94,
       "severity": "warning"
     },
     {
