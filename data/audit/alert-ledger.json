@@ -246,15 +246,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-31T01:01:37.841Z",
-      "lastSeen": "2026-10-31T01:01:37.841Z",
-      "lastNotifiedAt": "2026-10-31T01:01:37.841Z",
+      "incidentOpenedAt": "2026-10-31T00:50:08.927Z",
+      "lastSeen": "2026-10-31T01:19:05.324Z",
+      "lastNotifiedAt": "2026-10-31T00:50:08.927Z",
       "lastSurfacedAt": "2026-10-30T19:57:21.546Z",
       "notifyCount": 192,
       "cardId": null,
       "linearIdentifier": "BRO-6656",
       "notifyCountAtRelease": 177,
-      "sweptTracker": "BRO-6422"
+      "sweptTracker": "BRO-6422",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -33031,20 +33032,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"press-night fetch failure retries in 1h and is never abandoned inside 48h\"",
-      "firstSeen": "2026-10-31T00:31:33.687Z",
-      "incidentOpenedAt": "2026-10-31T00:31:33.687Z",
-      "lastSeen": "2026-10-31T01:01:37.822Z",
-      "lastNotifiedAt": "2026-10-31T00:31:33.687Z",
+      "firstSeen": "2026-10-31T00:50:08.394Z",
+      "incidentOpenedAt": "2026-10-31T00:50:08.394Z",
+      "lastSeen": "2026-10-31T01:19:05.264Z",
+      "lastNotifiedAt": "2026-10-31T00:50:08.394Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6679",
-      "dispatch": {
-        "requestedAt": "2026-10-31T00:31:33.687Z",
-        "mode": "dispatch-at-filing",
-        "runId": "41148466608",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41148466608"
-      },
       "silentRefires": 1
     },
     "land:land/bro-6676-systemic": {
