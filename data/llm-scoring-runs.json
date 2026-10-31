@@ -1602620,21 +1602620,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T15:26:10.882Z",
-    "completedAt": "2026-10-31T15:27:36.958Z",
-    "totalReviews": 19,
-    "processed": 18,
-    "skipped": 1,
+    "startedAt": "2026-10-31T15:29:56.283Z",
+    "completedAt": "2026-10-31T15:30:39.753Z",
+    "totalReviews": 8,
+    "processed": 8,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 113565,
-      "output": 5458,
-      "cacheRead": 68526,
+      "input": 50795,
+      "output": 2555,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 280169
+      "total": 125048
     },
-    "costUsd": 0.4234234,
-    "runId": "41214342831",
+    "costUsd": 0.1907962,
+    "runId": "41214386563",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1606163,10 +1606163,20 @@
       {
         "showId": "always-patsy-cline-regional-2025",
         "ourDistribution": {
-          "up": 4,
-          "flat": 0,
+          "up": 11,
+          "flat": 1,
           "down": 0,
-          "total": 4
+          "total": 12
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "always-patsy-cline-regional-2026",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 1,
+          "down": 0,
+          "total": 12
         },
         "hasDisagreement": false
       },
@@ -1606550,16 +1606560,6 @@
           "flat": 0,
           "down": 2,
           "total": 22
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "an-enemy-of-the-people-regional-2026",
-        "ourDistribution": {
-          "up": 17,
-          "flat": 1,
-          "down": 0,
-          "total": 18
         },
         "hasDisagreement": false
       },
@@ -1646080,8 +1646080,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T15:32:33.549Z",
-    "completedAt": "2026-10-31T15:32:33.550Z",
+    "startedAt": "2026-10-31T15:35:37.897Z",
+    "completedAt": "2026-10-31T15:35:37.899Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1646094,7 +1646094,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41214342831",
+    "runId": "41214386563",
     "source": "comparative-rescore",
     "errorDetails": []
   }
