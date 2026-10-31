@@ -1885632,21 +1885632,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T18:44:35.509Z",
-    "completedAt": "2026-10-31T18:45:10.251Z",
-    "totalReviews": 7,
-    "processed": 7,
-    "skipped": 0,
+    "startedAt": "2026-10-31T18:43:36.734Z",
+    "completedAt": "2026-10-31T18:45:01.342Z",
+    "totalReviews": 17,
+    "processed": 16,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 41741,
-      "output": 2187,
-      "cacheRead": 26649,
-      "cacheWrite": 0,
-      "total": 105260
+      "input": 94966,
+      "output": 5129,
+      "cacheRead": 57105,
+      "cacheWrite": 3807,
+      "total": 240389
     },
-    "costUsd": 0.1586497,
-    "runId": "41230213351",
+    "costUsd": 0.3759809499999999,
+    "runId": "41230195750",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1890551,6 +1890551,16 @@
           "flat": 5,
           "down": 0,
           "total": 18
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "ashland-avenue-regional-2025",
+        "ourDistribution": {
+          "up": 13,
+          "flat": 3,
+          "down": 0,
+          "total": 16
         },
         "hasDisagreement": false
       },
@@ -1913916,16 +1913926,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "rabbits-in-their-pockets-regional-2025",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 2,
-          "down": 0,
-          "total": 7
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "race-2009",
         "ourDistribution": {
           "up": 8,
@@ -1929866,8 +1929866,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T18:50:07.439Z",
-    "completedAt": "2026-10-31T18:50:07.445Z",
+    "startedAt": "2026-10-31T18:49:58.758Z",
+    "completedAt": "2026-10-31T18:49:58.760Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1929880,7 +1929880,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41230213351",
+    "runId": "41230195750",
     "source": "comparative-rescore",
     "errorDetails": []
   },
