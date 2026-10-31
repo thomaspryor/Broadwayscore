@@ -1,34 +1,23 @@
 {
-  "updatedAt": "2026-10-31T12:34:48.285Z",
-  "processed": 224,
-  "failed": 55,
-  "successRate": "80.3%",
+  "updatedAt": "2026-10-31T12:57:02.995Z",
+  "processed": 720,
+  "failed": 307,
+  "successRate": "70.1%",
   "tierBreakdown": {
-    "playwright": 107,
+    "playwright": 285,
     "amp": 0,
-    "browserbase": 23,
+    "browserbase": 25,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 12,
-    "brightdata": 12,
-    "archiveToday": 27,
-    "archive": 81
+    "scrapingdog": 34,
+    "scrapingbee": 20,
+    "brightdata": 17,
+    "archiveToday": 41,
+    "archive": 253
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 23,
   "recentActivity": [
     {
-      "t": "2026-10-31T08:42:15.230Z",
-      "event": "bb-session",
-      "session": "0fe6170d",
-      "url": "https://www.talkinbroadway.com/page/ob/04_21_22.html"
-    },
-    {
-      "t": "2026-10-31T08:42:15.937Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-31T08:57:48.188Z",
+      "t": "2026-10-31T09:56:47.445Z",
       "event": "bb-session",
       "session": "02bef680",
       "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
@@ -64,8 +53,13 @@
     {
       "t": "2026-10-31T09:44:43.945Z",
       "event": "bb-session",
-      "session": "fe7231ec",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+      "session": "10a9e7b8",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-31T10:05:30.574Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     },
     {
       "t": "2026-10-31T09:45:25.480Z",
@@ -107,12 +101,7 @@
       "url": "https://www.nytimes.com/2017/03/03/theater/review-little-miss-sunshine-trips-int"
     },
     {
-      "t": "2026-10-31T11:56:23.872Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T12:26:58.972Z",
+      "t": "2026-10-31T11:16:58.715Z",
       "event": "bb-session",
       "session": "fc9b039f",
       "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
@@ -120,8 +109,24 @@
     {
       "t": "2026-10-31T12:28:27.563Z",
       "event": "bb-session",
-      "session": "d9aa9088",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "261c9e29",
+      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
+    },
+    {
+      "t": "2026-10-31T12:01:18.678Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T12:27:08.416Z",
+      "event": "bb-session",
+      "session": "2183fed8",
+      "url": "https://www.nytimes.com/2025/10/09/theater/jen-tullock-severance-hand-of-god.htm"
+    },
+    {
+      "t": "2026-10-31T12:27:09.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
