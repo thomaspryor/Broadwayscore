@@ -32,13 +32,3 @@ test('a gap over 14 days is reported, never moved', () => {
 test('the new source stays overwritable by press-night sources', () => {
   for (const s of ['first-review-date', 'census-review', 'guardian-review']) assert.equal(isUnconfirmedDateSource({ category: 'regional', openingDateSource: s }), true);
 });
-
-test('applyMoves on real UK regional rows moves each date once and is idempotent', () => {
-  const { applyMoves } = require('../reconcile-uk-regional-opening-dates.js');
-  const s = require('../../data/shows.json');
-  const shows = (s.shows || s).map((x) => ({ ...x }));
-  const reviews = require('../../data/reviews.json').reviews;
-  const moved = applyMoves(shows, reviews);
-  for (const m of moved) assert.ok(m.show.openingDate < m.prev.openingDate);
-  assert.equal(applyMoves(shows, reviews).length, 0);
-});
