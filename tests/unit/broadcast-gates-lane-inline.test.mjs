@@ -145,6 +145,9 @@ test('send-script confidence floors (T1/T2/high-confidence) pass on raw lease ro
   // a top-level 'low' (paywall fallback) still wins over llmScore.confidence
   const low = liveRows.map((r) => ({ ...r, scoreConfidence: 'low' }));
   assert.equal(evaluateScoreConfidence({ showReviews: low, category: show.category, getOutletTier }).counts.highConfidence, 0);
+  // the owner digest's qualify check counts confidence the same way (it read hi-conf 0 on lease rows)
+  const { scoreQualifies } = require('../../scripts/send-opening-digest.js');
+  assert.equal(scoreQualifies(liveRows, show.category).breakdown.highConf, liveRows.length);
 });
 
 test('paywall fallback lane rows (aggregator thumb or stars, no LLM score) pass the orphan and readiness checks', () => {

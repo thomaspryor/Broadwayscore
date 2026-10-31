@@ -40,6 +40,7 @@ const { predictReviewCount } = require('./predict-review-count');
 const { getTier } = require('./lib/outlet-tiers');
 const { getMarketMinReviews, hasEnoughReviews } = require('./lib/min-reviews');
 const { computeCriticScore: canonicalComputeCriticScore } = require('./lib/compute-critic-score');
+const { rowConfidence } = require('./lib/score-confidence-gate'); // BRO-6623: raw lane rows keep confidence in llmScore
 const {
   TOKENS,
   esc,
@@ -271,7 +272,7 @@ function scoreQualifies(showReviews, market) {
     const tier = getTier(r.outletId, { showCategory: market });
     if (tier === 1) t1++;
     else if (tier === 2) t2++;
-    if (r.scoreConfidence === 'high' || r.scoreConfidence === 'medium') highConf++;
+    if (['high', 'medium'].includes(rowConfidence(r))) highConf++;
   }
   return {
     ok: showReviews.length >= t.minReviews && t1 >= t.minT1 && t2 >= t.minT2 && highConf >= t.minHighConf,
@@ -948,6 +949,7 @@ async function main() {
 // drive the real function instead of a reimplementation.
 module.exports = {
   displayedCriticScore,
+  scoreQualifies,
   minReviewsToShowScore,
   isBroadcastOverdue,
   classifyRows,

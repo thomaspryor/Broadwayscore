@@ -104,7 +104,8 @@ READY_OUTPUT=$(node -e "
   const showRevs = all.filter(r => r.showId === '${SHOW_ID}' && r.assignedScore > 0);
   const t1 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 1; }).length;
   const t2 = showRevs.filter(r => { const o = outlets[r.outletId]; return o && o.tier === 2; }).length;
-  const hiConf = showRevs.filter(r => r.scoreConfidence === 'high' || r.scoreConfidence === 'medium').length;
+  const { rowConfidence } = require('./scripts/lib/score-confidence-gate');
+  const hiConf = showRevs.filter(r => ['high', 'medium'].includes(rowConfidence(r))).length;
   const isWE = '${MARKET}' === 'west-end';
   const checks = [
     ['Total scored', showRevs.length, isWE ? 8 : 12],
