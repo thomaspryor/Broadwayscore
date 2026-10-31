@@ -274,7 +274,7 @@ const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
 // Host normalization + URL classification live in lib/non-review-url-patterns.js
 // (task #1073): registrableHost/hostOf moved there VERBATIM so the canonical
 // classifyReviewUrl and this audit share one implementation.
-const { classifyReviewUrl, classifyGapCandidateUrl, registrableHost, hostOf } = require('./lib/non-review-url-patterns');
+const { classifyReviewUrl, classifyGapCandidateUrl, registrableHost, hostOf, publicationHostOf } = require('./lib/non-review-url-patterns');
 const { hasReviewEvidence } = require('./lib/serp-review-evidence');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { syndicatedReprintOf } = require('./lib/syndicated-reprint-match'); // BRO-5489
@@ -754,7 +754,7 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   // (url/title/snippet), not merely avoid every known-bad pattern. `priorVetted`:
   // a URL seeded from the prior census already passed this once and its SERP
   // title/snippet are gone (BRO-5516), so it is not re-judged on a bare URL.
-  if (!priorVetted && !getKnownDomainMap().has(registrableHost(hostOf(u))) && !hasReviewEvidence(sr)) {
+  if (!priorVetted && !(getKnownDomainMap().has(registrableHost(hostOf(u))) || getKnownDomainMap().has(publicationHostOf(u))) && !hasReviewEvidence(sr)) {
     candidateRejections.count++;
     candidateRejections.byReason['no-review-evidence'] = (candidateRejections.byReason['no-review-evidence'] || 0) + 1;
     return null;
@@ -1336,7 +1336,9 @@ async function auditShow(show, opts = {}) {
     if (!aggHost) continue;
     // BRO-6640: timeout.com is shared by two editions and the domain map keeps the
     // last one (timeout-london); the URL path decides, as every writer does.
-    const _hostOutlet = knownDomains.get(aggHost) || null;
+    // BRO-6716: Blogger country mirrors and open.substack.com/pub/<name> links
+    // resolve to the host the registry lists (publicationHostOf).
+    const _hostOutlet = knownDomains.get(aggHost) || knownDomains.get(publicationHostOf(aggUrl)) || null;
     const knownOutletId = _hostOutlet ? resolveUrlEditionOutletId({ outletId: _hostOutlet, url: aggUrl }).outletId : null;
     // W3.D (task #1073): coverage is exact-URL first. Host-level fallback only
     // counts dir files whose OWN url is itself a plausible review URL (or has

@@ -368,6 +368,30 @@ const CENSUS_JUNK_DOMAINS = new Set([
   'overlookmaps.com', 'musicofourdesire.com', 'mtishows.com', 'audiblexminetta.com',
   'secrettheatre.com', 'arsnovanyc.com', 'brixtonhouse.co.uk', 'cleanbreak.org.uk',
   'headlong.co.uk', 'spitnvigor.com', 'sydneydramaturgical.com',
+  // BRO-6716 (2026-10-31): unregistered hosts cited by the slow-market gap audit.
+  // A sample page from each was read; none is a theatre review source. Grouped by reason:
+  // music, games, film, food, watches and medical sites (not theatre reviews)
+  'rateyourmusic.com', 'musicboard.app', 'metacritic.com', 'nintendolife.com',
+  'nintendoworldreport.com', 'ioncinema.com', 'metaltalk.net', 'mainspring.watch',
+  'luxurygoodsmediaa.com', '68wim-vi.com', 'cureus.com', 'f6s.com', 'randisadventures.com',
+  'theinfatuation.com', 'rixx.de', 'fathomentertainment.com',
+  // content scrapers and syndicators (the original outlet owns the review)
+  'ustimespost.com', 'noypiarticlesph.blogspot.com', 'voiceofalexandria.com', 'paperblog.com',
+  'aol.co.uk', 'aol.ca', 'inkl.com',
+  // ticket sellers and event listings
+  'capitalcitytickets.com', 'tickettailor.com', 'londontheatres.com', 'theatrebreaks.co.uk',
+  'designmynight.com', 'paramounttheatreseattle.net', 'playtoomuch.com', 'tinyout.com',
+  'everout.com', 'chicagoplays.com', 'encoreplus.app',
+  // venues, producing companies and schools (marketing pages)
+  'donmarwarehouse.com', 'openairtheatre.com', 'pinecrestplayers.com', 'bitteater.no',
+  'uglybuckettheatre.co.uk', 'jigsaw-arts.co.uk',
+  // roundup pages and link trackers
+  'stagefaves.com', 'list-manage.com',
+  // ticket-network sites showing customer reviews
+  'liverpool-theatre.co.uk', 'southendtheatre.co.uk', 'san-francisco-theater.com',
+  'washington-theater.com', 'brooklyn-theater.com',
+  // aggregator listing pages
+  'theatreinchicago.com', 'theatreindc.com',
 ]);
 
 /**

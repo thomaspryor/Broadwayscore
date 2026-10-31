@@ -734,6 +734,34 @@ function hostOf(u) {
   catch { return null; }
 }
 
+/**
+ * The host a publication is registered under, for outlet-registry lookups
+ * (BRO-6716). Two shared-host shapes name one publication under a host the
+ * registry never lists:
+ *   - Blogger country mirrors: slleiter.blogspot.co.uk is the same blog as
+ *     slleiter.blogspot.com (the registry's `domain`).
+ *   - Substack's shared link host: open.substack.com/pub/<name>/p/<slug> is
+ *     <name>.substack.com/p/<slug>.
+ * Every other URL returns hostOf(u) unchanged. Without this the gap audit
+ * tagged registered outlets (Theatre's Leiter Side, New York Notebook) as
+ * 'unregistered-host' and never ingested their cited reviews.
+ */
+function publicationHostOf(u) {
+  const host = hostOf(u);
+  if (!host) return host;
+  const suffix = platformSuffixOf(host);
+  if (suffix && suffix !== 'blogspot.com' && suffix.startsWith('blogspot.')) {
+    return host.slice(0, host.length - suffix.length) + 'blogspot.com';
+  }
+  if (host === 'open.substack.com') {
+    try {
+      const m = new URL(u).pathname.match(/^\/pub\/([a-z0-9-]+)(?:\/|$)/i);
+      if (m) return `${m[1].toLowerCase()}.substack.com`;
+    } catch { /* fall through */ }
+  }
+  return host;
+}
+
 const STATIC_ASSET_EXT_RE = /\.(css|js|json|xml|png|jpe?g|gif|svg|webp|ico|woff2?|ttf|mp4|pdf)$/i;
 
 /**
@@ -1006,6 +1034,7 @@ function ingestRefusalReason(url) {
 }
 
 module.exports = {
+  publicationHostOf,
   wordpressAttachmentParentUrl,
   INGEST_REFUSED_URL_REASONS,
   ingestRefusalReason,

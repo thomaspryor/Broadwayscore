@@ -678,3 +678,31 @@ test('maybeUpgradeUrl: a merge refuses to swap a goldderby file url onto the rou
   assert.equal(maybeUpgradeUrl(file, GD_ROUNDUP, 'test'), false);
   assert.equal(file.url, before);
 });
+
+// BRO-6716: the gap audit tagged cited reviews from registered outlets as
+// 'unregistered-host' because their URLs used a Blogger country mirror or
+// Substack's shared link host. publicationHostOf maps both onto the host the
+// registry lists; every other URL keeps hostOf()'s answer.
+test('publicationHostOf: Blogger country mirrors and open.substack.com/pub resolve to the registered host', () => {
+  const { publicationHostOf, hostOf } = require('./non-review-url-patterns.js');
+  assert.equal(publicationHostOf('https://slleiter.blogspot.co.uk/2017/02/review.html'), 'slleiter.blogspot.com');
+  assert.equal(publicationHostOf('https://slleiter.blogspot.fr/2024/x.html'), 'slleiter.blogspot.com');
+  assert.equal(publicationHostOf('https://dougmarino.blogspot.de/2025/x.html'), 'dougmarino.blogspot.com');
+  assert.equal(publicationHostOf('https://open.substack.com/pub/newyorknotebook/p/call-me-izzy'), 'newyorknotebook.substack.com');
+  // unchanged: canonical Blogger host, bare Substack host, ordinary sites, junk input
+  assert.equal(publicationHostOf('https://foo.blogspot.com/x'), 'foo.blogspot.com');
+  assert.equal(publicationHostOf('https://open.substack.com/'), 'open.substack.com');
+  assert.equal(publicationHostOf('https://www.nytimes.com/2026/x.html'), hostOf('https://www.nytimes.com/2026/x.html'));
+  assert.equal(publicationHostOf('not a url'), null);
+});
+
+test('publicationHostOf: the real outlet registry resolves the BRO-6716 mirror rows to their outlets', () => {
+  const { publicationHostOf, registrableHost } = require('./non-review-url-patterns.js');
+  const reg = require('../../data/outlet-registry.json').outlets;
+  const byHost = new Map();
+  for (const [id, o] of Object.entries(reg)) {
+    for (const d of [o.domain, ...(o.domainAliases || [])].filter(Boolean)) byHost.set(registrableHost(d), id);
+  }
+  assert.equal(byHost.get(publicationHostOf('https://slleiter.blogspot.co.uk/2017/x.html')), 'theatres-leiter-side');
+  assert.equal(byHost.get(publicationHostOf('https://open.substack.com/pub/newyorknotebook/p/x')), 'new-york-notebook');
+});

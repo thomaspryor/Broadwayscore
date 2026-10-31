@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-31T13:32:46.532Z",
+    "lastUpdated": "2026-10-31T20:20:02.075Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6610: coverageExpectation re-decided latimes"
+    "lastChange": "BRO-6716: registered 57 review outlets and 5 domain aliases from unregistered-host gap rows (per-host sample reads); removed the stray \"austincom\" alias from the-austin-chronicle (austin.com is a separate site)"
   },
   "outlets": {
     "westendtheatre": {
@@ -706,6 +706,9 @@
       "standingCoverage": true,
       "standingMarkets": [
         "broadway"
+      ],
+      "domainAliases": [
+        "temptalkinbroadway.com"
       ]
     },
     "cititour": {
@@ -3197,7 +3200,8 @@
       "domain": "edgemedianetwork.com",
       "accessModel": "free",
       "domainAliases": [
-        "edgesandiego.com"
+        "edgesandiego.com",
+        "edgenewyork.com"
       ],
       "defaultCritic": "Kilian Melloy",
       "multiAuthor": true,
@@ -3730,7 +3734,10 @@
       "region": "us",
       "isDualMarket": true,
       "regionCorrectedBy": "BRO-5896",
-      "regionCorrectedEvidence": "New York-based per en.wikipedia.org/wiki/Consequence_(website)"
+      "regionCorrectedEvidence": "New York-based per en.wikipedia.org/wiki/Consequence_(website)",
+      "domainAliases": [
+        "consequenceofsound.net"
+      ]
     },
     "collider": {
       "displayName": "Collider",
@@ -4324,7 +4331,10 @@
         "the-charlotte-ledger"
       ],
       "accessModel": "free",
-      "domain": "thecharlotteledger.com"
+      "domain": "thecharlotteledger.com",
+      "domainAliases": [
+        "charlotteledger.substack.com"
+      ]
     },
     "the-oakland-press": {
       "displayName": "The Oakland Press",
@@ -4576,8 +4586,7 @@
       "tier": 3,
       "aliases": [
         "the-austin-chronicle",
-        "austin",
-        "austincom"
+        "austin"
       ],
       "accessModel": "free",
       "defaultCritic": "Richard Whittaker",
@@ -5993,7 +6002,10 @@
       ],
       "accessModel": "free",
       "defaultCritic": "David Sheward",
-      "domain": "culturaldaily.com"
+      "domain": "culturaldaily.com",
+      "domainAliases": [
+        "culturalweekly.com"
+      ]
     },
     "popbytes": {
       "displayName": "Popbytes",
@@ -14124,6 +14136,595 @@
         "artsbeatla"
       ],
       "domain": "artsbeatla.com"
+    },
+    "georgia-straight": {
+      "displayName": "The Georgia Straight",
+      "tier": 3,
+      "aliases": [
+        "georgia-straight",
+        "the georgia straight"
+      ],
+      "domain": "straight.com",
+      "accessModel": "free"
+    },
+    "the-tls": {
+      "displayName": "The Times Literary Supplement",
+      "tier": 3,
+      "aliases": [
+        "the-tls",
+        "the times literary supplement"
+      ],
+      "domain": "the-tls.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "the-skinny": {
+      "displayName": "The Skinny",
+      "tier": 3,
+      "aliases": [
+        "the-skinny",
+        "the skinny"
+      ],
+      "domain": "theskinny.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "pasadena-star-news": {
+      "displayName": "Pasadena Star-News",
+      "tier": 3,
+      "aliases": [
+        "pasadena-star-news",
+        "pasadena star-news"
+      ],
+      "domain": "pasadenastarnews.com",
+      "accessModel": "free",
+      "region": "los-angeles"
+    },
+    "las-vegas-weekly": {
+      "displayName": "Las Vegas Weekly",
+      "tier": 3,
+      "aliases": [
+        "las-vegas-weekly",
+        "las vegas weekly"
+      ],
+      "domain": "lasvegasweekly.com",
+      "accessModel": "free"
+    },
+    "chronicle-telegram": {
+      "displayName": "The Chronicle-Telegram",
+      "tier": 3,
+      "aliases": [
+        "chronicle-telegram",
+        "the chronicle-telegram"
+      ],
+      "domain": "chroniclet.com",
+      "accessModel": "free"
+    },
+    "index-journal": {
+      "displayName": "The Index-Journal",
+      "tier": 3,
+      "aliases": [
+        "index-journal",
+        "the index-journal"
+      ],
+      "domain": "indexjournal.com",
+      "accessModel": "free"
+    },
+    "omaha-world-herald": {
+      "displayName": "Omaha World-Herald",
+      "tier": 3,
+      "aliases": [
+        "omaha-world-herald",
+        "omaha world-herald"
+      ],
+      "domain": "omaha.com",
+      "accessModel": "free"
+    },
+    "daily-press": {
+      "displayName": "Daily Press",
+      "tier": 3,
+      "aliases": [
+        "daily-press",
+        "daily press"
+      ],
+      "domain": "dailypress.com",
+      "accessModel": "free"
+    },
+    "nola-times-picayune": {
+      "displayName": "The Times-Picayune | NOLA.com",
+      "tier": 3,
+      "aliases": [
+        "nola-times-picayune",
+        "the times-picayune | nola.com"
+      ],
+      "domain": "nola.com",
+      "accessModel": "free"
+    },
+    "idaho-press": {
+      "displayName": "Idaho Press",
+      "tier": 3,
+      "aliases": [
+        "idaho-press",
+        "idaho press"
+      ],
+      "domain": "idahopress.com",
+      "accessModel": "free"
+    },
+    "yorkshire-post": {
+      "displayName": "The Yorkshire Post",
+      "tier": 3,
+      "aliases": [
+        "yorkshire-post",
+        "the yorkshire post"
+      ],
+      "domain": "yorkshirepost.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "sheffield-star": {
+      "displayName": "The Star (Sheffield)",
+      "tier": 3,
+      "aliases": [
+        "sheffield-star",
+        "the star (sheffield)"
+      ],
+      "domain": "thestar.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "derbyshire-times": {
+      "displayName": "Derbyshire Times",
+      "tier": 3,
+      "aliases": [
+        "derbyshire-times",
+        "derbyshire times"
+      ],
+      "domain": "derbyshiretimes.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "west-end-extra": {
+      "displayName": "West End Extra",
+      "tier": 3,
+      "aliases": [
+        "west-end-extra",
+        "west end extra"
+      ],
+      "domain": "westendextra.com",
+      "accessModel": "free",
+      "region": "london"
+    },
+    "425-magazine": {
+      "displayName": "425 Magazine",
+      "tier": 4,
+      "aliases": [
+        "425-magazine",
+        "425 magazine"
+      ],
+      "domain": "425magazine.com",
+      "accessModel": "free"
+    },
+    "planet-hugill": {
+      "displayName": "Planet Hugill",
+      "tier": 4,
+      "aliases": [
+        "planet-hugill",
+        "planet hugill"
+      ],
+      "domain": "planethugill.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "the-window-card": {
+      "displayName": "The Window Card",
+      "tier": 4,
+      "aliases": [
+        "the-window-card",
+        "the window card"
+      ],
+      "domain": "thewindowcard.com",
+      "accessModel": "free"
+    },
+    "creative-reviews-uk": {
+      "displayName": "Creative Reviews UK",
+      "tier": 4,
+      "aliases": [
+        "creative-reviews-uk",
+        "creative reviews uk"
+      ],
+      "domain": "creativereviewsuk.blogspot.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "badger-herald": {
+      "displayName": "The Badger Herald",
+      "tier": 4,
+      "aliases": [
+        "badger-herald",
+        "the badger herald"
+      ],
+      "domain": "badgerherald.com",
+      "accessModel": "free"
+    },
+    "megan-ann-rasmussen": {
+      "displayName": "Megan Ann Rasmussen",
+      "tier": 4,
+      "aliases": [
+        "megan-ann-rasmussen",
+        "megan ann rasmussen"
+      ],
+      "domain": "meganannrasmussen.com",
+      "accessModel": "free"
+    },
+    "pop-cult-blog": {
+      "displayName": "PopCult Blog",
+      "tier": 4,
+      "aliases": [
+        "pop-cult-blog",
+        "popcult blog"
+      ],
+      "domain": "popcultblog.com",
+      "accessModel": "free"
+    },
+    "theatre-beyond-broadway": {
+      "displayName": "Theatre Beyond Broadway",
+      "tier": 4,
+      "aliases": [
+        "theatre-beyond-broadway",
+        "theatre beyond broadway"
+      ],
+      "domain": "theatrebeyondbroadway.com",
+      "accessModel": "free"
+    },
+    "coffee-table-notes": {
+      "displayName": "Coffee Table Notes",
+      "tier": 4,
+      "aliases": [
+        "coffee-table-notes",
+        "coffee table notes"
+      ],
+      "domain": "coffeetablenotes.blogspot.com",
+      "accessModel": "free"
+    },
+    "afropean": {
+      "displayName": "Afropean",
+      "tier": 4,
+      "aliases": [
+        "afropean"
+      ],
+      "domain": "afropean.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "politicshome": {
+      "displayName": "PoliticsHome",
+      "tier": 4,
+      "aliases": [
+        "politicshome"
+      ],
+      "domain": "politicshome.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "tnt-magazine": {
+      "displayName": "TNT Magazine",
+      "tier": 4,
+      "aliases": [
+        "tnt-magazine",
+        "tnt magazine"
+      ],
+      "domain": "tntmagazine.com",
+      "accessModel": "free",
+      "region": "london"
+    },
+    "the-mancunion": {
+      "displayName": "The Mancunion",
+      "tier": 4,
+      "aliases": [
+        "the-mancunion",
+        "the mancunion"
+      ],
+      "domain": "mancunion.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "across-the-arts": {
+      "displayName": "Across the Arts",
+      "tier": 4,
+      "aliases": [
+        "across-the-arts",
+        "across the arts"
+      ],
+      "domain": "acrossthearts.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "colin-thomas": {
+      "displayName": "Colin Thomas",
+      "tier": 4,
+      "aliases": [
+        "colin-thomas",
+        "colin thomas"
+      ],
+      "domain": "colinthomas.ca",
+      "accessModel": "free"
+    },
+    "london-now": {
+      "displayName": "London Now",
+      "tier": 4,
+      "aliases": [
+        "london-now",
+        "london now"
+      ],
+      "domain": "london-now.co.uk",
+      "accessModel": "free",
+      "region": "london"
+    },
+    "indie-opera": {
+      "displayName": "Indie Opera",
+      "tier": 4,
+      "aliases": [
+        "indie-opera",
+        "indie opera"
+      ],
+      "domain": "indieopera.com",
+      "accessModel": "free"
+    },
+    "always-time-for-theatre": {
+      "displayName": "Always Time for Theatre",
+      "tier": 4,
+      "aliases": [
+        "always-time-for-theatre",
+        "always time for theatre"
+      ],
+      "domain": "alwaystimefortheatre.com",
+      "accessModel": "free"
+    },
+    "ox-in-a-box": {
+      "displayName": "Ox in a Box",
+      "tier": 4,
+      "aliases": [
+        "ox-in-a-box",
+        "ox in a box"
+      ],
+      "domain": "oxinabox.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "enjoy-things": {
+      "displayName": "Enjoy Things",
+      "tier": 4,
+      "aliases": [
+        "enjoy-things",
+        "enjoy things"
+      ],
+      "domain": "enjoy-things.com",
+      "accessModel": "free"
+    },
+    "daily-emerald": {
+      "displayName": "Daily Emerald",
+      "tier": 4,
+      "aliases": [
+        "daily-emerald",
+        "daily emerald"
+      ],
+      "domain": "dailyemerald.com",
+      "accessModel": "free"
+    },
+    "blogto": {
+      "displayName": "blogTO",
+      "tier": 4,
+      "aliases": [
+        "blogto"
+      ],
+      "domain": "blogto.com",
+      "accessModel": "free"
+    },
+    "asheville-stages": {
+      "displayName": "Asheville Stages",
+      "tier": 4,
+      "aliases": [
+        "asheville-stages",
+        "asheville stages"
+      ],
+      "domain": "ashevillestages.com",
+      "accessModel": "free"
+    },
+    "whats-on-newcastle": {
+      "displayName": "What's On Newcastle",
+      "tier": 4,
+      "aliases": [
+        "whats-on-newcastle",
+        "what's on newcastle"
+      ],
+      "domain": "whatsonnewcastle.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "hannah-come-lately": {
+      "displayName": "Hannah Come Lately",
+      "tier": 4,
+      "aliases": [
+        "hannah-come-lately",
+        "hannah come lately"
+      ],
+      "domain": "hannahcomelately.substack.com",
+      "accessModel": "free"
+    },
+    "bambino-goodies": {
+      "displayName": "Bambino Goodies",
+      "tier": 4,
+      "aliases": [
+        "bambino-goodies",
+        "bambino goodies"
+      ],
+      "domain": "bambinogoodies.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "930-the-answer": {
+      "displayName": "930 AM The Answer",
+      "tier": 4,
+      "aliases": [
+        "930-the-answer",
+        "930 am the answer"
+      ],
+      "domain": "930amtheanswer.com",
+      "accessModel": "free"
+    },
+    "providence-online": {
+      "displayName": "Providence Monthly",
+      "tier": 4,
+      "aliases": [
+        "providence-online",
+        "providence monthly"
+      ],
+      "domain": "providenceonline.com",
+      "accessModel": "free"
+    },
+    "charles-hutchinson-press": {
+      "displayName": "Charles Hutchinson Press",
+      "tier": 4,
+      "aliases": [
+        "charles-hutchinson-press",
+        "charles hutchinson press"
+      ],
+      "domain": "charleshutchpress.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "thurible": {
+      "displayName": "Thurible",
+      "tier": 4,
+      "aliases": [
+        "thurible"
+      ],
+      "domain": "thurible.net",
+      "accessModel": "free"
+    },
+    "scottish-stage": {
+      "displayName": "Scottish Stage",
+      "tier": 4,
+      "aliases": [
+        "scottish-stage",
+        "scottish stage"
+      ],
+      "domain": "scottishstage.wordpress.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "lisa-in-the-theatre": {
+      "displayName": "Lisa in the Theatre",
+      "tier": 4,
+      "aliases": [
+        "lisa-in-the-theatre",
+        "lisa in the theatre"
+      ],
+      "domain": "lisainthetheatre.com",
+      "accessModel": "free"
+    },
+    "binge-fringe": {
+      "displayName": "Binge Fringe",
+      "tier": 4,
+      "aliases": [
+        "binge-fringe",
+        "binge fringe"
+      ],
+      "domain": "bingefringe.com",
+      "accessModel": "free"
+    },
+    "austin-com": {
+      "displayName": "Austin.com",
+      "tier": 4,
+      "aliases": [
+        "austin-com",
+        "austin.com"
+      ],
+      "domain": "austin.com",
+      "accessModel": "free"
+    },
+    "the-suffolk-journal": {
+      "displayName": "The Suffolk Journal",
+      "tier": 4,
+      "aliases": [
+        "the-suffolk-journal",
+        "the suffolk journal"
+      ],
+      "domain": "thesuffolkjournal.com",
+      "accessModel": "free"
+    },
+    "andrew-j-stillman": {
+      "displayName": "Andrew J. Stillman",
+      "tier": 4,
+      "aliases": [
+        "andrew-j-stillman",
+        "andrew j. stillman"
+      ],
+      "domain": "andrewjstillman.com",
+      "accessModel": "free"
+    },
+    "toronto-theatre": {
+      "displayName": "Toronto-Theatre.com",
+      "tier": 4,
+      "aliases": [
+        "toronto-theatre",
+        "toronto-theatre.com"
+      ],
+      "domain": "toronto-theatre.com",
+      "accessModel": "free"
+    },
+    "really-tall-guy": {
+      "displayName": "Really Tall Guy",
+      "tier": 4,
+      "aliases": [
+        "really-tall-guy",
+        "really tall guy"
+      ],
+      "domain": "reallytallguy.com",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "black-girl-in-cle": {
+      "displayName": "Black Girl in CLE",
+      "tier": 4,
+      "aliases": [
+        "black-girl-in-cle",
+        "black girl in cle"
+      ],
+      "domain": "blackgirlincle.com",
+      "accessModel": "free"
+    },
+    "york-calling": {
+      "displayName": "York Calling",
+      "tier": 4,
+      "aliases": [
+        "york-calling",
+        "york calling"
+      ],
+      "domain": "yorkcalling.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "mini-travellers": {
+      "displayName": "Mini Travellers",
+      "tier": 4,
+      "aliases": [
+        "mini-travellers",
+        "mini travellers"
+      ],
+      "domain": "minitravellers.co.uk",
+      "accessModel": "free",
+      "region": "uk"
+    },
+    "dance-informa-usa": {
+      "displayName": "Dance Informa USA",
+      "tier": 4,
+      "aliases": [
+        "dance-informa-usa",
+        "dance informa usa"
+      ],
+      "domain": "danceinforma.com",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
@@ -14690,7 +15291,6 @@
     "on-stage-colorado": "onstage-colorado",
     "broadwayspace": "broadway-space",
     "artsatlcom": "artsatl",
-    "austincom": "the-austin-chronicle",
     "clevelandcom": "cleveland-plain-dealer",
     "phillycom": "philadelphia-inquirer",
     "laexcitescom": "la-excites",
@@ -14822,6 +15422,6 @@
     "kidsoutandabout": "kidsoutandabout",
     "kids out and about": "kidsoutandabout"
   },
-  "lastUpdated": "2026-10-24T09:00:22.000Z",
-  "lastChange": "BRO-6056: multiAuthor on 25 defaultCritic outlets whose files show several other named critics; multiAuthor:false on 3 reviewed single-author outlets"
+  "lastUpdated": "2026-10-31T20:20:02.075Z",
+  "lastChange": "BRO-6716: registered 57 review outlets and 5 domain aliases from unregistered-host gap rows (per-host sample reads); removed the stray \"austincom\" alias from the-austin-chronicle (austin.com is a separate site)"
 }
