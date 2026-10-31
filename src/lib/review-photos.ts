@@ -36,6 +36,7 @@ import {
 } from './review-photo-model';
 
 export { DIARY_PHOTOS_BUCKET, MAX_PHOTOS_PER_REVIEW } from './review-photo-model';
+import { MAX_PHOTOS_PER_REVIEW as MAX_PHOTOS } from './review-photo-model';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -354,6 +355,8 @@ export async function uploadReviewPhoto({ userId, reviewId, photoId, file }: Upl
   // No orphans: the row never landed, so take the object back out.
   await removeObjects(session.token, [path]).catch(() => {});
   if (insertError.code === '23503') throw new PhotoError('This diary entry no longer exists.');
+  // 23514: the user_review_photos_limit trigger (20261028_diary_photo_limits.sql) refused a 7th photo.
+  if (insertError.code === '23514') throw new PhotoError(`Up to ${MAX_PHOTOS} photos per entry. Delete one to add another.`);
   if (insertError.code === 'network') throw new PhotoError(NETWORK_MESSAGE);
   if (/session|jwt/i.test(insertError.message)) throw new PhotoError(SESSION_MESSAGE);
   throw new PhotoError('Couldn’t save this photo. Try again.');
