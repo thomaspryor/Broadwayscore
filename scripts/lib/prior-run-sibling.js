@@ -430,7 +430,7 @@ function collectHousedSiblingFiles(show, shows, deps) {
 }
 
 /**
- * Files a DIFFERENT, earlier-starting production of the same title in the same
+ * Files a DIFFERENT, earlier-starting (or later, after this one closed) production of the same title in the same
  * market holds, dated inside that production's own run and before `show`'s first
  * preview/opening. No priorRuns link is needed: two unrelated productions can share
  * a title (BRO-5489: the Southwark Playhouse "Jane Eyre" musical, Aug-Oct 2026, and
@@ -454,11 +454,17 @@ function collectSameTitleProductionFiles(show, shows, deps) {
     if (!other || other.id === show.id || linked.has(other.id) || !base || baseTitle(other) !== base) continue;
     if (getMarketPool(other.category) !== getMarketPool(show.category)) continue;
     const otherStart = runStartMs(other);
-    if (!Number.isFinite(otherStart) || otherStart >= start) continue;
+    if (!Number.isFinite(otherStart)) continue;
+    // BRO-6716: also a LATER same-title production that started after this one closed
+    // (Lost in Del Valle's September return holds its own reviews; the April run's gap
+    // row cited them). Only files dated inside that later run, so no overlap is possible.
+    const thisEnd = toDateMs(show.closingDate);
+    const later = otherStart > start && Number.isFinite(thisEnd) && otherStart > thisEnd;
+    if (otherStart >= start && !later) continue;
     const otherEnd = toDateMs(other.closingDate);
     for (const d of deps.loadFiles(other.id) || []) {
       const ms = toDateMs(d && d.publishDate);
-      if (!Number.isFinite(ms) || ms < otherStart || ms >= start) continue;
+      if (!Number.isFinite(ms) || ms < otherStart || (!later && ms >= start)) continue;
       if (Number.isFinite(otherEnd) && ms > otherEnd) continue;
       if (!deps.isCovered(d, other)) continue;
       out.push({ ...d, _housedOnShowId: other.id });

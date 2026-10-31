@@ -421,3 +421,23 @@ test('collectSameTitleProductionFiles: date boundaries and an earlier show with 
   const noStart = { ...SOUTHWARK, previewsStartDate: undefined, openingDate: undefined };
   assert.deepEqual(collectSameTitleProductionFiles(KINGSTON, [noStart, KINGSTON], deps), []);
 });
+
+// BRO-6716: Lost in Del Valle (SoHo Playhouse Feb-May 2026) and its September return.
+test('collectSameTitleProductionFiles: a later production that started after this one closed holds its own reviews', () => {
+  const ORIG = { id: 'lost-in-del-valle-off-broadway-2026', title: 'Lost in Del Valle', category: 'off-broadway',
+    previewsStartDate: '2026-02-23', openingDate: '2026-04-11', closingDate: '2026-05-03' };
+  const RET = { id: 'lost-in-del-valle-return-off-broadway-2026', title: 'Lost in Del Valle', category: 'off-broadway',
+    previewsStartDate: '2026-09-14', openingDate: '2026-09-23', closingDate: '2026-10-16' };
+  const files = { [RET.id]: [
+    { _file: 'nytg.json', url: 'https://x.com/nytg', publishDate: '2026-09-23' },
+    { _file: 'early.json', url: 'https://x.com/early', publishDate: '2026-04-12' },
+    { _file: 'undated.json', url: 'https://x.com/undated' },
+  ] };
+  const deps = { loadFiles: id => files[id] || [], isCovered: () => true };
+  const got = collectSameTitleProductionFiles(ORIG, [ORIG, RET], deps);
+  assert.deepEqual(got.map(d => d._file), ['nytg.json']);
+  assert.equal(got[0]._housedOnShowId, RET.id);
+  // This run still open, or no closing date: the later run might overlap, so nothing.
+  assert.deepEqual(collectSameTitleProductionFiles({ ...ORIG, closingDate: undefined }, [ORIG, RET], deps), []);
+  assert.deepEqual(collectSameTitleProductionFiles({ ...ORIG, closingDate: '2026-09-20' }, [ORIG, RET], deps), []);
+});
