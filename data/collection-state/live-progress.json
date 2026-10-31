@@ -1,40 +1,51 @@
 {
-  "updatedAt": "2026-10-31T16:26:44.417Z",
-  "processed": 220,
-  "failed": 113,
-  "successRate": "66.1%",
+  "updatedAt": "2026-10-31T16:32:07.577Z",
+  "processed": 302,
+  "failed": 68,
+  "successRate": "81.6%",
   "tierBreakdown": {
-    "playwright": 116,
-    "amp": 0,
-    "browserbase": 5,
+    "playwright": 149,
+    "amp": 16,
+    "browserbase": 17,
     "directCookies": 0,
-    "scrapingdog": 17,
-    "scrapingbee": 7,
-    "brightdata": 0,
-    "archiveToday": 21,
-    "archive": 56
+    "scrapingdog": 4,
+    "scrapingbee": 9,
+    "brightdata": 6,
+    "archiveToday": 32,
+    "archive": 124
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 12,
   "recentActivity": [
     {
-      "t": "2026-10-31T15:45:38.277Z",
+      "t": "2026-10-31T14:58:21.342Z",
       "event": "bb-session",
-      "session": "23778217",
-      "url": "http://www.wsj.com/articles/incident-at-vichy-review-humanity-detained-144796689"
+      "session": "25a5bf98",
+      "url": "https://www.nytimes.com/2016/02/21/theater/naian-gonzalez-norvind-reaches-for-hi"
     },
     {
-      "t": "2026-10-31T15:45:38.949Z",
+      "t": "2026-10-31T14:58:21.959Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T15:39:33.450Z",
+      "t": "2026-10-31T15:07:09.990Z",
       "event": "bb-session",
-      "session": "7ba06fc1",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+      "session": "dd0bc126",
+      "url": "http://www.wsj.com/articles/smart-people-review-not-so-right-minded-1455835004"
     },
     {
-      "t": "2026-10-31T15:39:34.254Z",
+      "t": "2026-10-31T15:07:10.664Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-31T15:14:19.531Z",
+      "event": "bb-session",
+      "session": "471a5f9d",
+      "url": "http://www.nytimes.com/2016/02/22/theater/review-in-the-woodsman-a-love-lost-in-"
+    },
+    {
+      "t": "2026-10-31T15:14:20.241Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -79,6 +90,28 @@
     },
     {
       "t": "2026-10-31T16:26:13.938Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T16:16:06.773Z",
+      "event": "bb-session",
+      "session": "3036710c",
+      "url": "https://www.wsj.com/articles/incident-at-vichy-review-wordy-but-worthwhile-11622"
+    },
+    {
+      "t": "2026-10-31T16:16:07.418Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-31T16:27:33.799Z",
+      "event": "bb-session",
+      "session": "42c2dad4",
+      "url": "http://www.nytimes.com/2015/10/23/theater/review-in-rothschild-sons-getting-even"
+    },
+    {
+      "t": "2026-10-31T16:27:34.460Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
