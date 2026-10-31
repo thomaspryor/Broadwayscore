@@ -116,10 +116,14 @@ function hasReviewShapedEvidence(d) {
 // Any wrongProduction/wrongShow reason that is not an LLM verdict text came from a rule
 // (anticipatory_pre_opening_post, dateless-revival, prior-run-republish, date guards, ...).
 // humanReviewScore is not a signal here: it makes the row humanExcluded upstream.
-const LLM_REASON = /^(CV-promoted|Collector LLM)/i;
+const LLM_REASON = /\b(LLM|CV-promoted|Collector)\b/i;
 function isDeterministicGateExclusion(d) {
-  return [d.wrongProductionReason, d.wrongShowReason]
-    .some(r => typeof r === 'string' && r.trim() !== '' && !LLM_REASON.test(r.trim()));
+  return [['wrongProduction', 'wrongProductionReason', 'wrongProductionNote'], ['wrongShow', 'wrongShowReason', 'wrongShowNote']]
+    .some(([flag, reason, note]) => {
+      if (d[flag] !== true) return false; // a cleared flag's leftover reason is a breadcrumb, not an exclusion
+      const text = [d[reason], d[note]].filter(x => typeof x === 'string' && x.trim()).join(' ');
+      return text !== '' && !LLM_REASON.test(text);
+    });
 }
 // "Confirmed" = the exclusion is the correct outcome (a non-review, a Time Out
 // listing capsule, a held syndicated reprint), not a gap. Name kept from BRO-5500.
