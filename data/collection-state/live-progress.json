@@ -1,131 +1,37 @@
 {
-  "updatedAt": "2026-10-31T07:02:55.209Z",
-  "processed": 225,
-  "failed": 61,
-  "successRate": "78.7%",
+  "updatedAt": "2026-10-31T07:33:10.381Z",
+  "processed": 23,
+  "failed": 6,
+  "successRate": "79.3%",
   "tierBreakdown": {
-    "playwright": 161,
+    "playwright": 12,
     "amp": 0,
-    "browserbase": 25,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 11,
-    "brightdata": 3,
-    "archiveToday": 18,
-    "archive": 57
+    "scrapingdog": 1,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archiveToday": 2,
+    "archive": 8
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-31T05:27:32.972Z",
+      "t": "2026-10-31T07:22:00.121Z",
       "event": "bb-session",
-      "session": "12bc9e5e",
-      "url": "https://www.nytimes.com/2018/02/01/theater/review-fire-and-air-terrence-mcnally-"
+      "session": "06d8b5a3",
+      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/whirligig-1005802/"
     },
     {
-      "t": "2026-10-31T05:27:33.580Z",
+      "t": "2026-10-31T07:22:52.001Z",
+      "event": "bb-session",
+      "session": "30714d32",
+      "url": "https://www.nytimes.com/2017/05/21/theater/whirligig-review.html"
+    },
+    {
+      "t": "2026-10-31T07:22:52.446Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T05:32:24.008Z",
-      "event": "bb-session",
-      "session": "cc2bfc49",
-      "url": "http://deadline.com/2018/01/review-cardinal-with-anna-chlumsky-and-adam-pally-12"
-    },
-    {
-      "t": "2026-10-31T05:37:42.917Z",
-      "event": "bb-session",
-      "session": "8afb2075",
-      "url": "https://www.nytimes.com/2017/12/27/theater/review-in-mary-shelleys-frankenstein-"
-    },
-    {
-      "t": "2026-10-31T05:37:43.507Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T05:41:34.468Z",
-      "event": "bb-session",
-      "session": "5d7559bf",
-      "url": "https://www.nytimes.com/2017/11/08/theater/office-hour-review.html?_r=0"
-    },
-    {
-      "t": "2026-10-31T05:41:35.047Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T05:51:58.830Z",
-      "event": "bb-session",
-      "session": "c475dafe",
-      "url": "https://www.nytimes.com/2017/10/24/theater/the-last-match-review.html?_r=0"
-    },
-    {
-      "t": "2026-10-31T05:51:59.440Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T05:52:49.409Z",
-      "event": "bb-session",
-      "session": "be9a46a8",
-      "url": "https://www.nytimes.com/2017/10/24/theater/review-the-portuguese-kid-jason-alexa"
-    },
-    {
-      "t": "2026-10-31T05:52:50.032Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T06:06:27.834Z",
-      "event": "bb-session",
-      "session": "7af7b8fb",
-      "url": "https://www.nytimes.com/2017/10/25/theater/people-places-things-review.html"
-    },
-    {
-      "t": "2026-10-31T06:06:28.467Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T06:11:07.752Z",
-      "event": "bb-session",
-      "session": "46b0d51e",
-      "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/treasurer-theater-rev"
-    },
-    {
-      "t": "2026-10-31T06:11:49.748Z",
-      "event": "bb-session",
-      "session": "5ab1a0fc",
-      "url": "https://www.nytimes.com/2017/09/26/theater/the-treasurer-review-max-posner.html"
-    },
-    {
-      "t": "2026-10-31T06:11:50.295Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T06:55:01.932Z",
-      "event": "bb-session",
-      "session": "8aa18d3d",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
-    },
-    {
-      "t": "2026-10-31T06:55:02.275Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-10-31T06:57:00.937Z",
-      "event": "bb-session",
-      "session": "7ee8f4e6",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-10-31T06:57:01.244Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
