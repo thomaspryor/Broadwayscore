@@ -32629,12 +32629,13 @@
       "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
       "firstSeen": "2026-10-30T17:21:01.709Z",
       "incidentOpenedAt": "2026-10-30T17:21:01.709Z",
-      "lastSeen": "2026-10-31T17:25:59.825Z",
+      "lastSeen": "2026-10-31T20:35:12.666Z",
       "lastNotifiedAt": "2026-10-31T17:25:59.825Z",
       "lastSurfacedAt": "2026-10-31T17:25:59.825Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-the-moth-off-west-end-2026": {
       "status": "open",
@@ -33303,7 +33304,7 @@
       "linearIdentifier": null
     },
     "pending-unrecoverable:middlemarch-rsc-regional-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "1 review(s) for middlemarch-rsc-regional-2026 stuck in _pending with no text and no byline",
@@ -33314,7 +33315,9 @@
       "lastSurfacedAt": "2026-10-31T10:52:45.808Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-31T20:33:47.557Z",
+      "resolveReason": "no unrecoverable _pending stubs on a complete scan"
     },
     "land:land/job/linear-BRO-6689-mvwaoh5q": {
       "status": "resolved",
@@ -34067,6 +34070,20 @@
       "lastSeen": "2026-10-31T20:29:24.507Z",
       "lastNotifiedAt": "2026-10-31T20:29:24.507Z",
       "lastSurfacedAt": "2026-10-31T20:29:24.507Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "pending-unrecoverable:stoker-wilde-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "1 review(s) for stoker-wilde-off-west-end-2026 stuck in _pending with no text and no byline",
+      "firstSeen": "2026-10-31T20:33:16.689Z",
+      "incidentOpenedAt": "2026-10-31T20:33:16.689Z",
+      "lastSeen": "2026-10-31T20:33:16.689Z",
+      "lastNotifiedAt": "2026-10-31T20:33:16.689Z",
+      "lastSurfacedAt": "2026-10-31T20:33:16.689Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
