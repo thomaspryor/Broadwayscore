@@ -1050,6 +1050,41 @@ function isVenueCarveoutPersistedWrongProduction(data, show) {
 }
 
 /**
+ * BRO-6716: a persisted CV-promoted wrongProduction that today's promotion rule
+ * would refuse. BRO-5805 made a CV verdict advisory when the body names most of
+ * this show's listed cast (ownShowTextEvidence.strong), but only at the pre-pass
+ * and only for files not yet flagged, so flags set before that rule stayed (Tru
+ * NYSR: "Jesse Tyler Ferguson" at House of the Redeemer, 2 of 2 cast named,
+ * flagged as "a different production"). Same provenance gates as the venue heal
+ * above; never the cvLowButStrong path; and the review must be dated near this
+ * production's opening (a pre-transfer run with the same cast, e.g. Oliver! at
+ * Chichester, sits inside the preview-anchored window but months before opening).
+ */
+const OWN_CAST_OPENING_LEAD_DAYS = 45;
+function isOwnCastEvidencePersistedWrongProduction(data, show) {
+  if (!data || data.wrongProduction !== true || !show) return false;
+  const reason = String(data.wrongProductionReason || '');
+  if (reason && !/^CV-promoted:/.test(reason)) return false;
+  if (!reason && !data.contentVerificationPromoted) return false;
+  if (data.wrongProductionNote) return false;
+  if (data.wrongProductionManualClear === true || data.wrongProductionOverride === true) return false;
+  if (typeof data.humanReviewedWrongProduction === 'boolean') return false;
+  if (data.wrongShow === true) return false;
+  if (data.rejectionReason && data.rejectionReason !== 'wrong_production') return false;
+  const cv = data.contentVerification;
+  // wrongArticle (preview / not-a-review) is a different question than which production; leave it.
+  if (!cv || cv.wrongProduction !== true || cv.wrongArticle === true) return false;
+  if (cv.confidence === 'low' && hasStrongDifferentShowSignal(cv.issues, cv.reasoning)) return false;
+  if (!isReviewWithinOwnProductionWindow(show, data.publishDate)) return false;
+  const { toDateMs } = require('./date-utils');
+  const openMs = toDateMs(show.openingDate);
+  const pubMs = toDateMs(data.publishDate);
+  if (isNaN(openMs) || isNaN(pubMs) || pubMs < openMs - OWN_CAST_OPENING_LEAD_DAYS * 86400000) return false;
+  const { ownShowTextEvidence } = require('./own-show-text-evidence');
+  return ownShowTextEvidence(data.fullText, show).strong;
+}
+
+/**
  * BRO-6716: the ensemble scoreability check ran with a prompt that assumed a
  * Broadway/West End production, so it rejected correct Off-Broadway reviews as
  * wrong_production ("an off-Broadway production at MCC Theater Space, not a
@@ -6614,6 +6649,7 @@ module.exports = {
   applyVenueClassificationCarveout,
   cvWrongProductionIsVenueCarveout,
   isVenueCarveoutPersistedWrongProduction,
+  isOwnCastEvidencePersistedWrongProduction,
   isEnsembleCategoryQuibbleRejection,
   offBroadwayCategoryVeto,
   placesArticleAtOtherStaging,

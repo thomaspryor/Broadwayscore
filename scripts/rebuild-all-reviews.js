@@ -74,7 +74,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -2592,7 +2592,9 @@ showDirs.forEach(showId => {
           const uInTourLeg = isWithinTourLeg(ud.publishDate, showById[showId]?.tourLegs);
           // BRO-6716: the venue/category carve-out applies here too (was pre-pass only).
           const uVenueCarveout = cvWrongProductionIsVenueCarveout(ucv, showById[showId], ud.publishDate);
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'wrongProduction') && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg && !uVenueCarveout) {
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'wrongProduction') && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg && !uVenueCarveout
+              // BRO-6716: the BRO-5805 own-cast veto was pre-pass only; without it here a healed file re-flags every rebuild.
+              && !ownShowTextEvidence(ud.fullText, showById[showId]).strong) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             invalidateWrongProductionAutoClear(ud);
@@ -3304,7 +3306,9 @@ showDirs.forEach(showId => {
               && !cvWpAdvisory && !cvInPriorRun && !cvInTourLeg
               // BRO-6716: the main loop never consulted the venue/category carve-out, so a
               // review the pre-pass spared was re-flagged here in memory every rebuild.
-              && !cvWrongProductionIsVenueCarveout(cv, showById[showId], data.publishDate, cvLowButStrong)) {
+              && !cvWrongProductionIsVenueCarveout(cv, showById[showId], data.publishDate, cvLowButStrong)
+              // BRO-6716: BRO-5805 own-cast veto, same as the pre-pass (else a healed file re-flags each rebuild).
+              && !(!cvLowButStrong && ownShowTextEvidence(data.fullText, showById[showId]).strong)) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
             invalidateWrongProductionAutoClear(data);
@@ -3463,10 +3467,16 @@ showDirs.forEach(showId => {
       // venue/category carve-out now neutralises (old prompts flagged correct
       // Off-Broadway reviews as "Off-Broadway, not Broadway"). See
       // isVenueCarveoutPersistedWrongProduction in review-guards.js.
-      if (isVenueCarveoutPersistedWrongProduction(data, showById[showId])) {
+      // Also heals a CV-promoted flag the BRO-5805 own-cast rule would now refuse
+      // (isOwnCastEvidencePersistedWrongProduction): same settle-and-retier path.
+      const wpHealKind = isVenueCarveoutPersistedWrongProduction(data, showById[showId]) ? 'venue'
+        : isOwnCastEvidencePersistedWrongProduction(data, showById[showId]) ? 'own-cast' : null;
+      if (wpHealKind) {
         data.wrongProduction = false;
         data.wrongProductionSelfHealed = true;
-        data.wrongProductionSelfHealReason = 'CV wrongProduction was a venue/category objection on this show\'s own run (BRO-6716 carve-out) — cleared';
+        data.wrongProductionSelfHealReason = wpHealKind === 'venue'
+          ? 'CV wrongProduction was a venue/category objection on this show\'s own run (BRO-6716 carve-out) — cleared'
+          : 'CV wrongProduction contradicted by the body naming this show\'s own cast, dated at its opening (BRO-5805 rule, BRO-6716 heal) — cleared';
       // collect-review-texts parks a wrong-production body in wrongFullText; put it back
       // so safeWriteReview's stale-wrong-content-tier retier can classify it.
         if (!data.fullText && typeof data.wrongFullText === 'string' && data.wrongFullText.length > 300) {
@@ -3490,7 +3500,8 @@ showDirs.forEach(showId => {
             data.incompleteDetail = null;
           }
         }
-        stats.cvVenueCarveoutWrongProductionHealed = (stats.cvVenueCarveoutWrongProductionHealed || 0) + 1;
+        if (wpHealKind === 'venue') stats.cvVenueCarveoutWrongProductionHealed = (stats.cvVenueCarveoutWrongProductionHealed || 0) + 1;
+        else stats.cvOwnCastWrongProductionHealed = (stats.cvOwnCastWrongProductionHealed || 0) + 1;
         if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
           markRescoreNeeded(data, 'wrongProduction venue carve-out heal');
         }
