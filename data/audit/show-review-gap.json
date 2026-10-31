@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-31T06:31:50.539Z",
-  "windowDays": 1095,
-  "targets": 1379,
-  "auditedThisRun": 23,
-  "carriedForward": 1054,
+  "generatedAt": "2026-10-31T08:07:39.479Z",
+  "windowDays": 21,
+  "targets": 28,
+  "auditedThisRun": 13,
+  "carriedForward": 1077,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 546,
-    "missingCurrentRun": 1072,
+    "withGap": 556,
+    "missingCurrentRun": 1094,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 782,
-    "totalRecoverable": 29,
-    "totalRecovered": 30,
+    "totalFlaggedMisses": 790,
+    "totalRecoverable": 32,
+    "totalRecovered": 40,
     "humanExcluded": 6,
-    "automatedExcluded": 574,
-    "automatedExcludedListed": 473,
-    "priorProductionCitations": 5790
+    "automatedExcluded": 584,
+    "automatedExcludedListed": 481,
+    "priorProductionCitations": 5800
   },
   "results": [
     {
@@ -5431,6 +5431,285 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-25T22:17:08.499Z"
+    },
+    {
+      "showId": "a-midsummer-nights-dream-off-broadway-2017",
+      "title": "A Midsummer Night's Dream",
+      "openingDate": "2017-07-31",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-A-MIDSUMMER-NIGHTS-DREAM-Starring-Annaleigh-Ashford-Danny-Burstein-and-More-at-Shakespeare-in-the-Park-20170801"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
+        "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
+        "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-review-1025277",
+        "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html",
+        "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933",
+        "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+        "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
+        "http://www.vulture.com/2017/07/a-midsummer-nights-dream-that-never-touches-earth.html",
+        "http://www.thewrap.com/midsummer-nights-dream-theater-review-phylicia-rashad-leads-sitcom-version-bard/"
+      ],
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
+          "host": "timeout.com",
+          "knownOutletId": "timeout"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "whatshouldwedo.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 341,
+        "byReason": {
+          "aggregator-internal-nav": 227,
+          "not-http-url": 95,
+          "non-review-host": 15,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
+          "host": "amny.com",
+          "outletId": "amny",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html",
+          "host": "nbcnewyork.com",
+          "outletId": "nbcny",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933",
+          "host": "newsday.com",
+          "outletId": "newsday",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
+          "host": "timeout.com",
+          "outletId": "timeout"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html"
+          },
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431"
+          },
+          {
+            "outletId": "nbcny",
+            "outlet": "nbcny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083"
+          },
+          {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-review-1025277",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.vulture.com/2017/07/a-midsummer-nights-dream-that-never-touches-earth.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/midsummer-nights-dream-theater-review-phylicia-rashad-leads-sitcom-version-bard/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
+            "outletId": "amny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html",
+            "outletId": "nbcny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 3,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
     },
     {
       "showId": "a-midsummer-nights-dream-off-broadway-2025",
@@ -13235,6 +13514,299 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-27T23:59:53.509Z"
+    },
+    {
+      "showId": "amy-and-the-orphans-off-broadway-2018",
+      "title": "Amy and the Orphans",
+      "openingDate": "2018-03-01",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-AMY-AND-THE-ORPHANS-20180302"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.nydailynews.com/entertainment/theater-arts/amy-orphans-review-family-drama-roundabout-article-1.3849563",
+        "https://www.thewrap.com/amy-and-orphans-theater-review-jamie-brewer-american-horror-story-down-syndrome/",
+        "https://www.timeout.com/newyork/theater/amy-and-the-orphans",
+        "https://www.nytimes.com/2018/03/01/theater/amy-and-the-orphans-review.html",
+        "https://www.hollywoodreporter.com/review/amy-orphans-theater-review-1089837",
+        "http://www.theatermania.com/off-broadway/reviews/amy-and-the-orphans-review_84280.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-UMQGEU",
+        "https://www.talkinbroadway.com/page/ob/03_01_18.html",
+        "http://www.theaterscene.net/plays/offbway-plays/amy-and-the-orphans/victor-gluck/",
+        "http://www.curtainup.com/amyandtheorphans18.html",
+        "http://theaterpizzazz.com/amy-and-the-orphans/",
+        "http://thefrontrowcenter.com/2018/03/amy-and-the-orphans/",
+        "https://frontmezzjunkies.com/2018/03/18/roundabout-amy-and-the-orphans/",
+        "https://www.theatrereviews.com/off-broadway-review-amy-and-the-orphans-at-the-laura-pels-theatre-at-the-harold-and-miriam-steinberg-center-for-theatre/",
+        "https://newyorktheater.me/2018/03/06/amy-and-the-orphans-review-the-truth-about-down-syndrome-packaged-in-a-familiar-comedy/",
+        "https://cititour.com/NYC_Broadway/Amy-and-the-Orphans/798",
+        "https://slleiter.blogspot.com/2018/03/174-2017-2018-review-amy-and-orphans.html",
+        "http://t2conline.com/jamie-brewer-of-amy-and-the-orphans-shows-that-talent-comes-in-many-forms/",
+        "https://www.villagevoice.com/2018/03/05/amy-and-the-orphans-take-audiences-on-a-swift-trip-to-greater-awareness/",
+        "https://www.stageleft.nyc/blog/2018/3/2/review-amy-and-the-orphans",
+        "http://theaterlife.com/edward-albees-at-home-at-the-zoo-jerry-springer-the-opera-good-for-otto-amy-and-the-orphans/",
+        "http://zealnyc.com/review-amy-and-the-orphans-a-confusing-road-trip/",
+        "https://melindasmalarky.blogspot.com/2018/03/amy-and-orphans-at-roundabout-family.html",
+        "http://magicalmisstaritour.blogspot.com/2018/03/thoughts-on-queens-and-amy-and-orphans.html",
+        "https://bsonarts.com/2018/03/01/amy-and-the-orphans/",
+        "https://centerontheaisle.com/4473/amy-and-the-orphans-at-the-laura-pels/",
+        "https://gotham-playgoer.blogspot.com/2018/03/amy-and-orphans.html"
+      ],
+      "dirFiles": 29,
+      "dirClean": 28,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "ny1.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://zealnyc.com/review-amy-and-the-orphans-a-confusing-road-trip/",
+          "host": "zealnyc.com",
+          "knownOutletId": "zeal-nyc",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "zeal-nyc--jil-picariello.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://zealnyc.com/review-amy-and-the-orphans-a-confusing-road-trip/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 304,
+        "byReason": {
+          "aggregator-internal-nav": 214,
+          "not-http-url": 67,
+          "non-review-host": 15,
+          "aggregator-section-root": 5,
+          "roundup-page": 2,
+          "unparseable-url": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/amy-orphans-theater-review-1089837",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "zeal-nyc",
+            "outlet": "zeal-nyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://zealnyc.com/review-amy-and-the-orphans-a-confusing-road-trip/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/amy-orphans-review-family-drama-roundabout-article-1.3849563",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/amy-and-orphans-theater-review-jamie-brewer-american-horror-story-down-syndrome/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/amy-and-the-orphans",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2018/03/01/theater/amy-and-the-orphans-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/amy-orphans-theater-review-1089837",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/amy-and-the-orphans-review_84280.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-UMQGEU",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/03_01_18.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/amy-and-the-orphans/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/amyandtheorphans18.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/amy-and-the-orphans/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2018/03/amy-and-the-orphans/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2018/03/18/roundabout-amy-and-the-orphans/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-amy-and-the-orphans-at-the-laura-pels-theatre-at-the-harold-and-miriam-steinberg-center-for-theatre/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2018/03/06/amy-and-the-orphans-review-the-truth-about-down-syndrome-packaged-in-a-familiar-comedy/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Amy-and-the-Orphans/798",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2018/03/174-2017-2018-review-amy-and-orphans.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://t2conline.com/jamie-brewer-of-amy-and-the-orphans-shows-that-talent-comes-in-many-forms/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2018/03/05/amy-and-the-orphans-take-audiences-on-a-swift-trip-to-greater-awareness/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.stageleft.nyc/blog/2018/3/2/review-amy-and-the-orphans",
+            "outletId": "stageleft.nyc",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/edward-albees-at-home-at-the-zoo-jerry-springer-the-opera-good-for-otto-amy-and-the-orphans/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://melindasmalarky.blogspot.com/2018/03/amy-and-orphans-at-roundabout-family.html",
+            "outletId": "melindasmalarky.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://magicalmisstaritour.blogspot.com/2018/03/thoughts-on-queens-and-amy-and-orphans.html",
+            "outletId": "magicalmisstaritour.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://bsonarts.com/2018/03/01/amy-and-the-orphans/",
+            "outletId": "bsonarts.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://centerontheaisle.com/4473/amy-and-the-orphans-at-the-laura-pels/",
+            "outletId": "centerontheaisle.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2018/03/amy-and-orphans.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://zealnyc.com/review-amy-and-the-orphans-a-confusing-road-trip/",
+            "outletId": "zeal-nyc",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 26,
+        "candidateCount": 27
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
     },
     {
       "showId": "an-american-daughter-off-broadway-2026",
@@ -79520,6 +80092,222 @@
       "computedAt": "2026-10-14T22:55:22.804Z"
     },
     {
+      "showId": "fulfillment-center-off-broadway-2017",
+      "title": "Fulfillment Center",
+      "openingDate": "2017-06-20",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
+        "https://www.timeout.com/newyork/theater/fulfillment-center",
+        "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
+        "http://www.theatermania.com/off-broadway/reviews/fulfillment-center_81496.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=48KEV9",
+        "http://www.talkinbroadway.com/page/ob/6_20_17.html",
+        "http://www.curtainup.com/fulfillmentcenter17.html",
+        "http://www.theasy.com/Reviews/2017/F/fulfillmentcenter.php",
+        "http://thefrontrowcenter.com/2017/06/fulfillment-center/",
+        "https://stagebuddy.com/theater/theater-review/review-fulfillment-center",
+        "https://frontmezzjunkies.com/2017/07/07/fulfillment-center/",
+        "https://cititour.com/NYC_Broadway/Fulfillment-Center/920",
+        "http://theaterlife.com/fulfillment-center/",
+        "https://www.villagevoice.com/2017/06/28/fall-in-love-with-the-four-wayward-loners-of-abe-kooglers-fulfillment-center/",
+        "https://zealnyc.com/review-fulfillment-center-a-quietly-moving-character-study/",
+        "https://bobs-theater-blog.blogspot.com/2017/06/fulfillment-center.html",
+        "https://dougmarino.blogspot.com/2017/06/fulfillment-center.html"
+      ],
+      "dirFiles": 18,
+      "dirClean": 18,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "recliningstandards.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "non-review-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://recliningstandards.org/2017/07/21/theater-review-in-fulfillment-center-four-characters-in-search-of-an-unknown-future/",
+          "host": "recliningstandards.org",
+          "file": "df-reviews--david-fox.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/F/fulfillmentcenter.php",
+          "host": "theasy.com",
+          "file": "theatre-is-easy--ken-kaissar.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://zealnyc.com/review-fulfillment-center-a-quietly-moving-character-study/",
+          "host": "zealnyc.com",
+          "file": "zeal-nyc--jil-picariello.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=zealnyc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=zealnyc.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  ScrapingBee failed (",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/06/20/theater/fulfillment-center-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/fulfillment-center",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/fulfillment-center_81496.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=48KEV9",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/6_20_17.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/fulfillmentcenter17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/F/fulfillmentcenter.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/06/fulfillment-center/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/review-fulfillment-center",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/07/07/fulfillment-center/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Fulfillment-Center/920",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/fulfillment-center/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2017/06/28/fall-in-love-with-the-four-wayward-loners-of-abe-kooglers-fulfillment-center/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://zealnyc.com/review-fulfillment-center-a-quietly-moving-character-study/",
+            "outletId": "zealnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://bobs-theater-blog.blogspot.com/2017/06/fulfillment-center.html",
+            "outletId": "bobs-theater-blog.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://dougmarino.blogspot.com/2017/06/fulfillment-center.html",
+            "outletId": "dougmarino.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 17,
+        "candidateCount": 17
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
+    },
+    {
       "showId": "galileo-berkeley-rep-regional-2024",
       "title": "Galileo: A Rock Musical",
       "openingDate": "2024-05-15",
@@ -97595,6 +98383,745 @@
       "computedAt": "2026-10-22T08:15:51.969Z"
     },
     {
+      "showId": "hangmen-off-broadway-2018",
+      "title": "Hangmen",
+      "openingDate": "2018-02-05",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-the-us-premiere-of-martin-mcdonaghs-hangmen",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-martin-mcdonaghs-hangmen"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.amny.com/entertainment/hangmen-review-off-broadway-1.16559497",
+        "http://www.hollywoodreporter.com/review/hangmen-theater-1081505",
+        "http://www.nytimes.com/2018/02/05/theater/review-hangmen-martin-mcdonagh-atlantic-theater-company.html",
+        "http://www.vulture.com/2018/02/theater-martin-mcdonagh-on-a-dying-profession-in-hangmen.html",
+        "http://www.ny1.com/nyc/all-boroughs/news/2018/02/06/atlantic-theater-company-debut-hangmen-martin-mcdonagh-play",
+        "http://www.nydailynews.com/entertainment/theater-arts/hangmen-review-martin-mcdonagh-play-opens-atlantic-article-1.3800877",
+        "http://www.timeout.com/newyork/theater/hangmen",
+        "http://variety.com/2018/legit/reviews/hangmen-review-martin-mcdonagh-atlantic-theater-1202688066/",
+        "http://www.thewrap.com/hangmen-theater-review-martin-mcdonagh-gleefully-explores-habit-murder/",
+        "https://news.yahoo.com/broadway-review-martin-mcdonagh-hangmen-003000248.html",
+        "https://www.amny.com/entertainment/broadway/review-plenty-of-gallows-humor-in-hangmen/",
+        "https://cititour.com/NYC_Broadway/Hangmen/1073",
+        "https://deadline.com/2022/04/hangmen-broadway-review-martin-mcdonagh-alfie-allen-1235006686/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-hangmen-review-martin-mcdonagh-20220422-jw74l3332zclnps4tbornkxhbq-story.html",
+        "https://nypost.com/2022/04/21/hangmen-is-the-best-new-play-on-broadway/",
+        "http://nystagereview.com/2022/04/21/hangmen-martin-mcdonaghs-slick-comedy-finally-arrives-on-broadway/",
+        "http://nystagereview.com/2022/04/21/hangmen-gallows-humor-literally/",
+        "https://newyorktheater.me/2022/04/21/hangmen-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/hangmen-broadway-review",
+        "https://www.nytimes.com/2022/04/21/theater/hangmen-review.html",
+        "https://observer.com/2022/04/review-martin-mcdonaghs-satirical-hangmen-thin-thread-bottom-heavy/",
+        "https://www.theatrely.com/post/hangmen-holds-a-tight-noose-review",
+        "https://www.thedailybeast.com/why-islander-is-new-yorks-best-new-musical-and-hangmen-swing-on-broadway",
+        "https://www.thewrap.com/hangmen-broadway-review-martin-mcdonagh/",
+        "https://www.timeout.com/newyork/theater/hangmen-broadway-review-martin-mcdonagh",
+        "https://www.vulture.com/article/hangmen-broadway-review.html",
+        "https://www.nytimes.com/2018/02/05/theater/review-hangmen-martin-mcdonagh-atlantic-theater-company.html",
+        "https://www.timeout.com/newyork/theater/hangmen",
+        "https://www.wsj.com/articles/hangmen-review-a-comedy-as-black-as-sin-1518719052",
+        "https://www.hollywoodreporter.com/review/hangmen-theater-1081505",
+        "https://www.amny.com/entertainment/hangmen-review-off-broadway-1.16559497",
+        "http://www.theatermania.com/off-broadway/reviews/hangmen_83958.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=IFB8RX",
+        "https://www.talkinbroadway.com/page/ob/02_05_18.html",
+        "http://www.theaternewsonline.com/NYTheaterReviews/GIVINGUPTHENOOSE.cfm",
+        "http://www.theaterscene.net/plays/offbway-plays/hangmen/david-kaufman/",
+        "http://www.curtainup.com/hangmen18",
+        "http://thefrontrowcenter.com/2018/02/the-hangmen/",
+        "https://stagebuddy.com/theater/theater-review/review-hangmen",
+        "https://frontmezzjunkies.com/2018/02/11/atcs-hangmen/",
+        "https://www.theatrereviews.com/off-broadway-review-hangmen-at-atlantic-theater-company/",
+        "https://newyorktheater.me/2018/03/07/hangmen-review/",
+        "http://thebroadwayblog.com/hangmen-atlantic-theater-company/",
+        "http://www.clydefitchreport.com/2018/02/martin-mcdonagh-hangmen-atlantic/",
+        "https://www.villagevoice.com/2018/02/07/hangmen-is-another-deft-dose-of-poison-from-martin-mcdonagh/",
+        "https://www.thewrap.com/hangmen-theater-review-martin-mcdonagh-gleefully-explores-habit-murder/",
+        "http://twi-ny.com/blog/2018/02/26/hangmen/",
+        "https://www.offoffonline.com/offoffonline/2018/2/8/hangmen",
+        "http://broadwayandme.blogspot.com/2018/03/yes-there-are-shows-i-like-edward.html",
+        "https://www.thedailybeast.com/martin-mcdonaghs-hangmen-is-the-best-new-play-in-new-york-city",
+        "https://www.stageleft.nyc/blog/2018/2/6/review-martin-mcdonaghs-menacingly-funny-hangmen",
+        "https://www.ft.com/content/b5cd4244-0a61-11e8-bacb-2958fde95e5e",
+        "https://scribicide.com/2018/02/16/like-int-old-days-or-not/",
+        "http://www.newnownext.com/hangmen-martin-mcdonagh-atlantic-theater/02/2018/",
+        "https://www.newsday.com/entertainment/theater/hangmen-review-martin-mcdonagh-1.16579720",
+        "http://theaterlife.com/hangmen-1-2/",
+        "http://www.zealnyc.com/review-hangmen-at-the-atlantic-is-dark-dangerous-and-damn-good/",
+        "https://centerontheaisle.com/4450/theatre-review-martin-mcdonaghs-hangmen/",
+        "http://theaterscene.com/hangmen.html",
+        "https://gotham-playgoer.blogspot.com/2018/02/hangmen.html",
+        "https://www.womanaroundtown.com/sections/playing-around/hangmen-black-comedy-driven-misdirection/",
+        "http://www.theaterreviewsfrommyseat.com/hangmen-atlantic-theater-company/"
+      ],
+      "dirFiles": 42,
+      "dirClean": 39,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "https://news.yahoo.com/broadway-review-martin-mcdonagh-hangmen-003000248.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Hangmen/1073",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2022/04/hangmen-broadway-review-martin-mcdonagh-alfie-allen-1235006686/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2022/04/21/hangmen-is-the-best-new-play-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2022/04/21/hangmen-martin-mcdonaghs-slick-comedy-finally-arrives-on-broadway/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2022/04/21/hangmen-gallows-humor-literally/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2022/04/review-martin-mcdonaghs-satirical-hangmen-thin-thread-bottom-heavy/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/hangmen-holds-a-tight-noose-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.zealnyc.com/review-hangmen-at-the-atlantic-is-dark-dangerous-and-damn-good/",
+          "host": "zealnyc.com",
+          "knownOutletId": "zeal-nyc"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "wnyc.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.theaterscene.net/plays/offbway-plays/hangmen/david-kaufman/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-scene--david-kaufman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theaterscene.net/plays/offbway-plays/hangmen/david-kaufman/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "http://thefrontrowcenter.com/2018/02/the-hangmen/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--tulis-mccall.json",
+              "flag": "clean",
+              "urlInDir": "http://thefrontrowcenter.com/2018/02/the-hangmen/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "knownSyndicationSecondary"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://frontmezzjunkies.com/2018/02/11/atcs-hangmen/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "recoverable": true,
+          "recoverableFile": "frontmezzjunkies--steven-ross.json",
+          "recoverableOutletId": "frontmezzjunkies",
+          "recoverableCritic": "Steven Ross",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frontmezzjunkies--steven-ross.json",
+              "flag": "nonReview",
+              "urlInDir": "https://frontmezzjunkies.com/2018/02/11/atcs-hangmen/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 221,
+        "byReason": {
+          "aggregator-internal-nav": 135,
+          "not-http-url": 11,
+          "non-review-host": 41,
+          "aggregator-section-root": 8,
+          "production-database-listing": 22,
+          "roundup-page": 4
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-martin-mcdonaghs-hangmen",
+          "publishDate": "2022-04-21"
+        }
+      ],
+      "automatedExcludedListed": 2,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://news.yahoo.com/broadway-review-martin-mcdonagh-hangmen-003000248.html",
+          "host": "yahoo.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Hangmen/1073",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2022/04/hangmen-broadway-review-martin-mcdonagh-alfie-allen-1235006686/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2022/04/21/hangmen-is-the-best-new-play-on-broadway/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2022/04/21/hangmen-martin-mcdonaghs-slick-comedy-finally-arrives-on-broadway/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2022/04/21/hangmen-gallows-humor-literally/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2022/04/review-martin-mcdonaghs-satirical-hangmen-thin-thread-bottom-heavy/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/hangmen-holds-a-tight-noose-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.zealnyc.com/review-hangmen-at-the-atlantic-is-dark-dangerous-and-damn-good/",
+          "host": "zealnyc.com",
+          "outletId": "zeal-nyc",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://frontmezzjunkies.com/2018/02/11/atcs-hangmen/",
+          "host": "frontmezzjunkies.com",
+          "file": "frontmezzjunkies--steven-ross.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/hangmen-theater-1081505",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--david-rooney.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://www.theatrereviews.com/off-broadway-review-hangmen-at-atlantic-theater-company/",
+          "host": "theatrereviews.com",
+          "file": "theatre-reviews-limited--david-roberts.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "https://www.wnyc.org/story/review-darkly-funny-hangmen-full-compelling-twists/",
+          "host": "wnyc.org",
+          "file": "wnyc--jennifer-vanasco.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "zeal-nyc",
+            "outlet": "zeal-nyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.zealnyc.com/review-hangmen-at-the-atlantic-is-dark-dangerous-and-damn-good/"
+          },
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.theaterscene.net/plays/offbway-plays/hangmen/david-kaufman/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://thefrontrowcenter.com/2018/02/the-hangmen/"
+          },
+          {
+            "outletId": "frontmezzjunkies",
+            "outlet": "frontmezzjunkies",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://frontmezzjunkies.com/2018/02/11/atcs-hangmen/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.amny.com/entertainment/hangmen-review-off-broadway-1.16559497",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/hangmen-theater-1081505",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2018/02/05/theater/review-hangmen-martin-mcdonagh-atlantic-theater-company.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.vulture.com/2018/02/theater-martin-mcdonagh-on-a-dying-profession-in-hangmen.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.ny1.com/nyc/all-boroughs/news/2018/02/06/atlantic-theater-company-debut-hangmen-martin-mcdonagh-play",
+            "outletId": "ny1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/hangmen-review-martin-mcdonagh-play-opens-atlantic-article-1.3800877",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/hangmen",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2018/legit/reviews/hangmen-review-martin-mcdonagh-atlantic-theater-1202688066/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/hangmen-theater-review-martin-mcdonagh-gleefully-explores-habit-murder/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/broadway/review-plenty-of-gallows-humor-in-hangmen/",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-hangmen-review-martin-mcdonagh-20220422-jw74l3332zclnps4tbornkxhbq-story.html",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2022/04/21/hangmen-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/hangmen-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2022/04/21/theater/hangmen-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/why-islander-is-new-yorks-best-new-musical-and-hangmen-swing-on-broadway",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/hangmen-broadway-review-martin-mcdonagh/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/hangmen-broadway-review-martin-mcdonagh",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/hangmen-broadway-review.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2018/02/05/theater/review-hangmen-martin-mcdonagh-atlantic-theater-company.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/hangmen",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/hangmen-review-a-comedy-as-black-as-sin-1518719052",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/hangmen-theater-1081505",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/hangmen-review-off-broadway-1.16559497",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/hangmen_83958.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=IFB8RX",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/02_05_18.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaternewsonline.com/NYTheaterReviews/GIVINGUPTHENOOSE.cfm",
+            "outletId": "theaternewsonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/hangmen18",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/review-hangmen",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-hangmen-at-atlantic-theater-company/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2018/03/07/hangmen-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/hangmen-atlantic-theater-company/",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.clydefitchreport.com/2018/02/martin-mcdonagh-hangmen-atlantic/",
+            "outletId": "clydefitchreport.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2018/02/07/hangmen-is-another-deft-dose-of-poison-from-martin-mcdonagh/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/hangmen-theater-review-martin-mcdonagh-gleefully-explores-habit-murder/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://twi-ny.com/blog/2018/02/26/hangmen/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2018/2/8/hangmen",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://broadwayandme.blogspot.com/2018/03/yes-there-are-shows-i-like-edward.html",
+            "outletId": "broadwayandme.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/martin-mcdonaghs-hangmen-is-the-best-new-play-in-new-york-city",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.stageleft.nyc/blog/2018/2/6/review-martin-mcdonaghs-menacingly-funny-hangmen",
+            "outletId": "stageleft.nyc",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.ft.com/content/b5cd4244-0a61-11e8-bacb-2958fde95e5e",
+            "outletId": "ft.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://scribicide.com/2018/02/16/like-int-old-days-or-not/",
+            "outletId": "scribicide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.newnownext.com/hangmen-martin-mcdonagh-atlantic-theater/02/2018/",
+            "outletId": "newnownext.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/theater/hangmen-review-martin-mcdonagh-1.16579720",
+            "outletId": "newsday.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/hangmen-1-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://centerontheaisle.com/4450/theatre-review-martin-mcdonaghs-hangmen/",
+            "outletId": "centerontheaisle.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterscene.com/hangmen.html",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2018/02/hangmen.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.womanaroundtown.com/sections/playing-around/hangmen-black-comedy-driven-misdirection/",
+            "outletId": "womanaroundtown.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterreviewsfrommyseat.com/hangmen-atlantic-theater-company/",
+            "outletId": "theaterreviewsfrommyseat.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.zealnyc.com/review-hangmen-at-the-atlantic-is-dark-dangerous-and-damn-good/",
+            "outletId": "zeal-nyc",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/hangmen/david-kaufman/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2018/02/the-hangmen/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2018/02/11/atcs-hangmen/",
+            "outletId": "frontmezzjunkies",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 37,
+        "candidateCount": 41
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
+    },
+    {
       "showId": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
       "title": "Hans Litten: The Jew Who Cross-Examined Hitler",
       "openingDate": "2026-01-30",
@@ -112507,6 +114034,433 @@
       "automatedExcludedListed": 0
     },
     {
+      "showId": "in-the-body-of-the-world-off-broadway-2018",
+      "title": "In the Body of the World",
+      "openingDate": "2018-02-06",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2018/02/06/theater/in-the-body-of-the-world-review-eve-ensler.html",
+        "https://www.timeout.com/newyork/theater/in-the-body-of-the-world",
+        "http://www.vulture.com/2018/02/theater-returning-to-reims-and-in-the-body-of-the-world.html",
+        "http://deadline.com/2018/02/review-eve-enslers-dazzling-in-the-body-of-the-world-1202279961/",
+        "http://www.nydailynews.com/entertainment/theater-arts/body-world-review-eve-ensler-solo-howl-article-1.3803618",
+        "http://variety.com/2018/legit/reviews/in-the-body-of-the-world-review-eve-ensler-1202689740/",
+        "https://www.hollywoodreporter.com/review/in-the-body-of-the-world-theater-1081887",
+        "http://ew.com/theater/2018/02/06/eve-ensler-in-the-body-of-the-world-review/",
+        "http://www.ny1.com/nyc/all-boroughs/news/2018/02/07/roma-torre-review-in-the-body-of-the-world-eve-ensler-monologue",
+        "http://www.theatermania.com/off-broadway/reviews/eve-ensler-in-the-body-of-the-world_83983.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-HVMW0",
+        "https://www.talkinbroadway.com/page/ob/02_06_18.html",
+        "http://www.theaterscene.net/plays/solo-plays/in-the-body-of-the-world/joel-benjamin/",
+        "http://www.curtainup.com/inthebodyoftheworld18.html",
+        "http://www.theasy.com/Reviews/2018/I/inthebodyoftheworld.php",
+        "http://theaterpizzazz.com/in-the-body-of-the-world/",
+        "http://thefrontrowcenter.com/2018/02/in-the-body-of-the-world/",
+        "https://frontmezzjunkies.com/2018/02/16/in-the-body-of-the-world-a-hippy-chick-hug-that-didnt-quite-connect/",
+        "https://newyorktheater.me/2018/02/07/in-the-body-of-the-world-review-eve-ensler-fighting-cancer-and-injustice-ranting-riffing-raging-revealing/",
+        "http://thebroadwayblog.com/in-the-body-of-the-world-mtc/",
+        "https://cititour.com/NYC_Broadway/In-the-Body-of-the-World/361",
+        "https://slleiter.blogspot.com/2018/02/156-2017-2018-review-in-body-of-world.html",
+        "http://www.towleroad.com/2018/02/eve-ensler-show/",
+        "http://twi-ny.com/blog/2018/02/06/in-the-body-of-the-world/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "http://broadwayandme.blogspot.com/2018/02/the-body-of-world-is-ego-trip.html",
+        "http://www.citycabaret.com/in-the-body-of-the-world.html",
+        "https://www.newsday.com/entertainment/theater/eve-ensler-body-of-the-world-review-1.16556419",
+        "http://theaterlife.com/in-the-body-of-the-world-he-brought-her-heart-back-in-a-box/",
+        "http://theaterlife.com/in-the-body-of-the-world-1-2/",
+        "http://www.zealnyc.com/review-eve-ensler-blasts-onto-mtcs-stage-with-her-compelling-and-insightful-in-the-body-of-the-world/",
+        "http://www.onstageblog.com/reviews/2018/2/2/off-broadway-review-in-the-body-of-the-world",
+        "https://www.womanaroundtown.com/sections/playing-around/body-world-mine/",
+        "http://www.theatermania.com/boston-theater/reviews/in-the-body-of-the-world-american-repertory_77189.html",
+        "https://www.bostonglobe.com/arts/theater-art/2016/05/19/ensler-body-world-shadow-death/dmnzpfSGepLf2VeOFwZIUN/story.html"
+      ],
+      "dirFiles": 36,
+      "dirClean": 33,
+      "inReviewsJson": 3,
+      "missing": [
+        {
+          "url": "https://www.bostonglobe.com/arts/theater-art/2016/05/19/ensler-body-world-shadow-death/dmnzpfSGepLf2VeOFwZIUN/story.html",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:May 19th, 2016"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "nystagereview.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://theaterlife.com/in-the-body-of-the-world-1-2/",
+          "host": "theaterlife.com",
+          "knownOutletId": "theater-life",
+          "recoverable": true,
+          "recoverableFile": "theater-life--patrick-christiano.json",
+          "recoverableOutletId": "theater-life",
+          "recoverableCritic": "Patrick Christiano",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-life--patrick-christiano.json",
+              "flag": "nonReview",
+              "urlInDir": "http://theaterlife.com/in-the-body-of-the-world-1-2/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        },
+        {
+          "url": "http://www.zealnyc.com/review-eve-ensler-blasts-onto-mtcs-stage-with-her-compelling-and-insightful-in-the-body-of-the-world/",
+          "host": "zealnyc.com",
+          "knownOutletId": "zeal-nyc",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "zeal-nyc--diana-mott.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.zealnyc.com/review-eve-ensler-blasts-onto-mtcs-stage-with-her-compelling-and-insightful-in-the-body-of-the-world/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "http://www.theatermania.com/boston-theater/reviews/in-the-body-of-the-world-american-repertory_77189.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--iris-fanger.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.theatermania.com/boston-theater/reviews/in-the-body-of-the-world-american-repertory_77189.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:May 24th, 2016",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 2,
+        "byReason": {
+          "aggregator-internal-nav": 2
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.bostonglobe.com/arts/theater-art/2016/05/19/ensler-body-world-shadow-death/dmnzpfSGepLf2VeOFwZIUN/story.html",
+          "host": "bostonglobe.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://theaterlife.com/in-the-body-of-the-world-1-2/",
+          "host": "theaterlife.com",
+          "file": "theater-life--patrick-christiano.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/in-the-body-of-the-world-theater-1081887",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2018/I/inthebodyoftheworld.php",
+          "host": "theasy.com",
+          "file": "theatre-is-easy--eleanor-j-bader.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theater-life",
+            "outlet": "theater-life",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theaterlife.com/in-the-body-of-the-world-1-2/"
+          },
+          {
+            "outletId": "zeal-nyc",
+            "outlet": "zeal-nyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.zealnyc.com/review-eve-ensler-blasts-onto-mtcs-stage-with-her-compelling-and-insightful-in-the-body-of-the-world/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2018/02/06/theater/in-the-body-of-the-world-review-eve-ensler.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/in-the-body-of-the-world",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.vulture.com/2018/02/theater-returning-to-reims-and-in-the-body-of-the-world.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://deadline.com/2018/02/review-eve-enslers-dazzling-in-the-body-of-the-world-1202279961/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/body-world-review-eve-ensler-solo-howl-article-1.3803618",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2018/legit/reviews/in-the-body-of-the-world-review-eve-ensler-1202689740/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/in-the-body-of-the-world-theater-1081887",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://ew.com/theater/2018/02/06/eve-ensler-in-the-body-of-the-world-review/",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.ny1.com/nyc/all-boroughs/news/2018/02/07/roma-torre-review-in-the-body-of-the-world-eve-ensler-monologue",
+            "outletId": "ny1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/eve-ensler-in-the-body-of-the-world_83983.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-HVMW0",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/02_06_18.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/solo-plays/in-the-body-of-the-world/joel-benjamin/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/inthebodyoftheworld18.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2018/I/inthebodyoftheworld.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/in-the-body-of-the-world/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2018/02/in-the-body-of-the-world/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2018/02/16/in-the-body-of-the-world-a-hippy-chick-hug-that-didnt-quite-connect/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2018/02/07/in-the-body-of-the-world-review-eve-ensler-fighting-cancer-and-injustice-ranting-riffing-raging-revealing/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thebroadwayblog.com/in-the-body-of-the-world-mtc/",
+            "outletId": "thebroadwayblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/In-the-Body-of-the-World/361",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2018/02/156-2017-2018-review-in-body-of-world.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.towleroad.com/2018/02/eve-ensler-show/",
+            "outletId": "towleroad.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://twi-ny.com/blog/2018/02/06/in-the-body-of-the-world/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://broadwayandme.blogspot.com/2018/02/the-body-of-world-is-ego-trip.html",
+            "outletId": "broadwayandme.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.citycabaret.com/in-the-body-of-the-world.html",
+            "outletId": "citycabaret.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.newsday.com/entertainment/theater/eve-ensler-body-of-the-world-review-1.16556419",
+            "outletId": "newsday.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/in-the-body-of-the-world-he-brought-her-heart-back-in-a-box/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.onstageblog.com/reviews/2018/2/2/off-broadway-review-in-the-body-of-the-world",
+            "outletId": "onstageblog.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.womanaroundtown.com/sections/playing-around/body-world-mine/",
+            "outletId": "womanaroundtown.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/in-the-body-of-the-world-1-2/",
+            "outletId": "theater-life",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.zealnyc.com/review-eve-ensler-blasts-onto-mtcs-stage-with-her-compelling-and-insightful-in-the-body-of-the-world/",
+            "outletId": "zeal-nyc",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 31,
+        "candidateCount": 33
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
+    },
+    {
       "showId": "in-the-heights-off-broadway-2026",
       "title": "In the Heights",
       "openingDate": "2026-10-28",
@@ -121178,6 +123132,300 @@
       "computedAt": "2026-09-23T06:56:57.530Z"
     },
     {
+      "showId": "jesus-hopped-the-a-train-off-broadway-2017",
+      "title": "Jesus Hopped the ‘A’ Train",
+      "openingDate": "2017-10-23",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-jesus-hopped-the-a-train"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+        "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+        "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
+        "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+        "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+        "https://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+        "http://deadline.com/2017/11/stage-review-school-girls-actually-jesus-hopped-the-a-train-1202215847/",
+        "http://www.theatermania.com/off-broadway/reviews/jesus-hopped-the-a-train_82856.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=3EXELW",
+        "http://www.theaterscene.net/plays/offbway-plays/jesus-hopped-train/joel-benjamin/",
+        "http://www.curtainup.com/jesussignature.html",
+        "http://www.theasy.com/Reviews/2017/J/jesushoppedtheatrain.php",
+        "http://theaterpizzazz.com/jesus-hopped-train-powerful-guirgis-revival/",
+        "http://thefrontrowcenter.com/2017/10/jesus-hopped-train/",
+        "https://stagebuddy.com/theater/theater-review/jesus-hopped-train-signature-theatre-center",
+        "https://frontmezzjunkies.com/2017/11/13/jesus-hopped-the-a-train/",
+        "http://www.theatrereviews.com/off-broadway-review-jesus-hopped-the-a-train-at-the-pershing-square-signature-centers-irene-diamond-stage/",
+        "https://cititour.com/NYC_Broadway/Jesus-Hopped-the-A-Train/302",
+        "https://slleiter.blogspot.com/2017/10/93-2017-2018-review-jesus-hopped-a.html",
+        "https://dctheatrescene.com/2017/10/23/jesus-hopped-train-review-killers-finding-god/",
+        "http://t2conline.com/jesus-hopped-the-a-train-must-see-theatre/",
+        "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+        "https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240",
+        "http://twi-ny.com/blog/2017/10/24/jesus-hopped-the-a-train/",
+        "http://showshowdown.blogspot.com/2017/10/jesus-hopped-a-train.html",
+        "http://morethantheplay.blogspot.com/2017/10/jesus-hopped-a-train.html",
+        "http://www.themodernistbeat.com/2017/11/20/what-happens-to-the-message-if-the-messenger-is-flawed/",
+        "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html"
+      ],
+      "dirFiles": 27,
+      "dirClean": 27,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 110,
+        "byReason": {
+          "aggregator-internal-nav": 69,
+          "not-http-url": 6,
+          "non-review-host": 21,
+          "aggregator-section-root": 4,
+          "production-database-listing": 10
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/J/jesushoppedtheatrain.php",
+          "host": "theasy.com",
+          "file": "theatre-is-easy--ran-xia.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2017/10/93-2017-2018-review-jesus-hopped-a.html",
+          "host": "slleiter.blogspot.com",
+          "file": "theatres-leiter-side--samuel-l-leiter.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/jesus-hopped-the-a-train-review-1202597382/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/jesus-hopped-the-a-train",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://deadline.com/2017/11/stage-review-school-girls-actually-jesus-hopped-the-a-train-1202215847/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/jesus-hopped-the-a-train_82856.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=3EXELW",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/jesus-hopped-train/joel-benjamin/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/jesussignature.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/J/jesushoppedtheatrain.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/jesus-hopped-train-powerful-guirgis-revival/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/10/jesus-hopped-train/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/jesus-hopped-train-signature-theatre-center",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/11/13/jesus-hopped-the-a-train/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatrereviews.com/off-broadway-review-jesus-hopped-the-a-train-at-the-pershing-square-signature-centers-irene-diamond-stage/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Jesus-Hopped-the-A-Train/302",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2017/10/93-2017-2018-review-jesus-hopped-a.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://dctheatrescene.com/2017/10/23/jesus-hopped-train-review-killers-finding-god/",
+            "outletId": "dctheatrescene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://t2conline.com/jesus-hopped-the-a-train-must-see-theatre/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://twi-ny.com/blog/2017/10/24/jesus-hopped-the-a-train/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://showshowdown.blogspot.com/2017/10/jesus-hopped-a-train.html",
+            "outletId": "showshowdown.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://morethantheplay.blogspot.com/2017/10/jesus-hopped-a-train.html",
+            "outletId": "morethantheplay.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.themodernistbeat.com/2017/11/20/what-happens-to-the-message-if-the-messenger-is-flawed/",
+            "outletId": "themodernistbeat.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2017/10/jesus-hopped-a-train.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 26,
+        "candidateCount": 26
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
+    },
+    {
       "showId": "job-2024",
       "title": "JOB",
       "openingDate": "2024-07-30",
@@ -123167,6 +125415,320 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T04:13:42.713Z"
+    },
+    {
+      "showId": "julius-caesar-off-broadway-2017",
+      "title": "Julius Caesar",
+      "openingDate": "2017-06-12",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-critics-think-of-shakespeare-in-the-parks-julius-caesar"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534",
+        "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/",
+        "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
+        "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
+        "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658",
+        "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html",
+        "https://www.timeout.com/newyork/theater/julius-caesar-11",
+        "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/"
+      ],
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534",
+          "host": "amny.com",
+          "knownOutletId": "amny"
+        },
+        {
+          "url": "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658",
+          "host": "newsday.com",
+          "knownOutletId": "newsday"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/julius-caesar-11",
+          "host": "timeout.com",
+          "knownOutletId": "timeout"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/",
+          "host": "variety.com",
+          "knownOutletId": "variety"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "ew.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 125,
+        "byReason": {
+          "aggregator-internal-nav": 76,
+          "not-http-url": 6,
+          "non-review-host": 21,
+          "aggregator-section-root": 4,
+          "production-database-listing": 17,
+          "write-path-blocked": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534",
+          "host": "amny.com",
+          "outletId": "amny",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
+          "host": "nbcnewyork.com",
+          "outletId": "nbcny",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658",
+          "host": "newsday.com",
+          "outletId": "newsday",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/julius-caesar-11",
+          "host": "timeout.com",
+          "outletId": "timeout"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/",
+          "host": "variety.com",
+          "outletId": "variety"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534"
+          },
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/"
+          },
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/julius-caesar-1012271"
+          },
+          {
+            "outletId": "nbcny",
+            "outlet": "nbcny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html"
+          },
+          {
+            "outletId": "newsday",
+            "outlet": "newsday",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html"
+          },
+          {
+            "outletId": "timeout",
+            "outlet": "timeout",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/julius-caesar-11"
+          },
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.amny.com/entertainment/julius-caesar-review-shakespeare-in-the-park-production-a-jumbled-mess-1.13731534",
+            "outletId": "amny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://deadline.com/2017/06/review-trump-like-julius-caesar-murdered-in-shakespeare-in-the-park-1202110899/",
+            "outletId": "deadline",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/julius-caesar-1012271",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
+            "outletId": "nbcny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.newsday.com/entertainment/theater/julius-caesar-review-shakespeare-shaded-by-the-trumps-1.13725658",
+            "outletId": "newsday",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2017/06/09/theater/review-julius-caesar-delacorte-theater-donald-trump.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/julius-caesar-11",
+            "outletId": "timeout",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/julius-caesar-broadway-review-trump-like-play-1202462921/",
+            "outletId": "variety",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
     },
     {
       "showId": "juno-and-the-paycock-west-end-2024",
@@ -167974,6 +170536,428 @@
       "computedAt": "2026-10-30T03:50:05.247Z"
     },
     {
+      "showId": "napoli-brooklyn-off-broadway-2017",
+      "title": "Napoli, Brooklyn",
+      "openingDate": "2017-06-27",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-critics-think-of-napoli-brooklyn"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.hollywoodreporter.com/review/napoli-brooklyn-1017046",
+        "http://www.nytimes.com/2017/06/27/theater/napoli-brooklyn-review.html",
+        "http://www.nydailynews.com/life-style/eats/lidia-bastianich-helped-napoli-brooklyn-star-season-role-article-1.3272963",
+        "http://www.timeout.com/newyork/theater/napoli-brooklyn",
+        "http://www.thewrap.com/napoli-brooklyn-theater-review-italian-american-saga-extra-kick-sauce/",
+        "https://www.nytimes.com/2017/06/27/theater/napoli-brooklyn-review.html",
+        "https://www.timeout.com/newyork/theater/napoli-brooklyn",
+        "http://www.theatermania.com/off-broadway/reviews/napoli-brooklyn_81574.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-B54BW",
+        "http://www.talkinbroadway.com/page/ob/6_27_17.html",
+        "http://www.theaterscene.net/plays/offbway-plays/napoli-brooklyn/victor-gluck/",
+        "http://www.curtainup.com/napolibrooklynny17.html",
+        "http://theaterpizzazz.com/napoli-brooklyn/",
+        "http://thefrontrowcenter.com/2017/07/napoli-brooklyn/",
+        "https://cititour.com/NYC_Broadway/Napoli-Brooklyn/527",
+        "https://slleiter.blogspot.fr/2017/07/40-2017-2018-review-napoli-brooklyn.html",
+        "http://t2conline.com/napoli-brooklyn-where-freedom-is-longed-for/",
+        "http://www.huffingtonpost.com/entry/5952c515e4b0c85b96c65d68",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "http://broadwayandme.blogspot.com/2017/07/napoli-brooklyn-is-all-over-map.html",
+        "http://theaterscene.com/Napoli-review.html",
+        "http://dcmetrotheaterarts.com/2017/07/03/review-napoli-brooklyn-roundabout-theatre-company/",
+        "https://www.villagevoice.com/2017/07/11/a-new-york-tragedy-informs-the-domestic-drama-of-meghan-kennedys-napoli-brooklyn/",
+        "http://theaterlife.com/napoli-brooklyn/",
+        "http://morethantheplay.blogspot.com/2017/07/napoli-brooklyn.html",
+        "https://zealnyc.com/review-a-family-tree-grows-in-napoli-brooklyn/",
+        "http://www.lasplash.com/publish/Entertainment/cat_index_new_york_entertainment/napoli-brooklyn.php",
+        "http://gotham-playgoer.blogspot.com/2017/08/napoli-brooklyn.html",
+        "http://www.womanaroundtown.com/sections/playing-around/napoli-brooklyn-dreaming-against-the-odds"
+      ],
+      "dirFiles": 25,
+      "dirClean": 22,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://www.nydailynews.com/life-style/eats/lidia-bastianich-helped-napoli-brooklyn-star-season-role-article-1.3272963",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews"
+        },
+        {
+          "url": "https://slleiter.blogspot.fr/2017/07/40-2017-2018-review-napoli-brooklyn.html",
+          "host": "slleiter.blogspot.fr",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.thewrap.com/napoli-brooklyn-theater-review-italian-american-saga-extra-kick-sauce/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": true,
+          "recoverableFile": "thewrap--thom-geier.json",
+          "recoverableOutletId": "thewrap",
+          "recoverableCritic": "Thom Geier",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--thom-geier.json",
+              "flag": "nonReview",
+              "urlInDir": "http://www.thewrap.com/napoli-brooklyn-theater-review-italian-american-saga-extra-kick-sauce/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://zealnyc.com/review-a-family-tree-grows-in-napoli-brooklyn/",
+          "host": "zealnyc.com",
+          "knownOutletId": "zeal-nyc",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "zeal-nyc--justin-sharon.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://zealnyc.com/review-a-family-tree-grows-in-napoli-brooklyn/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "http://www.lasplash.com/publish/Entertainment/cat_index_new_york_entertainment/napoli-brooklyn.php",
+          "host": "lasplash.com",
+          "knownOutletId": "la-splash",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "la-splash--ellen-eichelbaum.json",
+              "flag": "clean",
+              "urlInDir": "http://www.lasplash.com/publish/Entertainment/cat_index_new_york_entertainment/napoli-brooklyn.php"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "cvWrongArticleHighConfidence"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 104,
+        "byReason": {
+          "aggregator-internal-nav": 62,
+          "not-http-url": 5,
+          "non-review-host": 22,
+          "aggregator-section-root": 4,
+          "production-database-listing": 11
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 3,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://slleiter.blogspot.fr/2017/07/40-2017-2018-review-napoli-brooklyn.html",
+          "host": "slleiter.blogspot.fr",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.nydailynews.com/life-style/eats/lidia-bastianich-helped-napoli-brooklyn-star-season-role-article-1.3272963",
+          "host": "nydailynews.com",
+          "outletId": "nydailynews",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.thewrap.com/napoli-brooklyn-theater-review-italian-american-saga-extra-kick-sauce/",
+          "host": "thewrap.com",
+          "file": "thewrap--thom-geier.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        },
+        {
+          "url": "http://theaterscene.com/Napoli-review.html",
+          "host": "theaterscene.com",
+          "file": "theater-scene--ron-cohen.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=theaterscene.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=theaterscene.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nArticle extrac",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.nydailynews.com/life-style/eats/lidia-bastianich-helped-napoli-brooklyn-star-season-role-article-1.3272963"
+          },
+          {
+            "outletId": "slleiter.blogspot.fr",
+            "outlet": "slleiter.blogspot.fr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://slleiter.blogspot.fr/2017/07/40-2017-2018-review-napoli-brooklyn.html"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.thewrap.com/napoli-brooklyn-theater-review-italian-american-saga-extra-kick-sauce/"
+          },
+          {
+            "outletId": "zeal-nyc",
+            "outlet": "zeal-nyc",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://zealnyc.com/review-a-family-tree-grows-in-napoli-brooklyn/"
+          },
+          {
+            "outletId": "la-splash",
+            "outlet": "la-splash",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.lasplash.com/publish/Entertainment/cat_index_new_york_entertainment/napoli-brooklyn.php"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.hollywoodreporter.com/review/napoli-brooklyn-1017046",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/06/27/theater/napoli-brooklyn-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/napoli-brooklyn",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2017/06/27/theater/napoli-brooklyn-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/napoli-brooklyn",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/napoli-brooklyn_81574.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-B54BW",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/6_27_17.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/napoli-brooklyn/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/napolibrooklynny17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/napoli-brooklyn/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/07/napoli-brooklyn/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Napoli-Brooklyn/527",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://t2conline.com/napoli-brooklyn-where-freedom-is-longed-for/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/5952c515e4b0c85b96c65d68",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://broadwayandme.blogspot.com/2017/07/napoli-brooklyn-is-all-over-map.html",
+            "outletId": "broadwayandme.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterscene.com/Napoli-review.html",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://dcmetrotheaterarts.com/2017/07/03/review-napoli-brooklyn-roundabout-theatre-company/",
+            "outletId": "dcmetrotheaterarts.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2017/07/11/a-new-york-tragedy-informs-the-domestic-drama-of-meghan-kennedys-napoli-brooklyn/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/napoli-brooklyn/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://morethantheplay.blogspot.com/2017/07/napoli-brooklyn.html",
+            "outletId": "morethantheplay.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://gotham-playgoer.blogspot.com/2017/08/napoli-brooklyn.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.womanaroundtown.com/sections/playing-around/napoli-brooklyn-dreaming-against-the-odds",
+            "outletId": "womanaroundtown.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/life-style/eats/lidia-bastianich-helped-napoli-brooklyn-star-season-role-article-1.3272963",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.fr/2017/07/40-2017-2018-review-napoli-brooklyn.html",
+            "outletId": "slleiter.blogspot.fr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/napoli-brooklyn-theater-review-italian-american-saga-extra-kick-sauce/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://zealnyc.com/review-a-family-tree-grows-in-napoli-brooklyn/",
+            "outletId": "zeal-nyc",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lasplash.com/publish/Entertainment/cat_index_new_york_entertainment/napoli-brooklyn.php",
+            "outletId": "la-splash",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 22,
+        "candidateCount": 27
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
+    },
+    {
       "showId": "nero-off-west-end-2026",
       "title": "Nero",
       "openingDate": null,
@@ -170686,6 +173670,282 @@
         "candidateCount": 1
       },
       "computedAt": "2026-10-22T15:09:01.446Z"
+    },
+    {
+      "showId": "office-hour-off-broadway-2017",
+      "title": "Office Hour",
+      "openingDate": "2017-11-08",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/11/08/theater/office-hour-review.html",
+        "https://www.timeout.com/newyork/theater/office-hour",
+        "http://www.vulture.com/2017/11/theater-review-office-hour-is-a-well-intentioned-mistake.html",
+        "http://deadline.com/2017/11/broadway-review-the-bands-visit-off-broadway-office-hour-1202205240/",
+        "http://variety.com/2017/legit/reviews/office-hour-play-review-1202610843/",
+        "http://www.hollywoodreporter.com/review/office-hour-theater-1055626",
+        "http://www.theatermania.com/off-broadway/reviews/office-hour_83054.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=KMPBWB",
+        "https://www.talkinbroadway.com/page/ob/11_08_17.html",
+        "http://www.theaterscene.net/plays/offbway-plays/office-hour/victor-gluck/",
+        "http://www.curtainup.com/officehour17.html",
+        "http://theaterpizzazz.com/office-hour/",
+        "http://thefrontrowcenter.com/2017/11/office-hour/",
+        "https://stagebuddy.com/theater/theater-review/review-office-hour",
+        "https://frontmezzjunkies.com/2017/11/23/office-hour/",
+        "http://exeuntmagazine.com/reviews/review-office-hour-public-theater/",
+        "https://newyorktheater.me/2017/11/08/office-hour-review-a-mass-killer-in-the-makingor-misunderstood/",
+        "https://slleiter.blogspot.com/2017/11/107-2017-2018-review-office-hour-2017.html",
+        "https://www.thewrap.com/office-hour-theater-review-campus-assassin-julia-cho/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "https://www.villagevoice.com/2017/11/16/julia-chos-office-hour-grapples-with-violence-and-empathy/",
+        "http://theaterlife.com/office-hour-1-2/",
+        "https://gotham-playgoer.blogspot.com/2017/11/office-hour.html"
+      ],
+      "dirFiles": 25,
+      "dirClean": 25,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://deadline.com/2017/11/broadway-review-the-bands-visit-off-broadway-office-hour-1202205240/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "wnyc.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 2,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://deadline.com/2017/11/broadway-review-the-bands-visit-off-broadway-office-hour-1202205240/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "office-hour-off-broadway-2017: http://deadline.com/2017/11/broadway-review-the-bands-visit-off-broadway-office-hour-1202205240/ is already owned by the-bands-visit-2017 — one of the two is contaminated. Inspect data/review-texts/the-bands-visit-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/office-hour-theater-1055626",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.wnyc.org/story/review-office-hours",
+          "host": "wnyc.org",
+          "file": "wnyc--charlie-herman.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://deadline.com/2017/11/broadway-review-the-bands-visit-off-broadway-office-hour-1202205240/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/11/08/theater/office-hour-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/office-hour",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.vulture.com/2017/11/theater-review-office-hour-is-a-well-intentioned-mistake.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/office-hour-play-review-1202610843/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/office-hour-theater-1055626",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/office-hour_83054.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=KMPBWB",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/11_08_17.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/office-hour/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/officehour17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/office-hour/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/11/office-hour/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/review-office-hour",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/11/23/office-hour/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://exeuntmagazine.com/reviews/review-office-hour-public-theater/",
+            "outletId": "exeuntmagazine.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2017/11/08/office-hour-review-a-mass-killer-in-the-makingor-misunderstood/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2017/11/107-2017-2018-review-office-hour-2017.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/office-hour-theater-review-campus-assassin-julia-cho/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2017/11/16/julia-chos-office-hour-grapples-with-violence-and-empathy/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/office-hour-1-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2017/11/office-hour.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://deadline.com/2017/11/broadway-review-the-bands-visit-off-broadway-office-hour-1202205240/",
+            "outletId": "deadline",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 22,
+        "candidateCount": 23
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
     },
     {
       "showId": "oh-mary-2024",
@@ -175679,6 +178939,354 @@
         "candidateCount": 12
       },
       "computedAt": "2026-10-29T00:05:40.575Z"
+    },
+    {
+      "showId": "on-the-shore-of-the-wide-world-off-broadway-2017",
+      "title": "On the Shore of the Wide World",
+      "openingDate": "2017-09-12",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/09/12/theater/on-the-shore-of-the-wide-world-review.html",
+        "https://www.timeout.com/newyork/theater/on-the-shore-of-the-wide-world",
+        "http://www.vulture.com/2017/09/theater-on-the-shore-of-the-wide-world-and-fucking-a.html",
+        "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
+        "http://variety.com/2017/legit/reviews/on-the-shore-of-the-wide-world-review-play-1202558925/",
+        "http://www.hollywoodreporter.com/review/shore-wide-world-1037928",
+        "http://www.theatermania.com/off-broadway/reviews/on-the-shore-of-the-wide-world_82375.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=OW87CJ",
+        "http://www.theaterscene.net/plays/offbway-plays/shore-wide-world/victor-gluck/",
+        "http://www.curtainup.com/ontheshoreofthewideworld17.html",
+        "http://www.theasy.com/Reviews/2017/O/ontheshoreofthewideworld.php",
+        "http://theaterpizzazz.com/on-the-shore-of-the-wide-world/",
+        "http://thefrontrowcenter.com/2017/09/shore-wide-world/",
+        "https://stagebuddy.com/theater/theater-review/review-shore-wide-world",
+        "https://frontmezzjunkies.com/2017/09/18/on-the-shore-of-the-wide-world/",
+        "https://cititour.com/NYC_Broadway/On-the-Shore-of-the-Wide-World/48",
+        "https://slleiter.blogspot.com/2017/09/67-2017-2018-review-on-shore-of-wide.html",
+        "https://www.villagevoice.com/2017/09/25/a-simon-stephens-family-drama-proceeds-in-frustrating-fragments/",
+        "http://www.thewrap.com/shore-of-wide-world-theater-review-simon-stephens-blair-brown/",
+        "http://www.huffingtonpost.com/entry/59b8606be4b02c642e4a124f",
+        "http://www.thedailybeast.com/whod-want-to-be-old-reviews-of-for-peter-pan-on-her-70th-birthday-and-on-the-shore-of-the-wide-world",
+        "https://www.ft.com/content/02dbd9be-96eb-11e7-8c5c-c8d8fa6961bb",
+        "http://theaterscene.com/On-the-Shore-of-the-Wide-World-review.html",
+        "https://www.culturalweekly.com/uneven-shore-line-off-broadway/",
+        "https://www.theepochtimes.com/theater-review-on-the-shore-of-the-wide-world_2319163.html",
+        "http://theaterlife.com/on-the-shore-of-the-wide-world-2/",
+        "https://gotham-playgoer.blogspot.com/2017/09/on-shore-of-wide-world.html",
+        "http://www.clydefitchreport.com/2017/09/family-simon-stephens-atlantic-theater/"
+      ],
+      "dirFiles": 27,
+      "dirClean": 27,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline"
+        },
+        {
+          "url": "https://www.culturalweekly.com/uneven-shore-line-off-broadway/",
+          "host": "culturalweekly.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.culturalweekly.com/uneven-shore-line-off-broadway/",
+          "host": "culturalweekly.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
+          "host": "deadline.com",
+          "outletId": "deadline",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "on-the-shore-of-the-wide-world-off-broadway-2017: http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/ is already owned by charm-off-broadway-2017 — one of the two is contaminated. Inspect data/review-texts/charm-off-broadway-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.thedailybeast.com/whod-want-to-be-old-reviews-of-for-peter-pan-on-her-70th-birthday-and-on-the-shore-of-the-wide-world",
+          "host": "thedailybeast.com",
+          "file": "dailybeast--tim-teeman.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/shore-wide-world-1037928",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/O/ontheshoreofthewideworld.php",
+          "host": "theasy.com",
+          "file": "theatre-is-easy--ken-kaissar.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "https://slleiter.blogspot.com/2017/09/67-2017-2018-review-on-shore-of-wide.html",
+          "host": "slleiter.blogspot.com",
+          "file": "theatres-leiter-side--samuel-l-leiter.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "deadline",
+            "outlet": "deadline",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/"
+          },
+          {
+            "outletId": "culturalweekly.com",
+            "outlet": "culturalweekly.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.culturalweekly.com/uneven-shore-line-off-broadway/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/09/12/theater/on-the-shore-of-the-wide-world-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/on-the-shore-of-the-wide-world",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.vulture.com/2017/09/theater-on-the-shore-of-the-wide-world-and-fucking-a.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/on-the-shore-of-the-wide-world-review-play-1202558925/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/shore-wide-world-1037928",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/on-the-shore-of-the-wide-world_82375.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=OW87CJ",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/shore-wide-world/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/ontheshoreofthewideworld17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/O/ontheshoreofthewideworld.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/on-the-shore-of-the-wide-world/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/09/shore-wide-world/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://stagebuddy.com/theater/theater-review/review-shore-wide-world",
+            "outletId": "stagebuddy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/09/18/on-the-shore-of-the-wide-world/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/On-the-Shore-of-the-Wide-World/48",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2017/09/67-2017-2018-review-on-shore-of-wide.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2017/09/25/a-simon-stephens-family-drama-proceeds-in-frustrating-fragments/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thewrap.com/shore-of-wide-world-theater-review-simon-stephens-blair-brown/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/59b8606be4b02c642e4a124f",
+            "outletId": "huffingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.thedailybeast.com/whod-want-to-be-old-reviews-of-for-peter-pan-on-her-70th-birthday-and-on-the-shore-of-the-wide-world",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.ft.com/content/02dbd9be-96eb-11e7-8c5c-c8d8fa6961bb",
+            "outletId": "ft.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterscene.com/On-the-Shore-of-the-Wide-World-review.html",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.theepochtimes.com/theater-review-on-the-shore-of-the-wide-world_2319163.html",
+            "outletId": "theepochtimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/on-the-shore-of-the-wide-world-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2017/09/on-shore-of-wide-world.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.clydefitchreport.com/2017/09/family-simon-stephens-atlantic-theater/",
+            "outletId": "clydefitchreport.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
+            "outletId": "deadline",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.culturalweekly.com/uneven-shore-line-off-broadway/",
+            "outletId": "culturalweekly.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 26,
+        "candidateCount": 28
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
     },
     {
       "showId": "once-upon-a-mattress-2024",
@@ -183875,6 +187483,261 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-26T08:25:08.978Z"
+    },
+    {
+      "showId": "paradise-blue-off-broadway-2018",
+      "title": "Paradise Blue",
+      "openingDate": "2018-05-14",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2018/05/14/theater/paradise-blue-review-dominique-morisseau.html",
+        "https://www.timeout.com/newyork/theater/paradise-blue",
+        "http://www.vulture.com/2018/05/theater-review-paradise-blues-powerful-grit.html",
+        "http://variety.com/2018/legit/reviews/paradise-blue-review-play-dominique-morisseau-1202810217/",
+        "https://www.hollywoodreporter.com/review/paradise-blue-review-1111636",
+        "https://www.theatermania.com/off-broadway/reviews/paradise-blue_85193.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-PAMQET",
+        "https://www.talkinbroadway.com/page/ob/05_14_18.html",
+        "http://nystagereview.com/2018/05/14/1936/",
+        "http://nystagereview.com/2018/05/14/paradise-blue-race-music-and-madness-in-detroit/",
+        "http://www.theaterscene.net/plays/offbway-plays/paradise-blue/joel-benjamin/",
+        "http://www.curtainup.com/paradiseblue18.html",
+        "http://theaterpizzazz.com/paradise-blue/",
+        "http://thefrontrowcenter.com/2018/05/paradise-blue/",
+        "https://frontmezzjunkies.com/2018/05/28/signature-theatre-paradise-blue/",
+        "http://exeuntnyc.com/reviews/review-paradise-blue-pershing-square-signature-center/",
+        "https://cititour.com/NYC_Broadway/Paradise-Blue/122",
+        "https://slleiter.blogspot.com/2018/05/12-2018-2019-review-paradise-blue-seen.html",
+        "https://www.villagevoice.com/2018/05/29/with-paradise-blue-dominique-morisseau-applies-a-steamy-noir-sheen-to-1949-detroit/",
+        "https://www.thewrap.com/paradise-blue-theater-review-black-bottom-dominique-morisseau/",
+        "http://twi-ny.com/blog/2018/05/14/paradise-blue/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "https://www.stageleft.nyc/blog/2018/5/21/review-paradise-blue",
+        "http://showshowdown.blogspot.com/2018/06/spring-roundup-mean-girls-our-lady-of.html",
+        "http://fromtheorchestra.blogspot.com/2018/05/paradise-blue-intense-and-beautifully.html",
+        "https://gotham-playgoer.blogspot.com/2018/05/paradise-blue.html"
+      ],
+      "dirFiles": 27,
+      "dirClean": 27,
+      "inReviewsJson": 2,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.hollywoodreporter.com/review/paradise-blue-review-1111636",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/05/theater-review-paradise-blues-powerful-grit.html",
+          "host": "vulture.com",
+          "file": "vulture--sara-holdren.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2018/05/14/theater/paradise-blue-review-dominique-morisseau.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/paradise-blue",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.vulture.com/2018/05/theater-review-paradise-blues-powerful-grit.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2018/legit/reviews/paradise-blue-review-play-dominique-morisseau-1202810217/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/review/paradise-blue-review-1111636",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.theatermania.com/off-broadway/reviews/paradise-blue_85193.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-PAMQET",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/05_14_18.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://nystagereview.com/2018/05/14/1936/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://nystagereview.com/2018/05/14/paradise-blue-race-music-and-madness-in-detroit/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/paradise-blue/joel-benjamin/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/paradiseblue18.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/paradise-blue/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2018/05/paradise-blue/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2018/05/28/signature-theatre-paradise-blue/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://exeuntnyc.com/reviews/review-paradise-blue-pershing-square-signature-center/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Paradise-Blue/122",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2018/05/12-2018-2019-review-paradise-blue-seen.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2018/05/29/with-paradise-blue-dominique-morisseau-applies-a-steamy-noir-sheen-to-1949-detroit/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/paradise-blue-theater-review-black-bottom-dominique-morisseau/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://twi-ny.com/blog/2018/05/14/paradise-blue/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.stageleft.nyc/blog/2018/5/21/review-paradise-blue",
+            "outletId": "stageleft.nyc",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://showshowdown.blogspot.com/2018/06/spring-roundup-mean-girls-our-lady-of.html",
+            "outletId": "showshowdown.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://fromtheorchestra.blogspot.com/2018/05/paradise-blue-intense-and-beautifully.html",
+            "outletId": "fromtheorchestra.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2018/05/paradise-blue.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 25,
+        "candidateCount": 25
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
     },
     {
       "showId": "paranormal-activity-2026",
@@ -246421,6 +250284,266 @@
       "computedAt": "2026-09-27T14:36:57.317Z"
     },
     {
+      "showId": "the-last-match-off-broadway-2017",
+      "title": "The Last Match",
+      "openingDate": "2017-10-24",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/10/24/theater/the-last-match-review.html",
+        "https://www.timeout.com/newyork/theater/the-last-match",
+        "http://deadline.com/2017/10/reviews-zoe-kazan-after-the-blast-and-the-last-match-1202194789/",
+        "http://variety.com/2017/legit/reviews/the-last-match-review-1202599913/",
+        "http://www.hollywoodreporter.com/review/last-match-theater-1051144",
+        "http://www.theatermania.com/off-broadway/reviews/the-last-match_82873.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-2Y5FJW",
+        "https://www.talkinbroadway.com/page/ob/10_26_17.html",
+        "http://www.theaterscene.net/plays/offbway-plays/the-last-match/david-kaufman/",
+        "http://www.curtainup.com/lastmatch17.html",
+        "http://www.theasy.com/Reviews/2017/L/thelastmatch.php",
+        "http://theaterpizzazz.com/the-last-match/",
+        "http://thefrontrowcenter.com/2017/10/the-last-match/",
+        "https://frontmezzjunkies.com/2017/10/30/the-last-match/",
+        "https://newyorktheater.me/2017/10/28/the-last-match-review-awkward-tennis-appealing-love/",
+        "https://cititour.com/NYC_Broadway/The-Last-Match/494",
+        "https://slleiter.blogspot.com/2017/10/92-2017-2018-review-last-match-seen.html",
+        "https://www.thewrap.com/last-match-theater-review-tennis-without-suspense-drama/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "https://www.stageleft.nyc/blog/2017/10/26/review-a-journey-into-the-athletes-psyche-in-the-last-match",
+        "http://theaterlife.com/m-butterfly-the-portuguese-kid-the-last-match-12/",
+        "http://playfixer.com/wordpress/?p=478",
+        "https://gotham-playgoer.blogspot.com/2017/10/the-last-match.html"
+      ],
+      "dirFiles": 22,
+      "dirClean": 22,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "http://theaterlife.com/m-butterfly-the-portuguese-kid-the-last-match-12/",
+          "host": "theaterlife.com",
+          "knownOutletId": "theater-life"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "http://theaterlife.com/m-butterfly-the-portuguese-kid-the-last-match-12/",
+          "host": "theaterlife.com",
+          "outletId": "theater-life",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-last-match-off-broadway-2017: http://theaterlife.com/m-butterfly-the-portuguese-kid-the-last-match-12/ is already owned by m-butterfly-2017 — one of the two is contaminated. Inspect data/review-texts/m-butterfly-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/last-match-theater-1051144",
+          "host": "hollywoodreporter.com",
+          "file": "hollywood-reporter--frank-scheck.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/L/thelastmatch.php",
+          "host": "theasy.com",
+          "file": "theatre-is-easy--shani-r-friedman.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theater-life",
+            "outlet": "theater-life",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://theaterlife.com/m-butterfly-the-portuguese-kid-the-last-match-12/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/10/24/theater/the-last-match-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-last-match",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://deadline.com/2017/10/reviews-zoe-kazan-after-the-blast-and-the-last-match-1202194789/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/the-last-match-review-1202599913/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/last-match-theater-1051144",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/the-last-match_82873.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-2Y5FJW",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/10_26_17.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/the-last-match/david-kaufman/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/lastmatch17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/L/thelastmatch.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/the-last-match/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/10/the-last-match/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2017/10/30/the-last-match/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2017/10/28/the-last-match-review-awkward-tennis-appealing-love/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/The-Last-Match/494",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://slleiter.blogspot.com/2017/10/92-2017-2018-review-last-match-seen.html",
+            "outletId": "slleiter.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.thewrap.com/last-match-theater-review-tennis-without-suspense-drama/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.stageleft.nyc/blog/2017/10/26/review-a-journey-into-the-athletes-psyche-in-the-last-match",
+            "outletId": "stageleft.nyc",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://playfixer.com/wordpress/?p=478",
+            "outletId": "playfixer.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2017/10/the-last-match.html",
+            "outletId": "gotham-playgoer.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterlife.com/m-butterfly-the-portuguese-kid-the-last-match-12/",
+            "outletId": "theater-life",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 22,
+        "candidateCount": 23
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
+    },
+    {
       "showId": "the-last-ship-off-broadway-2026",
       "title": "The Last Ship",
       "openingDate": null,
@@ -271313,6 +275436,307 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-21T00:49:24.476Z"
+    },
+    {
+      "showId": "the-traveling-lady-off-broadway-2017",
+      "title": "The Traveling Lady",
+      "openingDate": "2017-06-21",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2017/06/22/theater/the-traveling-lady-review.html",
+        "https://www.timeout.com/newyork/theater/the-traveling-lady",
+        "https://www.wsj.com/articles/the-traveling-lady-and-marvins-room-reviews-from-texas-to-the-hospital-1498782601",
+        "http://www.theatermania.com/off-broadway/reviews/the-traveling-lady_81535.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=5UP8N8",
+        "http://www.talkinbroadway.com/page/ob/6_22_17.html",
+        "http://www.theaterscene.net/plays/the-traveling-lady/darryl-reilly/",
+        "http://www.curtainup.com/travelinglady17.html",
+        "http://www.theasy.com/Reviews/2017/T/thetravelinglady.php",
+        "http://theaterpizzazz.com/gets-around-traveling-lady/",
+        "http://thefrontrowcenter.com/2017/06/the-traveling-lady/",
+        "https://newyorktheater.me/2017/06/22/the-traveling-lady-review-back-with-horton-foote-in-harrison-tx/",
+        "http://www.huffingtonpost.com/entry/horton-footes-traveling-lady-yes-definitely-isla_us_594c5334e4b0c85b96c65804",
+        "http://twi-ny.com/blog/2017/06/25/the-traveling-lady/",
+        "http://www.wolfentertainmentguide.com/viewpage.aspx",
+        "https://caroleditosti.com/2017/06/25/the-traveling-lady-by-horton-foote-directed-by-austin-pendleton/",
+        "https://www.offoffonline.com/offoffonline/2017/6/17/4lbe3apeb47dqkb90y6wiozdx6d9he",
+        "http://www.citycabaret.com/the-traveling-lady.html",
+        "http://www.theepochtimes.com/n3/2261744-theater-review-the-traveling-lady/",
+        "http://morethantheplay.blogspot.com/2017/06/the-traveling-lady.html",
+        "http://fromtheorchestra.blogspot.com/2017/06/the-traveling-lady-beautifully-realized.html",
+        "http://www.lasplash.com/publish/Entertainment/cat_index_new_york_performances/the-traveling-lady-review.php",
+        "https://bobs-theater-blog.blogspot.com/2017/06/the-traveling-lady.html",
+        "https://www.villagevoice.com/2017/06/28/horton-footes-maligned-chamber-drama-the-traveling-lady-gets-a-dutiful-treatment/"
+      ],
+      "dirFiles": 23,
+      "dirClean": 22,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "https://www.wsj.com/articles/the-traveling-lady-and-marvins-room-reviews-from-texas-to-the-hospital-1498782601",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.huffingtonpost.com/entry/horton-footes-traveling-lady-yes-definitely-isla_us_594c5334e4b0c85b96c65804",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "huffpost--david-finkle.json",
+              "flag": "clean",
+              "urlInDir": "http://www.huffingtonpost.com/entry/horton-footes-traveling-lady-yes-definitely-isla_us_594c5334e4b0c85b96c65804"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "cvWrongArticleHighConfidence"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1,
+        "byReason": {
+          "aggregator-internal-nav": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.wsj.com/articles/the-traveling-lady-and-marvins-room-reviews-from-texas-to-the-hospital-1498782601",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-traveling-lady-off-broadway-2017: https://www.wsj.com/articles/the-traveling-lady-and-marvins-room-reviews-from-texas-to-the-hospital-1498782601 is already owned by marvins-room-2017 — one of the two is contaminated. Inspect data/review-texts/marvins-room-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "http://www.theepochtimes.com/n3/2261744-theater-review-the-traveling-lady/",
+          "host": "theepochtimes.com",
+          "file": "epoch-times--judd-hollander.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Fetch failed: All scraping methods failed",
+          "recoveryCount": 1,
+          "uncited": true
+        },
+        {
+          "url": "http://www.theasy.com/Reviews/2017/T/thetravelinglady.php",
+          "host": "theasy.com",
+          "file": "theatre-is-easy--ken-kaissar.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "huffpost",
+            "outlet": "huffpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.huffingtonpost.com/entry/horton-footes-traveling-lady-yes-definitely-isla_us_594c5334e4b0c85b96c65804"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/the-traveling-lady-and-marvins-room-reviews-from-texas-to-the-hospital-1498782601"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2017/06/22/theater/the-traveling-lady-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-traveling-lady",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theatermania.com/off-broadway/reviews/the-traveling-lady_81535.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=5UP8N8",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.talkinbroadway.com/page/ob/6_22_17.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/the-traveling-lady/darryl-reilly/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.curtainup.com/travelinglady17.html",
+            "outletId": "curtainup.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theasy.com/Reviews/2017/T/thetravelinglady.php",
+            "outletId": "theasy.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://theaterpizzazz.com/gets-around-traveling-lady/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://thefrontrowcenter.com/2017/06/the-traveling-lady/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2017/06/22/the-traveling-lady-review-back-with-horton-foote-in-harrison-tx/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://twi-ny.com/blog/2017/06/25/the-traveling-lady/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.wolfentertainmentguide.com/viewpage.aspx",
+            "outletId": "wolfentertainmentguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://caroleditosti.com/2017/06/25/the-traveling-lady-by-horton-foote-directed-by-austin-pendleton/",
+            "outletId": "caroleditosti.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2017/6/17/4lbe3apeb47dqkb90y6wiozdx6d9he",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.citycabaret.com/the-traveling-lady.html",
+            "outletId": "citycabaret.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.theepochtimes.com/n3/2261744-theater-review-the-traveling-lady/",
+            "outletId": "theepochtimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://morethantheplay.blogspot.com/2017/06/the-traveling-lady.html",
+            "outletId": "morethantheplay.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://fromtheorchestra.blogspot.com/2017/06/the-traveling-lady-beautifully-realized.html",
+            "outletId": "fromtheorchestra.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.lasplash.com/publish/Entertainment/cat_index_new_york_performances/the-traveling-lady-review.php",
+            "outletId": "lasplash.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://bobs-theater-blog.blogspot.com/2017/06/the-traveling-lady.html",
+            "outletId": "bobs-theater-blog.blogspot.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.villagevoice.com/2017/06/28/horton-footes-maligned-chamber-drama-the-traveling-lady-gets-a-dutiful-treatment/",
+            "outletId": "villagevoice.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/the-traveling-lady-and-marvins-room-reviews-from-texas-to-the-hospital-1498782601",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          },
+          {
+            "url": "http://www.huffingtonpost.com/entry/horton-footes-traveling-lady-yes-definitely-isla_us_594c5334e4b0c85b96c65804",
+            "outletId": "huffpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T08:07:39.479Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 22,
+        "candidateCount": 24
+      },
+      "computedAt": "2026-10-31T08:07:39.479Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
