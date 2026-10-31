@@ -93,12 +93,14 @@ function readOnDiskShows(filePath) {
  * @param {string} showsPath
  * @param {object} [options]
  * @param {boolean} [options.dryRun=false] - When true, saveShows() never
- *   touches disk: no lock, no re-read/merge, no write. Each call is recorded
+ *   writes to disk: no lock, no merge, no write. The duplicate check reports
+ *   new pairs against the current file. Each call is recorded
  *   on the returned `suppressedWrites` ledger instead (`{ reason, showCount,
  *   at }`), so a caller with several write sites (validate-data.js has four
  *   auto-fix sites) can report "N writes suppressed" and which site each came
  *   from. Callers name the site via the `reason` save option, which is
  *   stripped before a real write so atomicWriteJson never sees it.
+ *   Refusals add `wouldRefuse: true` and formatted `duplicates` to the ledger.
  */
 function createShowsWriteGuard(showsPath, options = {}) {
   const dryRun = !!(options && options.dryRun);
@@ -165,6 +167,14 @@ function createShowsWriteGuard(showsPath, options = {}) {
     }
     const showCount = data && Array.isArray(data.shows) ? data.shows.length : null;
     const entry = { reason: reason || null, showCount, at: new Date().toISOString() };
+    if (!allowDup && process.env.SHOWS_DUP_GUARD_DISABLED !== 'true') {
+      const added = newDuplicateFindings(() => readOnDiskShows(guard.filePath), data && data.shows);
+      if (added.length) {
+        entry.wouldRefuse = true;
+        entry.duplicates = added.map(formatFinding);
+        console.warn(`shows-write-guard: dry run would refuse ${added.length} new duplicate show row(s):\n${entry.duplicates.map(f => `  - ${f}`).join('\n')}`);
+      }
+    }
     suppressedWrites.push(entry);
     return { wrote: false, dryRun: true, ...entry };
   }

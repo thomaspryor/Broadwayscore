@@ -12,8 +12,7 @@
  *   season/ibdbUrl land there). The assertion would have failed every real run.
  *   Codex caught this during /ship-check. The right gate is at the producer:
  *   verify scripts/discover-historical-shows.js still imports + calls classifyShow
- *   adjacent to data.shows.push(), exactly as discover-new-shows-category.test.mjs
- *   does for the new-shows path.
+ *   when building the completed entry, before its duplicate check and push.
  */
 
 import { test } from 'node:test';
@@ -43,28 +42,27 @@ test('discover-historical-shows.js calls classifyShow on every new show', () => 
   );
 });
 
-test('classifyShow call site is adjacent to data.shows.push (no overwrite gap)', () => {
+test('classifyShow call site is adjacent to the completed entry (no overwrite gap)', () => {
   // The call must stay near the push so nothing can null out category/market
   // between classification and write. discover-historical-shows.js currently has
-  // ~6 lines between classifyShow and data.shows.push.
+  // a duplicate check between building the entry and data.shows.push.
   const src = readFileSync(SRC_PATH, 'utf8');
-  const pushIdx = src.indexOf('data.shows.push(');
-  assert.ok(pushIdx > -1, 'data.shows.push(...) call not found in discover-historical-shows.js');
-  const preceding = src.slice(Math.max(0, pushIdx - 600), pushIdx);
+  const entryIdx = src.indexOf('const entry = {');
+  assert.ok(entryIdx > -1, 'completed entry not found in discover-historical-shows.js');
+  const preceding = src.slice(Math.max(0, entryIdx - 600), entryIdx);
   assert.ok(
     /classifyShow\(/.test(preceding),
-    'classifyShow() is no longer called in the ~600 chars before data.shows.push(). ' +
-      'The call must stay adjacent to the push so nothing can overwrite category/market between.'
+    'classifyShow() must run before building the completed entry so the duplicate check sees its category/market.'
   );
 });
 
 test('the pushed row includes both category and market fields', () => {
-  // Regex-walk the push call: it must mention category AND market as keys.
+  // Inspect the completed row, then verify that same row reaches the push.
   const src = readFileSync(SRC_PATH, 'utf8');
-  const pushStart = src.indexOf('data.shows.push(');
-  assert.ok(pushStart > -1, 'data.shows.push(...) call not found');
-  // Take ~1200 chars after the push to capture the object literal.
-  const pushBlock = src.slice(pushStart, pushStart + 1200);
+  const entryStart = src.indexOf('const entry = {');
+  const pushStart = src.indexOf('data.shows.push(entry)', entryStart);
+  assert.ok(entryStart > -1 && pushStart > entryStart, 'completed entry must reach data.shows.push(entry)');
+  const pushBlock = src.slice(entryStart, src.indexOf('\n      };', entryStart));
   assert.ok(
     /\bcategory\b/.test(pushBlock),
     'data.shows.push(...) object literal does not mention `category` — historical rows will ship without it.'

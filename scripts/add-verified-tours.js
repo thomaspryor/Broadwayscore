@@ -22,6 +22,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { buildTourEntry } = require('./lib/tour-entry');
 const { newRowDuplicate } = require('./lib/add-show-action');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -42,7 +43,11 @@ function planVerifiedTours(list, shows, now = new Date()) {
     };
     const scheduleUrl = t.scheduleSlug ? `https://tourstoyou.org/shows/${t.scheduleSlug}/` : null;
     const built = buildTourEntry({ parent, shows: seen, decision, scheduleUrl, now });
-    if (built.entry) seen.push(built.entry);
+    if (built.entry) {
+      const duplicate = duplicateOfCandidate(seen, built.entry);
+      if (duplicate) return { parent: t.parent, skip: `exists as ${duplicate.existing.id}` };
+      seen.push(built.entry);
+    }
     return { parent: t.parent, ...built };
   });
 }

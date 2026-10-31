@@ -60,6 +60,7 @@ const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { resolveMetro } = require('./lib/venue-metro');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { decideUkFlagshipPromotion, stageUkRegionalCandidates, ukFlagshipShows, findSameProduction } = require('./lib/uk-regional-guardian');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { datedBackfillFor } = require('./lib/ob-venue-date-backfill');
 const { productionIdYear } = require('./lib/todaytix-dates');
@@ -1016,6 +1017,13 @@ async function main(args = process.argv.slice(2), io = {}) {
     // duplicate-slug row — the NEW row takes its year-scoped id as slug
     // (mirrors discover-new-shows.js), the existing row keeps its live URL.
     if (existingSlugs.has(entry.slug) && entry.slug !== entry.id) entry.slug = entry.id;
+    const duplicate = duplicateOfCandidate([...showsData.shows, ...promoted.map(p => p.entry)], entry);
+    if (duplicate) {
+      const reason = `exists as ${duplicate.existing.id}`;
+      skipped.push({ candidate: c, reason });
+      logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, id: entry.id, reason });
+      continue;
+    }
     existingSlugs.add(entry.slug);
     promoted.push({ candidate: c, entry, confirmationSource: source, confirmationReason: reason });
     existingIds.add(entry.id);

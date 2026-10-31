@@ -34,6 +34,7 @@ const { normalizeTitle } = require('./lib/title-match');
 const { matchesRetired } = require('./lib/retired-show-ids');
 const fs = require('fs');
 const path = require('path');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
@@ -245,6 +246,8 @@ function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}
     if (retiredHit) { skipped.push({ entry, reason: `matches retired ${retiredHit.id} by ${retiredHit.matchedBy}` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ entry, reason: 'duplicate id' }); continue; }
     if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
+    const duplicate = duplicateOfCandidate([...shows, ...toPromote], entry);
+    if (duplicate) { skipped.push({ entry, reason: `exists as ${duplicate.existing.id}` }); continue; }
     toPromote.push(entry);
     if (inferObShowType({ ...r, title: entry.title }, musicalTitles).guessed) typeGuessed.push(entry.id);
     knownShows.push({ title: entry.title, venue: entry.venue });

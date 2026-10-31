@@ -40,6 +40,7 @@
 const { showTypeFor } = require('./lib/title-says-musical');
 const path = require('path');
 const { newRowDuplicate } = require('./lib/add-show-action');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
@@ -478,6 +479,11 @@ async function evaluateCandidates(candidates, ctx) {
       const dupOf = newRowDuplicate([...allShows, ...promoted.map(p => p.entry)], entry, [entry.priorRunOf, entry.transferredFrom, entry.transferredTo], { ticketOnly: true });
       if (dupOf) {
         reject(c, 'skip-ticket-duplicate', `${entry.id} shares a ticketing listing with ${dupOf.other}`, { id: entry.id });
+        continue;
+      }
+      const duplicate = duplicateOfCandidate([...allShows, ...promoted.map(p => p.entry)], entry);
+      if (duplicate) {
+        reject(c, 'skip-duplicate', `exists as ${duplicate.existing.id}`, { id: entry.id });
         continue;
       }
       promoted.push({ candidate: c, entry, confirmationReason: r.reason });

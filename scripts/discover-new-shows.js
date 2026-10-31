@@ -57,6 +57,7 @@ const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendatio
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
 const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonTheatreVenue, isLondonReceivingHouse, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow, titleKeyLoose } = require('./lib/theatermania-ob');
 const { loadPendingAddShows } = require('./lib/pending-add-shows');
@@ -3325,7 +3326,9 @@ async function discoverShows() {
     console.log('');
   }
 
+  const addedShows = [];
   if (!dryRun) {
+    const addedDetections = [];
     // Add new shows to database
     for (let i = 0; i < newShows.length; i++) {
       const show = newShows[i];
@@ -3471,16 +3474,20 @@ async function discoverShows() {
       // tests/unit/discover-new-shows-category.test.mjs can assert the real function.
       Object.assign(showEntry, classifyShow(show));
 
+      const duplicate = duplicateOfCandidate(data.shows, showEntry);
+      if (duplicate) { console.log(`Skip ${showEntry.id}: exists as ${duplicate.existing.id}`); continue; }
       data.shows.push(showEntry);
+      addedShows.push(show);
+      addedDetections.push(detection);
     }
 
     saveShows(data);
-    console.log(`✅ Added ${newShows.length} shows to shows.json${reconciledShows.length > 0 ? `, refreshed ${reconciledShows.length} stale existing show(s)` : ''}`);
+    console.log(`✅ Added ${addedShows.length} shows to shows.json${reconciledShows.length > 0 ? `, refreshed ${reconciledShows.length} stale existing show(s)` : ''}`);
 
     // Show detection summary
-    const revivalsDetected = revivalDetection.filter(d => d.isRevival).length;
-    const playsDetected = revivalDetection.filter(d => d.detectedType === 'play' && !d.isRevival).length;
-    const needsReview = revivalDetection.filter(d => d.confidence === 'low').length;
+    const revivalsDetected = addedDetections.filter(d => d.isRevival).length;
+    const playsDetected = addedDetections.filter(d => d.detectedType === 'play' && !d.isRevival).length;
+    const needsReview = addedDetections.filter(d => d.confidence === 'low').length;
 
     console.log('');
     console.log('📊 Detection Summary:');
@@ -3492,7 +3499,7 @@ async function discoverShows() {
     // Save pending shows for review (strip internal fields)
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
       discoveredAt: new Date().toISOString(),
-      shows: newShows.map(s => {
+      shows: addedShows.map(s => {
         const { _showScoreUrl, _source, _ibdbRevivalChecked, _discoverySource, ...clean } = s;
         return clean;
       }),
@@ -3508,7 +3515,7 @@ async function discoverShows() {
         let urlsAssigned = 0;
         for (const { title, url } of consumedCandidateUrls) {
           // Find the newly created show by matching title
-          const addedShow = newShows.find(s => s.title === title);
+          const addedShow = addedShows.find(s => s.title === title);
           if (addedShow && !urlData.shows[addedShow.id]) {
             // BRO-4055: a candidate URL can already belong to an unrelated
             // existing show (e.g. a same-title earlier production) — refuse
@@ -3557,18 +3564,19 @@ async function discoverShows() {
     }
   }
 
+  const reportedShows = dryRun ? newShows : addedShows;
   // GitHub Actions outputs
   if (process.env.GITHUB_OUTPUT) {
     const outputFile = process.env.GITHUB_OUTPUT;
-    fs.appendFileSync(outputFile, `new_shows_count=${newShows.length}\n`);
-    fs.appendFileSync(outputFile, `new_shows=${newShows.map(s => s.title).join(', ')}\n`);
-    fs.appendFileSync(outputFile, `new_slugs=${newShows.map(s => s.slug).join(',')}\n`);
+    fs.appendFileSync(outputFile, `new_shows_count=${reportedShows.length}\n`);
+    fs.appendFileSync(outputFile, `new_shows=${reportedShows.map(s => s.title).join(', ')}\n`);
+    fs.appendFileSync(outputFile, `new_slugs=${reportedShows.map(s => s.slug).join(',')}\n`);
     // WE-specific output for downstream triggers (includes off-west-end)
-    const weNewShows = newShows.filter(s => isLondonMarket(s.category));
+    const weNewShows = reportedShows.filter(s => isLondonMarket(s.category));
     fs.appendFileSync(outputFile, `we_new_count=${weNewShows.length}\n`);
   }
 
-  return { newShows, count: newShows.length, reconciledCount: reconciledShows.length, retiredSkippedCount: retiredSkipped.length };
+  return { newShows: reportedShows, count: reportedShows.length, reconciledCount: reconciledShows.length, retiredSkippedCount: retiredSkipped.length };
 }
 
 if (require.main === module) {

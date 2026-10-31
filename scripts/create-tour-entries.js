@@ -56,6 +56,7 @@ const { buildTourEntry } = require('./lib/tour-entry');
 const { newRowDuplicate } = require('./lib/add-show-action');
 const { decideTourCreation, candidateRoundupUrl } = require('./lib/tour-create-decision');
 const { loadTourPageClasses } = require('./lib/tour-page-class');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
 const ROOT = path.join(__dirname, '..');
@@ -151,6 +152,8 @@ async function main() {
     try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'tour-schedules.json'), 'utf8')).tours || {}; } catch { return {}; }
   })();
   const results = [];
+  // Report-only standalone suggestions must not reserve a place in the batch.
+  const writable = r => r.entry && (!r.standalone || standaloneMode === 'write');
   let ledgerChanged = false;
   for (const c of open) {
     if (budget.exceeded()) { console.log(`Time budget reached; ${open.length - results.length} candidate(s) left for the next run`); break; }
@@ -198,6 +201,14 @@ async function main() {
       continue;
     }
     const built = d.built;
+    if (built.entry) {
+      const duplicate = duplicateOfCandidate([...shows, ...results.filter(writable).map(r => r.entry)], built.entry);
+      if (duplicate) {
+        console.log(`  skip ${built.entry.id}: exists as ${duplicate.existing.id}`);
+        record({ skip: `exists as ${duplicate.existing.id}` });
+        continue;
+      }
+    }
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
     else console.log(`  ${write && (!standalone || standaloneMode === 'write') ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})${standalone ? ' [standalone]' : ''}`);
     if (built.entry && c.ended) {
@@ -212,8 +223,6 @@ async function main() {
   const created = [];
   const reopened = [];
   for (const x of lifecycle.reopen) console.log(`${x.id}: ${write ? 'reopening' : 'would reopen'} (closed ${x.closingDate}, its page lists it again from ${x.resumes}: ${x.reason})`);
-  // A standalone entry is written only when its own switch says write.
-  const writable = r => r.entry && (!r.standalone || standaloneMode === 'write');
   if (write && (results.some(writable) || lifecycle.reopen.length)) {
     const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
     const snapshot = loadShows();
@@ -238,6 +247,8 @@ async function main() {
       // BRO-5791: ticket-identity gate (a tour and its parent are a declared pair).
       const dupOf = newRowDuplicate(snapshot.shows, r.entry, [r.parentId, r.entry.tourOf], { ticketOnly: true });
       if (dupOf) { console.log(`  ${r.entry.id} skipped under lock: shares a ticketing listing with ${dupOf.other}`); continue; }
+      const duplicate = duplicateOfCandidate(snapshot.shows, r.entry);
+      if (duplicate) { console.log(`skip ${r.entry.id}: exists as ${duplicate.existing.id}`); continue; }
       snapshot.shows.push(r.entry);
       created.push(r.entry.id);
     }

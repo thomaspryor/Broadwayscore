@@ -114,6 +114,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { createShowsWriteGuard, SHOWS_PATH } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { findExistingMatch } = require('./lib/candidate-dedup');
@@ -1060,6 +1061,7 @@ async function evaluateCandidates(candidates, ctx) {
   const {
     existingCandidates,
     existingIds,
+    allShows = [],
     venueVocabulary,
     venueListings = new Map(),
     evidencePages = new Map(),
@@ -1191,6 +1193,12 @@ async function evaluateCandidates(candidates, ctx) {
 
       if (existingIds.has(entry.id)) {
         prune(c, 'skip-id-collision', `id ${entry.id} already exists`, { id: entry.id });
+        continue;
+      }
+
+      const duplicate = duplicateOfCandidate([...allShows, ...promoted.map(p => p.entry)], entry);
+      if (duplicate) {
+        prune(c, 'skip-duplicate', `exists as ${duplicate.existing.id}`, { id: entry.id });
         continue;
       }
 
@@ -1381,6 +1389,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   const { promoted, held, pruned, backfills } = await evaluateCandidates(candidates, {
     existingCandidates,
     existingIds,
+    allShows: showsData.shows,
     venueVocabulary,
     venueListings,
     evidencePages,

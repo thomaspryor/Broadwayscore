@@ -44,6 +44,17 @@ function rowsSharingKey(rows, show) {
 }
 
 /**
+ * Check a completed candidate before adding it to a batch (BRO-6591).
+ * Include earlier accepted candidates in rows so duplicates within the batch
+ * are skipped too. Existing findings must never reject an unrelated candidate.
+ * Returns the same finding as the prebuild rule, or null; does not mutate rows.
+ */
+function duplicateOfCandidate(rows, show) {
+  return findDuplicateShows([...rowsSharingKey(rows, show), show])
+    .find(f => f.show === show) || null;
+}
+
+/**
  * @param {Object[]} rows - shows.json rows, in file order.
  * @returns {{show: Object, existing: Object, reason: string}[]} one finding per
  *   flagged row; `show` is the later row in file order, `existing` the earlier.
@@ -125,4 +136,4 @@ function newDuplicateFindings(before, after) {
   return found.filter((f) => !oldKeys.has(pairKey(f)) && !renamed(f));
 }
 
-module.exports = { findDuplicateShows, newDuplicateFindings, formatFinding, isTestFixture, rowsSharingKey };
+module.exports = { findDuplicateShows, newDuplicateFindings, duplicateOfCandidate, formatFinding, isTestFixture, rowsSharingKey };

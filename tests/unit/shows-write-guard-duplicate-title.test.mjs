@@ -11,7 +11,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { createShowsWriteGuard } = require('../../scripts/lib/shows-write-guard');
-const { findDuplicateShows, newDuplicateFindings } = require('../../scripts/lib/shows-duplicate-rule');
+const { findDuplicateShows, newDuplicateFindings, duplicateOfCandidate } = require('../../scripts/lib/shows-duplicate-rule');
 const { applyAddShow } = require('../../scripts/lib/add-show-action');
 const { buildAction } = require('../../scripts/lib/uk-regional-add-plan');
 
@@ -153,6 +153,85 @@ describe('the rule matches the prebuild gate', () => {
     const good = run([existing, distinct, row({ id: 'x-1', slug: 'x-1', title: null })]);
     assert.equal(good.status, 0, good.stderr);
     assert.match(good.stdout, /Prebuild check: 2 shows, no duplicates/);
+  });
+});
+
+describe('batch candidates are checked before entering the save', () => {
+  test('one duplicate does not discard a distinct row or poison the next checkpoint', () => {
+    seed([existing]);
+    const guard = createShowsWriteGuard(showsPath);
+    const data = guard.loadShows();
+    const skipped = [];
+    for (const candidate of [dupe, distinct, { ...distinct, id: 'another-tempest-2026' }]) {
+      const duplicate = duplicateOfCandidate(data.shows, candidate);
+      if (duplicate) skipped.push([candidate.id, duplicate.existing.id]);
+      else data.shows.push(candidate);
+    }
+    guard.saveShows(data);
+    assert.deepEqual(skipped, [[dupe.id, existing.id], ['another-tempest-2026', distinct.id]]);
+    assert.deepEqual(onDiskIds(), [existing.id, distinct.id]);
+    data.shows.find(s => s.id === distinct.id).status = 'open';
+    guard.saveShows(data);
+    assert.equal(JSON.parse(fs.readFileSync(showsPath)).shows[1].status, 'open');
+  });
+
+  test('candidate results match the full rule, including exemptions and old pairs', () => {
+    const baseline = [existing, dupe, { id: 'malformed' }];
+    for (const candidate of [
+      { ...dupe, id: 'third-tristan-2026' },
+      distinct,
+      { ...dupe, id: 'distinct-tristan-2026', distinctFrom: [existing.id, dupe.id] },
+      { ...dupe, id: 'tristan-off-broadway-2026', category: 'off-broadway' },
+      { ...dupe, id: 'tristan-express-test-2026' },
+      { id: 'title-less' },
+    ]) {
+      const before = JSON.stringify(baseline);
+      assert.deepEqual(duplicateOfCandidate(baseline, candidate),
+        findDuplicateShows([...baseline, candidate]).find(f => f.show === candidate) || null);
+      assert.equal(JSON.stringify(baseline), before);
+    }
+  });
+});
+
+describe('dry runs predict duplicate refusals without writing', () => {
+  test('reports and logs a new pair, leaving the file and caller unchanged', () => {
+    seed([existing]);
+    const before = fs.readFileSync(showsPath, 'utf8');
+    const guard = createShowsWriteGuard(showsPath, { dryRun: true });
+    const data = guard.loadShows();
+    data.shows.push(dupe, distinct);
+    const callerBefore = JSON.stringify(data);
+    const warnings = [];
+    const warn = console.warn;
+    console.warn = message => warnings.push(message);
+    let result;
+    try { result = guard.saveShows(data, { reason: 'batch promotion' }); }
+    finally { console.warn = warn; }
+    assert.equal(result.wouldRefuse, true);
+    assert.equal(result.duplicates.length, 1);
+    assert.match(result.duplicates[0], /tristan-yseult-royal-bath-regional-2026/);
+    assert.match(warnings.join('\n'), /dry run.*refus.*duplicate/s);
+    assert.equal(guard.suppressedWrites[0].wouldRefuse, true);
+    assert.equal(fs.readFileSync(showsPath, 'utf8'), before);
+    assert.equal(JSON.stringify(data), callerBefore);
+    assert.equal(fs.existsSync(guard.lockDir), false);
+  });
+
+  test('existing pairs and explicit bypasses are not reported as refusals', () => {
+    seed([existing, dupe]);
+    const guard = createShowsWriteGuard(showsPath, { dryRun: true });
+    const data = guard.loadShows();
+    data.shows.push(distinct);
+    assert.equal(guard.saveShows(data).wouldRefuse, undefined);
+    data.shows.push({ ...dupe, id: 'third-tristan-2026' });
+    assert.equal(guard.saveShows(data, { allowDuplicates: true }).wouldRefuse, undefined);
+    const previous = process.env.SHOWS_DUP_GUARD_DISABLED;
+    process.env.SHOWS_DUP_GUARD_DISABLED = 'true';
+    try { assert.equal(guard.saveShows(data).wouldRefuse, undefined); }
+    finally {
+      if (previous === undefined) delete process.env.SHOWS_DUP_GUARD_DISABLED;
+      else process.env.SHOWS_DUP_GUARD_DISABLED = previous;
+    }
   });
 });
 

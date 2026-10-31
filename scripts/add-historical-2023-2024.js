@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { checkForDuplicate } = require('./lib/deduplication');
@@ -741,6 +742,8 @@ newShows.forEach(show => {
       show.category = show.category || category;
       show.market = show.market || market;
     }
+    const duplicate = duplicateOfCandidate(data.shows, show);
+    if (duplicate) { console.log(`SKIP: ${show.id}: exists as ${duplicate.existing.id}`); return; }
     data.shows.push(show);
     addedCount++;
     console.log(`ADDED: ${show.title} (${show.id})`);

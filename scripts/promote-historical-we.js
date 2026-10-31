@@ -41,6 +41,7 @@ const path = require('path');
 const { titleSaysMusical } = require('./lib/title-says-musical');
 // A retired id must not be re-minted (BRO-5557).
 const { matchesRetired } = require('./lib/retired-show-ids');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
@@ -257,6 +258,8 @@ function planPromotions({ candidates, shows, approvals, only, today }) {
     const retiredHit = matchesRetired({ id: entry.id, title: entry.title, venue: entry.venue });
     if (retiredHit) { skipped.push({ title: c.title, reason: `matches retired ${retiredHit.id} by ${retiredHit.matchedBy}` }); continue; }
     if (existingIds.has(entry.id)) { skipped.push({ title: c.title, reason: `id ${entry.id} already exists` }); continue; }
+    const duplicate = duplicateOfCandidate([...shows, ...toPromote], entry);
+    if (duplicate) { skipped.push({ title: c.title, reason: `exists as ${duplicate.existing.id}` }); continue; }
     toPromote.push(entry);
     if (inferShowType(cand, musicalTitles).guessed) typeGuessed.push(entry.id);
     pool.push({ title: entry.title, venue: entry.venue, startDate, id: entry.id });

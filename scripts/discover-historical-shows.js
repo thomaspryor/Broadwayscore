@@ -34,6 +34,7 @@ const { getSeasonForDate, validateSeason } = require('./lib/broadway-seasons');
 const { extractDatesFromIBDBPage } = require('./lib/ibdb-dates');
 const { fetchPage } = require('./lib/scraper');
 const { scrapeCurrentRuntimes, scrapeShowRuntime, matchRuntimesToShows } = require('./lib/broadway-com-runtimes');
+const { duplicateOfCandidate } = require('./lib/shows-duplicate-rule');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { assignRevivalChain } = require('./lib/revival-chain');
@@ -590,6 +591,7 @@ async function discoverHistoricalShows() {
     console.log('');
   }
 
+  const addedShows = [];
   if (!dryRun) {
     // Add new shows to database
     for (const show of newShows) {
@@ -610,6 +612,7 @@ async function discoverHistoricalShows() {
       // as of 2026-08-25; see scripts/lib/revival-chain.js).
       let originalProductionId = null;
       let productionNumber = 1;
+      const revivalUpdates = [];
 
       if (show.isRevival) {
         const baseSlug = slugify(show.title);
@@ -634,12 +637,7 @@ async function discoverHistoricalShows() {
           // show's true chronological position displaces).
           for (const existing of existingProductions) {
             const c = chainById.get(existing.id);
-            if (existing.originalProductionId !== c.originalProductionId) {
-              existing.originalProductionId = c.originalProductionId;
-            }
-            if (existing.productionNumber !== c.productionNumber) {
-              existing.productionNumber = c.productionNumber;
-            }
+            revivalUpdates.push({ existing, originalProductionId: c.originalProductionId, productionNumber: c.productionNumber });
           }
         }
       }
@@ -650,7 +648,7 @@ async function discoverHistoricalShows() {
       const venueCat = validateVenue(show.venue)?.category;
       const { category, market } = classifyShow({ category: show.category || venueCat });
 
-      data.shows.push({
+      const entry = {
         id: show.id,
         title: show.title,
         slug: show.slug,
@@ -676,16 +674,24 @@ async function discoverHistoricalShows() {
         productionNumber,
         season: show.season,
         ibdbUrl: show.ibdbUrl || null,
-      });
+      };
+      const duplicate = duplicateOfCandidate(data.shows, entry);
+      if (duplicate) { console.log(`Skip ${entry.id}: exists as ${duplicate.existing.id}`); continue; }
+      // Only accepted rows may change the revival chain of existing shows.
+      for (const { existing, originalProductionId, productionNumber } of revivalUpdates) {
+        Object.assign(existing, { originalProductionId, productionNumber });
+      }
+      data.shows.push(entry);
+      addedShows.push(show);
     }
 
     saveShows(data);
-    console.log(`Added ${newShows.length} historical shows to shows.json`);
+    console.log(`Added ${addedShows.length} historical shows to shows.json`);
 
     // Summary
-    const revivals = newShows.filter(s => s.isRevival).length;
-    const plays = newShows.filter(s => s.type === 'play' && !s.isRevival).length;
-    const musicals = newShows.filter(s => s.type === 'musical' && !s.isRevival).length;
+    const revivals = addedShows.filter(s => s.isRevival).length;
+    const plays = addedShows.filter(s => s.type === 'play' && !s.isRevival).length;
+    const musicals = addedShows.filter(s => s.type === 'musical' && !s.isRevival).length;
 
     console.log('');
     console.log('Detection Summary:');
@@ -699,7 +705,7 @@ async function discoverHistoricalShows() {
       discoveredAt: new Date().toISOString(),
       seasons,
       ibdbBudgetExitCount,
-      shows: newShows.map(s => ({
+      shows: addedShows.map(s => ({
         id: s.id, title: s.title, slug: s.slug, venue: s.venue,
         openingDate: s.openingDate, closingDate: s.closingDate,
         type: s.type, isRevival: s.isRevival, season: s.season,
@@ -709,16 +715,17 @@ async function discoverHistoricalShows() {
     console.log(`Saved pending shows to ${OUTPUT_FILE}`);
   }
 
+  const reportedShows = dryRun ? newShows : addedShows;
   // GitHub Actions outputs
   if (process.env.GITHUB_OUTPUT) {
     const outputFile = process.env.GITHUB_OUTPUT;
-    fs.appendFileSync(outputFile, `historical_shows_count=${newShows.length}\n`);
-    fs.appendFileSync(outputFile, `historical_shows=${newShows.map(s => s.title).join(', ')}\n`);
-    fs.appendFileSync(outputFile, `historical_slugs=${newShows.map(s => s.slug).join(',')}\n`);
+    fs.appendFileSync(outputFile, `historical_shows_count=${reportedShows.length}\n`);
+    fs.appendFileSync(outputFile, `historical_shows=${reportedShows.map(s => s.title).join(', ')}\n`);
+    fs.appendFileSync(outputFile, `historical_slugs=${reportedShows.map(s => s.slug).join(',')}\n`);
     fs.appendFileSync(outputFile, `ibdb_incomplete_count=${ibdbBudgetExitCount}\n`);
   }
 
-  return { newShows, count: newShows.length };
+  return { newShows: reportedShows, count: reportedShows.length };
 }
 
 discoverHistoricalShows()
