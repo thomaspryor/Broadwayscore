@@ -54,6 +54,9 @@ function hookCommand(target, hookName) {
     + `[ -n "$R" ] && exec bash "$R/${RUNNER_REL}" ${hookName}; exit 0`;
 }
 
+// Repo settings keys copied as-is: the context window (env) and default effort (BRO-6684).
+const SPEND_KEYS = ['env', 'effortLevel'];
+
 // The generated settings for <target>: every hook in the repo settings, same
 // events, matchers and timeouts, commands rewritten to hookCommand().
 function buildSettings(repoSettings, target) {
@@ -73,7 +76,11 @@ function buildSettings(repoSettings, target) {
       (hooks[event] = hooks[event] || []).push(g);
     }
   }
-  return { settings: { [MARK_KEY]: MARK, hooks }, wired };
+  // BRO-6684: the spend knobs too. Without them a multi-repo session (the app's default)
+  // ran with the 1M context window and no effort default; the Oct 25-31 coordinator hit 780k.
+  const spend = {};
+  for (const key of SPEND_KEYS) if (repoSettings[key] !== undefined) spend[key] = repoSettings[key];
+  return { settings: { [MARK_KEY]: MARK, ...spend, hooks }, wired };
 }
 
 function readJson(p) {
@@ -84,6 +91,7 @@ function plan(target, adoptHookless = false) {
   const repoSettings = readJson(path.join(REPO_ROOT, '.claude', 'settings.json'));
   if (!repoSettings) throw new Error('cannot read .claude/settings.json in this checkout');
   const { settings, wired } = buildSettings(repoSettings, target);
+  const repoSpend = Object.fromEntries(SPEND_KEYS.filter((k) => settings[k] !== undefined).map((k) => [k, settings[k]]));
   const links = LINKS
     .filter((name) => fs.existsSync(path.join(REPO_ROOT, '.claude', name)))
     .map((name) => ({ name, from: path.join(target, '.claude', name), to: path.join(REPO_ROOT, '.claude', name) }));
@@ -92,7 +100,10 @@ function plan(target, adoptHookless = false) {
   const isObject = existing && typeof existing === 'object' && !Array.isArray(existing);
   const mayAdopt = !!(adoptHookless && isObject && !Object.hasOwn(existing, 'hooks') && !Object.hasOwn(existing, MARK_KEY));
   const preserve = isObject && (existing[MARK_KEY] === MARK || mayAdopt);
-  return { settingsPath, settings: preserve ? { ...existing, ...settings } : settings, wired, links, mayAdopt };
+  let merged = preserve ? { ...existing, ...settings } : settings;
+  // Adopting the owner's own settings: their env/effortLevel win over the repo's.
+  if (mayAdopt && existing[MARK_KEY] !== MARK) for (const key of SPEND_KEYS) if (Object.hasOwn(existing, key)) merged = { ...merged, [key]: existing[key] };
+  return { settingsPath, settings: merged, wired, links, mayAdopt, repoSpend };
 }
 
 // Problems that make installing unsafe; empty when it is fine to write.
@@ -159,6 +170,8 @@ function uninstall(p) {
     const remaining = { ...existing };
     delete remaining[MARK_KEY];
     delete remaining.hooks;
+    // Spend keys this installer wrote (still equal to the repo's value); an owner's own stay.
+    for (const key of SPEND_KEYS) if (JSON.stringify(remaining[key]) === JSON.stringify(p.repoSpend[key])) delete remaining[key];
     if (Object.keys(remaining).length) fs.writeFileSync(p.settingsPath, JSON.stringify(remaining, null, 2) + '\n');
     else fs.unlinkSync(p.settingsPath);
   }

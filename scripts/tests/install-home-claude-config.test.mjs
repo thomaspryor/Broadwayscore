@@ -276,3 +276,12 @@ test('adoption refuses existing hooks, foreign ownership, malformed JSON and arr
     assert.equal(fs.readFileSync(file, 'utf8'), raw);
   }
 });
+
+test('the context window and effort default reach multi-repo sessions (BRO-6684)', () => {
+  const real = JSON.parse(fs.readFileSync(path.join(path.dirname(INSTALLER), '..', '.claude', 'settings.json'), 'utf8'));
+  const { settings } = buildSettings(real, '/home/user');
+  assert.deepEqual(settings.env, real.env);
+  assert.equal(settings.effortLevel, real.effortLevel);
+  assert.ok(settings.env.CLAUDE_CODE_AUTO_COMPACT_WINDOW, 'the repo sets an autocompact window');
+  assert.equal(buildSettings({ hooks: {} }, '/home/user').settings.env, undefined, 'absent keys are not invented');
+});
