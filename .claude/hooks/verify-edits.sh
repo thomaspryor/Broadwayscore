@@ -1388,15 +1388,23 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
-# ─── Child-wait gate (CHILDWAIT, BRO-6264) ──────────────────────────────────
-# A child worker (prompt has a `BUDGET: Nh` line) ending KEEP OPEN on CI it
-# started is never woken (BRO-6154 sat ~1 day); WAKELESS passed it on an older
-# background Bash. Decision: scripts/lib/child-session-wait-guard.js. Kill switch CHILDWAIT_GATE_DISABLE=1.
-if os.environ.get('CHILDWAIT_GATE_DISABLE', '0') != '1':
+# ─── Child-wait gates (CHILDWAIT BRO-6264, CHILDJOBS + CHILDWATCH BRO-6717) ─
+# CHILDWAIT: a child worker (prompt has a `BUDGET: Nh` line) ending KEEP OPEN
+# on CI it started is never woken (BRO-6154 sat ~1 day); WAKELESS passed it on
+# an older background Bash. CHILDJOBS: a child ending KEEP OPEN on jobs it runs
+# (BRO-6518: "jobs still running ... I'll check back", container-local loop
+# died, idle 17h then 19h) needs a live background task or Monitor.
+# CHILDWATCH: a parent ending KEEP OPEN on a live child needs a live
+# `child-idle-watch.js watch` (an idle child never reports back). Decisions:
+# scripts/lib/child-session-wait-guard.js. Kill switches CHILDWAIT_GATE_DISABLE=1,
+# CHILDJOBS_GATE_DISABLE=1, CHILDWATCH_GATE_DISABLE=1.
+_CW_CODES = [c for c in ('CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH')
+             if os.environ.get(c + '_GATE_DISABLE', '0') != '1' and not _ve_seen(c)]
+if _CW_CODES:
     try:
         _cw_text, _cw_last = _closing()
         _cw_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'child-session-wait-guard.js')
-        if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('CHILDWAIT')
+        if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '')
                 and os.path.isfile(_cw_js) and not _owner_must_act(_cw_text)):
             import subprocess
             _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
@@ -1414,10 +1422,13 @@ if os.environ.get('CHILDWAIT_GATE_DISABLE', '0') != '1':
                                   'taskId': _bm.group(1) if _bm else None})
             _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
-                'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')}}))
+                'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')},
+                'all': True, 'skip': [c for c in ('CHILDWAIT', 'CHILDJOBS', 'CHILDWATCH') if c not in _CW_CODES],
+                'liveChildren': _live_work()['children']}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
-            if json.loads(_cw.stdout or '{}').get('block'):
-                _ve_block("CHILDWAIT")
+            _cw_res = json.loads(_cw.stdout or '{}')
+            if _cw_res.get('block') and _cw_res.get('code') in _CW_CODES:
+                _ve_block(_cw_res['code'])
     except Exception:
         pass  # fail-open
 
@@ -2419,6 +2430,16 @@ fi
 
 if [[ "$result" == "CHILDWAIT" ]]; then
   echo "🛑 BLOCKED: this is a child worker session with no human, and KEEP OPEN says it is waiting on CI or a run it started, but nothing started after that run will wake it (BRO-6264: BRO-6154 sat about a day after firing a workflow). Wait for CI inside your turn: a Bash with run_in_background: true that polls that run's own id (gh run view <id>, actions/runs/<id>) or node scripts/lib/wait-for-land.js land/<name> 60 --prod, or Monitor, started AFTER the run; its exit wakes you. A message to @parent does not wake you. Never end a turn waiting on CI. Bypass: NO-VERIFY: <reason>. Kill switch CHILDWAIT_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "CHILDJOBS" ]]; then
+  echo "🛑 BLOCKED: this is a child worker session with no human, and KEEP OPEN says jobs it runs are still going (a loop, crawl, ingest or queue) or that you will check back, but no background task or Monitor is live to wake you (BRO-6717: BRO-6518 said 'I'll check back on them', its container-local loop died, and it sat idle 17h, then 19h; an idle child wakes nobody, its parent included). Pick one: poll in-turn (a Bash with run_in_background: true, timeout up to 7200000, that loops until the jobs finish, or Monitor; its exit wakes you, start another if it times out); or hand the queue to a durable mechanism (a GitHub workflow, the tic-daily pending queue) that runs without this session, then send_message @parent what is queued and where, and end SAFE TO ARCHIVE. A loop started with nohup or & is not a wake. Bypass: NO-VERIFY: <reason>. Kill switch CHILDJOBS_GATE_DISABLE=1." >&2
+  exit 2
+fi
+
+if [[ "$result" == "CHILDWATCH" ]]; then
+  echo "🛑 BLOCKED: KEEP OPEN while a session you started is still live, but nothing will wake you if it goes idle without reporting back (BRO-6717: the BRO-6518 child sat idle 17h, then 19h; an idle child sends neither a report-back nor a failure event). Before ending the turn, start a Bash with run_in_background: true and timeout 2100000: node scripts/lib/child-idle-watch.js watch --session <child id> --minutes 30. When it wakes you, call get_session on the child, save the JSON and run node scripts/lib/child-idle-watch.js check --from-json <file>: rearm starts the watch again; nudge means send_message the child (poll in-turn, or hand its queue to a workflow, then report back); restart means it failed. If the child owns the work end to end and you do not need its result, end SAFE TO ARCHIVE instead (.claude/CLOUD.md 'Starting a worker session' step 6). Bypass: NO-VERIFY: <reason>. Kill switch CHILDWATCH_GATE_DISABLE=1." >&2
   exit 2
 fi
 
