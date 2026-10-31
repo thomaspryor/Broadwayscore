@@ -34,7 +34,10 @@ EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'no
   'city',
   // BRO-6400: transfer links (a regional tryout, or a Broadway <-> West End
   // transfer). A plan sets both ends; validate-data checks they reciprocate.
-  'transferOf', 'transferredTo'];
+  'transferOf', 'transferredTo',
+  // BRO-6725: a plan that moves a review-seeded date to an unconfirmed source clears the
+  // human pin the openingDate edit stamps, so Playbill press-night dates can still refine it.
+  'humanCorrectedOpeningDate'];
 
 // BRO-6191: plan-only (owner-approved) commercial.json extras with value checks
 // (cleared-field-guard.js planOnlyValueProblem); not offered to the feedback-plan LLM.
@@ -156,6 +159,10 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
         const problem = transferLinkCategoryError(shows[idx], field, target);
         if (problem) return { ok: false, reason: problem };
       }
+    }
+
+    if (field === 'humanCorrectedOpeningDate' && newValue !== null) {
+      return { ok: false, reason: 'humanCorrectedOpeningDate: plans may only clear it (null); set openingDate to pin a date' };
     }
 
     if (field === 'noReliableArt') {

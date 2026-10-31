@@ -1,91 +1,55 @@
 {
   "issueNumber": "bro-6725-c",
-  "planId": "e7f28535-961c-4ba1-b825-9c148c16f940",
+  "planId": "55d6366a-579e-4eb6-8b54-dd56000a1376",
   "status": "pending",
-  "createdAt": "2026-10-31T15:48:47.113Z",
+  "createdAt": "2026-10-31T16:46:14.493Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 3 of 9)",
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 3 of 14)",
     "steps": [
-      "Earliest review is 2d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 5d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 3d before the review-seeded opening date",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 9d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 6d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 2d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 2d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 11d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 2d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 3d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 2d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)"
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
     ],
     "riskLevel": "low",
     "actions": [
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "mans-best-friend-tron-regional-2025",
+        "showId": "the-other-boleyn-girl-chichester-festival-regional-2024",
         "field": "openingDate",
-        "oldValue": "2025-06-27",
-        "newValue": "2025-06-25",
-        "description": "Earliest review is 2d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "mans-best-friend-tron-regional-2025",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "saint-joan-citizens-regional-2026",
-        "field": "openingDate",
-        "oldValue": "2026-02-23",
-        "newValue": "2026-02-18",
-        "description": "Earliest review is 5d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "saint-joan-citizens-regional-2026",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "small-acts-of-love-citizens-regional-2025",
-        "field": "openingDate",
-        "oldValue": "2025-09-15",
-        "newValue": "2025-09-14",
+        "oldValue": "2024-04-28",
+        "newValue": "2024-04-27",
         "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "small-acts-of-love-citizens-regional-2025",
+        "showId": "the-other-boleyn-girl-chichester-festival-regional-2024",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -94,16 +58,25 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-long-drop-citizens-regional-2026",
+        "showId": "the-other-boleyn-girl-chichester-festival-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-04-27",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
         "field": "openingDate",
-        "oldValue": "2026-06-12",
-        "newValue": "2026-06-11",
+        "oldValue": "2025-05-16",
+        "newValue": "2025-05-15",
         "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-long-drop-citizens-regional-2026",
+        "showId": "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -112,16 +85,25 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "through-the-shortbread-tin-tron-regional-2025",
-        "field": "openingDate",
-        "oldValue": "2025-04-06",
-        "newValue": "2025-04-03",
-        "description": "Earliest review is 3d before the review-seeded opening date"
+        "showId": "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-05-15",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "through-the-shortbread-tin-tron-regional-2025",
+        "showId": "sunset-song-dundee-rep-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-04-28",
+        "newValue": "2024-04-19",
+        "description": "Earliest review is 9d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sunset-song-dundee-rep-regional-2024",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -130,16 +112,52 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "to-save-the-sea-tron-regional-2024",
+        "showId": "sunset-song-dundee-rep-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-04-19",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glass-menagerie-dundee-rep-regional-2025",
         "field": "openingDate",
-        "oldValue": "2024-09-29",
-        "newValue": "2024-09-27",
+        "oldValue": "2025-10-09",
+        "newValue": "2025-10-03",
+        "description": "Earliest review is 6d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glass-menagerie-dundee-rep-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-glass-menagerie-dundee-rep-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-10-03",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-citizens-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-06",
+        "newValue": "2026-09-04",
         "description": "Earliest review is 2d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "to-save-the-sea-tron-regional-2024",
+        "showId": "1984-citizens-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -148,16 +166,52 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "macbeth-hull-truck-regional-2026",
+        "showId": "1984-citizens-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-09-04",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-citizens-regional-2025",
         "field": "openingDate",
-        "oldValue": "2026-02-12",
-        "newValue": "2026-02-11",
+        "oldValue": "2025-12-08",
+        "newValue": "2025-12-06",
+        "description": "Earliest review is 2d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-citizens-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beauty-and-the-beast-citizens-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-12-06",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cry-laugh-oran-mor-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-06-18",
+        "newValue": "2026-06-17",
         "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "macbeth-hull-truck-regional-2026",
+        "showId": "cry-laugh-oran-mor-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -166,16 +220,25 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "mary-and-the-hyenas-hull-truck-regional-2025",
+        "showId": "cry-laugh-oran-mor-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-06-17",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gallus-in-weegieland-tron-regional-2025",
         "field": "openingDate",
-        "oldValue": "2025-02-14",
-        "newValue": "2025-02-13",
+        "oldValue": "2025-11-23",
+        "newValue": "2025-11-22",
         "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "mary-and-the-hyenas-hull-truck-regional-2025",
+        "showId": "gallus-in-weegieland-tron-regional-2025",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -184,74 +247,11 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-borrowers-hull-truck-regional-2024",
-        "field": "openingDate",
-        "oldValue": "2024-12-15",
-        "newValue": "2024-12-04",
-        "description": "Earliest review is 11d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-borrowers-hull-truck-regional-2024",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "all-blood-runs-red-leeds-regional-2025",
-        "field": "openingDate",
-        "oldValue": "2025-02-17",
-        "newValue": "2025-02-15",
-        "description": "Earliest review is 2d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "all-blood-runs-red-leeds-regional-2025",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "brassed-off-leeds-regional-2026",
-        "field": "openingDate",
-        "oldValue": "2026-06-27",
-        "newValue": "2026-06-24",
-        "description": "Earliest review is 3d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "brassed-off-leeds-regional-2026",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "our-public-house-leeds-regional-2026",
-        "field": "openingDate",
-        "oldValue": "2026-05-24",
-        "newValue": "2026-05-22",
-        "description": "Earliest review is 2d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "our-public-house-leeds-regional-2026",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+        "showId": "gallus-in-weegieland-tron-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-11-22",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       }
     ]
   }

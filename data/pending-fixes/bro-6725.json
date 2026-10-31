@@ -1,39 +1,39 @@
 {
   "issueNumber": "bro-6725",
-  "planId": "754afe9b-58ba-435b-9392-a33c08f5716d",
+  "planId": "0e43798a-f3c3-4b84-a8a8-08a3fbad4d60",
   "status": "pending",
-  "createdAt": "2026-10-31T15:48:47.113Z",
+  "createdAt": "2026-10-31T16:46:14.493Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 1 of 9)",
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 1 of 14)",
     "steps": [
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 4d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 2d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 3d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 3d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 3d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 3d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 1d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 3d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)"
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
     ],
     "riskLevel": "low",
     "actions": [
@@ -58,6 +58,15 @@
       {
         "type": "data-edit",
         "file": "shows.json",
+        "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-10-10",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
         "showId": "king-lear-royal-exchange-regional-2026",
         "field": "openingDate",
         "oldValue": "2026-10-10",
@@ -72,6 +81,15 @@
         "oldValue": "human-correction",
         "newValue": "first-review-date",
         "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-lear-royal-exchange-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-10-09",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       },
       {
         "type": "data-edit",
@@ -94,6 +112,15 @@
       {
         "type": "data-edit",
         "file": "shows.json",
+        "showId": "even-these-things-royal-exchange-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-05-21",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
         "showId": "a-man-for-all-seasons-royal-bath-regional-2025",
         "field": "openingDate",
         "oldValue": "2025-01-26",
@@ -108,6 +135,15 @@
         "oldValue": "human-correction",
         "newValue": "first-review-date",
         "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-man-for-all-seasons-royal-bath-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-01-22",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       },
       {
         "type": "data-edit",
@@ -130,6 +166,15 @@
       {
         "type": "data-edit",
         "file": "shows.json",
+        "showId": "endgame-royal-bath-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-09-10",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
         "showId": "summer-1954-royal-bath-regional-2024",
         "field": "openingDate",
         "oldValue": "2024-11-03",
@@ -144,6 +189,15 @@
         "oldValue": "human-correction",
         "newValue": "first-review-date",
         "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "summer-1954-royal-bath-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-10-31",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       },
       {
         "type": "data-edit",
@@ -166,6 +220,15 @@
       {
         "type": "data-edit",
         "file": "shows.json",
+        "showId": "the-secret-garden-royal-bath-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-07-13",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
         "showId": "tristan-and-yseult-royal-bath-regional-2026",
         "field": "openingDate",
         "oldValue": "2026-09-19",
@@ -184,74 +247,11 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "nanny-bristol-old-vic-regional-2024",
-        "field": "openingDate",
-        "oldValue": "2024-02-08",
-        "newValue": "2024-02-05",
-        "description": "Earliest review is 3d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "nanny-bristol-old-vic-regional-2024",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "reverberation-bristol-old-vic-regional-2024",
-        "field": "openingDate",
-        "oldValue": "2024-10-13",
-        "newValue": "2024-10-10",
-        "description": "Earliest review is 3d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "reverberation-bristol-old-vic-regional-2024",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "a-midsummer-nights-dream-chichester-festival-regional-2026",
-        "field": "openingDate",
-        "oldValue": "2026-09-27",
-        "newValue": "2026-09-26",
-        "description": "Earliest review is 1d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "a-midsummer-nights-dream-chichester-festival-regional-2026",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "a-small-and-quiet-light-chichester-festival-regional-2026",
-        "field": "openingDate",
-        "oldValue": "2026-08-31",
-        "newValue": "2026-08-28",
-        "description": "Earliest review is 3d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "a-small-and-quiet-light-chichester-festival-regional-2026",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+        "showId": "tristan-and-yseult-royal-bath-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-09-18",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       }
     ]
   }

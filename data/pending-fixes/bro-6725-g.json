@@ -1,127 +1,55 @@
 {
   "issueNumber": "bro-6725-g",
-  "planId": "ccc2347b-e242-451d-8239-672edceb1c0b",
+  "planId": "8c37e52c-5cf6-493c-976d-0a0a345a1a68",
   "status": "pending",
-  "createdAt": "2026-10-31T15:48:47.113Z",
+  "createdAt": "2026-10-31T16:46:14.493Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 7 of 9)",
+    "summary": "UK regional: move review-seeded opening dates to the earliest review date (part 7 of 14)",
     "steps": [
-      "Earliest review is 4d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 4d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 4d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 7d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 14d before the review-seeded opening date",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 4d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 7d before the review-seeded opening date",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 4d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 6d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 1d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
       "Earliest review is 3d before the review-seeded opening date",
       "Opening date now the earliest review date (unconfirmed upper bound)",
-      "Earliest review is 4d before the review-seeded opening date",
-      "Opening date now the earliest review date (unconfirmed upper bound)"
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date",
+      "Earliest review is 1d before the review-seeded opening date",
+      "Opening date now the earliest review date (unconfirmed upper bound)",
+      "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
     ],
     "riskLevel": "low",
     "actions": [
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "1984-royal-bath-regional-2024",
+        "showId": "the-memory-of-water-octagon-regional-2026",
         "field": "openingDate",
-        "oldValue": "2024-09-30",
-        "newValue": "2024-09-26",
-        "description": "Earliest review is 4d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "1984-royal-bath-regional-2024",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "emma-royal-bath-regional-2025",
-        "field": "openingDate",
-        "oldValue": "2025-09-22",
-        "newValue": "2025-09-18",
-        "description": "Earliest review is 4d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "emma-royal-bath-regional-2025",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "lines-crucible-regional-2024",
-        "field": "openingDate",
-        "oldValue": "2024-03-05",
-        "newValue": "2024-03-01",
-        "description": "Earliest review is 4d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "lines-crucible-regional-2024",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "macbeth-tobacco-factory-regional-2026",
-        "field": "openingDate",
-        "oldValue": "2026-03-05",
-        "newValue": "2026-02-26",
-        "description": "Earliest review is 7d before the review-seeded opening date"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "macbeth-tobacco-factory-regional-2026",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "glorious-hope-mill-regional-2025",
-        "field": "openingDate",
-        "oldValue": "2025-03-07",
-        "newValue": "2025-03-06",
+        "oldValue": "2026-02-05",
+        "newValue": "2026-02-04",
         "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "glorious-hope-mill-regional-2025",
+        "showId": "the-memory-of-water-octagon-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -130,16 +58,25 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "consumed-sheffield-regional-2025",
-        "field": "openingDate",
-        "oldValue": "2025-09-26",
-        "newValue": "2025-09-12",
-        "description": "Earliest review is 14d before the review-seeded opening date"
+        "showId": "the-memory-of-water-octagon-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-02-04",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "consumed-sheffield-regional-2025",
+        "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-08-21",
+        "newValue": "2026-08-17",
+        "description": "Earliest review is 4d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -148,16 +85,25 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "antigone-tron-regional-2026",
+        "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-08-17",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "happy-days-pitlochry-festival-regional-2026",
         "field": "openingDate",
-        "oldValue": "2026-10-01",
+        "oldValue": "2026-09-28",
         "newValue": "2026-09-24",
-        "description": "Earliest review is 7d before the review-seeded opening date"
+        "description": "Earliest review is 4d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "antigone-tron-regional-2026",
+        "showId": "happy-days-pitlochry-festival-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -166,34 +112,25 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-39-steps-hull-truck-regional-2026",
-        "field": "openingDate",
-        "oldValue": "2026-10-07",
-        "newValue": "2026-10-01",
-        "description": "Earliest review is 6d before the review-seeded opening date"
+        "showId": "happy-days-pitlochry-festival-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-09-24",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-39-steps-hull-truck-regional-2026",
-        "field": "openingDateSource",
-        "oldValue": "human-correction",
-        "newValue": "first-review-date",
-        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "dark-noon-aviva-studios-regional-2024",
+        "showId": "i-can-die-too-pitlochry-festival-regional-2026",
         "field": "openingDate",
-        "oldValue": "2024-03-09",
-        "newValue": "2024-03-08",
+        "oldValue": "2026-07-17",
+        "newValue": "2026-07-16",
         "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "dark-noon-aviva-studios-regional-2024",
+        "showId": "i-can-die-too-pitlochry-festival-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -202,16 +139,25 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "footloose-pitlochry-festival-regional-2024",
+        "showId": "i-can-die-too-pitlochry-festival-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-07-16",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inexperience-pitlochry-festival-regional-2026",
         "field": "openingDate",
-        "oldValue": "2024-06-17",
-        "newValue": "2024-06-16",
+        "oldValue": "2026-06-20",
+        "newValue": "2026-06-19",
         "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "footloose-pitlochry-festival-regional-2024",
+        "showId": "inexperience-pitlochry-festival-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -220,16 +166,52 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "peak-stuff-chichester-festival-regional-2024",
+        "showId": "inexperience-pitlochry-festival-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-06-19",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
         "field": "openingDate",
-        "oldValue": "2024-02-19",
-        "newValue": "2024-02-16",
+        "oldValue": "2025-06-06",
+        "newValue": "2025-06-05",
+        "description": "Earliest review is 1d before the review-seeded opening date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-review-date",
+        "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2025-06-05",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-sound-of-music-pitlochry-festival-regional-2024",
+        "field": "openingDate",
+        "oldValue": "2024-11-24",
+        "newValue": "2024-11-21",
         "description": "Earliest review is 3d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "peak-stuff-chichester-festival-regional-2024",
+        "showId": "the-sound-of-music-pitlochry-festival-regional-2024",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
@@ -238,20 +220,38 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-last-pearl-tron-regional-2024",
+        "showId": "the-sound-of-music-pitlochry-festival-regional-2024",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2024-11-21",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
         "field": "openingDate",
-        "oldValue": "2024-06-04",
-        "newValue": "2024-05-31",
-        "description": "Earliest review is 4d before the review-seeded opening date"
+        "oldValue": "2026-08-22",
+        "newValue": "2026-08-21",
+        "description": "Earliest review is 1d before the review-seeded opening date"
       },
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-last-pearl-tron-regional-2024",
+        "showId": "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
         "newValue": "first-review-date",
         "description": "Opening date now the earliest review date (unconfirmed upper bound)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wiping-my-mothers-arse-pitlochry-festival-regional-2026",
+        "field": "humanCorrectedOpeningDate",
+        "oldValue": "2026-08-21",
+        "newValue": null,
+        "description": "Clear the pin so Playbill/theatremonkey press-night dates can still refine this date"
       }
     ]
   }

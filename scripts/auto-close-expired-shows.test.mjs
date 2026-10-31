@@ -48,10 +48,13 @@ test('a committing workflow runs the writer; test.yml only dry-runs', () => {
 
 test('UK regional open show with no closingDate closes after the stale window (BRO-6725)', () => {
   const uk = (id, openingDate, extra = {}) => ({ id, status: 'open', category: 'regional', venue: 'Royal Exchange Theatre', openingDate, ...extra });
-  const shows = { old: uk('old', '2026-08-01'), fresh: uk('fresh', '2026-10-01'), dated: uk('dated', '2026-08-01', { closingDate: '2026-12-01' }) };
+  const shows = { old: uk('old', '2026-06-01'), fresh: uk('fresh', '2026-10-01'), dated: uk('dated', '2026-06-01', { closingDate: '2026-12-01' }) };
   const list = closeExpiredShows(shows, { apply: true, now });
   assert.deepEqual(list.map(s => s.id), ['old']);
   assert.equal(shows.fresh.status, 'open');
   assert.equal(shows.dated.status, 'open');
+  // boundary: exactly 90 days old stays open, 91 closes
+  assert.equal(isStaleUkRegionalRun(uk('b1', '2026-07-12'), '2026-10-10'), false);
+  assert.equal(isStaleUkRegionalRun(uk('b2', '2026-07-11'), '2026-10-10'), true);
   assert.equal(isStaleUkRegionalRun({ category: 'broadway', openingDate: '2020-01-01' }, '2026-10-11'), false);
 });

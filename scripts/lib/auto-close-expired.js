@@ -15,8 +15,8 @@ function getMarketDate(category, now = new Date()) {
 // BRO-6725: UK regional rows seeded from a Guardian review/census have an opening date but
 // almost never a closing date, so the closingDate rule below never fired and stale runs sat
 // in "On Stage Now". With no closingDate, close once the run is older than this window.
-// Real UK regional runs are 2-6 weeks; a sourced closingDate always wins over this guess.
-const UK_REGIONAL_NO_CLOSE_DAYS = 56;
+// Most UK regional runs are 2-8 weeks and repertory seasons run longer, so 90 days; a sourced closingDate always wins over this guess.
+const UK_REGIONAL_NO_CLOSE_DAYS = 90;
 
 function isStaleUkRegionalRun(show, today) {
   if (show.category !== 'regional' || show.closingDate || !show.openingDate) return false;
