@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-31T00:27:28.800Z",
+  "updatedAt": "2026-10-31T00:58:18.456Z",
   "processed": 406,
-  "failed": 220,
-  "successRate": "64.9%",
+  "failed": 221,
+  "successRate": "64.8%",
   "tierBreakdown": {
     "playwright": 200,
     "amp": 7,
@@ -11,22 +11,11 @@
     "scrapingdog": 29,
     "scrapingbee": 16,
     "brightdata": 1,
-    "archiveToday": 29,
+    "archiveToday": 31,
     "archive": 115
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-30T19:53:00.439Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-10-30T19:55:02.882Z",
-      "event": "bb-session",
-      "session": "54914432",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
     {
       "t": "2026-10-30T19:56:36.304Z",
       "event": "bb-session",
@@ -117,16 +106,26 @@
       "domain": "thetimes.co.uk"
     },
     {
-      "t": "2026-10-30T23:55:27.411Z",
+      "t": "2026-10-31T00:37:23.441Z",
       "event": "bb-session",
-      "session": "0574809a",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "1773442a",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
     },
     {
-      "t": "2026-10-30T23:56:33.606Z",
+      "t": "2026-10-31T00:37:23.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-31T00:37:34.587Z",
       "event": "bb-session",
-      "session": "9928bf17",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "90c0e11b",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+    },
+    {
+      "t": "2026-10-31T00:37:34.861Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }

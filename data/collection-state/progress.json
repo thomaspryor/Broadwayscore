@@ -627,7 +627,8 @@
     "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
     "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
     "boop-tour-2026/leagueofcincytheatres--shelby-colman.json",
-    "ready-tae-drap-oran-mor-regional-2026/herald--neil-cooper.json"
+    "ready-tae-drap-oran-mor-regional-2026/herald--neil-cooper.json",
+    "harry-potter-2021/newyorker--conde-nast.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -897,8 +898,7 @@
       "the-humanities-regional-2026/broadwayworld--unknown.json",
       "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026/broadwayworld--cindy-marcolina.json",
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
-      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json",
-      "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
+      "birthright-off-broadway-2026/broadwayworld--kyle-turner.json"
     ],
     "brightdata": [
       "the-heart-off-broadway-2026/talkinbroadway--unknown.json"
@@ -932,7 +932,9 @@
       "data/review-texts/daytona-west-end-2014/standard--unknown.json",
       "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
       "data/review-texts/the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/high-school-musical-off-west-end-2026/whatsonstage--hang-yuen.json"
+      "data/review-texts/high-school-musical-off-west-end-2026/whatsonstage--hang-yuen.json",
+      "data/review-texts/the-score-regional-2026/times-uk--unknown.json",
+      "data/review-texts/the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json"
     ],
     "archive": [
       "frozen-2018/village-voice--michael-feingold.json",
@@ -1053,7 +1055,7 @@
     ]
   },
   "startTime": "2026-10-30T19:50:43.255Z",
-  "lastProcessed": "my-neighbour-totoro-west-end-2025/telegraph--dominic-cavendish.json",
+  "lastProcessed": "the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--louise-griffin.json",
   "log": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -1162,16 +1164,26 @@
       "domain": "thetimes.co.uk"
     },
     {
-      "t": "2026-10-30T23:55:27.411Z",
+      "t": "2026-10-31T00:37:23.441Z",
       "event": "bb-session",
-      "session": "0574809a",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "1773442a",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
     },
     {
-      "t": "2026-10-30T23:56:33.606Z",
+      "t": "2026-10-31T00:37:23.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-31T00:37:34.587Z",
       "event": "bb-session",
-      "session": "9928bf17",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "90c0e11b",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+    },
+    {
+      "t": "2026-10-31T00:37:34.861Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ],
   "recoveredAfterFailure": [
