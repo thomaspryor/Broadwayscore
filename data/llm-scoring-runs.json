@@ -1594398,21 +1594398,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T14:35:43.788Z",
-    "completedAt": "2026-10-31T14:36:08.888Z",
-    "totalReviews": 5,
-    "processed": 5,
+    "startedAt": "2026-10-31T14:36:08.342Z",
+    "completedAt": "2026-10-31T14:36:48.453Z",
+    "totalReviews": 8,
+    "processed": 8,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 32350,
-      "output": 1546,
-      "cacheRead": 19035,
+      "input": 51116,
+      "output": 2649,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 78839
+      "total": 125527
     },
-    "costUsd": 0.1202427,
-    "runId": "41210269595",
+    "costUsd": 0.19296560000000004,
+    "runId": "41210278125",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1598374,6 +1598374,16 @@
           "flat": 0,
           "down": 1,
           "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "anatomy-of-a-suicide-regional-2026",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 1,
+          "down": 1,
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -1637114,16 +1637124,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "windows-regional-2026",
-        "ourDistribution": {
-          "up": 4,
-          "flat": 1,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "wine-in-the-wilderness-off-broadway-2025",
         "ourDistribution": {
           "up": 9,
@@ -1637688,8 +1637688,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T14:41:05.926Z",
-    "completedAt": "2026-10-31T14:41:05.928Z",
+    "startedAt": "2026-10-31T14:41:45.754Z",
+    "completedAt": "2026-10-31T14:41:45.756Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1637702,7 +1637702,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41210269595",
+    "runId": "41210278125",
     "source": "comparative-rescore",
     "errorDetails": []
   }
