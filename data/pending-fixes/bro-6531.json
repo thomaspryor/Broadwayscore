@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6531",
   "planId": "d840f853-4e54-4ced-85eb-3bc05ba331b5",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-31T03:06:41.703Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "reason": "Off-Off-Broadway adults-only panto at The Parkside Lounge (TDF tags it Off-Off Broadway); the catalog has no off-off-broadway tier; admitted by Show Score listing with placeholder venue 'Lower E Side' (BRO-6531)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T03:55:13.322Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": false,
+      "reason": "retire-show peter-panto-off-broadway-2026: openingDate 2026-11-21 is set: a row dated as opened is a real run"
+    }
+  ],
+  "executedIn": "ci"
 }
