@@ -71,6 +71,7 @@ test('audit-aggregator-gap.yml publishes ingests right after the ingest step', (
   assert.ok(ingest > 0 && fast > ingest && fast < firstReport,
     'fast-publish step must sit between "Run gap audit" and the slow reporting steps');
   const block = wf.slice(fast, firstReport);
+  assert.match(block, /GAP_FAST_PUBLISH_DISABLED/, 'kill switch');
   assert.match(block, /uses: \.\/\.github\/actions\/push-review-texts/);
   assert.match(block, /gap-ingest-fast-path\.js/);
   assert.match(block, /BEFORE_SHA: \$\{\{ steps\.rt_before\.outputs\.sha \}\}/);
