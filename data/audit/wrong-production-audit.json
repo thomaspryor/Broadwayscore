@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T13:15:48.894Z",
+  "timestamp": "2026-10-31T13:52:36.187Z",
   "stats": {
-    "totalReviews": 74244,
-    "alreadyFlagged": 22483,
+    "totalReviews": 74246,
+    "alreadyFlagged": 22488,
     "dateGuardCatches": 233,
-    "directorMismatch": 3049,
-    "tvFilmSignals": 2083,
-    "londonSignals": 3421,
-    "offBroadwaySignals": 671,
+    "directorMismatch": 3051,
+    "tvFilmSignals": 2088,
+    "londonSignals": 3422,
+    "offBroadwaySignals": 674,
     "yearMismatch": 305,
-    "noPublishDate": 8409
+    "noPublishDate": 8402
   },
   "findings": [
     {
@@ -4064,6 +4064,19 @@
       "score": 89,
       "publishDate": "2022-04-14",
       "url": "https://www.nytimes.com/2022/04/14/theater/american-buffalo-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "american-buffalo-2022",
+      "file": "thestage--nicole-serratore.json",
+      "publishDate": "2022-04-15",
+      "url": "https://www.thestage.co.uk/reviews/american-buffalo-review-circle-in-the-square-theatre-new-york-2022-laurence-fishburne-sam-rockwell-darren-criss",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -14209,6 +14222,19 @@
     },
     {
       "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "thestage--nicole-serratore.json",
+      "publishDate": "2023-06-06",
+      "url": "https://www.thestage.co.uk/reviews/days-of-wine-and-roses-review-at-linda-gross-theater-new-york",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
       "file": "thewrap--robert-hofler.json",
       "score": 46,
       "publishDate": "2023-06-05",
@@ -18643,6 +18669,20 @@
       ]
     },
     {
+      "showId": "evening-at-the-talk-house-off-broadway-2017",
+      "file": "the-clyde-fitch-report--david-finkle.json",
+      "score": null,
+      "publishDate": "2017-02-20",
+      "url": "http://www.clydefitchreport.com/2017/02/wallace-shawn-talk-house-off-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "every-brilliant-thing-2026",
       "file": "ew--dalton-ross.json",
       "score": 86,
@@ -19159,7 +19199,7 @@
       "showId": "fade-off-broadway-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": null,
-      "publishDate": "February 9th, 2017",
+      "publishDate": "2017-02-10",
       "url": "http://deadline.com/2017/02/review-fade-big-river-romeo-et-juliette-rusalka-1201907001/",
       "findings": [
         {
@@ -19178,13 +19218,27 @@
       "showId": "fade-off-broadway-2017",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": null,
-      "publishDate": "February 8th, 2017",
+      "publishDate": "2017-02-08",
       "url": "https://newyorktheater.me/2017/02/08/fade-play-review-latina-tv-writer-on-how-horrible-tv-is/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "fade-off-broadway-2017",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "February 8th, 2017",
+      "url": "http://www.talkinbroadway.com/page/ob/2_08_17a.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -55783,6 +55837,48 @@
       ]
     },
     {
+      "showId": "tell-hector-i-miss-him-off-broadway-2017",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2017-01-23",
+      "url": "http://dctheatrescene.com/2017/01/23/tell-hector-miss-love-puzzles-puerto-rico/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tell-hector-i-miss-him-off-broadway-2017",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "January 23rd, 2017",
+      "url": "http://www.talkinbroadway.com/page/ob/1_23_17a.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "tell-hector-i-miss-him-off-broadway-2017",
+      "file": "variety--marilyn-stasio.json",
+      "score": null,
+      "publishDate": "2017-01-23",
+      "url": "http://variety.com/2017/legit/reviews/tell-hector-i-miss-him-review-1201967411/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "tell-me-how-it-ends-liverpool-everyman-regional-2024",
       "file": "whatsonstage--matt-barton.json",
       "score": 65,
@@ -59589,6 +59685,19 @@
       "score": 44,
       "publishDate": "March 9, 2017",
       "url": "https://www.nytimes.com/2017/03/09/theater/the-glass-menagerie-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": "2017-03-14",
+      "url": "http://theaterlife.com/the-glass-menagerie-sweeney-todd-man-from-nebraska/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -68737,19 +68846,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "through-it-all-together-leeds-regional-2025",
-      "file": "broadwayworld--aa-cristi.json",
-      "publishDate": "2025-06-27",
-      "url": "https://www.broadwayworld.com/uk-regional/article/Photos-Shobna-Gulati-and-Reece-Dinsdale-Star-in-THROUGH-IT-ALL-TOGETHER-World-Premiere-at-Leeds-Playhouse-20250627",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -87814,6 +87910,20 @@
       ]
     },
     {
+      "showId": "fade-off-broadway-2017",
+      "file": "huffpost--david-finkle.json",
+      "score": null,
+      "publishDate": "2017-02-09",
+      "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-tanya-sarac_b_14670012.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
       "showId": "faith-healer-2006",
       "file": "theatermania--unknown.json",
       "score": 67,
@@ -90260,6 +90370,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-pitlochry-festival-regional-2025",
+      "file": "whatsonstage--simon-thompson.json",
+      "score": 79,
+      "publishDate": "2025-06-23",
+      "url": "https://www.whatsonstage.com/news/grease-at-pitlochry-festival-theatre-review_1683933/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -99158,6 +99282,20 @@
       ]
     },
     {
+      "showId": "man-from-nebraska-off-broadway-2017",
+      "file": "village-voice--michael-feingold.json",
+      "score": null,
+      "publishDate": "2017-02-28",
+      "url": "http://www.villagevoice.com/arts/tracy-letts-man-from-nebraska-raises-and-drops-searching-questions-9722914",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "man-of-la-mancha-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 35,
@@ -107512,6 +107650,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "ring-twice-for-miranda-off-broadway-2017",
+      "file": "off-off-online--edward-karam.json",
+      "score": null,
+      "publishDate": "2017-03-11",
+      "url": "https://www.offoffonline.com/offoffonline/2017/2/24/ring-twice-for-miranda",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
