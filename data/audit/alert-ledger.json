@@ -245,7 +245,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-31T16:14:24.276Z",
-      "lastSeen": "2026-10-31T17:08:54.218Z",
+      "lastSeen": "2026-10-31T17:09:41.574Z",
       "lastNotifiedAt": "2026-10-31T16:14:24.276Z",
       "lastSurfacedAt": "2026-10-31T16:14:24.276Z",
       "notifyCount": 193,
@@ -33789,7 +33789,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"NO MATCH: \"Reviews of Mamma Mia! The Party\"\"",
       "firstSeen": "2026-10-31T16:14:23.910Z",
       "incidentOpenedAt": "2026-10-31T16:14:23.910Z",
-      "lastSeen": "2026-10-31T17:08:54.154Z",
+      "lastSeen": "2026-10-31T17:09:41.546Z",
       "lastNotifiedAt": "2026-10-31T16:14:23.910Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -33822,6 +33822,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "tour-page-audit:city-row-unknown-show": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
+      "firstSeen": "2026-10-31T16:19:21.958Z",
+      "incidentOpenedAt": "2026-10-31T16:19:21.958Z",
+      "lastSeen": "2026-10-31T16:19:21.958Z",
+      "lastNotifiedAt": "2026-10-31T16:19:21.958Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6728",
+      "dispatch": {
+        "requestedAt": "2026-10-31T16:19:21.958Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41218494854",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41218494854"
+      }
     },
     "opening-night-remediation-exhausted-empty-cast:clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
@@ -33861,25 +33880,6 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
-    },
-    "tour-page-audit:city-row-unknown-show": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
-      "firstSeen": "2026-10-31T16:19:21.958Z",
-      "incidentOpenedAt": "2026-10-31T16:19:21.958Z",
-      "lastSeen": "2026-10-31T16:19:21.958Z",
-      "lastNotifiedAt": "2026-10-31T16:19:21.958Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-6728",
-      "dispatch": {
-        "requestedAt": "2026-10-31T16:19:21.958Z",
-        "mode": "dispatch-at-filing",
-        "runId": "41218494854",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41218494854"
-      }
     },
     "land:land/bro-6686-cost": {
       "status": "resolved",
