@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-31T17:08:13.824Z",
+  "generated": "2026-10-31T17:28:42.776Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 40,
+  "count": 39,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -275,13 +275,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "escape-to-margaritaville-2018",
-      "loserFile": "wolf-entertainment-guide--william-wolf.json",
-      "targetFile": "nytg--stanford-friedman.json",
-      "reason": "orphaned-duplicate-heal: nytg--stanford-friedman.json was flagged invalid after wolf-entertainment-guide--william-wolf.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
