@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-31T21:46:02.742Z",
+  "generatedAt": "2026-10-31T22:06:26.742Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 300,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "the-imaginary-invalid-2026",
-      "title": "The Imaginary Invalid",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 66.2 vs local 67.24 (Δ1.04)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
-      "firstDefectAt": "2026-10-31T21:45:53.711Z"
-    }
-  ],
+  "clean": 301,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

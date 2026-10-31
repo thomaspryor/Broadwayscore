@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T21:46:03.142Z",
+  "generatedAt": "2026-10-31T22:06:27.126Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -117,7 +117,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -138,9 +138,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 777,
+  "itemsScanned": 747,
   "matchedGaps": 6,
   "possibleGaps": 12,
   "gaps": [
