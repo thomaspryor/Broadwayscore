@@ -463,7 +463,7 @@ test('conflict-markers blocks a pushed file with markers and passes clean, binar
     assert.match(r.out, /AUDIT BLOCKED: conflict-markers failed/);
     assert.equal(run([clean, join(dir, 'gone.json')]).code, 0);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -479,6 +479,6 @@ test('set-u-expansions runs strict on changed shell scripts only, and blocks an 
     assert.equal(code, 1);
     assert.match(out, /AUDIT BLOCKED: set-u-expansions failed/);
   } finally {
-    rmSync(dir, { recursive: true, force: true });
+    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
