@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T23:09:24.563Z",
-  "processed": 268,
-  "failed": 151,
-  "successRate": "64.0%",
+  "updatedAt": "2026-10-31T23:51:34.962Z",
+  "processed": 302,
+  "failed": 218,
+  "successRate": "58.1%",
   "tierBreakdown": {
-    "playwright": 146,
-    "amp": 2,
-    "browserbase": 9,
+    "playwright": 171,
+    "amp": 3,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingdog": 26,
     "scrapingbee": 15,
     "brightdata": 0,
-    "archiveToday": 33,
-    "archive": 106
+    "archiveToday": 38,
+    "archive": 115
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-31T21:17:08.425Z",
@@ -92,6 +92,17 @@
       "t": "2026-10-31T23:01:14.290Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-31T23:51:23.912Z",
+      "event": "bb-session",
+      "session": "2d7b583b",
+      "url": "https://www.nytimes.com/2026/09/26/theater/jake-shears-scissor-sisters-rocky-hor"
+    },
+    {
+      "t": "2026-10-31T23:51:24.782Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
