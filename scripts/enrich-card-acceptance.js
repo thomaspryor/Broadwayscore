@@ -117,6 +117,7 @@ const { priorityOf } = require('./lib/linear-watchdog-source.js');
 // from selectRefusedLinearIdentifiers (which explicitly excludes armed cards)
 // and why a rewrite needs the enricher's label or matching logged draft.
 const { selectRearmCandidates, refuseRearmWrite } = require('./lib/card-rearm.js');
+const { guardFilerVerify, preserveFilerVerify } = require('./lib/filer-verify-guard.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
@@ -651,12 +652,15 @@ Name a check that is RED today and only goes green once this card's work lands. 
   2. \`test -f <path>\` naming a file that does NOT exist yet and that this work would CREATE.
 Do NOT name any file that already exists in the repository.
 ` : '';
+  const filerGuidance = rejectionKind === 'filer-verify-invented-path' ? `
+The card's filer already wrote a VERIFY. Do not invent a new file. Name a check over files that EXIST today and is not already green (for example an existing \`node --test\` on the module this card changes), or \`npx tsc --noEmit\` only if nothing better applies.
+` : '';
   return `${buildEnrichPrompt(card)}
 
 YOUR PREVIOUS ANSWER WAS REJECTED BY THE VALIDATOR.
 Rejected command: ${String(rejectedCommand).slice(0, 200)}
 Validator verdict: ${String(rejectionReason).slice(0, 400)}
-${vacuousGuidance}${arityGuidance}
+${vacuousGuidance}${arityGuidance}${filerGuidance}
 Fix exactly that. The complete list of accepted forms is: ${SAFE_CHECK_DESCRIPTION}
 Note the directory allowlists differ per form: \`test -f\` accepts docs/, memory/, tests/, src/ and scripts/; \`node --test\` and \`npx tsx --test\` accept only tests/, scripts/ and src/. If the file you want to assert on is outside the relevant list, do NOT force that form — name a \`node --test tests/unit/<name>.test.mjs\` test that asserts the same thing, or fall back to \`npx tsc --noEmit\`.
 Name EXACTLY ONE command anywhere in acceptanceCriteria. A second backticked command, even a safe one, can outrank the one you named and become the command that actually runs.
@@ -1351,6 +1355,14 @@ async function enrichOneCard(card, opts = {}) {
       continue;
     }
 
+    // BRO-6691: never arm a filer's card on a file that does not exist today.
+    // Re-arm redrafts a vacuous check; a file the work will create is the honest replacement there.
+    const inventedPath = opts.rearm ? null : guardFilerVerify(card, pathCheck.newPaths);
+    if (inventedPath) {
+      lastRejection = { command: finalCommand, ...inventedPath };
+      continue;
+    }
+
     // Everything from here to the verify-gate check is part of ACCEPTING a
     // draft, so it lives inside the loop: a section-level rejection is just
     // as recoverable by re-prompting as a command-level one, and leaving it
@@ -1388,7 +1400,8 @@ async function enrichOneCard(card, opts = {}) {
   // preexistingDemoted comes from the card's OWN notes (guardrail 4), which
   // buildDraftSection never sees — merged here so the run log names every
   // span demoted on this card, whichever pass demoted it.
-  const { newNotes, finalGate } = accepted;
+  const { finalGate } = accepted;
+  const newNotes = opts.rearm ? accepted.newNotes : preserveFilerVerify(card, accepted.newNotes, [FOOTER_RE, DECISION_TAIL_RE]);
   const allDemotedSpans = [...accepted.allDemotedSpans, ...preexistingDemoted];
 
   if (!opts.dryRun) {

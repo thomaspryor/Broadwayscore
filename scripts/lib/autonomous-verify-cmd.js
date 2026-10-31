@@ -199,4 +199,4 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
   };
 }
 
-module.exports = { extractVerifyCmd, candidatesFrom, SECTION_RE, rank, rawCandidates, stripDecoration };
+module.exports = { VERIFY_LINE_RE, extractVerifyCmd, candidatesFrom, SECTION_RE, rank, rawCandidates, stripDecoration };
