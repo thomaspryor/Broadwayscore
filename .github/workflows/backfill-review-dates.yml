@@ -1,10 +1,10 @@
 name: Backfill Review Dates
 
 on:
-  # BRO-5769: weekly early/carried publish-date recheck. Schedule events carry no inputs, so the
-  # "Resolve inputs" step below sets the recheck sweep explicitly (free sources only, all outlets, 20 files).
+  # BRO-5769, BRO-6707: daily early/carried publish-date recheck. Schedule events carry no inputs, so the
+  # "Resolve inputs" step below sets the recheck sweep explicitly (free sources only, all outlets, 40 files (worst case ~80s each fits the 60 min job); the weekly 20 could not keep up with ~260 awaiting).
   schedule:
-    - cron: '17 9 * * 1'
+    - cron: '17 9 * * *'
   workflow_dispatch:
     inputs:
       limit:
@@ -99,7 +99,7 @@ jobs:
           done
           if [ "${EVENT_NAME}" = "schedule" ]; then
             {
-              echo "INPUT_LIMIT=20"
+              echo "INPUT_LIMIT=40"
               echo "INPUT_OFFSET=0"
               echo "INPUT_SHOW="
               echo "INPUT_DOMAINS=all"

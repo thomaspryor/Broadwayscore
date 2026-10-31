@@ -447,7 +447,7 @@ jobs:
         run: node scripts/audit-default-critic-diversity.js --strict
 
       # BRO-5769: early or carried publish dates no page read has confirmed (counts only, digest row).
-      # Advisory: exit 1 means the weekly backfill-review-dates recheck is behind; continue-on-error keeps the job green.
+      # Advisory: exit 1 means the daily backfill-review-dates recheck is behind; continue-on-error keeps the job green.
       - name: Early publish date audit
         if: always()
         continue-on-error: true
