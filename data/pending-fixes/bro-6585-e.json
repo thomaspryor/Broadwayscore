@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6585-e",
   "planId": "756485ac-ffd1-48de-b29d-8f9d57b49508",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T03:26:21.229Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "description": "Gold Derby roundup of other critics (url ends -revival-reviews/), not a review"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T03:35:12.090Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-few-good-men-2026/globalnews2--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-few-good-men-2026/goldderby--ethan-alter.json"
+    }
+  ],
+  "executedIn": "ci"
 }
