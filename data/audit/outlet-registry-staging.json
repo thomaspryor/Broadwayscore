@@ -1,7 +1,16 @@
 {
   "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
-  "updatedAt": "2026-10-31T04:06:33.669Z",
+  "updatedAt": "2026-10-31T11:22:18.756Z",
   "staged": [
+    {
+      "outletId": "artsbeatla",
+      "reason": "name-unresolved",
+      "domainHint": "artsbeatla.com",
+      "reviewCount": 1,
+      "exampleShowId": "harry-potter-tour-2024",
+      "firstSeenAt": "2026-10-31T11:22:18.755Z",
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
+    },
     {
       "outletId": "globalnews2",
       "reason": "name-unresolved",
@@ -9,7 +18,7 @@
       "reviewCount": 1,
       "exampleShowId": "a-few-good-men-2026",
       "firstSeenAt": "2026-10-31T03:11:56.044Z",
-      "lastSeenAt": "2026-10-31T03:22:20.272Z"
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
     },
     {
       "outletId": "irishfilmcritic",
@@ -18,7 +27,7 @@
       "reviewCount": 1,
       "exampleShowId": "aint-too-proud-tour-2024",
       "firstSeenAt": "2026-10-30T11:24:23.963Z",
-      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
     },
     {
       "outletId": "marissavivian",
@@ -27,7 +36,16 @@
       "reviewCount": 1,
       "exampleShowId": "king-of-the-yees-off-broadway-2026",
       "firstSeenAt": "2026-10-29T16:20:03.318Z",
-      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
+    },
+    {
+      "outletId": "raysofadventure",
+      "reason": "name-unresolved",
+      "domainHint": "raysofadventure.com",
+      "reviewCount": 1,
+      "exampleShowId": "dear-evan-hansen-tour-2024",
+      "firstSeenAt": "2026-10-31T11:22:18.755Z",
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
     },
     {
       "outletId": "substack-com",
@@ -36,7 +54,16 @@
       "reviewCount": 1,
       "exampleShowId": "other-desert-cities-2026",
       "firstSeenAt": "2026-10-27T06:13:56.432Z",
-      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
+    },
+    {
+      "outletId": "texannews",
+      "reason": "name-unresolved",
+      "domainHint": "texannews.net",
+      "reviewCount": 1,
+      "exampleShowId": "hadestown-tour-2024",
+      "firstSeenAt": "2026-10-31T11:22:18.755Z",
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
     },
     {
       "outletId": "the-showmance-already-happened",
@@ -45,7 +72,7 @@
       "reviewCount": 1,
       "exampleShowId": "anna-christie-off-broadway-2025",
       "firstSeenAt": "2026-10-25T16:53:00.991Z",
-      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
     },
     {
       "outletId": "theglobalcelebritymeter",
@@ -54,7 +81,7 @@
       "reviewCount": 1,
       "exampleShowId": "billy-crystal-860-2026",
       "firstSeenAt": "2026-10-27T17:56:48.576Z",
-      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
     },
     {
       "outletId": "wtlgomag",
@@ -63,7 +90,7 @@
       "reviewCount": 2,
       "exampleShowId": "shucked-tour-2024",
       "firstSeenAt": "2026-10-27T10:31:52.801Z",
-      "lastSeenAt": "2026-10-31T04:06:33.668Z"
+      "lastSeenAt": "2026-10-31T11:22:18.755Z"
     }
   ]
 }
