@@ -1,17 +1,30 @@
 {
-  "timestamp": "2026-10-31T16:11:29.560Z",
+  "timestamp": "2026-10-31T16:28:48.671Z",
   "stats": {
-    "totalReviews": 74938,
-    "alreadyFlagged": 22501,
+    "totalReviews": 75032,
+    "alreadyFlagged": 22506,
     "dateGuardCatches": 235,
     "directorMismatch": 3118,
-    "tvFilmSignals": 2116,
+    "tvFilmSignals": 2117,
     "londonSignals": 3428,
-    "offBroadwaySignals": 690,
+    "offBroadwaySignals": 692,
     "yearMismatch": 312,
-    "noPublishDate": 8333
+    "noPublishDate": 8346
   },
   "findings": [
+    {
+      "showId": "12-ophelias-regional-2026",
+      "file": "chicagotribune--emily-mcclanathan.json",
+      "publishDate": "2026-04-21",
+      "url": "https://www.chicagotribune.com/2026/04/21/review-12-ophelias-strawdog/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
+        }
+      ]
+    },
     {
       "showId": "13-2008",
       "file": "variety--david-rooney.json",
@@ -4089,6 +4102,7 @@
     {
       "showId": "american-buffalo-2022",
       "file": "thestage--nicole-serratore.json",
+      "score": 39,
       "publishDate": "2022-04-15",
       "url": "https://www.thestage.co.uk/reviews/american-buffalo-review-circle-in-the-square-theatre-new-york-2022-laurence-fishburne-sam-rockwell-darren-criss",
       "findings": [
@@ -5649,6 +5663,7 @@
     {
       "showId": "antigone-regional-2026",
       "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/antigone/",
       "findings": [
@@ -8675,6 +8690,7 @@
     {
       "showId": "both-regional-2026",
       "file": "stageandcinema--cj-fernandes.json",
+      "score": 85,
       "publishDate": "2026-04-25",
       "url": "https://stageandcinema.com/2026/04/24/both-teatro-vista-steppenwolf-review/",
       "findings": [
@@ -8959,6 +8975,7 @@
     {
       "showId": "brokeback-mountain-regional-2026",
       "file": "new-city-stage--rob-silverman-ascher.json",
+      "score": 79,
       "publishDate": "2026-06-15",
       "url": "https://www.newcitystage.com/2026/06/15/brokeback-mountain-brings-queer-intimacy-to-a-grand-wyoming-setting/",
       "findings": [
@@ -14304,6 +14321,7 @@
     {
       "showId": "days-of-wine-and-roses-off-broadway-2023",
       "file": "thestage--nicole-serratore.json",
+      "score": 55,
       "publishDate": "2023-06-06",
       "url": "https://www.thestage.co.uk/reviews/days-of-wine-and-roses-review-at-linda-gross-theater-new-york",
       "findings": [
@@ -19467,6 +19485,7 @@
     {
       "showId": "falsettos-regional-2024",
       "file": "chicago-reader--emily-mcclanathan.json",
+      "score": 77,
       "publishDate": "2024-11-19",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/falsettos-court-theatre-timeline-theatre/",
       "findings": [
@@ -19653,6 +19672,7 @@
     {
       "showId": "fault-regional-2026",
       "file": "chicago-sun-times--steven-oxman.json",
+      "score": 56,
       "publishDate": "2026-04-29",
       "url": "https://chicago.suntimes.com/theater/2026/04/29/review-fault-chicago-shakespeare-enrico-colantoni-rebecca-spence-jason-alexander",
       "findings": [
@@ -23688,6 +23708,7 @@
     {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "talkinbroadway--marc-miller.json",
+      "score": 77,
       "publishDate": "2026-01-12",
       "url": "https://www.talkinbroadway.com/page/ob/01_12_26.html",
       "findings": [
@@ -28858,6 +28879,7 @@
     {
       "showId": "i-hate-hamlet-regional-2026",
       "file": "third-coast-review--unknown.json",
+      "score": 76,
       "publishDate": "2026-05-05",
       "url": "https://thirdcoastreview.com/stages/2026/05/05/review-i-hate-hamlet-saint-sebastian-players",
       "findings": [
@@ -33539,6 +33561,7 @@
     {
       "showId": "keerah-regional-2026",
       "file": "chicago-reader--dmitry-samarov.json",
+      "score": 41,
       "publishDate": "2026-06-04",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/keerah-definition-theatre-review/",
       "findings": [
@@ -34617,6 +34640,7 @@
     {
       "showId": "kowalski-regional-2026",
       "file": "chicago-sun-times--steven-oxman.json",
+      "score": 44,
       "publishDate": "2026-09-23",
       "url": "https://chicago.suntimes.com/theater/2026/09/23/review-kowalski-lookingglass-theatre-johnny-galecki-tennessee-williams-marlon-brando",
       "findings": [
@@ -34630,6 +34654,7 @@
     {
       "showId": "kowalski-regional-2026",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": "2026-09-22",
       "url": "https://www.chicagotheatrereview.com/2026/09/the-kindness-of-strangers-2/",
       "findings": [
@@ -34643,6 +34668,7 @@
     {
       "showId": "kowalski-regional-2026",
       "file": "picksinsix--ed-tracy.json",
+      "score": 87,
       "publishDate": "2026-09-20",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/20/picksinsix-review-kowalski-brando-beginnings-lookingglass-theatre-company",
       "findings": [
@@ -41586,6 +41612,7 @@
     {
       "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
       "file": "the-scotsman--joyce-mcmillan.json",
+      "score": 78,
       "publishDate": "2025-06-09",
       "url": "https://www.scotsman.com/arts-and-culture/theatre-and-stage/theatre-reviews-nan-shepherd-naked-and-unashamed-meme-girls-5166690",
       "findings": [
@@ -43984,6 +44011,7 @@
     {
       "showId": "othello-off-broadway-2026",
       "file": "theatermania--kenji-fujishima.json",
+      "score": 78,
       "publishDate": "2026-07-06",
       "url": "https://www.theatermania.com/news/review-classical-theatre-of-harlems-othello-is-the-best-of-a-recent-batch_1844714/",
       "findings": [
@@ -46865,6 +46893,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 92,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/play-on-reviewed-by-julia-w-rath/",
       "findings": [
@@ -46878,6 +46907,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "chicago-reader--kelly-kleiman.json",
+      "score": 78,
       "publishDate": "2026-09-23",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/play-on-chicago-shakespeare-theater/",
       "findings": [
@@ -46891,6 +46921,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "chicago-sun-times--graham-meyer.json",
+      "score": 89,
       "publishDate": "2026-09-22",
       "url": "https://chicago.suntimes.com/theater/2026/09/22/review-play-on-chicago-shakespeare",
       "findings": [
@@ -46904,6 +46935,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 91,
       "publishDate": "2026-09-25",
       "url": "https://www.chicagotheatrereview.com/2026/09/take-the-a-train/",
       "findings": [
@@ -46917,6 +46949,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "chicagostageandscreen--angela-allyn.json",
+      "score": 89,
       "publishDate": "2026-09-19",
       "url": "https://www.chicagostageandscreen.com/post/sparkling-revival-delightfully-swings-at-chicago-shakes",
       "findings": [
@@ -46930,6 +46963,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "chicagotribune--chris-jones.json",
+      "score": 88,
       "publishDate": "2026-09-19",
       "url": "https://www.chicagotribune.com/2026/09/19/review-play-on-chicago-shakespeare-theater/",
       "findings": [
@@ -46943,6 +46977,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 91,
       "publishDate": "2026-09-18",
       "url": "https://www.letsplaytheatricalreview.com/blog/play-on",
       "findings": [
@@ -46956,6 +46991,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "picksinsix--ed-tracy.json",
+      "score": 78,
       "publishDate": "2026-09-23",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/23/picksinsix-review-play-on-chicago-shakepseare-theater",
       "findings": [
@@ -46969,6 +47005,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "splash-magazines--emily-werner.json",
+      "score": 85,
       "publishDate": "2026-09-22",
       "url": "https://splashmags.com/2026/09/from-shakespeare-to-swing-play-on-celebrates-harlem-and-jazz/",
       "findings": [
@@ -46982,6 +47019,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "thefourthwalsh--unknown.json",
+      "score": 90,
       "publishDate": "2026-09-19",
       "url": "https://thefourthwalsh.com/2026/09/review-play-on-chicago-shakespeare-theater/",
       "findings": [
@@ -46995,6 +47033,7 @@
     {
       "showId": "play-on-regional-2026",
       "file": "third-coast-review--unknown.json",
+      "score": 88,
       "publishDate": "2026-09-21",
       "url": "https://thirdcoastreview.com/stages/2026/09/21/review-chicago-shakespeare-play-on",
       "findings": [
@@ -50367,6 +50406,7 @@
     {
       "showId": "shaun-the-sheeps-circus-show-aviva-studios-regional-2025",
       "file": "thestage--matt-barton.json",
+      "score": 39,
       "publishDate": "2025-12-17",
       "url": "https://www.thestage.co.uk/reviews/shaun-the-sheeps-circus-show-review-aviva-studios-manchester-aardman-circa",
       "findings": [
@@ -55383,6 +55423,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "allie-and-the-after-party--allie-bugajski.json",
+      "score": 87,
       "publishDate": "2026-09-07",
       "url": "https://www.allieandtheafterparty.com/reviews/kokandy-sunday-in-the-park",
       "findings": [
@@ -55396,6 +55437,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 89,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/sunday-in-the-park-with-george-3/",
       "findings": [
@@ -55409,6 +55451,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "chicago-reader--catey-sullivan.json",
+      "score": 78,
       "publishDate": "2026-09-02",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/sunday-in-the-park-with-george-kokandy-productions/",
       "findings": [
@@ -55422,6 +55465,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "chicago-sun-times--steven-oxman.json",
+      "score": 86,
       "publishDate": "2026-08-31",
       "url": "https://chicago.suntimes.com/theater/2026/08/31/review-sunday-in-the-park-with-george-kokandy-productions",
       "findings": [
@@ -55435,6 +55479,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 93,
       "publishDate": "2026-08-30",
       "url": "https://www.chicagotheatrereview.com/2026/08/art-isnt-easy-2/",
       "findings": [
@@ -55448,6 +55493,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "chicagoonstage--kyle-a-thomas.json",
+      "score": 63,
       "publishDate": "2026-09-01",
       "url": "https://www.chicagoonstage.com/putting-it-together-in-the-wrong-frame-sunday-in-the-park-with-george-is-a-triumph-in-the-wrong-space/",
       "findings": [
@@ -55461,6 +55507,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "chicagostageandscreen--angela-allyn.json",
+      "score": 78,
       "publishDate": "2026-08-31",
       "url": "https://www.chicagostageandscreen.com/post/kokandy-renders-colorful-sondheim-at-chopin",
       "findings": [
@@ -55474,6 +55521,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "chicagotheaterandarts--jodie-jacobs.json",
+      "score": 76,
       "publishDate": "2026-09-08",
       "url": "https://chicagotheaterandarts.com/2026/09/08/musical-walk-with-sondheim-and-seurat/",
       "findings": [
@@ -55487,7 +55535,8 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "curtaincallchicago--pauls-world.json",
-      "publishDate": null,
+      "score": 90,
+      "publishDate": "2026-11-01",
       "url": "https://paullisnek.com/ccc-sundayinpark-8-31-26",
       "findings": [
         {
@@ -55500,6 +55549,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "picksinsix--ed-tracy.json",
+      "score": 79,
       "publishDate": "2026-09-05",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/5/picksinsix-review-sunday-in-the-park-with-george-kokandy-productions",
       "findings": [
@@ -55513,6 +55563,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "splash-magazines--mira-temkin.json",
+      "score": 88,
       "publishDate": "2026-08-31",
       "url": "https://splashmags.com/2026/08/finding-art-in-life-sunday-in-the-park-with-george-at-chopin-theatre/",
       "findings": [
@@ -55526,6 +55577,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "stageandcinema--cj-fernandes.json",
+      "score": 93,
       "publishDate": "2026-09-05",
       "url": "https://stageandcinema.com/2026/09/05/sunday-in-the-park-with-george-kokandy-review/",
       "findings": [
@@ -55539,6 +55591,7 @@
     {
       "showId": "sunday-in-the-park-with-george-regional-2026",
       "file": "third-coast-review--unknown.json",
+      "score": 87,
       "publishDate": "2026-09-01",
       "url": "https://thirdcoastreview.com/stages/2026/09/01/review-kokandy-productions-sunday-in-the-park-with-george",
       "findings": [
@@ -62087,7 +62140,7 @@
       "showId": "the-heart-off-broadway-2026",
       "file": "one-minute-critic--matthew-wexler.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "2026-10-30",
       "url": "https://1minutecritic.com/the-heart-musical-roundabout-review/",
       "findings": [
         {
@@ -63852,6 +63905,7 @@
     {
       "showId": "the-man-who-fell-with-the-rain-regional-2026",
       "file": "third-coast-review--unknown.json",
+      "score": 77,
       "publishDate": "2026-09-06",
       "url": "https://thirdcoastreview.com/stages/2026/09/06/review-the-man-who-fell-with-the-rain-trap-door-theatre",
       "findings": [
@@ -68632,6 +68686,7 @@
     {
       "showId": "the-targeted-regional-2026",
       "file": "buzznews--john-accrocco.json",
+      "score": 79,
       "publishDate": "2026-05-18",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/6431-a-red-orchid-s-the-targeted-builds-a-case-for-compassion.html",
       "findings": [
@@ -74838,6 +74893,7 @@
     {
       "showId": "west-side-story-regional-2026",
       "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 83,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/west-side-story-7/",
       "findings": [
@@ -74856,6 +74912,7 @@
     {
       "showId": "west-side-story-regional-2026",
       "file": "chicago-reader--kelly-kleiman.json",
+      "score": 81,
       "publishDate": "2026-08-17",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/west-side-story-music-theater-works/",
       "findings": [
@@ -74874,6 +74931,7 @@
     {
       "showId": "west-side-story-regional-2026",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 93,
       "publishDate": "2026-08-18",
       "url": "https://www.chicagotheatrereview.com/2026/08/worthy-of-a-standing-ovation/",
       "findings": [
@@ -74892,6 +74950,7 @@
     {
       "showId": "west-side-story-regional-2026",
       "file": "chicagotheaterandarts--jodie-jacobs.json",
+      "score": 76,
       "publishDate": "2026-08-20",
       "url": "https://chicagotheaterandarts.com/2026/08/20/west-side-story-reflects-our-problems/",
       "findings": [
@@ -74910,6 +74969,7 @@
     {
       "showId": "west-side-story-regional-2026",
       "file": "new-city-stage--mary-wisniewski.json",
+      "score": 90,
       "publishDate": "2026-08-20",
       "url": "https://www.newcitystage.com/2026/08/20/music-theater-works-captures-the-majestic-scope-of-west-side-story/",
       "findings": [
@@ -74928,6 +74988,7 @@
     {
       "showId": "west-side-story-regional-2026",
       "file": "picksinsix--ed-tracy.json",
+      "score": 89,
       "publishDate": "2026-08-15",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2026/8/15/picksinsix-review-west-side-story-music-theatre-works",
       "findings": [
@@ -74946,6 +75007,7 @@
     {
       "showId": "west-side-story-regional-2026",
       "file": "third-coast-review--unknown.json",
+      "score": 72,
       "publishDate": "2026-08-22",
       "url": "https://thirdcoastreview.com/stages/2026/08/22/review-music-theater-works-west-side-story",
       "findings": [
@@ -75842,6 +75904,7 @@
     {
       "showId": "windfall-regional-2026",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": "2026-04-21",
       "url": "https://www.chicagotheatrereview.com/2026/04/between-activism-and-capitalism/",
       "findings": [
@@ -96796,6 +96859,20 @@
       ]
     },
     {
+      "showId": "invisible-thread-off-broadway-2015",
+      "file": "huffpost--steven-suskin.json",
+      "score": null,
+      "publishDate": "2015-12-02",
+      "url": "http://www.huffingtonpost.com/steven-suskin/aisle-view-project-uganda_b_8704410.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
       "showId": "is-god-is-west-end-2021",
       "file": "daily-mail--patrick-marmion.json",
       "score": 79,
@@ -99038,6 +99115,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "lazarus-off-broadway-2015",
+      "file": "slate--chris-oleary.json",
+      "score": null,
+      "publishDate": "2015-12-08",
+      "url": "http://www.slate.com/articles/arts/theater/2015/12/david_bowie_and_enda_walsh_musical_lazarus_reviewed.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
@@ -103548,6 +103639,7 @@
     {
       "showId": "my-brothers-a-genius-sheffield-regional-2026",
       "file": "thestage--neil-norman.json",
+      "score": 39,
       "publishDate": "2026-02-06",
       "url": "https://www.thestage.co.uk/reviews/my-brothers-a-genius-review-sheffield-playhouse",
       "findings": [
@@ -107956,6 +108048,7 @@
     {
       "showId": "por-knockers-regional-2026",
       "file": "buzznews--bill-esler.json",
+      "score": 78,
       "publishDate": "2026-09-13",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/6685-gwydion-theatre-delivers-more-than-a-satire-in-lynn-nottage-s-por-knockers.html",
       "findings": [
@@ -109184,6 +109277,7 @@
     {
       "showId": "road-royal-exchange-regional-2026",
       "file": "thestage--anya-ryan.json",
+      "score": 79,
       "publishDate": "2026-02-20",
       "url": "https://www.thestage.co.uk/reviews/road-review-royal-exchange-manchester-2026-jim-cartwright-johnny-vegas",
       "findings": [
@@ -109827,6 +109921,7 @@
     {
       "showId": "runboyrun-and-in-old-age-off-broadway-2019",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 43,
       "publishDate": "2019-10-02",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-E300FW",
       "findings": [
@@ -124218,6 +124313,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "broadwayworld--gary-naylor.json",
+      "score": 62,
       "publishDate": "2024-08-02",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-YEARS-Almeida-Theatre-20240802",
       "findings": [
@@ -124330,7 +124426,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "telegraph--dzifa-benson.json",
-      "score": 62,
+      "score": 58,
       "publishDate": "2024-08-02",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-years-almeida-theatre-review-annie-ernaux/",
       "findings": [
@@ -124423,7 +124519,7 @@
     {
       "showId": "the-years-west-end-2025",
       "file": "whatsonstage--alun-hood.json",
-      "score": 55,
+      "score": 61,
       "publishDate": "2024-08-02",
       "url": "https://www.whatsonstage.com/news/the-years-at-the-almeida-theatre-review_1619423/",
       "findings": [
