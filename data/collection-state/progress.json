@@ -542,7 +542,9 @@
     "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
     "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
     "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
-    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
   ],
   "failed": [
     "the-heart-off-broadway-2026/thewrap--robert-hofler.json",
@@ -584,11 +586,9 @@
     "222-a-ghost-story-off-broadway-2026/theatrely--kobi-kassal.json",
     "medea-off-broadway-2026/express-uk--neil-norman.json",
     "phyl-off-broadway-2026/phusionpassenger--unknown.json",
-    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
-    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
     "ilford-boy-west-end-2026/islingtontribune--unknown.json",
     "murder-cathedral-off-west-end-2026/plays-to-see--tim-hochstrasser.json",
     "twelfth-night-crucible-regional-2026/thestage--matt-barton.json",
@@ -854,7 +854,15 @@
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
     "surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
     "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
-    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json"
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1107,7 +1115,9 @@
       "the-revlon-girl-off-west-end-2026/artshub--unknown.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
       "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
-      "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
+      "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
     ],
     "amp": [
       "data/review-texts/a-view-from-the-bridge-2010/variety--david-rooney.json",
@@ -1405,7 +1415,7 @@
     ]
   },
   "startTime": "2026-10-30T19:50:43.255Z",
-  "lastProcessed": "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
   "log": [
     {
       "t": "2026-10-30T19:52:59.573Z",
@@ -1579,12 +1589,36 @@
       "event": "bb-session",
       "session": "4322108b",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-31T04:03:30.661Z",
+      "event": "bb-session",
+      "session": "7fd8a244",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T04:03:31.338Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T04:05:32.435Z",
+      "event": "bb-session",
+      "session": "4a8c20b2",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-31T04:05:33.029Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
     "the-heart-off-broadway-2026/talkinbroadway--unknown.json",
     "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "memoriam-off-west-end-2026/ground--unknown.json",
-    "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
+    "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
   ]
 }
