@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-6531b",
+  "planId": "c6058b58-2334-4955-9a24-602b43394c05",
+  "status": "applied",
+  "createdAt": "2026-10-31T03:57:54.903Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire out-of-tier Off-Off-Broadway row peter-panto-off-broadway-2026 (retry with outOfTier)",
+    "steps": [
+      "Retire out-of-tier Off-Off-Broadway row"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "description": "Retire out-of-tier Off-Off-Broadway row",
+        "id": "peter-panto-off-broadway-2026",
+        "expectTitle": "Peter Panto",
+        "nonProduction": true,
+        "outOfTier": true,
+        "evidenceUrl": "https://www.tdf.org/shows/23550/peter-panto/",
+        "reason": "Off-Off-Broadway adults-only panto at The Parkside Lounge (TDF tags it Off-Off Broadway); the catalog has no off-off-broadway tier; admitted by Show Score listing with placeholder venue 'Lower E Side' (BRO-6531)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-31T05:19:18.008Z",
+  "results": [
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired peter-panto-off-broadway-2026 (\"Peter Panto\" @ null)"
+    }
+  ],
+  "executedIn": "ci"
+}

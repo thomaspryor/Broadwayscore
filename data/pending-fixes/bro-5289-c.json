@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5289-c",
+  "planId": "652b3f1b-b92f-4561-8102-cc842f44b46c",
+  "status": "applied",
+  "createdAt": "2026-10-26T02:53:21.059Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5289: clear the leftover duplicate flags on the pippin-2013 AP row (the other two were cleared by bro-5289-b).",
+    "steps": [
+      "BRO-5289: leftover AP-scan stamp from when this page was filed under WSJ.",
+      "BRO-5289: pointer to an empty stub row."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/ap--mark-kennedy.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5289: leftover AP-scan stamp from when this page was filed under WSJ."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/ap--mark-kennedy.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "pippin-2013/ap--associated-press.json",
+        "newValue": null,
+        "description": "BRO-5289: pointer to an empty stub row."
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T06:24:38.060Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/ap--mark-kennedy.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/ap--mark-kennedy.json syndicatedPrimaryFile: \"pippin-2013/ap--associated-press.json\" -> null"
+    }
+  ],
+  "executedIn": "ci"
+}

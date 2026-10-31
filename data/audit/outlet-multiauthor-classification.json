@@ -1,0 +1,4815 @@
+{
+  "generatedAt": "2026-05-22T03:19:38.978Z",
+  "thresholds": {
+    "MULTI_AUTHOR_CRITIC_COUNT_THRESHOLD": 3,
+    "MULTI_AUTHOR_MATCH_RATE_THRESHOLD": 0.6,
+    "LOW_DATA_THRESHOLD": 5,
+    "MOSTLY_STAFF_THRESHOLD": 0.85
+  },
+  "allowlistSize": 55,
+  "counts": {
+    "allow-listed": 6,
+    "multi-author-confirmed": 5,
+    "single-author": 53,
+    "mostly-staff": 8,
+    "low-data": 176,
+    "no-data": 60
+  },
+  "classification": {
+    "allow-listed": [
+      {
+        "outletId": "boston-globe",
+        "defaultCritic": "Don Aucoin",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "don aucoin",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "outletId": "reuters",
+        "defaultCritic": "Frank Scheck",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 2,
+        "matchRate": 0.667,
+        "topCritics": [
+          {
+            "critic": "frank scheck",
+            "count": 2
+          },
+          {
+            "critic": "david rooney",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "bbc-news",
+        "defaultCritic": "Neil Armstrong",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "neil armstrong",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "sfgate",
+        "defaultCritic": "Lily Janiak",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 0,
+        "matchRate": 0,
+        "topCritics": [
+          {
+            "critic": "mark kennedy",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "forbes",
+        "defaultCritic": "Hal Rubenstein",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "hal rubenstein",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "minneapolis-star-tribune",
+        "defaultCritic": "Chris Hewitt",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      }
+    ],
+    "multi-author-confirmed": [
+      {
+        "outletId": "about-entertainment",
+        "defaultCritic": "Chris Caggiano",
+        "tier": 3,
+        "totalReviews": 68,
+        "attributedReviews": 68,
+        "distinctCritics": 4,
+        "defaultCriticMatches": 6,
+        "matchRate": 0.088,
+        "topCritics": [
+          {
+            "critic": "ben brantley",
+            "count": 50
+          },
+          {
+            "critic": "charles isherwood",
+            "count": 11
+          },
+          {
+            "critic": "chris caggiano",
+            "count": 6
+          },
+          {
+            "critic": "bruce weber",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "thereviewshub",
+        "defaultCritic": "The Reviews Hub - London",
+        "tier": 3,
+        "totalReviews": 55,
+        "attributedReviews": 55,
+        "distinctCritics": 19,
+        "defaultCriticMatches": 10,
+        "matchRate": 0.182,
+        "topCritics": [
+          {
+            "critic": "the reviews hub - london",
+            "count": 10
+          },
+          {
+            "critic": "scott matthewman",
+            "count": 10
+          },
+          {
+            "critic": "maryam philpott",
+            "count": 6
+          },
+          {
+            "critic": "richard maguire",
+            "count": 5
+          },
+          {
+            "critic": "john cutler",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "jks-theatre-scene",
+        "defaultCritic": "Jeff Kready",
+        "tier": 4,
+        "totalReviews": 12,
+        "attributedReviews": 12,
+        "distinctCritics": 3,
+        "defaultCriticMatches": 2,
+        "matchRate": 0.167,
+        "topCritics": [
+          {
+            "critic": "jeff kyler",
+            "count": 9
+          },
+          {
+            "critic": "jeff kready",
+            "count": 2
+          },
+          {
+            "critic": "view my complete",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-recs",
+        "defaultCritic": "Erin Muldoon",
+        "tier": 3,
+        "totalReviews": 11,
+        "attributedReviews": 11,
+        "distinctCritics": 4,
+        "defaultCriticMatches": 2,
+        "matchRate": 0.182,
+        "topCritics": [
+          {
+            "critic": "randall david cook",
+            "count": 6
+          },
+          {
+            "critic": "erin muldoon",
+            "count": 2
+          },
+          {
+            "critic": "david cook",
+            "count": 2
+          },
+          {
+            "critic": "the recs it",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "metro",
+        "defaultCritic": "Adam Bloodworth",
+        "tier": 3,
+        "totalReviews": 9,
+        "attributedReviews": 9,
+        "distinctCritics": 5,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.111,
+        "topCritics": [
+          {
+            "critic": "brooke ivey johnson",
+            "count": 3
+          },
+          {
+            "critic": "claire allfree",
+            "count": 3
+          },
+          {
+            "critic": "adam bloodworth",
+            "count": 1
+          },
+          {
+            "critic": "sharon lougher",
+            "count": 1
+          },
+          {
+            "critic": "siobhan murphy",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "single-author": [
+      {
+        "outletId": "lighting-and-sound-america",
+        "defaultCritic": "David Barbour",
+        "tier": 3,
+        "totalReviews": 147,
+        "attributedReviews": 147,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 147,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "david barbour",
+            "count": 147
+          }
+        ]
+      },
+      {
+        "outletId": "the-komisar-scoop",
+        "defaultCritic": "Lucy Komisar",
+        "tier": 3,
+        "totalReviews": 139,
+        "attributedReviews": 139,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 139,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "lucy komisar",
+            "count": 139
+          }
+        ]
+      },
+      {
+        "outletId": "pages-on-stages",
+        "defaultCritic": "Mason Pilevsky",
+        "tier": 3,
+        "totalReviews": 96,
+        "attributedReviews": 96,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 96,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mason pilevsky",
+            "count": 96
+          }
+        ]
+      },
+      {
+        "outletId": "towleroad",
+        "defaultCritic": "Naveen Kumar",
+        "tier": 3,
+        "totalReviews": 56,
+        "attributedReviews": 56,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 56,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "naveen kumar",
+            "count": 56
+          }
+        ]
+      },
+      {
+        "outletId": "theatres-leiter-side",
+        "defaultCritic": "Samuel L. Leiter",
+        "tier": 3,
+        "totalReviews": 54,
+        "attributedReviews": 54,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 54,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "samuel l. leiter",
+            "count": 54
+          }
+        ]
+      },
+      {
+        "outletId": "broadway-and-me",
+        "defaultCritic": "Janice C. Simpson",
+        "tier": 4,
+        "totalReviews": 42,
+        "attributedReviews": 42,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 42,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "janice c. simpson",
+            "count": 42
+          }
+        ]
+      },
+      {
+        "outletId": "wolf-entertainment-guide",
+        "defaultCritic": "William Wolf",
+        "tier": 3,
+        "totalReviews": 37,
+        "attributedReviews": 37,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 37,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "william wolf",
+            "count": 37
+          }
+        ]
+      },
+      {
+        "outletId": "stage-left",
+        "defaultCritic": "Robert Russo",
+        "tier": 3,
+        "totalReviews": 36,
+        "attributedReviews": 36,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 36,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "robert russo",
+            "count": 36
+          }
+        ]
+      },
+      {
+        "outletId": "wnyc",
+        "defaultCritic": "Jennifer Vanasco",
+        "tier": 2,
+        "totalReviews": 33,
+        "attributedReviews": 33,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 33,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jennifer vanasco",
+            "count": 33
+          }
+        ]
+      },
+      {
+        "outletId": "gotham-playgoer",
+        "defaultCritic": "Robert Sholiton",
+        "tier": 3,
+        "totalReviews": 32,
+        "attributedReviews": 32,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 32,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "robert sholiton",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "outletId": "scribicide",
+        "defaultCritic": "Aaron Botwick",
+        "tier": 3,
+        "totalReviews": 32,
+        "attributedReviews": 32,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 32,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "aaron botwick",
+            "count": 32
+          }
+        ]
+      },
+      {
+        "outletId": "this-week-in-new-york",
+        "defaultCritic": "Mark Rifkin",
+        "tier": 4,
+        "totalReviews": 31,
+        "attributedReviews": 31,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 31,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mark rifkin",
+            "count": 31
+          }
+        ]
+      },
+      {
+        "outletId": "city-cabaret",
+        "defaultCritic": "Elizabeth Ahlfors",
+        "tier": 3,
+        "totalReviews": 27,
+        "attributedReviews": 27,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 27,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "elizabeth ahlfors",
+            "count": 27
+          }
+        ]
+      },
+      {
+        "outletId": "stu-on-broadway",
+        "defaultCritic": "Stu Brown",
+        "tier": 3,
+        "totalReviews": 22,
+        "attributedReviews": 22,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 22,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "stu brown",
+            "count": 22
+          }
+        ]
+      },
+      {
+        "outletId": "bobs-theater-blog",
+        "defaultCritic": "Robert Sholiton",
+        "tier": 3,
+        "totalReviews": 21,
+        "attributedReviews": 21,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 21,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "robert sholiton",
+            "count": 21
+          }
+        ]
+      },
+      {
+        "outletId": "broadwayselect",
+        "defaultCritic": "Peter Filichia",
+        "tier": 3,
+        "totalReviews": 18,
+        "attributedReviews": 18,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 18,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "peter filichia",
+            "count": 18
+          }
+        ]
+      },
+      {
+        "outletId": "scheckontheater",
+        "defaultCritic": "Frank Scheck",
+        "tier": 3,
+        "totalReviews": 17,
+        "attributedReviews": 17,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 17,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "frank scheck",
+            "count": 17
+          }
+        ]
+      },
+      {
+        "outletId": "peconic-public-broadcasting",
+        "defaultCritic": "David Richardson",
+        "tier": 3,
+        "totalReviews": 17,
+        "attributedReviews": 17,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 17,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "david richardson",
+            "count": 17
+          }
+        ]
+      },
+      {
+        "outletId": "act-three-the-reviews",
+        "defaultCritic": "Doug Marino",
+        "tier": 3,
+        "totalReviews": 16,
+        "attributedReviews": 16,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 16,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "doug marino",
+            "count": 16
+          }
+        ]
+      },
+      {
+        "outletId": "drama-queen-nyc",
+        "defaultCritic": "Jonathan Warman",
+        "tier": 3,
+        "totalReviews": 16,
+        "attributedReviews": 16,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 16,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jonathan warman",
+            "count": 16
+          }
+        ]
+      },
+      {
+        "outletId": "the-interested-bystander",
+        "defaultCritic": "Cary Wong",
+        "tier": 3,
+        "totalReviews": 15,
+        "attributedReviews": 15,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 15,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "cary wong",
+            "count": 15
+          }
+        ]
+      },
+      {
+        "outletId": "on-off-broadway",
+        "defaultCritic": "Matt Windman",
+        "tier": 3,
+        "totalReviews": 15,
+        "attributedReviews": 15,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 15,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "matt windman",
+            "count": 15
+          }
+        ]
+      },
+      {
+        "outletId": "reflections-in-the-light",
+        "defaultCritic": "Lauren Yarger",
+        "tier": 3,
+        "totalReviews": 14,
+        "attributedReviews": 14,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 14,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "lauren yarger",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "outletId": "as-her-world-turns",
+        "defaultCritic": "Erica Meyer",
+        "tier": 3,
+        "totalReviews": 14,
+        "attributedReviews": 14,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 14,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "erica meyer",
+            "count": 14
+          }
+        ]
+      },
+      {
+        "outletId": "backstage-barbie",
+        "defaultCritic": "BackStage Barbie",
+        "tier": 3,
+        "totalReviews": 13,
+        "attributedReviews": 13,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 13,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "backstage barbie",
+            "count": 13
+          }
+        ]
+      },
+      {
+        "outletId": "labor-press",
+        "defaultCritic": "Leonard Golubchick",
+        "tier": 3,
+        "totalReviews": 12,
+        "attributedReviews": 12,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 12,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "leonard golubchick",
+            "count": 12
+          }
+        ]
+      },
+      {
+        "outletId": "bsonarts",
+        "defaultCritic": "Bruce Smith",
+        "tier": 3,
+        "totalReviews": 11,
+        "attributedReviews": 11,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 11,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bruce smith",
+            "count": 11
+          }
+        ]
+      },
+      {
+        "outletId": "simon-parris-man-in-chair",
+        "defaultCritic": "Simon Parris",
+        "tier": 3,
+        "totalReviews": 11,
+        "attributedReviews": 11,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 11,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "simon parris",
+            "count": 11
+          }
+        ]
+      },
+      {
+        "outletId": "film-festival-traveler",
+        "defaultCritic": "Kevin Filipski",
+        "tier": 3,
+        "totalReviews": 11,
+        "attributedReviews": 11,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 11,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "kevin filipski",
+            "count": 11
+          }
+        ]
+      },
+      {
+        "outletId": "newnownextcom",
+        "defaultCritic": "Michael Musto",
+        "tier": 3,
+        "totalReviews": 10,
+        "attributedReviews": 10,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 10,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael musto",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "outletId": "theater-reviews-from-my-seat",
+        "defaultCritic": "Joe Lombardi",
+        "tier": 3,
+        "totalReviews": 10,
+        "attributedReviews": 10,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 10,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "joe lombardi",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "outletId": "melindas-malarky",
+        "defaultCritic": "Melinda Pressler",
+        "tier": 3,
+        "totalReviews": 10,
+        "attributedReviews": 10,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 10,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "melinda pressler",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "outletId": "people",
+        "defaultCritic": "Dave Quinn",
+        "tier": 2,
+        "totalReviews": 8,
+        "attributedReviews": 8,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 8,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "dave quinn",
+            "count": 8
+          }
+        ]
+      },
+      {
+        "outletId": "2ontheaisle",
+        "defaultCritic": "Karen Isaacs",
+        "tier": 3,
+        "totalReviews": 8,
+        "attributedReviews": 8,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 8,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "karen isaacs",
+            "count": 8
+          }
+        ]
+      },
+      {
+        "outletId": "dc-theater-arts",
+        "defaultCritic": "Deb Miller",
+        "tier": 4,
+        "totalReviews": 7,
+        "attributedReviews": 7,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 7,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "deb miller",
+            "count": 7
+          }
+        ]
+      },
+      {
+        "outletId": "simon-seez",
+        "defaultCritic": "Simon Saltzman",
+        "tier": 3,
+        "totalReviews": 7,
+        "attributedReviews": 7,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 7,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "simon saltzman",
+            "count": 7
+          }
+        ]
+      },
+      {
+        "outletId": "thisbroadsway",
+        "defaultCritic": "Sandra McFarland",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "sandra mcfarland",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "national-review",
+        "defaultCritic": "Kyle Smith",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "kyle smith",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "parade",
+        "defaultCritic": "Janice Kaplan",
+        "tier": 2,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "janice kaplan",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "theater-in-the-now",
+        "defaultCritic": "Michael Block",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael block",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "journal-inquirer",
+        "defaultCritic": "Tim Leininger",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "tim leininger",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "onandoffbroadwaytheaterreviews",
+        "defaultCritic": "Richard Seff",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "richard seff",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "upstage-downstage",
+        "defaultCritic": "Howard Miller",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "howard miller",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "carey-purcell",
+        "defaultCritic": "Carey Purcell",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "carey purcell",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "magical-misstari-tour",
+        "defaultCritic": "Tari Stratton",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "tari stratton",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "aaron-in-nyc",
+        "defaultCritic": "Aaron",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 6,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "aaron",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "the-three-tomatoes",
+        "defaultCritic": "Valerie Samaldone",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "valerie samaldone",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "outletId": "more-than-the-play-blog",
+        "defaultCritic": "Domenick Danza",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "domenick danza",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "outletId": "li-herald",
+        "defaultCritic": "Elyse Trevers",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "elyse trevers",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "outletId": "adriandimanlig",
+        "defaultCritic": "Adrian Dimanlig",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "adrian dimanlig",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "outletId": "diandra-reviews-it-all",
+        "defaultCritic": "Diandra Rivera",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "diandra rivera",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "outletId": "the-culture-mom",
+        "defaultCritic": "Holly Rosen Fink",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "holly rosen fink",
+            "count": 5
+          }
+        ]
+      },
+      {
+        "outletId": "cote-notices",
+        "defaultCritic": "David Cote",
+        "tier": 3,
+        "totalReviews": 5,
+        "attributedReviews": 5,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 5,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "david cote",
+            "count": 5
+          }
+        ]
+      }
+    ],
+    "mostly-staff": [
+      {
+        "outletId": "nyt-theater",
+        "defaultCritic": "Jonathan Mandell",
+        "tier": 2,
+        "totalReviews": 259,
+        "attributedReviews": 259,
+        "distinctCritics": 5,
+        "defaultCriticMatches": 248,
+        "matchRate": 0.958,
+        "topCritics": [
+          {
+            "critic": "jonathan mandell",
+            "count": 248
+          },
+          {
+            "critic": "david nounou",
+            "count": 8
+          },
+          {
+            "critic": "raven snook",
+            "count": 1
+          },
+          {
+            "critic": "scott proudfit",
+            "count": 1
+          },
+          {
+            "critic": "schoenfeld theatre",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-clyde-fitch-report",
+        "defaultCritic": "David Finkle",
+        "tier": 3,
+        "totalReviews": 20,
+        "attributedReviews": 20,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 14,
+        "matchRate": 0.7,
+        "topCritics": [
+          {
+            "critic": "david finkle",
+            "count": 14
+          },
+          {
+            "critic": "martha wade steketee",
+            "count": 6
+          }
+        ]
+      },
+      {
+        "outletId": "cabaret-scenes",
+        "defaultCritic": "Elizabeth Ahlfors",
+        "tier": 3,
+        "totalReviews": 16,
+        "attributedReviews": 16,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 15,
+        "matchRate": 0.938,
+        "topCritics": [
+          {
+            "critic": "elizabeth ahlfors",
+            "count": 15
+          },
+          {
+            "critic": "christopher m. struck",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "city-am",
+        "defaultCritic": "Adam Bloodworth",
+        "tier": 3,
+        "totalReviews": 10,
+        "attributedReviews": 10,
+        "distinctCritics": 3,
+        "defaultCriticMatches": 8,
+        "matchRate": 0.8,
+        "topCritics": [
+          {
+            "critic": "adam bloodworth",
+            "count": 8
+          },
+          {
+            "critic": "anna moloney",
+            "count": 1
+          },
+          {
+            "critic": "steve dinneen",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "parterre-box",
+        "defaultCritic": "David Fox",
+        "tier": 3,
+        "totalReviews": 9,
+        "attributedReviews": 9,
+        "distinctCritics": 3,
+        "defaultCriticMatches": 7,
+        "matchRate": 0.778,
+        "topCritics": [
+          {
+            "critic": "david fox",
+            "count": 7
+          },
+          {
+            "critic": "dan johnson",
+            "count": 1
+          },
+          {
+            "critic": "christopher corwin",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "plays-international",
+        "defaultCritic": "Maryam Philpott",
+        "tier": 3,
+        "totalReviews": 8,
+        "attributedReviews": 8,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 7,
+        "matchRate": 0.875,
+        "topCritics": [
+          {
+            "critic": "maryam philpott",
+            "count": 7
+          },
+          {
+            "critic": "franco milazzo",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "operawire",
+        "defaultCritic": "David Salazar",
+        "tier": 3,
+        "totalReviews": 7,
+        "attributedReviews": 7,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 5,
+        "matchRate": 0.714,
+        "topCritics": [
+          {
+            "critic": "david salazar",
+            "count": 5
+          },
+          {
+            "critic": "francisco salazar",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "susangrangercom",
+        "defaultCritic": "Susan Granger",
+        "tier": 3,
+        "totalReviews": 6,
+        "attributedReviews": 6,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 5,
+        "matchRate": 0.833,
+        "topCritics": [
+          {
+            "critic": "susan granger",
+            "count": 5
+          },
+          {
+            "critic": "philip dorian",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "low-data": [
+      {
+        "outletId": "slash-film",
+        "defaultCritic": "Caroline Cao",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "caroline cao",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "our-theater-blog",
+        "defaultCritic": "Tamara Beck",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "tamara beck",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "lilith-magazine",
+        "defaultCritic": "Aileen Jacobson",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "aileen jacobson",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "theatre-reviews-by-john-clum",
+        "defaultCritic": "John Clum",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "john clum",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "show-buzz-nyc",
+        "defaultCritic": "Laura Heller",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "laura heller",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "flipsidereviews",
+        "defaultCritic": "Kevin Filipski",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "kevin filipski",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "frequentbusinesstraveler",
+        "defaultCritic": "Jonathan Spira",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jonathan spira",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "cultural-weekly",
+        "defaultCritic": "David Sheward",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "david sheward",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "popbytes",
+        "defaultCritic": "Alex Nagorski",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "alex nagorski",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "walterthinnes",
+        "defaultCritic": "Walter Thinnes",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "walter thinnes",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "pop-dust",
+        "defaultCritic": "Thomas Burns Scully",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "thomas burns scully",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "theatre-bee-uk",
+        "defaultCritic": "Theatre Bee (UK)",
+        "tier": 3,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 4,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "theatre bee (uk)",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "outletId": "america-magazine",
+        "defaultCritic": "Rob Weinert- Kendt",
+        "tier": 4,
+        "totalReviews": 4,
+        "attributedReviews": 4,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.25,
+        "topCritics": [
+          {
+            "critic": "rob weinert-kendt",
+            "count": 3
+          },
+          {
+            "critic": "rob weinert- kendt",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "andygram",
+        "defaultCritic": "Andrew C. McGibbon",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "andrew c. mcgibbon",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "carole-di-tosti",
+        "defaultCritic": "Carole Di Tosti",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "carole di tosti",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "hollywood-soapbox",
+        "defaultCritic": "John Soltes",
+        "tier": 4,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "john soltes",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "faster-times",
+        "defaultCritic": "Jonathan Mandell",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jonathan mandell",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "history-news-network",
+        "defaultCritic": "Bruce Chadwick",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bruce chadwick",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "indianapolis-business-journal",
+        "defaultCritic": "Lou Harry",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "lou harry",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "the-modernist-beat",
+        "defaultCritic": "Anthony Pennino",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "anthony pennino",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "reclining-standards",
+        "defaultCritic": "David Fox",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "david fox",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "nyc-theatre-addict",
+        "defaultCritic": "Michael Higgins",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael higgins",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "manhattan-digest",
+        "defaultCritic": "Ryan Leeds",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "ryan leeds",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "theater-time",
+        "defaultCritic": "Joseph Cervelli",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "joseph cervelli",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "what-should-we-do",
+        "defaultCritic": "David Cote",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "david cote",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "the-saratogian",
+        "defaultCritic": "Bob Goepfert",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bob goepfert",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "the-theatre-times",
+        "defaultCritic": "Michael Appler",
+        "tier": 3,
+        "totalReviews": 3,
+        "attributedReviews": 3,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 3,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael appler",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "outletId": "catholic-transcript",
+        "defaultCritic": "Bernard Carragher",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bernard carragher",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "limelight-magazine-au",
+        "defaultCritic": "Clive Paget",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "clive paget",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "woman-around-town",
+        "defaultCritic": "Alix Cohen",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "alix cohen",
+            "count": 1
+          },
+          {
+            "critic": "quan lam",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "columbus-dispatch",
+        "defaultCritic": "Michael Grossberg",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael grossberg",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "sarasota-herald-tribune",
+        "defaultCritic": "Jay Handelman",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "sheridan moriey",
+            "count": 1
+          },
+          {
+            "critic": "jay handelman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "seattle-post-intelligencer",
+        "defaultCritic": "Jeffrey Eric Jenkins",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "mark kennedy",
+            "count": 1
+          },
+          {
+            "critic": "jeffrey eric jenkins",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "edge-media-network",
+        "defaultCritic": "Kilian Melloy",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "winnie mccroy",
+            "count": 1
+          },
+          {
+            "critic": "kilian melloy",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-sun",
+        "defaultCritic": "Dominic Maxwell",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "dominic maxwell",
+            "count": 1
+          },
+          {
+            "critic": "lyndsey clarke",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "purewow",
+        "defaultCritic": "Danielle Long",
+        "tier": 4,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "danielle long",
+            "count": 1
+          },
+          {
+            "critic": "philip mutz",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "winningham-writes",
+        "defaultCritic": "Madie Winningham",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "madie winningham",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "yonkers-tribune",
+        "defaultCritic": "John Simon",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "john simon",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "staten-island-advance",
+        "defaultCritic": "Micael J. Fressola",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 0,
+        "matchRate": 0,
+        "topCritics": [
+          {
+            "critic": "michael kuchwara",
+            "count": 1
+          },
+          {
+            "critic": "michael j. fressola",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "njarts",
+        "defaultCritic": "Jay Lustig",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jay lustig",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "oc-register",
+        "defaultCritic": "Paul Hodgins",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "paul hodgins",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "the-times-of-israel",
+        "defaultCritic": "Elke Weiss",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "elke weiss",
+            "count": 1
+          },
+          {
+            "critic": "jordan hoffman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "theatre-arts-daily",
+        "defaultCritic": "Mark Johnson",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mark johnson",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "lets-talk-off-broadway",
+        "defaultCritic": "Yvonne Korshak",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "yvonne korshak",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "florida-theater-on-stage",
+        "defaultCritic": "Bill Hirschman",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bill hirschman",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "escape-into-life",
+        "defaultCritic": "Scott Klavan",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "scott klavan",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "scene-on-stage",
+        "defaultCritic": "Philip Dorian",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "philip dorian",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "wamc",
+        "defaultCritic": "Bob Goepfert",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bob goepfert",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "pop-culturalist",
+        "defaultCritic": "Taraneh",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "taraneh",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "indy-east-end",
+        "defaultCritic": "Isa Goldberg",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "isa goldberg",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "broadwaylover",
+        "defaultCritic": "Eleanore Jenks",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "eleanore jenks",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "broadway-space",
+        "defaultCritic": "Dan Wolpow",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 2,
+        "defaultCriticMatches": 1,
+        "matchRate": 0.5,
+        "topCritics": [
+          {
+            "critic": "ben brantley",
+            "count": 1
+          },
+          {
+            "critic": "dan wolpow",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "shy-strange-manic",
+        "defaultCritic": "Kariss Ainsworth",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "kariss ainsworth",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "jitney",
+        "defaultCritic": "J.J. Colagrande",
+        "tier": 4,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "j.j. colagrande",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "seth-saith",
+        "defaultCritic": "Seth Arkin",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "seth arkin",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "oscar-e-moore",
+        "defaultCritic": "Oscar E Moore",
+        "tier": 3,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "oscar e moore",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "south-london",
+        "defaultCritic": "Michael Holland",
+        "tier": 4,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael holland",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "digital-spy",
+        "defaultCritic": "Ian Sandwell",
+        "tier": 4,
+        "totalReviews": 2,
+        "attributedReviews": 2,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 2,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "ian sandwell",
+            "count": 2
+          }
+        ]
+      },
+      {
+        "outletId": "becca-on-broadway",
+        "defaultCritic": "Becca",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "becca",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "classicalite",
+        "defaultCritic": "Patricia Reaney",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "patricia reaney",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "gay-geeks-ny",
+        "defaultCritic": "Daniel Nieciecki",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "daniel nieciecki",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "reviews-off-broadway",
+        "defaultCritic": "Scott Mitchell",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "scott mitchell",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "troy-record",
+        "defaultCritic": "Bob Goepfert",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bob goepfert",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "metro-weekly",
+        "defaultCritic": "Ryan Leeds",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "ryan leeds",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "next-magazine",
+        "defaultCritic": "Michael Hollett",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael hollett",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "denver-post",
+        "defaultCritic": "Sandra Brooks-Dillard",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "sandra brooks-dillard",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "milwaukee-journal-sentinel",
+        "defaultCritic": "Damien Jaques",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "damien jaques",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "post-and-courier",
+        "defaultCritic": "Dottie Ashley",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "dottie ashley",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "syracuse-herald-journal",
+        "defaultCritic": "Joan Vadeboncoeur",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "joan vadeboncoeur",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "into",
+        "defaultCritic": "Christian Lewis",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "christian lewis",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "culture-whisper",
+        "defaultCritic": "Teresa Guerreiro",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "teresa guerreiro",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "hypable",
+        "defaultCritic": "Irvin K",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "irvin k",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "boston-herald",
+        "defaultCritic": "Marilyn Stasio",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "marilyn stasio",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "flavorwire",
+        "defaultCritic": "Sarah Seltzer",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "sarah seltzer",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "dread-central",
+        "defaultCritic": "Caroline Cao",
+        "tier": 4,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "caroline cao",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-mary-sue",
+        "defaultCritic": "Rachel Leishman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "rachel leishman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "third-coast-review",
+        "defaultCritic": "Nancy Bishop",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "nancy bishop",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-queer-review",
+        "defaultCritic": "James Kleinmann",
+        "tier": 4,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "james kleinmann",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "metro-uk",
+        "defaultCritic": "Brooke Ivey Johnson",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 0,
+        "matchRate": 0,
+        "topCritics": [
+          {
+            "critic": "adam bloodworth",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-daily",
+        "defaultCritic": "Daniel Green",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "daniel green",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "collider",
+        "defaultCritic": "Tania Hussain",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "tania hussain",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "culture-vulture",
+        "defaultCritic": "Emily S. Mendel",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "emily s. mendel",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "news-tribune",
+        "defaultCritic": "Mark Kennedy",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mark kennedy",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "mirror",
+        "defaultCritic": "Mickey Smith",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mickey smith",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "albuquerque-journal",
+        "defaultCritic": "Adrian Gomez",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "adrian gomez",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "cleveland",
+        "defaultCritic": "Glenn Anderson",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "glenn anderson",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "fort-worth-star-telegram",
+        "defaultCritic": "Rick Mauch",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "rick mauch",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "fox-sports",
+        "defaultCritic": "Peter Schrager",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "peter schrager",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "gmanetwork",
+        "defaultCritic": "Stuart Santiago",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "stuart santiago",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "nerdist",
+        "defaultCritic": "Alicia Lutes",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "alicia lutes",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "broadstreetreview",
+        "defaultCritic": "Carol Rocamora",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "carol rocamora",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "st-louis-post-dispatch",
+        "defaultCritic": "Bruce R. Miller",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bruce r. miller",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "broadwayreviewed",
+        "defaultCritic": "Stephen Shwartz",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "stephen shwartz",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "country-stars-central",
+        "defaultCritic": "Christian Scalise",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "christian scalise",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "df-reviews",
+        "defaultCritic": "David Fox",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "david fox",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "life-full-of-cheese",
+        "defaultCritic": "Chuck Pennington III",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "chuck pennington iii",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "mediander-blog",
+        "defaultCritic": "Nick Mangione",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "nick mangione",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "nichibeiorg",
+        "defaultCritic": "Floyd Mori",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "floyd mori",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "realmericanmedia",
+        "defaultCritic": "John Entrada",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "john entrada",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "shortandsweetnyc",
+        "defaultCritic": "Ralph Greco",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "ralph greco",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "spoilednyc",
+        "defaultCritic": "Jamison Hackelman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jamison hackelman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-rafu-shimpo",
+        "defaultCritic": "Lane Nishikawa",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "lane nishikawa",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "breathe-cast",
+        "defaultCritic": "Jeannie Law",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jeannie law",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "star-watch-byline",
+        "defaultCritic": "E. Caroll",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "e. caroll",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "a2view",
+        "defaultCritic": "Ron AnnArbor",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "ron annarbor",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "mildlybitter",
+        "defaultCritic": "Nicole Serratore",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "nicole serratore",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "queer-voices",
+        "defaultCritic": "Christian Lewis",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "christian lewis",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "fastcompany",
+        "defaultCritic": "Christopher Zara",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "christopher zara",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "3views",
+        "defaultCritic": "Brittani Samuel",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "brittani samuel",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "gq",
+        "defaultCritic": "Mark Burka",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mark burka",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "popdose",
+        "defaultCritic": "Rob Ross",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "rob ross",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "splitsider",
+        "defaultCritic": "Daniel Kurland",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "daniel kurland",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "insidethemagic",
+        "defaultCritic": "Cristina Sanza",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "cristina sanza",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "okazu",
+        "defaultCritic": "Erica Friedman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "erica friedman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "says-me-says-mom",
+        "defaultCritic": "Jeryl Marcus",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jeryl marcus",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "applaud-squad",
+        "defaultCritic": "Robby Dougher",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "robby dougher",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "culturecatch",
+        "defaultCritic": "Mark Weston",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mark weston",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "culturesonar",
+        "defaultCritic": "Drew Pisarra",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "drew pisarra",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "gay-socialites",
+        "defaultCritic": "Jonathan Warman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jonathan warman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "phindie",
+        "defaultCritic": "Kathryn Osenlund",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "kathryn osenlund",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-artswire-weekly",
+        "defaultCritic": "Mateo Moreno (Critic)",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mateo moreno (critic)",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "critics-at-large",
+        "defaultCritic": "Steve Vineberg",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "steve vineberg",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "hellogiggles",
+        "defaultCritic": "Meghan Kirby",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "meghan kirby",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "refinery29",
+        "defaultCritic": "Kathryn Lindsay",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "kathryn lindsay",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "real-mrhousewife",
+        "defaultCritic": "Matt Richards",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "matt richards",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "neontommy",
+        "defaultCritic": "Jason Kehe",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jason kehe",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "fordham",
+        "defaultCritic": "Christian Eble",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "christian eble",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-manila-times",
+        "defaultCritic": "Karen Kunawicz",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "karen kunawicz",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "emertainment-monthly",
+        "defaultCritic": "Nora Dominick",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "nora dominick",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "motherhood-later",
+        "defaultCritic": "Robin Gorman Newman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "robin gorman newman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "tatistidbits",
+        "defaultCritic": "Tatiana Bautista",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "tatiana bautista",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "gay-city-news",
+        "defaultCritic": "Christopher Byrne",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "christopher byrne",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "twin-cities-arts-reader",
+        "defaultCritic": "Basil Considine",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "basil considine",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-root",
+        "defaultCritic": "Martin Johsnon",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "martin johsnon",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "irish-times",
+        "defaultCritic": "Una Mullally",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "una mullally",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "12thnight",
+        "defaultCritic": "Liz Nicholls",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "liz nicholls",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "cityguideny",
+        "defaultCritic": "Griffin Miller",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "griffin miller",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "edge-boston",
+        "defaultCritic": "Iris Fanger",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "iris fanger",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "geeks",
+        "defaultCritic": "Robert Massimi",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "robert massimi",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "hudsonreview",
+        "defaultCritic": "Erick Neher",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "erick neher",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "businessworld",
+        "defaultCritic": "Sam Marcelo",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "sam marcelo",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "csmonitor",
+        "defaultCritic": "John Beaufort",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "john beaufort",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-philippine-star",
+        "defaultCritic": "Rosalinda Orosa",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "rosalinda orosa",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "gossipcentral",
+        "defaultCritic": "Regina Weinreich",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "regina weinreich",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "talk-entertainment",
+        "defaultCritic": "Oscar E Moore",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "oscar e moore",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-queens-courier",
+        "defaultCritic": "Elyse Trevers",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "elyse trevers",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "thefilmexperience",
+        "defaultCritic": "Eric Blume",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "eric blume",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "mycentraljerseycom",
+        "defaultCritic": "Charles Paolino",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "charles paolino",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "cleveland-jewish-news",
+        "defaultCritic": "Bob Abelman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bob abelman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-tampa-tribune",
+        "defaultCritic": "Walt Belcher",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "walt belcher",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "eater",
+        "defaultCritic": "Joshua David Stein",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "joshua david stein",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "mommy-factor",
+        "defaultCritic": "Onica Mommy Factor",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "onica mommy factor",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-g-list-society",
+        "defaultCritic": "Waddie G.",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "waddie g.",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "broadwaycom",
+        "defaultCritic": "William Stevenson",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "william stevenson",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "zap-2-it",
+        "defaultCritic": "Jacqueline Cutler",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "jacqueline cutler",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "cleveland-plain-dealer",
+        "defaultCritic": "Marianne Evett",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "marianne evett",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "kitchener-ontario-record",
+        "defaultCritic": "Harry Currie",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "harry currie",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "press-enterprise",
+        "defaultCritic": "T.E. Foreman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "t.e. foreman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "virginian-pilot",
+        "defaultCritic": "Mal Vincent",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "mal vincent",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "musicals101",
+        "defaultCritic": "John Kenrick",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "john kenrick",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-kalamazoo-gazette",
+        "defaultCritic": "Michael Sommers",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael sommers",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "abc-news-14",
+        "defaultCritic": "Bob Miller",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "bob miller",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "thepopbreak",
+        "defaultCritic": "Rob Crowther IV",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "rob crowther iv",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "katzreviews",
+        "defaultCritic": "Ed Katz",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "ed katz",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "luxury-experience",
+        "defaultCritic": "Debra C Argen",
+        "tier": 4,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 0,
+        "matchRate": 0,
+        "topCritics": [
+          {
+            "critic": "debra c argenedward f nesta",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "our-ladies-and-gentle-men",
+        "defaultCritic": "Matthew Murphy",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "matthew murphy",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "off-script",
+        "defaultCritic": "Matt Windman",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "matt windman",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "process-history",
+        "defaultCritic": "Timuimeon Man",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "timuimeon man",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "glenn-beck",
+        "defaultCritic": "Glenn Beck",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "glenn beck",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "ethankanfer",
+        "defaultCritic": "Ethan Kanfer",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "ethan kanfer",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "royberkinfo",
+        "defaultCritic": "Roy Berko",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "roy berko",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "harryforbes",
+        "defaultCritic": "Harry Forbes",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "harry forbes",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "jasonraize",
+        "defaultCritic": "Nelson Pressley",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "nelson pressley",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "journaltimes",
+        "defaultCritic": "Michael Sommers",
+        "tier": 3,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "michael sommers",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "yale-daily-news",
+        "defaultCritic": "Cielo Gazard",
+        "tier": 4,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 1,
+        "matchRate": 1,
+        "topCritics": [
+          {
+            "critic": "cielo gazard",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "outletId": "the-jewish-voice-and-opinion",
+        "defaultCritic": "Two Sues On the Aisle",
+        "tier": 4,
+        "totalReviews": 1,
+        "attributedReviews": 1,
+        "distinctCritics": 1,
+        "defaultCriticMatches": 0,
+        "matchRate": 0,
+        "topCritics": [
+          {
+            "critic": "susie rosenbluth and sue weston",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "no-data": [
+      {
+        "outletId": "perez-hilton",
+        "defaultCritic": "Perez Hilton",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "cbsnews",
+        "defaultCritic": "Shania Russell",
+        "tier": 2,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "san-jose-mercury-news",
+        "defaultCritic": "Karen D'Souza",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "la-weekly",
+        "defaultCritic": "Christian Hertzog",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "reading-eagle",
+        "defaultCritic": "George Hatza",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "chicago-reader",
+        "defaultCritic": "Justin Hayford",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "joysauce",
+        "defaultCritic": "Janvi Sai",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "albany-times-union",
+        "defaultCritic": "Steve Barnes",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "dayton-local",
+        "defaultCritic": "Michael Woody",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "seattles-child",
+        "defaultCritic": "Julie Hanson",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "datebook",
+        "defaultCritic": "Lily Janiak",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "pittsburgh-city-paper",
+        "defaultCritic": "Jordana Rosenfeld",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "the-austin-chronicle",
+        "defaultCritic": "Richard Whittaker",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "the-buffalo-news",
+        "defaultCritic": "Matthew Nerber",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "times-union",
+        "defaultCritic": "Katherine Kiessling",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "south-pasadenan",
+        "defaultCritic": "Alisa Hayashida",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "globe-and-mail",
+        "defaultCritic": "J. Kelly Nestruck",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "nippertown",
+        "defaultCritic": "Bill Kellert",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "philly",
+        "defaultCritic": "Toby Zinman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "juiceph",
+        "defaultCritic": "Wanggo Gallaga",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "philadelphia-daily-news",
+        "defaultCritic": "Chuck Darron",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "philly-stage",
+        "defaultCritic": "Toby Zinman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "picture-this-post",
+        "defaultCritic": "Alexis Bugajski",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "naples-news",
+        "defaultCritic": "Chris Silk",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "nuvo",
+        "defaultCritic": "Rita Kohn",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "newyorkcitytheatre",
+        "defaultCritic": "Nicola Quinn",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "grantland",
+        "defaultCritic": "Ben Lindbergh",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "the-mama-maven",
+        "defaultCritic": "Maytal Wichman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "the-culture-trip",
+        "defaultCritic": "Bill Stevenson",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "jta",
+        "defaultCritic": "Uriel Heilman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "inquirer",
+        "defaultCritic": "Toby Zinman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "westword",
+        "defaultCritic": "Juliet Wittman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "lets-note",
+        "defaultCritic": "Brooke Ashton",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "harpersbazaar",
+        "defaultCritic": "Aaron Leth",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "onstage-colorado",
+        "defaultCritic": "Alex Miller",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "stir",
+        "defaultCritic": "Vince Kanasoot",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "lets-go-to-the-theater",
+        "defaultCritic": "Karen Nowosad",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "fanbolt",
+        "defaultCritic": "Emma Loggins",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "asheville-movies",
+        "defaultCritic": "Edward Arnaudin",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "axscom",
+        "defaultCritic": "Kyle Osborne",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "curve-magazine",
+        "defaultCritic": "Merryn Johns",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "manila-bulletin",
+        "defaultCritic": "Yap Daza",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "the-atlanta-journal-constitution",
+        "defaultCritic": "Wendell Brock",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "st-petersburg-times",
+        "defaultCritic": "John Fleming",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "san-diego-story",
+        "defaultCritic": "Welton Jones",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "the-journal-news",
+        "defaultCritic": "Jacques Le Sourd",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "hendersonville-lightning",
+        "defaultCritic": "Olivia Stuller",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "the-la-times",
+        "defaultCritic": "Charles McNulty",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "amnewyorkcom",
+        "defaultCritic": "Matt Windman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "theaternewsonline",
+        "defaultCritic": "Joe Dziemianowicz",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "jonathan-kalb",
+        "defaultCritic": "Jonathan Kalb",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "adrian-dim-anlig",
+        "defaultCritic": "Adrian Dimanlig",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "frequent-business-traveler",
+        "defaultCritic": "Jonathan Spira",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "tim-teeman",
+        "defaultCritic": "Tim Teeman",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "ethan-kanfer",
+        "defaultCritic": "Ethan Kanfer",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "dc",
+        "defaultCritic": "Deb Miller",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "ny-theater",
+        "defaultCritic": "Jonathan Mandell",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "jeremy-gerard",
+        "defaultCritic": "David Cote",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "portsmouth-news",
+        "defaultCritic": "James George",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      },
+      {
+        "outletId": "usatoday30",
+        "defaultCritic": "Elysa Gardner",
+        "tier": 3,
+        "totalReviews": 0,
+        "attributedReviews": 0,
+        "distinctCritics": 0,
+        "defaultCriticMatches": 0,
+        "matchRate": null,
+        "topCritics": []
+      }
+    ]
+  }
+}

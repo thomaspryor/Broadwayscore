@@ -1,0 +1,286 @@
+name: Recollect for Scores
+
+# Weekly re-collection of review HTML from free outlet websites to extract
+# explicit P0 scores for reviews that were originally collected via aggregators
+# (which don't include HTML/star ratings).
+
+concurrency:
+  group: recollect-scores
+  cancel-in-progress: false
+
+on:
+  schedule:
+    # Weekly: Sunday 8 PM UTC (3 PM EST) — after other Sunday workflows finish
+    - cron: '0 20 * * 0'
+  workflow_dispatch:
+    inputs:
+      outlets:
+        description: 'Comma-separated outlet IDs (or "all-free" for all free outlets with extractors)'
+        required: false
+        default: 'all-free'
+      limit:
+        description: 'Max reviews per outlet'
+        required: false
+        default: '100'
+      dry_run:
+        description: 'Just list targets, do not fetch or write (true/false)'
+        required: false
+        default: 'false'
+      delay:
+        description: 'Delay between requests in ms'
+        required: false
+        default: '2000'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  recollect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: write
+
+    steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Opening-night lease sync (BRO-6648)
+        uses: ./.github/actions/opening-night-lease-sync
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }} # BRO-6672: lets a failed sync read LANE_ONLY_MARKETS
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Create directories
+        run: mkdir -p data/archives/reviews
+
+      - name: Configure git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Determine outlets to process
+        id: outlets
+        env:
+          INPUT_OUTLETS: ${{ inputs.outlets || 'all-free' }}
+        run: |
+          OUTLETS_INPUT="${INPUT_OUTLETS}"
+          if [ "$OUTLETS_INPUT" = "all-free" ]; then
+            # Free outlets with dedicated score extractors (not noScoreExtractor)
+            # Paywalled UK outlets (telegraph, thestage) use cookie secrets for auth
+            # Excluded: guardian (stars from API not HTML), usatoday (no stars in HTML)
+            # Excluded: theater-life, london-theatre (no stars in HTML)
+            # Excluded: nydailynews, rollingstone (no star ratings)
+            # nysr (BRO-4486): its stars sit in the intro <p class="text-xl">,
+            # which body extraction drops, so only the HTML carries them.
+            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,nysr,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am,times-uk,sunday-times,financialtimes"
+          else
+            OUTLETS="$OUTLETS_INPUT"
+          fi
+          echo "list=$OUTLETS" >> $GITHUB_OUTPUT
+          echo "Processing outlets: $OUTLETS"
+
+      - name: Recollect review HTML for score extraction
+        id: recollect
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          SB_CREDIT_BUDGET: '500'
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+          COOKIES_BUNDLE_11: ${{ secrets.COOKIES_BUNDLE_11 }}
+          WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
+          WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
+          INPUT_LIMIT: ${{ inputs.limit || '100' }}
+          INPUT_DELAY: ${{ inputs.delay || '2000' }}
+          INPUT_DRY_RUN: ${{ inputs.dry_run || 'false' }}
+        run: |
+          IFS=',' read -ra OUTLET_ARRAY <<< "${{ steps.outlets.outputs.list }}"
+          # BRO-5675: the outlet loop ran into the 120-min job timeout two weeks
+          # running (v6->v7 extractor bump reopened hundreds of reviews per outlet;
+          # outlets after daily-mail never ran). Give the loop a 95-min wall-clock
+          # budget (step starts ~3 min in), hand each outlet a fair share of what
+          # is left (remaining / outlets left, at least 8 min) via
+          # --time-budget-min, and skip the rest once under 8 min. Time an outlet
+          # doesn't use rolls over to the ones after it. The script stops
+          # starting items it can't finish, so the step exits 0, the always() steps
+          # push what finished, and the job timeout stays a backstop.
+          STEP_BUDGET_MIN=95
+          MIN_OUTLET_MIN=8
+          DEADLINE=$(( $(date +%s) + STEP_BUDGET_MIN * 60 ))
+          # Rotate the start outlet weekly so the tail of the list gets turns.
+          N=${#OUTLET_ARRAY[@]}
+          OFFSET=$(( $(date +%s) / 604800 % N ))
+          OUTLET_ARRAY=("${OUTLET_ARRAY[@]:OFFSET}" "${OUTLET_ARRAY[@]:0:OFFSET}")
+          SKIPPED=""
+          CRASHED=""
+          LIMIT="${INPUT_LIMIT}"
+          DELAY="${INPUT_DELAY}"
+          DRY_RUN="${INPUT_DRY_RUN}"
+          TOTAL_EXTRACTED=0
+          TOTAL_FAILED=0
+          TOTAL_ERRORS=0
+          RESULTS=""
+
+          LEFT=$N
+          for outlet in "${OUTLET_ARRAY[@]}"; do
+            outlet=$(echo "$outlet" | xargs)  # trim whitespace
+            REMAINING_MIN=$(( (DEADLINE - $(date +%s)) / 60 ))
+            SHARE_MIN=$(( REMAINING_MIN / LEFT ))
+            LEFT=$(( LEFT - 1 ))
+            if [ "$REMAINING_MIN" -lt "$MIN_OUTLET_MIN" ]; then
+              SKIPPED="${SKIPPED}${outlet} "
+              continue
+            fi
+            [ "$SHARE_MIN" -lt "$MIN_OUTLET_MIN" ] && SHARE_MIN=$MIN_OUTLET_MIN
+            echo ""
+            echo "========================================"
+            echo "Processing outlet: $outlet"
+            echo "========================================"
+
+            ARGS="--outlet=$outlet --limit=$LIMIT --delay=$DELAY --time-budget-min=$SHARE_MIN"
+            if [ "$DRY_RUN" = "true" ]; then
+              ARGS="$ARGS --dry-run"
+            else
+              ARGS="$ARGS --execute"
+            fi
+
+            # Stream output live (a $(...) capture showed nothing for 38 min) and
+            # parse the summary from the copy.
+            LOG=$(mktemp)
+            # PIPESTATUS[0] is node's status (no pipefail here): a crashed outlet
+            # is named and fails the step after the rest have run.
+            node scripts/recollect-for-scores.js $ARGS 2>&1 | tee "$LOG" || true
+            NODE_STATUS=${PIPESTATUS[0]}
+            if [ "$NODE_STATUS" -ne 0 ]; then
+              CRASHED="${CRASHED}${outlet} "
+            fi
+            OUTPUT=$(cat "$LOG")
+
+            # Extract counts from summary line: "Extracted: N | No score: N | Errors: N"
+            EXTRACTED=$(echo "$OUTPUT" | grep -oP 'Extracted: \K\d+' || echo "0")
+            NO_SCORE=$(echo "$OUTPUT" | grep -oP 'No score: \K\d+' || echo "0")
+            ERRORS=$(echo "$OUTPUT" | grep -oP 'Errors: \K\d+' || echo "0")
+
+            TOTAL_EXTRACTED=$((TOTAL_EXTRACTED + EXTRACTED))
+            TOTAL_FAILED=$((TOTAL_FAILED + NO_SCORE))
+            TOTAL_ERRORS=$((TOTAL_ERRORS + ERRORS))
+            RESULTS="${RESULTS}${outlet}: ${EXTRACTED} extracted, ${NO_SCORE} no score, ${ERRORS} errors\n"
+
+            echo ""
+          done
+
+          echo "========================================"
+          echo "GRAND TOTAL"
+          echo "========================================"
+          echo -e "$RESULTS"
+          if [ -n "$SKIPPED" ]; then
+            echo "Out of time budget, next week: $SKIPPED"
+          fi
+          echo "Total extracted: $TOTAL_EXTRACTED | Total no score: $TOTAL_FAILED | Total errors: $TOTAL_ERRORS"
+
+          echo "total_extracted=$TOTAL_EXTRACTED" >> $GITHUB_OUTPUT
+          echo "total_errors=$TOTAL_ERRORS" >> $GITHUB_OUTPUT
+          if [ -n "$CRASHED" ]; then
+            echo "::error::recollect-for-scores.js exited non-zero for: $CRASHED"
+            exit 1
+          fi
+
+      - name: Push review-texts to private repo
+        if: always()
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: "data: Recollect review HTML for score extraction"
+
+      - name: Commit audit data
+        if: always()
+        run: |
+          git add data/audit/ data/archives/ 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No audit changes to commit"
+          else
+            bash scripts/lib/check-file-sizes.sh --advisory  # BRO-5335: post-stage large-file check (advisory until armed)
+            git commit -m "data: Recollect for scores audit data
+
+          Co-Authored-By: GitHub Action <action@github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Trigger rebuild if scores were extracted
+        # !cancelled(): one crashed outlet fails the step, but the other outlets'
+        # scores were pushed above and still need a rebuild.
+        if: ${{ !cancelled() && steps.recollect.outputs.total_extracted != '0' && steps.recollect.outputs.total_extracted != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          EXTRACTED="${{ steps.recollect.outputs.total_extracted }}"
+          echo "Triggering rebuild — $EXTRACTED new scores extracted"
+          gh workflow run rebuild-reviews.yml -f reason="Post recollect-for-scores ($EXTRACTED new P0 scores)"
+
+      - name: Notify on failure
+        # cancelled(): a job-timeout kill reads as cancelled, which failure() misses (BRO-5675).
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Recollect for Scores Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

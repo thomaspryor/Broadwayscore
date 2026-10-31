@@ -1,0 +1,87 @@
+name: Commercial Broadway Journal Sweep
+
+# BRO-6167. Weekly sweep of the Broadway Journal Substack archive for posts
+# that mention AG filings, FOIL records, financial statements or recoupment
+# and are not cited in data/commercial.json. Uncited posts are routed to the
+# owner-alert router for review. The sweep NEVER writes commercial.json.
+# Posts dated before 2026-10-24 belong to the BRO-6160 backfill and are skipped.
+#
+# Advisory: failure severity is 'warning' (digest), nothing here pages. An
+# incomplete sweep (unreadable posts, Substack outage) fails the run so
+# notify-failure and cron health see it; findings are alerted before it fails.
+
+on:
+  schedule:
+    # Mondays 14:07 UTC.
+    - cron: '7 14 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Scan and print only, no alert'
+        type: boolean
+        default: false
+
+# Shares data-health-check.yml's group: both write the alert-ledger audit
+# files, and a concurrent push would drop one side's cooldown state.
+concurrency:
+  group: data-health-check
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Sweep Broadway Journal archive
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          CI: 'true'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          if [ "$DRY_RUN" = "true" ]; then
+            node scripts/sweep-broadway-journal.js --dry-run
+          else
+            node scripts/sweep-broadway-journal.js
+          fi
+
+      # Persist the alert ledger so the cooldown survives the runner.
+      - name: Commit alert state
+        if: always()
+        continue-on-error: true
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No alert state changes"
+          else
+            git commit -m "data: broadway journal sweep alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Broadway Journal Sweep Failed'
+          description: 'Weekly Broadway Journal archive sweep failed before it could report. Replay: node scripts/sweep-broadway-journal.js --dry-run'
+          severity: 'warning'

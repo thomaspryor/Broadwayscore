@@ -1,0 +1,25 @@
+{
+  "system": "main",
+  "status": "warn",
+  "lastChecked": "2026-10-31T08:29:12.839Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Main: red streak",
+      "status": "pass",
+      "message": "Last run green"
+    },
+    {
+      "name": "Main: green rate",
+      "status": "warn",
+      "message": "rate 41.6% (green 251 / red 352, 603 runs, 3 hung (cancelled >= 10 min, counted red)), 7d trend from 41.5%, day 0 of 14 at ≥80% → FAIL"
+    },
+    {
+      "name": "Main: mid-setup cancels",
+      "status": "pass",
+      "message": "0% of the last 19 test.yml main runs cancelled mid-setup (threshold 30%)"
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+name: Checkout review-texts
+description: Checks out the private review-texts repo into data/review-texts/
+
+inputs:
+  token:
+    description: PAT for private repo access
+    required: true
+  fetch-depth:
+    description: Number of commits to fetch (0 for full history)
+    required: false
+    default: '1'
+  sparse-paths:
+    description: >-
+      Optional space-separated top-level directories (e.g. one show id) to check out instead of the whole tree
+      (BRO-4835). Uses a blob-less partial clone in cone mode, so only those directories and root files are fetched;
+      other paths stay untouched in git and push-review-texts commits only what the job wrote. Empty = full checkout.
+    required: false
+    default: ''
+
+outputs:
+  sha:
+    description: review-texts HEAD right after the clone (also written to $RUNNER_TEMP/review-texts-checkout-sha)
+    value: ${{ steps.clone.outputs.sha }}
+
+runs:
+  using: composite
+  steps:
+    # BRO-66: this is the exact step named in the incident — "Checkout
+    # review-texts (private repo)" failed with "API rate limit exceeded for
+    # user ID 3475675" during an opening-night burst of orchestrator
+    # dispatches. REVIEW_TEXTS_TOKEN is a classic PAT (5000 req/hr across ALL
+    # API calls from that token, shared by every workflow using this action),
+    # and actions/checkout@v5 has no retry of its own. Manual clone (same
+    # pattern as checkout-core-data/action.yml) gives this composite action
+    # control over retry timing: a rate-limited clone gets 30s-base
+    # exponential backoff (scripts/lib/github-rate-limit-retry.js, unit-tested
+    # in tests/unit/checkout-rate-limit-retry.test.mjs) instead of failing the
+    # whole job outright.
+    - name: Clone review-texts repo
+      id: clone
+      shell: bash
+      env:
+        REVIEW_TEXTS_TOKEN: ${{ inputs.token }}
+        FETCH_DEPTH: ${{ inputs.fetch-depth }}
+        SPARSE_PATHS: ${{ inputs.sparse-paths }}
+      run: |
+        # FETCH_DEPTH can come from a dispatch input (run-script.yml): digits
+        # only, so it can never smuggle a git option into the clone (BRO-5373).
+        if [ -n "${FETCH_DEPTH}" ] && ! printf '%s' "${FETCH_DEPTH}" | grep -Eq '^[0-9]{1,6}$'; then
+          echo "::error::fetch-depth must be digits only"; exit 1
+        fi
+        DEPTH_ARGS=""
+        if [ -n "${FETCH_DEPTH}" ] && [ "${FETCH_DEPTH}" != "0" ]; then
+          DEPTH_ARGS="--depth=${FETCH_DEPTH}"
+        fi
+        # sparse-paths can come from a dispatch input too: plain directory names only (no option, no `..`, no slash).
+        SPARSE_ARGS=""
+        if [ -n "${SPARSE_PATHS}" ]; then
+          set -f # no globbing of the path list
+          for p in ${SPARSE_PATHS}; do
+            if ! printf '%s' "$p" | grep -Eq '^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$' || [ "$p" != "${p#*..}" ]; then
+              echo "::error::sparse-paths entries must be plain directory names (got '$p')"; exit 1
+            fi
+          done
+          set +f
+          SPARSE_ARGS="--filter=blob:none --sparse"
+        fi
+
+        rm -rf data/review-texts
+        MAX_RETRIES=3
+        . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh"
+        # BRO-5338: bound the clone so a transport hang counts as a failed
+        # attempt instead of waiting for the job timeout (BRO-3074 did core
+        # data only). Sized from 97 recent step timings across 6 workflows
+        # (2026-10-22): p50 49s, p95 52s, max 66s, which include the action's
+        # own sparse-checkout and cache work, so this is an upper bound on the
+        # clone itself. 240s = 3.6x the worst seen, 5x the median, and three
+        # attempts are ~13 min worst case. Jobs with timeout-minutes 10 still end
+        # at the job timeout on a triple hang (no worse than before); the cap
+        # exists so one hung attempt is retried instead. A stall is
+        # caught far sooner by git_net's http.lowSpeed flags (45s under 1000 B/s).
+        NET_SEC="${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-240}"
+        # Full-history clones (fetch-depth 0, run-script.yml review_texts_depth)
+        # were not in the timing sample: give them 4x.
+        if [ "${FETCH_DEPTH}" = "0" ] && [ -z "${CHECKOUT_REVIEW_TEXTS_NET_TIMEOUT_SEC:-}" ]; then NET_SEC=900; fi
+        STDERR_FILE=$(mktemp)
+        for ATTEMPT in $(seq 1 $MAX_RETRIES); do
+          : > "$STDERR_FILE"
+          START=$(date +%s)
+          # `|| CLONE_RC=$?` because this step runs under bash -e.
+          CLONE_RC=0
+          # shellcheck disable=SC2086 # DEPTH_ARGS / SPARSE_ARGS are validated flag lists
+          git_net "$NET_SEC" clone $DEPTH_ARGS $SPARSE_ARGS --branch main "https://x-access-token:${REVIEW_TEXTS_TOKEN}@github.com/thomaspryor/broadway-review-texts.git" data/review-texts 2>>"$STDERR_FILE" || CLONE_RC=$?
+          if [ "$CLONE_RC" -eq 0 ]; then
+            ELAPSED=$(($(date +%s) - START))
+            echo "review-texts cloned in ${ELAPSED}s"
+            break
+          fi
+
+          cat "$STDERR_FILE" >&2
+          rm -rf data/review-texts
+
+          if [ "$CLONE_RC" -eq 124 ] || [ "$CLONE_RC" -eq 137 ]; then
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+              echo "::warning::review-texts clone hung, killed after ${NET_SEC}s (attempt $ATTEMPT/$MAX_RETRIES, rc=$CLONE_RC) — retrying in 10s"
+              sleep 10
+              continue
+            fi
+            echo "::error::review-texts clone hung on all $MAX_RETRIES attempts (killed after ${NET_SEC}s each)"
+            exit 1
+          fi
+
+          # Guarded with `|| DECISION=stop:decision-error`: this step runs
+          # under bash -e, and an unguarded command substitution assigned to
+          # a variable trips errexit if the inner node -e throws — killing
+          # the whole retry loop on attempt 1 instead of falling through to
+          # the existing retry/exit handling below. Same bug/fix as
+          # push-core-data/action.yml (task #1911).
+          DECISION=$(STDERR_FILE="$STDERR_FILE" ATTEMPT="$ATTEMPT" MAX_RETRIES="$MAX_RETRIES" node -e "
+            const fs = require('fs');
+            const { shouldRetry, retryDelayMs } = require('${GITHUB_WORKSPACE}/scripts/lib/github-rate-limit-retry.js');
+            const stderr = fs.readFileSync(process.env.STDERR_FILE, 'utf8');
+            const attempt = Number(process.env.ATTEMPT);
+            const r = shouldRetry({ attempt, exitCode: 1, stderr, maxAttempts: Number(process.env.MAX_RETRIES) });
+            console.log(r.retry ? ('retry:' + retryDelayMs(attempt)) : ('stop:' + r.reason));
+          ") || DECISION="stop:decision-error"
+
+          case "$DECISION" in
+            retry:*)
+              DELAY_MS="${DECISION#retry:}"
+              DELAY_S=$(( (DELAY_MS + 999) / 1000 ))
+              echo "::warning::review-texts checkout hit a GitHub API rate limit (attempt $ATTEMPT/$MAX_RETRIES) — backing off ${DELAY_S}s before retry"
+              sleep "$DELAY_S"
+              ;;
+            stop:max-attempts-reached)
+              echo "::error::review-texts checkout still rate-limited after $MAX_RETRIES attempts — giving up"
+              exit 1
+              ;;
+            *)
+              if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+                echo "::warning::review-texts checkout failed (attempt $ATTEMPT/$MAX_RETRIES, non-rate-limit) — retrying in 10s"
+                sleep 10
+              else
+                echo "::error::review-texts checkout failed after $MAX_RETRIES attempts"
+                exit 1
+              fi
+              ;;
+          esac
+        done
+
+        if [ ! -d data/review-texts/.git ]; then
+          echo "::error::review-texts checkout FAILED — data/review-texts/.git missing"
+          exit 1
+        fi
+        if [ -n "${SPARSE_PATHS}" ]; then
+          # shellcheck disable=SC2086 # word-splitting the validated list is intended
+          set -f
+          git_net "$NET_SEC" -C data/review-texts sparse-checkout set -- ${SPARSE_PATHS}
+          set +f
+          echo "review-texts sparse checkout: ${SPARSE_PATHS}"
+        fi
+
+        # Stale-checkout race guard (BRO-3162): record the checkout-time SHA so
+        # ./.github/actions/sync-review-texts-drift can detect pushes that land
+        # between this clone and the job's rebuild-all-reviews.js step.
+        # BRO-5890: scripts that commit inside the clone (ingest-urls.js's
+        # pushReviewTexts) failed with "Author identity unknown". Set it here,
+        # only where unset, so a workflow's own identity still wins.
+        git -C data/review-texts config user.name >/dev/null || git -C data/review-texts config user.name "github-actions[bot]"
+        git -C data/review-texts config user.email >/dev/null || git -C data/review-texts config user.email "github-actions[bot]@users.noreply.github.com"
+
+        CHECKOUT_SHA=$(git -C data/review-texts rev-parse HEAD)
+        echo "${CHECKOUT_SHA}" > "${RUNNER_TEMP:-/tmp}/review-texts-checkout-sha"
+        echo "sha=${CHECKOUT_SHA}" >> "$GITHUB_OUTPUT"
+
+        # Preserve checkout-time bytes even if the job commits before validation.
+        node scripts/lib/review-validation-scope.js data/review-texts "${RUNNER_TEMP:-/tmp}/.review-validation-baseline.json"

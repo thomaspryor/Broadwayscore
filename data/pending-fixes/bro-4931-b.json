@@ -1,0 +1,347 @@
+{
+  "issueNumber": "bro-4931-b",
+  "planId": "8f918bf1-759e-4bc8-b7c6-7714bee94b9a",
+  "status": "applied",
+  "createdAt": "2026-10-09T13:06:34.680Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 9 national tours of theatrical productions (BRO-4931 owner decision: every touring production is tracked, with or without a Broadway parent). Three are booked-ahead standalone tours confirmed from the Tours To You schedule (Dolly Parton's Smoky Mountain Christmas Carol, The Unauthorized Hallmark-ish Parody Musical, Dr. Seuss' The Cat in the Hat). Six had their current-era launch checked by hand against two sources each (Mystic Pizza, Clue second tour, Menopause The Musical 25th anniversary tour, Spamilton, The Bodyguard, All the Devils Are Here). All are provisional tour entries with no closing date. Heathers and Mexodus are left out until their tours are confirmed.",
+    "steps": [
+      "Append dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+      "Append the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+      "Append dr-seuss-the-cat-in-the-hat-tour-2027",
+      "Append mystic-pizza-tour-2026",
+      "Append clue-tour-2025",
+      "Append menopause-the-musical-tour-2026",
+      "Append spamilton-an-american-parody-tour-2018",
+      "Append the-bodyguard-tour-2026",
+      "Append all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+          "title": "Dolly Parton’s Smoky Mountain Christmas Carol",
+          "slug": "dolly-partons-smoky-mountain-christmas-carol-tour-2026",
+          "venue": "North American Tour",
+          "openingDate": "2026-11-13",
+          "closingDate": null,
+          "status": "upcoming",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/dolly-partons-smoky-mountain-christmas-carol/, launch is the first listed engagement of a tour booked ahead",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/dolly-partons-smoky-mountain-christmas-carol/; Tours To You lists this season’s run from 2026-11-13 to 2026-12-23 (26 engagements)",
+          "openingDateSource": "tourstoyou-first-engagement",
+          "tourScheduleSlug": "dolly-partons-smoky-mountain-christmas-carol",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+          "title": "The Unauthorized Hallmark(ish) Parody Musical",
+          "slug": "the-unauthorized-hallmark-ish-parody-musical-tour-2026",
+          "venue": "North American Tour",
+          "openingDate": "2026-11-20",
+          "closingDate": null,
+          "status": "upcoming",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/hallmarkish/, launch is the first listed engagement of a tour booked ahead",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/hallmarkish/; Tours To You lists 24 engagements from Tampa (2026-11-20) to Milwaukee (2026-12-30); BroadwayWorld 2026-07-27 and Production List confirm the Tampa opening",
+          "openingDateSource": "tourstoyou-first-engagement",
+          "tourScheduleSlug": "hallmarkish",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dr-seuss-the-cat-in-the-hat-tour-2027",
+          "title": "Dr. Seuss’ The Cat in the Hat",
+          "slug": "dr-seuss-the-cat-in-the-hat-tour-2027",
+          "venue": "North American Tour",
+          "openingDate": "2027-01-23",
+          "closingDate": null,
+          "status": "upcoming",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/the-cat-in-the-hat/, launch is the first listed engagement of a tour booked ahead",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/the-cat-in-the-hat/; Tours To You lists this season’s run from 2027-01-23 to 2027-04-04 (40 engagements)",
+          "openingDateSource": "tourstoyou-first-engagement",
+          "tourScheduleSlug": "the-cat-in-the-hat",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mystic-pizza-tour-2026",
+          "title": "Mystic Pizza",
+          "slug": "mystic-pizza-tour-2026",
+          "venue": "North American Tour",
+          "openingDate": "2026-09-26",
+          "closingDate": null,
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tourOf": "mystic-pizza-regional-2025",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/mystic-pizza/, current-era launch verified by hand: https://playbill.com/article/mystic-pizza-a-new-musical-will-launch-national-tour-this-fall ; https://www.broadwayworld.com/article/Photos-First-Look-at-the-MYSTIC-PIZZA-National-Tour-20261006",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/mystic-pizza/; 2026 national tour launched 2026-09-26 at the Clemens Center, Elmira NY (Playbill 2026-06-22; BroadwayWorld first look 2026-10-06); Wikipedia’s 2026-10-06 is the St. Paul stop. Separate from the Jan-Jun 2025 tour",
+          "openingDateSource": "hand-verified",
+          "tourScheduleSlug": "mystic-pizza",
+          "images": {
+            "hero": null,
+            "thumbnail": "/images/shows/mystic-pizza-regional-2025/thumbnail.jpg",
+            "poster": "/images/shows/mystic-pizza-regional-2025/poster.jpg"
+          },
+          "synopsis": "Mystic Pizza: A New Musical adapts the 1988 film about three young waitresses — best friends Kat, Daisy, and JoJo — navigating love and self-discovery at a beloved pizzeria in Mystic, Connecticut, set to a jukebox score of '80s and '90s pop hits. This limited engagement at Paper Mill Playhouse followed prior stagings at Ogunquit Playhouse (2021 world premiere), the John W. Engeman Theater (2022), and La Mirada Theatre (2024), ahead of a 2026 national tour."
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "clue-tour-2025",
+          "title": "Clue",
+          "slug": "clue-tour-2025",
+          "venue": "North American Tour",
+          "openingDate": "2025-10-21",
+          "closingDate": null,
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/clue/, current-era launch verified by hand: https://www.broadwayworld.com/article/CLUE-Unveils-Full-Cast-for-Second-National-Tour-20250924 ; https://www.whec.com/?p=891203",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/clue/; second North American tour (Work Light Productions, LME) launched 2025-10-21 at the West Herr Auditorium Theatre, Rochester NY; the first tour ran 2024-02-27 to 2025-06-08",
+          "openingDateSource": "hand-verified",
+          "tourScheduleSlug": "clue",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "menopause-the-musical-tour-2026",
+          "title": "Menopause The Musical",
+          "slug": "menopause-the-musical-tour-2026",
+          "venue": "North American Tour",
+          "openingDate": "2026-07-14",
+          "closingDate": null,
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/menopause-the-musical/, current-era launch verified by hand: https://www.broadwayworld.com/off-broadway/article/MENOPAUSE-THE-MUSICAL-Launches-25th-Anniversary-North-American-Tour-20260616 ; https://kampfire.prezly.com/from-silent-passage-to-celebration-menopause-the-musicalr-champions-25-years-of-embracing-womanhood-launching-2026-27-nationwide-anniversary-tour",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/menopause-the-musical/; 25th Anniversary North American Tour launched 2026-07-14 at Laguna Playhouse, Laguna Beach CA (producer release 2026-06-16, carried by BroadwayWorld)",
+          "openingDateSource": "hand-verified",
+          "tourScheduleSlug": "menopause-the-musical",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "spamilton-an-american-parody-tour-2018",
+          "title": "Spamilton: An American Parody",
+          "slug": "spamilton-an-american-parody-tour-2018",
+          "venue": "North American Tour",
+          "openingDate": "2018-12-20",
+          "closingDate": null,
+          "status": "open",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/spamilton-an-american-parody/, current-era launch verified by hand: https://playbill.com/article/north-american-tour-of-spamilton-officially-opens-in-ohio-december-27 ; https://playbill.com/article/spamilton-an-american-parody-national-tour-announces-2022-performance-dates",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/spamilton-an-american-parody/; national tour began performances 2018-12-20 at Playhouse Square, Cleveland (Playbill 2018-12-27) and has kept booking engagements since (Playbill 2021-12-15: \"having launched in 2018\"); Tours To You lists engagements through 2027-04-09",
+          "openingDateSource": "hand-verified",
+          "tourScheduleSlug": "spamilton-an-american-parody",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-bodyguard-tour-2026",
+          "title": "The Bodyguard",
+          "slug": "the-bodyguard-tour-2026",
+          "venue": "North American Tour",
+          "openingDate": "2026-10-15",
+          "closingDate": null,
+          "status": "upcoming",
+          "type": "musical",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/the-bodyguard/, current-era launch verified by hand: https://www.theatermania.com/news/reimagined-bodyguard-musical-announces-cast-for-north-american-tour_1848748/ ; https://www.americantheatreguild.com/toledo/shows/the-bodyguard-toledo-broadway",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/the-bodyguard/; reimagined North American tour (dir. Samantha Saltzman) kicks off 2026-10-15 at the Stranahan Theater, Toledo OH (TheaterMania 2026-08-10); not the 2016-17 Deborah Cox tour",
+          "openingDateSource": "hand-verified",
+          "tourScheduleSlug": "the-bodyguard",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024",
+          "title": "All the Devils Are Here: How Shakespeare Invented the Villain",
+          "slug": "all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024",
+          "venue": "North American Tour",
+          "openingDate": "2024-10-12",
+          "closingDate": null,
+          "status": "open",
+          "type": "play",
+          "isRevival": false,
+          "category": "tour",
+          "market": "tour",
+          "tags": [
+            "tour"
+          ],
+          "provisional": true,
+          "discoverySource": "tour-schedule:tourstoyou",
+          "tourLaunchEvidence": "Tours To You schedule https://tourstoyou.org/shows/all-the-devils-are-here/, current-era launch verified by hand: https://www.broadway.com/buzz/203870/patrick-page-to-take-all-the-devils-are-here-there-and-everywhere/ ; https://thestagesofmn.com/2024/10/21/all-the-devils-are-here-is-a-masterclass-in-shakespeares-villains-at-the-guthrie-theater/",
+          "statusSource": "added by hand 2026-10-09 (BRO-4931 owner decision: every touring production is tracked), https://tourstoyou.org/shows/all-the-devils-are-here/; Patrick Page solo play (Octopus Theatricals) launched its national tour 2024-10-12 at the Guthrie Theater, Minneapolis; later stops Klein Theatre DC, Spoleto, McCarter and others through 2027",
+          "openingDateSource": "hand-verified",
+          "tourScheduleSlug": "all-the-devils-are-here",
+          "images": {
+            "hero": null,
+            "thumbnail": null,
+            "poster": null
+          }
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T14:17:44.083Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dolly-partons-smoky-mountain-christmas-carol-tour-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-unauthorized-hallmark-ish-parody-musical-tour-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dr-seuss-the-cat-in-the-hat-tour-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mystic-pizza-tour-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added clue-tour-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added menopause-the-musical-tour-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added spamilton-an-american-parody-tour-2018"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-bodyguard-tour-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added all-the-devils-are-here-how-shakespeare-invented-the-villain-tour-2024"
+    }
+  ]
+}

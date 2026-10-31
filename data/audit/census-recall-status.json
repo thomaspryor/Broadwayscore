@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-10-26T17:42:05.977Z",
+  "verdict": "ok",
+  "reason": "3 search method(s) within 0.15 of their 4-run median",
+  "regressions": [],
+  "comparedArms": 3,
+  "trendEntries": 10,
+  "latest": {
+    "date": "2026-10-26",
+    "generatedAt": "2026-10-26T17:42:05.977Z",
+    "naivePages": 2,
+    "shows": 5,
+    "informativeShows": 5,
+    "excluded": {
+      "settling": 1
+    },
+    "truthUrls": 53,
+    "onDiskUrls": 39,
+    "newFromNaive": 8,
+    "families": {
+      "naive": 0.377,
+      "onDisk": 0.736,
+      "scoped": 0.302
+    },
+    "arms": {
+      "naive-p0": 0.17,
+      "naive-p1": 0.208,
+      "onDisk": 0.736,
+      "scoped-q0": 0.113,
+      "scoped-q1": 0.226
+    },
+    "combinedRecall": 0.849,
+    "familyYield": {
+      "naive": 4,
+      "onDisk": 7.8,
+      "scoped": 3.2
+    },
+    "armYield": {
+      "naive-p0": 1.8,
+      "naive-p1": 2.2,
+      "onDisk": 7.8,
+      "scoped-q0": 1.2,
+      "scoped-q1": 2.4
+    },
+    "armsFailed": {
+      "naive-p0": 0,
+      "naive-p1": 0,
+      "onDisk": 0,
+      "scoped-q0": 0,
+      "scoped-q1": 0
+    },
+    "unavailableArms": [],
+    "byCategory": {
+      "off-broadway": {
+        "shows": 3,
+        "truthUrls": 14,
+        "families": {
+          "naive": 0.429,
+          "onDisk": 0.786,
+          "scoped": 0.286
+        }
+      },
+      "off-west-end": {
+        "shows": 1,
+        "truthUrls": 29,
+        "families": {
+          "naive": 0.31,
+          "onDisk": 0.759,
+          "scoped": 0.31
+        }
+      },
+      "west-end": {
+        "shows": 1,
+        "truthUrls": 10,
+        "families": {
+          "naive": 0.5,
+          "onDisk": 0.6,
+          "scoped": 0.3
+        }
+      }
+    },
+    "sampleIds": [
+      "aftermath-art-new-york-off-broadway-2026",
+      "the-kick-inside-off-broadway-2026",
+      "garry-starr-classic-penguins-off-west-end-2026",
+      "cirque-berserk-west-end-2026",
+      "women-who-eat-off-broadway-2026"
+    ]
+  }
+}

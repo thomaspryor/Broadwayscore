@@ -1,0 +1,312 @@
+{
+  "issueNumber": "bro-5239-b",
+  "planId": "162d6b31-1da5-487e-85a3-258a8f3dcab2",
+  "status": "applied",
+  "createdAt": "2026-10-13T06:41:56.893Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5239 class 2: flag nine reviews that belong to a different run or production than the show they are counted on.",
+    "steps": [
+      "A Small and Quiet Light (Orange Tree): flag 4 reviews of the Chichester Minerva run",
+      "Bull (Park): flag 3 reviews of the Birmingham Rep tour leg",
+      "Kramer/Fauci: flag a This Week in New York piece dated 3 days before first preview",
+      "Love's Labour's Lost (Globe): flag a Guardian review of the Guildford Braboeuf Manor double bill",
+      "Twelfth Night (Kew): flag a Canadian Stage High Park review and a Creation Theatre review"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/guardian--arifa-akbar.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/guardian--arifa-akbar.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/whatsonstage--gareth-carr.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/whatsonstage--gareth-carr.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-small-and-quiet-light-off-west-end-2026/daily-mail--patrick-marmion.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bull-off-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bull-off-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bull-off-west-end-2026/british-theatre--andrew-cowie.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bull-off-west-end-2026/british-theatre--andrew-cowie.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bull-off-west-end-2026/liamodell--liam-odell.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bull-off-west-end-2026/liamodell--liam-odell.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/this-week-in-new-york--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Dated 2026-09-24, three days before the first preview on 2026-09-27; pre-opening piece, not a review of the St. Ann's run"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kramerfauci-st-anns-off-broadway-2026/this-week-in-new-york--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Dated 2026-09-24, three days before the first preview on 2026-09-27; pre-opening piece, not a review of the St. Ann's run",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Guardian review of the Guildford Shakespeare Co double bill at Braboeuf Manor, not the Globe production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Guardian review of the Guildford Shakespeare Co double bill at Braboeuf Manor, not the Globe production",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/aviewfromthebox--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of Canadian Stage at High Park Amphitheatre, Toronto, not Theatre on Kew"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/aviewfromthebox--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of Canadian Stage at High Park Amphitheatre, Toronto, not Theatre on Kew",
+        "description": "reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/dailyinfo--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of Creation Theatre's Twelfth Night, not Theatre on Kew"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "twelfth-night-off-west-end-2026/dailyinfo--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Review of Creation Theatre's Twelfth Night, not Theatre on Kew",
+        "description": "reason for the flag"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T07:54:13.837Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/guardian--arifa-akbar.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/guardian--arifa-akbar.json wrongProductionReason: null -> \"Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/thestage--dave-fargnoli.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/thestage--dave-fargnoli.json wrongProductionReason: null -> \"Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/whatsonstage--gareth-carr.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/whatsonstage--gareth-carr.json wrongProductionReason: null -> \"Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/daily-mail--patrick-marmion.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-small-and-quiet-light-off-west-end-2026/daily-mail--patrick-marmion.json wrongProductionReason: null -> \"Review of the earlier Chichester Minerva run (Aug-Sep 2026), before the Orange Tree transfer opened\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bull-off-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bull-off-west-end-2026/all-that-dazzles-uk--all-that-dazzles.json wrongProductionReason: null -> \"Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bull-off-west-end-2026/british-theatre--andrew-cowie.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bull-off-west-end-2026/british-theatre--andrew-cowie.json wrongProductionReason: null -> \"Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bull-off-west-end-2026/liamodell--liam-odell.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bull-off-west-end-2026/liamodell--liam-odell.json wrongProductionReason: null -> \"Review of the Birmingham Rep leg (12-19 Sep 2026) of the Deafinitely tour, before the Park Theatre run (previews 30 Sep)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/this-week-in-new-york--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kramerfauci-st-anns-off-broadway-2026/this-week-in-new-york--unknown.json wrongProductionReason: null -> \"Dated 2026-09-24, three days before the first preview on 2026-09-27; pre-opening piece, not a review of the St. Ann's run\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "loves-labours-lost-globe-west-end-2026/guardian--mark-fisher.json wrongProductionReason: null -> \"Guardian review of the Guildford Shakespeare Co double bill at Braboeuf Manor, not the Globe production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/aviewfromthebox--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/aviewfromthebox--unknown.json wrongProductionReason: null -> \"Review of Canadian Stage at High Park Amphitheatre, Toronto, not Theatre on Kew\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/dailyinfo--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "twelfth-night-off-west-end-2026/dailyinfo--unknown.json wrongProductionReason: null -> \"Review of Creation Theatre's Twelfth Night, not Theatre on Kew\""
+    }
+  ]
+}

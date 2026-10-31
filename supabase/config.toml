@@ -1,0 +1,18 @@
+# Only the per-function settings live here; deploys pass --project-ref.
+# verify_jwt is stated explicitly for every function because a function first
+# deployed with --no-verify-jwt keeps that setting until a deploy says
+# otherwise (BRO-4631: show-score-proxy accepted forged tokens).
+project_id = "broadwayscorecard"
+# Never `supabase link` or `config push` from this file: it only pins function settings.
+
+[functions.show-score-proxy]
+verify_jwt = true
+
+[functions.mezzanine-search]
+verify_jwt = true
+
+[functions.delete-account]
+verify_jwt = true
+
+[functions.theatr-screenshot-import]
+verify_jwt = true

@@ -1,0 +1,269 @@
+{
+  "issueNumber": "bro-5420-a",
+  "planId": "d37137eb-a131-4fe4-9b7d-a86298cd4335",
+  "status": "partial",
+  "createdAt": "2026-10-16T02:20:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (a): re-credit 19 critic names cut at an apostrophe or Mc particle (Holly O' / Joe Mc / Caroline Mc / Neil Mc) to the full name. Three are live today (Midsummer Regent's Park 2026, Fool for Love 2015, Misery 2015); the rest are excluded duplicates or wrong-production rows corrected for consistency.",
+    "steps": [
+      "recredit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-west-end-2026/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-streetcar-named-desire-2012/ew--joe-mc.json",
+        "field": "criticName",
+        "oldValue": "Joe Mc",
+        "newValue": "Joe McGovern",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Joe McGovern' at the apostrophe/particle. The same outlet credits Joe McGovern on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/telegraph--neil-mc.json",
+        "field": "criticName",
+        "oldValue": "Neil Mc",
+        "newValue": "Neil McCormick",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Neil McCormick' at the apostrophe/particle. The same outlet credits Neil McCormick on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brigadoon-1980/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fool-for-love-2015/ew--joe-mc.json",
+        "field": "criticName",
+        "oldValue": "Joe Mc",
+        "newValue": "Joe McGovern",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Joe McGovern' at the apostrophe/particle. The same outlet credits Joe McGovern on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-2017/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hello-dolly-2017/timeout-london--caroline-mc.json",
+        "field": "criticName",
+        "oldValue": "Caroline Mc",
+        "newValue": "Caroline McGinn",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Caroline McGinn' at the apostrophe/particle. The same outlet credits Caroline McGinn on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-west-end-2026/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manic-street-creature-west-end-2026/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marie-and-rosetta-west-end-2026/timeout-london--caroline-mc.json",
+        "field": "criticName",
+        "oldValue": "Caroline Mc",
+        "newValue": "Caroline McGinn",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Caroline McGinn' at the apostrophe/particle. The same outlet credits Caroline McGinn on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "misery-2015/ew--joe-mc.json",
+        "field": "criticName",
+        "oldValue": "Joe Mc",
+        "newValue": "Joe McGovern",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Joe McGovern' at the apostrophe/particle. The same outlet credits Joe McGovern on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-bacchae-1980/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-crucible-2016/ew--joe-mc.json",
+        "field": "criticName",
+        "oldValue": "Joe Mc",
+        "newValue": "Joe McGovern",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Joe McGovern' at the apostrophe/particle. The same outlet credits Joe McGovern on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-west-end-2021/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-secret-garden-1991/timeout-london--caroline-mc.json",
+        "field": "criticName",
+        "oldValue": "Caroline Mc",
+        "newValue": "Caroline McGinn",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Caroline McGinn' at the apostrophe/particle. The same outlet credits Caroline McGinn on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json",
+        "field": "criticName",
+        "oldValue": "Holly O'",
+        "newValue": "Holly O'Mahony",
+        "description": "BRO-5420: the WET/aggregator byline parser cut 'Holly O'Mahony' at the apostrophe/particle. The same outlet credits Holly O'Mahony on this outlet's other rows (and in this show where a full-name copy of the same url exists)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T02:59:33.440Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-west-end-2026/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-midsummer-nights-dream-west-end-2026/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-streetcar-named-desire-2012/ew--joe-mc.json criticName: \"Joe Mc\" -> \"Joe McGovern\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "abba-voyage-off-west-end-2026/telegraph--neil-mc.json criticName: \"Neil Mc\" -> \"Neil McCormick\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brigadoon-1980/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "christmas-carol-goes-wrong-west-end-2026/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fool-for-love-2015/ew--joe-mc.json criticName: \"Joe Mc\" -> \"Joe McGovern\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hello-dolly-2017/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hello-dolly-2017/timeout-london--caroline-mc.json criticName: \"Caroline Mc\" -> \"Caroline McGinn\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "jesus-christ-superstar-west-end-2026/thestage--holly-o.json criticName applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manic-street-creature-west-end-2026/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/timeout-london--caroline-mc.json criticName: \"Caroline Mc\" -> \"Caroline McGinn\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "misery-2015/ew--joe-mc.json criticName: \"Joe Mc\" -> \"Joe McGovern\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bacchae-1980/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-crucible-2016/ew--joe-mc.json criticName: \"Joe Mc\" -> \"Joe McGovern\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-west-end-2021/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-secret-garden-1991/timeout-london--caroline-mc.json criticName: \"Caroline Mc\" -> \"Caroline McGinn\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json criticName: \"Holly O'\" -> \"Holly O'Mahony\""
+    }
+  ]
+}

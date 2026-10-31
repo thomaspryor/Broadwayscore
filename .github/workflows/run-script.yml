@@ -1,0 +1,152 @@
+name: Run Script (cloud sessions)
+
+# BRO-5008: lets a cloud Claude session (iPhone, iPad, claude.ai/code) run a
+# committed repo script that needs production API keys, which only the Mac's .env
+# and GitHub secrets hold. Before this, each such question (traffic sources,
+# PostHog, scraper probes, LLM-backed checks) became an email asking the owner to
+# run it at the Mac. Dispatch with scripts/cloud-run-script.js, which waits and
+# prints the output locally.
+#
+# Safety:
+# - main only: the job refuses any other ref, so only landed (gated) code runs.
+# - The script path is validated (scripts/**.{js,mjs,cjs,ts}, no '..'), args are a
+#   JSON array passed as argv, and inputs reach the runner only through env (never
+#   interpolated into a shell line), so input text cannot inject shell.
+# - This repo is PUBLIC and so are its logs: the runner encrypts all script output
+#   to the caller's one-time public key (scripts/lib/sealed-output.js) and refuses
+#   to run without one. The child gets no GITHUB_STEP_SUMMARY/OUTPUT/ENV, so it
+#   cannot publish results around the seal. The script path and args_json are
+#   NOT secret (they show in the run): never pass private data as arguments.
+# - No pushes: contents read-only, checkout without persisted credentials. Files
+#   the script writes are discarded with the runner. Data changes go through
+#   execute-approved-fix.yml or their dedicated workflows.
+# - Keys are the read/analysis set only. Deliberately absent: RESEND (email,
+#   CLAUDE.md §17), VERCEL_TOKEN and SUPABASE_ACCESS_TOKEN/SERVICE_ROLE (can
+#   change production), outlet logins and cookies, backup keys, PATs.
+on:
+  workflow_dispatch:
+    inputs:
+      script:
+        description: 'Script under scripts/ (e.g. scripts/analyze-traffic-sources.js)'
+        required: true
+        type: string
+      args_json:
+        description: 'JSON array of string arguments, e.g. ["--days=91"]'
+        required: false
+        default: '[]'
+        type: string
+      review_texts:
+        description: 'Also check out the private review texts (slower)'
+        required: false
+        default: false
+        type: boolean
+      review_texts_depth:
+        description: 'Commits of review-texts history to clone (1 = snapshot, 0 = full); for history audits'
+        required: false
+        default: '1'
+        type: string
+      timeout_minutes:
+        description: 'Script time limit in minutes (max 55)'
+        required: false
+        default: '30'
+        type: string
+      pubkey_b64:
+        description: 'Base64 PEM public key the output is encrypted to (cloud-run-script.js makes one per run)'
+        required: true
+        type: string
+      request_id:
+        description: 'Caller-chosen id used to find this run'
+        required: false
+        default: ''
+        type: string
+
+run-name: "run-script ${{ inputs.script }} [${{ inputs.request_id }}]"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  run:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # Script limit (max 55) + npm ci + data checkouts.
+    timeout-minutes: 80
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          persist-credentials: false
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # review_texts_depth reaches `git clone` inside the shared action while
+      # the private-repo token is in the environment: digits only (BRO-5373).
+      - name: Validate review_texts_depth
+        if: inputs.review_texts
+        env:
+          DEPTH: ${{ inputs.review_texts_depth }}
+        run: |
+          if ! printf '%s' "${DEPTH:-1}" | grep -Eq '^[0-9]{1,6}$'; then
+            echo "::error::review_texts_depth must be 0-999999 digits only"; exit 1
+          fi
+
+      - name: Checkout review texts
+        if: inputs.review_texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          fetch-depth: ${{ inputs.review_texts_depth || '1' }}
+
+      # The data checkouts clone with the PAT in the remote URL; drop it so no
+      # script can read it back out of .git/config (nothing here pushes).
+      - name: Scrub checkout credentials
+        run: |
+          for d in /tmp/core-data-checkout data/review-texts; do
+            [ -d "$d/.git" ] || continue
+            git -C "$d" remote set-url origin "$(git -C "$d" remote get-url origin | sed -E 's#https://[^@/]+@#https://#')"
+            if git -C "$d" remote get-url origin | grep -q '@'; then echo "::error::credential still in $d remote"; exit 1; fi
+          done
+
+      - name: Run script (output sealed to the caller's key)
+        env:
+          RS_SCRIPT: ${{ inputs.script }}
+          RS_ARGS_JSON: ${{ inputs.args_json }}
+          RS_PUBKEY_B64: ${{ inputs.pubkey_b64 }}
+          RS_TIMEOUT_MIN: ${{ inputs.timeout_minutes }}
+          GH_TOKEN: ${{ github.token }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          BRIGHTDATA_SERP_ZONE: ${{ secrets.BRIGHTDATA_SERP_ZONE }}
+          BROWSERBASE_API_KEY: ${{ secrets.BROWSERBASE_API_KEY }}
+          BROWSERBASE_PROJECT_ID: ${{ secrets.BROWSERBASE_PROJECT_ID }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA_SERVICE_ACCOUNT_KEY: ${{ secrets.GA_SERVICE_ACCOUNT_KEY }}
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
+          GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+          PAGESPEED_API_KEY: ${{ secrets.PAGESPEED_API_KEY }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+        run: node scripts/run-script-sealed.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Run Script (cloud sessions) Failed'
+          severity: 'low'

@@ -1,0 +1,104 @@
+name: Vercel Project Domain
+# Attaches a domain the team already owns to the production Vercel project,
+# or reports its state (BRO-6145). The Vercel MCP connector cannot see the
+# project and no other workflow attaches domains; first use was
+# broadwaymoneyscorecard.com (bought 2026-10-24) for the Money Scorecard.
+# Where the domain points is decided in vercel.json (host redirects), not here.
+#
+# Public repo, public logs: API response bodies are never printed (the
+# /v5/domains body carries the creator's account details). Only the fields
+# below are echoed. Inputs reach the step ONLY through env.
+on:
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain owned by the team, e.g. broadwaymoneyscorecard.com or www.broadwaymoneyscorecard.com'
+        required: true
+        type: string
+      action:
+        description: 'status (read-only) or add'
+        required: true
+        default: status
+        type: choice
+        options:
+          - status
+          - add
+
+concurrency:
+  group: vercel-project-domain
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  domain:
+    name: ${{ inputs.action }} ${{ inputs.domain }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Attach or inspect the domain
+        shell: bash
+        env:
+          ACTION: ${{ inputs.action }}
+          DOMAIN_INPUT: ${{ inputs.domain }}
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          PROJECT_ID: prj_wmBnDUrCQCwabIAYPbnMiIP3wg15
+          TEAM_ID: team_zvgatcxkXdPbfhtHQMOnjpXo
+        run: |
+          set -euo pipefail
+          DOMAIN=$(printf '%s' "$DOMAIN_INPUT" | tr '[:upper:]' '[:lower:]')
+          if ! [[ "$DOMAIN" =~ ^(www\.)?[a-z0-9-]+\.(com|org|co)$ ]]; then
+            echo "::error::Not a plain apex or www domain"; exit 1
+          fi
+          APEX=${DOMAIN#www.}
+          API=https://api.vercel.com
+          AUTH="Authorization: Bearer $VERCEL_TOKEN"
+
+          # Owned by this team? Status code only, the body is never printed.
+          OWNED=$(curl -s -o /dev/null -w '%{http_code}' -H "$AUTH" \
+            "$API/v5/domains/$APEX?teamId=$TEAM_ID" || echo 000)
+          if [ "$OWNED" != "200" ]; then
+            echo "::error::$APEX is not registered to the team (HTTP $OWNED)"; exit 1
+          fi
+          echo "owned by team: yes"
+
+          if [ "$ACTION" = "add" ]; then
+            BODY=$(jq -n --arg n "$DOMAIN" '{name: $n}')
+            CODE=$(curl -s -o /tmp/add.json -w '%{http_code}' -X POST -H "$AUTH" \
+              -H 'Content-Type: application/json' \
+              "$API/v10/projects/$PROJECT_ID/domains?teamId=$TEAM_ID" -d "$BODY" || echo 000)
+            echo "add: HTTP $CODE $(jq -r '.error.code // "ok"' /tmp/add.json)"
+            # 2xx = attached; 409 = already on this project, so re-running add is safe.
+            case "$CODE" in 2??|409) ;; *) exit 1 ;; esac
+          fi
+
+          CODE=$(curl -s -o /tmp/pd.json -w '%{http_code}' -H "$AUTH" \
+            "$API/v9/projects/$PROJECT_ID/domains/$DOMAIN?teamId=$TEAM_ID" || echo 000)
+          if [ "$CODE" != "200" ]; then
+            echo "::error::$DOMAIN is not attached to the project (HTTP $CODE)"; exit 1
+          fi
+          jq '{name, verified, redirect}' /tmp/pd.json
+          if [ "$(jq -r '.verified' /tmp/pd.json)" != "true" ]; then
+            echo "::error::$DOMAIN is attached but not verified"; exit 1
+          fi
+
+          CODE=$(curl -s -o /tmp/cfg.json -w '%{http_code}' -H "$AUTH" \
+            "$API/v6/domains/$DOMAIN/config?teamId=$TEAM_ID" || echo 000)
+          if [ "$CODE" != "200" ]; then
+            echo "::error::Could not read DNS config for $DOMAIN (HTTP $CODE)"; exit 1
+          fi
+          jq '{misconfigured, configuredBy}' /tmp/cfg.json
+          if [ "$(jq -r '.misconfigured' /tmp/cfg.json)" != "false" ]; then
+            echo "::error::$DOMAIN is attached but DNS is not serving it yet"; exit 1
+          fi
+          echo "$DOMAIN is attached and serving"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Vercel Project Domain step failed'
+          severity: 'low'

@@ -1,0 +1,130 @@
+name: Fix Platform Ticket Links
+
+on:
+  schedule:
+    # Monthly on 1st Monday at 4 PM UTC (11 AM EST). Cron ORs day-of-month with
+    # day-of-week, so the old '0 16 1-7 * 1' fired on days 1-7 AND every Monday
+    # (~11 paid BD/SB runs a month). Fire every Monday; the gate job keeps day 1-7.
+    - cron: '0 16 * * 1'
+  workflow_dispatch:
+    inputs:
+      time_budget_min:
+        description: 'Per-step wall-clock budget in minutes for each BD/SB step (0 = unlimited)'
+        required: false
+        default: '9'
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    outputs:
+      run: ${{ steps.g.outputs.run }}
+    steps:
+      - id: g
+        run: |
+          # Scheduled runs: first Monday of the month only (day 1-7). Cron lag is
+          # at most ~3h from 16:00 UTC, so the UTC date is still the scheduled one.
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(date -u +%-d)" -gt 7 ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"; echo "Not the first Monday; skipping."
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  fix-links:
+    needs: gate
+    if: needs.gate.outputs.run == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    # Shared shows.json writer group (BRO-5803): fix-platform-ticket-links.js,
+    # enrich-seatplan-links.js and enrich-official-urls.js all save shows.json.
+    # Job-level so the skipped-Monday gate never pends in the group. cancel must
+    # be false: in a shared group `true` would cancel a sibling writer mid-run.
+    concurrency:
+      group: shows-json-writer
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 25-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Validate Telecharge and Ticketmaster links
+        id: fix
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          INPUT_TIME_BUDGET_MIN: ${{ github.event.inputs.time_budget_min }}
+        run: |
+          # Exit each BD/SB step's loop cleanly well before the shared 25-min
+          # job timeout; deferred shows are picked up next run. Default in
+          # bash, not a GHA || expression — the expression coerces a literal
+          # 0 (= unlimited) to falsy.
+          TB="${INPUT_TIME_BUDGET_MIN}"
+          [ -z "$TB" ] && TB=9
+          node scripts/fix-platform-ticket-links.js --time-budget-min="$TB"
+
+      - name: Enrich SeatPlan links (West End)
+        run: node scripts/enrich-seatplan-links.js
+        continue-on-error: true
+
+      - name: Enrich missing official site URLs (Broadway)
+        id: official
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_TIME_BUDGET_MIN: ${{ github.event.inputs.time_budget_min }}
+        run: |
+          TB="${INPUT_TIME_BUDGET_MIN}"
+          [ -z "$TB" ] && TB=9
+          node scripts/enrich-official-urls.js --category=broadway --time-budget-min="$TB"
+        continue-on-error: true
+
+      - name: Push core data to private repo
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from fix-platform-ticket-links'
+
+      - name: Dispatch deploy
+        if: always()
+        uses: ./.github/actions/dispatch-deploy
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: fix-platform-ticket-links
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Fix Platform Ticket Links Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

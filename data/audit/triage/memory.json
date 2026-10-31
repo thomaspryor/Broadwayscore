@@ -1,0 +1,20 @@
+{
+  "system": "memory",
+  "status": "warn",
+  "lastChecked": "2026-10-31T08:29:12.838Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Memory: cloud mirror reconcile failing",
+      "status": "pass",
+      "message": "cloud-memory/ reconcile read claude-config cleanly"
+    },
+    {
+      "name": "Memory: cloud notes not reaching the Mac",
+      "status": "warn",
+      "message": "1 cloud-memory note(s) differ from the Mac's memory for over 48h. Oldest: design-system.md (cloud-edit-merged, 58h)"
+    }
+  ]
+}

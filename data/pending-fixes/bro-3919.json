@@ -1,0 +1,119 @@
+{
+  "issueNumber": "bro-3919",
+  "planId": "7ecf5025-f7b8-4ea2-87c8-108f8f291616",
+  "status": "partial",
+  "createdAt": "2026-10-13T13:32:07.192Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3919: correct 7 critic bylines that disagree with the reviewer credit printed as the last line of the review text (extractBodyByline). Includes the london-theatre-reviews My Son's a Queer row credited to Matt Wolf (londontheatre.co.uk) whose text is signed Andrea Golinucci, and house labels (LTR, Westendwilma) replaced by the signed reviewer.",
+    "steps": [
+      "BRO-3919: the review text ends with the reviewer credit \"Jonathan Mandell\"; stored byline \"Richard Seff\" disagrees.",
+      "BRO-3919: the review text ends with the reviewer credit \"Anita-Marguerite Butler\"; stored byline \"Steve Orme\" disagrees.",
+      "BRO-3919: the review text ends with the reviewer credit \"Cara-Louise Scott-Lapish\"; stored byline \"LTR\" disagrees.",
+      "BRO-3919: the review text ends with the reviewer credit \"Andrea Golinucci\"; stored byline \"Matt Wolf\" disagrees.",
+      "BRO-3919: the review text ends with the reviewer credit \"David Brown\"; stored byline \"LTR\" disagrees.",
+      "BRO-3919: the review text ends with the reviewer credit \"Vera Liber\"; stored byline \"Susan Novak\" disagrees.",
+      "BRO-3919: the review text ends with the reviewer credit \"Nicole Darvill-Batten\"; stored byline \"Westendwilma\" disagrees."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "bernhardthamlet-2018/onandoffbroadwaytheaterreviews--richard-seff.json",
+        "field": "criticName",
+        "oldValue": "Richard Seff",
+        "newValue": "Jonathan Mandell",
+        "description": "BRO-3919: the review text ends with the reviewer credit \"Jonathan Mandell\"; stored byline \"Richard Seff\" disagrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-west-end-2026/british-theatre--steve-orme.json",
+        "field": "criticName",
+        "oldValue": "Steve Orme",
+        "newValue": "Anita-Marguerite Butler",
+        "description": "BRO-3919: the review text ends with the reviewer credit \"Anita-Marguerite Butler\"; stored byline \"Steve Orme\" disagrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "from-the-heart-west-end-2026/london-theatre-reviews--ltr.json",
+        "field": "criticName",
+        "oldValue": "LTR",
+        "newValue": "Cara-Louise Scott-Lapish",
+        "description": "BRO-3919: the review text ends with the reviewer credit \"Cara-Louise Scott-Lapish\"; stored byline \"LTR\" disagrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-sons-a-queer-but-what-can-you-do-west-end-2026/london-theatre-reviews--matt-wolf.json",
+        "field": "criticName",
+        "oldValue": "Matt Wolf",
+        "newValue": "Andrea Golinucci",
+        "description": "BRO-3919: the review text ends with the reviewer credit \"Andrea Golinucci\"; stored byline \"Matt Wolf\" disagrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/london-theatre-reviews--ltr.json",
+        "field": "criticName",
+        "oldValue": "LTR",
+        "newValue": "David Brown",
+        "description": "BRO-3919: the review text ends with the reviewer credit \"David Brown\"; stored byline \"LTR\" disagrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-car-man-west-end-2026/british-theatre--susan-novak.json",
+        "field": "criticName",
+        "oldValue": "Susan Novak",
+        "newValue": "Vera Liber",
+        "description": "BRO-3919: the review text ends with the reviewer credit \"Vera Liber\"; stored byline \"Susan Novak\" disagrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-story-west-end-2026/west-end-wilma--westendwilma.json",
+        "field": "criticName",
+        "oldValue": "Westendwilma",
+        "newValue": "Nicole Darvill-Batten",
+        "description": "BRO-3919: the review text ends with the reviewer credit \"Nicole Darvill-Batten\"; stored byline \"Westendwilma\" disagrees."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T17:07:16.320Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bernhardthamlet-2018/onandoffbroadwaytheaterreviews--richard-seff.json criticName: \"Richard Seff\" -> \"Jonathan Mandell\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: cats-west-end-2026/british-theatre--steve-orme.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "from-the-heart-west-end-2026/london-theatre-reviews--ltr.json criticName: \"LTR\" -> \"Cara-Louise Scott-Lapish\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "my-sons-a-queer-but-what-can-you-do-west-end-2026/london-theatre-reviews--matt-wolf.json criticName: \"Matt Wolf\" -> \"Andrea Golinucci\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/london-theatre-reviews--ltr.json criticName: \"LTR\" -> \"David Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: the-car-man-west-end-2026/british-theatre--susan-novak.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-story-west-end-2026/west-end-wilma--westendwilma.json criticName: \"Westendwilma\" -> \"Nicole Darvill-Batten\""
+    }
+  ]
+}

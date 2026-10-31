@@ -1,0 +1,31 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0f0f1a;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Top bar -->
+  <text x="80" y="80" font-family="system-ui, -apple-system, sans-serif" font-size="24" fill="#d4a574" font-weight="600" letter-spacing="2">BROADWAY SCORECARD</text>
+  <text x="80" y="115" font-family="system-ui, -apple-system, sans-serif" font-size="20" fill="#6b7280">REVIEW</text>
+
+  <!-- Score badge -->
+  <rect x="1000" y="50" width="130" height="130" rx="20" fill="#FFD700" opacity="0.15"/>
+  <rect x="1000" y="50" width="130" height="130" rx="20" fill="none" stroke="#FFD700" stroke-width="3"/>
+  <text x="1065" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="bold" fill="#FFD700" text-anchor="middle">88</text>
+  <text x="1065" y="160" font-family="system-ui, -apple-system, sans-serif" font-size="14" fill="#FFD700" text-anchor="middle">Critical Gold</text>
+
+  <!-- Title -->
+  <text x="80" y="220" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="bold" fill="#ffffff">Cats: The Jellicle Ball Is a Queer</text>
+  <text x="80" y="285" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="bold" fill="#ffffff">Lion King and I Mean That as the</text>
+  <text x="80" y="350" font-family="system-ui, -apple-system, sans-serif" font-size="52" font-weight="bold" fill="#ffffff">Highest Compliment</text>
+
+  <!-- Show info -->
+  <text x="80" y="435" font-family="system-ui, -apple-system, sans-serif" font-size="28" fill="#9ca3af">Cats: The Jellicle Ball at Broadhurst Theatre</text>
+
+  <!-- Footer -->
+  <line x1="80" y1="560" x2="1120" y2="560" stroke="#374151" stroke-width="1"/>
+  <text x="80" y="595" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#6b7280">broadwayscorecard.com/reviews</text>
+</svg>

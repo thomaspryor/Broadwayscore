@@ -1,0 +1,148 @@
+{
+  "issueNumber": "bro-5851-p1617",
+  "planId": "9a9886b2-8539-4532-abda-9fe9cb854c5c",
+  "status": "applied",
+  "createdAt": "2026-10-23T03:53:18.424Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5851: clear 3 wrong 2016-17 West End posters found on the contact sheet (stock street photos, a later production)",
+    "steps": [
+      "the-kid-stays-in-the-picture-west-end-2017: clear art, stored art is a watermarked stock street photo, not production art (BRO-5851 2016-17 contact sheet)",
+      "the-kid-stays-in-the-picture-west-end-2017: mark no reliable art so the image sweep does not re-fetch it",
+      "the-kite-runner-west-end-2017: clear art, stored art is a street photo of a poster on a wall, not production art (BRO-5851 2016-17 contact sheet)",
+      "the-kite-runner-west-end-2017: mark no reliable art so the image sweep does not re-fetch it",
+      "rosencrantz-and-guildenstern-are-dead-west-end-2017: clear art, stored art is a later production (the 2017 Old Vic run starred Daniel Radcliffe; neither face is his) (BRO-5851 2016-17 contact sheet)",
+      "rosencrantz-and-guildenstern-are-dead-west-end-2017: mark no reliable art so the image sweep does not re-fetch it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-kid-stays-in-the-picture-west-end-2017",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-kid-stays-in-the-picture-west-end-2017/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-kid-stays-in-the-picture-west-end-2017: clear art, stored art is a watermarked stock street photo, not production art (BRO-5851 2016-17 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-kid-stays-in-the-picture-west-end-2017",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-23",
+          "reason": "BRO-5851: stored art is a watermarked stock street photo, not production art; cleared",
+          "key": "the kid stays in the picture|royal court|2017-03-23"
+        },
+        "description": "the-kid-stays-in-the-picture-west-end-2017: mark no reliable art so the image sweep does not re-fetch it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-kite-runner-west-end-2017",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-kite-runner-west-end-2017/thumbnail.jpg",
+          "poster": "/images/shows/the-kite-runner-west-end-2017/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-kite-runner-west-end-2017: clear art, stored art is a street photo of a poster on a wall, not production art (BRO-5851 2016-17 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-kite-runner-west-end-2017",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-23",
+          "reason": "BRO-5851: stored art is a street photo of a poster on a wall, not production art; cleared",
+          "key": "the kite runner|wyndham's theatre|2017-01-10"
+        },
+        "description": "the-kite-runner-west-end-2017: mark no reliable art so the image sweep does not re-fetch it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rosencrantz-and-guildenstern-are-dead-west-end-2017/thumbnail.jpg",
+          "poster": "/images/shows/rosencrantz-and-guildenstern-are-dead-west-end-2017/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "rosencrantz-and-guildenstern-are-dead-west-end-2017: clear art, stored art is a later production (the 2017 Old Vic run starred Daniel Radcliffe; neither face is his) (BRO-5851 2016-17 contact sheet)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-23",
+          "reason": "BRO-5851: stored art is a later production (the 2017 Old Vic run starred Daniel Radcliffe; neither face is his); cleared",
+          "key": "rosencrantz and guildenstern are dead|the old vic|2017-03-07"
+        },
+        "description": "rosencrantz-and-guildenstern-are-dead-west-end-2017: mark no reliable art so the image sweep does not re-fetch it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T05:07:48.305Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-kid-stays-in-the-picture-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-kid-stays-in-the-picture-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-kite-runner-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-kite-runner-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for rosencrantz-and-guildenstern-are-dead-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for rosencrantz-and-guildenstern-are-dead-west-end-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

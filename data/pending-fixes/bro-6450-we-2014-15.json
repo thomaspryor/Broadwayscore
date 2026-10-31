@@ -1,0 +1,748 @@
+{
+  "issueNumber": "bro-6450-we-2014-15",
+  "planId": "210e5977-03e5-40b3-a09e-81c4e248b9ca",
+  "status": "applied",
+  "createdAt": "2026-10-27T23:55:47.530Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add 22 closed West End production(s) for 2014-2015 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "steps": [
+      "Append king-charles-iii-west-end-2014 (Wyndham's Theatre, 2014-09-02 to 2015-01-31)",
+      "Append evita-west-end-2014 (Dominion Theatre, 2014-09-16 to 2014-11-01)",
+      "Append the-scottsboro-boys-west-end-2014 (Garrick Theatre, 2014-10-04 to 2015-02-21)",
+      "Append nevilles-island-west-end-2014 (Duke of York's Theatre, 2014-10-21 to 2015-01-03)",
+      "Append white-christmas-west-end-2014 (Dominion Theatre, 2014-11-08 to 2015-01-03)",
+      "Append treasure-island-west-end-2014 (Olivier Theatre, 2014-12-01 to 2015-04-08)",
+      "Append women-on-the-verge-of-a-nervous-breakdown-west-end-2015 (Playhouse Theatre, 2015-01-12 to 2015-05-23)",
+      "Append taken-at-midnight-west-end-2015 (Theatre Royal Haymarket, 2015-01-15 to 2015-03-14)",
+      "Append the-ruling-class-west-end-2015 (Trafalgar Theatre, 2015-01-16 to 2015-04-11)",
+      "Append man-and-superman-west-end-2015 (Lyttelton Theatre, 2015-02-01 to 2015-05-31)",
+      "Append how-to-hold-your-breath-west-end-2015 (Royal Court, 2015-02-04 to 2015-03-21)",
+      "Append a-view-from-the-bridge-west-end-2015 (Wyndham's Theatre, 2015-02-10 to 2015-04-11)",
+      "Append beautiful-the-carole-king-musical-west-end-2015 (Aldwych Theatre, 2015-02-24 to 2017-08-05)",
+      "Append harvey-west-end-2015 (Theatre Royal Haymarket, 2015-03-23 to 2015-05-02)",
+      "Append light-shining-in-buckinghamshire-west-end-2015 (Lyttelton Theatre, 2015-04-15 to 2015-06-22)",
+      "Append high-society-west-end-2015 (The Old Vic, 2015-04-30 to 2015-08-22)",
+      "Append the-elephant-man-west-end-2015 (Theatre Royal Haymarket, 2015-05-26 to 2015-08-08)",
+      "Append violence-and-son-west-end-2015 (Royal Court, 2015-06-03 to 2015-07-11)",
+      "Append hang-west-end-2015 (Royal Court, 2015-06-11 to 2015-07-18)",
+      "Append stop-the-play-west-end-2015 (Trafalgar Theatre, 2015-07-01 to 2015-07-27)",
+      "Append the-importance-of-being-earnest-west-end-2015 (Vaudeville Theatre, 2015-07-01 to 2015-11-07)",
+      "Append the-mentalists-west-end-2015 (Wyndham's Theatre, 2015-07-13 to 2015-08-29)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "king-charles-iii-west-end-2014",
+          "title": "King Charles III",
+          "slug": "king-charles-iii-west-end-2014",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2014-09-02",
+          "openingDate": "2014-09-02",
+          "closingDate": "2015-01-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.004Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dvj/king-charles-iii/production/vvd"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "evita-west-end-2014",
+          "title": "Evita",
+          "slug": "evita-west-end-2014",
+          "venue": "Dominion Theatre",
+          "previewsStartDate": "2014-09-16",
+          "openingDate": "2014-09-16",
+          "closingDate": "2014-11-01",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.041Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5q1/evita/production/wpf"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-scottsboro-boys-west-end-2014",
+          "title": "The Scottsboro Boys",
+          "slug": "the-scottsboro-boys-west-end-2014",
+          "venue": "Garrick Theatre",
+          "previewsStartDate": "2014-10-04",
+          "openingDate": "2014-10-04",
+          "closingDate": "2015-02-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.062Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gww/the-scottsboro-boys/production/1350"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "nevilles-island-west-end-2014",
+          "title": "Neville's Island",
+          "slug": "nevilles-island-west-end-2014",
+          "venue": "Duke of York's Theatre",
+          "previewsStartDate": "2014-10-21",
+          "openingDate": "2014-10-21",
+          "closingDate": "2015-01-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.083Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/65z/nevilles-island/production/14xs"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "white-christmas-west-end-2014",
+          "title": "White Christmas",
+          "slug": "white-christmas-west-end-2014",
+          "venue": "Dominion Theatre",
+          "previewsStartDate": "2014-11-08",
+          "openingDate": "2014-11-08",
+          "closingDate": "2015-01-03",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.105Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/drm/white-christmas/production/wpg"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "treasure-island-west-end-2014",
+          "title": "Treasure Island",
+          "slug": "treasure-island-west-end-2014",
+          "venue": "Olivier Theatre",
+          "previewsStartDate": "2014-12-01",
+          "openingDate": "2014-12-01",
+          "closingDate": "2015-04-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.128Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/4pg/treasure-island/production/vvt"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+          "title": "Women On The Verge Of A Nervous Breakdown",
+          "slug": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+          "venue": "Playhouse Theatre",
+          "previewsStartDate": "2015-01-12",
+          "openingDate": "2015-01-12",
+          "closingDate": "2015-05-23",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.150Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ftn/women-on-the-verge-of-a-nervous-breakdown/production/1564"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "taken-at-midnight-west-end-2015",
+          "title": "Taken at Midnight",
+          "slug": "taken-at-midnight-west-end-2015",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2015-01-15",
+          "openingDate": "2015-01-15",
+          "closingDate": "2015-03-14",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.172Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/ek8/taken-at-midnight/production/1094"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-ruling-class-west-end-2015",
+          "title": "The Ruling Class",
+          "slug": "the-ruling-class-west-end-2015",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2015-01-16",
+          "openingDate": "2015-01-16",
+          "closingDate": "2015-04-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.197Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7wf/the-ruling-class/production/wmp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "man-and-superman-west-end-2015",
+          "title": "Man and Superman",
+          "slug": "man-and-superman-west-end-2015",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2015-02-01",
+          "openingDate": "2015-02-01",
+          "closingDate": "2015-05-31",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.218Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/aq/man-and-superman/production/1dy5"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "how-to-hold-your-breath-west-end-2015",
+          "title": "How to Hold Your Breath",
+          "slug": "how-to-hold-your-breath-west-end-2015",
+          "venue": "Royal Court",
+          "previewsStartDate": "2015-02-04",
+          "openingDate": "2015-02-04",
+          "closingDate": "2015-03-21",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.236Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/j60/how-to-hold-your-breath/production/19s6"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "a-view-from-the-bridge-west-end-2015",
+          "title": "A View from the Bridge",
+          "slug": "a-view-from-the-bridge-west-end-2015",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2015-02-10",
+          "openingDate": "2015-02-10",
+          "closingDate": "2015-04-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.254Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/487/a-view-from-the-bridge/production/1528"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "beautiful-the-carole-king-musical-west-end-2015",
+          "title": "Beautiful, the Carole King Musical",
+          "slug": "beautiful-the-carole-king-musical-west-end-2015",
+          "venue": "Aldwych Theatre",
+          "previewsStartDate": "2015-02-24",
+          "openingDate": "2015-02-24",
+          "closingDate": "2017-08-05",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.275Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/gq3/beautiful-the-carole-king-musical/production/12rn"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "harvey-west-end-2015",
+          "title": "Harvey",
+          "slug": "harvey-west-end-2015",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2015-03-23",
+          "openingDate": "2015-03-23",
+          "closingDate": "2015-05-02",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.296Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3v6/harvey/production/1096"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "light-shining-in-buckinghamshire-west-end-2015",
+          "title": "Light Shining in Buckinghamshire",
+          "slug": "light-shining-in-buckinghamshire-west-end-2015",
+          "venue": "Lyttelton Theatre",
+          "previewsStartDate": "2015-04-15",
+          "openingDate": "2015-04-15",
+          "closingDate": "2015-06-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.317Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/6a4/light-shining-in-buckinghamshire/production/19wj"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "high-society-west-end-2015",
+          "title": "High Society",
+          "slug": "high-society-west-end-2015",
+          "venue": "The Old Vic",
+          "previewsStartDate": "2015-04-30",
+          "openingDate": "2015-04-30",
+          "closingDate": "2015-08-22",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "musical",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.338Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/5gk/high-society/production/wsp"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-elephant-man-west-end-2015",
+          "title": "The Elephant Man",
+          "slug": "the-elephant-man-west-end-2015",
+          "venue": "Theatre Royal Haymarket",
+          "previewsStartDate": "2015-05-26",
+          "openingDate": "2015-05-26",
+          "closingDate": "2015-08-08",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.360Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7rv/the-elephant-man/production/1097"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "violence-and-son-west-end-2015",
+          "title": "Violence and Son",
+          "slug": "violence-and-son-west-end-2015",
+          "venue": "Royal Court",
+          "previewsStartDate": "2015-06-03",
+          "openingDate": "2015-06-03",
+          "closingDate": "2015-07-11",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.382Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fy4/violence-and-son/production/1117"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hang-west-end-2015",
+          "title": "hang",
+          "slug": "hang-west-end-2015",
+          "venue": "Royal Court",
+          "previewsStartDate": "2015-06-11",
+          "openingDate": "2015-06-11",
+          "closingDate": "2015-07-18",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.401Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/fp0/hang/production/10j0"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "stop-the-play-west-end-2015",
+          "title": "Stop! The Play",
+          "slug": "stop-the-play-west-end-2015",
+          "venue": "Trafalgar Theatre",
+          "previewsStartDate": "2015-07-01",
+          "openingDate": "2015-07-01",
+          "closingDate": "2015-07-27",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.419Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/dzg/stop-the-play/production/w4e"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-importance-of-being-earnest-west-end-2015",
+          "title": "The Importance of Being Earnest",
+          "slug": "the-importance-of-being-earnest-west-end-2015",
+          "venue": "Vaudeville Theatre",
+          "previewsStartDate": "2015-07-01",
+          "openingDate": "2015-07-01",
+          "closingDate": "2015-11-07",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.441Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/3f/the-importance-of-being-earnest/production/14zj"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-mentalists-west-end-2015",
+          "title": "The Mentalists",
+          "slug": "the-mentalists-west-end-2015",
+          "venue": "Wyndham's Theatre",
+          "previewsStartDate": "2015-07-13",
+          "openingDate": "2015-07-13",
+          "closingDate": "2015-08-29",
+          "status": "closed",
+          "category": "west-end",
+          "market": "west-end",
+          "type": "play",
+          "tags": [
+            "historical"
+          ],
+          "season": "2014-2015",
+          "discoverySource": "we-historical:theatricalia",
+          "discoveredAt": "2026-10-27T23:55:47.463Z",
+          "openingDateSource": "theatricalia-first-performance",
+          "closingDateSource": "theatricalia",
+          "evidenceUrls": [
+            "https://theatricalia.com/play/7jq/the-mentalists/production/152c"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T01:15:24.076Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added king-charles-iii-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added evita-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-scottsboro-boys-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nevilles-island-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added white-christmas-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added treasure-island-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added women-on-the-verge-of-a-nervous-breakdown-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added taken-at-midnight-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-ruling-class-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added man-and-superman-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added how-to-hold-your-breath-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-view-from-the-bridge-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added beautiful-the-carole-king-musical-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added harvey-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added light-shining-in-buckinghamshire-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added high-society-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-elephant-man-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added violence-and-son-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hang-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added stop-the-play-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-importance-of-being-earnest-west-end-2015"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-mentalists-west-end-2015"
+    }
+  ],
+  "executedIn": "ci"
+}

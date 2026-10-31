@@ -1,0 +1,135 @@
+name: Backfill Meta Evidence
+
+# BRO-5794: a real review whose full text can't be fetched still counts, using the
+# headline + standfirst the page publishes above the wall (metaExcerpt). Weekly sweep
+# plus manual dispatch; scripts/backfill-meta-evidence.js stamps rejected and
+# unreachable pages so they are rechecked only every 14 days.
+on:
+  schedule:
+    - cron: '13 13 * * 2'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: 'Max stubs to fetch per run'
+        required: false
+        default: '40'
+        type: string
+      show:
+        description: 'Only process a specific show ID'
+        required: false
+        default: ''
+        type: string
+      dry_run:
+        description: 'Show what would be updated without writing files'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: backfill-meta-evidence
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 300
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Checkout review texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Resolve inputs
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          DISPATCH_LIMIT: ${{ inputs.limit }}
+          DISPATCH_SHOW: ${{ inputs.show }}
+          DISPATCH_DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          # A newline in a dispatch string would inject extra GITHUB_ENV lines.
+          for v in "${DISPATCH_LIMIT}" "${DISPATCH_SHOW}"; do
+            case "$v" in *$'\n'*|*$'\r'*) echo "::error::dispatch input contains a newline"; exit 1;; esac
+          done
+          if [ "${EVENT_NAME}" = "schedule" ]; then
+            { echo "INPUT_LIMIT=40"; echo "INPUT_SHOW="; echo "INPUT_DRY_RUN=false"; } >> "$GITHUB_ENV"
+          else
+            { echo "INPUT_LIMIT=${DISPATCH_LIMIT}"; echo "INPUT_SHOW=${DISPATCH_SHOW}"; echo "INPUT_DRY_RUN=${DISPATCH_DRY_RUN}"; } >> "$GITHUB_ENV"
+          fi
+
+      - name: Run meta-evidence backfill
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          COOKIES_BUNDLE_1: ${{ secrets.COOKIES_BUNDLE_1 }}
+          COOKIES_BUNDLE_2: ${{ secrets.COOKIES_BUNDLE_2 }}
+          COOKIES_BUNDLE_3: ${{ secrets.COOKIES_BUNDLE_3 }}
+          COOKIES_BUNDLE_4: ${{ secrets.COOKIES_BUNDLE_4 }}
+          COOKIES_BUNDLE_5: ${{ secrets.COOKIES_BUNDLE_5 }}
+          COOKIES_BUNDLE_6: ${{ secrets.COOKIES_BUNDLE_6 }}
+          COOKIES_BUNDLE_7: ${{ secrets.COOKIES_BUNDLE_7 }}
+          COOKIES_BUNDLE_8: ${{ secrets.COOKIES_BUNDLE_8 }}
+          COOKIES_BUNDLE_9: ${{ secrets.COOKIES_BUNDLE_9 }}
+          COOKIES_BUNDLE_10: ${{ secrets.COOKIES_BUNDLE_10 }}
+        run: |
+          ARGS="--limit=${INPUT_LIMIT} --time-budget-min=35"
+          if [ -n "${INPUT_SHOW}" ]; then ARGS="$ARGS --show=${INPUT_SHOW}"; fi
+          if [ "${INPUT_DRY_RUN}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          echo "Running: node scripts/backfill-meta-evidence.js $ARGS"
+          node scripts/backfill-meta-evidence.js $ARGS
+
+      - name: Push review texts
+        id: push-review-texts
+        if: ${{ env.INPUT_DRY_RUN != 'true' }}
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Backfill page-meta evidence for unfetchable reviews'
+
+      # Dispatch only when review-texts actually reached the private repo.
+      - name: Trigger rebuild
+        if: ${{ env.INPUT_DRY_RUN != 'true' && steps.push-review-texts.outputs.pushed == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run "Rebuild Reviews Data" -f reason="Post meta-evidence backfill"
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: backfill-meta-evidence
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Backfill Meta Evidence Failed'
+          severity: 'low'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

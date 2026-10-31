@@ -1,0 +1,337 @@
+{
+  "issueNumber": "bro-5232-c",
+  "planId": "216b4a7a-3acd-4048-9675-c06716de34b1",
+  "status": "applied",
+  "createdAt": "2026-10-13T09:05:05.171Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 batch c: byline/outlet/production fixes for BRO-5222 follow-up rows, each cited to the live page, an aggregator or a sitemap.",
+    "steps": [
+      "duplicateOf or wrongAttribution for cross-outlet copies",
+      "isNonReview for reviews that do not exist",
+      "wrongProduction for other-production texts",
+      "criticName for wrong bylines"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "sister-act-2011/abc-news--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW credits the AP review ((quote omitted)) to Mark Kennedy, linked to ABC News; the excerpt is verbatim in ap--mark-kennedy.json. Evidence: https://www.broadwayworld.com/article/Broadway-Review-Roundup-SISTER-ACT-Updating-LIVE-20110420"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sister-act-2011/abc-news--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Broadway-Review-Roundup-SISTER-ACT-Updating-LIVE-20110420",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-peewee-herman-show-2010/canadian-press--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW credits Mark Kennedy via a Canadian Press hosted-news link (CP carried the AP wire); the excerpt (quote omitted) is verbatim in ap--mark-kennedy.json. Evidence: https://www.broadwayworld.com/article/Review-Roundup-THE-PEEWEE-HERMAN-SHOW-20101111"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-peewee-herman-show-2010/canadian-press--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-THE-PEEWEE-HERMAN-SHOW-20101111",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trouble-in-mind-2021/bloomberg--mark-kennedy.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: The Bloomberg URL carries the AP review (quote omitted) by Mark Kennedy (also syndicated on theGrio/AOL); the excerpt overlaps ap--mark-kennedy.json heavily. Its stored fullText is Bloomberg boilerplate, not the review. Evidence: https://thegrio.com/2021/11/20/trouble-in-mind-broadway-debut/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "trouble-in-mind-2021/bloomberg--mark-kennedy.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://thegrio.com/2021/11/20/trouble-in-mind-broadway-debut/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2010/abc-news--michael-kuchwara.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: BWW credits this AP review (ABC News wire link) to Michael Kuchwara, and broadway.com also lists an AP/Kuchwara quote. The outlet should be ap, not abc-news; no ap sibling exists, so re-key it rather than drop it. Evidence: https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2010/abc-news--michael-kuchwara.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: byline/outlet wrong, real: ap / Michael Kuchwara; evidence https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-2003/journaltimes--michael-sommers.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Journal Times text is Peter Marks's Washington Post review, syndicated: it contains the WaPo excerpt (quote omitted). It is not Sommers's review (his (quote omitted) text is absent). Evidence: https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-2003/journaltimes--michael-sommers.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of washpost--peter-marks.json credited to the wrong outlet/critic; evidence https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-west-end-2022/daily-mail--unknown.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Same Libby Purves Daily Mail review (293 shared 8-word shingles with the Theatre Record row); the live page title is (quote omitted). Evidence: https://www.dailymail.co.uk/tvshowbiz/article-11492489/LIBBY-PURVES-reviews-Othello.html"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-west-end-2022/daily-mail--unknown.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of daily-mail--libby-purves.json credited to the wrong outlet/critic; evidence https://www.dailymail.co.uk/tvshowbiz/article-11492489/LIBBY-PURVES-reviews-Othello.html",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2003/woman-around-town--alix-cohen.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Live womanaroundtown.com page JSON-LD author and visible byline (quote omitted); datePublished 2016-05-05, credits Jonathan Kent and the excerpt praises Jessica Lange, so it reviews the 2016 Roundabout revival, not 2003. Evidence: https://womanaroundtown.com/sections/playing-around/long-days-journey-into-night-a-glass-mountain-of-a-play/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "long-days-journey-into-night-2003/woman-around-town--alix-cohen.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production (long-days-journey-into-night-2016); evidence https://womanaroundtown.com/sections/playing-around/long-days-journey-into-night-a-glass-mountain-of-a-play/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "summer-1976-2023/frank-rizzo--frank-rizzo.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Row is a BWW roundup excerpt labelled (quote omitted) with a bogus outlet (quote omitted); the excerpt appears verbatim in the sibling Variety row, whose live page has meta author (quote omitted). Evidence: https://variety.com/2023/legit/reviews/summer-1976-review-laura-linney-broadway-1235594092/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "summer-1976-2023/frank-rizzo--frank-rizzo.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of variety--frank-rizzo.json credited to the wrong outlet/critic; evidence https://variety.com/2023/legit/reviews/summer-1976-review-laura-linney-broadway-1235594092/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/billboard--greg-evans.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Billboard URL returns 404 (slug mimics the Deadline one); the stored bwwExcerpt ((quote omitted)) is in the sibling Deadline review, whose live page has author (quote omitted). Evidence: https://deadline.com/2023/03/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-stephen-sondheim-1235310162/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweeney-todd-2023/billboard--greg-evans.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: copy of deadline--greg-evans.json credited to the wrong outlet/critic; evidence https://deadline.com/2023/03/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-stephen-sondheim-1235310162/",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "diana-the-untold-and-untrue-story-off-broadway-2026/timeout--helen-shaw.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Live Time Out page is Helen Shaw's review of a different show, (quote omitted) (datePublished 2017-10-09), not the 2026 production; no 2026 Time Out review by Shaw (she left Time Out in 2019). Evidence: https://www.timeout.com/newyork/theater/my-lingerie-play-2017-the-concert-and-call-to-arms-the-final-installation"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "diana-the-untold-and-untrue-story-off-broadway-2026/timeout--helen-shaw.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production; evidence https://www.timeout.com/newyork/theater/my-lingerie-play-2017-the-concert-and-call-to-arms-the-final-installation",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "michael-r-jackson-wake-up-call-off-broadway-2026/timeout--helen-shaw.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Live Time Out page is Helen Shaw's 2019 review of (quote omitted) (datePublished 2019-06-17), a different show; no 2026 Time Out review by Shaw. Evidence: https://www.timeout.com/newyork/theater/a-strange-loop"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "michael-r-jackson-wake-up-call-off-broadway-2026/timeout--helen-shaw.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: text reviews a different production; evidence https://www.timeout.com/newyork/theater/a-strange-loop",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "big-fish-2013/cbsnews--shania-russell.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Live CBS page is a 2013-11-11 news item about Big Fish closing, with a hidden (quote omitted) byline; not a review and not by Shania Russell. Evidence: https://www.cbsnews.com/news/big-fish-musical-closing-on-broadway/"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "big-fish-2013/cbsnews--shania-russell.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: no such review by this critic at this outlet; evidence https://www.cbsnews.com/news/big-fish-musical-closing-on-broadway/",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T12:14:08.751Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sister-act-2011/abc-news--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sister-act-2011/abc-news--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Broadway-Review-Roundup-SISTER-ACT-Updating-LIVE-20110420\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/canadian-press--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-peewee-herman-show-2010/canadian-press--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://www.broadwayworld.com/article/Review-Roundup-THE-PEEWEE-HERMAN-SHOW-20101111\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/bloomberg--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/bloomberg--mark-kennedy.json wrongAttributionReason: null -> \"BRO-5232: copy of ap--mark-kennedy.json credited to the wrong outlet/critic; evidence https://thegrio.com/2021/11/20/trouble-in-mind-broadway-debut/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-view-from-the-bridge-2010/abc-news--michael-kuchwara.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-view-from-the-bridge-2010/abc-news--michael-kuchwara.json wrongAttributionReason: null -> \"BRO-5232: byline/outlet wrong, real: ap / Michael Kuchwara; evidence https://www.broadwayworld.com/article/Broadway-Blog-A-VIEW-FROM-THE-BRIDGE-Review-Roundup-20100124\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wicked-2003/journaltimes--michael-sommers.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wicked-2003/journaltimes--michael-sommers.json wrongAttributionReason: null -> \"BRO-5232: copy of washpost--peter-marks.json credited to the wrong outlet/critic; evidence https://www.washingtonpost.com/archive/lifestyle/2003/10/31/kristen-chenoweth-good-luck-charm/3701584c-82b3-4610-9220-6fb5662cbc8f/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2022/daily-mail--unknown.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2022/daily-mail--unknown.json wrongAttributionReason: null -> \"BRO-5232: copy of daily-mail--libby-purves.json credited to the wrong outlet/critic; evidence https://www.dailymail.co.uk/tvshowbiz/article-11492489/LIBBY-PURVES-reviews-Othello.html\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2003/woman-around-town--alix-cohen.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-2003/woman-around-town--alix-cohen.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production (long-days-journey-into-night-2016); evidence https://womanaroundtown.com/sections/playing-around/long-days-journey-into-night-a-glass-mountain-of-a-play/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/frank-rizzo--frank-rizzo.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "summer-1976-2023/frank-rizzo--frank-rizzo.json wrongAttributionReason: null -> \"BRO-5232: copy of variety--frank-rizzo.json credited to the wrong outlet/critic; evidence https://variety.com/2023/legit/reviews/summer-1976-review-laura-linney-broadway-1235594092/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/billboard--greg-evans.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweeney-todd-2023/billboard--greg-evans.json wrongAttributionReason: null -> \"BRO-5232: copy of deadline--greg-evans.json credited to the wrong outlet/critic; evidence https://deadline.com/2023/03/sweeney-todd-broadway-review-josh-groban-annaleigh-ashford-stephen-sondheim-1235310162/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "diana-the-untold-and-untrue-story-off-broadway-2026/timeout--helen-shaw.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "diana-the-untold-and-untrue-story-off-broadway-2026/timeout--helen-shaw.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production; evidence https://www.timeout.com/newyork/theater/my-lingerie-play-2017-the-concert-and-call-to-arms-the-final-installation\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "michael-r-jackson-wake-up-call-off-broadway-2026/timeout--helen-shaw.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "michael-r-jackson-wake-up-call-off-broadway-2026/timeout--helen-shaw.json wrongProductionReason: null -> \"BRO-5232: text reviews a different production; evidence https://www.timeout.com/newyork/theater/a-strange-loop\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "big-fish-2013/cbsnews--shania-russell.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "big-fish-2013/cbsnews--shania-russell.json isNonReviewReason: null -> \"BRO-5232: no such review by this critic at this outlet; evidence https://www.cbsnews.com/news/big-fish-musical-closing-on-broadway/\""
+    }
+  ]
+}

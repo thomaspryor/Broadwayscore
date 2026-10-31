@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Dead-man check for the autonomous nightly loop (S2-T7): alerts the
+         owner if the ledger is silent >24h while the nightly plist is
+         installed. Runs 09:00 local ET, well after the 03:30 nightly slot.
+         Install:  cp scripts/launchd/com.broadwayscore.autonomous-deadman.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.autonomous-deadman.plist -->
+    <key>Label</key>
+    <string>com.broadwayscore.autonomous-deadman</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/opt/homebrew/bin/node</string>
+        <string>/Users/tompryor/Broadwayscore/scripts/autonomous-deadman.js</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>9</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/autonomous-deadman-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/autonomous-deadman-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+</dict>
+</plist>

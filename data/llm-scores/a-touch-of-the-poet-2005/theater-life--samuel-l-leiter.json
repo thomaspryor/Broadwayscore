@@ -1,0 +1,46 @@
+{
+  "showId": "a-touch-of-the-poet-2005",
+  "outletId": "theater-life",
+  "outlet": "Theater Life",
+  "criticName": "Barry Gordin",
+  "score": 40,
+  "bucket": "Negative",
+  "thumb": "Down",
+  "confidence": "high",
+  "keyPhrases": [
+    {
+      "text": "fails to plaster over its cracks, largely because of two problematic performances",
+      "sentiment": "negative"
+    },
+    {
+      "text": "I may not be a big fan of this production",
+      "sentiment": "negative"
+    },
+    {
+      "text": "any opportunity to watch a major O'Neill play is worth the time",
+      "sentiment": "positive"
+    },
+    {
+      "text": "widely recognized as a powerful, but flawed example",
+      "sentiment": "negative"
+    },
+    {
+      "text": "ranks among his top achievements",
+      "sentiment": "positive"
+    }
+  ],
+  "reasoning": "Despite acknowledging O'Neill's stature and the play's merits, the critic explicitly states they are 'not a big fan of this production' and identifies 'two problematic performances' as major flaws. The review focuses more on the play's historical context than praising the current production, indicating disappointment with the execution.",
+  "flags": [
+    {
+      "type": "original_rating_mismatch",
+      "originalRating": "3/5",
+      "expectedRange": "55-72",
+      "actualScore": 40
+    }
+  ],
+  "scoredAt": "2026-02-21T22:17:13.461Z",
+  "promptVersion": "3.0.0-calibrated",
+  "originalScore": "3/5 stars",
+  "dtliThumb": null,
+  "bwwThumb": null
+}

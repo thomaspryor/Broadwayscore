@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-5786",
+  "planId": "4b740c1b-6b93-453b-9df7-d98562dfbaf9",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5786: owner decision (chat, 2026-10-20): the 2023 Playwrights Horizons reviews of School Pictures do not count toward the 2026 Cherry Lane run. The 2023 run keeps its own page; the 2026 page keeps the priorRuns link.",
+    "steps": [
+      "set inheritReviews:false on the 2023 priorRuns entry of school-pictures-off-broadway-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2026",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "id": "school-pictures-off-broadway-2023",
+            "openingDate": "2023-11-20",
+            "closingDate": "2023-12-16",
+            "venue": "Playwrights Horizons"
+          }
+        ],
+        "newValue": [
+          {
+            "id": "school-pictures-off-broadway-2023",
+            "openingDate": "2023-11-20",
+            "closingDate": "2023-12-16",
+            "venue": "Playwrights Horizons",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-5786: owner decided the 2023 reviews are not this run's; the 2023 production has its own page (school-pictures-off-broadway-2023, 6 reviews) and stays linked."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T17:33:15.787Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for school-pictures-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

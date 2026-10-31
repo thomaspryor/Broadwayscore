@@ -1,0 +1,98 @@
+name: Re-verify CV-promoted exclusions (weekly)
+
+# BRO-4282 AC3. reverify-stale-cv-promoted.js (CV-promoted exclusions whose
+# contentHash no longer matches their text) and reverify-nulled-cv-promoted.js
+# (exclusions whose fullText was quarantined) were referenced only by test.yml,
+# so the backlog audit-stale-cv-hash.js reports (57 stale-hash + 323 recoverable
+# nulled on 2026-09-29) never shrank. Weekly, capped per run with --limit so a
+# large backlog drains over several weeks at a bounded Haiku cost. Both scripts
+# clear only on a fresh clean verdict (never blind-clear). The next daily
+# rebuild picks up any cleared flags.
+on:
+  schedule:
+    # Sundays 07:23 UTC: after the 04:00 rebuild, clear of the Wed-Sat
+    # review-texts cleanup sweeps.
+    - cron: '23 7 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Verify only, write and push nothing'
+        required: false
+        default: false
+        type: boolean
+      limit:
+        description: 'Max files per script'
+        required: false
+        default: '25'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  # Same group as reverify-cv-promoted-nonreview.yml: both write review-texts
+  # through the same scripts, so they never run at once.
+  group: reverify-cv-promoted-nonreview
+  cancel-in-progress: false
+
+jobs:
+  reverify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Re-verify
+        id: run
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
+          LIMIT: ${{ inputs.limit || '25' }}
+        run: |
+          set -o pipefail
+          case "$LIMIT" in ''|*[!0-9]*) echo "limit must be digits"; exit 1;; esac
+          EXTRA=()
+          [ "$DRY_RUN" = "true" ] && EXTRA+=(--dry-run)
+          node scripts/reverify-stale-cv-promoted.js --limit=$LIMIT "${EXTRA[@]}" 2>&1 | tee /tmp/reverify-stale.log
+          node scripts/reverify-nulled-cv-promoted.js --limit=$LIMIT "${EXTRA[@]}" 2>&1 | tee /tmp/reverify-nulled.log
+          CLEARED=$(cat /tmp/reverify-stale.log /tmp/reverify-nulled.log | grep -c '>>> CLEARED' || true)
+          echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
+
+      - name: Push to private repo
+        if: ${{ !inputs.dry_run }}
+        uses: ./.github/actions/push-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: |
+            fix: weekly re-verify of CV-promoted exclusions, cleared ${{ steps.run.outputs.cleared }} (BRO-4282)
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## Weekly CV-promoted re-verify"
+            echo '### stale-hash'; echo '```'; tail -25 /tmp/reverify-stale.log 2>/dev/null; echo '```'
+            echo '### nulled'; echo '```'; tail -25 /tmp/reverify-nulled.log 2>/dev/null; echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Weekly CV-promoted re-verify failed'
+          severity: 'warning'

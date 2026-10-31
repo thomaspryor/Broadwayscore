@@ -1,0 +1,281 @@
+{
+  "issueNumber": "bro-5647-i",
+  "planId": "b25e3302-5cba-49d7-96ad-6f8f30fecc39",
+  "status": "applied",
+  "createdAt": "2026-10-21T02:53:41.556039Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "From the owner's Gemini Deep Research batch (Oct 21). Most sourced figures were already on record; two records change. (1) Maybe Happy Ending: the $16M capitalization was cited to Wikipedia; the show's SEC Form D/A (Jan 22, 2025) states 'Offering capitalized at $16,000,000' with $16,000,000 sold to 56 investors, so the source becomes the filing (basis sold). (2) Titanique: the $9.5M was shown as raised, but Broadway Journal (Feb 20, 2026) and the SEC Form D (Jan 14, 2026) both call it the maximum (minimum $7.5M), so it becomes 'up to $9.5M' (basis maximum). Rejected from the batch: Spamalot $8M (the cited aggregator page is a different CIK's 2022 filing; our record cites the show's own Aug 2023 Form D at $12M), Ragtime 'did not recoup' (closed Aug 16, 2026; a no-announcement loss label waits ~6 months under classify-stale-closure), Reddit and forum figures. Old values read from the private core data at c1886db. (3) Beaches: TBD -> Flop with designationBasis reported-loss. The New York Times (May 19, 2026) reported the early closing was 'losing investors millions of dollars'; Dots' Oct 19 audit (GN12-003, CG14-003, GD01-003) verified it as did-not-recoup and it had not been applied. The r/Broadway grosses analyst estimate on record is 0% returned. designationBasis is set before the label so stampDesignationBasis keeps it.",
+    "steps": [
+      "Maybe Happy Ending source to its SEC Form D/A",
+      "Titanique capitalization shown as the Form D maximum",
+      "Beaches: Flop, on the New York Times report of investor losses"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "maybe-happy-ending",
+        "showId": "maybe-happy-ending",
+        "field": "capitalizationSource",
+        "oldValue": "Wikipedia article on Maybe Happy Ending",
+        "newValue": "SEC Form D/A (Maybe Happy Ending Broadway Ltd Liability Co, CIK 0002021672, filed Jan 22, 2025): \"Maximum capitalization was $18,250,000/Minimum capitalization was $16,000,000/Offering capitalized at $16,000,000.\" $16,000,000 sold to 56 investors. https://www.sec.gov/Archives/edgar/data/2021672/000202167225000001/xslFormDX01/primary_doc.xml",
+        "description": "maybe-happy-ending: capitalization source Wikipedia -> the SEC Form D/A that states the $16M raise"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "maybe-happy-ending",
+        "showId": "maybe-happy-ending",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/Maybe_Happy_Ending",
+            "date": "2026-10-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://en.wikipedia.org/wiki/Maybe_Happy_Ending",
+            "date": "2026-10-01"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2021672/000202167225000001/xslFormDX01/primary_doc.xml",
+            "date": "2025-01-22"
+          }
+        ],
+        "description": "maybe-happy-ending: add the SEC Form D/A"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "capitalizationSource",
+        "oldValue": "Broadway Journal (Philip Boroff)",
+        "newValue": "Broadway Journal (Philip Boroff, Feb 20, 2026): \"Its capitalization is indeed modest for Broadway ... a maximum of $9.5 million\". SEC Form D (Kooky Krazy Broadway Ltd Liability Co, CIK 0002104273, filed Jan 14, 2026): total offering amount $9,500,000; \"The minimum capitalization is $7,500,000; the maximum capitalization is $9,500,000.\" $0 sold when filed. https://www.sec.gov/Archives/edgar/data/2104273/000210427326000001/xslFormDX01/primary_doc.xml",
+        "description": "titanique: $9.5M is the Form D maximum (Broadway Journal and the filing both say so), not the amount raised"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "notes",
+        "oldValue": "Titanique was capitalized at $9.5M, needed ~$900k/week to run (break-even ~$993k/week), but grosses remained below break-even, resulting in weekly losses and no recoupment.",
+        "newValue": "Titanique was capitalized at up to $9.5M (its SEC Form D maximum; minimum $7.5M), needed ~$900k/week to run (break-even ~$993k/week), but grosses remained below break-even, resulting in weekly losses and no recoupment.",
+        "description": "titanique: notes say up to $9.5M"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "titanique",
+        "showId": "titanique",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/titaniques-downtown-ups-and-downs?isFreemail=true&post_id=186556932&publication_id=7178918",
+            "date": "2026-02-20"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": null
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/titaniques-downtown-ups-and-downs?isFreemail=true&post_id=186556932&publication_id=7178918",
+            "date": "2026-02-20"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1u7m33w/grosses_analysis_week_ending_june_14_guest_fillin/",
+            "date": null
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2104273/000210427326000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-01-14"
+          }
+        ],
+        "description": "titanique: add the SEC Form D"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Michael Paulson, May 19, 2026): \"The strategy proved to be an unsuccessful gambit, losing investors millions of dollars (the capitalization cost has not yet been disclosed).\" https://www.nytimes.com/2026/05/19/theater/beaches-broadway-closing.html",
+        "description": "beaches: NYT (May 19, 2026) reported investor losses; Dots audit GN12-003/CG14-003 verified it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "beaches: NYT (May 19, 2026) reported investor losses; Dots audit GN12-003/CG14-003 verified it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "beaches: basis set before the label so the label keeps it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop",
+        "description": "beaches: TBD -> Flop: reported investor loss, analyst estimate 0% returned"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "notes",
+        "oldValue": "Commercial new musical at the Majestic; opened Apr 22, 2026 and closed May 24, 2026, more than three months early, after grossing about $4.2M. No capitalization reported and no recoupment announced.",
+        "newValue": "Commercial new musical at the Majestic; opened Apr 22, 2026 and closed May 24, 2026, more than three months early, after grossing about $4.2M. No capitalization reported. The New York Times reported the run was losing investors millions of dollars.",
+        "description": "beaches: notes cite the reported loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beaches",
+        "showId": "beaches",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/beaches-plays-final-performance-on-broadway-may-24",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "date": "2026-04-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaydirect.com/beaches-to-close-on-broadway-this-month/",
+            "date": "2026-05-21"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/beaches-plays-final-performance-on-broadway-may-24",
+            "date": null
+          },
+          {
+            "type": "manual",
+            "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+            "date": "2025-08-10"
+          },
+          {
+            "type": "reddit",
+            "url": "https://www.reddit.com/r/Broadway/comments/1sf5swb/easter_grosses_analysis_week_ending_april_5/",
+            "date": "2026-04-06"
+          },
+          {
+            "type": "trade",
+            "url": "https://broadwaydirect.com/beaches-to-close-on-broadway-this-month/",
+            "date": "2026-05-21"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2026/05/19/theater/beaches-broadway-closing.html",
+            "date": "2026-05-19"
+          }
+        ],
+        "description": "beaches: add the NYT closing report"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T03:25:56.327Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for maybe-happy-ending"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for maybe-happy-ending"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for titanique"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for beaches"
+    }
+  ],
+  "executedIn": "ci"
+}

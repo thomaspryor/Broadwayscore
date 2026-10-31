@@ -1,0 +1,151 @@
+{
+  "issueNumber": "bro-4415",
+  "planId": "f74ac09c-1cd1-4099-9641-3359e1cd0803",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Clear 5 syndication marks whose primary copy is excluded for a primary-only reason (BRO-4415)",
+    "steps": [
+      "Each secondary is the same article as its excluded primary; the primary verdict (wrongAttribution, misfiled or dated wrongProduction, garbage extraction) does not apply to it."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/front-row-center--tulis-mccall.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear stale syndication mark: primary-only exclusion (wrongProduction (misfiled/dated copy)); primary nytg--tulis-mccall.json excluded (wrongProduction)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "allegiance-2015/front-row-center--tulis-mccall.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "allegiance-2015/nytg--tulis-mccall.json",
+        "newValue": null,
+        "description": "Clear stale syndication pointer: primary-only exclusion (wrongProduction (misfiled/dated copy)); primary nytg--tulis-mccall.json excluded (wrongProduction)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bug-2026/ew--shania-russell.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear stale syndication mark: primary-only exclusion (wrongAttribution); primary cbsnews--shania-russell.json excluded (wrongAttribution)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bug-2026/ew--shania-russell.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "bug-2026/cbsnews--shania-russell.json",
+        "newValue": null,
+        "description": "Clear stale syndication pointer: primary-only exclusion (wrongAttribution); primary cbsnews--shania-russell.json excluded (wrongAttribution)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bug-2026/nysr--roma-torre.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear stale syndication mark: primary-only exclusion (wrongProduction (CV) vs human clear on the secondary); primary ny1--roma-torre.json excluded (wrongProduction)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bug-2026/nysr--roma-torre.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "bug-2026/ny1--roma-torre.json",
+        "newValue": null,
+        "description": "Clear stale syndication pointer: primary-only exclusion (wrongProduction (CV) vs human clear on the secondary); primary ny1--roma-torre.json excluded (wrongProduction)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pal-joey-2008/nytimes--ben-brantley.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear stale syndication mark: primary-only exclusion (wrongProduction (misfiled/dated copy)); primary about-entertainment--ben-brantley.json excluded (wrongProduction)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pal-joey-2008/nytimes--ben-brantley.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "pal-joey-2008/about-entertainment--ben-brantley.json",
+        "newValue": null,
+        "description": "Clear stale syndication pointer: primary-only exclusion (wrongProduction (misfiled/dated copy)); primary about-entertainment--ben-brantley.json excluded (wrongProduction)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-house-of-blue-leaves-2011/amny--matt-windman.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear stale syndication mark: primary-only exclusion (garbage_text extraction); primary newsday--matt-windman.json excluded (rejectionReason)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-house-of-blue-leaves-2011/amny--matt-windman.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "the-house-of-blue-leaves-2011/newsday--matt-windman.json",
+        "newValue": null,
+        "description": "Clear stale syndication pointer: primary-only exclusion (garbage_text extraction); primary newsday--matt-windman.json excluded (rejectionReason)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T13:38:51.467Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "allegiance-2015/front-row-center--tulis-mccall.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "allegiance-2015/front-row-center--tulis-mccall.json syndicatedPrimaryFile: \"allegiance-2015/nytg--tulis-mccall.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/ew--shania-russell.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/ew--shania-russell.json syndicatedPrimaryFile: \"bug-2026/cbsnews--shania-russell.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/nysr--roma-torre.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bug-2026/nysr--roma-torre.json syndicatedPrimaryFile: \"bug-2026/ny1--roma-torre.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pal-joey-2008/nytimes--ben-brantley.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pal-joey-2008/nytimes--ben-brantley.json syndicatedPrimaryFile: \"pal-joey-2008/about-entertainment--ben-brantley.json\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-house-of-blue-leaves-2011/amny--matt-windman.json isSyndicatedDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-house-of-blue-leaves-2011/amny--matt-windman.json syndicatedPrimaryFile: \"the-house-of-blue-leaves-2011/newsday--matt-windman.json\" -> null"
+    }
+  ]
+}

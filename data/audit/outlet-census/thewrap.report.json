@@ -1,0 +1,2000 @@
+{
+  "outletId": "thewrap",
+  "generatedAt": "2026-10-28T21:00:58.188Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 496,
+    "inWindow": 496,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "held": 174,
+      "held-unmatched": 21,
+      "not-review": 162,
+      "catalog-gap": 69,
+      "held-alt-url": 2,
+      "gap": 33,
+      "out-of-window": 34,
+      "misfile": 1
+    },
+    "viaTitleVariant": {
+      "held": 2,
+      "gap": 1
+    },
+    "recall": 0.838,
+    "recallWithCatalog": 0.631
+  },
+  "corpusSide": {
+    "rowsInWindow": 423,
+    "notEnumerated": 42,
+    "noUrl": 0,
+    "samples": [
+      {
+        "showId": "act-one-2014",
+        "url": "https://www.thewrap.com/act-one-theater-review-tony-shalhoub",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "all-nighter-off-broadway-2025",
+        "url": "https://www.thewrap.com/all-nighter-off-broadway-review-when-college-ends-with-a-bang-not-a-whimper/",
+        "publishDate": "2025-03-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "anna-christie-off-broadway-2025",
+        "url": "https://www.thewrap.com/anna-christie-off-broadway-review-michelle-williams/",
+        "publishDate": "2025-12-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "url": "https://www.thewrap.com/back-to-the-future-broadway-review/",
+        "publishDate": "2023-08-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "becoming-eve-off-broadway-2025",
+        "url": "https://www.thewrap.com/becoming-eve-off-broadway-review-richard-schiff/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "buena-vista-social-club-2025",
+        "url": "https://www.thewrap.com/buena-vista-social-club-broadway-review/",
+        "publishDate": "2025-03-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cost-of-living-2022",
+        "url": "http://www.thewrap.com/cost-living-theater-review-whos-taking-care-caretakers/",
+        "publishDate": "2022-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cult-of-love-2024",
+        "url": "https://www.thewrap.com/cult-of-love-broadway-review-zachary-quinto-shailene-woodley/",
+        "publishDate": "2024-12-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dana-h-2021",
+        "url": "https://www.thewrap.com/dana-h-broadway-review-lucas-hnath-aryan-brotherhood/",
+        "publishDate": "2021-10-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "dead-outlaw-2025",
+        "url": "https://www.thewrap.com/dead-outlaw-broadway-review-never-before-has-a-musical-been-so-strangely-alive/",
+        "publishDate": "2025-04-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "glengarry-glen-ross-2025",
+        "url": "https://www.thewrap.com/glengarry-glen-ross-broadway-review-bob-odenkirk-kieran-culkin/",
+        "publishDate": "2025-03-31",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "good-night-and-good-luck-2025",
+        "url": "https://www.thewrap.com/good-night-and-good-luck-broadway-review-george-clooney/",
+        "publishDate": "2025-04-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "house-of-mcqueen-off-broadway-2025",
+        "url": "https://www.thewrap.com/house-of-mcqueen-off-broadway-review-luke-newton-bridgerton/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "lempicka-2024",
+        "url": "https://www.thewrap.com/lempicka-broadway-review-lesbians-get-their-big-musical-moment-finally/",
+        "publishDate": "2024-04-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "life-of-pi-2023",
+        "url": "https://www.thewrap.com/life-of-pi-broadway-review/",
+        "publishDate": "2023-03-31",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "messy-white-gays-off-broadway-2025",
+        "url": "https://www.thewrap.com/messy-white-gays-off-broadway-review-drew-droege/",
+        "publishDate": "2025-11-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "of-mice-and-men-2014",
+        "url": "https://www.thewrap.com/mice-and-men-james-franco-review",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "on-the-twentieth-century-2015",
+        "url": "http://www.thewrap.com/on-the-twentieth-century-theater-review-kristin-chenoweth-is-back-on-the-fast-track/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "othello-2025",
+        "url": "https://www.thewrap.com/othello-broadway-review-denzel-washington-jake-gyllenhaal/",
+        "publishDate": "2025-03-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pass-over-2021",
+        "url": "https://www.thewrap.com/pass-over-broadway-review-antoinette-chinonye-nwandu/",
+        "publishDate": "2021-08-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "prima-facie-2023",
+        "url": "https://www.thewrap.com/jodie-comer-prima-facie-broadway-review/",
+        "publishDate": "2023-04-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "queen-versailles-2025",
+        "url": "https://www.thewrap.com/queen-of-versailles-broadway-review-kristin-chenoweth-stephen-schwartz/",
+        "publishDate": "2025-11-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "real-women-have-curves-2025",
+        "url": "https://www.thewrap.com/real-women-have-curves-broadway-review-latinas-take-cover-to-break-free/",
+        "publishDate": "2025-04-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "shucked-2023",
+        "url": "https://www.thewrap.com/shucked-broadway-review-musical-that-doesnt-suck/",
+        "publishDate": "2023-04-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-2021",
+        "url": "https://www.thewrap.com/six-broadway-review-musical-wives-henry-viii/",
+        "publishDate": "2021-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "spamalot-2023",
+        "url": "https://www.thewrap.com/spamalot-broadway-review-monty-python-revival/",
+        "publishDate": "2023-11-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "sunset-boulevard-2024",
+        "url": "https://www.thewrap.com/sunset-boulevard-broadway-review-glenn-close-leads-awkward-comeback/",
+        "publishDate": "2024-10-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "tammy-faye-2024",
+        "url": "https://www.thewrap.com/tammy-faye-broadway-review-elton-john/",
+        "publishDate": "2024-11-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-comeuppance-off-broadway-2026",
+        "url": "https://www.thewrap.com/the-comeuppance-off-broadway-review/",
+        "publishDate": "2023-06-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-last-five-years-2025",
+        "url": "https://www.thewrap.com/the-last-five-years-review-anna-kendrick-jeremy-jordan-richard-lagravenese/",
+        "publishDate": "2025-04-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-minutes-2022",
+        "url": "https://www.thewrap.com/the-minutes-broadway-review-tracy-letts-noah-reid/",
+        "publishDate": "2022-04-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-real-thing-2014",
+        "url": "https://www.thewrap.com/the-real-thing-theater-review-ewan-mcgregor-maggie-gyllenhaal-live-up-to-tom-stoppards-title/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-seat-of-our-pants-off-broadway-2025",
+        "url": "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/",
+        "publishDate": "2025-11-14",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-skin-of-our-teeth-2022",
+        "url": "https://www.thewrap.com/skin-of-our-teeth-broadway-review-thornton-wilder/",
+        "publishDate": "2022-04-25",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-visit-2015",
+        "url": "http://www.thewrap.com/the-visit-theater-review-chita-rivera-and-roger-rees-perform-a-gripping-dance-of-death/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-welkin-off-broadway-2024",
+        "url": "https://www.thewrap.com/the-welkin-off-broadway-review-sandra-oh-12-angry-women/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "thoughts-of-a-colored-man-2021",
+        "url": "https://www.thewrap.com/thoughts-of-a-colored-man-broadway-review-keenan-scott/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "tina-2019",
+        "url": "https://www.thewrap.com/tina-broadway-review-tina-turner-adrienne-warren-katori-hall/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "travesties-2018",
+        "url": "https://www.thewrap.com/travesties-broadway-review-tom-hollander-pulls-stoppard/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "true-west-2019",
+        "url": "https://www.thewrap.com/true-west-broadway-review-ethan-hawke-paul-dano-sam-shepard/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/",
+      "headline": "‘You Got Older’ Off Broadway Review: Alia Shawkat and Peter Friedman Lead a Quirky Cancer Comedy",
+      "publishDate": "2026-02-24",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "you-got-older-off-broadway-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/liberation-off-broadway-review-bess-wohl/",
+      "headline": "‘Liberation’ Off Broadway Review: Bess Wohl’s New Play Is as Good as New York Theater Gets",
+      "publishDate": "2025-02-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "liberation-off-broadway-2025"
+      ],
+      "outOfWindow": [
+        "liberation-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/drag-the-musical-off-broadway-review/",
+      "headline": "‘Drag: The Musical’ Off Broadway Review: When Boys Just Want to Have Fun",
+      "publishDate": "2024-10-21",
+      "via": "title-variant",
+      "held": [],
+      "matched": [
+        "drag-the-musical-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-counter-off-broadway-review-meghan-kennedy/",
+      "headline": "‘The Counter’ Off Broadway Review:  This Greasy Spoon Serves Nothing but Coffee",
+      "publishDate": "2024-10-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-counter-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/table-17-off-broadway-review-michael-rishawn/",
+      "headline": "‘Table 17’ Off Broadway Review: A Case Study in How to Steal a Show From the Leads",
+      "publishDate": "2024-09-06",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "table-17-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/n-a-off-broadway-theater-review-holland-taylor-nancy-pelosi/",
+      "headline": "‘N/A’ Off Broadway Review: Nancy Pelosi Wipes the House Floor With Alexandria Ocasio-Cortez",
+      "publishDate": "2024-06-27",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "n-a-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "alexandria-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/the-outsiders-broadway-review-improves-coppola-cult-classic/",
+      "headline": "‘The Outsiders’ Broadway Review: It Vastly Improves on Coppola’s Cult Classic",
+      "publishDate": "2024-04-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-outsiders-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-effect-off-broadway-review/",
+      "headline": "‘The Effect’ Off Broadway Review: Lucy Prebble Delivers a ‘Spellbound’ for the 21st Century",
+      "publishDate": "2024-03-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-effect-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "spellbound-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/corruption-off-broadway-review-rupert-murdoch/",
+      "headline": "‘Corruption’ Off Broadway Review: Rupert Murdoch Gets Away With It – Again",
+      "publishDate": "2024-03-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "corruption-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/dead-outlaw-off-broadway-review-mummy-musical-elmer-mccurdy/",
+      "headline": "‘Dead Outlaw’ Off Broadway Review: How to Make a Musical About a Mummy",
+      "publishDate": "2024-03-10",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "dead-outlaw-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "dead-outlaw-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/brooklyn-laundry-off-broadway-review-cecily-strong/",
+      "headline": "‘Brooklyn Laundry’ Off Broadway Review: Cecily Strong Gets Stuck in the Spin Cycle",
+      "publishDate": "2024-02-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "brooklyn-laundry-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-seven-year-disappear-off-broadway-review-cynthia-nixon-play/",
+      "headline": "‘The Seven Year Disappear’ Off Broadway Review: Cynthia Nixon Vanishes Into Several Roles",
+      "publishDate": "2024-02-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-seven-year-disappear-off-broadway-2024"
+      ],
+      "outOfWindow": [
+        "the-disappear-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
+      "headline": "‘Buena Vista Social Club’ Off Broadway Review: How Cuba’s Music Fuels Its Survival",
+      "publishDate": "2023-12-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "buena-vista-social-club-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "buena-vista-social-club-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/the-gardens-of-anuncia-off-broadway-review/",
+      "headline": "‘The Gardens of Anuncia’ Off Broadway Review: How Great Art Survives Terrible Politics",
+      "publishDate": "2023-11-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-gardens-of-anuncia-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/i-can-get-it-for-you-wholesale-off-broadway-review/",
+      "headline": "‘I Can Get It for You Wholesale’ Off Broadway Review: Barbra Streisand’s Other Stage Musical Gets a Second Look",
+      "publishDate": "2023-10-30",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "i-can-get-it-for-you-wholesale-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/stereophonic-off-broadway-review/",
+      "headline": "‘Stereophonic’ Off Broadway Review: Part Robert Altman, Part Fleetwood Mac",
+      "publishDate": "2023-10-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "stereophonic-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "stereophonic-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/the-doctor-off-broadway-review-juliet-stevenson/",
+      "headline": "‘The Doctor’ Off Broadway Review: Juliet Stevenson Gives Woke a Workout",
+      "publishDate": "2023-06-15",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-doctor-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/days-of-wine-and-roses-theater-review-kelli-ohara-brian-darcy-james/",
+      "headline": "‘Days of Wine and Roses’ Off Broadway Review: Kelli O’Hara, Brian d’Arcy James Lead One of the Century’s Few Great Musicals",
+      "publishDate": "2023-06-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "days-of-wine-and-roses-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "days-of-wine-and-roses-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/good-night-oscar-broadway-review-sean-hayes-will-and-grace/",
+      "headline": "‘Good Night, Oscar’ Broadway Review: Sean Hayes Says Goodbye to ‘Will & Grace’ With a Vengeance",
+      "publishDate": "2023-04-24",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "good-night-oscar-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/how-to-defend-yourself-off-broadway-review/",
+      "headline": "‘How to Defend Yourself’ Off Broadway Review:  Rape Culture Meets Consent Culture on Campus",
+      "publishDate": "2023-03-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "how-to-defend-yourself-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/elyria-off-broadway-review-india-melodrama/",
+      "headline": "‘Elyria’ Off Broadway Review: The Real Housewives of Suburban Cleveland Wear Saris",
+      "publishDate": "2023-02-27",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "elyria-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/black-odyssey-off-broadway-review-ulysses/",
+      "headline": "‘Black Odyssey’ Off Broadway Review: Ulysses Now Travels Home to Harlem",
+      "publishDate": "2023-02-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "black-odyssey-off-broadway-2023"
+      ],
+      "outOfWindow": [
+        "ulysses-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/a-bright-new-boise-off-broadway-review-samuel-d-hunter/",
+      "headline": "‘A Bright New Boise’ Off Broadway Review: Hobby Lobby May Be Even Worse Than You Imagined",
+      "publishDate": "2023-02-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "a-bright-new-boise-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-wanderers-off-broadway-review-katie-holmes/",
+      "headline": "‘The Wanderers’ Off Broadway Review: A Woody Allen-Tinged Character Pursues Katie Holmes on the Internet",
+      "publishDate": "2023-02-16",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-wanderers-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/cornelia-street-off-broadway-review-norbert-leo-butz-slices-and-dices-like-a-pro/",
+      "headline": "‘Cornelia Street’ Off Broadway Review: Norbert Leo Butz Slices and Dices Like a Pro",
+      "publishDate": "2023-02-14",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cornelia-street-off-broadway-2023"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/your-own-personal-exegesis-off-broadway-review/",
+      "headline": "‘Your Own Personal Exegesis’ Off Broadway Review: This Passion Play Is Really Passionate",
+      "publishDate": "2022-12-05",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "your-own-personal-exegesis-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "passion-1994",
+        "passion-2004",
+        "passion-1983"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/sandra-off-broadway-review-murder-she-wrote-very-awkwardly/",
+      "headline": "‘Sandra’ Off Broadway Review: Murder, She Wrote Very Awkwardly",
+      "publishDate": "2022-11-20",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "sandra-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/funny-girl-broadway-review-lea-michele-brings-her-funny-lady-to-the-stage/",
+      "headline": "‘Funny Girl’ Broadway Review: Lea Michele Brings the Diva But Not the Laughs",
+      "publishDate": "2022-10-03",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "outOfWindow": [
+        "funny-girl-2002"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/the-kite-runner-broadway-review-khaled-hosseini/",
+      "headline": "‘The Kite Runner’ Broadway Review: Khaled Hosseini’s Bestseller Fails to Take Flight",
+      "publishDate": "2022-07-21",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-kite-runner-2022"
+      ],
+      "outOfWindow": [
+        "flight-off-broadway-2027"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/macbeth-broadway-review-daniel-craig-ruth-negga/",
+      "headline": "‘Macbeth’ Broadway Review: Daniel Craig and Ruth Negga Reinvent a Classic",
+      "publishDate": "2022-04-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "macbeth-2022"
+      ],
+      "outOfWindow": [
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/funny-girl-broadway-review-beanie-feldstein/",
+      "headline": "‘Funny Girl’ Broadway Review: She’s Back, Finally, and Very Different",
+      "publishDate": "2022-04-24",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "outOfWindow": [
+        "funny-girl-2002"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/take-me-out-broadway-review-jesse-tyler-ferguson-jesse-williams/",
+      "headline": "‘Take Me Out’ Broadway Review: Jesse Tyler Ferguson and Jesse Williams Hit It Out of the Ballpark",
+      "publishDate": "2022-04-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "take-me-out-2022"
+      ],
+      "outOfWindow": [
+        "take-me-out-2003"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/is-this-a-room-broadway-review-reality-winner/",
+      "headline": "‘Is This a Room’ Broadway Review:  Whistleblower Reality Winner’s Trauma in Her Own Words",
+      "publishDate": "2021-10-11",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "is-this-a-room-2021"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.thewrap.com/creative-content/reviews/titanique-broadway-review-titanic-parody-musical/",
+      "headline": "‘Titanique’ Broadway Review: Jim Parsons Jumps Aboard the Sinking-Ship Musical",
+      "publishDate": "2026-04-13",
+      "matched": [
+        "titanique-2026"
+      ],
+      "heldUrls": [
+        "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/sunset-blvd-broadway-review-nicole-scherzinger/",
+      "headline": "‘Sunset Blvd.’ Broadway Review: Nicole Scherzinger Evokes Sally Bowles and Carrie White",
+      "publishDate": "2024-10-20",
+      "matched": [
+        "sunset-boulevard-2024"
+      ],
+      "heldUrls": [
+        "https://www.thewrap.com/sunset-boulevard-broadway-review-glenn-close-leads-awkward-comeback/"
+      ]
+    }
+  ],
+  "misfiles": [
+    {
+      "url": "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/",
+      "headline": "‘Titanique’ Off Broadway Review: A Hilarious Jukebox Musical for Those Who Detest Them",
+      "publishDate": "2022-12-13",
+      "via": "poller-matcher",
+      "held": [
+        "titanique-2026"
+      ],
+      "matched": [
+        "titanique-off-broadway-2022"
+      ],
+      "outOfWindow": [
+        "titanique-2026",
+        "titanic-1997"
+      ]
+    }
+  ],
+  "heldUnmatched": [
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/860-broadway-review-billy-crystal/",
+      "headline": "‘860’ Broadway Review: Billy Crystal Loses His Home but Not His Gift to Make Us Laugh",
+      "publishDate": "2026-10-21",
+      "via": null,
+      "held": [
+        "billy-crystal-860-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/la-cage-aux-folles-off-broadway-review-billy-porter-wayne-brady/",
+      "headline": "‘La Cage aux Folles’ Off Broadway Review: Billy Porter and Wayne Brady Play It for Real",
+      "publishDate": "2026-06-19",
+      "via": null,
+      "held": [
+        "encores-la-cage-aux-folles-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "la-cage-aux-folles-2010",
+        "la-cage-aux-folles-2004",
+        "la-cage-aux-folles-1983"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/beaches-broadway-review-bette-midler-musical/",
+      "headline": "‘Beaches’ Broadway Review: Even the Legendary Mike Stoller Can’t Prevent This Flotsam From Washing Ashore",
+      "publishDate": "2026-04-22",
+      "via": null,
+      "held": [
+        "beaches-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/giant-broadway-review-john-lithgow/",
+      "headline": "‘Giant’ Broadway Review: John Lithgow Devours Roald Dahl for Breakfast",
+      "publishDate": "2026-03-23",
+      "via": null,
+      "held": [
+        "giant-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/data-off-broadway-review-high-tech-makes-for-high-suspense/",
+      "headline": "‘Data’ Off Broadway Review: High Tech Makes for High Suspense",
+      "publishDate": "2026-01-26",
+      "via": null,
+      "held": [
+        "data-off-broadway-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/just-in-time-broadway-review-jonathan-groff/",
+      "headline": "‘Just in Time’ Broadway Review: Jonathan Groff Is Great! But Where’s Bobby Darin?",
+      "publishDate": "2025-04-26",
+      "via": null,
+      "held": [
+        "just-in-time-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/old-friends-broadway-review-stephen-sondheim-revue/",
+      "headline": "‘Old Friends’ Broadway Review: Do We Need Another Stephen Sondheim Revue?",
+      "publishDate": "2025-04-08",
+      "via": null,
+      "held": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
+      "headline": "‘Boop!’ Broadway Review: First Barbie, Now Betty Gets Dragged Into the 21 Century",
+      "publishDate": "2025-04-07",
+      "via": null,
+      "held": [
+        "boop-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/a-wonderful-world-broadway-musical-review-louis-armstrong/",
+      "headline": "‘A Wonderful World’ Broadway Review: Or, the Singing Wives of Louis Armstrong",
+      "publishDate": "2024-11-11",
+      "via": null,
+      "held": [
+        "a-wonderful-world-the-louis-armstrong-musical-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/job-broadway-review-max-wolf-friedlich/",
+      "headline": "‘Job’ Broadway Review: Yes, Social Media Can Be Bad for Your Health",
+      "publishDate": "2024-07-30",
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/cabaret-broadway-review-eddie-redmayne-twists-the-emcee-into-a-rancid-pretzel/",
+      "headline": "‘Cabaret’ Broadway Review: Eddie Redmayne Twists the Emcee Into a Rancid Pretzel",
+      "publishDate": "2024-04-21",
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/the-wiz-broadway-review-funniest-lion-scarecrow-tin-man/",
+      "headline": "‘The Wiz’ Broadway Review: The Original Was Never This Much Fun",
+      "publishDate": "2024-04-17",
+      "via": null,
+      "held": [
+        "the-wiz-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/doubt-broadway-review-liev-schreiber-amy-ryan/",
+      "headline": "‘Doubt’ Broadway Review: Liev Schreiber and Amy Ryan Battle for the Soul of the Church",
+      "publishDate": "2024-03-07",
+      "via": null,
+      "held": [
+        "doubt-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/russian-troll-farm-off-broadway-review/",
+      "headline": "‘Russian Troll Farm’ Off Broadway Review: Hitting a New Low in Election Interference",
+      "publishDate": "2024-02-08",
+      "via": null,
+      "held": [
+        "russian-troll-farm-a-workplace-comedy-off-broadway-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/walk-on-through-off-broadway-review-gavin-creel/",
+      "headline": "‘Walk on Through’ Off Broadway Review: Gavin Creel Casts Himself as a Museum Virgin",
+      "publishDate": "2023-12-04",
+      "via": null,
+      "held": [
+        "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/purlie-victorious-broadway-review-leslie-odom-jr-kenny-leon/",
+      "headline": "‘Purlie Victorious’ Broadway Review: Leslie Odom Jr. Gives Ossie Davis’ Preacher a Brilliant Encore",
+      "publishDate": "2023-09-27",
+      "via": null,
+      "held": [
+        "purlie-victorious-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "purlie-1972"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/parade-review-ben-platt-broadway-musical-revival/",
+      "headline": "‘Parade’ Broadway Review: Ben Platt Leads a Great Revival of a Modern Classic",
+      "publishDate": "2023-03-16",
+      "via": null,
+      "held": [
+        "parade-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/kpop-broadway-review-musical-koren-pop/",
+      "headline": "‘KPOP’ Broadway Review: A Behind-the-Scenes Musical About Korean Pop – Without BTS",
+      "publishDate": "2022-11-27",
+      "via": null,
+      "held": [
+        "kpop-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/potus-broadway-review-rachel-dratch-vanessa-williams-julianne-hough/",
+      "headline": "‘POTUS’ Broadway Review: The President Can’t Be Held Responsible for This Mess",
+      "publishDate": "2022-04-27",
+      "via": null,
+      "held": [
+        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/mj-broadway-review-michael-jackson/",
+      "headline": "‘MJ’ Broadway Review: Michael Jackson Musical Is Less Thriller Than Dangerous",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/company-broadway-review-katrina-lenk-patti-lupone/",
+      "headline": "‘Company’ Broadway Review: Katrina Lenk and Patti LuPone Shine in Rousing Sondheim Revival",
+      "publishDate": "2021-12-09",
+      "via": null,
+      "held": [
+        "company-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/just-in-time-broadway-review-jeremy-jordan-olivia-holt-recast/",
+      "headline": "‘Just in Time’ Broadway Review: Jeremy Jordan Makes This Show Better Than Ever",
+      "publishDate": "2026-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/creative-content/theater/high-spirits-off-broadway-review-andrea-martin/",
+      "headline": "‘High Spirits’ Off Broadway Review: Andrea Martin and Katrina Lenk Polish Up a Real Antique",
+      "publishDate": "2026-02-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/romy-and-michele-the-musical-review-off-broadway/",
+      "headline": "‘Romy & Michele: The Musical’ Off Broadway Review: Laura Bell Bundy and Kara Lindsay Are Beautiful, Very Funny Losers",
+      "publishDate": "2025-10-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/galas-off-broadway-review-maria-callas-anthony-roth-costanzo/",
+      "headline": "‘Galas’ Off Broadway Review: Sensational Drag Send-Up of Maria Callas Is Ready-Made for Uptown",
+      "publishDate": "2025-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/jeff-ross-take-a-banana-for-the-road-broadway-review/",
+      "headline": "‘Jeff Ross: Take a Banana for the Ride’ Broadway Review: The Roastmaster General Packs Little Sizzle",
+      "publishDate": "2025-08-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/love-life-off-broadway-review/",
+      "headline": "‘Love Life’ Off Broadway Review: Or, Why Kurt Weill Got Lost in America",
+      "publishDate": "2025-03-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/english-broadway-review-sanaz-toossi/",
+      "headline": "‘English’ Broadway Review: Something Gets Lost in the Translation",
+      "publishDate": "2025-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/home-broadway-review-samm-art-williams-play-revival/",
+      "headline": "‘Home’ Broadway Review: How to Dismantle the Myth of the North",
+      "publishDate": "2024-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/jordans-off-broadway-review/",
+      "headline": "‘Jordans’ Off Broadway Review: If This Wild Comedy Isn’t an Homage to Jordan Peele, It Should Be",
+      "publishDate": "2024-04-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-ally-off-broadway-review-josh-radnor/",
+      "headline": "‘The Ally’ Off Broadway Review: The Israel-Palestine Debate Leaves Josh Radnor Reeling",
+      "publishDate": "2024-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-hunt-off-broadway-review-tobias-menzies/",
+      "headline": "‘The Hunt’ Off Broadway Review: An Angry Village Mob Targets ‘The Crown’ Star Tobias Menzies",
+      "publishDate": "2024-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/manahatta-off-broadway-review/",
+      "headline": "‘Manahatta’ Off Broadway Review: How the 2008 Wall Street Collapse Was Centuries in the Making",
+      "publishDate": "2023-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/spain-off-broadway-review-a-movie-classic-gets-a-makeover/",
+      "headline": "‘Spain’ Off Broadway Review: A Movie Classic Gets a Makeover",
+      "publishDate": "2023-11-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/sabbaths-theater-review-john-turturro-philip-roth-off-broadway/",
+      "headline": "‘Sabbath’s Theater’ Off Broadway Review: John Turturro Wrestles With Philip Roth",
+      "publishDate": "2023-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/poor-yella-rednecks-off-broadway-review-vietnam-yellowface/",
+      "headline": "‘Poor Yella Rednecks’ Off Broadway Review: The Vietnam War’s End Was Only the Beginning",
+      "publishDate": "2023-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/flex-off-broadway-review-candrice-jones-play/",
+      "headline": "‘Flex’ Off Broadway Review: It’s Sex and the Rural Basketball Court",
+      "publishDate": "2023-07-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/lizard-boy-off-broadway-review-justin-huertas/",
+      "headline": "‘Lizard Boy’ Off Broadway Review: He’s Green and He’s Gay — But He’s No Elphaba",
+      "publishDate": "2023-06-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/wet-brain-off-broadway-theater-review/",
+      "headline": "‘Wet Brain’ Off Broadway Review: When Too Much Vodka Is the Least of the Problems",
+      "publishDate": "2023-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/king-james-off-broadway-review-lebron-james-play/",
+      "headline": "‘King James’ Off Broadway Review: Why LeBron James Inspires Adult-Male Infantilism",
+      "publishDate": "2023-05-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/plays-for-plague-year-review-suzan-lori-parks/",
+      "headline": "‘Plays for the Plague Year’ Off Broadway Review: Suzan-Lori Parks Sings the Blues Over COVID",
+      "publishDate": "2023-04-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/wife-of-willesden-off-broadway-review-zadie-smith/",
+      "headline": "‘The Wife of Willesden’ Off Broadway Review: Zadie Smith Updates Chaucer and Makes It Twerk",
+      "publishDate": "2023-04-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-harder-they-come-theater-review-suzan-lori-parks/",
+      "headline": "‘The Harder They Come’ Off Broadway Review: How to Cut Jimmy Cliff Down to Size",
+      "publishDate": "2023-03-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-coast-starlight-off-broadway-theater-review/",
+      "headline": "‘The Coast Starlight’ Off Broadway Review: We’re Not Traveling in the Quiet Car",
+      "publishDate": "2023-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/dark-disabled-stories-off-broadway-review/",
+      "headline": "‘Dark Disabled Stories’ Off Broadway Review: How Using a Walker Can Totally Ruin Your Grindr Date",
+      "publishDate": "2023-03-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/misty-off-broadway-review-arinze-kene/",
+      "headline": "‘Misty’ Off Broadway Review: Arinzé Kene Grapples With Black Violence, Gentrification and Balloons",
+      "publishDate": "2023-03-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-trees-off-broadway-review-the-title-rhymes-with-twee/",
+      "headline": "‘The Trees’ Off Broadway Review: The Title Rhymes With Twee",
+      "publishDate": "2023-03-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-best-we-could-off-broadway-review-aya-cash-discovers-her-dads-a-toxic-male/",
+      "headline": "‘The Best We Could’ Off Broadway Review: Aya Cash Discovers Her Dad’s a Toxic Male",
+      "publishDate": "2023-03-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/letters-from-max-off-broadway-review-sarah-ruhl/",
+      "headline": "‘Letters From Max’ Off Broadway Review: Death Becomes Them",
+      "publishDate": "2023-02-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/lucy-off-broadway-review-audible-minetta-lane/",
+      "headline": "‘Lucy’ Off Broadway Review: When Having It All Turns Into a Childcare Nightmare",
+      "publishDate": "2023-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/anthony-rapp-without-you-rent-off-broadway-review/",
+      "headline": "‘Without You’ Off Broadway Review: Anthony Rapp Looks Back on ‘Rent’ and Loss",
+      "publishDate": "2023-01-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/camp-siegfried-off-broadway-review-nazis-bess-wohl/",
+      "headline": "‘Camp Siegfried’ Off Broadway Review: A Misguided Play About American Nazis in ’38",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/catch-as-catch-can-off-broadway-review/",
+      "headline": "‘Catch as Catch Can’ Off Broadway Review: Mia Chung’s Play Examines Racism at the Coffee Klatsch",
+      "publishDate": "2022-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/where-we-belong-off-broadway-review/",
+      "headline": "‘Where We Belong’ Off Broadway Review: Madeline Sayet Takes Mannahatta",
+      "publishDate": "2022-11-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/only-gold-off-broadway-review-kate-nash/",
+      "headline": "‘Only Gold’ Off Broadway Review: Dancers Dazzle Despite the Dross",
+      "publishDate": "2022-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/good-enemy-off-broadway-review/",
+      "headline": "‘Good Enemy’ Off Broadway Review: A Twisted Escape From One Man’s Past in China",
+      "publishDate": "2022-11-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/where-the-mountain-meets-the-sea-off-broadway-review/",
+      "headline": "‘Where the Mountain Meets the Sea’ Review: 2 Haitian American Men Seek Their Roots Through Music",
+      "publishDate": "2022-11-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/a-man-of-no-importance-off-broadway-review-jim-parsons-musical-revival/",
+      "headline": "‘A Man of No Importance’ Off Broadway Review: Jim Parsons Leads a Bloodless Musical Revival",
+      "publishDate": "2022-10-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/straight-line-crazy-off-broadway-review-ralph-fiennes-robert-moses/",
+      "headline": "‘Straight Line Crazy’ Off Broadway Review: Ralph Fiennes Tries to Bulldoze Over Robert Moses",
+      "publishDate": "2022-10-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/baldwin-buckley-at-cambridge-off-broadway-review/",
+      "headline": "‘Baldwin & Buckley at Cambridge’ Off Broadway Review: The Great Debate Loses Some of Its Bite",
+      "publishDate": "2022-10-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/american-televisions-off-broadway-review-victor-cazares/",
+      "headline": "‘American (Tele)visions’ Off Broadway Review: Why the Tube Is Bad for Our Health",
+      "publishDate": "2022-09-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/weightless-off-broadway-review-the-kilbanes-musical/",
+      "headline": "‘Weightless’ Off Broadway Review: The Kilbanes Give 2 Mythic Greek Sisters an Indie-Rock Lift",
+      "publishDate": "2022-09-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/this-beautiful-future-off-broadway-review-rita-kalnejais/",
+      "headline": "‘This Beautiful Future’ Off Broadway Review: Karaoke Perks Up a Doomed WWII-Era Love Story",
+      "publishDate": "2022-09-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/remember-this-off-broadway-review-david-strathairn-proves-bearing-witness-can-be-heroic/",
+      "headline": "‘Remember This’ Off Broadway Review: David Strathairn Proves Bearing Witness Can Be Heroic",
+      "publishDate": "2022-09-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/epiphany-off-broadway-review-james-joyce-gets-a-radical-and-hilarious-update/",
+      "headline": "‘Epiphany’ Off Broadway Review: James Joyce Gets a Radical and Hilarious Update",
+      "publishDate": "2022-06-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/corsicana-off-broadway-review-will-arberys-new-play-gets-lost-in-words/",
+      "headline": "‘Corsicana’ Off Broadway Review: Will Arbery’s New Play Gets Lost in Words",
+      "publishDate": "2022-06-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/soft-off-broadway-review-donja-r-love/",
+      "headline": "‘Soft’ Off Broadway Review: Donja R. Love’s Tough New Play Redefines Masculinity",
+      "publishDate": "2022-06-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/bedwetter-off-broadway-sarah-silverman-adam-schlesinger-musical/",
+      "headline": "‘The Bedwetter’ Off Broadway Review: Sarah Silverman’s Bestselling Memoir Becomes an Off-Key Musical",
+      "publishDate": "2022-06-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/what-the-end-will-be-off-broadway-review-3-generations-of-gay-men-in-one-family-dramedy/",
+      "headline": "‘What the End Will Be’ Off Broadway Review: 3 Generations of Gay Men in One Family Dramedy",
+      "publishDate": "2022-06-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/exception-to-the-rule-off-broadway-review-dave-harris/",
+      "headline": "‘Exception to the Rule’ Off Broadway Review: A Disturbing Update on ‘The Breakfast Club’",
+      "publishDate": "2022-05-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/golden-shield-off-broadway-review-china/",
+      "headline": "‘Golden Shield’ Off Broadway Review: An Off-Balance Chinese Juggling Act",
+      "publishDate": "2022-05-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/which-way-to-the-stage-off-broadway-review-ana-nogueira/",
+      "headline": "‘Which Way to the Stage’ Off Broadway Review: Drag Yourself to This Stellar New Comedy",
+      "publishDate": "2022-05-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/case-for-the-existence-of-god-off-broadway-review-samuel-hunter/",
+      "headline": "‘A Case for the Existence of God’ Off Broadway Review: A Riveting, Deceptively Simple 2-Hander",
+      "publishDate": "2022-05-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/confederates-off-broadway-review-dominique-morisseau/",
+      "headline": "‘Confederates’ Off Broadway Review: Dominique Morisseau Suggests College Is the New Plantation",
+      "publishDate": "2022-03-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/chinese-lady-off-broadway-review-lloyd-sun/",
+      "headline": "‘The Chinese Lady’ Off Broadway Review: A Forgotten Immigrant in 19th-Century America Takes Center Stage",
+      "publishDate": "2022-03-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/on-sugarland-off-broadway-review-aleshea-harris/",
+      "headline": "‘On Sugarland’ Off Broadway Review: Aleshea Harris’ Sweeping Look at Black Life Amid Endless Wars",
+      "publishDate": "2022-03-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/english-off-broadway-review-sanaz-toossis-play-gets-lost-in-translation/",
+      "headline": "‘English’ Off Broadway Review: Sanaz Toossi’s Play Gets Lost in Translation",
+      "publishDate": "2022-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/black-no-more-off-broadway-review-musical-george-schuyler/",
+      "headline": "‘Black No More’ Off Broadway Review: A New Musical Declaws a Classic Book",
+      "publishDate": "2022-02-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/wolf-play-off-broadway-review-hansol-jung/",
+      "headline": "‘Wolf Play’ Off Broadway Review: An Internet-Era Custody Battle Over an Adopted Boy",
+      "publishDate": "2022-02-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/intimate-apparel-review-lynn-nottage-opera/",
+      "headline": "‘Intimate Apparel’ Off Broadway Review: Lynn Nottage’s Seamstress Now Sings",
+      "publishDate": "2022-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/shhhh-theater-review-clare-barron-kinky/",
+      "headline": "‘Shhhh’ Off Broadway Review: Clare Barron’s Kinky, Envelope-Pushing Drama",
+      "publishDate": "2022-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/the-hang-review-taylor-mac-socrates/",
+      "headline": "‘The Hang’ Off Broadway Review: Taylor Mac Wraps Socrates in Tulle in Blissfully Bizarre Musical",
+      "publishDate": "2022-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/cullud-wattah-off-broadway-review-erika-dickerson-despenza/",
+      "headline": "‘Cullud Wattah’ Off Broadway Review: A Powerful Kitchen-Sink Drama Set in Flint",
+      "publishDate": "2021-11-17",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/medicine-off-broadway-review-domhnall-gleeson-enda-walsh/",
+      "headline": "‘Medicine’ Off Broadway Review: Domhnall Gleeson Makes a Lot of Noise, But Not Much Sense",
+      "publishDate": "2021-11-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/while-you-were-paryting-off-broadway-review-soho-rep/",
+      "headline": "‘While You Were Partying’ Off Broadway Review: An Onstage Experiment in Misdirection – and Rage",
+      "publishDate": "2021-11-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/nollywood-dreams-off-broadway-review-jocelyn-bioh/",
+      "headline": "‘Nollywood Dreams’ Off Broadway Review: A Star Is Born in Lagos, Nigeria",
+      "publishDate": "2021-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/gnit-theater-review-peer-gynt-will-eno/",
+      "headline": "‘Gnit’ Off Broadway Review: Will Eno’s Peer Gynt Takes His Comedy Act on the Road",
+      "publishDate": "2021-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/kristina-wong-sweatshop-overlord-off-broadway-review-she-sews-pandemic-masks-of-comedy-not-tragedy/",
+      "headline": "‘Kristina Wong, Sweatshop Overlord’ Off Broadway Review: She Sews Pandemic Masks of Comedy, Not Tragedy",
+      "publishDate": "2021-11-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/morning-sun-off-broadway-review-edie-falco-stars-blair-brown/",
+      "headline": "‘Morning Sun’ Off Broadway Review: Edie Falco Stars in a Version of ‘It’s Not a Wonderful Life’",
+      "publishDate": "2021-11-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.thewrap.com/sanctuary-city-off-broadway-review-a-gripping-look-at-young-people-caught-in-us-immigration-trap/",
+      "headline": "‘Sanctuary City’ Off Broadway Review: A Gripping Look at Young People Caught in US Immigration Trap",
+      "publishDate": "2021-09-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://www.thewrap.com/mexodus-off-broadway-review/",
+      "headline": "‘Mexodus’ Off Broadway Review: One of America’s Darker Chapters Now Explodes With Music",
+      "publishDate": "2025-09-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mexodus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/jesus-christ-superstar-review-cynthia-erivo-adam-lambert-hollywood-bowl/",
+      "headline": "‘Jesus Christ Superstar’ LA Theater Review: Cynthia Erivo and Adam Lambert Reach Biblical Heights",
+      "publishDate": "2025-08-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jesus-christ-superstar-2012",
+        "jesus-christ-superstar-1977",
+        "jesus-christ-superstar-2000",
+        "jesus-christ-superstar-1971"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/american-idiot-la-theater-review/",
+      "headline": "‘American Idiot’ LA Theater Review: 20 Years Later, Green Day’s Music Is More Than Just a Millennial Howl",
+      "publishDate": "2024-10-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "american-idiot-2010",
+        "music-is-1976"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
+      "headline": "‘Here There Are Blueberries’ Off Broadway Review: Revisiting Another ‘Zone of Interest’",
+      "publishDate": "2024-05-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "here-there-are-blueberries-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/jellys-last-jam-off-broadway-review-billy-porter/",
+      "headline": "‘Jelly’s Last Jam’ Off Broadway Review: How Jazz Was Born, or Was it?",
+      "publishDate": "2024-02-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jellys-last-jam-1992"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/hells-kitchen-alicia-keys-off-broadway-review-manhattan-pla/",
+      "headline": "‘Hell’s Kitchen’ Off Broadway Review: Alicia Keys Celebrates a Big Apartment Complex",
+      "publishDate": "2023-11-19",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hells-kitchen-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/pal-joey-off-broadway-review-rodgers-hart-musical-savion-glover-tony-goldwyn/",
+      "headline": "‘Pal Joey’ Off Broadway Review: Bewitched, Bothered and Completely Misbegotten",
+      "publishDate": "2023-11-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "pal-joey-2008",
+        "pal-joey-1976"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/the-light-in-the-piazza-off-broadway-review/",
+      "headline": "‘The Light in the Piazza’ Off Broadway Review: This Century’s Best Musical Is Back and Brighter Than Ever",
+      "publishDate": "2023-06-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-light-in-the-piazza-2005"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/love-off-broadway-review-alexander-zeldin-homeless/",
+      "headline": "‘Love’ Off Broadway Review: A Heart-Tugging Peek Inside a Homeless Shelter in All Its Humanity",
+      "publishDate": "2023-03-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "shelter-1973",
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/public-obscenities-off-broadway-india-chowdhury/",
+      "headline": "‘Public Obscenities’ Off Broadway Review: A Stunning Snapshot of India Through a Gay Ph.D. Student’s Lens",
+      "publishDate": "2023-02-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "public-obscenities-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/colin-quinn-small-talk-off-broadway-review/",
+      "headline": "‘Small Talk’ Off Broadway Review: Colin Quinn Serves Another Round of Familiar Gripes",
+      "publishDate": "2023-01-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/great-expectations-off-broadway-review-eddie-izzard/",
+      "headline": "‘Great Expectations’ Off Broadway Review: Eddie Izzard Is a Pip – and All the Other Characters, Too",
+      "publishDate": "2022-12-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/far-country-off-broadway-review/",
+      "headline": "‘The Far Country’ Off Broadway Review: Lloyd Suh’s Play Explores the Horrors of the Other Ellis Island",
+      "publishDate": "2022-12-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-island-1974",
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/the-patient-gloria-off-broadway-review-gina-moxley-looks-back-at-shrink-wrapped-abuse/",
+      "headline": "‘The Patient Gloria’ Off Broadway Review: Gina Moxley Looks Back at Shrink-Wrapped Abuse",
+      "publishDate": "2022-11-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "gloria-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/downstate-off-broadway-review-bruce-norris/",
+      "headline": "‘Downstate’ Off Broadway Review: Bruce Norris Delivers a Great Play About Predators",
+      "publishDate": "2022-11-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "downstate-2026"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/raisin-in-the-sun-review-robert-ohara-tonya-pinkins/",
+      "headline": "‘A Raisin in the Sun’ Off Broadway Review: Robert O’Hara Rethinks a Classic to Brilliant Effect",
+      "publishDate": "2022-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-raisin-in-the-sun-2014",
+        "a-raisin-in-the-sun-2004",
+        "the-effect-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/montag-off-broadway-review-soho-rep-kate-tarker/",
+      "headline": "‘Montag’ Off Broadway Review: An Onstage Thriller About 2 Women in a State of Siege",
+      "publishDate": "2022-10-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/its-revolting-off-broadway-review-gracie-gardner/",
+      "headline": "‘I’m Revolting’ Off Broadway Review: Hell Is Other People in a Hospital Waiting Room",
+      "publishDate": "2022-10-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "other-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/as-you-like-it-off-broadway-review-the-bards-comedy-gets-a-musical-update/",
+      "headline": "‘As You Like It’ Off Broadway Review: The Bard’s Comedy Gets a Musical Update",
+      "publishDate": "2022-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/richard-iii-off-broadway-review-danai-gurira/",
+      "headline": "‘Richard III’ Off Broadway Review: Danai Gurira Leads a Muddled Revival in Central Park",
+      "publishDate": "2022-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/hamlet-off-broadway-review-alex-lawther-leads-a-brilliant-modern-take-on-the-bard/",
+      "headline": "‘Hamlet’ Off Broadway Review: Alex Lawther Leads a Brilliant Modern Take on the Bard",
+      "publishDate": "2022-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/fat-ham-off-broadway-review-james-ijames-hamlet/",
+      "headline": "‘Fat Ham’ Off Broadway Review: A Young Gay Black Hamlet Smokes Shakespeare, in a Good Way",
+      "publishDate": "2022-05-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "fat-ham-2023",
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/who-killed-my-father-off-broadway-review-a-french-wunderkinds-cri-de-coeur/",
+      "headline": "‘Who Killed My Father’ Off Broadway Review: A French Wunderkind’s Cri-de-Coeur",
+      "publishDate": "2022-05-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/hannah-gadsby-body-of-work-review-a-feel-good-show-with-less-trauma-but-plenty-of-laughs/",
+      "headline": "‘Hannah Gadsby: Body of Work’ Review: A ‘Feel-Good Show’ With Less Trauma but Plenty of Laughs",
+      "publishDate": "2022-05-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "plenty-1983"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/cyrano-de-bergerac-off-broadway-review-james-mcavoy/",
+      "headline": "‘Cyrano de Bergerac’ Off Broadway Review: James McAvoy Plays a Poet Stud",
+      "publishDate": "2022-04-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cyrano-de-bergerac-2012",
+        "cyrano-de-bergerac-2007",
+        "cyrano-the-musical-1993",
+        "cyrano-1973",
+        "cyrano-de-bergerac-1984"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
+      "headline": "‘To My Girls’ Off Broadway Review: JC Lee Updates ‘The Boys in the Band’ for Millennial Gay Men",
+      "publishDate": "2022-04-12",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-boys-in-the-band-2018"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/suffs-off-broadway-review-shaina-taub-musical/",
+      "headline": "‘Suffs’ Off Broadway Review: Shaina Taub Pulls a Lin-Manuel Miranda With Tour-de-Force Suffragette Musical",
+      "publishDate": "2022-04-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "suffs-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/tambo-bones-off-broadway-review-dave-harris-explores-the-minstrel-shows-past-and-present/",
+      "headline": "‘Tambo & Bones’ Off Broadway Review: The Minstrel Show’s Past, Present and Future",
+      "publishDate": "2022-02-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-present-2017"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/prayer-for-the-french-republic-off-broadway-review/",
+      "headline": "‘Prayer for the French Republic’ Off Broadway Review: A Tour de Force Look at a Jewish Family in Paris",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "prayer-for-the-french-republic-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/kimberly-akimbo-off-broadway-review-victoria-clark-tesori/",
+      "headline": "‘Kimberly Akimbo’ Off Broadway Review: A Triumphant New Musical About a Girl Who Looks Like Her Grandmother",
+      "publishDate": "2021-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "kimberly-akimbo-2022"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/alex-edelman-just-for-us-review-jewish-comic-neo-nazi-white-supremacist/",
+      "headline": "Alex Edelman’s ‘Just for Us’ Off Broadway Review: A Jewish Comic Crashes a Meeting of Neo-Nazis",
+      "publishDate": "2021-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "just-for-us-2023"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/is-there-still-sex-in-the-city-off-broadway-review-candace-bushnell/",
+      "headline": "‘Is There Still Sex in the City?’ Off Broadway Review: Insufferable Candace Bushnell Goes in for the Shill",
+      "publishDate": "2021-12-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "still-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/assassins-off-broadway-review-sondheim-john-doyle/",
+      "headline": "‘Assassins’ Off Broadway Review: Presidents Aren’t the Only Targets Now",
+      "publishDate": "2021-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "assassins-2004"
+      ]
+    },
+    {
+      "url": "https://www.thewrap.com/fairycakes-off-broadway-review-douglas-carter-beanes-fairy-tale-mash-up-takes-flight/",
+      "headline": "‘Fairycakes’ Off Broadway Review: Douglas Carter Beane’s Fairy Tale Mash-Up Takes Flight",
+      "publishDate": "2021-10-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "flight-off-broadway-2027"
+      ]
+    }
+  ]
+}

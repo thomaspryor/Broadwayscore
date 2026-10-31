@@ -1,0 +1,111 @@
+{
+  "issueNumber": "bro-4910",
+  "planId": "dec1f2df-a678-417d-8094-1338c46dded2",
+  "status": "applied",
+  "createdAt": "2026-10-16T20:57:52.443Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4910: Into the Woods data fixes left over from BRO-4887 (Front Mezz Junkies url, Theater Life Simmons score, amNY wrong-production text, unsupported Talkin' Broadway row, misfiled Washington Post copies).",
+    "steps": [
+      "Stored url is a guessed slug; the real review (fetched 2026-10-16, title \"The Latest Broadway Revival of Into the Woods Climbs Way Up High\") is at the dated url. Collector refetches and rescores.",
+      "Simmons gives 5/5 stars (91-100 band) and says she thoroughly enjoyed the revival despite not being a Sondheim fan; read in full. Stored 100 from the star rating alone; 94 reflects the reservations about the show itself. Sheward (5/5, perfect-production rave) stays at 95.",
+      "Provenance for the score override.",
+      "Holds Matt Windman's May 2022 Encores! concert piece (flagged wrongProduction) under the Broadway revival url. Deleted so the collector refetches the July 2022 Broadway review at that url.",
+      "No url, no text, web-search-sourced excerpt only; no 2022 Talkin' Broadway review by Murray found in the outlet archive (his Into the Woods review there is the 2002 one). Unsupported row counted at 88.",
+      "Holds Peter Marks's 2022/07/29 Washington Post article on the St. James revival under a fake 1997 date; flagged wrongProduction. The 2022 page keeps its own Marks review (2022/07/10).",
+      "Same 2022/07/29 Washington Post article misfiled under the 1987 production; flagged wrongProduction."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json",
+        "field": "url",
+        "oldValue": "https://www.frontmezzjunkies.com/into-the-woods-review/",
+        "newValue": "https://frontmezzjunkies.com/2022/07/28/latest-broadway-revival-into-the-woods/",
+        "description": "Stored url is a guessed slug; the real review (fetched 2026-10-16, title \"The Latest Broadway Revival of Into the Woods Climbs Way Up High\") is at the dated url. Collector refetches and rescores."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/theater-life--paulanne-simmons.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 94,
+        "description": "Simmons gives 5/5 stars (91-100 band) and says she thoroughly enjoyed the revival despite not being a Sondheim fan; read in full. Stored 100 from the star rating alone; 94 reflects the reservations about the show itself. Sheward (5/5, perfect-production rave) stays at 95."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/theater-life--paulanne-simmons.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Theater Life 5/5 stars by Paulanne Simmons, read in full 2026-10-16: enthusiastic about staging and cast, lukewarm on Sondheim generally. BRO-4910.",
+        "description": "Provenance for the score override."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-2022/amny--matt-windman.json",
+        "description": "Holds Matt Windman's May 2022 Encores! concert piece (flagged wrongProduction) under the Broadway revival url. Deleted so the collector refetches the July 2022 Broadway review at that url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-2022/talkinbroadway--matthew-murray.json",
+        "description": "No url, no text, web-search-sourced excerpt only; no 2022 Talkin' Broadway review by Murray found in the outlet archive (his Into the Woods review there is the 2002 one). Unsupported row counted at 88."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-1997/washpost--peter-marks.json",
+        "description": "Holds Peter Marks's 2022/07/29 Washington Post article on the St. James revival under a fake 1997 date; flagged wrongProduction. The 2022 page keeps its own Marks review (2022/07/10)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "into-the-woods-1987/washpost--peter-marks.json",
+        "description": "Same 2022/07/29 Washington Post article misfiled under the 1987 production; flagged wrongProduction."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T21:45:58.837Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/frontmezzjunkies--shannon-shyne.json url: \"https://www.frontmezzjunkies.com/into-the-woods-review/\" -> \"https://frontmezzjunkies.com/2022/07/28/latest-broadway-revival-into-the-woods/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/theater-life--paulanne-simmons.json humanReviewScore: null -> 94"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "into-the-woods-2022/theater-life--paulanne-simmons.json humanReviewNote: null -> \"Theater Life 5/5 stars by Paulanne Simmons, read in full 2026-10-16: enthusiastic about staging and cast, lukewarm on Sondheim generally. BRO-4910.\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/amny--matt-windman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-2022/talkinbroadway--matthew-murray.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1997/washpost--peter-marks.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted into-the-woods-1987/washpost--peter-marks.json"
+    }
+  ]
+}

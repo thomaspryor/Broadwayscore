@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-5755-b",
+  "planId": "082f4198-03ba-46ff-8cec-709cb8ed3721",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:11:05.082Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5755: fill empty synopses for memoriam-off-west-end-2026 (Tangram Theatre listings) and medea-off-broadway-2026 (Met Opera season page).",
+    "steps": [
+      "shows.json: memoriam-off-west-end-2026.synopsis",
+      "shows.json: medea-off-broadway-2026.synopsis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "memoriam-off-west-end-2026",
+        "field": "synopsis",
+        "oldValue": "",
+        "newValue": "In this near-future drama by Noga Flaishon, a tech firm packages people's memories as VR experiences. Employee Rachel sees a chance to preserve the testimony of her grandmother Rivka, soon to be the last living Holocaust survivor, and the project turns into a family fight over ownership, ethics and legacy. Tangram Theatre Company stage the London premiere, directed by Daniel Goldman, with Beverley Klein as Rivka.",
+        "description": "shows.json: memoriam-off-west-end-2026.synopsis"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "medea-off-broadway-2026",
+        "field": "synopsis",
+        "oldValue": "",
+        "newValue": "Cherubini's opera retells Euripides' tragedy. Jilted by Giasone (Jason), who is about to marry Glauce, the princess of Corinth, the sorceress Medea demands him back, then sends the bride a poisoned gift and carries out her revenge on their children. David McVicar directs the Met production, with Sonya Yoncheva in the title role and Michael Spyres as Giasone.",
+        "description": "shows.json: medea-off-broadway-2026.synopsis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T07:02:42.478Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for memoriam-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for medea-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

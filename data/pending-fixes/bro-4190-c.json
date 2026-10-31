@@ -1,0 +1,119 @@
+{
+  "issueNumber": "bro-4190-c",
+  "planId": "1fbfead5-57e3-40b5-bc7a-4ef0c7e1d096",
+  "status": "partial",
+  "createdAt": "2026-10-12T01:08:06.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4190 residuals: flag two Canadian Opera Company (Toronto) reviews that the gap auto-ingest filed under the Met's Cosi fan tutte, and ingest the four real same-production reviews still listed as gaps on the cluster cards (Torera, America Who Hurt You, two Met Cosi reviews).",
+    "steps": [
+      "Set wrongProduction on cosi-fan-tutte-off-broadway-2026 Globe and Mail and Toronto Star files (Atom Egoyan COC staging at the Four Seasons Centre, Toronto).",
+      "Ingest each real missing review URL with ingest-review-from-url.js --stub-on-failure (write guards still apply)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "cosi-fan-tutte-off-broadway-2026/the-globe-and-mail--nirris-nagendrarajah.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4190: reviews the Canadian Opera Company staging (Atom Egoyan) at the Four Seasons Centre, Toronto, not the Met production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cosi-fan-tutte-off-broadway-2026/the-globe-and-mail--nirris-nagendrarajah.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4190: Canadian Opera Company, Four Seasons Centre Toronto (text credits Company/Venue/City); show is the Metropolitan Opera production",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cosi-fan-tutte-off-broadway-2026/toronto-star--glenn-sumi.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4190: reviews Atom Egoyan's Canadian Opera Company staging in Toronto, not the Met production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cosi-fan-tutte-off-broadway-2026/toronto-star--glenn-sumi.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4190: Canadian Opera Company (Atom Egoyan) staging in Toronto; show is the Metropolitan Opera production",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=torera-off-broadway-2026 --url=https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html --stub-on-failure",
+        "description": "BRO-4658: The Interested Bystander multi-show post with a Torera (WP Theater) review"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=america-who-hurt-you-off-broadway-2026 --url=https://www.interestedbystander.com/2026/09/theater-reviews-david-greenspan-shines.html --stub-on-failure",
+        "description": "BRO-4834: The Interested Bystander multi-show post with an America, Who Hurt You? (Polonsky Shakespeare Center) review"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cosi-fan-tutte-off-broadway-2026 --url=https://bachtrack.com/review-cosi-fan-tutte-lombardi-hankey-metropolitan-opera-new-york-september-2026 --stub-on-failure",
+        "description": "BRO-4190: Bachtrack review of the 2026 Met Cosi"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cosi-fan-tutte-off-broadway-2026 --url=https://operacanada.ca/the-metropolitan-opera-cosi-fan-tuttea-riot-of-colourful-invention/ --stub-on-failure",
+        "description": "BRO-4190: Opera Canada review of the 2026 Met Cosi (published 2026-10-02)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T05:45:24.158Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cosi-fan-tutte-off-broadway-2026/the-globe-and-mail--nirris-nagendrarajah.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cosi-fan-tutte-off-broadway-2026/the-globe-and-mail--nirris-nagendrarajah.json wrongProductionReason: null -> \"BRO-4190: Canadian Opera Company, Four Seasons Centre Toronto (text credits Company/Venue/City); show is the Metropolitan Opera production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cosi-fan-tutte-off-broadway-2026/toronto-star--glenn-sumi.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cosi-fan-tutte-off-broadway-2026/toronto-star--glenn-sumi.json wrongProductionReason: null -> \"BRO-4190: Canadian Opera Company (Atom Egoyan) staging in Toronto; show is the Metropolitan Opera production\""
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=torera-off-broadway-2026 --url=https://www.interestedbystander.com/2025/10/theater-broadways-punch-argues-for.html --stub-on-failure"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
+}

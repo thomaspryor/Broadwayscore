@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-10-31T08:50:03.719Z",
+  "apply": true,
+  "auditGeneratedAt": "2026-10-31T08:39:06.255Z",
+  "counts": {
+    "recent-activity": 5,
+    "closed": 1,
+    "sweep:eligible": 6,
+    "sweep:recheck-after-pending": 2,
+    "sweep:no-auto-worker": 3,
+    "sweep:refusal-breaker": 1
+  },
+  "rows": [
+    {
+      "id": "BRO-3699",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-3096",
+      "state": "In Review",
+      "action": "closed",
+      "sha": "46dce3983ba297fe87c0b2692a5a29cd181fe7a2"
+    },
+    {
+      "id": "BRO-6663",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6625",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6616",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6608",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6121",
+      "state": "In Review",
+      "action": "sweep-leave",
+      "reason": "recheck-after-pending"
+    },
+    {
+      "id": "BRO-5516",
+      "state": "In Review",
+      "action": "sweep-leave",
+      "reason": "recheck-after-pending"
+    },
+    {
+      "id": "BRO-6381",
+      "state": "In Review",
+      "action": "sweep-leave",
+      "reason": "gate-refused, no-auto-worker"
+    },
+    {
+      "id": "BRO-6382",
+      "state": "In Review",
+      "action": "sweep-leave",
+      "reason": "gate-refused, no-auto-worker"
+    },
+    {
+      "id": "BRO-6386",
+      "state": "In Review",
+      "action": "sweep-leave",
+      "reason": "gate-refused, no-auto-worker"
+    }
+  ]
+}

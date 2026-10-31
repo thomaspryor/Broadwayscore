@@ -1,0 +1,397 @@
+name: Press Night Probe
+run-name: 'Press night probe ${{ inputs.show_id }} ${{ inputs.night }}'
+
+# BRO-5912: measure one press night end to end. Started by opening-night-orchestrator.yml
+# (step "Start press-night probes") inside [embargo - 2.5h, embargo + 3h] of the opening-day
+# embargo. NOT a cron: GitHub delays crons 3-6h (see opening-night-orchestrator.yml header).
+#
+# One show-night = two jobs, because a hosted job caps at 360 min and the probe needs ~6.5h:
+#   early  waits for embargo - 30 min, samples the deployed show JSON every 5 min to +2h,
+#          stamps the census coverage at +2h, and COMMITS A CHECKPOINT (a timeout or
+#          cancel later must not lose the night).
+#   late   resumes from that checkpoint, samples to +6h, stamps coverage at the end,
+#          finalizes, commits the final record.
+# Record: data/audit/press-night/<show>-<night>.json (public data only).
+# Verdict: node scripts/press-night-record.js --show=ID --night=DATE --check
+# Advisory by design (nothing reads the record to gate anything yet).
+# Duplicate dispatches queue behind the running one (concurrency, no cancel) and exit at the
+# "finalized" guard.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show id (shows.json)'
+        required: true
+        type: string
+      night:
+        description: 'Press night, YYYY-MM-DD (the show openingDate)'
+        required: true
+        type: string
+      market:
+        description: 'broadway or west-end (picks the census market)'
+        required: true
+        type: string
+      embargo_at:
+        description: 'Embargo lift, ISO UTC (the orchestrator computes it; see defaultEmbargoAt)'
+        required: true
+        type: string
+
+permissions:
+  # contents: write: both jobs commit the record via push-with-retry.sh (a read-only token 403s).
+  contents: write
+  # actions: read: the late job downloads the lane-shadow artifact of another run (BRO-6067), as land.yml does.
+  actions: read
+
+concurrency:
+  group: press-night-probe-${{ inputs.show_id }}-${{ inputs.night }}
+  cancel-in-progress: false
+
+env:
+  SHOW_ID: ${{ inputs.show_id }}
+  NIGHT: ${{ inputs.night }}
+  MARKET: ${{ inputs.market }}
+  EMBARGO_AT: ${{ inputs.embargo_at }}
+
+jobs:
+  early:
+    name: Probe to embargo +2h
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    permissions:
+      contents: write
+      # actions: write: "Start lane shadow" dispatches opening-night-lane-live.yml (BRO-6074); gh run list reads runs.
+      actions: write
+    outputs:
+      inputs_ok: ${{ steps.guard.outputs.inputs_ok }}
+      finalized: ${{ steps.guard.outputs.finalized }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          # Long job (ledger-checkout-depth.js): depth 1000 keeps push-with-retry.sh's shallow boundary an
+          # ancestor of main for the commits at the end, hours after checkout.
+          fetch-depth: 1000
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Guard (inputs, already finalized)
+        id: guard
+        run: |
+          [[ "$SHOW_ID" =~ ^[a-z0-9-]+$ ]] || { echo "::error::bad show_id"; exit 1; }
+          [[ "$NIGHT" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]] || { echo "::error::bad night"; exit 1; }
+          [[ "$MARKET" =~ ^[a-z-]+$ ]] || { echo "::error::bad market"; exit 1; }
+          date -u -d "$EMBARGO_AT" +%s >/dev/null || { echo "::error::bad embargo_at"; exit 1; }
+          echo "inputs_ok=true" >> "$GITHUB_OUTPUT"
+          F="data/audit/press-night/${SHOW_ID}-${NIGHT}.json"
+          if [ -f "$F" ] && node -e "process.exit(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).probe.endedAt ? 0 : 1)" "$F"; then
+            echo "Record already finalized: nothing to do."
+            echo "finalized=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "finalized=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Wait for embargo - 30 min
+        if: steps.guard.outputs.finalized == 'false'
+        run: |
+          START=$(date -u -d "$EMBARGO_AT - 30 minutes" +%s)
+          WAIT=$((START - $(date -u +%s)))
+          echo "Wait: ${WAIT}s"
+          if [ "$WAIT" -gt 8100 ]; then
+            echo "::error::Dispatched more than 2.5h before the embargo (wait ${WAIT}s); the orchestrator should not do this."
+            exit 1
+          fi
+          # BRO-6614 start guard: started after embargo - 30 min (a reviewEmbargoAt earlier than the orchestrator's
+          # crons reach, or a late cron). Say so and start at once; the record flags reviews already live as baseline.
+          if [ "$WAIT" -lt 0 ]; then echo "::warning::Started $(( -WAIT / 60 )) min after embargo - 30 min ($EMBARGO_AT); probing at once, early reviews may be missed"; fi
+          if [ "$WAIT" -gt 0 ]; then sleep "$WAIT"; fi
+
+      - name: Start lane shadow
+        # BRO-6074: the opening-night lane in shadow mode (no lease, no publish, cannot touch the live site) runs on
+        # every Broadway press night, so cutover evidence no longer depends on a hand dispatch. Warn-only: a failure
+        # here must never fail or delay the probe. Deduped against a queued or running shadow for this show-night
+        # (run-name in opening-night-lane-live.yml); window covers now to embargo +5h, capped at 320 min.
+        # Kill switch: repo variable LANE_SHADOW_AUTO=false (an already-dispatched shadow keeps running; cancel by hand).
+        if: steps.guard.outputs.finalized == 'false' && vars.LANE_SHADOW_AUTO != 'false'
+        continue-on-error: true
+        timeout-minutes: 2
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Fail closed: if any list call fails the dedupe cannot be trusted, so skip rather than risk a second full window.
+          ACTIVE=""
+          for ST in in_progress queued pending; do
+            OUT=$(gh run list --workflow=opening-night-lane-live.yml --status "$ST" --json displayTitle --jq '.[].displayTitle') \
+              || { echo "::warning::could not list $ST lane runs; skipping lane shadow dispatch"; exit 0; }
+            ACTIVE="$ACTIVE"$'\n'"$OUT"
+          done
+          # A finished successful shadow also blocks: a rerun of this job must not start a shorter second shadow whose
+          # artifact would supersede the complete one (the late job imports the newest).
+          OUT=$(gh run list --workflow=opening-night-lane-live.yml --status success --limit 20 --json displayTitle --jq '.[].displayTitle') \
+            || { echo "::warning::could not list finished lane runs; skipping lane shadow dispatch"; exit 0; }
+          ACTIVE="$ACTIVE"$'\n'"$OUT"
+          PLAN=$(node scripts/lib/lane-shadow-dispatch.js --show="$SHOW_ID" --night="$NIGHT" --market="$MARKET" \
+                   --embargo-at="$EMBARGO_AT" --active="$ACTIVE") || { echo "::warning::lane shadow plan failed"; exit 0; }
+          echo "Lane shadow plan: $PLAN"
+          if [ "$(echo "$PLAN" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync(0,'utf8')).dispatch))")" != "true" ]; then exit 0; fi
+          WINDOW=$(echo "$PLAN" | node -e "process.stdout.write(String(JSON.parse(require('fs').readFileSync(0,'utf8')).windowMin))")
+          gh workflow run opening-night-lane-live.yml -f mode=shadow -f show="$SHOW_ID" -f night="$NIGHT" -f window_min="$WINDOW" \
+            || echo "::warning::Failed to dispatch lane shadow for $SHOW_ID $NIGHT"
+
+      - name: Probe to embargo +2h
+        if: steps.guard.outputs.finalized == 'false'
+        # Step timeout < job timeout so the stamp and commit steps below still run if the probe hangs.
+        timeout-minutes: 175
+        run: |
+          UNTIL=$(date -u -d "$EMBARGO_AT + 2 hours" +%Y-%m-%dT%H:%M:%SZ)
+          node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --market="$MARKET" \
+            --embargo-at="$EMBARGO_AT" --probe --until="$UNTIL"
+
+      - name: Checkout aggregator archive (census reference)
+        if: always() && steps.guard.outputs.finalized == 'false'
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # BRO-6070: this show's review-text files, read-only, so the record can snapshot which reviews are
+      # includable and when each was first seen (same-night-completeness, census exclusions). Capped at 5 min
+      # so a hung clone cannot eat the checkpoint's time budget; a failed or partial clone is deleted, and
+      # press-night-record.js then keeps any earlier snapshot and grades the gate unknown.
+      - name: Checkout review-texts (this show, same-night gate)
+        id: rt_early
+        if: always() && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        timeout-minutes: 5
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse-paths: ${{ env.SHOW_ID }}
+
+      - name: Drop partial review-texts checkout
+        if: always() && steps.guard.outputs.finalized == 'false' && steps.rt_early.outcome != 'success'
+        run: rm -rf data/review-texts
+
+      # BRO-6652: who published the night. The capture below stamps publishedBy from the lane-only decision
+      # (lane-only-markets.js), so it needs the lease state as of now and the two variables. Read-only and
+      # continue-on-error: a failed read leaves the decision "old path on", which stamps the night regular.
+      - name: Lease sync for the published-by stamp (+2h)
+        if: always() && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/opening-night-lease.js sync
+
+      - name: Read lane-only variables (+2h)
+        if: always() && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        timeout-minutes: 1
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Stamp census coverage at +2h
+        if: always() && steps.guard.outputs.finalized == 'false'
+        env:
+          # The script fetches the BWW roundup itself when no workflow has archived it (BRO-6067). fetchPage's
+          # cheap tiers only: BROWSERBASE_API_KEY is deliberately not passed, so discovery never opens a paid session.
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --capture-reference --label=2h
+
+      - name: Commit checkpoint
+        if: always() && steps.guard.outputs.finalized == 'false'
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          F="data/audit/press-night/${SHOW_ID}-${NIGHT}.json"
+          if [ ! -f "$F" ]; then echo "No record written (no sample was due); nothing to commit."; exit 0; fi
+          git add "$F"
+          if git diff --staged --quiet; then echo "No change"; exit 0; fi
+          git commit -m "data: press night checkpoint ${SHOW_ID} ${NIGHT} (embargo +2h) [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        # After the record commit so the record lands first; the ledger is telemetry and may lose a race.
+        if: always() && github.ref == 'refs/heads/main' && steps.guard.outputs.finalized == 'false'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: press-night-probe early
+
+      - name: Notify on failure
+        # A job timeout reports "cancelled", not "failure" (opening-night-orchestrator.yml, BRO-3707).
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Press Night Probe Failed (early)'
+          description: ${{ inputs.show_id }} ${{ inputs.night }}. The checkpoint may be missing; the late job still tries to run.
+          severity: 'warning'
+
+  late:
+    name: Probe to embargo +6h
+    needs: early
+    # Runs even when `early` failed or timed out (a missing checkpoint just means a fresh record),
+    # but not on bad inputs (inputs_ok) and not after a manual cancel.
+    if: ${{ !cancelled() && needs.early.outputs.inputs_ok == 'true' && needs.early.outputs.finalized != 'true' }}
+    runs-on: ubuntu-latest
+    # 350: probe step 270 + lane-shadow import 5 + two push-with-retry budgets (audit-push-retry-budgets.js).
+    timeout-minutes: 350
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          # Long job (ledger-checkout-depth.js): depth 1000 keeps push-with-retry.sh's shallow boundary an
+          # ancestor of main for the commits at the end, hours after checkout.
+          fetch-depth: 1000
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Wait for embargo - 30 min
+        run: |
+          START=$(date -u -d "$EMBARGO_AT - 30 minutes" +%s)
+          WAIT=$((START - $(date -u +%s)))
+          echo "Wait: ${WAIT}s"
+          if [ "$WAIT" -gt 8100 ]; then echo "::error::Started more than 2.5h before the embargo."; exit 1; fi
+          # BRO-6614 start guard: started after embargo - 30 min (a reviewEmbargoAt earlier than the orchestrator's
+          # crons reach, or a late cron). Say so and start at once; the record flags reviews already live as baseline.
+          if [ "$WAIT" -lt 0 ]; then echo "::warning::Started $(( -WAIT / 60 )) min after embargo - 30 min ($EMBARGO_AT); probing at once, early reviews may be missed"; fi
+          if [ "$WAIT" -gt 0 ]; then sleep "$WAIT"; fi
+
+      - name: Probe to embargo +6h
+        # Step timeout < job timeout so the stamp, finalize and commit steps still run if the probe hangs.
+        timeout-minutes: 270
+        run: |
+          UNTIL=$(date -u -d "$EMBARGO_AT + 6 hours" +%Y-%m-%dT%H:%M:%SZ)
+          node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --market="$MARKET" \
+            --embargo-at="$EMBARGO_AT" --probe --until="$UNTIL"
+
+      - name: Checkout aggregator archive (census reference)
+        if: always()
+        uses: ./.github/actions/checkout-aggregator-archive
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # BRO-6070: this show's review-text files, read-only, so the record can snapshot which reviews are
+      # includable and when each was first seen (same-night-completeness, census exclusions). Capped at 5 min
+      # so a hung clone cannot eat the checkpoint's time budget; a failed or partial clone is deleted, and
+      # press-night-record.js then keeps any earlier snapshot and grades the gate unknown.
+      - name: Checkout review-texts (this show, same-night gate)
+        id: rt_late
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse-paths: ${{ env.SHOW_ID }}
+
+      - name: Drop partial review-texts checkout
+        if: always() && steps.rt_late.outcome != 'success'
+        run: rm -rf data/review-texts
+
+      - name: Import lane-shadow artifact (site-live times, first discovery)
+        # Optional (BRO-6067): the shadow run (opening-night-lane-live.yml mode=shadow) is dispatched by the early job
+        # (BRO-6074) and uploads only when its window ends, so a shadow started after about embargo +1h is not here yet. Backfill
+        # later by hand: download the artifact, then press-night-record.js --import-lane-shadow=DIR and
+        # --rebuild-reference. Lookup copied from land.yml (newest unexpired artifact of that name).
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NAME="lane-shadow-${SHOW_ID}-${NIGHT}"
+          ROW=$(gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts?name=${NAME}&per_page=10" \
+            --jq '[.artifacts[] | select(.expired | not)] | sort_by(.created_at) | reverse | .[0] | select(. != null) | "\(.id) \(.workflow_run.id)"')
+          if [ -z "$ROW" ]; then echo "No ${NAME} artifact (shadow not run, or not uploaded yet)."; exit 0; fi
+          read -r ART_ID RUN_ID <<< "$ROW"
+          DIR="${RUNNER_TEMP}/lane-shadow"
+          rm -rf "$DIR" && mkdir -p "$DIR"
+          gh api "repos/${GITHUB_REPOSITORY}/actions/artifacts/${ART_ID}/zip" > "$DIR.zip"
+          unzip -q -o "$DIR.zip" -d "$DIR"
+          node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --import-lane-shadow="$DIR" --run-id="$RUN_ID"
+
+      # BRO-6652: who published the night. The capture below stamps publishedBy from the lane-only decision
+      # (lane-only-markets.js), so it needs the lease state as of now and the two variables. Read-only and
+      # continue-on-error: a failed read leaves the decision "old path on", which stamps the night regular.
+      - name: Lease sync for the published-by stamp (end)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/opening-night-lease.js sync
+
+      - name: Read lane-only variables (end)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 1
+        uses: ./.github/actions/read-lane-only-vars
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Stamp census coverage at the end
+        if: always()
+        env:
+          # The script fetches the BWW roundup itself when no workflow has archived it (BRO-6067). fetchPage's
+          # cheap tiers only: BROWSERBASE_API_KEY is deliberately not passed, so discovery never opens a paid session.
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+        run: node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --capture-reference --label=end
+
+      - name: Finalize and print verdict
+        if: always()
+        run: node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --finalize
+
+      - name: Commit record
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          F="data/audit/press-night/${SHOW_ID}-${NIGHT}.json"
+          if [ ! -f "$F" ]; then echo "No record written; nothing to commit."; exit 0; fi
+          git add "$F"
+          if git diff --staged --quiet; then echo "No change"; exit 0; fi
+          git commit -m "data: press night record ${SHOW_ID} ${NIGHT} [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        # After the record commit so the record lands first; the ledger is telemetry and may lose a race.
+        if: always() && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: press-night-probe late
+
+      - name: Notify on failure
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Press Night Probe Failed (late)'
+          description: ${{ inputs.show_id }} ${{ inputs.night }}. The record may be incomplete; check data/audit/press-night/.
+          severity: 'warning'

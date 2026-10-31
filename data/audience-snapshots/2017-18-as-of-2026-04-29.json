@@ -1,0 +1,388 @@
+{
+  "_meta": {
+    "snapshotAt": "2026-04-29T04:00:35.238Z",
+    "snapshotTag": "as-of-2026-04-29",
+    "tonySeason": "2017-18",
+    "sourceLastUpdated": "2026-04-29T00:26:22.829Z",
+    "nomineeCount": 17,
+    "eligibleShowCount": 0,
+    "totalShows": 17,
+    "note": "Audience grades captured at this point in time. Tony Predictions backtest evaluation should read THIS snapshot rather than live audience-buzz.json (which accumulates post-Tony halo ratings). Re-running on the same day overwrites; tag distinct snapshots with --tag."
+  },
+  "shows": {
+    "harry-potter-2021": {
+      "title": "Harry Potter and the Cursed Child",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 84.63,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 6390
+        },
+        "mezzanine": {
+          "score": 82,
+          "reviewCount": 4626
+        },
+        "theatr": {
+          "score": 76,
+          "reviewCount": 3001
+        },
+        "broadwayCom": {
+          "score": 92,
+          "reviewCount": 620
+        },
+        "reddit": {
+          "score": 71,
+          "reviewCount": 97
+        }
+      }
+    },
+    "frozen-2018": {
+      "title": "Frozen",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 77.25,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 81,
+          "reviewCount": 1596
+        },
+        "mezzanine": {
+          "score": 73,
+          "reviewCount": 1367
+        },
+        "theatr": {
+          "score": 75,
+          "reviewCount": 76
+        }
+      }
+    },
+    "lobby-hero-2018": {
+      "title": "Lobby Hero",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 80,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 413
+        },
+        "mezzanine": {
+          "score": 72,
+          "reviewCount": 64
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 6
+        }
+      }
+    },
+    "three-tall-women-2018": {
+      "title": "Three Tall Women",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 88.6,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 90,
+          "reviewCount": 612
+        },
+        "mezzanine": {
+          "score": 83,
+          "reviewCount": 60
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 1
+        }
+      }
+    },
+    "mean-girls-2018": {
+      "title": "Mean Girls",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 79.44,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 1712
+        },
+        "mezzanine": {
+          "score": 77,
+          "reviewCount": 2429
+        },
+        "theatr": {
+          "score": 78,
+          "reviewCount": 111
+        }
+      }
+    },
+    "carousel-2018": {
+      "title": "Carousel",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 78.67,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 81,
+          "reviewCount": 1171
+        },
+        "mezzanine": {
+          "score": 72,
+          "reviewCount": 409
+        },
+        "theatr": {
+          "score": 57,
+          "reviewCount": 7
+        },
+        "reddit": {
+          "score": 65,
+          "reviewCount": 673
+        }
+      }
+    },
+    "my-fair-lady-2018": {
+      "title": "My Fair Lady",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 86.07,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 88,
+          "reviewCount": 1447
+        },
+        "mezzanine": {
+          "score": 81,
+          "reviewCount": 513
+        },
+        "theatr": {
+          "score": 73,
+          "reviewCount": 15
+        }
+      }
+    },
+    "travesties-2018": {
+      "title": "Travesties",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 72.2,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 76,
+          "reviewCount": 343
+        },
+        "mezzanine": {
+          "score": 57,
+          "reviewCount": 34
+        }
+      }
+    },
+    "angels-in-america-2018": {
+      "title": "Angels in America",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 92.69,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 92,
+          "reviewCount": 859
+        },
+        "mezzanine": {
+          "score": 94,
+          "reviewCount": 456
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 8
+        },
+        "reddit": {
+          "score": 87,
+          "reviewCount": 41
+        }
+      }
+    },
+    "the-children-2017": {
+      "title": "The Children",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 73.8,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 75,
+          "reviewCount": 362
+        },
+        "mezzanine": {
+          "score": 69,
+          "reviewCount": 16
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 2
+        }
+      }
+    },
+    "farinelli-and-the-king-2017": {
+      "title": "Farinelli and the King",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 80.2,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 82,
+          "reviewCount": 541
+        },
+        "mezzanine": {
+          "score": 73,
+          "reviewCount": 46
+        }
+      }
+    },
+    "junk-2017": {
+      "title": "Junk",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 75.2,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 77,
+          "reviewCount": 449
+        },
+        "mezzanine": {
+          "score": 68,
+          "reviewCount": 25
+        }
+      }
+    },
+    "latin-history-for-morons-2017": {
+      "title": "Latin History for Morons",
+      "tonyCategoriesNominated": [
+        "Best Play"
+      ],
+      "combinedScore": 79.6,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 81,
+          "reviewCount": 419
+        },
+        "mezzanine": {
+          "score": 74,
+          "reviewCount": 27
+        },
+        "theatr": {
+          "score": 100,
+          "reviewCount": 2
+        }
+      }
+    },
+    "the-bands-visit-2017": {
+      "title": "The Band's Visit",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 81.83,
+      "designation": "Liking",
+      "sources": {
+        "showScore": {
+          "score": 83,
+          "reviewCount": 2091
+        },
+        "mezzanine": {
+          "score": 79,
+          "reviewCount": 735
+        },
+        "theatr": {
+          "score": 63,
+          "reviewCount": 19
+        }
+      }
+    },
+    "spongebob-squarepants-2017": {
+      "title": "SpongeBob SquarePants",
+      "tonyCategoriesNominated": [
+        "Best Musical"
+      ],
+      "combinedScore": 77.4,
+      "designation": "Shrugging",
+      "sources": {
+        "mezzanine": {
+          "score": 78,
+          "reviewCount": 966
+        },
+        "theatr": {
+          "score": 75,
+          "reviewCount": 36
+        }
+      }
+    },
+    "the-iceman-cometh-2018": {
+      "title": "The Iceman Cometh",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Play"
+      ],
+      "combinedScore": 73.6,
+      "designation": "Shrugging",
+      "sources": {
+        "showScore": {
+          "score": 76,
+          "reviewCount": 252
+        },
+        "mezzanine": {
+          "score": 64,
+          "reviewCount": 50
+        },
+        "theatr": {
+          "score": 0,
+          "reviewCount": 1
+        }
+      }
+    },
+    "once-on-this-island-2017": {
+      "title": "Once on This Island",
+      "tonyCategoriesNominated": [
+        "Best Revival of a Musical"
+      ],
+      "combinedScore": 89.36,
+      "designation": "Loving",
+      "sources": {
+        "showScore": {
+          "score": 89,
+          "reviewCount": 1392
+        },
+        "mezzanine": {
+          "score": 90,
+          "reviewCount": 967
+        },
+        "theatr": {
+          "score": 85,
+          "reviewCount": 27
+        }
+      }
+    }
+  }
+}

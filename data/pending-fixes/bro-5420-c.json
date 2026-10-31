@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5420-c",
+  "planId": "f49ad575-511c-4fdf-9b58-5427470bab99",
+  "status": "applied",
+  "createdAt": "2026-10-16T03:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (c): two live Theatre Record rows with OCR residue in the byline. Chicago 1996: re-credit 'Michael Covene>' to Michael Coveney and flag wrongProduction (the review is of the 1997 London Adelphi production). Wicked West End: 'Sheridan Morley·' to Sheridan Morley (opening-night 2006 review, right production).",
+    "steps": [
+      "recredit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1996/daily-mail--michael-covene.json",
+        "field": "criticName",
+        "oldValue": "Michael Covene>",
+        "newValue": "Michael Coveney",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Michael Coveney (the outlet's critic at that date, legible in the residue)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1996/daily-mail--michael-covene.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: Daily Mail 1997-11-21 review (Theatre Record issue 899) of the London Adelphi production with Ruthie Henshall, not the 1996 Broadway revival at the Ambassador.",
+        "description": "BRO-5420: reason for the wrong-production flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chicago-1996/daily-mail--michael-covene.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: a London 1997 review filed under the Broadway 1996 revival; it was live (score 78) in that show's critic score."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-west-end-2021/express-uk--sheridan-morley.json",
+        "field": "criticName",
+        "oldValue": "Sheridan Morley·",
+        "newValue": "Sheridan Morley",
+        "description": "BRO-5420: Theatre Record scan OCR left residue in the byline; the critic is Sheridan Morley (the outlet's critic at that date, legible in the residue)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T04:07:35.050Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1996/daily-mail--michael-covene.json criticName: \"Michael Covene>\" -> \"Michael Coveney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1996/daily-mail--michael-covene.json wrongProductionReason: null -> \"BRO-5420: Daily Mail 1997-11-21 review (Theatre Record issue 899) of the London Adelphi production with Ruthie Henshall, not the 1996 Broadway revival at the Ambassador.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chicago-1996/daily-mail--michael-covene.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wicked-west-end-2021/express-uk--sheridan-morley.json criticName: \"Sheridan Morley·\" -> \"Sheridan Morley\""
+    }
+  ]
+}

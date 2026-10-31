@@ -1,0 +1,147 @@
+{
+  "issueNumber": "bro-5090-06",
+  "planId": "37902f51-8caf-4db1-98f6-8be6410afcd1",
+  "status": "partial",
+  "createdAt": "2026-10-12T11:57:00.096Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5090 part 6: correct 9 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page date at https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html is 2017-03-17 (show opened 2017-03-16); February 16, 2017 came from the legacy web-search step.",
+      "Page date at https://online.wsj.com/articles/not-quite-real-enoughtom-stoppards-the-real-thing-review-by-terry-teachout-1414715401 is 2014-10-31 (show opened 2014-10-30); October 23, 2014 came from the legacy web-search step.",
+      "Page date at https://www.nytimes.com/2019/10/15/theater/the-rose-tattoo-review-marisa-tomei.html is 2019-10-16 (show opened 2019-10-15); October 7, 2019 came from the legacy web-search step.",
+      "Page date at http://www.wsj.com/articles/the-visit-review-as-long-as-the-lady-is-paying-1429835402 is 2015-04-24 (show opened 2015-04-23); April 16, 2015 came from the legacy web-search step.",
+      "Page date at https://www.nytimes.com/2021/10/13/theater/thoughts-of-a-colored-man-review.html is 2021-10-13 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step.",
+      "Page date at https://www.washingtonpost.com/entertainment/theater_dance/thoughts-colored-man/2021/10/13/eef681e0-2b71-11ec-8ef6-3ca8fe943a92_story.html is 2021-10-14 (show opened 2021-10-13); November 1, 2021 came from the legacy web-search step.",
+      "Page date at https://www.nytimes.com/2008/05/08/theater/reviews/08girl.html is 2008-05-08 (show opened 2008-05-07); December 8, 2008 came from the legacy web-search step.",
+      "Page date at http://www.usatoday.com/story/life/theater/2014/04/20/broadway-review-violet/7806053/ is 2014-04-21 (show opened 2014-04-20); April 12, 2014 came from the legacy web-search step.",
+      "Page date at https://www.nytimes.com/2013/11/25/theater/reviews/no-mans-land-and-waiting-for-godot-at-the-cort.html is 2013-11-25 (show opened 2013-11-24); November 7, 2013 came from the legacy web-search step."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-price-2017/nytimes--ben-brantley.json",
+        "field": "publishDate",
+        "oldValue": "February 16, 2017",
+        "newValue": "2017-03-17",
+        "description": "Page date at https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html is 2017-03-17 (show opened 2017-03-16); February 16, 2017 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-real-thing-2014/wsj--terry-teachout.json",
+        "field": "publishDate",
+        "oldValue": "October 23, 2014",
+        "newValue": "2014-10-31",
+        "description": "Page date at https://online.wsj.com/articles/not-quite-real-enoughtom-stoppards-the-real-thing-review-by-terry-teachout-1414715401 is 2014-10-31 (show opened 2014-10-30); October 23, 2014 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-rose-tattoo-2019/nytimes--ben-brantley.json",
+        "field": "publishDate",
+        "oldValue": "October 7, 2019",
+        "newValue": "2019-10-16",
+        "description": "Page date at https://www.nytimes.com/2019/10/15/theater/the-rose-tattoo-review-marisa-tomei.html is 2019-10-16 (show opened 2019-10-15); October 7, 2019 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-visit-2015/wsj--terry-teachout.json",
+        "field": "publishDate",
+        "oldValue": "April 16, 2015",
+        "newValue": "2015-04-24",
+        "description": "Page date at http://www.wsj.com/articles/the-visit-review-as-long-as-the-lady-is-paying-1429835402 is 2015-04-24 (show opened 2015-04-23); April 16, 2015 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/nytimes--jesse-green.json",
+        "field": "publishDate",
+        "oldValue": "October 31, 2021",
+        "newValue": "2021-10-13",
+        "description": "Page date at https://www.nytimes.com/2021/10/13/theater/thoughts-of-a-colored-man-review.html is 2021-10-13 (show opened 2021-10-13); October 31, 2021 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thoughts-of-a-colored-man-2021/washpost--peter-marks.json",
+        "field": "publishDate",
+        "oldValue": "November 1, 2021",
+        "newValue": "2021-10-14",
+        "description": "Page date at https://www.washingtonpost.com/entertainment/theater_dance/thoughts-colored-man/2021/10/13/eef681e0-2b71-11ec-8ef6-3ca8fe943a92_story.html is 2021-10-14 (show opened 2021-10-13); November 1, 2021 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "top-girls-2008/nytimes--ben-brantley.json",
+        "field": "publishDate",
+        "oldValue": "December 8, 2008",
+        "newValue": "2008-05-08",
+        "description": "Page date at https://www.nytimes.com/2008/05/08/theater/reviews/08girl.html is 2008-05-08 (show opened 2008-05-07); December 8, 2008 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "violet-2014/usatoday--elysa-gardner.json",
+        "field": "publishDate",
+        "oldValue": "April 12, 2014",
+        "newValue": "2014-04-21",
+        "description": "Page date at http://www.usatoday.com/story/life/theater/2014/04/20/broadway-review-violet/7806053/ is 2014-04-21 (show opened 2014-04-20); April 12, 2014 came from the legacy web-search step."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "waiting-for-godot-2013/nytimes--ben-brantley.json",
+        "field": "publishDate",
+        "oldValue": "November 7, 2013",
+        "newValue": "2013-11-25",
+        "description": "Page date at https://www.nytimes.com/2013/11/25/theater/reviews/no-mans-land-and-waiting-for-godot-at-the-cort.html is 2013-11-25 (show opened 2013-11-24); November 7, 2013 came from the legacy web-search step."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T12:20:45.007Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-price-2017/nytimes--ben-brantley.json publishDate applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-real-thing-2014/wsj--terry-teachout.json publishDate: \"October 23, 2014\" -> \"2014-10-31\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-rose-tattoo-2019/nytimes--ben-brantley.json publishDate: \"October 7, 2019\" -> \"2019-10-16\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-2015/wsj--terry-teachout.json publishDate: \"April 16, 2015\" -> \"2015-04-24\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thoughts-of-a-colored-man-2021/nytimes--jesse-green.json publishDate: \"October 31, 2021\" -> \"2021-10-13\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thoughts-of-a-colored-man-2021/washpost--peter-marks.json publishDate: \"November 1, 2021\" -> \"2021-10-14\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "top-girls-2008/nytimes--ben-brantley.json publishDate: \"December 8, 2008\" -> \"2008-05-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "violet-2014/usatoday--elysa-gardner.json publishDate: \"April 12, 2014\" -> \"2014-04-21\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "waiting-for-godot-2013/nytimes--ben-brantley.json publishDate: \"November 7, 2013\" -> \"2013-11-25\""
+    }
+  ]
+}

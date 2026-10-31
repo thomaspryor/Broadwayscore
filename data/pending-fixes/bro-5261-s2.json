@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5261-s2",
+  "planId": "cc2403ef-3ef4-42b6-9d10-2e3064b57ef9",
+  "status": "partial",
+  "createdAt": "2026-10-13T14:28:00.192Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5261 retro-review of BRO-2716: the Louder Than War ABBA Voyage review (in-window: the show opened 2022-05-28, the review is dated 2022-06-13) was flagged wrongAttribution \"until it is re-filed under its real outlet\", but nothing re-filed it. The same change registers louder-than-war (louderthanwar.com, T3 london, the same tier as click-liverpool), so the rebuild outlet-mismatch pass relabels the file by its url (publisherDomainCorrection). Clearing the flag lets it score under its own outlet.",
+    "steps": [
+      "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json: clear wrongAttribution and its reason. The next rebuild relabels it to louder-than-war--filthy-dirty.json (its url resolves to the newly registered louderthanwar.com)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json",
+        "field": "wrongAttributionReason",
+        "oldValue": "BRO-2716: url is louderthanwar.com, not Click Liverpool (clickliverpool.com)",
+        "newValue": null,
+        "description": "The outlet is now registered; the rebuild relabels by url."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json",
+        "field": "wrongAttribution",
+        "oldValue": true,
+        "newValue": null,
+        "description": "Re-filed under louder-than-war by the rebuild publisher-domain relabel."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T20:07:47.490Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json wrongAttributionReason: write guard kept \"BRO-2716: url is louderthanwar.com, not Click Liverpool (clickliverpool.com)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "abba-voyage-off-west-end-2026/click-liverpool--filthy-dirty.json wrongAttribution: write guard kept true"
+    }
+  ]
+}

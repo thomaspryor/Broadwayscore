@@ -1,0 +1,26 @@
+{
+  "issueNumber": "bro-4623-orphan-key",
+  "planId": "a2d8c3bc-13d1-43d7-8f39-1c0734f46262",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4623: drop the orphan commercial research bookkeeping key 860. It matches neither an ID nor a slug in shows.json and contains no financial claim or source.",
+    "steps": [
+      "The executor verifies a plausible shows.json and refuses both live IDs and live slugs.",
+      "Delete only key 860 from commercial.json; retain every production record and every unresolved outcome."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "drop-orphan-key",
+        "file": "commercial.json",
+        "showId": "860",
+        "reason": "BRO-4623: no shows.json ID or slug matches 860; this unsourced TBD row contains only research/model bookkeeping.",
+        "description": "Remove the orphan commercial research key 860 without changing any live production."
+      }
+    ]
+  }
+}

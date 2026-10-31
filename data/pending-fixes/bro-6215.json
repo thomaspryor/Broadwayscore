@@ -1,0 +1,178 @@
+{
+  "issueNumber": "bro-6215",
+  "planId": "9ba09096-e1b5-45dd-8e3e-f1f17564257d",
+  "status": "applied",
+  "createdAt": "2026-10-29T05:00:29.001Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Owner-set recoupment estimates dated 2026-10-25: Joe Turner approximately 100%, Oedipus 70-95%; label as Our estimate, preserve Ragtime",
+    "steps": [
+      "commercial.json: joe-turners-come-and-gone.ourRecoupEstimatePct",
+      "commercial.json: joe-turners-come-and-gone.ourRecoupEstimateAsOf",
+      "commercial.json: joe-turners-come-and-gone.designationBasis",
+      "commercial.json: joe-turners-come-and-gone.recouped",
+      "commercial.json: joe-turners-come-and-gone.designation",
+      "commercial.json: oedipus.ourRecoupEstimatePct",
+      "commercial.json: oedipus.ourRecoupEstimateAsOf",
+      "commercial.json: oedipus.designationBasis",
+      "commercial.json: oedipus.recouped",
+      "commercial.json: oedipus.ourEstimateRangePct"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "ourRecoupEstimatePct",
+        "oldValue": null,
+        "newValue": 100,
+        "description": "commercial.json: joe-turners-come-and-gone.ourRecoupEstimatePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "ourRecoupEstimateAsOf",
+        "oldValue": null,
+        "newValue": "2026-10-25",
+        "description": "commercial.json: joe-turners-come-and-gone.ourRecoupEstimateAsOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "designationBasis",
+        "oldValue": "model-estimate",
+        "newValue": "model-estimate",
+        "description": "commercial.json: joe-turners-come-and-gone.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "commercial.json: joe-turners-come-and-gone.recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "joe-turners-come-and-gone",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Trickle",
+        "description": "commercial.json: joe-turners-come-and-gone.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "ourRecoupEstimatePct",
+        "oldValue": null,
+        "newValue": [
+          70,
+          95
+        ],
+        "description": "commercial.json: oedipus.ourRecoupEstimatePct"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "ourRecoupEstimateAsOf",
+        "oldValue": null,
+        "newValue": "2026-10-25",
+        "description": "commercial.json: oedipus.ourRecoupEstimateAsOf"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "model-estimate",
+        "description": "commercial.json: oedipus.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "commercial.json: oedipus.recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "ourEstimateRangePct",
+        "oldValue": [
+          50,
+          65
+        ],
+        "newValue": null,
+        "description": "commercial.json: oedipus.ourEstimateRangePct"
+      }
+    ]
+  },
+  "executedAt": "2026-10-29T06:59:06.080Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimatePct updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimateAsOf updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for joe-turners-come-and-gone"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimatePct updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourRecoupEstimateAsOf updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: ourEstimateRangePct updated for oedipus"
+    }
+  ],
+  "executedIn": "ci"
+}

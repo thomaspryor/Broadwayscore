@@ -1,0 +1,206 @@
+#!/usr/bin/env node
+
+/**
+ * Score reviews using Claude LLM
+ *
+ * Reads each review file in data/review-texts/, sends fullText to Claude,
+ * and saves the assignedScore (0-100) back to the file.
+ *
+ * Usage:
+ *   ANTHROPIC_API_KEY=sk-... node scripts/score-reviews-llm.js
+ *
+ * Options:
+ *   --show=hamilton-2015    Only process one show
+ *   --dry-run               Don't save, just print results
+ *   --limit=10              Only process N reviews
+ *   --max-cost=5.00         Stop when cumulative API spend hits $X
+ */
+
+const fs = require('fs');
+const path = require('path');
+const Anthropic = require('@anthropic-ai/sdk').default;
+const { safeWriteReview } = require('./lib/review-write-guard');
+const { isAlreadyLlmScored } = require('./lib/review-guards');
+const { SCORING_SONNET } = require('./lib/models');
+
+const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
+
+const USAGE = `score-reviews-llm.js — Score reviews using Claude LLM.
+
+Usage:
+  node scripts/score-reviews-llm.js [options]
+  node scripts/score-reviews-llm.js --help, -h    print this usage and exit
+`;
+const reviewsDir = path.join(__dirname, '../data/review-texts');
+
+// Parse command line args
+const args = process.argv.slice(2);
+const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+const dryRun = args.includes('--dry-run');
+const limitArg = args.find(a => a.startsWith('--limit='));
+const limit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
+const maxCostArg = args.find(a => a.startsWith('--max-cost='));
+const maxCost = maxCostArg ? parseFloat(maxCostArg.split('=')[1]) : null;
+
+// Sonnet 4.6 pricing: $3/M input, $15/M output
+const COST_PER_INPUT_TOKEN = 3 / 1_000_000;
+const COST_PER_OUTPUT_TOKEN = 15 / 1_000_000;
+
+const SCORING_PROMPT = `You are a theater critic review analyzer. Given a review excerpt, assign a score from 0-100 based on how positive or negative the review is.
+
+Scoring guidelines:
+- 90-100: Rave review. Extremely positive, uses superlatives like "masterpiece", "triumph", "unmissable", "brilliant"
+- 80-89: Very positive. Enthusiastic recommendation, minor quibbles at most
+- 70-79: Positive. Generally favorable, recommends the show but has some criticisms
+- 60-69: Mixed-positive. More positive than negative, but significant reservations
+- 50-59: Mixed. Roughly equal positives and negatives, lukewarm
+- 40-49: Mixed-negative. More negative than positive
+- 30-39: Negative. Generally unfavorable, does not recommend
+- 20-29: Very negative. Strong criticism, few if any positives
+- 0-19: Pan. Extremely negative, harsh criticism throughout
+
+Respond with ONLY a JSON object in this exact format:
+{"score": <number>, "sentiment": "<Rave|Positive|Mixed|Negative|Pan>", "confidence": "<high|medium|low>"}
+
+The review:
+`;
+
+async function scoreReview(client, reviewText) {
+  const response = await client.messages.create({
+    model: SCORING_SONNET,
+    max_tokens: 100,
+    messages: [
+      {
+        role: 'user',
+        content: SCORING_PROMPT + reviewText
+      }
+    ]
+  });
+
+  const text = (response.content.find(c => c.type === 'text')?.text || '').trim();
+  const inputTokens = response.usage?.input_tokens || 0;
+  const outputTokens = response.usage?.output_tokens || 0;
+
+  // Parse JSON response
+  try {
+    const match = text.match(/\{[\s\S]*\}/);
+    if (match) {
+      const result = JSON.parse(match[0]);
+      result.inputTokens = inputTokens;
+      result.outputTokens = outputTokens;
+      return result;
+    }
+  } catch (e) {
+    console.error('Failed to parse response:', text);
+  }
+
+  return null;
+}
+
+async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    console.error('Error: ANTHROPIC_API_KEY environment variable not set');
+    console.error('Usage: ANTHROPIC_API_KEY=sk-... node scripts/score-reviews-llm.js');
+    process.exit(1);
+  }
+
+  const client = new Anthropic({ apiKey });
+
+  // Get all review files
+  const shows = listShowDirs(reviewsDir);
+
+  const targetShows = showFilter ? shows.filter(s => s === showFilter) : shows;
+
+  if (showFilter && targetShows.length === 0) {
+    console.error(`Show not found: ${showFilter}`);
+    process.exit(1);
+  }
+
+  let processed = 0;
+  let skipped = 0;
+  let errors = 0;
+  let totalCost = 0;
+
+  console.log(`Scoring reviews with Claude LLM...`);
+  console.log(`Shows to process: ${targetShows.length}`);
+  if (maxCost) console.log(`Cost ceiling: $${maxCost.toFixed(2)}`);
+  if (dryRun) console.log('DRY RUN - no files will be modified\n');
+
+  for (const show of targetShows) {
+    const showDir = path.join(reviewsDir, show);
+    const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json'));
+
+    for (const file of files) {
+      if (limit && processed >= limit) {
+        console.log(`\nLimit of ${limit} reached.`);
+        break;
+      }
+      if (maxCost && totalCost >= maxCost) {
+        console.log(`\nCost ceiling $${maxCost.toFixed(2)} reached ($${totalCost.toFixed(4)} spent).`);
+        break;
+      }
+
+      const filePath = path.join(showDir, file);
+      const review = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+      // Skip if already scored
+      if (isAlreadyLlmScored(review)) {
+        skipped++;
+        continue;
+      }
+
+      // Skip if no text
+      if (!review.fullText || review.fullText.length < 50) {
+        console.log(`  Skipping ${file} - no text`);
+        skipped++;
+        continue;
+      }
+
+      process.stdout.write(`  ${show}/${file}... `);
+
+      try {
+        const result = await scoreReview(client, review.fullText);
+
+        if (result && result.score !== undefined) {
+          const callCost = (result.inputTokens * COST_PER_INPUT_TOKEN) + (result.outputTokens * COST_PER_OUTPUT_TOKEN);
+          totalCost += callCost;
+
+          review.assignedScore = result.score;
+          review.bucket = result.sentiment;
+          review.llmConfidence = result.confidence;
+
+          if (!dryRun) {
+            safeWriteReview(filePath, review);
+          }
+
+          console.log(`${result.score} (${result.sentiment}) [$${totalCost.toFixed(4)}]`);
+          processed++;
+        } else {
+          console.log('FAILED');
+          errors++;
+        }
+      } catch (e) {
+        console.log(`ERROR: ${e.message}`);
+        errors++;
+      }
+
+      // Rate limiting - wait 100ms between requests
+      await new Promise(r => setTimeout(r, 100));
+    }
+
+    if (limit && processed >= limit) break;
+    if (maxCost && totalCost >= maxCost) break;
+  }
+
+  console.log(`\n========================================`);
+  console.log(`Processed: ${processed}`);
+  console.log(`Skipped (already scored or no text): ${skipped}`);
+  console.log(`Errors: ${errors}`);
+  console.log(`Total cost: $${totalCost.toFixed(4)}`);
+}
+
+main().catch(console.error);

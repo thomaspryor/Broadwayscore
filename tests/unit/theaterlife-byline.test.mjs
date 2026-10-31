@@ -1,0 +1,124 @@
+/**
+ * Regression test for the theaterlife.com byline override.
+ *
+ * The bug (Notion 39b637c5): theaterlife.com (WordPress) attributes EVERY post
+ * to the site owner "Barry Gordin" via the author vcard
+ * (class="author vcard" → /author/barry/). The generic byline-CSS strategy in
+ * extractAuthorFromHtml picks that vcard, so 366 reviews were mis-bylined
+ * "Barry Gordin" — none of them written by him. The real critic is the in-body
+ * "By: <name>" line near the top of the article ("By: Samuel L. Leiter").
+ *
+ * The fix: extractTheaterLifeByline() parses the in-body "By:" line (colon form,
+ * which the shared BYLINE_PATTERNS do not catch), and extractAuthorFromHtml
+ * prefers it for theaterlife.com URLs before the vcard strategy runs.
+ *
+ * These fixtures are the real cleaned-text shapes seen in the corpus: the
+ * newline-formatted modern scrape and the space-flattened legacy scrape.
+ */
+
+import { test, describe } from 'node:test';
+import assert from 'node:assert';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const { extractTheaterLifeByline, extractAuthorFromHtml } = require('../../scripts/lib/content-quality.js');
+
+describe('extractTheaterLifeByline', () => {
+  test('parses "By: First M. Last" (colon + middle initial)', () => {
+    const text = 'CHARLES DICKENS’ A CHRISTMAS CAROL\n\nBy: Samuel L. Leiter\n\nNovember 30, 2022: If you go';
+    assert.strictEqual(extractTheaterLifeByline(text), 'Samuel L. Leiter');
+  });
+
+  test('parses "By: First Last" and stops before trailing body text (flattened scrape)', () => {
+    const text = '1984 ***1/2 – theaterlife Skip to content Reviews By: Isa Goldberg Transferred from London to Broadway';
+    assert.strictEqual(extractTheaterLifeByline(text), 'Isa Goldberg');
+  });
+
+  test('parses "By: First Last" and stops before the publish date', () => {
+    const text = 'By: David Sheward\n\nMarch 17, 2023: Jessica Chastain’s compelling performance';
+    assert.strictEqual(extractTheaterLifeByline(text), 'David Sheward');
+  });
+
+  test('parses "By Name" without a colon, followed by a date', () => {
+    assert.strictEqual(extractTheaterLifeByline('By David Sheward\n\nJanuary 22, 2025: Billed as a new play'), 'David Sheward');
+  });
+
+  test('parses "By Name" after an ALL-CAPS headline (date-guarded)', () => {
+    assert.strictEqual(extractTheaterLifeByline('UNITED AGAINST BIAS, DIVIDED BY POWER\n\nBy Alix Cohen\n\nFebruary 27, 2026: Prejudice'), 'Alix Cohen');
+  });
+
+  test('parses "By Name" with byline and date space-separated (stripped HTML)', () => {
+    assert.strictEqual(extractTheaterLifeByline('  By David Sheward  June 13, 2025: Even though'), 'David Sheward');
+  });
+
+  test('requires a date for the no-colon form (bare "By Name" is not enough)', () => {
+    assert.strictEqual(extractTheaterLifeByline('By David Sheward\n\nno date here, just prose about the show'), null);
+  });
+
+  test('cuts a byline glued to a curly quote ("By: Alix Cohen“We are…")', () => {
+    assert.strictEqual(extractTheaterLifeByline('THIS is Great Theater\n\nBy: Alix Cohen“We are merchants of money.'), 'Alix Cohen');
+  });
+
+  test('cuts a byline glued to a month ("By: Alix CohenSeptember 19, 2025")', () => {
+    assert.strictEqual(extractTheaterLifeByline('By: Alix CohenSeptember 19, 2025: On our way out'), 'Alix Cohen');
+  });
+
+  test('does not split Mc/Mac surnames (no-colon path)', () => {
+    assert.strictEqual(extractTheaterLifeByline('By McDonald Smith\n\nApril 1, 2025: some review text'), 'McDonald Smith');
+  });
+
+  test('conservatively rejects a month-word name token (ambiguous with a date)', () => {
+    // A surname that is itself a month ("John March") can't be safely told apart
+    // from "By: John" + a "March …" publish date, so the parser returns null and
+    // the file routes to manual triage rather than risk stamping a date as a name.
+    assert.strictEqual(extractTheaterLifeByline('By: John March\n\nA review of the show.'), null);
+  });
+
+  test('does not glue-cut a real name when a month is not followed by a date', () => {
+    // "DeMay" (month substring, no following digit) must survive as one token.
+    assert.strictEqual(extractTheaterLifeByline('By: Ada DeMay\n\nMarch 3, 2025: A review of the show.'), 'Ada DeMay');
+  });
+
+  test('does not match a body sentence starting with "By" + lowercase', () => {
+    assert.strictEqual(extractTheaterLifeByline('The show opens.\nBy then the plot has thickened considerably.'), null);
+  });
+
+  test('does not match a no-colon "By Name" that is NOT at text start (mid-body credit)', () => {
+    // A playwright credit deep in the body must not be mistaken for the critic.
+    assert.strictEqual(extractTheaterLifeByline('A long review paragraph about the staging and design choices.\nThe play, By David Mamet, concerns a con.'), null);
+  });
+
+  test('never re-stamps the phantom "Barry Gordin" even if the body said so', () => {
+    assert.strictEqual(extractTheaterLifeByline('By: Barry Gordin\n\nsome text about a show'), null);
+  });
+
+  test('returns null when no in-body byline is parseable (routes to manual triage)', () => {
+    assert.strictEqual(extractTheaterLifeByline('No byline here at all, just prose about the show.'), null);
+    assert.strictEqual(extractTheaterLifeByline(''), null);
+    assert.strictEqual(extractTheaterLifeByline(null), null);
+  });
+});
+
+describe('extractAuthorFromHtml — theaterlife.com override', () => {
+  // Minimal reproduction of theaterlife's structure: the author vcard names the
+  // site owner, the article body carries the real critic.
+  const html =
+    '<html><body>' +
+    '<span class="author vcard"><a class="url fn n" href="https://theaterlife.com/author/barry/">Barry Gordin</a></span>' +
+    '<div class="entry-content"><p><strong>By:  Samuel L. Leiter</strong></p><p>A review body.</p></div>' +
+    '</body></html>';
+  const cleanedText = "A Doll's House ****1/2 By: Samuel L. Leiter March 17, 2023: Jessica Chastain’s compelling performance of Nora";
+
+  test('theaterlife.com URL → in-body critic wins over the vcard site owner', () => {
+    const got = extractAuthorFromHtml(html, cleanedText, { url: 'https://theaterlife.com/a-dolls-house-1-2/' });
+    assert.strictEqual(got, 'Samuel L. Leiter');
+    assert.notStrictEqual(got, 'Barry Gordin');
+  });
+
+  test('non-theaterlife URL is unaffected by the override (vcard path still used)', () => {
+    // A different WordPress outlet where the vcard IS the real byline — override
+    // must not fire, so the generic strategy still returns the vcard name.
+    const got = extractAuthorFromHtml(html, cleanedText, { url: 'https://example-blog.com/some-review/' });
+    assert.strictEqual(got, 'Barry Gordin');
+  });
+});

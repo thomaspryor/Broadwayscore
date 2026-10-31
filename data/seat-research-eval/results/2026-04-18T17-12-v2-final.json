@@ -1,0 +1,83 @@
+{
+  "promptVersion": "v2-final",
+  "timestamp": "2026-04-18T17:12:41.251Z",
+  "score": {
+    "composite": 63.7,
+    "sectionScore": 45,
+    "claimScore": 38.7,
+    "warningPenalty": 20
+  },
+  "totals": {
+    "theaters_total": 3,
+    "theaters_with_errors": 0,
+    "sections_total": 15,
+    "sections_by_support": {
+      "STRONG": 10,
+      "MODERATE": 5,
+      "WEAK": 0,
+      "UNSUPPORTED": 0,
+      "ERROR": 0
+    },
+    "claims_total": 51,
+    "claims_by_support": {
+      "STRONG": 23,
+      "MODERATE": 21,
+      "WEAK": 6,
+      "UNSUPPORTED": 1
+    },
+    "warnings_total": 43,
+    "urls_fetched_total": 75,
+    "urls_failed_total": 0,
+    "unsupported_claims_examples": [
+      {
+        "theater": "Gershwin Theatre",
+        "section": "Side Orchestra partial-view (above Row G)",
+        "note": "No evidence discusses genre suitability or show types for this section. The claim that it's 'best suited for musical' appears to be pattern-matched from general knowledge that Gershwin Theatre hosts Wicked (a musical), but no source ties the section's characteristics to musical theatre specifically."
+      }
+    ]
+  },
+  "perTheater": [
+    {
+      "theater": "Majestic Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 4,
+        "MODERATE": 1,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 16,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Music Box Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 3,
+        "MODERATE": 2,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 9,
+      "unsupported_claims": 0
+    },
+    {
+      "theater": "Gershwin Theatre",
+      "sections_total": 5,
+      "sections_audited": 5,
+      "sections_by_support": {
+        "STRONG": 3,
+        "MODERATE": 2,
+        "WEAK": 0,
+        "UNSUPPORTED": 0,
+        "ERROR": 0
+      },
+      "warnings": 18,
+      "unsupported_claims": 1
+    }
+  ]
+}

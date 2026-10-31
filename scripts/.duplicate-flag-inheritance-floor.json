@@ -1,0 +1,5 @@
+{
+  "floor": 8,
+  "evidenceFile": "data/audit/duplicate-flag-inheritance-baseline.json",
+  "note": "Ratcheted 205 -> 8 on 2026-10-19 (BRO-5501): node scripts/audit-duplicate-flag-inheritance.js run on main after duplicateOfInheritedFlag stopped inheriting onto different-text files found 8 candidates (57807 files scanned). Spot-checked 3 shows: the candidates are empty-text or self-flagged stubs, none live. Ratchet down further as counts drop; do not raise without a fresh measurement."
+}

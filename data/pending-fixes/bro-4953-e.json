@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-4953-e",
+  "planId": "f8af26e0-2051-4e7c-86b7-4ec7ff4198bc",
+  "status": "applied",
+  "createdAt": "2026-10-10T01:35:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Put The Heart (the-heart-off-broadway-2026) back to previews. It shows 'Now Playing' / 'Opened Oct 29, 2026' while in previews (first preview 2026-10-08, opening 2026-10-29). update-show-status.js's review-driven catch-up (Check 2d, scoreThreshold) flipped it to open on the four Heart of Rock and Roll excerpts that BRO-4953 has since flagged wrongShow; they were dateless, so reviewsPredateRun could not see they predate the run. Check 2c would revert it at the next 08:00 UTC cron; this applies the same transition now.",
+    "steps": [
+      "Set status open -> previews on the-heart-off-broadway-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-heart-off-broadway-2026",
+        "field": "status",
+        "oldValue": "open",
+        "newValue": "previews",
+        "description": "openingDate 2026-10-29 is in the future and previews began 2026-10-08: the state update-show-status.js Check 2c maps to 'previews'. The 'open' came from wrong-show reviews (BRO-4953)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-10T02:22:57.654Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-heart-off-broadway-2026"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "issueNumber": "bro-4317-d-01",
+  "planId": "0c298c6c-d7d2-456c-8060-a33add38a900",
+  "status": "applied",
+  "createdAt": "2026-10-13T02:38:29.855Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 1/1: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "delete kinky-boots-2026/chicagotribune--chris-jones.json",
+      "delete kinky-boots-2026/ew--thom-geier.json",
+      "delete kinky-boots-2026/financialtimes--brendan-lemon.json",
+      "delete kinky-boots-2026/huffpost--michael-giltz.json",
+      "delete kinky-boots-2026/northjerseycom--robert-feldberg.json",
+      "delete kinky-boots-2026/nypost--elisabeth-vincentelli.json",
+      "delete kinky-boots-2026/talkinbroadway--matthew-murray.json",
+      "delete kinky-boots-2026/vulture--christopher-bonanos.json",
+      "delete the-play-that-goes-wrong-2019/dctheatrescene--jonathan-mandell.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/chicagotribune--chris-jones.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/ew--thom-geier.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/financialtimes--brendan-lemon.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/huffpost--michael-giltz.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/northjerseycom--robert-feldberg.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/nypost--elisabeth-vincentelli.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/talkinbroadway--matthew-murray.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "kinky-boots-2026/vulture--christopher-bonanos.json",
+        "description": "empty show-score stub (no text) of a 2013 review; kinky-boots-2013 already holds this critic file (move refused: destination exists)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-play-that-goes-wrong-2019/dctheatrescene--jonathan-mandell.json",
+        "description": "empty show-score stub (no text) of a 2017 review; the-play-that-goes-wrong-2017 already holds this critic file (move refused: destination exists)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T03:36:06.416Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/chicagotribune--chris-jones.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/ew--thom-geier.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/financialtimes--brendan-lemon.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/huffpost--michael-giltz.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/northjerseycom--robert-feldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/nypost--elisabeth-vincentelli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/talkinbroadway--matthew-murray.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted kinky-boots-2026/vulture--christopher-bonanos.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-play-that-goes-wrong-2019/dctheatrescene--jonathan-mandell.json"
+    }
+  ]
+}

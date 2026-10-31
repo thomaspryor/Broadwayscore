@@ -1,0 +1,1396 @@
+{
+  "outletId": "variety",
+  "generatedAt": "2026-10-28T20:39:04.136Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 292,
+    "inWindow": 292,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "held": 135,
+      "held-other-market": 28,
+      "not-review": 34,
+      "out-of-window": 45,
+      "held-unmatched": 18,
+      "held-alt-url": 18,
+      "gap": 3,
+      "catalog-gap": 11
+    },
+    "viaTitleVariant": {
+      "held": 1,
+      "held-alt-url": 1
+    },
+    "recall": 0.981,
+    "recallWithCatalog": 0.916
+  },
+  "corpusSide": {
+    "rowsInWindow": 624,
+    "notEnumerated": 48,
+    "noUrl": 5,
+    "samples": [
+      {
+        "showId": "a-christmas-carol-1991",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "a-christmas-carol-1994",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "a-christmas-carol-2001",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "a-naked-girl-on-the-appian-way-2005",
+        "url": "https://variety.com/2005/legit/reviews/a-naked-girl-on-the-appian-way-1200521253/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-view-from-the-bridge-2010",
+        "url": "http://www.variety.com/review/VE1117941959.html?categoryid=33&cs=1&nid=2562&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+variety%2Fheadlines+%28Variety+-+Latest+News%29&utm_content=Google+Reader",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "all-shook-up-2005",
+        "url": "https://variety.com/2005/legit/reviews/all-shook-up-4-1200526943/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "an-enemy-of-the-people-2024",
+        "url": "https://variety.com/2024/legit/reviews/an-enemy-of-the-people-jeremy-strong-broadway-michael-imperioli-1235944570/",
+        "publishDate": "2024-03-18",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "barefoot-in-the-park-2006",
+        "url": "https://variety.com/2006/legit/reviews/barefoot-in-the-park-2-1200518319/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "beauty-and-the-beast-1994",
+        "url": "https://variety.com/1994/legit/reviews/disney-s-beauty-and-the-beast-2-1200436613/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "between-riverside-and-crazy-2022",
+        "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/",
+        "publishDate": "2022-12-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "big-fish-2013",
+        "url": "https://variety.com/2013/legit/reviews/broadway-review-big-fish-1200700284/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cabaret-2024",
+        "url": "https://variety.com/2024/legit/columns/cabaret-broadway-revival-reviews-male-critics-gayle-rankin-1235984887/",
+        "publishDate": "2024-04-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "caroline-or-change-2021",
+        "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/",
+        "publishDate": "2021-11-02",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chitty-chitty-bang-bang-2005",
+        "url": "https://variety.com/2005/legit/reviews/chitty-chitty-bang-bang-3-1200526254/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "cost-of-living-2022",
+        "url": "https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/",
+        "publishDate": "2022-10-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "death-of-a-salesman-2026",
+        "url": "https://variety.com/2026/legit/news/death-of-a-salesman-broadway-review-nathan-lane-laurie-metcalf-lead-disappointing-revival-1236711360/",
+        "publishDate": "2026-04-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "url": "https://variety.com/2021/music/reviews/diana-musical-review-broadway-1235114301/",
+        "publishDate": "2021-11-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "exit-the-king-2009",
+        "url": "https://variety.com/2009/legit/reviews/exit-the-king-1200472357/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "fallen-angels-2026",
+        "url": "https://variety.com/2026/legit/news/fallen-angels-broadway-review-rose-byrne-kelli-ohara-lackluster-noel-coward-revival-1236725348/",
+        "publishDate": "2026-04-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "flying-over-sunset-2021",
+        "url": "https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-1235122751/",
+        "publishDate": "2021-12-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "good-people-2011",
+        "url": "http://www.variety.com/review/VE1117944758",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hamlet-1995",
+        "url": "https://variety.com/1995/legit/reviews/hamlet-7-1200441739/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hangmen-2022",
+        "url": "https://variety.com/2022/legit/reviews/hangmen-review-broadway-martin-mcdonagh-1235238447/",
+        "publishDate": "2022-04-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "into-the-woods-2022",
+        "url": "https://variety.com/2022/theater/reviews/into-the-woods-review-revival-sondheim-broadway-city-center-encores-1235312251/",
+        "publishDate": "2022-07-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "la-bete-2010",
+        "url": "https://variety.com/2010/legit/reviews/la-bete-1117943144/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "left-on-tenth-2024",
+        "url": "https://variety.com/2024/legit/reviews/left-on-tenth-review-julianna-margulies-peter-gallagher-1236212345/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "major-barbara-2001",
+        "url": "https://variety.com/2001/legit/reviews/major-barbara-5-1200469159/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "maybe-happy-ending-2024",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "medea-2002",
+        "url": "https://variety.com/2002/legit/reviews/medea-7-1200545686/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mr-saturday-night-2022",
+        "url": "https://variety.com/2022/legit/reviews/mr-saturday-night-review-billy-crystal-broadway-1235227471/",
+        "publishDate": "2022-04-28",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mrs-doubtfire-2021",
+        "url": "https://variety.com/2021/theater/reviews/mrs-doubtfire-review-musical-broadway-1235126621/",
+        "publishDate": "2021-12-05",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "nine-2003",
+        "url": "https://variety.com/2003/legit/reviews/nine-6-1200542289/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "on-golden-pond-2005",
+        "url": "https://variety.com/2005/legit/reviews/on-golden-pond-3-1200526662/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "othello-1982",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "silver-manhattan-off-broadway-2026",
+        "url": "https://variety.com/2026/music/reviews/jesse-malin-silver-manhattan-theater-review-1236668559/",
+        "publishDate": "2026-02-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "six-2021",
+        "url": "https://variety.com/2021/legit/reviews/six-review-broadway-1235088742/",
+        "publishDate": "2021-10-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "steel-magnolias-2005",
+        "url": "https://variety.com/2005/legit/reviews/steel-magnolias-3-1200526719/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "sweet-smell-of-success-2002",
+        "url": "https://variety.com/2002/legit/reviews/sweet-smell-of-success-4-1200551928/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "swept-away-2024",
+        "url": "https://variety.com/2024/legit/reviews/swept-away-review-broadway-1236221067/",
+        "publishDate": "2024-11-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-balusters-2026",
+        "url": "https://variety.com/2026/legit/news/balusters-broadway-review-anika-noni-rose-richard-thomas-brilliant-comedy-1236726809/",
+        "publishDate": "2026-04-21",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
+      "headline": "‘Midnight in the Garden of Good and Evil’ Review: Musical Adaptation is a Promising, Boldly Unconventional Retelling Anchored by Standout Performances",
+      "publishDate": "2024-07-09",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "midnight-in-the-garden-of-good-and-evil-2024"
+      ],
+      "outOfWindow": [
+        "midnight-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/dancin-review-broadway-1235559028/",
+      "headline": "‘Bob Fosse’s Dancin” Review: A Rapturous Broadway Homage to a Great Choreographer",
+      "publishDate": "2023-03-19",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "bob-fosses-dancin-2023"
+      ],
+      "outOfWindow": [
+        "dancin-1978"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/evanston-salt-costs-climbing-review-will-arbery-1235435465/",
+      "headline": "‘Evanston Salt Costs Climbing’ Review: There is Nothing Thrilling About Climate Change Except This Play",
+      "publishDate": "2022-11-17",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "evanston-salt-costs-climbing-off-broadway-2022"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://variety.com/2026/legit/reviews/balusters-broadway-review-anika-noni-rose-richard-thomas-brilliant-comedy-1236726809/",
+      "headline": "‘The Balusters’ Broadway Review: Anika Noni Rose, Richard Thomas Star in Brilliant and Brutally Funny Look at a Dysfunctional Neighborhood Association",
+      "publishDate": "2026-04-21",
+      "matched": [
+        "the-balusters-2026"
+      ],
+      "heldUrls": [
+        "https://variety.com/2026/legit/news/balusters-broadway-review-anika-noni-rose-richard-thomas-brilliant-comedy-1236726809/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2026/legit/reviews/fallen-angels-broadway-review-rose-byrne-kelli-ohara-lackluster-noel-coward-revival-1236725348/",
+      "headline": "‘Fallen Angels’ Broadway Review: Rose Byrne and Kelli O’Hara Sparkle in Lackluster Noël Coward Revival",
+      "publishDate": "2026-04-19",
+      "matched": [
+        "fallen-angels-2026"
+      ],
+      "heldUrls": [
+        "https://variety.com/2026/legit/news/fallen-angels-broadway-review-rose-byrne-kelli-ohara-lackluster-noel-coward-revival-1236725348/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/stephen-sondheims-old-friends-revue-ahmanson-review-1236317150/",
+      "headline": "‘Stephen Sondheim’s Old Friends’ L.A. Review: Songwriting Depth and Skilled Diva Turns Make the Broadway-Bound Revue a Retrospective Joy",
+      "publishDate": "2025-02-23",
+      "matched": [
+        "stephen-sondheims-old-friends-2025"
+      ],
+      "heldUrls": [
+        "https://variety.com/2025/legit/reviews/old-friends-review-broadway-stephen-sondheim-1236363218/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/swept-away-review-broadway-musical-the-avett-brothers-1236208635/",
+      "headline": "‘Swept Away’ Review: Avett Brothers Musical Fails to Satisfy Despite a Sterling Broadway Staging",
+      "publishDate": "2024-11-20",
+      "matched": [
+        "swept-away-2024"
+      ],
+      "heldUrls": [
+        "https://variety.com/2024/legit/reviews/swept-away-review-broadway-1236221067/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/maybe-happy-ending-review-darren-criss-broadway-musical-1236207518/",
+      "headline": "‘Maybe Happy Ending’ Review: Broadway’s Deeply Moving Robot Musical, Starring Darren Criss, Teaches Us How to Be Human",
+      "publishDate": "2024-11-12",
+      "matched": [
+        "maybe-happy-ending-2024"
+      ],
+      "heldUrls": [
+        "(no url)"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-sam-mendes-jez-butterworth-1236159482/",
+      "headline": "‘The Hills of California’ Review: Sam Mendes and Jez Butterworth Deliver a Dream of a Broadway Drama",
+      "publishDate": "2024-09-29",
+      "matched": [
+        "the-hills-of-california-2024"
+      ],
+      "heldUrls": [
+        "https://variety.com/2024/legit/reviews/the-hills-of-california-review-broadway-1236197234/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-common-stephen-adly-guirgis-mckinley-henderson-1235465956/",
+      "headline": "‘Between Riverside and Crazy’ Review: Stephen Adly Guirgis’ Pulitzer-Winning Dark Comedy Makes Marvelous Broadway Premiere",
+      "publishDate": "2022-12-19",
+      "matched": [
+        "between-riverside-and-crazy-2022"
+      ],
+      "heldUrls": [
+        "https://variety.com/2022/legit/reviews/between-riverside-and-crazy-review-broadway-1235447099/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-play-1235391743/",
+      "headline": "‘Cost of Living’ Review: Martyna Majok’s Pulitzer-Winning Drama Makes Sensational Broadway Debut",
+      "publishDate": "2022-10-03",
+      "matched": [
+        "cost-of-living-2022"
+      ],
+      "heldUrls": [
+        "https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-1235392544/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/mr-saturday-night-review-billy-crystal-broadway-musical-1235241292/",
+      "headline": "‘Mr. Saturday Night’ Review: Billy Crystal Brings the Laughs in His New Broadway Musical",
+      "publishDate": "2022-04-27",
+      "matched": [
+        "mr-saturday-night-2022"
+      ],
+      "heldUrls": [
+        "https://variety.com/2022/legit/reviews/mr-saturday-night-review-billy-crystal-broadway-1235227471/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/funny-girl-review-broadway-beanie-feldstein-1235239624/",
+      "headline": "‘Funny Girl’ Review: An Underpowered Revival Brings Fanny Brice Back to Broadway",
+      "publishDate": "2022-04-24",
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "heldUrls": [
+        "https://variety.com/2022/legit/reviews/funny-girl-review-lea-michele-broadway-1235398499/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/hangmen-review-broadway-martin-mcdonagh-1235237938/",
+      "headline": "‘Hangmen’ Review: A Killer Broadway Production of Martin McDonagh’s Lethal Black Comedy",
+      "publishDate": "2022-04-22",
+      "matched": [
+        "hangmen-2022"
+      ],
+      "heldUrls": [
+        "https://variety.com/2022/legit/reviews/hangmen-review-broadway-martin-mcdonagh-1235238447/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/the-minutes-review-broadway-play-tracy-letts-1235234223/",
+      "headline": "‘The Minutes’ Review: New Broadway Comedy is a Cunning, Sensational Indictment of American Democracy",
+      "publishDate": "2022-04-17",
+      "matched": [
+        "the-minutes-2022"
+      ],
+      "heldUrls": [
+        "https://variety.com/2022/legit/reviews/the-minutes-review-broadway-play-tracy-letts-1235234223/amp/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-musical-1235132491/",
+      "headline": "‘Flying Over Sunset’ Review: A Trippy New Broadway Musical",
+      "publishDate": "2021-12-13",
+      "matched": [
+        "flying-over-sunset-2021"
+      ],
+      "heldUrls": [
+        "https://variety.com/2021/legit/reviews/flying-over-sunset-review-broadway-1235122751/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/pardise-square-review-musical-chicago-1235115343/",
+      "headline": "‘Paradise Square’ Review: Broadway-Bound Musical Premieres in Chicago",
+      "publishDate": "2021-11-18",
+      "matched": [
+        "chicago-1996"
+      ],
+      "heldUrls": [
+        "http://variety.com/1996/legit/reviews/chicago-4-1200447571/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/diana-musical-review-broadway-1235114301/",
+      "headline": "‘Diana, The Musical’ Review: A Royal Tragedy Turned Vacuous Rom-Com",
+      "publishDate": "2021-11-17",
+      "matched": [
+        "diana-the-musical-2021"
+      ],
+      "heldUrls": [
+        "https://variety.com/2021/music/reviews/diana-musical-review-broadway-1235114301/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-sharon-d-clarke-1235098905/",
+      "headline": "‘Caroline, or Change’ Review: Broadway Revival Starring Sharon D Clarke Is Timely and Necessary",
+      "publishDate": "2021-10-27",
+      "matched": [
+        "caroline-or-change-2021"
+      ],
+      "heldUrls": [
+        "https://variety.com/2021/legit/reviews/caroline-or-change-review-broadway-1235104577/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235088743/",
+      "headline": "‘The Lehman Trilogy’ Review: A Dazzling Chronicle of the Rise and Fall of American Capitalism",
+      "publishDate": "2021-10-14",
+      "matched": [
+        "the-lehman-trilogy-2021"
+      ],
+      "heldUrls": [
+        "https://variety.com/2021/legit/reviews/the-lehman-trilogy-review-broadway-1235081462/"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/thoughts-of-a-colored-man-review-broadway-1235088174/",
+      "headline": "‘Thoughts of a Colored Man’ Review: A Welcome if Uneven Excavation of Black Masculinity on Broadway",
+      "publishDate": "2021-10-13",
+      "matched": [
+        "thoughts-of-a-colored-man-2021"
+      ],
+      "heldUrls": [
+        "https://variety.com/2021/legit/reviews/thoughts-of-a-colored-man-review-broadway-1235103378/"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://variety.com/2026/legit/reviews/beaches-broadway-review-awful-musical-remake-bette-midler-film-1236727693/",
+      "headline": "‘Beaches’ Broadway Review: Soulless and Uninspired Musical Remake of Beloved Film Washes Ashore",
+      "publishDate": "2026-04-22",
+      "via": null,
+      "held": [
+        "beaches-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2026/legit/reviews/giant-broadway-review-john-lithgow-roald-dahl-1236696703/",
+      "headline": "‘Giant’ Broadway Review: John Lithgow as a Venomous Roald Dahl Animates a Staggering Production",
+      "publishDate": "2026-03-23",
+      "via": null,
+      "held": [
+        "giant-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/just-in-time-review-jonathan-groff-broadway-musical-1236379177/",
+      "headline": "‘Just in Time’ Review: Jonathan Groff Plays Bobby Darin in a Lackluster Bio-Jukebox on Broadway",
+      "publishDate": "2025-04-26",
+      "via": null,
+      "held": [
+        "just-in-time-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
+      "headline": "‘Boop!’ Review: This Cartoon of a Broadway Musical Is Stuck in Two Dimensions",
+      "publishDate": "2025-04-07",
+      "via": null,
+      "held": [
+        "boop-2025"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/english-review-broadway-play-1236282770/",
+      "headline": "‘English’ Review: Pulitzer Winner Debuts on Broadway at the Top of the Class",
+      "publishDate": "2025-01-23",
+      "via": null,
+      "held": [
+        "english-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-kit-connor-rachel-zegler-broadway-1236189568/",
+      "headline": "‘Romeo and Juliet’ Review: Kit Connor and Rachel Zegler Headline a Shakespeare Tragedy That’s More Fun Than It Should Be",
+      "publishDate": "2024-10-24",
+      "via": null,
+      "held": [
+        "romeo-juliet-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-2013",
+        "romeo-and-juliet-1986",
+        "romeo-and-juliet-1977",
+        "romeo-and-juliet-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/job-review-broadway-play-1236090498/",
+      "headline": "‘JOB’ Review: Taut Broadway Drama Uploads a Journey Through Cyber-Hell",
+      "publishDate": "2024-07-30",
+      "via": null,
+      "held": [
+        "job-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/cabaret-review-broadway-eddie-redmayne-1235977702/",
+      "headline": "‘Cabaret’ Review: Eddie Redmayne and Gayle Rankin Lead High-Style Revival That Cuts to the Bone",
+      "publishDate": "2024-04-21",
+      "via": null,
+      "held": [
+        "cabaret-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/the-wiz-review-broadway-revival-1235973899/",
+      "headline": "‘The Wiz’ Review: In a New Broadway Revival, Dorothy and Friends Get Lost in a Hypercolor Whirligig",
+      "publishDate": "2024-04-17",
+      "via": null,
+      "held": [
+        "the-wiz-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/tommy-review-broadway-musical-2024-1235954615/",
+      "headline": "‘Tommy’ Review: Broadway Musical Revival is Strictly for the Boomers",
+      "publishDate": "2024-03-28",
+      "via": null,
+      "held": [
+        "the-whos-tommy-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/purlie-victorious-review-broadway-1235734487/",
+      "headline": "‘Purlie Victorious’ Review: Broadway Revival of the Ossie Davis Satire Is a Delightful Romp Centering Black Joy and the Absurdity of Racism",
+      "publishDate": "2023-09-27",
+      "via": null,
+      "held": [
+        "purlie-victorious-2023"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "purlie-1972"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/parade-review-ben-platt-broadway-musical-1235555503/",
+      "headline": "‘Parade’ Review: Ben Platt Stuns in a Powerful Broadway Production of an Essential American Musical",
+      "publishDate": "2023-03-16",
+      "via": null,
+      "held": [
+        "parade-2023"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/a-beautiful-noise-review-neil-diamond-musical-broadway-1235449537/",
+      "headline": "‘A Beautiful Noise’ Review: Neil Diamond Musical Unpacks Hitmaker’s Life in Therapy and Song",
+      "publishDate": "2022-12-05",
+      "via": null,
+      "held": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/kpop-review-south-broadway-musical-1235442833/",
+      "headline": "‘KPOP’ Review: South Korea’s Explosive Pop Export Hits Broadway With Authenticity and Flash",
+      "publishDate": "2022-11-27",
+      "via": null,
+      "held": [
+        "kpop-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/1776-review-broadway-musical-1235394093/",
+      "headline": "‘1776’ Review: Bold Choices Enliven Broadway Revival of Revolutionary Musical",
+      "publishDate": "2022-10-06",
+      "via": null,
+      "held": [
+        "1776-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/potus-review-play-broadway-1235253436/",
+      "headline": "‘POTUS’ Review: A Rollicking New Broadway Farce About the Women Behind the Idiot in the White House",
+      "publishDate": "2022-04-28",
+      "via": null,
+      "held": [
+        "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973",
+        "potus-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
+      "headline": "‘For Colored Girls…’ Review: Broadway Revival of Ntozake Shange’s Riveting Work Reminds Black Women They Are Enough",
+      "publishDate": "2022-04-20",
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "the-women-2001",
+        "the-women-1973"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/company-review-broadway-patti-lupone-1235129438/",
+      "headline": "‘Company’ Review: A Sublime Revival of Stephen Sondheim’s Beloved Musical",
+      "publishDate": "2021-12-09",
+      "via": null,
+      "held": [
+        "company-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [
+    {
+      "url": "https://variety.com/2024/legit/reviews/reefer-madness-musical-hollywood-whitley-stage-review-1236039370/",
+      "headline": "‘Reefer Madness: The Musical’ Review: This L.A. Revival of the Weed-Themed Spoof Doesn’t Bogart the Showbiz Razzle-Dazzle",
+      "publishDate": "2024-06-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/becky-nurse-of-salem-review-play-sarah-ruhl-deirdre-oconnell-1235453107/",
+      "headline": "‘Becky Nurse of Salem’ Review: Witch Trials, Trump and the Kitchen Sink in Sarah Ruhl’s Overstuffed New Play",
+      "publishDate": "2022-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/a-little-life-ivo-van-hove-1235410965/",
+      "headline": "‘A Little Life’ Review: Director Ivo van Hove Draws Blood and Tears at BAM",
+      "publishDate": "2022-10-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/griswolds-broadway-vacation-review-musical-1235385032/",
+      "headline": "‘The Griswolds’ Broadway Vacation’ Review: New Musical Struggles to Strike Balance Between Slapstick and Sentiment",
+      "publishDate": "2022-09-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/devil-wears-prada-review-musical-1235335985/",
+      "headline": "‘The Devil Wears Prada’ Review: Broadway-Bound Musical Needs to Take a Cue From Miranda Priestly and Get Meaner",
+      "publishDate": "2022-08-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/straight-line-crazy-review-ralph-fiennes-david-hare-1235214559/",
+      "headline": "‘Straight Line Crazy’ Review: Ralph Fiennes Plays Robert Moses in David Hare’s Talky New Play",
+      "publishDate": "2022-03-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/",
+      "headline": "‘MJ’ Review: Flashy Michael Jackson Musical Packs in the Hits, but Struggles to Get Behind the Music",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/intimate-apparel-review-opera-lynn-nottage-1235167530/",
+      "headline": "‘Intimate Apparel’ Review: Opera of Lynn Nottage’s Play Sets Free Soaring Emotions",
+      "publishDate": "2022-01-31",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/the-visitor-review-musical-1235104116/",
+      "headline": "‘The Visitor’ Review: David Hyde Pierce Stars in a Musical With No Beat",
+      "publishDate": "2021-11-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/merry-wives-review-shakespeare-park-1235037344/",
+      "headline": "‘Merry Wives’ Review:  Shakespeare’s Farce Updated to South Harlem in a Lively, Powerful Remix",
+      "publishDate": "2021-08-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/seven-deadly-sins-review-new-york-city-1235008090/",
+      "headline": "‘Seven Deadly Sins’ Review: Taking Orthodox Theater Outdoors Without Defiling the Soul",
+      "publishDate": "2021-06-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://variety.com/2026/legit/reviews/brigadoon-pasadena-playhouse-review-lerner-loe-1236760181/",
+      "headline": "‘Brigadoon’ Review: Pasadena Playhouse’s Enrapturing Revival Is Worth What Seemed Like a Hundred-Year Wait",
+      "publishDate": "2026-05-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "brigadoon-1980"
+      ]
+    },
+    {
+      "url": "https://variety.com/2026/legit/reviews/amadeus-pasadena-playhouse-review-jefferson-mays-1236674354/",
+      "headline": "‘Amadeus’ Review: Jefferson Mays Shines as a Funny and Frothing Salieri in a Gorgeously Mounted, Essential Revival at the Pasadena Playhouse",
+      "publishDate": "2026-02-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "amadeus-1980",
+        "amadeus-1999"
+      ]
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/jajas-african-hair-braiding-mark-taper-forum-theater-review-1236555077/",
+      "headline": "‘Jaja’s African Hair Braiding’ Review: A Salon-Set Comedy at the Mark Taper That’s Rich and Rewarding Enough to Merit Extensions",
+      "publishDate": "2025-10-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jajas-african-hair-braiding-2023"
+      ]
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/eureka-day-pasadena-playhouse-theater-stage-review-1236528615/",
+      "headline": "‘Eureka Day’ Review: Pasadena Playhouse’s Production of the Tony-Winning School-Vax Comedy Provides Peals of Laughter",
+      "publishDate": "2025-09-24",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eureka-day-2024"
+      ]
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/a-streetcar-named-desire-review-paul-mescal-1236334736/",
+      "headline": "‘A Streetcar Named Desire’ Review: Paul Mescal and Patsy Ferran Sparkle in the Tennessee Williams Classic",
+      "publishDate": "2025-03-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/richard-ii-review-jonathan-bailey-1236312255/",
+      "headline": "‘Richard II’ Review: Jonathan Bailey Shows Off His Shakespearean Chops in a Stern, Stripped-Down Production",
+      "publishDate": "2025-02-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-ii-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/the-queen-of-versailles-review-kristin-chenoweth-musical-boston-1236094159/",
+      "headline": "‘The Queen of Versailles’ Review: Kristin Chenoweth Shines in a Lavish New Musical With a Social Satire Bite",
+      "publishDate": "2024-08-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "queen-versailles-2025"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/strange-loop-review-ahmanson-stage-musical-1236056232/",
+      "headline": "‘A Strange Loop’ Review: One Man’s Mind Games Get Funny, Then Wrenching, in Superlative L.A. Take on the Bold Broadway Hit",
+      "publishDate": "2024-06-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-strange-loop-2022"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/jellys-last-jam-review-pasadena-playhouse-musical-1236044782/",
+      "headline": "‘Jelly’s Last Jam’ Review: Pasadena Playhouse Production Brings a Too-Rarely Revived Classic Jazz Musical Back to Rousing Life",
+      "publishDate": "2024-06-21",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "jellys-last-jam-1992"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/romeo-and-juliet-review-tom-holland-1236014743/",
+      "headline": "‘Romeo and Juliet’ Review: Tom Holland-Led Production Is Hobbled by Director Jamie Lloyd’s Extreme Stylization",
+      "publishDate": "2024-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-2013",
+        "romeo-and-juliet-1986",
+        "romeo-and-juliet-1977",
+        "romeo-and-juliet-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-1236010777/",
+      "headline": "‘Death Becomes Her’ Review: Promising Pre-Broadway Musical Makes for a Campy Improvement on the Cult Film",
+      "publishDate": "2024-05-20",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "death-becomes-her-2024"
+      ]
+    },
+    {
+      "url": "https://variety.com/2024/legit/reviews/the-picture-of-dorian-grey-review-sarah-snook-play-1235914151/",
+      "headline": "‘The Picture of Dorian Gray’ Review: Sarah Snook Dazzles in a Flashy Stage-Meets-Screen Retelling",
+      "publishDate": "2024-02-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-picture-of-dorian-gray-2025"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/sunset-boulevard-review-nicole-scherzinger-1235760561/",
+      "headline": "‘Sunset Boulevard’ Review: Nicole Scherzinger Delivers in a Technologically Audacious but Emotionally Empty Reimagining",
+      "publishDate": "2023-10-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "sunset-boulevard-2024",
+        "sunset-boulevard-2017",
+        "sunset-boulevard-1994"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/melissa-etheridge-my-window-review-broadway-1235739446/",
+      "headline": "‘Melissa Etheridge: My Window’ Review: A Broadway Memoir, Confession and Concert That’s Worthy of Applause",
+      "publishDate": "2023-09-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/romeo-and-juliet-review-toheeb-jimoh-ted-lasso-rebecca-frecknall-1235645790/",
+      "headline": "‘Romeo and Juliet’ Review: ‘Ted Lasso’ Star Toheeb Jimoh Is the Expressive Heart of Rebecca Frecknall’s Passionate Production",
+      "publishDate": "2023-06-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-2013",
+        "romeo-and-juliet-1986",
+        "romeo-and-juliet-1977",
+        "romeo-and-juliet-off-broadway-2026",
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/the-curious-case-of-benjamin-button-review-musical-1235638565/",
+      "headline": "‘The Curious Case of Benjamin Button’ Review: Good-Hearted Musical Is Long on Incident but Short on Drama",
+      "publishDate": "2023-06-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-curious-case-of-benjamin-button-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+      "headline": "‘Guys and Dolls’ Review: An Explosively Thrilling Production of a Masterpiece in London",
+      "publishDate": "2023-03-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "guys-and-dolls-2009",
+        "guys-and-dolls-1992",
+        "guys-and-dolls-1976"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/sunday-in-the-park-with-george-review-stephen-sondheim-pasadena-playhouse-1235544492/",
+      "headline": "Critic’s Notebook: Stumped by Sondheim After Spending ‘Sunday in the Park with George’",
+      "publishDate": "2023-03-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-notebook-2024",
+        "sunday-in-the-park-with-george-2017",
+        "sunday-in-the-park-with-george-2008",
+        "sunday-in-the-park-with-george-1994",
+        "sunday-in-the-park-with-george-1984"
+      ]
+    },
+    {
+      "url": "https://variety.com/2023/legit/reviews/a-streetcar-named-desire-review-paul-mescal-london-1235490092/",
+      "headline": "‘A Streetcar Named Desire’ Review: Paul Mescal Is Explosive in Rebecca Frecknall’s Staggering Revival",
+      "publishDate": "2023-01-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/tammy-faye-review-musical-elton-john-1235415964/",
+      "headline": "‘Tammy Faye’ Review: New Elton John Score Doesn’t Yet Live Up to a Terrifically Entertaining Production",
+      "publishDate": "2022-10-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "tammy-faye-2024"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/the-crucible-review-national-theatre-1235388183/",
+      "headline": "‘The Crucible’ Review: A Soggy London Revival of Miller’s Masterpiece",
+      "publishDate": "2022-09-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-crucible-2016",
+        "the-crucible-2002",
+        "the-crucible-1991",
+        "the-crucible-1972"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/eureka-day-review-helen-hunt-1235383580/",
+      "headline": "‘Eureka Day’ Review: Timing Is Almost Everything for This Vaccine Comedy Starring Helen Hunt in London",
+      "publishDate": "2022-09-26",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "eureka-day-2024"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/as-you-like-it-review-public-works-central-park-shaina-taub-1235354601/",
+      "headline": "‘As You Like It’ Review: A Joyful Musical Closes Out the Summer in Central Park",
+      "publishDate": "2022-08-30",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "as-you-like-it-1974",
+        "as-you-like-it-1986"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/the-old-man-and-the-pool-review-1235335037/",
+      "headline": "‘Mike Birbiglia: The Old Man and the Pool’ Review: Young Man, There’s No Need to Feel Down",
+      "publishDate": "2022-08-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "mike-birbiglia-the-old-man-and-the-pool-2022"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/jack-absolute-flies-again-review-play-national-theatre-1235317868/",
+      "headline": "‘Jack Absolute Flies Again’ Review: A Knockout New Comedy by the Writer of ‘One Man, Two Guvnors’",
+      "publishDate": "2022-07-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "one-man-two-guvnors-2012",
+        "knockout-1979"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/richard-iii-review-danai-gurira-shakespeare-in-the-park-1235310209/",
+      "headline": "‘Richard III’ Review: Danai Gurira Lights Up Central Park in Bard’s Game of Thrones",
+      "publishDate": "2022-07-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "richard-iii-2013"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/the-seagull-review-emilia-clarke-west-end-1235309750/",
+      "headline": "‘The Seagull’ Review: Emilia Clarke, Indira Varma Shine in a Production That Doesn’t Fly",
+      "publishDate": "2022-07-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/1776-review-musical-diane-paulus-1235283643/",
+      "headline": "‘1776’ Review: A Revolutionary Take on an Old Warhorse",
+      "publishDate": "2022-06-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "1776-2022"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/glass-menagerie-review-amy-adams-west-end-1235282774/",
+      "headline": "‘The Glass Menagerie’ Review: Underpowered Amy Adams Leads a Slow-Burn Rethink of Tennessee Williams’ Classic",
+      "publishDate": "2022-06-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-glass-menagerie-2017",
+        "the-glass-menagerie-2013",
+        "the-glass-menagerie-1975",
+        "the-glass-menagerie-2005",
+        "the-glass-menagerie-1983"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/the-father-and-the-assassin-review-national-theatre-gandhi-play-1235275167/",
+      "headline": "‘The Father and the Assassin’ Review: A Star-Making Performance in a Dynamic Play About the Murder of Gandhi",
+      "publishDate": "2022-05-23",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-father-2016",
+        "the-father-1981"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/edward-albee-whos-afraid-of-virginia-woolf-review-calista-flockhart-zachary-quinto-1235257488/",
+      "headline": "‘Edward Albee’s Who’s Afraid of Virginia Woolf?’ Review: A Fearless Calista Flockhart Tears Into Zachary Quinto in 60th Anniversary Revival",
+      "publishDate": "2022-05-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "whos-afraid-of-virginia-woolf-2012",
+        "whos-afraid-of-virginia-woolf-2020",
+        "whos-afraid-of-virginia-woolf-1976",
+        "whos-afraid-of-virginia-woolf-2005"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/harmony-review-barry-manilow-musical-new-york-1235232141/",
+      "headline": "‘Harmony’ Review: Barry Manilow Musical Tells Sensational True Story With Pop Prowess",
+      "publishDate": "2022-04-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "harmony-2023"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/suffs-review-musical-shaina-taub-1235226941/",
+      "headline": "‘Suffs’ Review: Epic New Musical Portrays the Blood, Sweat and Tears Behind the Fight for Women’s Suffrage",
+      "publishDate": "2022-04-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "suffs-2024",
+        "sweat-2017"
+      ]
+    },
+    {
+      "url": "https://variety.com/2022/legit/reviews/the-collaboration-review-paul-bettany-jeremy-pope-warhol-basquiat-1235190563/",
+      "headline": "‘The Collaboration’ Review: Paul Bettany and Jeremy Pope Can’t Make Drama Out of This Bio",
+      "publishDate": "2022-02-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-collaboration-2022"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/cabaret-review-eddie-redmayne-1235131905/",
+      "headline": "‘Cabaret’ Review: Eddie Redmayne Dazzles in Triumphant West End Revival",
+      "publishDate": "2021-12-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "cabaret-2014",
+        "cabaret-1987"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/the-book-of-dust-la-belle-sauvage-review-play-1235129288/",
+      "headline": "‘The Book of Dust: La Belle Sauvage’ Review: ‘His Dark Materials’ Prequel Is a Triumph of Theatrical Storytelling",
+      "publishDate": "2021-12-08",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "triumph-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/life-of-pi-review-play-west-end-1235124607/",
+      "headline": "‘Life of Pi’ Review: A Fantastical Story Becomes a Fantastic West End Production",
+      "publishDate": "2021-12-02",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "life-of-pi-2023"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/assassins-review-classic-stage-company-sondheim-musical-1235111096/",
+      "headline": "‘Assassins’ Review: A Killer Revival of Stephen Sondheim’s Macabre Masterpiece",
+      "publishDate": "2021-11-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "assassins-2004"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/nollywood-dreams-review-jocelyn-bioh-1235109298/",
+      "headline": "‘Nollywood Dreams’ Review: A Comedy With Heart About the Nigerian Film Industry",
+      "publishDate": "2021-11-11",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-heart-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/the-shark-is-broken-review-jaws-1235094773/",
+      "headline": "‘The Shark Is Broken’ Review: The ‘Jaws’ Backstory, Watered Down",
+      "publishDate": "2021-10-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-shark-is-broken-2023"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/macbeth-review-saoirse-ronan-james-mcardle-1235089573/",
+      "headline": "‘The Tragedy of Macbeth’ Review: James McArdle and Saoirse Ronan in an Over-Directed and Under-Dramatized Production",
+      "publishDate": "2021-10-14",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/hamlet-review-cush-jumbo-1235081302/",
+      "headline": "‘Hamlet’ Review: Cush Jumbo Ignites London Production",
+      "publishDate": "2021-10-05",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/six-review-broadway-musical-1235079922/",
+      "headline": "‘Six’ Review: Long Live These Broadway Queens",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "queens-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/operation-mincemeat-review-musical-1235054134/",
+      "headline": "‘Operation Mincemeat’ Review: Hilarious Small-Scale Musical Could Become a Big Hit",
+      "publishDate": "2021-09-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "operation-mincemeat-2025",
+        "small-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://variety.com/2021/legit/reviews/hamlet-ian-mckellen-review-1235025566/",
+      "headline": "‘Hamlet’ Review: Ian McKellen’s Greatness Shines Intermittently in a Rudderless Production",
+      "publishDate": "2021-07-22",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "hamlet-2009",
+        "hamlet-1995",
+        "hamlet-1975",
+        "hamlet-off-broadway-2026",
+        "hamlet-off-broadway-2024",
+        "hamlet-greenwich-house-off-broadway-2024"
+      ]
+    }
+  ]
+}

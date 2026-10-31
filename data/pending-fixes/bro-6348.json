@@ -1,0 +1,125 @@
+{
+  "issueNumber": "bro-6348",
+  "planId": "d7942d8e-fa11-4fcd-af7e-ee25292a77a1",
+  "status": "applied",
+  "createdAt": "2026-10-28T13:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the 2017 New York Theatre Workshop run of Hundred Days (The Bengsons) as a closed Off-Broadway musical. Users searched 'hundred days' with zero results (PostHog, 2x/7d) and four diary entries already log it at NYTW.",
+    "steps": [
+      "Append hundred-days-off-broadway-2017 (NYTW, previews 2017-11-15, opened 2017-12-04, closed 2017-12-31; Playbill + NYTW season page)",
+      "Then dispatch gather-reviews.yml with shows=hundred-days-off-broadway-2017"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hundred-days-off-broadway-2017",
+          "title": "Hundred Days",
+          "slug": "hundred-days-off-broadway-2017",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2017-11-15",
+          "openingDate": "2017-12-04",
+          "closingDate": "2017-12-31",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "season": "2017-2018",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "A folk-punk concert musical in which real-life married songwriters Abigail and Shaun Bengson tell the story of their whirlwind romance, wed weeks after meeting and haunted by a premonition that their time together would last only a hundred days, asking how a person would choose to live if that were all the time left.",
+          "openingDateSource": "playbill",
+          "closingDateSource": "nytw-season-page",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Abigail Bengson",
+              "role": "Performer"
+            },
+            {
+              "name": "Shaun Bengson",
+              "role": "Performer"
+            },
+            {
+              "name": "Jo Lampert",
+              "role": "Ensemble"
+            },
+            {
+              "name": "Colette Alexander",
+              "role": "Ensemble"
+            },
+            {
+              "name": "Dani Markham",
+              "role": "Ensemble"
+            },
+            {
+              "name": "Reggie D. White",
+              "role": "Ensemble"
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Abigail Bengson",
+              "role": "Music, Lyrics and Book"
+            },
+            {
+              "name": "Shaun Bengson",
+              "role": "Music, Lyrics and Book"
+            },
+            {
+              "name": "Sarah Gancher",
+              "role": "Book"
+            },
+            {
+              "name": "Anne Kauffman",
+              "role": "Director"
+            },
+            {
+              "name": "Sonya Tayeh",
+              "role": "Movement Director"
+            },
+            {
+              "name": "Kris Stone",
+              "role": "Scenic Designer"
+            },
+            {
+              "name": "Sydney Gallas",
+              "role": "Costume Designer"
+            },
+            {
+              "name": "Andrew Hungerford",
+              "role": "Lighting Designer"
+            },
+            {
+              "name": "Nicholas Pope",
+              "role": "Sound Designer"
+            }
+          ],
+          "evidenceUrls": [
+            "https://playbill.com/article/folk-punk-musical-hundred-days-opens-off-broadway",
+            "https://www.nytw.org/201718-season/",
+            "https://didtheylikeit.com/hundred-days-review-2/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-28T14:32:15.405Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hundred-days-off-broadway-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

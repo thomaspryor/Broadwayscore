@@ -1,0 +1,371 @@
+{
+  "issueNumber": "bro-5081-08",
+  "planId": "14c79beb-cf6d-49a2-921b-74b3315b79df",
+  "status": "partial",
+  "createdAt": "2026-10-11T21:42:49.528Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 8: correct 25 critic bylines and publish dates. The legacy LLM web-search step (Feb 2026 backfill) invented them; each review page's own metadata (JSON-LD/meta author, published time) says otherwise.",
+    "steps": [
+      "Page byline at https://www.theatermania.com/news/the-audience_72023/#:~:text=Reviews,Peter%20Morgan's%20new%20stage%20play. is Zachary Stewart; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2018/05/theater-review-can-the-boys-in-the-band-work-in-2018.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2018/12/theater-review-how-over-the-top-should-the-cher-show-be.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2022/12/theater-review-ollaboration-warhol-basquiat-broadway.html is Jackson McHenry; Helen Shaw came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2005/legit/reviews/the-color-purple-1200524646/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2008/legit/reviews/the-country-girl-1200472139/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at http://variety.com/2016/legit/reviews/the-encounter-review-broadway-1201873835/ is Matt Trueman; Marilyn Stasio came from the legacy web-search step and is not on the page. The page critic already has the live record variety--matt-trueman.json for this url, so this web-search copy is a duplicate of it.",
+      "Page byline at https://www.vulture.com/2018/10/theater-review-livestock-and-stock-types-in-the-ferryman.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at http://variety.com/2013/legit/reviews/broadway-review-the-glass-menagerie-1200671070/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theguardian.com/stage/2024/feb/08/the-hills-of-california-review-jerusalem-jez-butterworth-harold-pinter-theatre-london is Arifa Akbar; Adrian Horton came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.newyorker.com/magazine/2024/10/14/the-hills-of-california-theatre-review is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/11/theater-review-the-heiress-jessica-chastain.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.theatermania.com/news/the-heiress_63558/ is Brian Scott Lipton; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2022/legit/reviews/kite-runner-review-broadway-play-amir-arison-1235322248/ is Marilyn Stasio; Frank Rizzo came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2022/07/theater-review-kite-runner-broadway-hayes.html is Naveen Kumar; Helen Shaw came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2019/11/theater-review-the-inheritance-on-broadway.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2006/legit/reviews/the-lieutenant-of-inishmore-1200514088/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2019/10/review-the-lightning-thief-the-percy-jackson-musical.html is Jackson McHenry; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/the-minutes-tracy-letts-broadway-review.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2022/legit/reviews/music-man-review-hugh-jackman-broadway-1235177555/ is Marilyn Stasio; Peter Debruge came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/2012/11/theater-review-the-mystery-of-edwin-drood.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2024/legit/reviews/the-notebook-review-broadway-musical-1235939025/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/theater-review-the-outsiders-broadway-musical.html is Sara Holdren; Jackson McHenry came from the legacy web-search step and is not on the page.",
+      "Page byline at https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html is Sara Holdren; Helen Shaw came from the legacy web-search step and is not on the page.",
+      "Page byline at https://variety.com/2017/legit/reviews/the-play-that-goes-wrong-review-broadway-1202019860/ is Frank Rizzo; Charles Isherwood came from the legacy web-search step and is not on the page."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-audience-2015/theatermania--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Zachary Stewart",
+        "description": "Page byline at https://www.theatermania.com/news/the-audience_72023/#:~:text=Reviews,Peter%20Morgan's%20new%20stage%20play. is Zachary Stewart; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-boys-in-the-band-2018/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/2018/05/theater-review-can-the-boys-in-the-band-work-in-2018.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-cher-show-2018/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/2018/12/theater-review-how-over-the-top-should-the-cher-show-be.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-collaboration-2022/vulture--helen-shaw.json",
+        "field": "criticName",
+        "oldValue": "Helen Shaw",
+        "newValue": "Jackson McHenry",
+        "description": "Page byline at https://www.vulture.com/2022/12/theater-review-ollaboration-warhol-basquiat-broadway.html is Jackson McHenry; Helen Shaw came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-color-purple-2005/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2005/legit/reviews/the-color-purple-1200524646/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-country-girl-2008/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2008/legit/reviews/the-country-girl-1200472139/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/variety--marilyn-stasio.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "variety--matt-trueman.json",
+        "description": "Page byline at http://variety.com/2016/legit/reviews/the-encounter-review-broadway-1201873835/ is Matt Trueman; Marilyn Stasio came from the legacy web-search step and is not on the page. The page critic already has the live record variety--matt-trueman.json for this url, so this web-search copy is a duplicate of it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-ferryman-2018/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/2018/10/theater-review-livestock-and-stock-types-in-the-ferryman.html is Sara Holdren; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at http://variety.com/2013/legit/reviews/broadway-review-the-glass-menagerie-1200671070/ is Frank Rizzo; Marilyn Stasio came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hills-of-california-2024/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Arifa Akbar",
+        "description": "Page byline at https://www.theguardian.com/stage/2024/feb/08/the-hills-of-california-review-jerusalem-jez-butterworth-harold-pinter-theatre-london is Arifa Akbar; Adrian Horton came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-hills-of-california-2024/newyorker--naomi-fry.json",
+        "field": "criticName",
+        "oldValue": "Naomi Fry",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.newyorker.com/magazine/2024/10/14/the-hills-of-california-theatre-review is Helen Shaw; Naomi Fry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heiress-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2012/11/theater-review-the-heiress-jessica-chastain.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-heiress-2012/theatermania--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Brian Scott Lipton",
+        "description": "Page byline at https://www.theatermania.com/news/the-heiress_63558/ is Brian Scott Lipton; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-kite-runner-2022/variety--frank-rizzo.json",
+        "field": "criticName",
+        "oldValue": "Frank Rizzo",
+        "newValue": "Marilyn Stasio",
+        "description": "Page byline at https://variety.com/2022/legit/reviews/kite-runner-review-broadway-play-amir-arison-1235322248/ is Marilyn Stasio; Frank Rizzo came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-kite-runner-2022/vulture--helen-shaw.json",
+        "field": "criticName",
+        "oldValue": "Helen Shaw",
+        "newValue": "Naveen Kumar",
+        "description": "Page byline at https://www.vulture.com/2022/07/theater-review-kite-runner-broadway-hayes.html is Naveen Kumar; Helen Shaw came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-inheritance-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.vulture.com/2019/11/theater-review-the-inheritance-on-broadway.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lieutenant-of-inishmore-2006/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Rooney",
+        "description": "Page byline at https://variety.com/2006/legit/reviews/the-lieutenant-of-inishmore-1200514088/ is David Rooney; Charles Isherwood came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lightning-thief-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Jackson McHenry",
+        "description": "Page byline at https://www.vulture.com/2019/10/review-the-lightning-thief-the-percy-jackson-musical.html is Jackson McHenry; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-minutes-2022/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Helen Shaw",
+        "description": "Page byline at https://www.vulture.com/article/the-minutes-tracy-letts-broadway-review.html is Helen Shaw; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/variety--peter-debruge.json",
+        "field": "criticName",
+        "oldValue": "Peter Debruge",
+        "newValue": "Marilyn Stasio",
+        "description": "Page byline at https://variety.com/2022/legit/reviews/music-man-review-hugh-jackman-broadway-1235177555/ is Marilyn Stasio; Peter Debruge came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mystery-of-edwin-drood-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at https://www.vulture.com/2012/11/theater-review-the-mystery-of-edwin-drood.html is Scott Brown; Jesse Green came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-2024/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2024/legit/reviews/the-notebook-review-broadway-musical-1235939025/ is Frank Rizzo; Aramide Tinubu came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-outsiders-2024/vulture--jackson-mchenry.json",
+        "field": "criticName",
+        "oldValue": "Jackson McHenry",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/article/theater-review-the-outsiders-broadway-musical.html is Sara Holdren; Jackson McHenry came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-notebook-2024/vulture--helen-shaw.json",
+        "field": "criticName",
+        "oldValue": "Helen Shaw",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at https://www.vulture.com/article/theater-reviews-the-notebook-the-effect.html is Sara Holdren; Helen Shaw came from the legacy web-search step and is not on the page."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-play-that-goes-wrong-2017/variety--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at https://variety.com/2017/legit/reviews/the-play-that-goes-wrong-review-broadway-1202019860/ is Frank Rizzo; Charles Isherwood came from the legacy web-search step and is not on the page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T23:42:27.298Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-audience-2015/theatermania--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-boys-in-the-band-2018/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-cher-show-2018/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-collaboration-2022/vulture--helen-shaw.json criticName: \"Helen Shaw\" -> \"Jackson McHenry\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-color-purple-2005/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-country-girl-2008/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-encounter-2016/variety--marilyn-stasio.json duplicateOf: write guard kept null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-ferryman-2018/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hills-of-california-2024/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Arifa Akbar\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-hills-of-california-2024/newyorker--naomi-fry.json criticName: \"Naomi Fry\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heiress-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-heiress-2012/theatermania--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Brian Scott Lipton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-kite-runner-2022/variety--frank-rizzo.json criticName: \"Frank Rizzo\" -> \"Marilyn Stasio\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-kite-runner-2022/vulture--helen-shaw.json criticName: \"Helen Shaw\" -> \"Naveen Kumar\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-inheritance-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lieutenant-of-inishmore-2006/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Rooney\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lightning-thief-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Jackson McHenry\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-minutes-2022/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/variety--peter-debruge.json criticName: \"Peter Debruge\" -> \"Marilyn Stasio\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mystery-of-edwin-drood-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-2024/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-outsiders-2024/vulture--jackson-mchenry.json criticName: \"Jackson McHenry\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-notebook-2024/vulture--helen-shaw.json criticName: \"Helen Shaw\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-play-that-goes-wrong-2017/variety--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Frank Rizzo\""
+    }
+  ]
+}

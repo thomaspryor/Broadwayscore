@@ -1,0 +1,334 @@
+{
+  "issueNumber": "bro-5420-g4",
+  "planId": "c5a9a835-a0c8-4a1d-8dd3-07d32133b8a0",
+  "status": "partial",
+  "createdAt": "2026-10-16T04:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (g4): London reviews live on Broadway shows (audit-uk-rows-on-broadway: UK outlet or Theatre Record, dated outside the Broadway opening window and priorRuns; each url hand-checked and names a London venue or production). This plan: flag wrongProduction (no London show holds the date), 24 actions.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/financialtimes--david-jays.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: financialtimes 2000-02-10 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/financialtimes--david-jays.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/news-oftheworld--bill-hagerty.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: news-oftheworld 2000-02-13 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/news-oftheworld--bill-hagerty.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/sunday-times--john-peter.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: sunday-times 2000-02-13 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fosse-1999/sunday-times--john-peter.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-lies-love-2023/independent--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: independent 2014-10-14 review of a London production (http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/here-lies-love-national-theatre-review-fatboy-slim-and-david-byrne-disco-musical-is-brilliantly-immersive-9792035.html), not the Broadway run 2023-07-20..2023-11-26.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-lies-love-2023/independent--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-2012/guardian--lyn-gardner.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: guardian 2012-09-23 review of a London production (http://www.guardian.co.uk/stage/2012/sep/23/jesus-christ-superstar-review?newsfeed=true), not the Broadway run 2012-03-22..2012-07-01.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "jesus-christ-superstar-2012/guardian--lyn-gardner.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/city-am--adam-bloodworth.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: city-am 2023-03-16 review of a London production (https://www.cityam.com/marjorie-prime-menier-chocolate-factory-review-a-memory-play-with-astonishing-scope/), not the Broadway run 2025-12-08..2026-02-15.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/city-am--adam-bloodworth.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/london-theatre--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2023-03-16 review of a London production (https://www.londontheatre.co.uk/reviews/marjorie-prime-review-menier-chocolate-factory), not the Broadway run 2025-12-08..2026-02-15.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marjorie-prime-2025/london-theatre--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-2010/guardian--michael-billington.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: guardian 2011-02-28 review of a London production (http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review), not the Broadway run 2010-04-11..2011-06-12.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-2010/guardian--michael-billington.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-2010/times-uk--dominic-maxwell.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: times-uk 2011-02-28 review of a London production (http://www.thetimes.co.uk/tto/arts/stage/theatre/article2928930.ece), not the Broadway run 2010-04-11..2011-06-12.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "million-dollar-quartet-2010/times-uk--dominic-maxwell.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-2025/theupcoming--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: theupcoming 2018-08-02 review of a London production (https://www.theupcoming.co.uk/2018/08/02/othello-at-shakespeares-globe-theatre-review/), not the Broadway run 2025-03-23..2025-06-08.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-2025/theupcoming--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-2008/artsdesk--helen-hawkins.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: artsdesk 2024-05-22 review of a London production (https://theartsdesk.com/theatre/passing-strange-young-vic-review-exuberant-pocket-musical-thoughtful-core), not the Broadway run 2008-02-28..2008-07-20.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-2008/artsdesk--helen-hawkins.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-2008/london-theatre--marianka-swain.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2024-05-22 review of a London production (https://www.londontheatre.co.uk/reviews/passing-strange-review-young-vic), not the Broadway run 2008-02-28..2008-07-20.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-2008/london-theatre--marianka-swain.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:20:24.688Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/financialtimes--david-jays.json wrongProductionReason: null -> \"BRO-5420: financialtimes 2000-02-10 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/financialtimes--david-jays.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/news-oftheworld--bill-hagerty.json wrongProductionReason: null -> \"BRO-5420: news-oftheworld 2000-02-13 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/news-oftheworld--bill-hagerty.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/sunday-times--john-peter.json wrongProductionReason: null -> \"BRO-5420: sunday-times 2000-02-13 review of a London production (https://www.theatrerecord.com/archive/volume/20/page/139), not the Broadway run 1999-01-14..2001-08-25.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fosse-1999/sunday-times--john-peter.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-2012/guardian--lyn-gardner.json wrongProductionReason: null -> \"BRO-5420: guardian 2012-09-23 review of a London production (http://www.guardian.co.uk/stage/2012/sep/23/jesus-christ-superstar-review?newsfeed=true), not the Broadway run 2012-03-22..2012-07-01.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jesus-christ-superstar-2012/guardian--lyn-gardner.json wrongProduction: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-2010/guardian--michael-billington.json wrongProductionReason: null -> \"BRO-5420: guardian 2011-02-28 review of a London production (http://www.guardian.co.uk/music/2011/feb/28/million-dollar-quartet-review), not the Broadway run 2010-04-11..2011-06-12.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-2010/guardian--michael-billington.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-2010/times-uk--dominic-maxwell.json wrongProductionReason: null -> \"BRO-5420: times-uk 2011-02-28 review of a London production (http://www.thetimes.co.uk/tto/arts/stage/theatre/article2928930.ece), not the Broadway run 2010-04-11..2011-06-12.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "million-dollar-quartet-2010/times-uk--dominic-maxwell.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passing-strange-2008/artsdesk--helen-hawkins.json wrongProductionReason: null -> \"BRO-5420: artsdesk 2024-05-22 review of a London production (https://theartsdesk.com/theatre/passing-strange-young-vic-review-exuberant-pocket-musical-thoughtful-core), not the Broadway run 2008-02-28..2008-07-20.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passing-strange-2008/london-theatre--marianka-swain.json wrongProductionReason: null -> \"BRO-5420: london-theatre 2024-05-22 review of a London production (https://www.londontheatre.co.uk/reviews/passing-strange-review-young-vic), not the Broadway run 2008-02-28..2008-07-20.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

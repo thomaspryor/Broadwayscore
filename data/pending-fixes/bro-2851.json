@@ -1,0 +1,57 @@
+{
+  "issueNumber": "bro-2851",
+  "planId": "f77367e7-fcb9-42a5-afb5-86a1e18951a7",
+  "status": "partial",
+  "createdAt": "2026-10-13T06:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-2851: put back three real reviews whose wrong-production flag was released (override/manual clear) but whose full text stayed quarantined in wrongFullText. John Proctor is the Villain (New Statesman, Emily Lawford, Royal Court, 2026-03-27): live text is a 149-word stub, the 505-word review sits in wrongFullText, so it was never scored. Same shape, text read and confirmed: Data (NYT, Lucille Lortel) and Sylvia (britishtheatre.com, Cort Theatre 2015). Four other scan hits were read and left alone (awards-show article, consent-page capture, a film review, a UK tour review).",
+    "steps": [
+      "New Statesman John Proctor: restore the 505-word review (read: Royal Court production, Emily Lawford).",
+      "NYT Data: restore the full 818-word review over a 2381-char partial copy of the same article.",
+      "britishtheatre.com Sylvia: restore the 1122-word review of the Cort Theatre production (no live text)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "restore-released-quarantined-body.js",
+        "args": "--file=john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json --apply",
+        "description": "Restore the released New Statesman review body"
+      },
+      {
+        "type": "run-script",
+        "script": "restore-released-quarantined-body.js",
+        "args": "--file=data-off-broadway-2026/nytimes--tim-teeman.json --apply",
+        "description": "Restore the full NYT Data review body"
+      },
+      {
+        "type": "run-script",
+        "script": "restore-released-quarantined-body.js",
+        "args": "--file=sylvia-2015/britishtheatrecom--stephen-collins.json --apply",
+        "description": "Restore the britishtheatre.com Sylvia review body"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T07:06:43.485Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script restore-released-quarantined-body.js failed: Command failed: node scripts/restore-released-quarantined-body.js --file=john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json --apply"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script restore-released-quarantined-body.js failed: Command failed: node scripts/restore-released-quarantined-body.js --file=data-off-broadway-2026/nytimes--tim-teeman.json --apply"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran restore-released-quarantined-body.js successfully"
+    }
+  ]
+}

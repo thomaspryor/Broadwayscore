@@ -1,0 +1,155 @@
+{
+  "issueNumber": "bro-5295",
+  "planId": "2f70b6f4-c9c7-425a-b5e2-96c6db1fd9c8",
+  "status": "partial",
+  "createdAt": "2026-10-13T21:40:00Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5295: reader report that the Her Campus review of the Death Becomes Her tour (a rave) shows 40. The generic star extractor read '1992 starring Meryl Streep' as 2/5 and the collector pre-pass re-added it after BRO-305 cleared it. Clears the same false star on 5 other reviews, corrects one '4.0 out of 5.0 stars' misread (served 100 instead of 4/5), and clears a round-up's star.",
+    "steps": [
+      "Reset Her Campus: clear phantom 2/5, replace the pinned 40 with a provisional 87",
+      "Clear 5 more phantom 'YYYY starring' stars",
+      "Correct the shinylife Importance of Being Oscar rating to 4/5",
+      "Clear the Alvin Ailey round-up star"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json",
+        "field": "originalScore",
+        "oldValue": "2/5",
+        "newValue": null,
+        "description": "BRO-5295: the generic star extractor read '1992 starring Meryl Streep' as 2/5; the student article prints no rating and the collector re-added it after BRO-305 cleared it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json",
+        "field": "humanReviewScore",
+        "oldValue": 40,
+        "newValue": 87,
+        "description": "BRO-5295: 40 was pinned from the phantom 2/5 (no person decided it); 87 is the unanimous 3-model Rave."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5295: provisional so a later rescore replaces the placeholder instead of freezing it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aladdin-2014/minneapolis-star-tribune--mark-kennedy.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": null,
+        "description": "BRO-5295: the generic star extractor read the '2014 StarTribune' copyright line as 4 stars."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mean-girls-west-end-2024/amyleighchandler--unknown.json",
+        "field": "originalScore",
+        "oldValue": "4/5",
+        "newValue": null,
+        "description": "BRO-5295: the generic star extractor read '2004 starring Lindsay Lohan' as 4/5."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-mousetrap-west-end-2021/manchester-evening-news--steve-howarth.json",
+        "field": "originalScore",
+        "oldValue": "2/5",
+        "newValue": null,
+        "description": "BRO-5295: the generic star extractor read '1952 starring ...' as 2/5."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-sound-of-music-tour-2025/thesuburban--alexandra-cohen-the-suburban.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": null,
+        "description": "BRO-5295: the generic star extractor read '1965 starring Julie Andrews' as 5/5; the site showed 100 instead of the ensemble 90."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-tour-2025/maryland-theatre-guide--herb-merrick.json",
+        "field": "originalScore",
+        "oldValue": "1/5",
+        "newValue": null,
+        "description": "BRO-5295: the generic star extractor read '2011 starring Robert Pattinson' as 1/5."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-importance-of-being-oscar-off-west-end-2026/shinylife--unknown.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": "4/5",
+        "description": "BRO-5295: the page header reads '4.0 out of 5.0 stars'; the extractor took the trailing '5.0 stars' as the rating and the site showed 100."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--alan-ingram.json",
+        "field": "originalScore",
+        "oldValue": "5/5",
+        "newValue": null,
+        "description": "BRO-5295: a review round-up ('one five-star, three four-star') carries no single rating of its own."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T22:18:06.957Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json originalScore: write guard kept \"2/5\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json humanReviewScore: 40 -> 87"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "death-becomes-her-tour-2026/hercampus--jessica-sprague.json humanReviewScoreProvisional: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "aladdin-2014/minneapolis-star-tribune--mark-kennedy.json originalScore: \"4/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mean-girls-west-end-2024/amyleighchandler--unknown.json originalScore: \"4/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mousetrap-west-end-2021/manchester-evening-news--steve-howarth.json originalScore: \"2/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-sound-of-music-tour-2025/thesuburban--alexandra-cohen-the-suburban.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "water-for-elephants-tour-2025/maryland-theatre-guide--herb-merrick.json originalScore: \"1/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-importance-of-being-oscar-off-west-end-2026/shinylife--unknown.json originalScore: \"5/5\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "alvin-ailey-american-dance-theater-new-works-west-end-2026/bestoftheatre--alan-ingram.json originalScore: \"5/5\" -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource)"
+    }
+  ]
+}

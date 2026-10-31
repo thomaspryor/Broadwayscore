@@ -1,0 +1,65 @@
+{
+  "issueNumber": "bro-4768",
+  "planId": "44c0bbfc-b4d8-4eae-9c0b-8b273fce49ba",
+  "status": "applied",
+  "createdAt": "2026-10-16T01:12:59.520Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Record the earlier-run start (firstRunStart) on 3 return engagements so the video-review date rule stops dropping reviews of the identical 2025 production.",
+    "steps": [
+      "Set firstRunStart on mexodus-off-broadway-2026, sexual-misconduct-of-the-middle-classes-off-broadway-2026 and the-porch-on-windy-hill-off-broadway-2026",
+      "Next weekly-video-reviews run: verify-productions.js re-checks the stale date flags and clears them (LLM + Gemini still apply)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mexodus-off-broadway-2026",
+        "field": "firstRunStart",
+        "oldValue": null,
+        "newValue": "2025-09-09",
+        "description": "Mexodus 2025 run at Audible's Minetta Lane Theatre: first preview Sep 9 2025, opened Sep 18 (Boneau Bryan Brown listing, Broadway.com, NY Theatre Guide); a video posted 2025-09-11 says it caught \"the first preview\" there. Same production returned to Daryl Roth 2026."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
+        "field": "firstRunStart",
+        "oldValue": null,
+        "newValue": "2025-04-28",
+        "description": "2025 US premiere at Audible's Minetta Lane Theatre began performances Apr 28 2025 (Stage Door; run Apr 28-Jun 18 2025); critic reviews dated 2025-05-08 in reviews.json. Same production (Hugh Jackman, Ella Beatty) returned Mar 2026."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-porch-on-windy-hill-off-broadway-2026",
+        "field": "firstRunStart",
+        "oldValue": null,
+        "newValue": "2025-09-12",
+        "description": "2025 NYC premiere at Urban Stages, Sep 12-Oct 11/12 2025 (ticket listing; DC Theater Arts review 2025-09-18; matches this row's existing priorRuns openingDate 2025-09-12). Same production returned Jan 2026."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T02:08:22.582Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: firstRunStart updated for mexodus-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: firstRunStart updated for sexual-misconduct-of-the-middle-classes-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: firstRunStart updated for the-porch-on-windy-hill-off-broadway-2026"
+    }
+  ]
+}

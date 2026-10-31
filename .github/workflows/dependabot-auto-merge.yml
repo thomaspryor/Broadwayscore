@@ -1,0 +1,87 @@
+# Dependabot PRs → Linear cards (BRO-5631).
+#
+# This used to run `gh pr merge --auto --squash` on every Dependabot PR. That
+# always failed (auto-merge is disabled on this repo), and Dependabot PRs skip
+# the test.yml jobs that need private data, so every monthly group PR rotted
+# open (#964 sat 17 days) while the PR supervisor flagged it daily to an owner
+# who never merges PRs. Unattended landing through land.yml was rejected in
+# review: land.yml does not run `next build`, and it would execute the updated
+# packages' install scripts with a workflow-scoped PAT on disk.
+#
+# Now: once a day, each open same-repo Dependabot PR gets one deduped 'auto'
+# card through the owner-alert router (conditionKey dependabot-pr:<N>), and a
+# worker session rebuilds, verifies and lands the bumps. Selection logic:
+# scripts/lib/dependabot-pr-cards.js (tested alongside it).
+name: Dependabot PR Cards
+
+on:
+  schedule:
+    - cron: '41 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+concurrency:
+  group: dependabot-pr-cards
+  cancel-in-progress: false
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List open Dependabot PRs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr list --repo "${{ github.repository }}" --author 'app/dependabot' --state open --limit 50 \
+            --json number,title,url,headRefName,isCrossRepository > "$RUNNER_TEMP/dependabot-prs.json"
+          echo "open Dependabot PRs: $(node -e 'console.log(require(process.argv[1]).length)' "$RUNNER_TEMP/dependabot-prs.json")"
+
+      - name: File one card per PR (deduped by the alert router)
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          PRS_JSON: ${{ runner.temp }}/dependabot-prs.json
+        run: |
+          node -e '
+            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
+            const { dependabotPrAlerts } = require("./scripts/lib/dependabot-pr-cards.js");
+            const alerts = dependabotPrAlerts(require(process.env.PRS_JSON));
+            (async () => {
+              for (const a of alerts) {
+                const result = await routeAlert({ ...a, severity: "warning", disposition: "auto", cooldownHours: 24 * 30,
+                  fields: [{ name: "PR", value: a.url }] });
+                console.log(`${a.conditionKey}: ${result.action}`);
+              }
+              if (!alerts.length) console.log("no open Dependabot PRs");
+            })().catch((e) => { console.error("routeAlert failed:", e.message); process.exit(1); });
+          '
+
+      - name: Commit alert-router ledger changes
+        continue-on-error: true # a failed push shows red but does not fail the job (ledger-step-guard)
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          if ! git diff --staged --quiet; then
+            git commit -m "data: alert-router ledger (dependabot-pr-cards) [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          else
+            echo "No ledger changes to commit."
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Dependabot PR Cards Failed'
+          severity: 'warning'

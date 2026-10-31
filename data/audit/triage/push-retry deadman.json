@@ -1,0 +1,15 @@
+{
+  "system": "push-retry deadman",
+  "status": "error",
+  "lastChecked": "2026-10-31T08:29:12.840Z",
+  "lastAlertTimestamp": null,
+  "autoFixAttempts": 0,
+  "escalationState": "resolved",
+  "details": [
+    {
+      "name": "Push-retry deadman",
+      "status": "error",
+      "message": "335 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x205, Ingest Review URLs x66, Press Night Probe x14, Opening Night Express x14, Opening Night Poller x13, Collect Review Texts x4, Rebuild Reviews (Fast) x4, Test Suite x4, Rebuild Reviews Data x2, Recover WE Major Outlet Reviews x2, Land x2, Audit Aggregator Review Gap x2, Recover Explicit Ratings x1, Gather Review Data x1, Collect WE/OB Review Texts x1]. Most recent reason: retries-exhausted(deadline). 1785 committed file(s) discarded across 333 run(s). 1016 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+    }
+  ]
+}

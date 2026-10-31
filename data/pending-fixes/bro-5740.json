@@ -1,0 +1,81 @@
+{
+  "issueNumber": "bro-5740",
+  "planId": "2e3df31a-f4e4-4f58-a1b9-5c23b549a5c5",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5740: fill the two national-tour gaps (American in Paris tour runtime/intermissions, Dear Evan Hansen tour synopsis) and use the bare 'New World Stages' venue on amaze-off-broadway-2026.",
+    "steps": [
+      "set runtime + intermissions on an-american-in-paris-tour-2022",
+      "set synopsis on dear-evan-hansen-tour-2024",
+      "set venue on amaze-off-broadway-2026 to the bare complex name"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-tour-2022",
+        "field": "runtime",
+        "oldValue": null,
+        "newValue": "2h 30m",
+        "description": "BRO-5740: runtime published on https://tourstoyou.org/shows/an-american-in-paris/ (Runtime: 2 hours 30 minutes, checked 2026-10-20)."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "an-american-in-paris-tour-2022",
+        "field": "intermissions",
+        "oldValue": null,
+        "newValue": 1,
+        "description": "BRO-5740: https://tourstoyou.org/shows/an-american-in-paris/ lists Intermissions: 1."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-evan-hansen-tour-2024",
+        "field": "synopsis",
+        "oldValue": null,
+        "newValue": "Dear Evan Hansen is a musical by Steven Levenson, Benj Pasek and Justin Paul about Evan Hansen, an anxious high school senior. After a classmate dies, a letter Evan wrote to himself is mistaken for proof that the two were close friends, and the lie he does not correct grows into a story that changes his life, the family that takes him in, and the community around them. This is the North American tour, which ran from September 2024 to April 2025.",
+        "description": "BRO-5740: tour synopsis restating the show's premise (the Broadway parent has none to inherit); tour dates from shows.json."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amaze-off-broadway-2026",
+        "field": "venue",
+        "oldValue": "New World Stages / Stage 5",
+        "newValue": "New World Stages",
+        "description": "BRO-5740: the 'New World Stages / Stage 5' venue string leaves the new-world-stages-stage-5 sub-venue slug unlinked in venue-complexes.json; tests/unit/venue-complex-live-data.test.mjs pins that complex's subVenueSlugs as empty (a 2026-09-05 merge orphaned this slug once), so use the bare venue name, as the sibling amaze-magic-off-broadway-2025 does."
+      }
+    ]
+  },
+  "createdAt": "2026-10-20T01:30:00Z",
+  "executedAt": "2026-10-20T01:41:47.993Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for an-american-in-paris-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for an-american-in-paris-tour-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dear-evan-hansen-tour-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for amaze-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

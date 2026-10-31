@@ -1,0 +1,412 @@
+{
+  "issueNumber": "bro-6137-r2",
+  "planId": "3f8d2cfb-a177-42a4-8bfd-bf0913bec5b0",
+  "status": "partial",
+  "createdAt": "2026-10-24T16:25:24.823Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6137 round 2 (part 1 of 5): Nonprofit labels, Did Not Recoup for silent commercial closures (BRO-5645), Easy Winner for two recouped limited runs.",
+    "steps": [
+      "kiss-me-kate-2019: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "kiss-me-kate-2019: the producing nonprofit.",
+      "kiss-me-kate-2019: a nonprofit has no loss label to evidence.",
+      "kiss-me-kate-2019: basis for the Nonprofit label.",
+      "kiss-me-kate-2019: press naming the producing nonprofit.",
+      "falsettos-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "falsettos-2016: a nonprofit has no loss label to evidence.",
+      "falsettos-2016: basis for the Nonprofit label.",
+      "falsettos-2016: press naming the producing nonprofit.",
+      "the-cherry-orchard-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "the-cherry-orchard-2016: the producing nonprofit.",
+      "the-cherry-orchard-2016: a nonprofit has no loss label to evidence.",
+      "the-cherry-orchard-2016: basis for the Nonprofit label.",
+      "the-cherry-orchard-2016: press naming the producing nonprofit.",
+      "heisenberg-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "heisenberg-2016: the producing nonprofit.",
+      "heisenberg-2016: a nonprofit has no loss label to evidence.",
+      "heisenberg-2016: basis for the Nonprofit label.",
+      "heisenberg-2016: press naming the producing nonprofit.",
+      "long-days-journey-into-night-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2).",
+      "long-days-journey-into-night-2016: the producing nonprofit.",
+      "long-days-journey-into-night-2016: a nonprofit has no loss label to evidence.",
+      "long-days-journey-into-night-2016: basis for the Nonprofit label.",
+      "long-days-journey-into-night-2016: press naming the producing nonprofit."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kiss-me-kate-2019",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "kiss-me-kate-2019: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kiss-me-kate-2019",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "kiss-me-kate-2019: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kiss-me-kate-2019",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "kiss-me-kate-2019: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kiss-me-kate-2019",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company production at Studio 54. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "kiss-me-kate-2019: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kiss-me-kate-2019",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.broadwaynews.com/kiss-me-kate-sets-dates-for-studio-54/",
+            "date": null
+          }
+        ],
+        "description": "kiss-me-kate-2019: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "falsettos-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "falsettos-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "falsettos-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "falsettos-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "falsettos-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Lincoln Center Theater production, presented at the Walter Kerr Theatre (a Jujamcyn house). Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "falsettos-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "falsettos-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://playbill.com/article/falsettos-revival-closes-january-8",
+            "date": null
+          }
+        ],
+        "description": "falsettos-2016: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cherry-orchard-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "the-cherry-orchard-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cherry-orchard-2016",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "the-cherry-orchard-2016: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cherry-orchard-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "the-cherry-orchard-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cherry-orchard-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company revival. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "the-cherry-orchard-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cherry-orchard-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/diane-lane-to-star-in-roundabouts-the-cherry-orchard",
+            "date": null
+          }
+        ],
+        "description": "the-cherry-orchard-2016: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heisenberg-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "heisenberg-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heisenberg-2016",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club",
+        "description": "heisenberg-2016: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heisenberg-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "heisenberg-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heisenberg-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Manhattan Theatre Club production. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "heisenberg-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "heisenberg-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/mtcs-production-of-heisenberg-will-transfer-to-broadway",
+            "date": null
+          }
+        ],
+        "description": "heisenberg-2016: press naming the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "long-days-journey-into-night-2016",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Nonprofit",
+        "description": "long-days-journey-into-night-2016: produced by a nonprofit theater, so there are no investors to recoup (BRO-6137 round 2)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "long-days-journey-into-night-2016",
+        "field": "nonprofitOrg",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company",
+        "description": "long-days-journey-into-night-2016: the producing nonprofit."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "long-days-journey-into-night-2016",
+        "field": "needsLossEvidence",
+        "oldValue": true,
+        "newValue": false,
+        "description": "long-days-journey-into-night-2016: a nonprofit has no loss label to evidence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "long-days-journey-into-night-2016",
+        "field": "notes",
+        "oldValue": null,
+        "newValue": "Roundabout Theatre Company revival. Trade press names the nonprofit as producer; no commercial enhancement investors found.",
+        "description": "long-days-journey-into-night-2016: basis for the Nonprofit label."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "long-days-journey-into-night-2016",
+        "field": "sources",
+        "oldValue": null,
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/jessica-lange-to-star-in-long-days-journey-into-night",
+            "date": null
+          }
+        ],
+        "description": "long-days-journey-into-night-2016: press naming the producing nonprofit."
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T17:00:00.220Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for kiss-me-kate-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for falsettos-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for falsettos-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for falsettos-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for the-cherry-orchard-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for heisenberg-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: nonprofitOrg updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:needsLossEvidence: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for long-days-journey-into-night-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for long-days-journey-into-night-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

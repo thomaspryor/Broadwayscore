@@ -1,0 +1,209 @@
+{
+  "issueNumber": "bro-5268-f",
+  "planId": "cb660eb3-874a-4b35-8dca-be97f348abd4",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5268: cite trade/producer reports for recoupment outcomes on cabaret-2024, tootsie-2019, king-kong-2018",
+    "steps": [
+      "Apply each commercial.json data-edit (compare-and-set on oldValue)",
+      "Each citation was read on the article page; excerpts are at most 15 quoted words"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "showId": "cabaret-2024",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": [
+          0,
+          10
+        ],
+        "newValue": [
+          0,
+          0
+        ],
+        "description": "cabaret-2024: Broadway Journal: no money returned to investors, a total loss to date"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "showId": "cabaret-2024",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "Deep Research: 0% investor recovery per lawsuit filings",
+        "newValue": "Broadway Journal (Sep 7, 2025) reported the production \"hasn't returned any money to investors, resulting in a total loss to-date,\" so investors had recouped 0% of the $24.25 million capitalization. https://www.broadwayjournal.com/p/cabaret-investor-sues-atg-amid-early-closing",
+        "description": "cabaret-2024: Broadway Journal: no money returned to investors, a total loss to date"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "showId": "cabaret-2024",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": "2026-01-31",
+        "newValue": "2025-09-07",
+        "description": "cabaret-2024: Broadway Journal: no money returned to investors, a total loss to date"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "tootsie-2019: Broadway Journal: closed at a loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Jan 16, 2020) reported the musical closed at a loss, describing it as: \"the adaptation of the movie that closed at a loss early this month\" https://www.broadwayjournal.com/p/cheap-six-could-make-investors-whole-in-record-time",
+        "description": "tootsie-2019: Broadway Journal: closed at a loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1734354/000173435418000001/0001734354-18-000001-index.htm",
+            "date": "2018-03-15"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1734354/000173435418000001/0001734354-18-000001-index.htm",
+            "date": "2018-03-15"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayjournal.com/p/cheap-six-could-make-investors-whole-in-record-time",
+            "date": "2020-01-16",
+            "excerpt": "the adaptation of the movie that closed at a loss early this month"
+          }
+        ],
+        "description": "tootsie-2019: Broadway Journal: closed at a loss"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "king-kong-2018: Deadline: $36.5M will not be recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "Deadline (Jun 26, 2019) reported the musical would close without recouping: \"That massive $36.5M will not be recouped when the show closes Aug. 18\" https://deadline.com/2019/06/king-kong-the-cher-show-broadway-closing-notices-tony-awards-1202638102/",
+        "description": "king-kong-2018: Deadline: $36.5M will not be recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-kong-2018",
+        "showId": "king-kong-2018",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm",
+            "date": "2018-04-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1730694/000173069418000001/0001730694-18-000001-index.htm",
+            "date": "2018-04-26"
+          },
+          {
+            "type": "trade",
+            "url": "https://www.broadwayworld.com/grosses/KING-KONG",
+            "date": "2019-08-01"
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2019/06/king-kong-the-cher-show-broadway-closing-notices-tony-awards-1202638102/",
+            "date": "2019-06-26",
+            "excerpt": "That massive $36.5M will not be recouped when the show closes Aug. 18"
+          }
+        ],
+        "description": "king-kong-2018: Deadline: $36.5M will not be recouped"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T17:01:49.258Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for king-kong-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for king-kong-2018"
+    }
+  ]
+}
