@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-30T09:04:42.033Z",
+  "generatedAt": "2026-10-31T08:53:09.751Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 5349,
-  "flaggedShows": 55,
-  "flaggedFiles": 192,
+  "scannedShows": 5454,
+  "flaggedShows": 53,
+  "flaggedFiles": 181,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 30,
-    "needs-human-review": 25
+    "likely-contamination": 29,
+    "needs-human-review": 24
   },
   "shows": [
     {
@@ -771,161 +771,6 @@
           "criticName": "Clive Davis",
           "publishDate": "2022-12-07",
           "url": "https://www.thetimes.co.uk/article/orlando-review-nudges-winks-and-a-pack-of-woolfs-make-orlando-bloom-gqlpz8h7c",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": "2026-10-30",
-      "openingDate": "2026-10-30",
-      "verdict": "likely-contamination",
-      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 10,
-        "distinctYears": [
-          2014,
-          2023,
-          2025
-        ],
-        "spanDays": 3984,
-        "flaggedCount": 10,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "broadwayworld--clementine-scott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Clementine Scott",
-          "publishDate": "2025-06-20",
-          "url": "https://www.broadwayworld.com/westend/article/Review-MEDEA-Coronet-Theatre-20250620",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "express-uk--neil-norman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "publishDate": "2014-07-24",
-          "url": "https://www.express.co.uk/entertainment/theatre/491278/Greek-tragedy-Medea-at-the-National-Theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/18/medea-review-sohoplace-london",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/26/the-week-in-theatre-grenfell-system-failure-medea-trouble-in-butetown-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2023-02-18",
-          "url": "https://inews.co.uk/culture/arts/medea-soho-place-review-sophie-okonedo-blisteringly-brilliant-revenge-tragedy-2159926",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Alice Saville",
-          "publishDate": "2023-02-18",
-          "url": "https://www.independent.co.uk/independentpremium/culture/medea-review-sophie-okonedo-b2285262.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2023-02-18",
-          "url": "https://www.standard.co.uk/culture/theatre/medea-sohoplace-review-sophie-okonedo-ben-daniels-must-see-b1061181.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2023-02-18",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/medea-sohoplace-review-sophie-okonedo-gives-mythic-otherworldly/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--dave-fargnoli.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Dave Fargnoli",
-          "publishDate": "2025-06-20",
-          "url": "https://www.thestage.co.uk/reviews/medea-review-coronet-theatre-london-satoshi-miyagi-euripides",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thestage.co.uk/reviews/medea-review-the-byre-theatre-st-andrews",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3759,42 +3604,6 @@
           "criticName": "Nastazja Domaradzka",
           "publishDate": "2019-12-06",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-dick-whittington-stratford-east",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
-      "title": "A Beautiful Noise, The Neil Diamond Musical",
-      "market": "tour",
-      "status": "upcoming",
-      "venue": "North American Tour",
-      "previewsStartDate": null,
-      "openingDate": "2026-10-30",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"North American Tour\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "toronto-star--jeremy-daniel.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "toronto-star",
-          "criticName": "Jeremy Daniel",
-          "publishDate": "2026-05-05",
-          "url": "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

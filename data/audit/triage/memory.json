@@ -1,7 +1,7 @@
 {
   "system": "memory",
-  "status": "pass",
-  "lastChecked": "2026-10-30T08:41:09.867Z",
+  "status": "warn",
+  "lastChecked": "2026-10-31T08:29:12.838Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,8 +13,8 @@
     },
     {
       "name": "Memory: cloud notes not reaching the Mac",
-      "status": "pass",
-      "message": "No cloud-memory note has waited more than 48h for the Mac"
+      "status": "warn",
+      "message": "1 cloud-memory note(s) differ from the Mac's memory for over 48h. Oldest: design-system.md (cloud-edit-merged, 58h)"
     }
   ]
 }
