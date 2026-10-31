@@ -1096,20 +1096,6 @@
     "queuedAt": "2026-10-31T18:23:04.502Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
-    "title": "Review gap — \"ANON – a tempest at our kitchen table\" missing 1 cited review(s)",
-    "description": "ANON – a tempest at our kitchen table (anon-a-tempest-at-our-kitchen-table-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=anon-a-tempest-at-our-kitchen-table-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:23:04.516Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:any-rebellion-of-will-regional-2026",
     "title": "Review gap — \"Any Rebellion of Will\" missing 2 cited review(s)",
     "description": "Any Rebellion of Will (any-rebellion-of-will-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=any-rebellion-of-will-regional-2026 --checkpoint --ingest-missing",
@@ -1758,20 +1744,6 @@
     "queuedAt": "2026-10-31T20:09:00.598Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T20:09:22.065Z"
-  },
-  {
     "conditionKey": "land:land/bro-6249-planning-tiers",
     "title": "Landing blocked: unit-tests-node red on land/bro-6249-planning-tiers",
     "description": "land.yml did not land land/bro-6249-planning-tiers: the unit-tests-node gate went red at d94460b973. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41235509418",
@@ -1832,6 +1804,20 @@
       }
     ],
     "queuedAt": "2026-10-31T20:06:35.109Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T20:32:00.357Z"
   },
   {
     "conditionKey": "land:land/bro-6725-date-ci2",
