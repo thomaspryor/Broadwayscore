@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T20:59:39.142Z",
+  "timestamp": "2026-10-31T21:19:55.374Z",
   "stats": {
-    "totalReviews": 76213,
-    "alreadyFlagged": 21703,
+    "totalReviews": 76265,
+    "alreadyFlagged": 21700,
     "dateGuardCatches": 238,
-    "directorMismatch": 3240,
+    "directorMismatch": 3239,
     "tvFilmSignals": 2180,
-    "londonSignals": 3516,
+    "londonSignals": 3517,
     "offBroadwaySignals": 722,
-    "yearMismatch": 322,
-    "noPublishDate": 8594
+    "yearMismatch": 323,
+    "noPublishDate": 8596
   },
   "findings": [
     {
@@ -24613,6 +24613,19 @@
       ]
     },
     {
+      "showId": "good-people-regional-2026",
+      "file": "wernerstheatrereviews--unknown.json",
+      "publishDate": "2026-07-21",
+      "url": "https://wernerstheatrereviews.wordpress.com/2026/07/21/4-chairs-theatres-good-people-delivers-a-timely-story-of-empathy-and-survival/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2026 (0x). 2011 matches production: good-people-2011"
+        }
+      ]
+    },
+    {
       "showId": "good-people-west-end-2014",
       "file": "standard--fiona-mountford.json",
       "score": 82,
@@ -45261,20 +45274,6 @@
       "file": "financialtimes--unknown.json",
       "publishDate": "2016-07-12",
       "url": "https://next.ft.com/content/adaccc22-4813-11e6-8d68-72e9211e86ab",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bartlett sher\" from oslo-2017"
-        }
-      ]
-    },
-    {
-      "showId": "oslo-off-broadway-2016",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": null,
-      "publishDate": "July 12, 2016",
-      "url": "http://www.hollywoodreporter.com/review/oslo-theater-review-909909",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -114226,6 +114225,20 @@
       "score": 73,
       "publishDate": "2026-02-15",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "shadowlands-west-end-2026",
+      "file": "thestage--holly-omahony.json",
+      "score": 73,
+      "publishDate": "February 13th, 2026",
+      "url": "https://www.thestage.co.uk/reviews/shadowlands-review-aldwych-theatre-london-hugh-bonneville-maggie-siff",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
