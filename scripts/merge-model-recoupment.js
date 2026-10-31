@@ -178,7 +178,7 @@ function main() {
     applyShadowReturnFields(comm, result, show);
     applyReturnedSoFarFields(comm, tier === 'weekly-model'
       ? calculateRecoupment(show, comm, grossAllTime, weeklyData, { ...RETURNED_SO_FAR_OPTS, capEstimate: rowOpts.capEstimate })
-      : calculateLifetimeRecoupment(show, comm, grossAllTime, { ...RETURNED_SO_FAR_OPTS, capEstimate: rowOpts.capEstimate }));
+      : calculateLifetimeRecoupment(show, comm, grossAllTime, { ...RETURNED_SO_FAR_OPTS, capEstimate: rowOpts.capEstimate }), show);
 
     if (DRY_RUN) {
       console.log(`${key}: ${tier} | ${result.recoupmentPctLow}–${result.recoupmentPctCentral}–${result.recoupmentPctHigh}%`);

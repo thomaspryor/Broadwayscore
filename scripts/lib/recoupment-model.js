@@ -339,11 +339,29 @@ function getTheaterSeats(venueName) {
  * Scale an estimated nut by venue size relative to the category's anchor house.
  * Returns 1 when the venue is unknown.
  */
-function venueSizeFactor(show, category) {
+// BRO-6720: a musical that ran this many weeks or more is a hit, and a hit in
+// a small house still pays a full cast, band and crew. The venue shrink on an
+// estimated nut understated the cost of long runs and overstated their return.
+const LONG_RUN_WEEKS = 78;
+// Older long runs (the 2008-2011 reported-recouped musicals) fit the shrink;
+// the backtest turns two of them into losses with the floor. Modern runs only.
+const LONG_RUN_FROM = '2015-01-01';
+
+function runWeeksOf(show, now = Date.now()) {
+  const open = Date.parse(show.openingDate);
+  if (!Number.isFinite(open)) return 0;
+  const close = Date.parse(show.closingDate);
+  const end = Number.isFinite(close) && close < now ? close : now;
+  return Math.max(0, (end - open) / 6048e5);
+}
+
+function venueSizeFactor(show, category, opts = {}) {
   const seats = getTheaterSeats(show.venue);
   if (!seats) return 1;
   const anchor = NUT_SEAT_ANCHORS[category] || NUT_SEAT_ANCHORS.musical;
-  return Math.min(Math.max(seats / anchor, 0.65), 1.2);
+  const longMusical = opts.longRunVenueFloor !== false && /^musical/.test(category) &&
+    runWeeksOf(show, opts.now) >= LONG_RUN_WEEKS && show.openingDate >= LONG_RUN_FROM;
+  return Math.min(Math.max(seats / anchor, longMusical ? 1 : 0.65), 1.2);
 }
 
 /**
@@ -1244,7 +1262,7 @@ function estimateWeeklyNut(show, commercial, opts = {}) {
   // adjust to the show's era and venue size. The lifetime model passes
   // eraAdjust:false — it deflates the current nut to a run-average itself.
   const era = opts.eraAdjust === false ? 1 : eraDeflator(show.openingDate, opts);
-  const nut = base * era * venueSizeFactor(show, category);
+  const nut = base * era * venueSizeFactor(show, category, opts);
   // BRO-6188: the type/house default overstates the fixed cost of inexpensive
   // older musicals. In the absence of any cost figure, use capitalization as
   // a scale constraint: at most one sixteenth of the production budget per
@@ -1508,6 +1526,8 @@ function calculateLifetimeRecoupment(show, commercial, grossesAllTime, opts = {}
 // ---------------------------------------------------------------------------
 
 module.exports = {
+  venueSizeFactor,
+  LONG_RUN_WEEKS,
   MUSICAL_LIVE_OPTS,
   PLAY_LIVE_OPTS,
   ALL_LIVE_OPTS,

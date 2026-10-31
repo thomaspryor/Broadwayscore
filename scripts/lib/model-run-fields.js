@@ -66,19 +66,53 @@ function applyShadowReturnFields(comm, result, show, now = Date.now()) {
  * Write the "% returned so far" shadow fields from a run with
  * RETURNED_SO_FAR_OPTS. A missing or failed run clears them.
  */
-function applyReturnedSoFarFields(comm, returned) {
+// BRO-6720: a closed show is paid its NY tax credit after closing, and the
+// weekly profit model floors at zero before that cash arrives. So a closed
+// show with a cited credit returns at least most of the credit and at most
+// the whole credit even in its worst case. The low end stays where it is.
+const CLOSED_CREDIT_CENTRAL_SHARE = 0.75;
+const CLOSED_CREDIT_HIGH_SHARE = 1;
+
+/**
+ * Raise a closed show's returned-so-far band to the credit floor. The band is
+ * profit over capitalization with the counted credit already included, and
+ * the model clips it at zero. Only ever raises; returns a new band.
+ * @param {number[]} band [low, central, high] as percent of capitalization
+ * @param {number} creditPts tax credit counted, in points of capitalization
+ */
+function closedCreditFloor(band, creditPts) {
+  if (!Array.isArray(band) || !(creditPts > 0)) return band;
+  const [low, central, high] = band;
+  return [
+    low,
+    Math.max(central, CLOSED_CREDIT_CENTRAL_SHARE * creditPts),
+    Math.max(high, CLOSED_CREDIT_HIGH_SHARE * creditPts),
+  ];
+}
+
+function isClosedShow(show, comm, now = Date.now()) {
+  const close = Date.parse(show && show.closingDate);
+  return !!(show && (show.status === 'closed' || (Number.isFinite(close) && close < now)));
+}
+
+function applyReturnedSoFarFields(comm, returned, show) {
   if (!returned || returned.error || !Number.isFinite(returned.recoupmentPctCentral)) {
     delete comm.modelReturnedExCreditPct;
     delete comm.modelTaxCreditExcluded;
     delete comm.modelTaxCreditCounted;
     return;
   }
-  comm.modelReturnedExCreditPct = [returned.recoupmentPctLow, returned.recoupmentPctCentral, returned.recoupmentPctHigh];
+  let band = [returned.recoupmentPctLow, returned.recoupmentPctCentral, returned.recoupmentPctHigh];
+  const counted = returned.taxCreditApplied || 0;
+  if (show && isClosedShow(show, comm) && comm.capitalization > 0) {
+    band = closedCreditFloor(band, (counted / comm.capitalization) * 100);
+  }
+  comm.modelReturnedExCreditPct = band;
   comm.modelTaxCreditExcluded = returned.taxCreditExcluded || 0;
-  comm.modelTaxCreditCounted = returned.taxCreditApplied || 0;
+  comm.modelTaxCreditCounted = counted;
 }
 
 module.exports = {
-  clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields,
+  clearStaleModelFields, applyShadowReturnFields, applyReturnedSoFarFields, closedCreditFloor, isClosedShow,
   SHADOW_RETURN_FIELDS, RETURNED_SO_FAR_OPTS,
 };
