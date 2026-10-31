@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-31T22:10:35.130Z",
-  "processed": 215,
-  "failed": 99,
-  "successRate": "68.5%",
+  "updatedAt": "2026-10-31T22:19:54.536Z",
+  "processed": 267,
+  "failed": 154,
+  "successRate": "63.4%",
   "tierBreakdown": {
-    "playwright": 116,
-    "amp": 0,
-    "browserbase": 8,
+    "playwright": 145,
+    "amp": 2,
+    "browserbase": 9,
     "directCookies": 0,
     "scrapingdog": 16,
-    "scrapingbee": 4,
+    "scrapingbee": 9,
     "brightdata": 0,
-    "archiveToday": 19,
-    "archive": 55
+    "archiveToday": 26,
+    "archive": 71
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-31T21:17:08.425Z",
@@ -61,22 +61,15 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T22:02:36.123Z",
+      "t": "2026-10-31T21:58:46.683Z",
       "event": "bb-session",
-      "session": "55e72c08",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "e5afdb5a",
+      "url": "https://archive.nytimes.com/artsbeat.blogs.nytimes.com/2011/06/07/million-dollar"
     },
     {
-      "t": "2026-10-31T22:03:42.072Z",
-      "event": "bb-session",
-      "session": "622d835d",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
-    },
-    {
-      "t": "2026-10-31T22:04:19.514Z",
-      "event": "bb-session",
-      "session": "64e30b05",
-      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+      "t": "2026-10-31T21:58:47.421Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
