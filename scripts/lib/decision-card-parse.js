@@ -60,6 +60,27 @@ function headingQuestionLine(lines, i) {
   return at;
 }
 
+// BRO-6715: the email and answer-link path (src/lib/owner-decision-link.js) only knows the one-line form
+// "DECISION NEEDED: <question>", while this parser also accepts a heading with the question on the next
+// line. A card written that way (BRO-6176) could be answered by a Linear reply but never got buttons in
+// the digest. Fold the heading form into the one-line form; everything else is left byte for byte.
+function canonicalizeDecisionHeading(description) {
+  const lines = String(description || '').split('\n');
+  let inFence = false;
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\s*(```|~~~)/.test(lines[i])) { inFence = !inFence; continue; }
+    if (inFence || !HEADING_RE.test(lines[i])) continue;
+    const at = headingQuestionLine(lines, i);
+    if (at < 0) continue;
+    const q = lines[at].replace(HEADING_LINE_PREFIX_RE, '').replace(/\*+$/, '').trim();
+    if (!q || isPlaceholder(q) || isEmptyDecisionContent(q) || SETTLED_RE.test(q)) continue;
+    lines[i] = `${lines[i].replace(/\s*:?\s*\**\s*$/, '')}: ${q}`;
+    lines.splice(at, 1);
+    break;
+  }
+  return lines.join('\n');
+}
+
 function isPlaceholder(q) {
   return /^</.test(q) || /<(?:what|why|name|upside|downside|x|y)\b/i.test(q) || /^\.{3}$/.test(q);
 }
@@ -192,6 +213,6 @@ function recommendedKey(recommendation, options) {
 }
 
 module.exports = {
-  MARKER_RE, HEADING_RE, SETTLED_RE, headingQuestionLine, cleanOwnerText, collapseSelfLinks, findDecisionQuestion, hasInlineDecision, isPlaceholder,
+  MARKER_RE, HEADING_RE, SETTLED_RE, headingQuestionLine, cleanOwnerText, collapseSelfLinks, findDecisionQuestion, canonicalizeDecisionHeading, hasInlineDecision, isPlaceholder,
   parseDecisionDescription, recommendedKey, splitOption, stripCode,
 };

@@ -72,3 +72,19 @@ test('without buttons the old single link is unchanged', () => {
   const html = renderNamedDigestBlock('Waiting on your approval', sec, { actionCards: true, showBanner: true });
   assert.match(html, /Open →/);
 });
+
+// BRO-6715: BRO-6176 wrote its decision as a heading with the question on the next line. The Linear
+// reply parser accepted it, the email/answer-link parser did not, so the digest showed no buttons.
+test('a heading-style decision block is folded into the one-line form the answer links read', () => {
+  const parse = require('../../scripts/lib/decision-card-parse.js');
+  const desc = 'Intro\n\n## DECISION NEEDED (owner)\n\nWhich ideas to build. Recommended starting set: 1, 2, 3 and 5.\n\n## Acceptance criteria\n\n* x\n';
+  const canon = parse.canonicalizeDecisionHeading(desc);
+  assert.equal(link.markerLines(desc).length, 0, 'the answer-link parser misses the heading form');
+  assert.equal(link.markerLines(canon).length, 1);
+  assert.equal(parse.findDecisionQuestion(canon).question, parse.findDecisionQuestion(desc).question);
+  assert.equal(parse.canonicalizeDecisionHeading(canon), canon, 'idempotent');
+  const plain = 'DECISION NEEDED: already one line\n\nbody';
+  assert.equal(parse.canonicalizeDecisionHeading(plain), plain);
+  const fenced = '```\n## DECISION NEEDED\n\nexample\n```\n';
+  assert.equal(parse.canonicalizeDecisionHeading(fenced), fenced);
+});
