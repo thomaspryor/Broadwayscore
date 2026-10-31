@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T09:39:17.729Z",
+  "generatedAt": "2026-10-31T09:48:17.104Z",
   "windowDays": 21,
   "targets": 9,
   "auditedThisRun": 9,
@@ -25214,7 +25214,7 @@
         "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
@@ -49950,14 +49950,19 @@
       "openingDate": "2017-09-18",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-critics-think-of-charm-off-broadway"
+      ],
       "aggregatorListedUrls": [
+        "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
+        "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
+        "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
+        "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
+        "http://www.timeout.com/newyork/theater/charm",
+        "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
         "https://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
         "https://www.timeout.com/newyork/theater/charm",
-        "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
         "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
-        "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
-        "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
         "http://www.theatermania.com/off-broadway/reviews/charm_82456.html",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TR4NKL",
         "http://www.theaterscene.net/plays/offbway-plays/charm/victor-gluck/",
@@ -49970,12 +49975,9 @@
         "http://www.thewrap.com/charm-theater-review-emily-post-transgender-miss-gloria-allen/",
         "http://www.towleroad.com/2017/09/broadway-charm/",
         "http://broadwayandme.blogspot.com/2017/09/charm-celebrates-gender-fluidity.html",
-        "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
         "http://www.newnownext.com/michael-musto-lisa-lampanelli/09/2017",
         "http://www.newsday.com/entertainment/theater/mcc-theater-s-charm-has-plenty-of-it-1.14251439",
-        "https://gotham-playgoer.blogspot.com/2017/09/charm.html",
-        "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
-        "http://www.timeout.com/newyork/theater/charm"
+        "https://gotham-playgoer.blogspot.com/2017/09/charm.html"
       ],
       "dirFiles": 22,
       "dirClean": 22,
@@ -49990,8 +49992,14 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 111,
+        "byReason": {
+          "not-http-url": 6,
+          "non-review-host": 22,
+          "aggregator-internal-nav": 69,
+          "aggregator-section-root": 4,
+          "production-database-listing": 10
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -50001,6 +50009,42 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
+            "outletId": "nydailynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/charm",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
+          {
+            "url": "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T08:36:58.086Z"
+          },
           {
             "url": "https://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
             "outletId": "nytimes.com",
@@ -50014,26 +50058,8 @@
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
           },
           {
-            "url": "http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
             "url": "http://deadline.com/2017/09/mary-jane-review-the-leftovers-carrie-coon-triumphs-1202176627/",
             "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812",
-            "outletId": "nydailynews.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://variety.com/2017/legit/reviews/charm-play-review-off-broadway-1202563001/",
-            "outletId": "variety.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
           },
@@ -50110,12 +50136,6 @@
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
           },
           {
-            "url": "http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
             "url": "http://www.newnownext.com/michael-musto-lisa-lampanelli/09/2017",
             "outletId": "newnownext.com",
             "state": "live",
@@ -50132,25 +50152,13 @@
             "outletId": "gotham-playgoer.blogspot.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
-          },
-          {
-            "url": "http://www.timeout.com/newyork/theater/charm",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T08:36:58.086Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 22,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -81705,7 +81713,7 @@
         "liveCount": 17,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "galileo-berkeley-rep-regional-2024",
@@ -124936,7 +124944,7 @@
         "liveCount": 26,
         "candidateCount": 26
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "job-2024",
@@ -153122,7 +153130,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "mas-sabe-el-saulo-por-viejo-off-broadway-2025",
@@ -165234,7 +165242,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "money-talks-off-broadway-2017",
@@ -165271,7 +165279,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
@@ -189433,7 +189441,7 @@
         "liveCount": 25,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "paranormal-activity-2026",
@@ -279205,7 +279213,7 @@
         "liveCount": 30,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-31T09:39:17.729Z"
+      "computedAt": "2026-10-31T09:48:17.104Z"
     },
     {
       "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
