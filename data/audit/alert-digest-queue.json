@@ -3627,5 +3627,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-30T23:44:40.319Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6676-systemic",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6676-systemic",
+    "description": "land.yml did not land land/bro-6676-systemic: the unit-tests-node gate went red at f85abe2071. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41148452497",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6676-systemic"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f85abe2071c8cd71ca8996f7126946334c5baac5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41148452497"
+      }
+    ],
+    "queuedAt": "2026-10-31T00:25:38.232Z"
   }
 ]
