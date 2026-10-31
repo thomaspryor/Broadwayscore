@@ -200,3 +200,28 @@ test('BRO-6725: two regionals of one title never both claim the same Broadway sh
   assert.equal(older.broadwayId, null);
   assert.match(older.reason, /ambiguous.*ragtime-regional-2023/);
 });
+
+test('BRO-6725: one-regional-per-Broadway result is independent of input order, three claimants', () => {
+  const rows = [
+    { id: 'x-regional-2019', title: 'Xshow', category: 'regional', openingDate: '2019-03-01' },
+    { id: 'x-regional-2021', title: 'Xshow', category: 'regional', openingDate: '2021-03-01' },
+    { id: 'x-regional-2023', title: 'Xshow', category: 'regional', openingDate: '2023-03-01' },
+    { id: 'x-2025', title: 'Xshow', category: 'broadway', openingDate: '2025-10-01' },
+  ];
+  for (const list of [rows, [...rows].reverse()]) {
+    const linked = detectTransferPairs(list).filter(p => p.broadwayId);
+    assert.deepEqual(linked.map(p => p.regionalId), ['x-regional-2023']);
+  }
+});
+
+test('BRO-6725: same-date claimants tie-break deterministically by id', () => {
+  const rows = [
+    { id: 'y-regional-b', title: 'Yshow', category: 'regional', openingDate: '2023-03-01' },
+    { id: 'y-regional-a', title: 'Yshow', category: 'regional', openingDate: '2023-03-01' },
+    { id: 'y-2025', title: 'Yshow', category: 'broadway', openingDate: '2025-10-01' },
+  ];
+  for (const list of [rows, [...rows].reverse()]) {
+    const linked = detectTransferPairs(list).filter(p => p.broadwayId);
+    assert.deepEqual(linked.map(p => p.regionalId), ['y-regional-a']);
+  }
+});

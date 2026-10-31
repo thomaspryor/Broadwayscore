@@ -17,6 +17,9 @@
  *    NEVER linked.
  *  - Ambiguity: two candidate Broadway productions (revival + original both
  *    post-dating the tryout) → no pair. Humans handle rare cases.
+ *  - One regional per Broadway show (BRO-6725): when several regionals of one
+ *    title claim the same Broadway show, only the most recent keeps the link;
+ *    the older ones are reported as ambiguous and are not written.
  *  - Idempotent: shows already carrying transferredTo / transferOf are
  *    skipped on their respective sides.
  *
