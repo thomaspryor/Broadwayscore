@@ -58,7 +58,7 @@ test('tests/unit/*.test.mjs selects the full test-registration audit set (BRO-32
 test('scripts/lib/**/*.test.* selects the full test-registration audit set (BRO-3239 HOLE 1)', () => {
   assert.deepEqual(
     listAudits(['scripts/lib/push-with-retry.stall-diagnostics.test.sh']),
-    plus(['colocated-test-ci-coverage', 'orphan-tests', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch'])
+    plus(['colocated-test-ci-coverage', 'orphan-tests', 'set-u-expansions', 'test-yml-manifest-paths', 'tests-vs-derived-data', 'toplevel-script-test-yml-coverage', 'unbounded-fetch'])
   );
   assert.deepEqual(
     listAudits(['scripts/lib/nested/deeper/x.test.mjs']),
@@ -462,6 +462,22 @@ test('conflict-markers blocks a pushed file with markers and passes clean, binar
     assert.equal(r.code, 1);
     assert.match(r.out, /AUDIT BLOCKED: conflict-markers failed/);
     assert.equal(run([clean, join(dir, 'gone.json')]).code, 0);
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('set-u-expansions runs strict on changed shell scripts only, and blocks an unguarded expansion (BRO-6687)', () => {
+  assert.ok(listAudits(['scripts/lib/stage-data-changes.sh']).includes('set-u-expansions'));
+  assert.ok(!listAudits(['scripts/foo.js']).includes('set-u-expansions'));
+  const dir = mkdtempSync(join(tmpdir(), 'setu-audit-'));
+  try {
+    const sh = join(dir, 'bad.sh');
+    writeFileSync(sh, '#!/usr/bin/env bash\nset -uo pipefail\nA=()\nprintf "%s" "${A[@]}"\n');
+    let code = 0, out = '';
+    try { execFileSync('bash', [SCRIPT], { input: sh, stdio: 'pipe' }); } catch (e) { code = e.status; out = String(e.stdout); }
+    assert.equal(code, 1);
+    assert.match(out, /AUDIT BLOCKED: set-u-expansions failed/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
