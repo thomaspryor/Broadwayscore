@@ -91,6 +91,16 @@ test('BRO-6602: a possessive name before a title does not route to a same-word s
   // The one-word show still matches its own slugs.
   assert.equal(matchSlugToShow('read-reviews-for-the-christians', shows)?.show?.id, 'the-christians-regional-2023');
   assert.equal(matchSlugToShow('the-christians-review-a-church-divided', shows)?.show?.id, 'the-christians-regional-2023');
+  // "the christians" is the title, not a name (ship-check, Codex).
+  assert.equal(matchSlugToShow('the-christians-animal-instincts-versus-divine-wisdom', shows)?.show?.id, 'the-christians-regional-2023');
+  // An article before the second title (ship-check, Claude).
+  assert.equal(matchSlugToShow('heather-christians-the-animal-wisdom', shows)?.show?.id, 'animal-wisdom-off-broadway-2022');
+  // A single-show caller (Playbill per-show poll) refuses the possessive too, via
+  // the catalogue (ship-check, Codex). Needs data/shows.json to know Animal Wisdom.
+  const { defaultShows } = require('./title-containment.js');
+  if (defaultShows().some(s => s.title === 'Animal Wisdom')) {
+    assert.equal(matchSlugToShow('read-reviews-for-heather-christians-animal-wisdom', [shows[1]]), null);
+  }
 });
 
 test('cleanSlugTitle strips head and tail patterns', () => {

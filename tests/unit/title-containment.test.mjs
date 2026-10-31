@@ -152,6 +152,11 @@ test('BRO-6727: a short title inside a longer UNcatalogued title is not redirect
   assert.equal(matchTitleToShow('MAMMA MIA! Reviews | BroadwayWorld', shows)?.show?.id, 'mamma-mia-west-end-2021');
   // Words BEFORE the title ("Reviews of", a possessive credit) don't make it a longer title.
   assert.equal(matchTitleToShow("Reviews of ABBA's Mamma Mia!", shows, { market: 'west-end' })?.show?.id, 'mamma-mia-west-end-2021');
+  // Cast billing is not a longer title (ship-check, Codex).
+  assert.equal(matchTitleToShow('Mamma Mia! Starring Jane Doe', shows, { market: 'west-end' })?.show?.id, 'mamma-mia-west-end-2021');
+  // A rejected redirect does not fall through to an unrelated shorter variant (ship-check, Claude).
+  const withTender = [...shows, { id: 'tender-off-west-end-2026', title: 'Tender', slug: 'tender', category: 'off-west-end', openingDate: '2026-01-01' }];
+  assert.equal(matchTitleToShow('A Tender Night: Mamma Mia! The Party review', withTender, { market: 'west-end' }), null);
   // A tagline after the dash is not a longer title: the pre-dash variant still matches.
   assert.equal(matchTitleToShow('Mamma Mia! review – a night to remember', shows, { market: 'west-end' })?.show?.id, 'mamma-mia-west-end-2021');
 });

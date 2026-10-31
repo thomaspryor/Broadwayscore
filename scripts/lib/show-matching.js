@@ -16,7 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./venue-classification');
-const { findContainingTitleSibling, distinctTitleKey, phraseNorm } = require('./title-containment');
+const { findContainingTitleSibling, distinctTitleKey, phraseNorm, defaultShows } = require('./title-containment');
 
 // ---------------------------------------------------------------------------
 // Known Aliases: External show titles → slugs in shows.json
@@ -752,12 +752,12 @@ function matchTitleToShow(externalTitle, shows, options) {
         // BRO-6727: the redirect skips titleWordsMatch, so apply its short-title
         // guard here. "Mia" word-matched "Mamma Mia! The Party" and the redirect
         // filed it under "Mamma Mia!" even though "party" names a different show.
-        // A guard rejection tries the next (shorter) variant: "Mamma Mia! review
-        // – a night to remember" still matches on "mamma mia! review".
         // Only the headline counts, not a "| BroadwayWorld" suffix or a "– tagline".
         // Only words AFTER the title count ("Mamma Mia! The Party"); a prefix
         // like "Reviews of" or "Irving Berlin's" does not make a longer title.
-        const headline = phraseNorm(variant.split(/\s+[|\u2013\u2014]\s+/)[0]);
+        // Cast billing ("Starring X Y") is stripped as titleWordsMatch does.
+        const headline = phraseNorm(variant.split(/\s+[|\u2013\u2014]\s+/)[0]
+          .replace(/\s+(?:starring|featuring)\s+.+$/, ''));
         const siblingRows = shows.filter(show => containingSiblings.has(distinctTitleKey(show.title || '')));
         const named = siblingRows.filter((show) => {
           const sibling = containingSiblings.get(distinctTitleKey(show.title || ''));
@@ -768,7 +768,14 @@ function matchTitleToShow(externalTitle, shows, options) {
         if (named.length > 0) {
           return { show: pickBestProduction(named, targetYear, preferredMarket, prefer, activeDate), confidence: 'medium' };
         }
-        if (siblingRows.length > 0) continue;
+        // Fall through only to a shorter variant that still names the sibling;
+        // otherwise its word matches ("A Tender Night: Mamma Mia! The Party" ->
+        // "a tender night") are about something else.
+        if (siblingRows.length > 0) {
+          const later = titleVariants.slice(titleVariants.indexOf(variant) + 1);
+          if (later.some(v => [...containingSiblings.values()].some(sib => phraseNorm(v).includes(sib)))) continue;
+          return null;
+        }
         // The named show isn't in the caller's list: none of the remaining
         // word matches is the show the title is about.
         return null;
@@ -1627,28 +1634,53 @@ function _tokenOnlyLocationPrefixed(token, cleanedSlug) {
   return sawOccurrence;
 }
 
+const _ARTICLES = new Set(['the', 'a', 'an']);
+const _titleTokenRunCache = new WeakMap();
+
+/** Set of each show's distinctive tokens joined by '-' ("animal-wisdom"), memoised per array. */
+function _titleTokenRuns(shows) {
+  let runs = _titleTokenRunCache.get(shows);
+  if (!runs) {
+    runs = new Set();
+    for (const show of shows) {
+      const toks = _showDistinctiveTokens(show);
+      // Two-word titles only: a lone word after a plural reads as prose
+      // ("keep-marching-suffs-bring-the-...", "dinosaurs-monsters-...").
+      if (toks.length > 1) runs.add(toks.join('-'));
+    }
+    _titleTokenRunCache.set(shows, runs);
+  }
+  return runs;
+}
+
 /**
- * Is `token` (ending in "s") used as a possessive name in the slug, i.e. is
- * every occurrence preceded by a word and followed by the full title of one
- * of `others`?
- * "heather-christians-animal-wisdom" with others [Animal Wisdom] → true.
+ * Is `token` (ending in "s") a possessive name in the slug: every occurrence
+ * follows a non-article word and is followed directly by another catalogued
+ * title of two or more words (optionally after "the-")?
+ * "heather-christians-animal-wisdom" → true; "the-christians-animal-..." and
+ * "oedipus-all-about-my-mother" → false. Checks the caller's list AND the full
+ * catalogue, so single-show callers ([The Christians]) refuse it too.
  */
-function _isPossessivePrefix(token, cleanedSlug, others) {
-  if (!token || !token.endsWith('s') || others.length === 0) return false;
+function _isPossessivePrefix(token, cleanedSlug, shows) {
+  if (!token || !token.endsWith('s')) return false;
+  const runSets = [_titleTokenRuns(shows), _titleTokenRuns(defaultShows())];
   let idx = -1;
   let saw = false;
   while ((idx = cleanedSlug.indexOf(token, idx + 1)) !== -1) {
     const end = idx + token.length;
     if ((idx > 0 && cleanedSlug[idx - 1] !== '-') || (end !== cleanedSlug.length && cleanedSlug[end] !== '-')) continue;
-    // A possessive surname follows a first name; a slug-leading "oedipus-..." is the title.
-    if (idx === 0) return false;
+    if (idx === 0) return false; // a slug-leading "oedipus-..." is the title
+    const before = cleanedSlug.slice(0, idx - 1);
+    if (_ARTICLES.has(before.slice(before.lastIndexOf('-') + 1))) return false;
     saw = true;
-    const rest = cleanedSlug.slice(end + 1);
-    const ownsRest = others.some(o => {
-      const toks = _showDistinctiveTokens(o.show);
-      return toks.length > 0 && rest.startsWith(toks[0]) && toks.every(t => _tokenAppearsInSlug(t, rest));
-    });
-    if (!ownsRest) return false;
+    let words = cleanedSlug.slice(end + 1).split('-').filter(Boolean);
+    if (words[0] === 'the') words = words.slice(1);
+    let owned = false;
+    for (let k = 2; k <= Math.min(words.length, 8) && !owned; k++) {
+      const run = words.slice(0, k).join('-');
+      if (runSets.some(r => r.has(run))) owned = true;
+    }
+    if (!owned) return false;
   }
   return saw;
 }
@@ -1816,12 +1848,13 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
   if (viable.length === 0) return null;
   // BRO-6602: "heather-christians-animal-wisdom" is Heather Christian's Animal
   // Wisdom. Once "The Christians" was catalogued its one long token outscored
-  // [animal, wisdom]. A one-word "...s" title followed by another candidate's
-  // whole title is a possessive name, not the show.
+  // [animal, wisdom]. A one-word "...s" title followed by another catalogued
+  // title is a possessive name, not the show.
   const possessive = viable.filter(c => c.total === 1
-    && _isPossessivePrefix(_showDistinctiveTokens(c.show)[0], cleanedSlug, viable.filter(o => o !== c)));
+    && _isPossessivePrefix(_showDistinctiveTokens(c.show)[0], cleanedSlug, shows));
   candidates.length = 0;
   candidates.push(...viable.filter(c => !possessive.includes(c)));
+  if (candidates.length === 0) return null;
   candidates.sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.totalLen !== a.totalLen) return b.totalLen - a.totalLen;

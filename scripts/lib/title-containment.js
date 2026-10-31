@@ -253,6 +253,7 @@ function categoriesOfCoreTitle(coreKey, options = {}) {
 
 module.exports = {
   containsAsWords,
+  defaultShows,
   basicNorm,
   categoriesOfCoreTitle,
   phraseNorm,
