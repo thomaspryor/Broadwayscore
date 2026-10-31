@@ -1,29 +1,40 @@
 {
-  "updatedAt": "2026-10-31T17:04:39.429Z",
-  "processed": 363,
-  "failed": 87,
-  "successRate": "80.7%",
+  "updatedAt": "2026-10-31T17:17:35.241Z",
+  "processed": 347,
+  "failed": 196,
+  "successRate": "63.9%",
   "tierBreakdown": {
-    "playwright": 181,
-    "amp": 20,
-    "browserbase": 21,
+    "playwright": 189,
+    "amp": 0,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 10,
-    "brightdata": 6,
-    "archiveToday": 38,
-    "archive": 150
+    "scrapingdog": 25,
+    "scrapingbee": 16,
+    "brightdata": 0,
+    "archiveToday": 31,
+    "archive": 92
   },
   "browserbaseSessions": 14,
   "recentActivity": [
     {
-      "t": "2026-10-31T15:14:19.531Z",
+      "t": "2026-10-31T15:38:08.536Z",
       "event": "bb-session",
-      "session": "471a5f9d",
-      "url": "http://www.nytimes.com/2016/02/22/theater/review-in-the-woodsman-a-love-lost-in-"
+      "session": "2202a999",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-31T15:14:20.241Z",
+      "t": "2026-10-31T15:38:09.409Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T15:39:33.450Z",
+      "event": "bb-session",
+      "session": "7ba06fc1",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-31T15:39:34.254Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -79,50 +90,6 @@
     },
     {
       "t": "2026-10-31T15:55:25.118Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T16:16:06.773Z",
-      "event": "bb-session",
-      "session": "3036710c",
-      "url": "https://www.wsj.com/articles/incident-at-vichy-review-wordy-but-worthwhile-11622"
-    },
-    {
-      "t": "2026-10-31T16:16:07.418Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-31T16:40:05.298Z",
-      "event": "bb-session",
-      "session": "d26021b5",
-      "url": "http://www.wsj.com/articles/sutton-foster-stars-a-revival-of-neil-simons-sweet-c"
-    },
-    {
-      "t": "2026-10-31T16:40:06.103Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T16:38:51.683Z",
-      "event": "bb-session",
-      "session": "72a3b128",
-      "url": "http://www.nytimes.com/2015/10/20/theater/review-perfect-arrangement-a-comic-tal"
-    },
-    {
-      "t": "2026-10-31T16:38:52.318Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T16:49:59.107Z",
-      "event": "bb-session",
-      "session": "4aa786f8",
-      "url": "http://www.nytimes.com/2015/10/13/theater/review-would-you-still-love-me-if-with"
-    },
-    {
-      "t": "2026-10-31T16:49:59.822Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
