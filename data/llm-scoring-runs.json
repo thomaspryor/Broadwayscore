@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-30T11:18:35.532Z",
-    "completedAt": "2026-10-30T11:23:07.792Z",
-    "totalReviews": 70389,
-    "processed": 46,
-    "skipped": 67023,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 277061,
-      "output": 15676,
-      "cacheRead": 147503,
-      "cacheWrite": 41410,
-      "total": 717303
-    },
-    "costUsd": 1.2138096,
-    "runId": "41044543717",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-30T11:28:04.472Z",
-    "completedAt": "2026-10-30T11:29:59.740Z",
-    "totalReviews": 50,
-    "processed": 50,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 134964,
-      "output": 11371,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 146335
-    },
-    "costUsd": 0.3716254,
-    "runId": "41044543717",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-30T11:53:16.036Z",
     "completedAt": "2026-10-30T11:55:26.917Z",
     "totalReviews": 32,
@@ -1543391,6 +1543353,44 @@
     },
     "costUsd": 0,
     "runId": "41197444219",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-31T12:32:20.478Z",
+    "completedAt": "2026-10-31T12:32:35.738Z",
+    "totalReviews": 6,
+    "processed": 3,
+    "skipped": 3,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 19658,
+      "output": 932,
+      "cacheRead": 7614,
+      "cacheWrite": 3807,
+      "total": 47733
+    },
+    "costUsd": 0.08598955000000001,
+    "runId": "41201067329",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-31T12:37:32.474Z",
+    "completedAt": "2026-10-31T12:37:32.476Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "41201067329",
     "source": "comparative-rescore",
     "errorDetails": []
   }
