@@ -35,3 +35,15 @@ test('http errors and thrown errors come back as not fired, never throw', async 
   assert.equal((await wakeBoardWorker({ env, fetchImpl: async () => ({ ok: false, status: 429 }) })).why, 'http-429');
   assert.match((await wakeBoardWorker({ env, fetchImpl: async () => { throw new Error('boom'); } })).why, /^error: boom/);
 });
+
+test('debounce: another successful wake run in the window skips; the current run and errors do not', async () => {
+  const { recentWakeRun } = require('../../scripts/lib/board-worker-wake.js');
+  const env = { GITHUB_REPOSITORY: 'o/r', GITHUB_TOKEN: 't', GITHUB_RUN_ID: '100' };
+  const ok = (runs) => async () => ({ ok: true, json: async () => ({ workflow_runs: runs }) });
+  assert.equal((await recentWakeRun({ env, fetchImpl: ok([{ id: 99, created_at: 'x' }]) })).id, 99);
+  assert.equal(await recentWakeRun({ env, fetchImpl: ok([{ id: 100 }]) }), null, 'this run does not count');
+  assert.equal(await recentWakeRun({ env, fetchImpl: ok([]) }), null);
+  assert.equal(await recentWakeRun({ env, fetchImpl: async () => ({ ok: false }) }), null, 'fail-open');
+  assert.equal(await recentWakeRun({ env, fetchImpl: async () => { throw new Error('x'); } }), null, 'fail-open');
+  assert.equal(await recentWakeRun({ env: {}, fetchImpl: ok([{ id: 1 }]) }), null, 'no token, no check');
+});
