@@ -5,8 +5,8 @@
 // (and the user) can SEE the change at multiple breakpoints + at full pixel
 // resolution. The companion hook (.claude/hooks/pre-push-visual-gate.sh)
 // requires `.claude/visual-qa/<branch>/verdict.json` newer than the latest
-// UI edit OR an explicit `APPROVED: <contentHash>` from the user before any
-// push touching src/**/*.{tsx,jsx,css,scss} can proceed.
+// UI edit plus a plain affirmative from the user before any push touching
+// src/**/*.{tsx,jsx,css,scss} can proceed.
 //
 // CLI:
 //   --url <required>            localhost URL of the running dev server
@@ -28,6 +28,7 @@ import { chromium } from 'playwright';
 import { computeContentHash, generateRunId, VERDICT_SCHEMA_VERSION } from './lib/verdict-hash.mjs';
 import { parseDemoFeatures, detectFlagGatedChangedFiles } from './lib/visual-qa-flag-awareness.mjs';
 import { rolePromptHeader, parseVerdictJson } from './lib/visual-qa-prompt.mjs';
+import { OWNER_APPROVAL_INSTRUCTION } from './lib/visual-qa-agent-instructions.mjs';
 
 // Load .env into process.env without external dotenv dependency.
 // Only sets keys not already in env (so explicit env overrides .env).
@@ -874,7 +875,7 @@ Then re-run this command.`);
     for (const s of screenshots.slice(0, 3)) console.log(`     Read ${s.file}`);
   }
   console.log('  2. Paste the above paths + verdict summary in your next message to the user.');
-  console.log(`  3. Wait for the user to reply with: APPROVED: ${verdict.contentHash}`);
+  console.log(OWNER_APPROVAL_INSTRUCTION);
   console.log(`     OR: a description of what to fix.`);
   console.log('━'.repeat(60));
 
