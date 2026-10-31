@@ -25,9 +25,12 @@ const DEMO_FEATURES = new Set(['showtimes']);
 // Releasing one means removing it here. commercial (the Profitability Scorecard) was
 // released 2026-10-26 (BRO-6192); to pull it again, restore its has() getter
 // and add it back here. BRO-5007: boxOfficeV2 is not public yet
-// (owner, 2026-10-10). vercel-demo.yml also leaves held flags off the public
+// (owner, 2026-10-10). fantasyLeague (Broadway Fantasy League promos: homepage
+// banner, footer link, sitemap, search indexing) is held until the owner
+// announces the launch (owner, 2026-10-31); to launch, remove it here and
+// restore its `return true` getter. vercel-demo.yml also leaves held flags off the public
 // demo build unless DEMO_HELD_ALLOWLIST names them.
-export const PROD_HELD_FEATURES = new Set(['boxOfficeV2']);
+export const PROD_HELD_FEATURES = new Set(['boxOfficeV2', 'fantasyLeague']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -105,7 +108,7 @@ export const featureFlags = {
   get showPageRedesign() { return true; }, // launched 2026-10-02 with userAccounts (BRO-4525), flag retained for cleanup
   get showtimes() { return true; }, // launched — flag retained for cleanup
   get theaterScorecard() { return true; }, // launched — flag retained for cleanup
-  get fantasyLeague() { return true; }, // launched 2026-09-29 (BRO-4324, 2026-27 season) — flag retained for cleanup
+  get fantasyLeague() { return has('fantasyLeague'); }, // held from prod until the owner launches it (2026-10-31); the /fantasy pages still work by direct link
   get videoReviews() { return true; }, // launched 2026-10-06 (BRO-4775), flag retained for cleanup
   get homepageExplainer() { return true; }, // launched — flag retained for cleanup
   get awardScoreV2() { return true; }, // launched 2026-05-17 — flag retained for cleanup

@@ -24,6 +24,7 @@ import {
 } from '../../src/config/fantasy';
 import type { FantasyShow } from '../../src/config/fantasy';
 import { LISTED_FROM, isFantasyListed } from '../../src/config/fantasy-listing';
+import { featureFlags, PROD_HELD_FEATURES } from '../../src/config/feature-flags';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.join(__dirname, '..', '..', 'data');
@@ -191,7 +192,15 @@ describe('listing date', () => {
     }
   });
   test('unlisted the evening before listedFrom, listed that morning', () => {
-    assert.equal(isFantasyListed(new Date(`${LISTED_FROM}T03:00:00Z`)), false);
-    assert.equal(isFantasyListed(new Date(`${LISTED_FROM}T12:00:00Z`)), true);
+    assert.equal(isFantasyListed(new Date(`${LISTED_FROM}T03:00:00Z`), true), false);
+    assert.equal(isFantasyListed(new Date(`${LISTED_FROM}T12:00:00Z`), true), true);
+  });
+  test('stays unlisted with the launch flag off, whatever the date', () => {
+    // Owner 2026-10-31: not launched yet. Homepage banner, footer link and the
+    // sitemap all key off isFantasyListed(), so this one switch hides them all.
+    assert.equal(isFantasyListed(new Date(`${LISTED_FROM}T12:00:00Z`), false), false);
+    assert.equal(isFantasyListed(new Date('2027-03-01T12:00:00Z'), false), false);
+    assert.equal(featureFlags.fantasyLeague, false);
+    assert.ok(PROD_HELD_FEATURES.has('fantasyLeague'));
   });
 });

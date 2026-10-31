@@ -17,7 +17,11 @@ export const LISTED_FROM: string = (seasonConfig as { listedFrom?: string }).lis
 
 const nyDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' });
 
-/** True once the game should be findable: the feature is on and listedFrom has arrived in New York. */
-export function isFantasyListed(now: Date = new Date()): boolean {
-  return featureFlags.fantasyLeague && nyDay.format(now) >= LISTED_FROM;
+/**
+ * True once the game should be findable: the fantasyLeague flag is on (the
+ * owner's launch switch, held off in production until the announcement) and
+ * listedFrom has arrived in New York.
+ */
+export function isFantasyListed(now: Date = new Date(), flagOn: boolean = featureFlags.fantasyLeague): boolean {
+  return flagOn && nyDay.format(now) >= LISTED_FROM;
 }
