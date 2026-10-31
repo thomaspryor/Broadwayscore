@@ -108,6 +108,9 @@ const ALLOWED_SCRIPTS = [
   // BRO-6141: delete aggregator-archive pages that fail their own category check (the pages
   // audit-aggregator-archive-integrity --strict reports). Needs --delete --expect=N; same archive checkout/push as above.
   'quarantine-poisoned-aggregator-archive.js',
+  // BRO-6690: delete WestEndTheatre archives filed under a non-London show (a West End roundup on a
+  // Broadway/off-Broadway row). Needs --delete --expect=N; same archive checkout/push as above.
+  'audit-wet-archive-market.js',
   // BRO-4371: repair bwwExcerpt cut at digit-leading outlets from the private BWW archive. Dry run unless
   // --write; --write needs --expect=N and exits nonzero on any refusal or count mismatch.
   'repair-bww-digit-outlets.js',

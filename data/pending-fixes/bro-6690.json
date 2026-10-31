@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-6690",
+  "planId": "4b8e2960-7866-4d35-a376-4cbb8ba9afb1",
+  "status": "pending",
+  "createdAt": "2026-10-31T04:46:39.908Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6690: flag 3 WestEndTheatre-sourced reviews that cover London or non-matching productions as wrongProduction, then delete the 212 WET archives filed under Broadway/off-Broadway shows",
+    "steps": [
+      "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json: wrongProduction",
+      "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json: wrongProductionReason",
+      "disruption-off-broadway-2026/thestage--dave-fargnoli.json: wrongProduction",
+      "disruption-off-broadway-2026/thestage--dave-fargnoli.json: wrongProductionReason",
+      "macbeth-off-broadway-2026/times-uk--clive-davis.json: wrongProduction",
+      "macbeth-off-broadway-2026/times-uk--clive-davis.json: wrongProductionReason",
+      "Run audit-wet-archive-market.js --delete --expect=212 on the checked-out private archive; the workflow pushes the deletions"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "An Enemy of the People (2024) is the Broadway/NY Jeremy Strong production. This Sunday Times piece (Dominic Maxwell) reviews the London Matt Smith staging; BRO-6690",
+        "description": "an-enemy-of-the-people-2024/sunday-times--dominic-maxwell.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "disruption-off-broadway-2026/thestage--dave-fargnoli.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "This Stage review is of the London Park Theatre production of Disruption, not the New York run; BRO-6690",
+        "description": "disruption-off-broadway-2026/thestage--dave-fargnoli.json: wrongProductionReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "macbeth-off-broadway-2026/times-uk--clive-davis.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "macbeth-off-broadway-2026/times-uk--clive-davis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "This Times review covers the Metropolitan Opera Verdi Macbeth, a different work from this show; BRO-6690",
+        "description": "macbeth-off-broadway-2026/times-uk--clive-davis.json: wrongProductionReason"
+      },
+      {
+        "type": "run-script",
+        "script": "audit-wet-archive-market.js",
+        "args": "--delete --expect=212",
+        "description": "Delete WestEndTheatre archives filed under Broadway/off-Broadway shows (212: 197 Broadway, 15 off-Broadway); aborts without deleting if the count differs. The one UK regional archive (RSC Stratford) is kept."
+      }
+    ]
+  }
+}
