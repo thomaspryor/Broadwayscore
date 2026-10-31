@@ -1307,6 +1307,8 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
 
 function urlLooksLikeReview(url, showTitle) {
   const lower = url.toLowerCase();
+  // BRO-6606: film-fan, book shop and announcement URLs are never a review of a stage production.
+  if (require('./serp-non-review-url').isNonReviewUrl(url)) return false;
   // Reject non-article URLs
   if (lower.includes('/tag/') || lower.includes('/author/') || lower.includes('/category/')) return false;
   if (lower.includes('/search') || lower.includes('/obituar')) return false;
