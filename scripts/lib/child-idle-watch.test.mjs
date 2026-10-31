@@ -77,7 +77,8 @@ test('claimsRunningWork: verdict or a non-empty Still running: line', () => {
 const WRITTEN = new Set();
 after(() => {
   for (const t of WRITTEN) {
-    const sum = spawnSync('bash', ['-c', 'printf "%s" "$1" | cksum | cut -d" " -f1', '_', t], { encoding: 'utf8' }).stdout.trim();
+    // Same key the hook derives: printf "%s" "$transcript" | cksum (first field).
+    const sum = spawnSync('cksum', [], { input: t, encoding: 'utf8' }).stdout.split(' ')[0];
     fs.rmSync(`/tmp/verify-edits-chain-${sum}`, { force: true, recursive: true });
     fs.rmSync(path.dirname(t), { force: true, recursive: true });
   }
