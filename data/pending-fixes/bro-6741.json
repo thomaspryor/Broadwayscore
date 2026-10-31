@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6741",
   "planId": "c9257224-f097-4fed-a0a9-a25c7d8ed915",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-31T22:44:46.363Z",
   "submitter": {
     "name": null,
@@ -46,5 +46,33 @@
         "description": "Move The Stage review onto the kept Studio3 row (Tron, May 2025, one run)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T22:53:29.437Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-high-life-the-musical-dundee-rep-regional-2026/the-list--unknown.json → the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/the-list--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-high-life-the-musical-dundee-rep-regional-2026/thestage--arusa-qureshi.json → the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/thestage--arusa-qureshi.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-high-life-the-musical-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json → the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025/thestage--david-pollock.json → studio3-tron-regional-2025/thestage--david-pollock.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
