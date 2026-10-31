@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T15:45:50.894Z",
+  "timestamp": "2026-10-31T16:11:29.560Z",
   "stats": {
-    "totalReviews": 74831,
-    "alreadyFlagged": 22496,
+    "totalReviews": 74938,
+    "alreadyFlagged": 22501,
     "dateGuardCatches": 235,
     "directorMismatch": 3118,
-    "tvFilmSignals": 2109,
+    "tvFilmSignals": 2116,
     "londonSignals": 3428,
-    "offBroadwaySignals": 688,
+    "offBroadwaySignals": 690,
     "yearMismatch": 312,
-    "noPublishDate": 8316
+    "noPublishDate": 8333
   },
   "findings": [
     {
@@ -8669,6 +8669,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "both-regional-2026",
+      "file": "stageandcinema--cj-fernandes.json",
+      "publishDate": "2026-04-25",
+      "url": "https://stageandcinema.com/2026/04/24/both-teatro-vista-steppenwolf-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -19638,6 +19651,19 @@
       ]
     },
     {
+      "showId": "fault-regional-2026",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": "2026-04-29",
+      "url": "https://chicago.suntimes.com/theater/2026/04/29/review-fault-chicago-shakespeare-enrico-colantoni-rebecca-spence-jason-alexander",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "fawlty-towers-west-end-2024",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 93,
@@ -28830,6 +28856,19 @@
       ]
     },
     {
+      "showId": "i-hate-hamlet-regional-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-05-05",
+      "url": "https://thirdcoastreview.com/stages/2026/05/05/review-i-hate-hamlet-saint-sebastian-players",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "i-need-that-2023",
       "file": "chicagotribune--chris-jones.json",
       "score": 71,
@@ -34765,6 +34804,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "lazarus-off-broadway-2015",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2015-12-11",
+      "url": "http://dctheatrescene.com/2015/12/11/michael-c-hall-lazarus-review-bowies-first-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -52396,6 +52449,20 @@
       ]
     },
     {
+      "showId": "south-pacific-regional-2026",
+      "file": "buzznews--kimberly-katz.json",
+      "score": 91,
+      "publishDate": "2026-05-10",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/6410-paramount-s-lush-and-spectacular-south-pacific-brings-island-love-to-life.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"series finale\""
+        }
+      ]
+    },
+    {
       "showId": "spamalot-2005",
       "file": "cbsnews--rebecca-leung.json",
       "score": null,
@@ -69806,6 +69873,20 @@
       ]
     },
     {
+      "showId": "these-paper-bullets-off-broadway-2015",
+      "file": "nytimes--charles-isherwood.json",
+      "score": null,
+      "publishDate": "2015-12-15",
+      "url": "http://www.nytimes.com/2015/12/16/theater/review-in-these-paper-bullets-a-chance-to-twist-and-shout.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "this-is-our-youth-2014",
       "file": "newsday--linda-winer.json",
       "score": 83,
@@ -75755,6 +75836,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "windfall-regional-2026",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-04-21",
+      "url": "https://www.chicagotheatrereview.com/2026/04/between-activism-and-capitalism/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -98934,6 +99028,34 @@
       ]
     },
     {
+      "showId": "lazarus-off-broadway-2015",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2015-12-12",
+      "url": "http://broadwayandme.blogspot.com/2015/12/head-trips-is-room-and.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "lazarus-off-broadway-2015",
+      "file": "thewrap--robert-hofler.json",
+      "score": null,
+      "publishDate": "2015-12-07",
+      "url": "http://www.thewrap.com/lazarus-theater-review-david-bowie-revisits-the-man-who-fell-to-earth/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
       "showId": "left-on-tenth-2024",
       "file": "playbill--molly-higgins.json",
       "publishDate": "2024-10-23",
@@ -104863,6 +104985,7 @@
     {
       "showId": "octet-regional-2026",
       "file": "chicagotribune--chris-jones.json",
+      "score": 89,
       "publishDate": "2026-05-10",
       "url": "https://www.chicagotribune.com/2026/05/10/review-octet-raven-theatre/",
       "findings": [
