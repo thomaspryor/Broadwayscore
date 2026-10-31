@@ -25,12 +25,9 @@ const DEMO_FEATURES = new Set(['showtimes']);
 // Releasing one means removing it here. commercial (the Profitability Scorecard) was
 // released 2026-10-26 (BRO-6192); to pull it again, restore its has() getter
 // and add it back here. BRO-5007: boxOfficeV2 is not public yet
-// (owner, 2026-10-10). fantasyLeague (Broadway Fantasy League promos: homepage
-// banner, footer link, sitemap, search indexing) is held until the owner
-// announces the launch (owner, 2026-10-31); to launch, remove it here and
-// restore its `return true` getter. vercel-demo.yml also leaves held flags off the public
+// (owner, 2026-10-10). vercel-demo.yml also leaves held flags off the public
 // demo build unless DEMO_HELD_ALLOWLIST names them.
-export const PROD_HELD_FEATURES = new Set(['boxOfficeV2', 'fantasyLeague']);
+export const PROD_HELD_FEATURES = new Set(['boxOfficeV2']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -108,7 +105,11 @@ export const featureFlags = {
   get showPageRedesign() { return true; }, // launched 2026-10-02 with userAccounts (BRO-4525), flag retained for cleanup
   get showtimes() { return true; }, // launched — flag retained for cleanup
   get theaterScorecard() { return true; }, // launched — flag retained for cleanup
-  get fantasyLeague() { return has('fantasyLeague'); }, // held from prod until the owner launches it (2026-10-31); the /fantasy pages still work by direct link
+  // Held off by the owner until the launch is announced (2026-10-31): homepage banner, footer link, sitemap and
+  // search indexing all key off this. Hard-coded false, NOT has(): production's NEXT_PUBLIC_FEATURES still
+  // lists fantasyLeague from the old rollout, so has() would keep it on, and listing it in PROD_HELD_FEATURES
+  // makes the deploy guard refuse every production build. To launch, return true. /fantasy pages still work by direct link.
+  get fantasyLeague() { return false; },
   get videoReviews() { return true; }, // launched 2026-10-06 (BRO-4775), flag retained for cleanup
   get homepageExplainer() { return true; }, // launched — flag retained for cleanup
   get awardScoreV2() { return true; }, // launched 2026-05-17 — flag retained for cleanup
