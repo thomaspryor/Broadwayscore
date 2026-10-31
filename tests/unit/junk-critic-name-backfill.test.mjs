@@ -134,3 +134,9 @@ describe('applyPageByline on a junk-named file', () => {
     assert.equal(pageBylineRefusal(t.fp(junkFile), t.read(junkFile), { showId: t.show, criticName: 'Carol Rocamora' }), 'locked-or-manual');
   });
 });
+
+test('BRO-6518: a bare byline label is junk, a label with a name is not', async () => {
+  const { isJunkCriticName } = await import('../../scripts/lib/byline-recovery.js');
+  for (const n of ['Submitted by', 'Written by:', 'Posted By', 'Reviewed by']) assert.equal(isJunkCriticName(n), true, n);
+  assert.equal(isJunkCriticName('Jane Doe'), false);
+});

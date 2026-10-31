@@ -8,6 +8,8 @@
  * a bare "|" occurs inside real URLs (Variety's "...&cmpid=RSS|News|LatestNews").
  */
 const CRITIC_SEP = /\s+\|\s+/;
+// Two critics in one byline ("Kerry Reid and Dan Jakes"): not one critic's name.
+const JOINT_BYLINE_RE = /\s(and|&)\s|\//i;
 
 function parseIngestLine(line) {
   // A trailing " |" with no name is dropped rather than read as an outlet id.
@@ -27,4 +29,20 @@ function formatIngestLine({ url, outlet = null, critic = null }) {
   return line;
 }
 
-module.exports = { parseIngestLine, formatIngestLine };
+/**
+ * Which byline an ingested review gets (BRO-6518). A plausible name read off the
+ * page wins; a listed critic fills in when the page gave none or only a label
+ * ("Submitted by"); joint or implausible listed names stay out. Falls back to
+ * the raw page text, then Unknown.
+ */
+function chooseIngestByline(pageName, listedName, isPlausiblePersonName) {
+  const page = pageName && isPlausiblePersonName(pageName) ? pageName : null;
+  const listed = listedName && !JOINT_BYLINE_RE.test(listedName) && isPlausiblePersonName(listedName) ? listedName : null;
+  return {
+    criticName: page || listed || pageName || 'Unknown',
+    bylineFromOwnPage: !!page || (!listed && !!pageName),
+    bylineFromListing: !page && !!listed,
+  };
+}
+
+module.exports = { parseIngestLine, formatIngestLine, chooseIngestByline, JOINT_BYLINE_RE };

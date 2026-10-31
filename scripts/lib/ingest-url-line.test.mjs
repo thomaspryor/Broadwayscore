@@ -37,3 +37,15 @@ test('an empty or doubled critic part never becomes an outlet or a piped name', 
   assert.equal(parseIngestLine('https://a.com/r | Jane Doe | extra').listedCritic, 'Jane Doe');
   assert.equal(parseIngestLine(formatIngestLine({ url: 'https://a.com/r', critic: 'Jane | Doe' })).listedCritic, 'Jane Doe');
 });
+
+test('chooseIngestByline: page name wins, a label or no name yields to the listing', () => {
+  const { chooseIngestByline } = require('./ingest-url-line.js');
+  const { isPlausiblePersonName } = require('./byline-recovery.js');
+  const pick = (p, l) => chooseIngestByline(p, l, isPlausiblePersonName);
+  assert.deepEqual(pick('Catey Sullivan', 'Carey Sullivan'), { criticName: 'Catey Sullivan', bylineFromOwnPage: true, bylineFromListing: false });
+  assert.deepEqual(pick('Submitted by', 'Lawrence B. Johnson'), { criticName: 'Lawrence B. Johnson', bylineFromOwnPage: false, bylineFromListing: true });
+  assert.deepEqual(pick(null, 'Kerry Reid'), { criticName: 'Kerry Reid', bylineFromOwnPage: false, bylineFromListing: true });
+  assert.deepEqual(pick(null, 'Kerry Reid and Dan Jakes'), { criticName: 'Unknown', bylineFromOwnPage: false, bylineFromListing: false });
+  assert.equal(pick('Submitted by', null).criticName, 'Submitted by');
+  assert.deepEqual(pick(null, null), { criticName: 'Unknown', bylineFromOwnPage: false, bylineFromListing: false });
+});
