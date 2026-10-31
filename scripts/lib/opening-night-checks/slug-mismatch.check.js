@@ -258,7 +258,8 @@ function loadSourceTextByUrl(reviewTextsRoot, showId) {
     const segments = [d.fullText, d.bwwExcerpt, d.dtliExcerpt, d.showScoreExcerpt, d.pullQuote]
       .filter(t => typeof t === 'string' && t);
     byUrl.set(d.url, (byUrl.get(d.url) || []).concat(segments));
-    if (typeof d.fullText === 'string' && d.fullText && !d.isRoundupArticle) {
+    if (typeof d.fullText === 'string' && d.fullText
+        && !d.isRoundupArticle && !d.wrongShow && !d.wrongProduction) {
       byUrl.fullTexts.set(d.url, (byUrl.fullTexts.get(d.url) || []).concat(d.fullText));
     }
   }
@@ -314,6 +315,9 @@ function run(show, context) {
   let sourceTextByUrl = null;
   // Whole title / alias only: a single title word in a lede proves nothing.
   const mentionRe = buildMentionRegex(show, { titleWords: false });
+  // Repeat rule: multi-word names only, so "Chicago"/"Rent"/"Company" used
+  // twice in prose never clears a URL (BRO-6524 review finding).
+  const repeatRe = buildMentionRegex(show, { titleWords: false, minWords: 2 });
   for (const review of reviews) {
     if (!review.url) continue;
     const urlSlug = urlSearchSlug(review.url);
@@ -327,7 +331,7 @@ function run(show, context) {
     if (!sourceTextByUrl) sourceTextByUrl = loadSourceTextByUrl(context.reviewTextsRoot, show.id);
     const segs = sourceTextByUrl.get(review.url);
     if (sourceTextNamesShow(segs, mentionRe)
-        || fullTextNamesShowRepeatedly(sourceTextByUrl.fullTexts.get(review.url), mentionRe)) { textConfirmed++; continue; }
+        || fullTextNamesShowRepeatedly(sourceTextByUrl.fullTexts.get(review.url), repeatRe)) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;

@@ -17,6 +17,8 @@ const SHOW = { id: 'the-lifespan-of-a-fact-regional-2023', title: 'The Lifespan 
 const LATE = 'https://www.chicagotheatrereview.com/2023/11/a-can-of-worms/';
 const ONCE = 'https://www.out.com/michael-musto/2017/4/03/queer-icon';
 const ROUNDUP = 'https://example.com/2023/11/fall-roundup';
+const FLAGGED = 'https://example.com/2023/11/flagged-piece';
+const ONEWORD = { id: 'rent-1996', title: 'Rent', slug: 'rent' };
 const filler = 'The company stages a gripping evening about an editor and a fact checker. '.repeat(30);
 let root;
 before(() => {
@@ -26,6 +28,9 @@ before(() => {
   const w = (n, o) => fs.writeFileSync(path.join(dir, n), JSON.stringify(o));
   w('a.json', { url: LATE, fullText: filler + ' The Lifespan of a Fact is sharp. ' + filler + ' See The Lifespan of a Fact.' });
   w('b.json', { url: ONCE, fullText: filler + ' Also: The Lifespan of a Fact.' });
+  w('d.json', { url: FLAGGED, wrongShow: true, fullText: filler + ' The Lifespan of a Fact. ' + filler + ' The Lifespan of a Fact.' });
+  const d2 = path.join(root, ONEWORD.id); fs.mkdirSync(d2);
+  fs.writeFileSync(path.join(d2, 'e.json'), JSON.stringify({ url: 'https://example.com/a-story', fullText: filler + ' Rent was due. ' + filler + ' Rent again.' }));
   w('c.json', { url: ROUNDUP, isRoundupArticle: true, fullText: filler + ' The Lifespan of a Fact. ' + filler + ' The Lifespan of a Fact.' });
 });
 after(() => fs.rmSync(root, { recursive: true, force: true }));
@@ -43,5 +48,12 @@ describe('repeated mentions beyond the lede', () => {
   });
   it('still flags a roundup-flagged article', () => {
     assert.strictEqual(check.run(SHOW, ctx([ROUNDUP])).ok, false);
+  });
+  it('does not count wrongShow-flagged texts', () => {
+    assert.strictEqual(check.run(SHOW, ctx([FLAGGED])).ok, false);
+  });
+  it('one-word titles never clear on repeats', () => {
+    const c = { reviewTextsRoot: root, reviewsDoc: { [ONEWORD.id]: [{ outletId: 'o', criticName: 'c', url: 'https://example.com/a-story' }] } };
+    assert.strictEqual(check.run(ONEWORD, c).ok, false);
   });
 });
