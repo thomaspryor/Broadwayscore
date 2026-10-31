@@ -1932937,21 +1932937,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T19:01:30.949Z",
-    "completedAt": "2026-10-31T19:01:53.303Z",
-    "totalReviews": 4,
-    "processed": 4,
+    "startedAt": "2026-10-31T19:00:39.036Z",
+    "completedAt": "2026-10-31T19:01:39.469Z",
+    "totalReviews": 10,
+    "processed": 10,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 25462,
-      "output": 1275,
-      "cacheRead": 15228,
+      "input": 64184,
+      "output": 2966,
+      "cacheRead": 38070,
       "cacheWrite": 0,
-      "total": 62644
+      "total": 156808
     },
-    "costUsd": 0.09554549999999999,
-    "runId": "41231743998",
+    "costUsd": 0.2377935,
+    "runId": "41231519051",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1941212,6 +1941212,16 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Flat thumbs differ by 29% (ours: 29%, theirs: 0%)"
+      },
+      {
+        "showId": "catch-me-if-you-can-regional-2025",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 0,
+          "down": 1,
+          "total": 10
+        },
+        "hasDisagreement": false
       },
       {
         "showId": "catch-of-the-day-off-broadway-2026",
@@ -1961542,16 +1961552,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "refracted-light-regional-2025",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 2,
-          "down": 0,
-          "total": 4
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "relatively-speaking-2011",
         "ourDistribution": {
           "up": 3,
@@ -1977221,8 +1977221,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T19:06:50.135Z",
-    "completedAt": "2026-10-31T19:06:50.136Z",
+    "startedAt": "2026-10-31T19:06:36.364Z",
+    "completedAt": "2026-10-31T19:06:36.366Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1977235,7 +1977235,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41231743998",
+    "runId": "41231519051",
     "source": "comparative-rescore",
     "errorDetails": []
   }
