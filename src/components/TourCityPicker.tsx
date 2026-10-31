@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useState } from 'react';
 import Link from 'next/link';
+import TicketLink from '@/components/TicketLink';
 import { ScoreBadge } from '@/components/show-cards';
 import { cityAgenda, stopDateRange, type CityAgendaStop } from '@/lib/tour-cities';
 import { shortCity } from '@/lib/tour-schedule';
@@ -65,7 +66,19 @@ function StopRow({ stop, show }: { stop: CityAgendaStop; show: BrowseShow }) {
         <Link href={`/show/${show.slug}`} className="block font-semibold text-white text-sm sm:text-base leading-tight hover:text-brand transition-colors line-clamp-2">
           {show.title}
         </Link>
-        <div className="text-xs sm:text-sm text-fg-muted truncate mt-0.5">{stop.venue}</div>
+        <div className="flex items-center gap-2 text-xs sm:text-sm text-fg-muted mt-0.5">
+          <span className="truncate">{stop.venue}</span>
+          {stop.ticketUrl && (
+            <TicketLink
+              showName={show.title} showId={show.id} showSlug={show.slug}
+              showStatus={show.status} showCategory="tour"
+              platform="TodayTix" url={stop.ticketUrl} pageType="browse"
+              className="flex-shrink-0 whitespace-nowrap text-brand hover:text-brand-hover"
+            >
+              Tickets ↗
+            </TicketLink>
+          )}
+        </div>
       </div>
       <ScoreBadge
         size="xs"

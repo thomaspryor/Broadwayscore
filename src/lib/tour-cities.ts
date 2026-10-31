@@ -55,6 +55,7 @@ export interface CityAgendaStop {
   venue: string;
   start: string;
   end: string;
+  ticketUrl?: string;
 }
 
 export interface CityAgenda {

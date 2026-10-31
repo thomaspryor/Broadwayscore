@@ -17,9 +17,9 @@ import type { BrowseShow } from '@/components/BrowseListClient';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 import FeaturedRowServer from '@/components/FeaturedRowServer';
 import type { TourCityOption } from '@/components/TourCityPicker';
-import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
+import { getTourNowNextForShow, getTourStopTickets } from '@/lib/data-tour-schedule';
 import { isLiveTour, isTourScored, isTourScoreHidden } from '@/lib/tour-listing';
-import { shortCity } from '@/lib/tour-schedule';
+import { shortCity, stopKey } from '@/lib/tour-schedule';
 import { stopDateRange } from '@/lib/tour-cities';
 import { ukHubForCity, ukHubFilterOptions } from '@/lib/uk-hubs';
 
@@ -264,7 +264,10 @@ export default async function BrowsePage(props: { params: Promise<{ slug: string
       chip: chipSlugs.has(c.slug),
       stops: c.stops
         .filter(st => st.end >= keepFrom && listedIds.has(st.showId))
-        .map(st => ({ showId: st.showId, venue: st.venue, start: st.start, end: st.end })),
+        .map(st => ({
+          showId: st.showId, venue: st.venue, start: st.start, end: st.end,
+          ticketUrl: getTourStopTickets(st.show)[stopKey(st)],
+        })),
     }))
     .sort((a, b) => a.city.localeCompare(b.city));
 
