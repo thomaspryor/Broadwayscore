@@ -210,9 +210,57 @@ function classifyFlaggedMiss(files, explain, isHeldFile, isRoundupUrl) {
   return { exclusion: human ? 'humanExcluded' : 'automatedExcluded', basis, confirmedNonReview, confirmedBasis };
 }
 
+// BRO-6716: exclusion reasons meaning "this file is a copy of another review".
+const COPY_BASES = new Set(['duplicateOf', 'duplicateOfCircularTiebreak', 'isSyndicatedDuplicate',
+  'knownSyndicationSecondary', 'crossOutletDuplicate', 'personalRepost']);
+
+function normKeyPart(v) {
+  return String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+function liveKey(outletId, criticName) {
+  const o = normKeyPart(outletId), c = normKeyPart(criticName);
+  return o && c && c !== 'unknown' ? `${o}|${c}` : null;
+}
+
+/**
+ * BRO-6716 class H: a listed URL whose held file is excluded only as a COPY
+ * (duplicateOf, syndicated reprint, known-syndication secondary, ...) is not a
+ * gap when the review it copies is live. 9 of 9 such grade rows were live on
+ * the site under the original (Chris Jones's Tribune review for the NY Daily
+ * News reprint, the correctly spelled critic slot for a typo'd duplicate, ...),
+ * yet each counted as a missing review.
+ * @param {object[]} files - the excluded dir files for the listed URL
+ * @param {string[]} basis - classifyFlaggedMiss basis for those files
+ * @param {Set<string>} liveKeys - liveKey(outletId, criticName) of every
+ *   reviews.json entry for the show (build with liveKeysFromReviews)
+ * @param {(d: object) => object[]} [originalsOf] - the files this copy points
+ *   at (duplicateOf target, syndication primary); each is tried as a live key
+ * @returns {boolean}
+ */
+function isCopyOfLiveReview(files, basis, liveKeys, originalsOf) {
+  const list = Array.isArray(files) ? files.filter(Boolean) : [];
+  if (!list.length || !Array.isArray(basis) || !basis.length || !liveKeys || !liveKeys.size) return false;
+  if (!basis.some(b => COPY_BASES.has(b))) return false;
+  return list.some(d => {
+    const cands = [d, ...((originalsOf && originalsOf(d)) || [])];
+    return cands.some(x => x && liveKeys.has(liveKey(x.outletId || x.outlet, x.criticName)));
+  });
+}
+
+/** Live keys for isCopyOfLiveReview from the show's reviews.json entries. */
+function liveKeysFromReviews(reviews) {
+  const keys = new Set();
+  for (const r of reviews || []) {
+    const k = r && liveKey(r.outletId || r.outlet, r.criticName);
+    if (k) keys.add(k);
+  }
+  return keys;
+}
+
 /** Re-check an automated exclusion only when a current-run round-up lists it. */
 function shouldReverify(m) {
-  return !!m && m.exclusion === 'automatedExcluded' && !m.confirmedNonReview && !isPriorProductionCitation(m);
+  return !!m && m.exclusion === 'automatedExcluded' && !m.confirmedNonReview && !m.copyOfLiveReview
+    && !isPriorProductionCitation(m);
 }
 
 /** Count of flaggedMisses marked reverify (automated, current-run listed). */
@@ -247,4 +295,6 @@ module.exports = {
   hasReviewShapedEvidence,
   shouldReverify,
   countAutomatedExcludedListed,
+  isCopyOfLiveReview,
+  liveKeysFromReviews,
 };

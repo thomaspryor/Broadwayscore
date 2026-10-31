@@ -33,7 +33,8 @@ const PAYWALL_PATTERNS = [
   /subscribe\s+to\s+(continue|read|access)/i,
   /sign\s+in\s+to\s+(continue|read|access|view)/i,
   /log\s+in\s+to\s+(continue|read|access|view)/i,
-  /members?\s+only/i,
+  // \b: "in case you remember only the Bee Gees" (Theater Pizzazz, BRO-6716) is prose, not a wall.
+  /\bmembers?\s+only/i,
   // Require a qualifier after "subscriber(s)" — bare "Subscriber" appears in
   // WSJ nav chrome ("Subscriber Sign-In") and is not a paywall signal on its own.
   /subscribers?\s+(only|content|exclusive|access)/i,
@@ -1373,6 +1374,27 @@ function stripLeadingFetchDebris(text) {
 }
 
 /**
+ * BRO-6716: a consent-manager panel saved ahead of the article (CookieYes-style
+ * "We use cookies..." plus one paragraph per cookie category). Returns the text
+ * after the leading run of consent paragraphs, or the text unchanged when it
+ * does not open with one. isGarbageContent judges what follows; a banner with
+ * no article behind it stays garbage. Found on theatermania (titanique-2026),
+ * whose 21K review sat behind 1.1K of banner and was dropped as garbage.
+ */
+const CONSENT_PARAGRAPH_RE = /\bcookies?\b|\bconsent\b|\bgdpr\b|privacy (?:preferences|settings|policy)|accept all|reject all|always active/i;
+function stripLeadingCookieConsentBlock(text) {
+  if (typeof text !== 'string' || !detectCookieConsent(text).detected) return text;
+  const paras = text.split(/\n+/);
+  let i = 0;
+  while (i < paras.length) {
+    const p = paras[i].trim();
+    if (CONSENT_PARAGRAPH_RE.test(p) || (p.length < 40 && i > 0)) { i++; continue; }
+    break;
+  }
+  return i > 0 ? paras.slice(i).join('\n\n') : text;
+}
+
+/**
  * Main function to check if content is garbage/invalid
  *
  * @param {string} text - The fullText content to check
@@ -1411,6 +1433,13 @@ function isGarbageContent(text) {
     if (interstitial.detected) {
       return { isGarbage: true, reason: `WSJ registration interstitial: "${interstitial.match}"` };
     }
+  }
+
+  // BRO-6716: a consent banner ahead of the article. Judge the article after
+  // it; a banner with too little behind it falls through to the cookie check.
+  if (typeof text === 'string') {
+    const stripped = stripLeadingCookieConsentBlock(text);
+    if (stripped !== text && stripped.trim().length >= 1500 && _countTheaterKeywords(stripped) >= 3) text = stripped;
   }
 
   // BRO-5684: known mid-article publisher chrome blocks are not review prose.
@@ -1885,7 +1914,7 @@ const TRUNCATION_SIGNALS = {
     /subscribe\s+to\s+(continue|read|access)/i,
     /sign\s+in\s+to\s+(continue|read|access)/i,
     /log\s+in\s+to\s+(continue|read)/i,
-    /members?\s+only/i,
+    /\bmembers?\s+only/i, // \b: "remember only" (BRO-6716)
     /read\s+more\s*\.{0,3}$/i,
     /continue\s+reading/i,
     /click\s+here\s+to\s+read/i,
@@ -4063,6 +4092,7 @@ module.exports = {
   stripVenueListingsTrailer,
   isGarbageContent,
   stripLeadingJsonBlob,
+  stripLeadingCookieConsentBlock,
   stripLeadingFetchDebris,
   hasReviewContent,
   assessTextQuality,

@@ -15,7 +15,8 @@ const { foldDiacritics } = require('./title-match');
 
 const LABEL = '(?:Theat(?:er|re)|Off[- ]Off[- ]Broadway|Off[- ]Broadway|Broadway|Musical|Play|Opera|Dance|Cabaret|Concert|Film|Comedy)';
 // photographer runs straight into the label with no space: "(c) Rachel Louise BrownTheater: "
-const HEADING_RE = new RegExp(`\\(c\\)\\s(?:(?!\\(c\\))[^:\\n]){1,80}?(${LABEL}):\\s+`, 'g');
+// BRO-6716: newer posts head sections "Theater Review: <Title>" as well as "Theater: <Title>".
+const HEADING_RE = new RegExp(`\\(c\\)\\s(?:(?!\\(c\\))[^:\\n]){1,80}?(${LABEL})(?: Reviews?)?:\\s+`, 'g');
 
 function norm(s) {
   return foldDiacritics(String(s || '')).toLowerCase().replace(/[‘’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim()
@@ -73,6 +74,12 @@ function sectionTitleVariants(showTitle, aliases = []) {
     if (m && /['’]s\b/i.test(showTitle)) out.add(m[1]);
   }
   // Derived short forms must be >= 4 chars; the real title always counts ("Bug").
+  // BRO-6716: a concert-series prefix our titles carry but posts drop
+  // ("Encores! La Cage Aux Folles" is headed "La Cage aux Folles At Encores!").
+  for (const v of [...out]) {
+    const m = v.match(/^encores (.{4,})$/);
+    if (m) out.add(m[1]);
+  }
   const own = norm(showTitle);
   return [...out].filter(v => v === own || v.length >= 4);
 }

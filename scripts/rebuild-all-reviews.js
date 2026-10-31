@@ -74,7 +74,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -2452,9 +2452,8 @@ const crossShowFingerprints = new Map();
         // in THIS show's own run window — never on reasoning text alone — and (b)
         // when it is NOT the cvLowButStrong path, so the Schmigadoon EBT "different
         // show" strong-signal promotion is preserved.
-        const ppVenueCarveout = !cvLowButStrong
-          && applyVenueClassificationCarveout(cv, showById[sid]).clearedWrongProduction
-          && isReviewWithinOwnProductionWindow(showById[sid], d.publishDate);
+        // BRO-6716: also covers the Off-Broadway "not Broadway" category quibble.
+        const ppVenueCarveout = cvWrongProductionIsVenueCarveout(cv, showById[sid], d.publishDate, cvLowButStrong);
         if (cv.wrongProduction === true && d.wrongProduction !== true
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')
             && !ppCvWpAdvisory && !ppInPriorRun && !ppInTourLeg && !ppVenueCarveout && !ppOwnShowEvidence) {
@@ -2591,7 +2590,9 @@ showDirs.forEach(showId => {
           const uInPriorRun = isWithinPriorRun(ud.publishDate, showById[showId]?.priorRuns);
           // Same gate for a declared tourLegs window.
           const uInTourLeg = isWithinTourLeg(ud.publishDate, showById[showId]?.tourLegs);
-          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'wrongProduction') && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg) {
+          // BRO-6716: the venue/category carve-out applies here too (was pre-pass only).
+          const uVenueCarveout = cvWrongProductionIsVenueCarveout(ucv, showById[showId], ud.publishDate);
+          if (ucv.wrongProduction === true && ud.wrongProduction !== true && !shouldSkipWrongProductionAudit(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'wrongProduction') && !uCvWpAdvisory && !uInPriorRun && !uInTourLeg && !uVenueCarveout) {
             // [GUARD:CV-PRE-PASS-UPCOMING]
             ud.wrongProduction = true;
             invalidateWrongProductionAutoClear(ud);
@@ -2948,6 +2949,30 @@ showDirs.forEach(showId => {
         stats.staleEnsembleCleared = (stats.staleEnsembleCleared || 0) + 1;
       }
 
+      // BRO-6716: legacy wrongShow flags no current writer would set. Class B: a
+      // CV "not a review" verdict an older rebuild filed as wrongShow (the
+      // promotion now routes it to isNonReview). Class C: a "Generic homepage
+      // URL" collector verdict on a URL that points at one article. Runs before
+      // the tier re-check below so a healed file is re-tiered in this pass.
+      // wrongShowReason is removed so the stale-CV fallback cannot re-promote it.
+      {
+        const urlFiledUnderOtherShow = data.url
+          ? (urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1 : false;
+        let healKind = null;
+        if (isMisFamilyCvPromotedWrongShow(data, { cvIsStale: computeCvIsStale(data), urlFiledUnderOtherShow })) healKind = 'cv-nonreview-misfamily';
+        else if (isStaleGenericHomepageWrongShow(data, showById[showId], { urlFiledUnderOtherShow })) healKind = 'generic-homepage-legacy';
+        if (healKind) {
+          data.wrongShowSelfHealed = true;
+          data.wrongShowSelfHealReason = `BRO-6716 ${healKind}: cleared legacy wrongShow (${String(data.wrongShowReason || '').slice(0, 120)})`;
+          data.wrongShow = false;
+          delete data.wrongShowReason;
+          if (data.incompleteReason === 'wrong_content') { delete data.incompleteReason; delete data.incompleteDetail; }
+          stats.legacyWrongShowHealed = (stats.legacyWrongShowHealed || 0) + 1;
+          if (isStaleScoreInput(data, showById[showId], filePath)) markRescoreNeeded(data, `BRO-6716 ${healKind} wrongShow heal`);
+          try { safeWriteReview(filePath, data); } catch (e) {}
+        }
+      }
+
       // Reclassify contentTier as safety net (in case collect-review-texts missed it)
       // Also write back to source file if tier changed (prevents stale classifications)
       {
@@ -3276,7 +3301,10 @@ showDirs.forEach(showId => {
           if (cv.wrongProduction === true && data.wrongProduction !== true
               && !shouldSkipWrongProductionAudit(data)
               && promotionEligibleConfidence && !data.allowEarlyDate && !data.allowCrossMarket && !laneHolds(data, 'wrongProduction')
-              && !cvWpAdvisory && !cvInPriorRun && !cvInTourLeg) {
+              && !cvWpAdvisory && !cvInPriorRun && !cvInTourLeg
+              // BRO-6716: the main loop never consulted the venue/category carve-out, so a
+              // review the pre-pass spared was re-flagged here in memory every rebuild.
+              && !cvWrongProductionIsVenueCarveout(cv, showById[showId], data.publishDate, cvLowButStrong)) {
             // [GUARD:CV-MAIN-LOOP]
             data.wrongProduction = true;
             invalidateWrongProductionAutoClear(data);
@@ -3427,6 +3455,64 @@ showDirs.forEach(showId => {
           }
           try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
         }
+      }
+
+      // BRO-6716 heals below read only the stored record, not the CV confidence, so
+      // they run outside the high/medium-CV block (a low-confidence CV row was skipped).
+      // BRO-6716: heal a persisted wrongProduction that came from a CV verdict the
+      // venue/category carve-out now neutralises (old prompts flagged correct
+      // Off-Broadway reviews as "Off-Broadway, not Broadway"). See
+      // isVenueCarveoutPersistedWrongProduction in review-guards.js.
+      if (isVenueCarveoutPersistedWrongProduction(data, showById[showId])) {
+        data.wrongProduction = false;
+        data.wrongProductionSelfHealed = true;
+        data.wrongProductionSelfHealReason = 'CV wrongProduction was a venue/category objection on this show\'s own run (BRO-6716 carve-out) — cleared';
+      // collect-review-texts parks a wrong-production body in wrongFullText; put it back
+      // so safeWriteReview's stale-wrong-content-tier retier can classify it.
+        if (!data.fullText && typeof data.wrongFullText === 'string' && data.wrongFullText.length > 300) {
+          data.fullText = data.wrongFullText;
+          delete data.wrongFullText;
+        }
+        // The tier safety net and incompleteReason pass above ran while the flag was
+        // still set (and on the parked text). Redo both now so this pass writes the
+        // settled record; otherwise the next rebuild changes it again (ship-check P1).
+        {
+          const { tierResult } = classifyTierWriteBack(data);
+          data.contentTier = tierResult.contentTier;
+          data.contentTierReason = tierResult.tierReason;
+          if (tierResult.wordCount != null) data.wordCount = tierResult.wordCount;
+          const reasonResult = classifyIncompleteReason(data, failedFetchMap.get(`${showId}/${file}`));
+          if (reasonResult) {
+            data.incompleteReason = reasonResult.incompleteReason;
+            data.incompleteDetail = reasonResult.incompleteDetail;
+          } else {
+            data.incompleteReason = null;
+            data.incompleteDetail = null;
+          }
+        }
+        stats.cvVenueCarveoutWrongProductionHealed = (stats.cvVenueCarveoutWrongProductionHealed || 0) + 1;
+        if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
+          markRescoreNeeded(data, 'wrongProduction venue carve-out heal');
+        }
+        try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
+      }
+
+      // BRO-6716: same quibble from the ensemble scoreability check. The original
+      // rejection is kept under rejectionSelfHealed for the audit trail.
+      if (isEnsembleCategoryQuibbleRejection(data, showById[showId])) {
+        data.rejectionSelfHealed = {
+          rejectionReason: data.rejectionReason, rejectedAt: data.rejectedAt || null,
+          rejectedBy: data.rejectedBy, rejectionReasoning: data.rejectionReasoning || null,
+          rejectionAgreeCount: data.rejectionAgreeCount ?? null,
+          why: 'ensemble wrong_production was an Off-Broadway-not-Broadway category objection on this show\'s own run (BRO-6716)',
+        };
+        delete data.rejectionReason; delete data.rejectedAt; delete data.rejectedBy; delete data.rejectionReasoning;
+        if (data.rejectionAgreeCount != null) data.rejectionAgreeCount = null;
+        stats.ensembleCategoryRejectionHealed = (stats.ensembleCategoryRejectionHealed || 0) + 1;
+        if (isStaleScoreInput(data, showById[showId], path.join(showDir, file))) {
+          markRescoreNeeded(data, 'ensemble category-quibble rejection heal');
+        }
+        try { safeWriteReview(path.join(showDir, file), data); } catch (e) {}
       }
 
       // Skip wrong-production reviews (e.g., off-Broadway reviews filed under Broadway show)

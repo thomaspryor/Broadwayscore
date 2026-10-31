@@ -531,7 +531,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         const parts = [];
         if (venueCarve.clearedWrongProduction) parts.push('wrongProduction→false');
         if (venueCarve.restoredValidity) parts.push('isValid→true');
-        console.log(`    ✓ Festival-venue carve-out (${show && show.venue}): ${parts.join(', ')} — venue classification is not wrong-production`);
+        console.log(`    ✓ Venue/category carve-out (${show && show.venue}): ${parts.join(', ')} — venue classification is not wrong-production`);
         wpFlag = venueCarve.wrongProduction;
         isValid = venueCarve.isValid;
       }

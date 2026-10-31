@@ -1245,6 +1245,30 @@ function extractPublishDate(html, url) {
   const divDate = normalizeDate((html.match(/<div[^>]+class=["'][^"']*publish-date[^"']*["'][^>]*>([^<]+)</i) || [])[1], url);
   if (divDate) return divDate;
 
+  // 5. BRO-6716: WordPress single posts with no meta/JSON-LD (Crooked Marquee). The
+  // <body> names the post (postid-N); read the published <time> inside THAT
+  // <article id="post-N">, never a sidebar/related-post card's.
+  const postId = (html.match(/<body[^>]+class=["'][^"']*\bpostid-(\d+)\b/i) || [])[1];
+  if (postId) {
+    const start = html.search(new RegExp(`<article[^>]+id=["']post-${postId}["']`, 'i'));
+    if (start >= 0) {
+      const end = html.indexOf('</article>', start);
+      const block = html.slice(start, end > start ? end : start + 20000);
+      const t = block.match(/<time[^>]+class=["'][^"']*\bpublished\b[^"']*["'][^>]+datetime=["']([^"']+)["']/i)
+        || block.match(/<time[^>]+datetime=["']([^"']+)["'][^>]+class=["'][^"']*\bpublished\b/i);
+      const wp = t && normalizeDate(t[1], url);
+      if (wp) return wp;
+    }
+  }
+
+  // 6. BRO-6716: Blogger item pages (The Interested Bystander) print the post date
+  // only as <h2 class='date-header'>. Trusted only when the page has exactly one.
+  const headers = [...html.matchAll(/<h2[^>]+class=["']date-header["'][^>]*>([\s\S]{0,200}?)<\/h2>/gi)];
+  if (headers.length === 1) {
+    const bd = normalizeDate(headers[0][1].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(), url);
+    if (bd) return bd;
+  }
+
   return null;
 }
 

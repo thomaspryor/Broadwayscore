@@ -175,6 +175,21 @@ function missingSetHash(outletIds) {
 }
 
 /**
+ * BRO-6716: an app-server or proxy error page served with HTTP 200 in place of
+ * a round-up. Its links (Phusion Passenger's admin docs, on 2026-10-26) were
+ * parsed as review rows and reported as 11 "missing reviews" across three West
+ * End shows. Judged on the page title and the first 3,000 chars of text.
+ */
+const SERVER_ERROR_PAGE_RE = /we(?:'|’)re sorry, but something went wrong|web application could not be started|phusion passenger|incomplete response received from application|error establishing a database connection|\b(?:502 bad gateway|503 service (?:temporarily )?unavailable|504 gateway time-?out|500 internal server error)\b/i;
+function isServerErrorPageHtml(html) {
+  if (typeof html !== 'string' || !html) return false;
+  const title = (html.match(/<title[^>]*>([\s\S]*?)<\/title>/i) || [])[1] || '';
+  const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 3000);
+  return SERVER_ERROR_PAGE_RE.test(title) || SERVER_ERROR_PAGE_RE.test(text);
+}
+
+/**
  * Collect WE reference rows for a show.
  *
  * @param {object} show shows.json record
@@ -234,7 +249,10 @@ async function getWeReferenceRows(show, opts = {}) {
   // theatre.reviews — discover HTML, parse with the existing scraper module
   try {
     const tr = await discoverTrRoundupHtml(show, { ...opts, stats: trStats });
-    if (tr) {
+    if (tr && isServerErrorPageHtml(tr.html)) {
+      sources['theatre-reviews'].error = 'server error page served in place of the round-up';
+      log(`    WE-ref TR: server error page at ${tr.url}, rows skipped`);
+    } else if (tr) {
       sources['theatre-reviews'].found = true;
       const { extractReviews } = require('../scrape-theatre-reviews');
       const parsed = extractReviews(tr.html, show.id) || [];
@@ -250,7 +268,10 @@ async function getWeReferenceRows(show, opts = {}) {
   // London Box Office — discover HTML (title-validated), parse with existing module
   try {
     const lbo = await discoverLboRoundupHtml(show, { ...opts, stats: lboStats });
-    if (lbo) {
+    if (lbo && isServerErrorPageHtml(lbo.html)) {
+      sources['lbo-roundup'].error = 'server error page served in place of the round-up';
+      log(`    WE-ref LBO: server error page at ${lbo.url}, rows skipped`);
+    } else if (lbo) {
       sources['lbo-roundup'].found = true;
       const { extractReviewsFromLBO } = require('../scrape-london-box-office-roundups');
       const parsed = extractReviewsFromLBO(lbo.html, show.id, lbo.url) || [];
@@ -267,7 +288,10 @@ async function getWeReferenceRows(show, opts = {}) {
   // found, with a direct link, reviewer and stars, small outlets included.
   try {
     const bot = await discoverBestOfTheatreRoundup(show, { ...opts, stats: botStats });
-    if (bot) {
+    if (bot && isServerErrorPageHtml(bot.html)) {
+      sources.bestoftheatre.error = 'server error page served in place of the round-up';
+      log(`    WE-ref BoT: server error page at ${bot.url}, rows skipped`);
+    } else if (bot) {
       sources.bestoftheatre.found = true;
       const parsed = extractBestOfTheatreRows(bot.html);
       sources.bestoftheatre.rows = parsed.length;
@@ -339,6 +363,7 @@ async function getWeReferenceRows(show, opts = {}) {
 
 module.exports = {
   getWeReferenceRows,
+  isServerErrorPageHtml,
   isWeShow,
   inOpeningWindow,
   isCurrentRunRoundup,

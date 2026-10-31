@@ -880,6 +880,51 @@ function showHasFestivalVenue(show) {
   return !!(show && show.venue && FESTIVAL_VENUE_SHOW_RE.test(show.venue));
 }
 
+// BRO-6716: the same taxonomy quibble on an ordinary Off-Broadway show. Older
+// verifier prompts assumed Broadway, so a correct Off-Broadway review came back
+// wrongProduction=true with "the production is Off-Broadway, not Broadway" or
+// "<venue>, which is an Off-Broadway venue". On an off-broadway-category show
+// that is agreement, not a mismatch. Deliberately one-directional: "not
+// Off-Broadway" (a Broadway transfer) does NOT match.
+const OFF_BROADWAY_CATEGORY_OBJECTION_RE = /off[- ]?broadway\b(?:[^.]|(?<=\b(?:[A-Z]|St|Mt|Dr|Jr|Sr|Ave))\.){0,160}?\bnot\s+(?:a\s+|an\s+|on\s+|the\s+)?(?:current\s+)?broadway\b|\bis\s+an?\s+(?:known\s+)?off[- ]?broadway\s+(?:venue|theat(?:er|re)|house|production|space)|off[- ]?broadway\b(?:[^.]|(?<=\b(?:[A-Z]|St|Mt|Dr|Jr|Sr|Ave))\.){0,160}?\bcontext\s+(?:specifies|says|lists|describes)\s+(?:a|the)\s+broadway\b/i;
+// Vetoes for the Off-Broadway branch: the verifier named a Broadway house
+// (Pen Pals: "Daryl Roth Theatre, which is a Broadway theater"), a different
+// production of the same play ("a different Off-Broadway production"), or a
+// wrong date. A year mismatch is caught by reasoningAssertsDifferentProduction.
+const OFF_BROADWAY_CATEGORY_VETO_RE = /\b(?:is|as)\s+a\s+broadway\s+(?:theat(?:er|re)|venue|house)\b|\bdifferent\b[^.]{0,30}\bproduction\b|\bdate is wrong\b|\bnot the expected production\b/i;
+// An issue that is only the flag's label ("Wrong Production", "wrongProduction")
+// or a label prefix ("Wrong production: <the actual objection>").
+const WRONG_PRODUCTION_LABEL_RE = /^\s*wrong\s*production\s*(?::\s*|$)/i;
+
+// The verifier placed the article at ANOTHER staging: a tour, London, a regional
+// or out-of-town house. "Not a Broadway or West End show" names the expected
+// category, not the article's staging, so that pairing is stripped first.
+const OFF_BROADWAY_OTHER_STAGING_RE = /\b(?:national\s+)?tour(?:ing)?\b|\blondon\b|\bwest\s+end\b|\bregional\b|\bout[- ]of[- ]town\b|\bu\.k\.|\b(?:chicago|boston|los\s+angeles|washington,?\s+d\.?c|philadelphia|san\s+francisco|toronto|edinburgh|seattle|minneapolis|atlanta|houston|baltimore|pittsburgh|cleveland|la\s+jolla|new\s+haven|princeton|hartford|berkeley)\b/i;
+const NEGATED_BROADWAY_CLAUSE_RE = /\bnot\s+(?:the\s+|a\s+|an\s+|on\s+)?(?:current\s+)?broadway\b(?:[^.;|]|(?<=\b(?:[A-Z]|St|Mt|Dr|Jr|Sr|Ave))\.)*/gi;
+const CATEGORY_PAIR_RE = /\b(?:broadway|west\s+end|london)(?:\s+(?:or|and|nor|\/)\s+(?:broadway|west\s+end|london))+\b/gi;
+/** BRO-6716: veto for every Off-Broadway category heal (CV carve-out, ensemble). */
+function offBroadwayCategoryVeto(text, show) {
+  const t = String(text || '');
+  return OFF_BROADWAY_CATEGORY_VETO_RE.test(t) || placesArticleAtOtherStaging(t);
+}
+/**
+ * BRO-6716: the verdict places the article at a tour, London, or a regional /
+ * out-of-town staging. A house-name comparison was tried and dropped: shows.json
+ * venues are often a sub-stage ("Susan & Ronald Frankel Theater" inside MCC
+ * Theater Space), so it vetoed correct reviews. A different NYC production is
+ * caught by reasoningAssertsDifferentProduction / the "different production" veto.
+ */
+function placesArticleAtOtherStaging(text) {
+  // "not the Broadway production at the St. James Theatre" names what the
+  // article is NOT; drop those clauses before looking for another staging.
+  const placed = String(text || '').replace(NEGATED_BROADWAY_CLAUSE_RE, ' ').replace(CATEGORY_PAIR_RE, ' ');
+  return OFF_BROADWAY_OTHER_STAGING_RE.test(placed);
+}
+
+function isOffBroadwayCategoryShow(show) {
+  return !!(show && show.category === 'off-broadway');
+}
+
 function reasoningAssertsDifferentProduction(text, show) {
   const t = String(text || '');
   if (DIFFERENT_PRODUCTION_ASSERTION_RE.test(t)) return true;
@@ -919,7 +964,25 @@ function applyVenueClassificationCarveout(cv, show) {
     clearedWrongProduction: false,
     restoredValidity: false,
   };
-  if (!showHasFestivalVenue(show)) return out;
+  const festival = showHasFestivalVenue(show);
+  if (!festival && !isOffBroadwayCategoryShow(show)) return out;
+
+  if (!festival) {
+    // BRO-6716 Off-Broadway category branch. Only wrongProduction is cleared;
+    // isValid is left alone (these rows usually also carry a truncation issue).
+    const stripped = issues.map(i => String(i).replace(WRONG_PRODUCTION_LABEL_RE, '')).filter(i => i.trim());
+    const text = [reasoning, ...stripped].join(' | ');
+    if (out.wrongProduction
+        && OFF_BROADWAY_CATEGORY_OBJECTION_RE.test(text)
+        && !offBroadwayCategoryVeto(text, show)
+        && !reasoningAssertsDifferentProduction(text, show)
+        && !hasStrongDifferentShowSignal(cv.issues, reasoning)) {
+      out.wrongProduction = false;
+      out.clearedWrongProduction = true;
+      out.venueCarveoutApplied = true;
+    }
+    return out;
+  }
 
   const venueIssues = issues.filter(isVenueClassificationObjection);
   const otherIssues = issues.filter(i => !isVenueClassificationObjection(i));
@@ -935,7 +998,8 @@ function applyVenueClassificationCarveout(cv, show) {
   const venueClearText = [reasoning, ...issues].join(' | ');
   if (out.wrongProduction
       && reasoningIsVenue
-      && !reasoningAssertsDifferentProduction(venueClearText, show)) {
+      && !reasoningAssertsDifferentProduction(venueClearText, show)
+      && !placesArticleAtOtherStaging(venueClearText)) {
     out.wrongProduction = false;
     out.clearedWrongProduction = true;
     out.venueCarveoutApplied = true;
@@ -949,6 +1013,68 @@ function applyVenueClassificationCarveout(cv, show) {
   }
 
   return out;
+}
+
+/**
+ * BRO-6716: one decision for "is this CV wrongProduction verdict a venue/category
+ * quibble the carve-out neutralises?", shared by every rebuild site that would
+ * otherwise promote it (pre-pass, main loop, upcoming loop) and by the heal of
+ * flags an older pass already persisted. Requires the review to sit in this
+ * show's own run window, and never fires on the low-confidence strong-signal path.
+ */
+function cvWrongProductionIsVenueCarveout(cv, show, publishDate, cvLowButStrong = false) {
+  if (!cv || cv.wrongProduction !== true || cvLowButStrong) return false;
+  return applyVenueClassificationCarveout(cv, show).clearedWrongProduction
+    && isReviewWithinOwnProductionWindow(show, publishDate);
+}
+
+/**
+ * BRO-6716: a persisted wrongProduction=true that came from a CV verdict the
+ * carve-out now neutralises (old verifier prompts assumed Broadway and flagged
+ * correct Off-Broadway reviews). Provenance: reason empty (the old writer left
+ * none) or CV-promoted; never a manual/override/adjudicated/wrongShow/other-
+ * rejection row, and never one carrying a date/URL note.
+ */
+function isVenueCarveoutPersistedWrongProduction(data, show) {
+  if (!data || data.wrongProduction !== true) return false;
+  const reason = String(data.wrongProductionReason || '');
+  if (reason && !/^CV-promoted:/.test(reason)) return false;
+  if (data.wrongProductionNote) return false;
+  if (data.wrongProductionManualClear === true || data.wrongProductionOverride === true) return false;
+  if (typeof data.humanReviewedWrongProduction === 'boolean') return false;
+  if (data.wrongShow === true) return false;
+  if (data.rejectionReason && data.rejectionReason !== 'wrong_production') return false;
+  const cv = data.contentVerification;
+  const lowStrong = !!(cv && cv.confidence === 'low' && hasStrongDifferentShowSignal(cv.issues, cv.reasoning));
+  return cvWrongProductionIsVenueCarveout(cv, show, data.publishDate, lowStrong);
+}
+
+/**
+ * BRO-6716: the ensemble scoreability check ran with a prompt that assumed a
+ * Broadway/West End production, so it rejected correct Off-Broadway reviews as
+ * wrong_production ("an off-Broadway production at MCC Theater Space, not a
+ * Broadway or West End show"). Same quibble as the CV carve-out above. Narrow on
+ * purpose (a loose clear once let a Vulture FILM review of Hamlet back in, see
+ * clear-failure-flags.js): off-broadway show, ensemble rejection, EVERY model's
+ * reason is the category objection with no veto, and the review is in this
+ * show's own run window. Never touches a human decision.
+ */
+function isEnsembleCategoryQuibbleRejection(data, show) {
+  if (!data || !isOffBroadwayCategoryShow(show)) return false;
+  // rejectedAt-only rows (rejectionReason null) carry the same ensemble reasoning (The Adding Machine).
+  if (!(data.rejectionReason === 'wrong_production' || (data.rejectionReason == null && data.rejectedAt))) return false;
+  if (data.rejectedBy !== 'ensemble-scoreability-check') return false;
+  if (data.manualReviewedBy || typeof data.humanReviewedWrongProduction === 'boolean') return false;
+  if (data.wrongShow === true || data.isNonReview === true) return false;
+  const segs = String(data.rejectionReasoning || '').split(/;\s*(?=[a-z0-9-]+:\s)/i)
+    .map(x => x.replace(/^[a-z0-9-]+:\s*/i, '').trim()).filter(Boolean);
+  if (segs.length === 0) return false;
+  const allQuibble = segs.every(t => OFF_BROADWAY_CATEGORY_OBJECTION_RE.test(t)
+    && !offBroadwayCategoryVeto(t, show)
+    && !reasoningAssertsDifferentProduction(t, show)
+    && !hasStrongDifferentShowSignal([], t)
+    && !/\b(?:film|movie|tv|television|screen)\b/i.test(t));
+  return allQuibble && isReviewWithinOwnProductionWindow(show, data.publishDate);
 }
 
 /**
@@ -2562,6 +2688,82 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
   if (cv.confidence !== 'high') return false;
 
   return true;
+}
+
+/**
+ * BRO-6716 (class B): a CV "not a review" verdict (preview, interview,
+ * feature) that an older rebuild filed under wrongShow. The current
+ * promotion code routes a pure wrongArticle verdict to the isNonReview family
+ * (cvWrongArticleFamily === 'nonReview', #651/BRO-4429) and never to wrongShow.
+ * The leftover wrongShow flag is wrong-family: it blocks the BRO-6225
+ * partial-window rescore (needsRescoreForCvPartialWindow ends in isScoreable)
+ * and keeps the review off the site even after the ensemble reads the whole
+ * text and calls it a review. Clearing it lets the normal isNonReview
+ * promotion and its advisory exceptions (isCvPartialWindowAdvisory) decide.
+ *
+ * Only clears what a CV promotion wrote: the reason must be the plain
+ * `CV-promoted: ` form, with no wrongShowNote and no humanReviewedWrongShow, and the URL
+ * must not also be filed under another show (that is a real wrong-show signal
+ * from the URL-collision audit).
+ *
+ * Rebuild-only on purpose: flag-contradiction.js's demoteStaleWrongShowPromotion
+ * writes wrongShowOverride, a permanent human-equivalent bypass. This heal sets
+ * only the wrongShowSelfHealed marker, so a later CV wrongShow-family verdict
+ * can still re-flag the file.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {{cvIsStale?: boolean, urlFiledUnderOtherShow?: boolean}} [ctx]
+ * @returns {boolean} true when the mis-family wrongShow flag should be cleared
+ */
+function isMisFamilyCvPromotedWrongShow(data, { cvIsStale = false, urlFiledUnderOtherShow = false } = {}) {
+  if (!data || data.wrongShow !== true) return false;
+  if (cvIsStale || urlFiledUnderOtherShow) return false;
+  if (!/^CV-promoted: /.test(String(data.wrongShowReason || ''))) return false;
+  // A person's clear (wrongShowCleared) is NOT a bar here, unlike BRO-168: it
+  // agrees with this heal, and the corpus has files a person cleared that a
+  // later CV promotion re-flagged (titanique-2026 theatermania).
+  if (data.wrongShowNote || data.humanReviewedWrongShow === true) return false;
+  const cv = data.contentVerification;
+  if (cvWrongArticleFamily(cv) !== 'nonReview') return false;
+  if (cv.isFilmTv === true) return false;
+  return true;
+}
+
+// URL shapes that are never one review: site search, draft previews, archive
+// listings. A "Generic homepage URL" flag on these stays.
+const NON_ARTICLE_URL_RE = /[?&](?:s|preview|preview_id)=|\/(?:search|tag|tags|category|author|page)\//i;
+
+/**
+ * BRO-6716 (class C): a wrongShow flag whose reason says "Generic homepage URL"
+ * on a URL that points at one article (a path, or an article id such as
+ * Lighting & Sound America's story.asp?ID=). No current code writes this
+ * reason; it is a legacy collector verdict that excluded real reviews.
+ *
+ * The flag clears only with positive evidence the file is this show's review:
+ * its own text (500+ chars) names the show, or an aggregator listed it with an
+ * excerpt on this show's page (Show Score, DTLI, BWW round-up). A root
+ * homepage, a search page or a draft preview keeps the flag.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {object} show - shows.json entry for the folder the file sits in
+ * @param {{urlFiledUnderOtherShow?: boolean}} [ctx]
+ * @returns {boolean}
+ */
+function isStaleGenericHomepageWrongShow(data, show, { urlFiledUnderOtherShow = false } = {}) {
+  if (!data || data.wrongShow !== true || urlFiledUnderOtherShow) return false;
+  if (!/^Generic homepage URL/i.test(String(data.wrongShowReason || ''))) return false;
+  if (data.wrongShowNote || data.humanReviewedWrongShow === true) return false;
+  let u;
+  try { u = new URL(String(data.url || '')); } catch (_) { return false; }
+  if (NON_ARTICLE_URL_RE.test(u.pathname + u.search)) return false;
+  const deepPath = u.pathname.replace(/\/+$/, '').length > 1;
+  const articleId = /[?&](?:id|p|article|story)=\w/i.test(u.search);
+  if (!deepPath && !articleId) return false;
+  const text = typeof data.fullText === 'string' ? data.fullText : '';
+  if (text.length >= 500) return findShowKeywordInText(text, buildShowKeywordSet(show)) != null;
+  const excerpt = [data.showScoreExcerpt, data.dtliExcerpt, data.bwwExcerpt]
+    .find((x) => typeof x === 'string' && x.trim().length >= 80);
+  return Boolean(excerpt);
 }
 
 /**
@@ -6410,6 +6612,11 @@ module.exports = {
   PRE_OPENING_LEAD_DAYS,
   UNSCHEDULED_MAX_AGE_DAYS,
   applyVenueClassificationCarveout,
+  cvWrongProductionIsVenueCarveout,
+  isVenueCarveoutPersistedWrongProduction,
+  isEnsembleCategoryQuibbleRejection,
+  offBroadwayCategoryVeto,
+  placesArticleAtOtherStaging,
   isVenueClassificationObjection,
   showHasFestivalVenue,
   reasoningAssertsDifferentProduction,
@@ -6433,6 +6640,8 @@ module.exports = {
   isLikelyStaleWrongProduction,
   isStaleCvPromotedWrongProduction,
   isStaleCvPromotedWrongShow,
+  isMisFamilyCvPromotedWrongShow,
+  isStaleGenericHomepageWrongShow,
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
   isCvPartialWindowAdvisory,

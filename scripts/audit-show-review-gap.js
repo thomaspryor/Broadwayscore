@@ -68,7 +68,8 @@ const {
 const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
 const { isIncludableForRebuild, explainExclusion, isRoundupUrl } = require('./lib/review-guards');
 // BRO-4971: human vs automated exclusion split + re-verify marking for flaggedMisses.
-const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed, makeHeldFileResolver } = require('./lib/flagged-miss-basis');
+const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed, makeHeldFileResolver, isCopyOfLiveReview, liveKeysFromReviews } = require('./lib/flagged-miss-basis');
+const { getSyndicationPrimaries } = require('./lib/syndication-pairs');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { ingestFailureReason } = require('./lib/ingest-failure-reason');
 const { partitionUnextractable, updateZeroCharCounts } = require('./lib/gap-unextractable'); // BRO-4765
@@ -181,7 +182,7 @@ const DUE_LANE_RESERVE_MS = Math.min(DUE_LANE_RESERVE_MS_DEFAULT, Math.floor(TIM
 const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours='))?.split('=')[1] || '12', 10);
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
 // WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
-const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = require('./lib/gap-reference-sources');
+const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash, isServerErrorPageHtml } = require('./lib/gap-reference-sources');
 // How long after opening a London show is still checked against the WE round-ups (BRO-4956).
 const WE_REFERENCE_WINDOW_DAYS = 45;
 // The one predicate for "citation from an earlier production of this title".
@@ -858,6 +859,13 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
       return null;
     }
     html = r.content;
+    // BRO-6716: an error page served as 200 has links, not reviews. Not cached:
+    // the next run may get the real round-up.
+    if (isServerErrorPageHtml(html)) {
+      _fetchStats.errors++;
+      console.log(`::warning::aggregator served a server error page (${hostOf(articleUrl) || articleUrl}); links skipped`);
+      return null;
+    }
     _articleCache.set(articleUrl, html);
   }
   if (html == null) return null;
@@ -1304,7 +1312,9 @@ async function auditShow(show, opts = {}) {
   }
 
   const reviewsJson = loadReviews();
-  result.inReviewsJson = reviewsJson.filter(r => r.showId === show.id).length;
+  const showReviews = reviewsJson.filter(r => r.showId === show.id);
+  result.inReviewsJson = showReviews.length;
+  const showLiveKeys = liveKeysFromReviews(showReviews);
 
   // URLs of files we already hold AND count as covered for this show. Used by
   // the alias-variant check below; deliberately covered-only, so a flagged or
@@ -1395,6 +1405,21 @@ async function auditShow(show, opts = {}) {
         const isHeldFile = makeHeldFileResolver(dirData, show.id, x => isCoveredFile(x, show));
         const { exclusion, basis, confirmedNonReview, confirmedBasis } = classifyFlaggedMiss(
           dirFiles, d => explainFileExclusion(d, show), isHeldFile, isRoundupUrl);
+        // BRO-6716 class H: a copy (duplicateOf / syndicated reprint) of a review
+        // that is live is not a gap. Originals: the duplicateOf target, the
+        // syndication pointer (bare or '<show>/<file>'), the known-pair primary.
+        const copyOfLiveReview = isCopyOfLiveReview(dirFiles, basis, showLiveKeys, d => {
+          const out = [];
+          for (const ptr of [d.duplicateOf, d.syndicatedPrimaryFile]) {
+            if (typeof ptr !== 'string' || !ptr) continue;
+            const f = path.basename(ptr);
+            const hit = dirData.find(x => x._file === f && x !== d);
+            if (hit) out.push(hit);
+          }
+          const outlet = normalizeOutletId(d.outletId || d.outlet || '');
+          for (const p of getSyndicationPrimaries(d.criticName, outlet)) out.push({ outletId: p, criticName: d.criticName });
+          return out;
+        });
         result.flaggedMisses.push({
           url: aggUrl,
           host: aggHost,
@@ -1413,6 +1438,7 @@ async function auditShow(show, opts = {}) {
           exclusion,
           basis,
           ...(confirmedNonReview ? { confirmedNonReview: true, confirmedBasis } : {}),
+          ...(copyOfLiveReview ? { copyOfLiveReview: true } : {}),
           // Stored flagged files dated before this run: permanent prior-run (see policy).
           ...(() => { const d = recoverableFile ? null : flaggedFilePriorRunDate(dirFiles, show); return d ? { priorRun: true, priorRunSource: `flagged-file-date:${d}` } : {}; })(),
         });

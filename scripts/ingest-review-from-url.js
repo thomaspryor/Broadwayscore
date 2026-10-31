@@ -502,12 +502,15 @@ if (!show) {
   // BRO-6588: then the byline date in the article text, as the collector does.
   const resolvedDate = require('./lib/ingest-publish-date').resolveIngestPublishDate({
     publishDateArg, html, url, text: hasBody ? text : null, stagePublishDate: stageMeta && stageMeta.publishDate,
+    showOpeningDate: show && show.openingDate,
   });
   const publishDate = resolvedDate.publishDate;
   if (resolvedDate.from === 'page' || resolvedDate.from === 'stage') {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
   } else if (resolvedDate.from === 'text') {
     console.log(`  → Extracted publishDate from the byline text: ${publishDate}`);
+  } else if (resolvedDate.from === 'listing') {
+    console.log(`  → No article date; the listing's run block names this production's opening: ${publishDate}`);
   } else if (resolvedDate.reason === 'body-url-conflict') {
     console.log('  → Byline date disagrees with the URL path date: publishDate left empty for the rebuild backfill (BRO-5351)');
   }

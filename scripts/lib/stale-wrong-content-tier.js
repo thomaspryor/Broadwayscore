@@ -16,6 +16,9 @@
 const CLEAR_EVIDENCE = [
   'wrongProductionAutoCleared', 'wrongProductionManualClear', 'wrongProductionOverride',
   'wrongShowAutoCleared', 'wrongShowManualClear', 'wrongShowOverride',
+  // Rebuild self-heals (BRO-6716): the flag was cleared on current evidence, same
+  // standing as an auto-clear stamp. retier still requires the flag to be false.
+  'wrongProductionSelfHealed', 'wrongShowSelfHealed',
 ];
 
 function hasClearEvidence(record) {

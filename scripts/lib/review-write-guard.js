@@ -545,6 +545,11 @@ function invalidateWrongProductionAutoClear(d) {
   if (!_isEmptyValue(d.wrongProductionAutoClearedAt)) retracted.push('wrongProductionAutoClearedAt');
   delete d.wrongProductionAutoCleared;
   delete d.wrongProductionAutoClearedAt;
+  // BRO-6716: a rebuild self-heal marker is clear evidence for re-tiering
+  // (stale-wrong-content-tier.js). A re-flag retracts it so a later loss of the
+  // flag cannot ride it back onto the site. Null, not delete: the merge-mode
+  // restore pass resurrects a deleted field that is still on disk (#1624).
+  if (d.wrongProductionSelfHealed) { d.wrongProductionSelfHealed = null; d.wrongProductionSelfHealReason = null; }
   // BRO-2708: deleting the fields is not enough. Both are PROTECTED, so a NON-force
   // safeWriteReview reads the absence as data loss and restores them unless the incoming
   // payload carries the registered clear breadcrumb. rebuild-all-reviews.js:1593 is exactly
@@ -584,6 +589,11 @@ function invalidateWrongShowAutoClear(d) {
   if (!_isEmptyValue(d.wrongShowAutoClearedAt)) retracted.push('wrongShowAutoClearedAt');
   delete d.wrongShowAutoCleared;
   delete d.wrongShowAutoClearedAt;
+  // BRO-6716: a rebuild self-heal marker is clear evidence for re-tiering
+  // (stale-wrong-content-tier.js). A re-flag retracts it so a later loss of the
+  // flag cannot ride it back onto the site. Null, not delete: the merge-mode
+  // restore pass resurrects a deleted field that is still on disk (#1624).
+  if (d.wrongShowSelfHealed) { d.wrongShowSelfHealed = null; d.wrongShowSelfHealReason = null; }
   _recordClearBreadcrumbRetraction(
     d,
     retracted,
@@ -1004,6 +1014,20 @@ function _trWrongProductionTextReplaced(d, committed) {
   return !Number.isFinite(priorAt) || at > priorAt;
 }
 
+// BRO-6716: the rebuild's ensemble category-quibble heal moves the rejection into
+// rejectionSelfHealed and deletes it. Honour that delete only for the exact
+// rejection on disk (same reason and rejectedAt), so a newer rejection is kept.
+function _rejectionSelfHealedMatches(d, committed) {
+  const h = d && d.rejectionSelfHealed;
+  if (!h || typeof h !== 'object' || !committed) return false;
+  if (!committed.rejectionReason && !committed.rejectedAt) return false;
+  // The whole rejection must be the one healed: a newer rejection with the same
+  // reason (or both rejectedAt null) but different reasoning is not (BRO-6716).
+  return (h.rejectionReason || null) === (committed.rejectionReason || null)
+    && (h.rejectedAt || null) === (committed.rejectedAt || null)
+    && (h.rejectionReasoning || null) === (committed.rejectionReasoning || null);
+}
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   // duplicateTextOf (task #1624, found by ship-check codebase review): the
@@ -1051,6 +1075,8 @@ const CLEAR_BREADCRUMBS = {
   // restore pass copied the rejection straight back from disk.
   ...Object.fromEntries(['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
     'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'wrongShowReason', 'wrongShowNote'].map((k) => [k, _trWrongProductionTextReplaced])),
+  ...Object.fromEntries(['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning'].map((k) => [k,
+    (d, committed) => _trWrongProductionTextReplaced(d, committed) || _rejectionSelfHealedMatches(d, committed)])),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
   // shares the SAME field-scope key as crossOutletVerified above — every
