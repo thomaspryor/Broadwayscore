@@ -55,6 +55,14 @@ function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, n
     return { ok: false, reason: `commercial.json:${field}: value changed since plan` };
   }
 
+  if (field === 'returnSnapshotAsOf' && newValue !== null) {
+    const { dateBounds } = require('./commercial-return-snapshot');
+    const bounds = typeof newValue === 'string' && dateBounds(newValue);
+    if (!bounds || bounds.start > Date.parse(now)) {
+      return { ok: false, reason: 'commercial.json:returnSnapshotAsOf must be a valid, non-future evidence date (YYYY, YYYY-MM or YYYY-MM-DD)' };
+    }
+  }
+
   // BRO-5815: a new capitalizationSource must quote the figure's sentence, give
   // a URL, or state its basis; a bare outlet name leaves the basis a guess.
   if (field === 'capitalizationSource' && isBareCapitalizationSource(newValue)) {

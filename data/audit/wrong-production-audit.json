@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T13:15:48.894Z",
+  "timestamp": "2026-10-31T14:19:52.676Z",
   "stats": {
-    "totalReviews": 74244,
-    "alreadyFlagged": 22483,
+    "totalReviews": 74361,
+    "alreadyFlagged": 22489,
     "dateGuardCatches": 233,
-    "directorMismatch": 3049,
-    "tvFilmSignals": 2083,
-    "londonSignals": 3421,
-    "offBroadwaySignals": 671,
+    "directorMismatch": 3066,
+    "tvFilmSignals": 2092,
+    "londonSignals": 3422,
+    "offBroadwaySignals": 675,
     "yearMismatch": 305,
-    "noPublishDate": 8409
+    "noPublishDate": 8416
   },
   "findings": [
     {
@@ -4064,6 +4064,19 @@
       "score": 89,
       "publishDate": "2022-04-14",
       "url": "https://www.nytimes.com/2022/04/14/theater/american-buffalo-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "american-buffalo-2022",
+      "file": "thestage--nicole-serratore.json",
+      "publishDate": "2022-04-15",
+      "url": "https://www.thestage.co.uk/reviews/american-buffalo-review-circle-in-the-square-theatre-new-york-2022-laurence-fishburne-sam-rockwell-darren-criss",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -14209,6 +14222,19 @@
     },
     {
       "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "thestage--nicole-serratore.json",
+      "publishDate": "2023-06-06",
+      "url": "https://www.thestage.co.uk/reviews/days-of-wine-and-roses-review-at-linda-gross-theater-new-york",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
       "file": "thewrap--robert-hofler.json",
       "score": 46,
       "publishDate": "2023-06-05",
@@ -16431,6 +16457,20 @@
       ]
     },
     {
+      "showId": "dial-m-for-murder-regional-2026",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/dial-m-for-murder-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "diana-the-musical-2021",
       "file": "amny--matt-windman.json",
       "score": 42,
@@ -18643,6 +18683,20 @@
       ]
     },
     {
+      "showId": "evening-at-the-talk-house-off-broadway-2017",
+      "file": "the-clyde-fitch-report--david-finkle.json",
+      "score": null,
+      "publishDate": "2017-02-20",
+      "url": "http://www.clydefitchreport.com/2017/02/wallace-shawn-talk-house-off-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "every-brilliant-thing-2026",
       "file": "ew--dalton-ross.json",
       "score": 86,
@@ -19159,7 +19213,7 @@
       "showId": "fade-off-broadway-2017",
       "file": "deadline--jeremy-gerard.json",
       "score": null,
-      "publishDate": "February 9th, 2017",
+      "publishDate": "2017-02-10",
       "url": "http://deadline.com/2017/02/review-fade-big-river-romeo-et-juliette-rusalka-1201907001/",
       "findings": [
         {
@@ -19178,13 +19232,27 @@
       "showId": "fade-off-broadway-2017",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": null,
-      "publishDate": "February 8th, 2017",
+      "publishDate": "2017-02-08",
       "url": "https://newyorktheater.me/2017/02/08/fade-play-review-latina-tv-writer-on-how-horrible-tv-is/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "fade-off-broadway-2017",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "February 8th, 2017",
+      "url": "http://www.talkinbroadway.com/page/ob/2_08_17a.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -34323,6 +34391,45 @@
       ]
     },
     {
+      "showId": "kowalski-regional-2026",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": "2026-09-23",
+      "url": "https://chicago.suntimes.com/theater/2026/09/23/review-kowalski-lookingglass-theatre-johnny-galecki-tennessee-williams-marlon-brando",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "kowalski-regional-2026",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-09-22",
+      "url": "https://www.chicagotheatrereview.com/2026/09/the-kindness-of-strangers-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "kowalski-regional-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-09-20",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/20/picksinsix-review-kowalski-brando-beginnings-lookingglass-theatre-company",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
       "showId": "kpop-2022",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 79,
@@ -46460,6 +46567,149 @@
       ]
     },
     {
+      "showId": "play-on-regional-2026",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/play-on-reviewed-by-julia-w-rath/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicago-reader--kelly-kleiman.json",
+      "publishDate": "2026-09-23",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/play-on-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicago-sun-times--graham-meyer.json",
+      "publishDate": "2026-09-22",
+      "url": "https://chicago.suntimes.com/theater/2026/09/22/review-play-on-chicago-shakespeare",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2026-09-25",
+      "url": "https://www.chicagotheatrereview.com/2026/09/take-the-a-train/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicagostageandscreen--angela-allyn.json",
+      "publishDate": "2026-09-19",
+      "url": "https://www.chicagostageandscreen.com/post/sparkling-revival-delightfully-swings-at-chicago-shakes",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2026-09-19",
+      "url": "https://www.chicagotribune.com/2026/09/19/review-play-on-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2026-09-18",
+      "url": "https://www.letsplaytheatricalreview.com/blog/play-on",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-09-23",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/23/picksinsix-review-play-on-chicago-shakepseare-theater",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "splash-magazines--emily-werner.json",
+      "publishDate": "2026-09-22",
+      "url": "https://splashmags.com/2026/09/from-shakespeare-to-swing-play-on-celebrates-harlem-and-jazz/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "thefourthwalsh--unknown.json",
+      "publishDate": "2026-09-19",
+      "url": "https://thefourthwalsh.com/2026/09/review-play-on-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
+      "showId": "play-on-regional-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-09-21",
+      "url": "https://thirdcoastreview.com/stages/2026/09/21/review-chicago-shakespeare-play-on",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sheldon epps\" from play-on-1997"
+        }
+      ]
+    },
+    {
       "showId": "player-kings-west-end-2024",
       "file": "daily-mail--rory-tingle.json",
       "score": null,
@@ -55331,6 +55581,34 @@
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
+      "file": "guardian--alexis-soloski.json",
+      "score": null,
+      "publishDate": "2016-11-21",
+      "url": "https://www.theguardian.com/stage/2016/nov/21/sweet-charity-review-sutton-foster-neil-simon",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "2016-11-20",
+      "url": "http://www.hollywoodreporter.com/review/sweet-charity-review-949242",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
       "file": "nbcny--robert-kahn.json",
       "score": 87,
       "publishDate": "November 20th, 2016",
@@ -55359,6 +55637,20 @@
     },
     {
       "showId": "sweet-charity-off-broadway-2016",
+      "file": "newyorker--hilton-als.json",
+      "score": null,
+      "publishDate": "2016-11-28",
+      "url": "http://www.newyorker.com/magazine/2016/12/05/a-strangely-muted-sweet-charity?mbid=rss",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
       "file": "northjerseycom--robert-feldberg.json",
       "score": null,
       "publishDate": "2016-11-21",
@@ -55376,6 +55668,19 @@
       "file": "nytimes--ben-brantley.json",
       "publishDate": "November 20th, 2016",
       "url": "http://www.nytimes.com/2016/11/21/theater/sutton-foster-sweet-charity-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from sweet-charity-1986"
+        }
+      ]
+    },
+    {
+      "showId": "sweet-charity-off-broadway-2016",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2016-11-20",
+      "url": "https://www.nytimes.com/2016/11/21/theater/sutton-foster-sweet-charity-review.html?eafs_enabled=false",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -55779,6 +56084,48 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "tell-hector-i-miss-him-off-broadway-2017",
+      "file": "dctheatrescene--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2017-01-23",
+      "url": "http://dctheatrescene.com/2017/01/23/tell-hector-miss-love-puzzles-puerto-rico/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tell-hector-i-miss-him-off-broadway-2017",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "January 23rd, 2017",
+      "url": "http://www.talkinbroadway.com/page/ob/1_23_17a.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "tell-hector-i-miss-him-off-broadway-2017",
+      "file": "variety--marilyn-stasio.json",
+      "score": null,
+      "publishDate": "2017-01-23",
+      "url": "http://variety.com/2017/legit/reviews/tell-hector-i-miss-him-review-1201967411/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -59589,6 +59936,19 @@
       "score": 44,
       "publishDate": "March 9, 2017",
       "url": "https://www.nytimes.com/2017/03/09/theater/the-glass-menagerie-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": "2017-03-14",
+      "url": "http://theaterlife.com/the-glass-menagerie-sweeney-todd-man-from-nebraska/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -68737,19 +69097,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "through-it-all-together-leeds-regional-2025",
-      "file": "broadwayworld--aa-cristi.json",
-      "publishDate": "2025-06-27",
-      "url": "https://www.broadwayworld.com/uk-regional/article/Photos-Shobna-Gulati-and-Reece-Dinsdale-Star-in-THROUGH-IT-ALL-TOGETHER-World-Premiere-at-Leeds-Playhouse-20250627",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -87814,6 +88161,20 @@
       ]
     },
     {
+      "showId": "fade-off-broadway-2017",
+      "file": "huffpost--david-finkle.json",
+      "score": null,
+      "publishDate": "2017-02-09",
+      "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-tanya-sarac_b_14670012.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
       "showId": "faith-healer-2006",
       "file": "theatermania--unknown.json",
       "score": 67,
@@ -90260,6 +90621,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-pitlochry-festival-regional-2025",
+      "file": "whatsonstage--simon-thompson.json",
+      "score": 79,
+      "publishDate": "2025-06-23",
+      "url": "https://www.whatsonstage.com/news/grease-at-pitlochry-festival-theatre-review_1683933/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
@@ -99158,6 +99533,20 @@
       ]
     },
     {
+      "showId": "man-from-nebraska-off-broadway-2017",
+      "file": "village-voice--michael-feingold.json",
+      "score": null,
+      "publishDate": "2017-02-28",
+      "url": "http://www.villagevoice.com/arts/tracy-letts-man-from-nebraska-raises-and-drops-searching-questions-9722914",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "man-of-la-mancha-west-end-2019",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 35,
@@ -107516,6 +107905,20 @@
       ]
     },
     {
+      "showId": "ring-twice-for-miranda-off-broadway-2017",
+      "file": "off-off-online--edward-karam.json",
+      "score": null,
+      "publishDate": "2017-03-11",
+      "url": "https://www.offoffonline.com/offoffonline/2017/2/24/ring-twice-for-miranda",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "road-royal-exchange-regional-2026",
       "file": "thestage--anya-ryan.json",
       "publishDate": "2026-02-20",
@@ -112828,6 +113231,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-babylon-line-off-broadway-2016",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2016-12-08",
+      "url": "http://thebroadwayblog.com/2016/12/08/15783-babylon-line-review-lincoln-center",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
