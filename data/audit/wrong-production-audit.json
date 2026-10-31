@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T17:57:32.140Z",
+  "timestamp": "2026-10-31T18:15:40.604Z",
   "stats": {
-    "totalReviews": 75477,
-    "alreadyFlagged": 21736,
+    "totalReviews": 75542,
+    "alreadyFlagged": 21747,
     "dateGuardCatches": 238,
-    "directorMismatch": 3199,
+    "directorMismatch": 3204,
     "tvFilmSignals": 2158,
-    "londonSignals": 3507,
+    "londonSignals": 3508,
     "offBroadwaySignals": 717,
-    "yearMismatch": 318,
-    "noPublishDate": 8511
+    "yearMismatch": 319,
+    "noPublishDate": 8512
   },
   "findings": [
     {
@@ -6170,6 +6170,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "as-you-like-it-regional-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2025-11-10",
+      "url": "https://www.chicagotribune.com/2025/11/10/review-as-you-like-it-writers-theatre/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (3x) more than 2025 (2x). 2022 matches production: as-you-like-it-west-end-2022"
         }
       ]
     },
@@ -48743,6 +48756,20 @@
     },
     {
       "showId": "plenty-off-broadway-2016",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "October 23rd, 2016",
+      "url": "http://www.talkinbroadway.com/page/ob/10_23_16.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
       "file": "theater-news-online--brian-scott-lipton.json",
       "score": null,
       "publishDate": "November 8th, 2016",
@@ -48785,6 +48812,20 @@
     },
     {
       "showId": "plenty-off-broadway-2016",
+      "file": "thestage--mark-shenton.json",
+      "score": null,
+      "publishDate": "2016-10-27",
+      "url": "https://www.thestage.co.uk/reviews/2016/broadway-review-of-rachel-weisz-in-plenty-disappointingly-leaden/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
       "file": "thewrap--robert-hofler.json",
       "score": null,
       "publishDate": "2016-10-23",
@@ -48803,6 +48844,20 @@
       "score": null,
       "publishDate": "2016-10-23",
       "url": "https://www.timeout.com/newyork/blog/theater-review-rachel-weisz-heats-up-a-chilly-revival-of-david-hares-plenty-102116",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "score": null,
+      "publishDate": "2016-10-24",
+      "url": "http://t2conline.com/oh-i-got-plenty-of-nothing/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48846,9 +48901,37 @@
     },
     {
       "showId": "plenty-off-broadway-2016",
+      "file": "wnyc--jennifer-vanasco.json",
+      "score": null,
+      "publishDate": "2016-10-29",
+      "url": "http://www.wnyc.org/story/review-plenty-woman-and-country-fall-apart/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
       "file": "wsj--terry-teachout.json",
       "publishDate": "2016-10-25",
       "url": "http://www.wsj.com/articles/plenty-review-the-madness-of-normality-1477411193",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
+      "file": "zeal-nyc--jil-picariello.json",
+      "score": null,
+      "publishDate": "October 27th, 2016",
+      "url": "https://zealnyc.com/review-plenty-promises-doesnt-deliver/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -117841,6 +117924,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2026-05-17",
+      "url": "https://theatreandtonic.co.uk/blog/the-boy-who-harnessed-the-wind-sohoplace-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
