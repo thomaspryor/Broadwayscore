@@ -1411,7 +1411,7 @@ if _CW_CODES:
             _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
                         for n in re.findall(r'<task-notification>(.*?)</task-notification>', p or '', re.DOTALL)  # a Monitor <event> without <status> is progress
                         if '<status>' in re.sub(r'<event>.*?</event>', '', n, flags=re.DOTALL) or '<event>' not in n
-                        for m in re.findall(r'<task-id>\s*([^<\s]+)\s*</task-id>', n)}
+                        for m in re.findall(r'^.*?<task-id>\s*([^<\s]+)\s*</task-id>', n, re.DOTALL)}  # first id only, as _live_work
             _cw_tools = []
             for _i, (_k, _p) in enumerate(events):
                 if _k != 'tool':
