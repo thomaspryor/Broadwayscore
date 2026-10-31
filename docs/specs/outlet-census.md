@@ -6,6 +6,18 @@ London follow-up: [BRO-6488 coverage recheck](outlet-census-london-recheck.md)
 records the October 31 saved-gap presence audit, per-season counts and missing
 outlet inventory. London enumeration and vetted-gap ingestion remain incomplete.
 
+BRO-6538 partial follow-up: [Stage gap vetting and eight-outlet inventory](../../data/audit/outlet-census/london/bro-6538-gap-vetting.json).
+The seven missing enumerations and Stage CDX archive pass remain blocked by unavailable
+GitHub authentication and HTTP 403 egress restrictions. This is gap vetting, not a completed census.
+Of the 26 saved Stage gaps, five match current West End shows and their article headers
+confirm the title, venue and run date. Twenty match current Off-West End shows, including
+the already acquired Bronco Billy review, and one saved show ID no longer exists.
+The five West End articles remain absent from both the private corpus and published reviews.
+Three article datelines differ from the saved soft sitemap dates: Your Lie in April
+(July 8, 2024), Baghdaddy (November 28, 2022), and Pride and Prejudice (November 3, 2021).
+The snapshot retains the original dates, source hashes and every candidate. It changes
+no catalog or review record and approves no new show outside the card's venue scope.
+
 Every other coverage audit starts from what we already know about (aggregator pages, pollers, files we hold). The census starts from the outlet instead. It asks each outlet for every theater review it has published since 2021-06-01, matches each one to a show, and diffs that list against our corpus. A review nobody cited and no poller found shows up here as a gap.
 
 It does two jobs. It fills coverage gaps, and it exposes pipeline bugs: show-matching errors, misfiled reviews, catalog gaps (NYC productions we have no show for), and outlets the pipeline cannot read at all.
