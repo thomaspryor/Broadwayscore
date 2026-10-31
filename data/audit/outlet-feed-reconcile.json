@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T22:45:24.510Z",
+  "generatedAt": "2026-10-31T23:10:06.036Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -117,7 +117,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -126,10 +126,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -142,10 +138,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 768,
-  "matchedGaps": 6,
+  "itemsScanned": 746,
+  "matchedGaps": 5,
   "possibleGaps": 12,
   "gaps": [
     {
@@ -183,15 +183,6 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
-      "outletId": "theatre-reviews-limited",
-      "url": "https://www.theatrereviews.com/off-broadway-review-the-heart-at-roundabout-theatre-companys-laura-pels-theatre-in-the-harold-and-miriam-steinberg-center-for-theatre-through-sunday-december-13-2026/",
-      "headline": "Off-Broadway Review: &#8220;The Heart&#8221; at Roundabout Theatre Company&#8217;s Laura Pels Theatre in the Harold and Miriam Steinberg Center for Theatre (Through Sunday, December 13, 2026)",
-      "publishDate": "2026-10-31"
     },
     {
       "showId": "the-moth-off-west-end-2026",

@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-31T22:45:24.261Z",
+  "generatedAt": "2026-10-31T23:10:05.667Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 302,
-  "clean": 301,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "mud-row-regional-2026",
-      "title": "Mud Row",
-      "openingDate": "2026-10-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.38 vs local 75.19 (Δ0.19)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-10-31T22:45:19.387Z"
-    }
-  ],
+  "clean": 302,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
