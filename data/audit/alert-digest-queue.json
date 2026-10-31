@@ -1618,20 +1618,6 @@
     "queuedAt": "2026-10-31T19:05:44.417Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-31.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:34:02.896Z"
-  },
-  {
     "conditionKey": "llm-scoring:daily-cost-breach",
     "title": "LLM scoring daily spend over budget — already tracked at BRO-6732",
     "description": "This condition already has an open tracker (BRO-6732); not filing a duplicate. It will go quiet in the digest from here.\n\nRolling 24h LLM scoring cost $29.46 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
@@ -1906,5 +1892,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T23:09:39.479Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +12 more). Checked 2026-10-31.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T23:11:02.485Z"
   }
 ]
