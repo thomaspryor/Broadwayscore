@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-6606-c",
+  "planId": "2a01da67-bf32-4394-bf6c-daaa3cdae08e",
+  "status": "pending",
+  "createdAt": "2026-10-31T05:20:54.380Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Remove one Letterboxd film-page row scored as a review of Uncle Vanya (BRO-6606 cousin sweep)",
+    "steps": [
+      "Letterboxd film page synopsis (2020 film), not a review of the stage production"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "uncle-vanya-west-end-2020/letterboxd--unknown.json",
+        "description": "Letterboxd film page synopsis (2020 film), not a review of the stage production"
+      }
+    ]
+  }
+}
