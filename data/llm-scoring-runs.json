@@ -1505324,21 +1505324,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-31T14:00:26.670Z",
-    "completedAt": "2026-10-31T14:01:25.529Z",
-    "totalReviews": 11,
-    "processed": 10,
-    "skipped": 1,
+    "startedAt": "2026-10-31T13:59:19.987Z",
+    "completedAt": "2026-10-31T13:59:40.967Z",
+    "totalReviews": 4,
+    "processed": 4,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 64484,
-      "output": 3144,
-      "cacheRead": 38070,
+      "input": 24367,
+      "output": 1353,
+      "cacheRead": 15228,
       "cacheWrite": 0,
-      "total": 157741
+      "total": 60986
     },
-    "costUsd": 0.24181950000000002,
-    "runId": "41207589814",
+    "costUsd": 0.0932209,
+    "runId": "41207542435",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1509719,6 +1509719,16 @@
           "flat": 0,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "any-rebellion-of-will-regional-2026",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1548494,8 +1548504,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-31T14:06:21.454Z",
-    "completedAt": "2026-10-31T14:06:21.459Z",
+    "startedAt": "2026-10-31T14:04:38.358Z",
+    "completedAt": "2026-10-31T14:04:38.359Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1548508,7 +1548518,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41207589814",
+    "runId": "41207542435",
     "source": "comparative-rescore",
     "errorDetails": []
   }
