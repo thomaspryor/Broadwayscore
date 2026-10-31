@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-31T12:57:02.995Z",
-  "processed": 720,
-  "failed": 307,
-  "successRate": "70.1%",
+  "updatedAt": "2026-10-31T13:03:57.305Z",
+  "processed": 331,
+  "failed": 79,
+  "successRate": "80.7%",
   "tierBreakdown": {
-    "playwright": 285,
-    "amp": 0,
-    "browserbase": 25,
+    "playwright": 161,
+    "amp": 1,
+    "browserbase": 26,
     "directCookies": 0,
-    "scrapingdog": 34,
-    "scrapingbee": 20,
-    "brightdata": 17,
-    "archiveToday": 41,
-    "archive": 253
+    "scrapingdog": 21,
+    "scrapingbee": 15,
+    "brightdata": 16,
+    "archiveToday": 35,
+    "archive": 121
   },
   "browserbaseSessions": 23,
   "recentActivity": [
@@ -70,16 +70,33 @@
     {
       "t": "2026-10-31T09:45:26.151Z",
       "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-31T11:22:34.323Z",
+      "event": "bb-session",
+      "session": "4415e859",
+      "url": "http://www.hollywoodreporter.com/review/how-transcend-a-happy-marriage-theater-r"
+    },
+    {
+      "t": "2026-10-31T11:35:34.952Z",
+      "event": "bb-session",
+      "session": "bbcdaeca",
+      "url": "https://www.nytimes.com/2017/03/13/theater/review-the-light-years-debate-society"
+    },
+    {
+      "t": "2026-10-31T11:35:35.505Z",
+      "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T09:56:47.445Z",
+      "t": "2026-10-31T11:36:24.916Z",
       "event": "bb-session",
-      "session": "4a2ff41c",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+      "session": "291ffdb5",
+      "url": "https://www.nytimes.com/2017/03/13/theater/the-moors-review.html"
     },
     {
-      "t": "2026-10-31T09:56:48.097Z",
+      "t": "2026-10-31T11:36:25.357Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
