@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T17:40:32.555Z",
+  "timestamp": "2026-10-31T17:57:32.140Z",
   "stats": {
-    "totalReviews": 75435,
-    "alreadyFlagged": 21738,
+    "totalReviews": 75477,
+    "alreadyFlagged": 21736,
     "dateGuardCatches": 238,
-    "directorMismatch": 3200,
-    "tvFilmSignals": 2154,
-    "londonSignals": 3506,
+    "directorMismatch": 3199,
+    "tvFilmSignals": 2158,
+    "londonSignals": 3507,
     "offBroadwaySignals": 717,
     "yearMismatch": 318,
-    "noPublishDate": 8519
+    "noPublishDate": 8511
   },
   "findings": [
     {
@@ -3998,6 +3998,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "amadeus-regional-2025",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2025-11-18",
+      "url": "https://chicago.suntimes.com/theater/2025/11/18/review-steppenwolfs-psychological-thriller-amadeus-pits-genius-against-ego-with-wigs",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "amadeus-regional-2025",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2025-11-18",
+      "url": "https://www.chicagotheatrereview.com/2025/11/music-menace-and-a-murder-myth/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -8036,19 +8062,6 @@
     {
       "showId": "birds-of-north-america-regional-2026",
       "file": "wernerstheatrereviews--emily-werner.json",
-      "publishDate": "2026-01-27",
-      "url": "https://wernerstheatrereviews.wordpress.com/2026/01/27/family-in-flight-birds-of-north-america/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "birds-of-north-america-regional-2026",
-      "file": "wernerstheatrereviews--unknown.json",
       "publishDate": "2026-01-27",
       "url": "https://wernerstheatrereviews.wordpress.com/2026/01/27/family-in-flight-birds-of-north-america/",
       "findings": [
@@ -15325,6 +15338,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-off-broadway-2016",
+      "file": "ew--isabella-biedenharn.json",
+      "publishDate": "2016-05-01",
+      "url": "http://www.ew.com/article/2016/05/01/dear-evan-hansen-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from dear-evan-hansen-2016"
         }
       ]
     },
@@ -25429,20 +25455,6 @@
     },
     {
       "showId": "gypsy-regional-2023",
-      "file": "chicagoonstage--samantha-robison.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.chicagoonstage.com/marriott-theatres-gypsy/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
-        }
-      ]
-    },
-    {
-      "showId": "gypsy-regional-2023",
       "file": "chicagotheaterandarts--myra-temkin.json",
       "score": 77,
       "publishDate": null,
@@ -26412,19 +26424,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "hamnet-regional-2026",
-      "file": "allie-and-the-after-party--allie-bugajsk.json",
-      "publishDate": "2026-02-14",
-      "url": "https://www.allieandtheafterparty.com/reviews/chicago-shakespeare-theater-hamnet",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"erica whyman\" from hamnet-west-end-2023"
         }
       ]
     },
@@ -57078,6 +57077,32 @@
       ]
     },
     {
+      "showId": "superior-donuts-regional-2025",
+      "file": "buzznews--john-accrocco.json",
+      "publishDate": "2025-11-07",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/6070-review-superior-donuts-at-the-artistic-home-at-the-den-theatre.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "superior-donuts-regional-2025",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2025-11-08",
+      "url": "https://thirdcoastreview.com/stages/2025/11/08/review-superior-donuts-artistic-home",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "sweat-2017",
       "file": "out-magazine--michael-musto.json",
       "score": 75,
@@ -76832,6 +76857,19 @@
       ]
     },
     {
+      "showId": "white-christmas-regional-2025",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2025-11-24",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2025/11/24/picksinsix-review-white-christmas-paramount-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"directed by stephen schellhardt who makes his directorial debut for paramount\""
+        }
+      ]
+    },
+    {
       "showId": "white-christmas-west-end-2014",
       "file": "guardian--unknown.json",
       "score": null,
@@ -80996,6 +81034,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "amadeus-regional-2025",
+      "file": "chicagocultureauthority--frank-sennett.json",
+      "publishDate": "2025-11-18",
+      "url": "https://chicagocultureauthority.com/2025/11/17/ian-barford-and-robert-falls-rock-amadeus-at-steppenwolf/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
