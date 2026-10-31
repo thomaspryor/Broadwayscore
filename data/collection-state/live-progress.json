@@ -1,96 +1,91 @@
 {
-  "updatedAt": "2026-10-31T12:29:28.448Z",
-  "processed": 268,
-  "failed": 62,
-  "successRate": "81.2%",
+  "updatedAt": "2026-10-31T12:34:48.285Z",
+  "processed": 224,
+  "failed": 55,
+  "successRate": "80.3%",
   "tierBreakdown": {
-    "playwright": 124,
+    "playwright": 107,
     "amp": 0,
-    "browserbase": 26,
+    "browserbase": 23,
     "directCookies": 0,
-    "scrapingdog": 16,
-    "scrapingbee": 14,
-    "brightdata": 14,
-    "archiveToday": 28,
-    "archive": 100
+    "scrapingdog": 8,
+    "scrapingbee": 12,
+    "brightdata": 12,
+    "archiveToday": 27,
+    "archive": 81
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-31T10:22:37.788Z",
+      "t": "2026-10-31T08:42:15.230Z",
       "event": "bb-session",
-      "session": "b76c4562",
-      "url": "https://www.nytimes.com/2017/05/08/theater/review-could-a-long-gone-antarctic-ex"
+      "session": "0fe6170d",
+      "url": "https://www.talkinbroadway.com/page/ob/04_21_22.html"
     },
     {
-      "t": "2026-10-31T10:22:38.340Z",
+      "t": "2026-10-31T08:42:15.937Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T08:57:48.188Z",
+      "event": "bb-session",
+      "session": "02bef680",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-10-31T08:57:48.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-10-31T08:58:49.147Z",
+      "event": "bb-session",
+      "session": "98229634",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-31T09:37:22.851Z",
+      "event": "bb-session",
+      "session": "b56663a6",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-31T09:37:23.550Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-31T09:44:03.768Z",
+      "event": "bb-session",
+      "session": "bf971130",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/sunday-in-the-park-george-cance"
+    },
+    {
+      "t": "2026-10-31T09:44:43.945Z",
+      "event": "bb-session",
+      "session": "fe7231ec",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-31T09:45:25.480Z",
+      "event": "bb-session",
+      "session": "41a36af0",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-31T09:45:26.151Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-31T10:32:57.002Z",
+      "t": "2026-10-31T09:56:47.445Z",
       "event": "bb-session",
-      "session": "ad2fedea",
-      "url": "https://www.nytimes.com/2017/05/08/theater/review-he-can-cook-too-so-why-not-mar"
+      "session": "4a2ff41c",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
     },
     {
-      "t": "2026-10-31T10:32:57.556Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T10:33:15.085Z",
-      "event": "bb-session",
-      "session": "5d6beb94",
-      "url": "http://www.hollywoodreporter.com/review/pacific-overtures-theater-1000003"
-    },
-    {
-      "t": "2026-10-31T10:48:44.610Z",
-      "event": "bb-session",
-      "session": "f1d8ccbe",
-      "url": "https://www.nytimes.com/2017/04/10/theater/the-profane-zayd-dohrn.html"
-    },
-    {
-      "t": "2026-10-31T10:48:45.166Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:03:14.799Z",
-      "event": "bb-session",
-      "session": "e0b92b26",
-      "url": "https://www.nytimes.com/2017/04/03/theater/vanity-fair-broadway-review-kate-hami"
-    },
-    {
-      "t": "2026-10-31T11:03:15.349Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-31T11:04:37.104Z",
-      "event": "bb-session",
-      "session": "5d67735e",
-      "url": "https://www.wsj.com/articles/vanity-fair-review-becky-sharp-takes-the-stage-1491"
-    },
-    {
-      "t": "2026-10-31T11:04:37.582Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-31T11:22:34.323Z",
-      "event": "bb-session",
-      "session": "cf4fc64f",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
-    {
-      "t": "2026-10-31T12:01:17.949Z",
-      "event": "bb-session",
-      "session": "261c9e29",
-      "url": "https://www.nytimes.com/2026/01/26/theater/data-review.html"
-    },
-    {
-      "t": "2026-10-31T12:01:18.678Z",
+      "t": "2026-10-31T09:56:48.097Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -115,6 +110,18 @@
       "t": "2026-10-31T11:56:23.872Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-31T12:26:58.972Z",
+      "event": "bb-session",
+      "session": "fc9b039f",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-10-31T12:28:27.563Z",
+      "event": "bb-session",
+      "session": "d9aa9088",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
