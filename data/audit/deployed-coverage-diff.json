@@ -1,76 +1,15 @@
 {
-  "generatedAt": "2026-10-31T18:23:47.047Z",
+  "generatedAt": "2026-10-31T18:48:24.608Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 301,
-  "clean": 296,
-  "defective": 5,
+  "clean": 298,
+  "defective": 3,
   "byType": {
-    "score-drift": 5,
-    "missing-from-prod": 2
+    "score-drift": 3
   },
   "shows": [
-    {
-      "showId": "dead-girls-quinceanera-regional-2026",
-      "title": "Dead Girl's Quinceanera",
-      "openingDate": "2026-10-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: maratapporg"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 75.2 vs local 75.63 (Δ0.43)"
-        }
-      ],
-      "missingFromProd": [
-        "maratapporg"
-      ],
-      "localCount": 15,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-10-31T18:23:39.181Z"
-    },
-    {
-      "showId": "detroit-67-regional-2026",
-      "title": "Detroit '67",
-      "openingDate": "2026-09-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: maratapporg"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 81.36 vs local 82.07 (Δ0.71)"
-        }
-      ],
-      "missingFromProd": [
-        "maratapporg"
-      ],
-      "localCount": 5,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-10-31T18:23:39.181Z"
-    },
-    {
-      "showId": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "openingDate": "2026-10-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.53 vs local 79.08 (Δ0.55)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-10-31T18:23:39.181Z"
-    },
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",
       "title": "Copperfield! The New Musical",
@@ -79,29 +18,45 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 73.77 vs local 74.78 (Δ1.01)"
+          "detail": "deployed cs 73.77 vs local 73.94 (Δ0.17)"
         }
       ],
       "missingFromProd": [],
       "localCount": 13,
       "deployedCount": 13,
-      "firstDefectAt": "2026-10-31T18:23:39.181Z"
+      "firstDefectAt": "2026-10-31T18:48:18.004Z"
     },
     {
-      "showId": "a-history-of-paper-pitlochry-festival-regional-2026",
-      "title": "A History of Paper",
-      "openingDate": "2026-08-17",
+      "showId": "dead-girls-quinceanera-regional-2026",
+      "title": "Dead Girl's Quinceanera",
+      "openingDate": "2026-10-05",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.7 vs local 72.34 (Δ0.36)"
+          "detail": "deployed cs 75.2 vs local 75.63 (Δ0.43)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-10-31T18:23:39.181Z"
+      "localCount": 14,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-10-31T18:48:18.004Z"
+    },
+    {
+      "showId": "detroit-67-regional-2026",
+      "title": "Detroit '67",
+      "openingDate": "2026-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.36 vs local 82.07 (Δ0.71)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-10-31T18:48:18.004Z"
     }
   ],
   "persistentDefective": 0,

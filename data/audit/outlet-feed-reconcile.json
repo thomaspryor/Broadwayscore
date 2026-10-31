@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T18:23:47.378Z",
+  "generatedAt": "2026-10-31T18:48:25.013Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -117,7 +117,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -126,6 +126,14 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -138,13 +146,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 778,
+  "itemsScanned": 776,
   "matchedGaps": 6,
   "possibleGaps": 12,
   "gaps": [

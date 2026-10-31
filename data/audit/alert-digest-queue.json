@@ -1068,52 +1068,6 @@
     "queuedAt": "2026-10-31T16:51:55.017Z"
   },
   {
-    "conditionKey": "arm-yield:workflow:scoring-audit",
-    "title": "Scoring Audit has stopped updating (190 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-04-24 and 2026-10-31.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Last yield",
-        "value": null
-      },
-      {
-        "name": "Silent for",
-        "value": "190 days (threshold 30)"
-      }
-    ],
-    "queuedAt": "2026-10-31T17:19:17.394Z"
-  },
-  {
-    "conditionKey": "arm-yield:workflow:scrape-westendtheatre",
-    "title": "Scrape WestEndTheatre has stopped updating (90 days)",
-    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-08-02, 90 days ago. It has never before gone quiet for more than 20 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 22d, from 4 productive day(s) / 4 item(s) between 2026-06-14 and 2026-08-02.)",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Last yield",
-        "value": "2026-08-02"
-      },
-      {
-        "name": "Silent for",
-        "value": "90 days (threshold 22)"
-      }
-    ],
-    "queuedAt": "2026-10-31T17:19:17.418Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:a-dark-wood-regional-2026",
     "title": "Review gap — \"A Dark Wood\" missing 2 cited review(s)",
     "description": "A Dark Wood (a-dark-wood-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-dark-wood-regional-2026 --checkpoint --ingest-missing",
@@ -1604,20 +1558,6 @@
     "queuedAt": "2026-10-31T18:23:06.243Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:23:22.549Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
     "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
@@ -1632,6 +1572,52 @@
     "queuedAt": "2026-10-31T17:25:59.825Z"
   },
   {
+    "conditionKey": "arm-yield:workflow:scoring-audit",
+    "title": "Scoring Audit has stopped updating (190 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-04-24 and 2026-10-31.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": null
+      },
+      {
+        "name": "Silent for",
+        "value": "190 days (threshold 30)"
+      }
+    ],
+    "queuedAt": "2026-10-31T17:19:17.394Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:scrape-westendtheatre",
+    "title": "Scrape WestEndTheatre has stopped updating (90 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-08-02, 90 days ago. It has never before gone quiet for more than 20 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 22d, from 4 productive day(s) / 4 item(s) between 2026-06-14 and 2026-08-02.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": "2026-08-02"
+      },
+      {
+        "name": "Silent for",
+        "value": "90 days (threshold 22)"
+      }
+    ],
+    "queuedAt": "2026-10-31T17:19:17.418Z"
+  },
+  {
     "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
     "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
     "description": "check-corpus-drift.js audit \"orphaned-wrongprod-provenance\" (node scripts/audit-orphaned-wrongprod-provenance.js --gate) has been drifting. Latest output:\n\nScanned 75637 files: 1 orphaned (0 baselined, 1 NEW, 0 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  the-whoopi-monologues-off-broadway-2026/playbill--unknown.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.",
@@ -1644,6 +1630,104 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T17:55:14.864Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:a-strange-loop-regional-2026",
+    "title": "Review gap — \"A Strange Loop\" missing 3 cited review(s)",
+    "description": "A Strange Loop (a-strange-loop-regional-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-strange-loop-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:47:33.504Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
+    "title": "Review gap — \"Medea\" missing 1 cited review(s)",
+    "description": "Medea (medea-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:47:33.927Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:middlemarch-rsc-regional-2026",
+    "title": "Review gap — \"Middlemarch\" missing 1 cited review(s)",
+    "description": "Middlemarch (middlemarch-rsc-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=middlemarch-rsc-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:47:33.980Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:stoker-wilde-off-west-end-2026",
+    "title": "Review gap — \"Stoker Wilde\" missing 2 cited review(s)",
+    "description": "Stoker Wilde (stoker-wilde-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=stoker-wilde-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:47:34.105Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-bridge-off-west-end-2026",
+    "title": "Review gap — \"The Bridge\" missing 1 cited review(s)",
+    "description": "The Bridge (the-bridge-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bridge-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:47:34.194Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-unexpected-3rd-2026",
+    "title": "Review gap — \"The Unexpected 3rd\" missing 4 cited review(s)",
+    "description": "The Unexpected 3rd (the-unexpected-3rd-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-unexpected-3rd-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:47:34.403Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-31T18:47:55.937Z"
   },
   {
     "conditionKey": "corpus-drift:monitor-only",
