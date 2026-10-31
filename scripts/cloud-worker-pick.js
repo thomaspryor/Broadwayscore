@@ -183,7 +183,7 @@ async function main() {
   // for Codex, bounced).
   const queue = buildPickQueue(findResume(issues, nowMs), tiers);
   const counts = { eligible, eligibleP2, eligibleP3, open: issues.length, skipped, skippedP2, skippedP3, startNowSkipped };
-  const modelOf = modelPicker();
+  const modelOf = modelPicker({ opusBudget: await require('./lib/opus-budget.js').loadOpusBudget() });
   const historySkipped = {};
   const listN = listArg(process.argv);
   if (listN) {

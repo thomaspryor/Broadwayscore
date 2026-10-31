@@ -19,7 +19,8 @@
  *
  * Linear dispatch (linear-next.js) uses pickLinearModel() below instead: flag,
  * then retry escalation, then the filer's "Model:" line, then P0 →
- * Opus. There is no Opus launch cap (owner decision 2026-10-29, BRO-6502). The filer's line is written by linear-brain.js create --model.
+ * Opus. The filer's Opus line spends a daily Opus budget (BRO-6684, scripts/lib/opus-budget.js;
+ * it replaced BRO-6502's "no cap", owner 2026-10-31); P0s and retries are never capped. The filer's line is written by linear-brain.js create --model.
  *
  * Fable/Mythos is excluded from every hint/triage path: MODEL_HINT_RE has no
  * fable alternative, and pickModel() itself throws on a forbidden tier — only
@@ -124,9 +125,9 @@ function resolveModel({ explicitFlag, task, card, notionId, queuePath = QUEUE_PA
 // it combines with the flag and the filer's Model: line): a P0 card, or a card that already carries a
 // "Dispatched ..." comment (a re-run after a prior worker failed to close
 // it), gets Opus. Same retry rule digest-autofix.js already uses
-// (`attempt >= 2 ? 'opus'`). There is no cap on Opus launches (owner decision
-// 2026-10-29, BRO-6502: Claude-plan usage is not a constraint while within
-// plan limits). countRecentLinearOpusLaunches survives as a usage display only.
+// (`attempt >= 2 ? 'opus'`). P0s and retries are never capped; a card's own
+// "Model: Opus" line spends the daily Opus budget (BRO-6684, opus-budget.js,
+// owner 2026-10-31; it replaced BRO-6502's no-cap decision). countRecentLinearOpusLaunches feeds that budget.
 const LINEAR_OPUS_WINDOW_MS = 24 * 60 * 60 * 1000;
 const PRIOR_DISPATCH_RE = /^Dispatched\b/;
 
@@ -195,7 +196,8 @@ function isP0Issue(issue) {
  *      failure BRO-4523 fixed.
  *   3. a "Model:" line the filer stamped (linear-brain.js create --model):
  *      opus or sonnet (haiku runs as sonnet: there are no haiku workers) is
- *      honored on the first attempt, even on a P0 the filer judged easy.
+ *      honored on the first attempt, even on a P0 the filer judged easy; an
+ *      Opus line runs on Sonnet once opusBudget (opus-budget.js) is spent.
  *   4. otherwise the escalation rule (P0 → Opus).
  * Reading the ledger can fail; then no prior launches are counted and the
  * comment-based retry count still applies.
@@ -204,7 +206,7 @@ function isP0Issue(issue) {
  * Notion path.
  * @returns {{ model: string, reason: string }}
  */
-function pickLinearModel({ explicitFlag, issue, taskId, readEntries }) {
+function pickLinearModel({ explicitFlag, issue, taskId, readEntries, opusBudget = null }) {
   if (typeof explicitFlag === 'string') return { model: explicitFlag, reason: '--model flag' };
   let entries = null;
   try { entries = readEntries(); } catch { entries = null; }
@@ -213,7 +215,12 @@ function pickLinearModel({ explicitFlag, issue, taskId, readEntries }) {
   const hint = explicitModelHint({ description: issue && issue.description }, null);
   if (!hint) return escalation;
   if (countPriorDispatches(issue, priorLaunches) > 0) return { ...escalation, reason: `${escalation.reason} (overrides Model: ${hint} on the card)` };
-  if (hint === 'opus') return { model: 'opus', reason: 'Model: opus on the card' };
+  if (hint === 'opus') {
+    // BRO-6684: the card's own Opus line spends the daily Opus budget; P0s and retries above never do.
+    if (opusBudget && !isP0Issue(issue) && opusBudget.remaining <= 0) return { model: 'sonnet', reason: `Model: opus on the card, but the Opus budget is spent (${opusBudget.reason})` };
+    if (opusBudget) opusBudget.remaining -= 1;
+    return { model: 'opus', reason: 'Model: opus on the card' };
+  }
   return { model: 'sonnet', reason: `Model: ${hint} on the card` };
 }
 

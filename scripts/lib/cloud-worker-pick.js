@@ -568,20 +568,20 @@ function cloudPriorAttempts(issue) {
  * The model a cloud worker should run this card on, by the same policy as a
  * Mac dispatch (linear-next.js -> bsc-next-model.js pickLinearModel): a retry
  * escalates, a filer's "Model:" line is honored on the first attempt, a P0
- * gets Opus, and there is no Opus launch cap (owner decision 2026-10-29,
- * BRO-6502). Cloud retries (cloudPriorAttempts) count as prior launches; they
+ * gets Opus, and a card's own Opus line spends the daily Opus budget (BRO-6684,
+ * opus-budget.js; pass it as opts.opusBudget). Cloud retries (cloudPriorAttempts) count as prior launches; they
  * are added as ledger rows with no model.
  * @param {object} issue - Linear issue, with prefetched comments
  * @param {{readEntries?:Function}} [opts] - readEntries defaults to the dispatch ledger
  * @returns {{ model: string, reason: string }}
  */
-function pickModel(issue, { readEntries } = {}) {
+function pickModel(issue, { readEntries, opusBudget = null } = {}) {
   const { pickLinearModel } = require('./bsc-next-model.js');
   const baseRead = readEntries || require('./dispatch-ledger.js').readEntries;
   const taskId = `linear:${issue && issue.identifier}`;
   const prior = cloudPriorAttempts(issue);
   const read = () => [...baseRead(), ...Array.from({ length: prior }, () => ({ event: 'launch', taskId, model: null }))];
-  return pickLinearModel({ explicitFlag: null, issue, taskId, readEntries: read });
+  return pickLinearModel({ explicitFlag: null, issue, taskId, readEntries: read, opusBudget });
 }
 
 /**
@@ -593,6 +593,8 @@ function opusClaimEntries(comments) {
   const { parseWorkerModel } = require('./linear-session-reporting.js');
   return (Array.isArray(comments) ? comments : [])
     .filter((c) => c && c.issue && parseWorkerModel(c.body) === 'opus')
+    // One row per card (BRO-6684): a parent's claim and its child's re-claim are one launch.
+    .filter((c, i, all) => all.findIndex((d) => d.issue.identifier === c.issue.identifier) === i)
     .map((c) => ({ event: 'launch', source: 'cloud-claim', taskId: `linear:${c.issue.identifier}`, model: 'opus', ts: c.createdAt }));
 }
 
@@ -626,7 +628,7 @@ async function fetchOpusClaimEntries(nowMs = Date.now(), client = require('./lin
  * retries are invisible there (the card's "Dispatched" comments still count).
  * Shared by scripts/cloud-worker-pick.js and scripts/session-model.js.
  */
-function modelPicker() {
+function modelPicker({ opusBudget = null } = {}) {
   const ledger = require('./dispatch-ledger.js');
   const ledgerMissing = !require('fs').existsSync(ledger.LEDGER_PATH);
   let entries;
@@ -635,7 +637,7 @@ function modelPicker() {
     return entries;
   };
   return (issue) => {
-    const m = pickModel(issue, { readEntries });
+    const m = pickModel(issue, { readEntries, opusBudget });
     return ledgerMissing && m.model === 'sonnet' ? { ...m, reason: `${m.reason} (no dispatch ledger here: Mac launches of this card are not counted as retries)` } : m;
   };
 }

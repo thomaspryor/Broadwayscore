@@ -10,6 +10,8 @@
  *
  * Usage: node scripts/session-model.js BRO-N [BRO-M ...]   (or --no-card)
  * Prints JSON { model, modelReason, cards: [{identifier, model, modelReason}] }.
+ * The card's own "Model: Opus" line spends the daily Opus budget (BRO-6684, scripts/opus-budget.js;
+ * record the weekly limit with --record-usage first). The create_session hook re-runs this policy.
  * Pass `model` to create_session and put `MODEL-REASON: <modelReason>` in the
  * prompt, plus a `BUDGET: <hours>h` line (1-12) and a `REPORT-BACK:` line for a
  * Broadwayscore session (BRO-5673, BRO-5781). Exit 1 when Linear can't be read or a card is missing.
@@ -41,7 +43,7 @@ async function main() {
     process.exit(2);
   }
   const { getIssue } = require('./lib/linear-client.js');
-  const modelOf = modelPicker();
+  const modelOf = modelPicker({ opusBudget: await require('./lib/opus-budget.js').loadOpusBudget() });
   const issues = await Promise.all(ids.map((id) => getIssue(id)));
   // BRO-6502: a card held with a NO-DISPATCH line gets no model at all, so a create_session
   // that follows this output has nothing to pass. Exit 3.

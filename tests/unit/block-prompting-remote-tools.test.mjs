@@ -145,9 +145,19 @@ test('create_session on Opus needs a non-empty MODEL-REASON: line in the prompt 
     assert.equal(run(remote('create_session', { model })), 'deny', model);
     assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1.\nMODEL-REASON:   \n', model })), 'deny', model);
     assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1. MODEL-REASON: inline is not a line', model })), 'deny', model);
-    assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1.\nMODEL-REASON: P0\nThen land it.', model })), 'pass', model);
-    assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked for Opus', model })), 'pass', model);
+    // The MODEL-REASON layer alone (BRO-6684's card re-check switched off):
+    const old = { env: { OPUS_BUDGET_DISABLED: '1' } };
+    assert.equal(run(remote('create_session', { prompt: 'Fix BRO-1.\nMODEL-REASON: P0\nThen land it.', model }), old), 'pass', model);
+    assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked for Opus', model }), old), 'pass', model);
   }
+});
+
+test('create_session on Opus also needs the card policy or an OWNER-ASKED-OPUS: line (BRO-6684)', () => {
+  const model = 'claude-opus-5-5';
+  // No card in title or tags and no owner line: a free-text reason is no longer enough.
+  assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: big data job', model })), 'deny');
+  assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked\nOWNER-ASKED-OPUS: "run this on opus"', model })), 'pass');
+  assert.equal(run(remote('create_session', { prompt: 'MODEL-REASON: owner asked\nOWNER-ASKED-OPUS: "run this on opus"\nBUDGET: 6h', model })), 'deny');
 });
 
 test('create_session with a misspelled Broadwayscore source_url is denied (BRO-5068: lowercase starts in /home/user, no commands or hooks)', () => {

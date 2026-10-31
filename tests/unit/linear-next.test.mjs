@@ -34,6 +34,8 @@ import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import fs from 'node:fs';
+import os from 'node:os';
 import {
   MAC_ONLY_LABEL,
   buildIssueQuery,
@@ -2275,10 +2277,10 @@ test('reportDispatchOnIssue: still claims the state when the fresh refetch confi
 });
 
 for (const [label, claims, expect, priority] of [
-  ['six cloud Opus claims in 24h change nothing', 6, 'opus', 2],
-  ['five change nothing', 5, 'opus', 2],
+  ['three cloud Opus claims leave room', 3, 'opus', 2],
+  ['four spend the daily budget', 4, 'sonnet', 2],
   ['a P0 with many claims', 30, 'opus', 1],
-]) test(`BRO-6502: no Opus cap, and linear-next never reads cloud claim comments (${label})`, () => {
+]) test(`BRO-6684: a card's Opus line spends the daily Opus budget, counted with cloud claims (${label})`, () => {
   const script = `
     const { main } = require('./scripts/linear-next.js');
     const issue = {
@@ -2295,9 +2297,9 @@ for (const [label, claims, expect, priority] of [
       getIssue: async () => issue,
       readLedgerEntries: () => [],
       appendLedgerEntry: () => {},
-      linear: { listRecentCommentsContaining: async () => { throw new Error('cloud claims must not be read'); }, TEAM_KEY: 'BRO' },
+      linear: { listRecentCommentsContaining: async () => comments, TEAM_KEY: 'BRO' },
     }).catch((e) => { console.error(e.stack); process.exit(1); });
   `;
-  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000, env: { ...process.env, LINEAR_OPUS_DAILY_CAP: '0' } });
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000, env: { ...process.env, HOME: fs.mkdtempSync(path.join(os.tmpdir(), 'opus-home-')), OPUS_BUDGET_DISABLED: '' } });
   assert.match(res.stdout, new RegExp(`model: ${expect} `), `stdout:\n${res.stdout}\nstderr:\n${res.stderr}`);
 });

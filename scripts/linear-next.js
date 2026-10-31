@@ -480,10 +480,14 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const taskId = ledgerTaskId(issue.identifier);
   const pseudoTask = { id: taskId, subject: `${issue.identifier} ${issue.title}`, description: issue.description || '' };
   const explicitModel = typeof args.model === 'string' ? args.model : null;
-  // BRO-4523: flag, then a "Model:" hint line, then P0-or-retry → Opus, no cap
-  // (BRO-6502). (resolveModel's Notion triage layer never applied
-  // to Linear cards, so every card used to land on Sonnet.)
-  const pick = pickLinearModel({ explicitFlag: explicitModel, issue, taskId, readEntries: readLedgerEntriesFn });
+  // BRO-4523: flag, then a "Model:" hint line, then P0-or-retry → Opus; a card's own
+  // Opus line spends the daily Opus budget (BRO-6684). (resolveModel's Notion triage
+  // layer never applied to Linear cards, so every card used to land on Sonnet.)
+  const opusBudget = explicitModel ? null : await require('./lib/opus-budget.js').loadOpusBudget({
+    readEntries: readLedgerEntriesFn,
+    fetchClaims: (ms) => require('./lib/cloud-worker-pick.js').fetchOpusClaimEntries(ms, deps.linear || linear),
+  });
+  const pick = pickLinearModel({ explicitFlag: explicitModel, issue, taskId, readEntries: readLedgerEntriesFn, opusBudget });
   const model = pick.model;
   console.log(`[linear-next] model: ${model} (${pick.reason})`);
   const project = projectOf({ tags: ld.issueLabelNames(issue).join(','), category: null, subject: issue.title });
