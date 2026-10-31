@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6741",
   "planId": "c9257224-f097-4fed-a0a9-a25c7d8ed915",
-  "status": "applied",
+  "status": "partial",
   "createdAt": "2026-10-31T22:44:46.363Z",
   "submitter": {
     "name": null,
@@ -47,31 +47,27 @@
       }
     ]
   },
-  "executedAt": "2026-10-31T22:53:29.437Z",
+  "executedAt": "2026-10-31T23:03:10.820Z",
   "results": [
     {
       "action": "review-file-op",
-      "ok": true,
-      "msg": "Moved the-high-life-the-musical-dundee-rep-regional-2026/the-list--unknown.json → the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/the-list--unknown.json",
-      "cleared": []
+      "ok": false,
+      "reason": "Source not found: the-high-life-the-musical-dundee-rep-regional-2026/the-list--unknown.json"
     },
     {
       "action": "review-file-op",
-      "ok": true,
-      "msg": "Moved the-high-life-the-musical-dundee-rep-regional-2026/thestage--arusa-qureshi.json → the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/thestage--arusa-qureshi.json",
-      "cleared": []
+      "ok": false,
+      "reason": "Source not found: the-high-life-the-musical-dundee-rep-regional-2026/thestage--arusa-qureshi.json"
     },
     {
       "action": "review-file-op",
-      "ok": true,
-      "msg": "Moved the-high-life-the-musical-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json → the-high-life-the-musical-still-living-it-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json",
-      "cleared": []
+      "ok": false,
+      "reason": "Source not found: the-high-life-the-musical-dundee-rep-regional-2026/whatsonstage--scott-purvis-armour.json"
     },
     {
       "action": "review-file-op",
-      "ok": true,
-      "msg": "Moved studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025/thestage--david-pollock.json → studio3-tron-regional-2025/thestage--david-pollock.json",
-      "cleared": []
+      "ok": false,
+      "reason": "Source not found: studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025/thestage--david-pollock.json"
     }
   ],
   "executedIn": "ci"
