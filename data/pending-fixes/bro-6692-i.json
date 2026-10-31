@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6692-i",
   "planId": "74ac7824-aaf9-4198-9bcc-e1d829ee3465",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-31T06:46:58.879Z",
   "submitter": {
     "name": null,
@@ -189,5 +189,134 @@
         "description": "BRO-6541: ingest thereviewshub review for the-grand-babylon-hotel-hull-truck-regional-2026"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-31T10:07:52.717Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=community-birmingham-rep-regional-2025 --url=https://www.thereviewshub.com/community-birmingham-rep/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=noises-off-stephen-joseph-regional-2025 --url=https://www.thereviewshub.com/noises-off-stephen-joseph-theatre-scarborough/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-accountants-aviva-studios-regional-2024 --url=https://www.thereviewshub.com/the-accountants-aviva-studios-manchester/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=little-women-york-royal-regional-2024 --url=https://www.thereviewshub.com/little-women-york-theatre-royal/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-constant-wife-york-royal-regional-2026 --url=https://www.thereviewshub.com/the-constant-wife-york-theatre-royal/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=good-for-a-girl-birmingham-rep-regional-2025 --url=https://www.thereviewshub.com/good-for-a-girl-birmingham-rep/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=starter-for-ten-birmingham-rep-regional-2025 --url=https://www.thereviewshub.com/starter-for-ten-birmingham-rep/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-school-for-scandal-royal-shakespeare-regional-2024 --url=https://www.thereviewshub.com/the-school-for-scandal-royal-shakespeare-theatre-stratford-upon-avon/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=lizzie-the-musical-hope-mill-regional-2024 --url=https://www.thereviewshub.com/lizzie-the-musical-hope-mill-theatre-manchester-2/ --outlet=thereviewshub"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-grand-babylon-hotel-hull-truck-regional-2026 --url=https://www.thereviewshub.com/the-grand-babylon-hotel-hull-truck-theatre/ --outlet=thereviewshub"
+    }
+  ],
+  "executedIn": "ci"
 }
