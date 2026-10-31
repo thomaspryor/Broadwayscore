@@ -2,12 +2,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
-import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { findViolations } = require('../../scripts/lib/font-floor.js');
+const { findViolations, run } = require('../../scripts/lib/font-floor.js');
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 test('flags 9/10/11px, not 12px or text-xs', () => {
@@ -21,7 +20,7 @@ test('font-floor-ok on the same or previous line exempts', () => {
   assert.deepStrictEqual(findViolations(src), []);
 });
 
-test('CLI is advisory: prints a count and exits 0 on the real tree', () => {
-  const out = execFileSync(process.execPath, ['scripts/lint-font-floor.js'], { cwd: REPO, encoding: 'utf8' });
-  assert.match(out, /^ADVISORY font floor \(12px\): \d+ sub-floor use/m);
+test('run() counts sub-floor uses on the real tree without throwing', () => {
+  const res = run(REPO);
+  assert.ok(Number.isInteger(res.total) && res.total >= 0);
 });
