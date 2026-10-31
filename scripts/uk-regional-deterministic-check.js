@@ -89,7 +89,7 @@ for (const s of uk) {
     const yr = (String(r.url || '').match(/\/(20\d\d)\//) || [])[1];
     if (yr && idYear && Math.abs(Number(yr) - Number(idYear)) >= 2) add('reviewUrlYearFarFromRun', s.id, `url ${yr}`);
     const other = venueWords.find((v) => v.words.some((w) => w.length > 8 && u.includes(w.replace(/ /g, ' '))) && !isSameHouse(s, v));
-    if (other) add('reviewUrlNamesOtherHouse', s.id, other.words[0]);
+    if (other) add('reviewUrlNamesOtherHouse', s.id, other.words[0] + ' ' + r.url);
   }
 }
 
