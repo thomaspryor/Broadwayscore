@@ -841,7 +841,7 @@ def _live_work():
                     bm = bucket_re.search(res)
                     if not bm:
                         continue  # errored / unreadable result: keeps the last real reading
-                    child[sid]['done'] = i if bm.group(1).upper() in ('COMPLETED', 'REVIEW_READY') else -1
+                    child[sid]['done'] = i if bm.group(1).upper() in ('COMPLETED', 'REVIEW_READY', 'ARCHIVED') else -1
         elif kind in ('user_notice', 'user_text'):
             for mn in re.finditer(r'<task-notification>(.*?)</task-notification>', payload or '', flags=re.DOTALL):
                 idm = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', mn.group(1))
@@ -1433,8 +1433,8 @@ if _CW_CODES:
                 'liveChildren': _live_work()['children']}))
             sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             _cw_res = json.loads(_cw.stdout or '{}')
-            if _cw_res.get('block') and _cw_res.get('code') in _CW_CODES:
-                _ve_block(_cw_res['code'])
+            if _cw_res.get('block') and (_cw_res.get('code') or 'CHILDWAIT') in _CW_CODES:
+                _ve_block(_cw_res.get('code') or 'CHILDWAIT')  # an older guard returns no code
     except Exception:
         pass  # fail-open
 

@@ -191,6 +191,8 @@ test('other ways of saying jobs are still going are caught, clause by clause', (
     'KEEP OPEN — the ingest is mid-way',
     'KEEP OPEN — 40 of 120 reviews left to process',
     'KEEP OPEN — the crawl is running; the ingest finished',
+    "KEEP OPEN — the crawl hasn't finished",
+    'KEEP OPEN — one batch completed, remaining jobs pending; the import is not yet done',
   ]) assert.equal(blocks(c), true, c);
 });
 

@@ -88,7 +88,7 @@ function childWaitDecision(input) {
 // the queue to something durable (a workflow, the tic-daily pending queue).
 const JOB_NOUN = '(?:jobs?|loops?|crawls?|crawlers?|ingests?|ingestion|imports?|rescores?|rescoring|reprocess(?:ing)?|batch(?:es)?|queues?|dispatch(?:es)?|scrapes?|scrapers?|scraping|backfills?|shards?|pipelines?)';
 const JOBS_WAIT_RE = new RegExp(
-  '\\b' + JOB_NOUN + '\\b[^.;\\n]{0,60}?\\b(?:in progress|in flight|is running|are running|still running|still going|running|pending|queued|to (?:finish|complete)|ha(?:s|ve)n.t finished|working through|continues|in the background|mid-?way|underway)\\b'
+  '\\b' + JOB_NOUN + '\\b[^.;\\n]{0,60}?\\b(?:in progress|in flight|is running|are running|still running|still going|running|pending|queued|to (?:finish|complete)|ha(?:s|ve)n.t finished|working through|continues|in the background|mid-?way|underway|not (?:yet )?(?:done|finished|complete(?:d)?))\\b'
   + '|\\b(?:waiting|awaiting|wait)\\b[^.;\\n]{0,40}\\b' + JOB_NOUN + '\\b'
   + '|\\b\\d+\\s+(?:of\\s+\\d+\\s+)?\\w+\\s+(?:left|remaining) to (?:process|ingest|score|fetch|crawl)\\b'
   + '|\\bI(?:.ll| will) (?:check back|check (?:on|in on) (?:them|it|the)|come back|look again|re-?check)\\b',
@@ -107,7 +107,7 @@ function waitClauses(closing) {
   return String(closing || '').split('\n')
     .filter((l) => /^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running)\b/i.test(l))
     .map((l) => l.replace(/^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running:?)\s*[—–:,-]?\s*/i, ''))
-    .flatMap((l) => l.split(/[;.]\s*|,\s*(?:and|but|while)\b|\s\band\b\s(?=the\b)/i))
+    .flatMap((l) => l.split(/[;.,]\s*|\s\b(?:and|but|while)\b\s(?=the\b)/i))
     .map((c) => c.trim()).filter(Boolean);
 }
 
@@ -156,7 +156,9 @@ function childJobsDecision(input) {
   const no = (reason) => ({ block: false, reason });
   if (!isChildSession({ firstPrompt, env })) return no('not a child session');
   if (!verdictKeepOpen(closing)) return no('closing verdict is not KEEP OPEN');
-  if (!waitClauses(closing).some((c) => JOBS_WAIT_RE.test(c) && !NOT_WAITING_RE.test(c) && !PERSON_WAIT_RE.test(c))) {
+  // "hasn't finished" / "not yet done" are waits, not completions.
+  const settled = (c) => NOT_WAITING_RE.test(c.replace(/\b(?:has|have|is|are)\s*n[o']?t(?:\s+yet)?\s+(?:finished|completed|done)\b|\bnot (?:yet )?(?:finished|completed|done)\b/gi, ' '));
+  if (!waitClauses(closing).some((c) => JOBS_WAIT_RE.test(c) && !settled(c) && !PERSON_WAIT_RE.test(c))) {
     return no('KEEP OPEN does not wait on jobs this session runs');
   }
   if (liveBackground(tools, done, { now }).length) return no('a background task or Monitor is live');
