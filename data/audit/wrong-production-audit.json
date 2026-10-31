@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T15:10:20.391Z",
+  "timestamp": "2026-10-31T15:24:16.679Z",
   "stats": {
-    "totalReviews": 74574,
-    "alreadyFlagged": 22510,
-    "dateGuardCatches": 233,
-    "directorMismatch": 3117,
-    "tvFilmSignals": 2103,
-    "londonSignals": 3425,
-    "offBroadwaySignals": 683,
-    "yearMismatch": 305,
-    "noPublishDate": 8363
+    "totalReviews": 74667,
+    "alreadyFlagged": 22479,
+    "dateGuardCatches": 234,
+    "directorMismatch": 3118,
+    "tvFilmSignals": 2108,
+    "londonSignals": 3428,
+    "offBroadwaySignals": 687,
+    "yearMismatch": 306,
+    "noPublishDate": 8358
   },
   "findings": [
     {
@@ -5633,6 +5633,19 @@
       ]
     },
     {
+      "showId": "antigone-regional-2026",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/antigone/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "appropriate-2023",
       "file": "chicagotribune--chris-jones.json",
       "score": 92,
@@ -8908,6 +8921,19 @@
       "score": 82,
       "publishDate": "2019-07-23",
       "url": "http://nystagereview.com/2019/07/23/broadway-bounty-hunter-exploiting-a-darling-character-in-pursuit-of-laughs/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "brokeback-mountain-regional-2026",
+      "file": "new-city-stage--rob-silverman-ascher.json",
+      "publishDate": "2026-06-15",
+      "url": "https://www.newcitystage.com/2026/06/15/brokeback-mountain-brings-queer-intimacy-to-a-grand-wyoming-setting/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -20615,6 +20641,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2009 (2x) more than 2016 (1x). 2009 matches production: finians-rainbow-2009"
+        }
+      ]
+    },
+    {
+      "showId": "finians-rainbow-off-broadway-2016",
+      "file": "theatermania--david-gordon.json",
+      "score": null,
+      "publishDate": "2016-11-06",
+      "url": "http://www.theatermania.com/off-broadway/reviews/finians-rainbow_79039.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2009 (2x) more than 2016 (0x). 2009 matches production: finians-rainbow-2009"
         }
       ]
     },
@@ -33425,6 +33465,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "keerah-regional-2026",
+      "file": "chicago-reader--dmitry-samarov.json",
+      "publishDate": "2026-06-04",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/keerah-definition-theatre-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -51664,6 +51717,7 @@
     {
       "showId": "smiley-regional-2026",
       "file": "broadwayworld--angela-lin.json",
+      "score": 85,
       "publishDate": "2026-06-13",
       "url": "https://www.broadwayworld.com/chicago/article/Review-SMILEY-at-Open-Space-Arts-20260613",
       "findings": [
@@ -51677,6 +51731,7 @@
     {
       "showId": "smiley-regional-2026",
       "file": "chicagostageandscreen--angela-allyn.json",
+      "score": 78,
       "publishDate": "2026-07-12",
       "url": "https://www.chicagostageandscreen.com/post/darling-rom-com-at-open-space-arts",
       "findings": [
@@ -51690,6 +51745,7 @@
     {
       "showId": "smiley-regional-2026",
       "file": "windycitytimes--matt-simonette.json",
+      "score": 86,
       "publishDate": "2026-06-12",
       "url": "https://windycitytimes.com/2026/06/12/theater-smiley-recounts-romantic-pitfalls-in-an-online-world/",
       "findings": [
@@ -67083,6 +67139,7 @@
     {
       "showId": "the-producers-regional-2026",
       "file": "epoch-times--betty-mohr.json",
+      "score": 89,
       "publishDate": "2026-06-19",
       "url": "https://www.theepochtimes.com/bright/chicagolands-the-producers-induces-uproarious-laughter-6049328",
       "findings": [
@@ -68258,6 +68315,20 @@
       ]
     },
     {
+      "showId": "the-shitheads-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "score": 54,
+      "publishDate": "February 13th, 2026",
+      "url": "https://www.thestage.co.uk/reviews/the-shitheads-review-royal-court-theatre-upstairs-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-singularity-play-regional-2024",
       "file": "chicagotribune--chris-jones.json",
       "score": 79,
@@ -68416,6 +68487,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-targeted-regional-2026",
+      "file": "buzznews--john-accrocco.json",
+      "publishDate": "2026-05-18",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/6431-a-red-orchid-s-the-targeted-builds-a-case-for-compassion.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -72730,6 +72814,19 @@
       "score": 90,
       "publishDate": "2024-09-23",
       "url": "https://playstosee.com/reviews/war-horse-3/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tom morris\" from war-horse-2011"
+        }
+      ]
+    },
+    {
+      "showId": "war-horse-lowry-regional-2024",
+      "file": "strandmagazine--georgia-gibson.json",
+      "publishDate": "2024-10-03",
+      "url": "https://www.strandmagazine.co.uk/single-post/awe-inspiring-puppetry-for-a-deeply-human-story-reviewing-war-horse-galloping-across-the-uk-on-t",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -89399,6 +89496,34 @@
       ]
     },
     {
+      "showId": "finians-rainbow-off-broadway-2016",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "2016-11-06",
+      "url": "http://www.nytimes.com/2016/11/07/theater/finians-rainbow-review.html?_r=0",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
+        }
+      ]
+    },
+    {
+      "showId": "finians-rainbow-off-broadway-2016",
+      "file": "talkinbroadway--matthew-murray.json",
+      "score": null,
+      "publishDate": "November 6th, 2016",
+      "url": "http://www.talkinbroadway.com/page/ob/11_06_16.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
       "showId": "fire-and-air-off-broadway-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 64,
@@ -95112,6 +95237,20 @@
       ]
     },
     {
+      "showId": "husbands-and-sons-west-end-2015",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2015-10-28",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/husbands-and-sons-dorfman-national-theatre-review-a-magnificent-evening-of-revelatory-marvels-a6712056.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "i-can-die-too-pitlochry-festival-regional-2026",
       "file": "theatreandtonic--kerry.json",
       "score": 88,
@@ -99887,6 +100026,20 @@
       ]
     },
     {
+      "showId": "macbeth-2008",
+      "file": "njcom--anthony-venutolo.json",
+      "score": null,
+      "publishDate": "2008-04-09",
+      "url": "https://www.nj.com/entertainment/arts/2008/04/british_macbeth_bloody_complic.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
       "showId": "macbeth-2013",
       "file": "ew--leah-greenblatt.json",
       "score": 79,
@@ -102193,6 +102346,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "score": 66,
+      "publishDate": "2026-10-30",
+      "url": "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -109446,6 +109613,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "runboyrun-and-in-old-age-off-broadway-2019",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2019-10-02",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-E300FW",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
@@ -123810,6 +123990,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
+      "file": "broadwayworld--gary-naylor.json",
+      "publishDate": "2024-08-02",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-YEARS-Almeida-Theatre-20240802",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2024-08-02 vs 2025-01-24)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
