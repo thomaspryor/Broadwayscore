@@ -323,3 +323,50 @@ test('BRO-6716 ship-check: the rejection-delete breadcrumb only covers the exact
   assert.equal(Boolean(pred(d, { ...healed, rejectionReasoning: 'claude: a London production.' })), false, 'newer rejection, same reason, both rejectedAt null: kept');
   assert.equal(Boolean(pred({}, { ...healed })), false, 'no heal record: kept');
 });
+
+// BRO-6716: a persisted CV-promoted wrongProduction the BRO-5805 own-cast rule
+// now refuses (Tru NYSR: lead named, venue named, flagged "different production").
+{
+  const G = require('../../scripts/lib/review-guards.js');
+  const truShow = { id: 'tru-off-broadway-2026', category: 'off-broadway', venue: 'House of the Redeemer',
+    previewsStartDate: '2026-03-03', openingDate: '2026-03-19', closingDate: '2026-05-10',
+    cast: [{ name: 'Jesse Tyler Ferguson' }, { name: "Charlotte d'Amboise" }] };
+  const body = 'Truman Capote (Jesse Tyler Ferguson, behaving like a whippet) holds court. Charlotte d’Amboise glides through. The library in the House of the Redeemer.';
+  const cv = { wrongProduction: true, wrongArticle: false, confidence: 'high', issues: ['expected production opened 2026-03-19 with different casting'], reasoning: 'reviews a different production' };
+  const base = { wrongProduction: true, wrongProductionReason: 'CV-promoted: reviews a different production than expected',
+    contentVerification: cv, publishDate: '2026-03-20', fullText: body };
+
+  test('own-cast heal: Tru NYSR shape is healed', () => {
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(base, truShow), true);
+  });
+  test('own-cast heal: weak cast evidence keeps the flag', () => {
+    const one = { ...base, fullText: 'Jesse Tyler Ferguson plays Capote at the House of the Redeemer.' };
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(one, truShow), false);
+  });
+  test('own-cast heal: same cast months before opening (pre-transfer run) keeps the flag', () => {
+    const oliver = { ...truShow, previewsStartDate: '2024-05-02', openingDate: '2024-12-14', closingDate: '2025-09-27' };
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...base, publishDate: '2024-07-26' }, oliver), false);
+  });
+  test('own-cast heal: human, manual, note and non-CV rows are untouched', () => {
+    for (const over of [{ humanReviewedWrongProduction: true }, { wrongProductionManualClear: true },
+      { wrongProductionNote: 'x' }, { wrongProductionReason: 'Auto-flagged: URL date' }, { wrongShow: true },
+      { wrongProductionReason: 'CV-low-but-strong-signal: x' }]) {
+      assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...base, ...over }, truShow), false, JSON.stringify(over));
+    }
+  });
+  test('own-cast heal: low-confidence different-show verdict keeps the flag', () => {
+    const low = { ...base, contentVerification: { ...cv, confidence: 'low', issues: ['This is a review of a completely different show, Hamlet'], reasoning: 'different show entirely' } };
+    const sig = G.hasStrongDifferentShowSignal(low.contentVerification.issues, low.contentVerification.reasoning);
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(low, truShow), !sig);
+  });
+}
+{
+  const G = require('../../scripts/lib/review-guards.js');
+  test('own-cast heal: CV wrongArticle (preview) rows keep the flag', () => {
+    const show = { venue: 'X', openingDate: '2026-03-19', previewsStartDate: '2026-03-03', closingDate: '2026-05-10', cast: [{ name: 'Ann Bee' }, { name: 'Cal Dee' }] };
+    const r = { wrongProduction: true, wrongProductionReason: 'CV-promoted: x', publishDate: '2026-03-20', fullText: 'Ann Bee and Cal Dee star.',
+      contentVerification: { wrongProduction: true, wrongArticle: true, confidence: 'high', issues: [] } };
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction(r, show), false);
+    assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...r, contentVerification: { ...r.contentVerification, wrongArticle: false } }, show), true);
+  });
+}
