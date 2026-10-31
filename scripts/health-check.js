@@ -5146,7 +5146,9 @@ function checkUkRegionalOpeningDates() {
       message: `${late.length} UK regional show(s) have a review dated before the review-seeded opening date (e.g. ${late.slice(0, 3).map((s) => s.id).join(', ')}).`,
       hint: 'node scripts/reconcile-uk-regional-opening-dates.js --plan=bro-N writes the data-edit plan (BRO-6725).',
     }];
-  } catch { return []; }
+  } catch (e) {
+    return [{ name: 'Data: UK regional opening dates', status: 'warn', message: `check could not run: ${e.message}` }];
+  }
 }
 
 function checkEarlyPublishDates() {
