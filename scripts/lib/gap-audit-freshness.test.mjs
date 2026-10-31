@@ -213,3 +213,11 @@ test('Broadway alerting row sorts ahead of a clean slow-market row, which sorts 
   assert.ok(compareAuditPriority(alerting, we, checkpoint, NOW) < 0);
   assert.ok(compareAuditPriority(we, backlog, checkpoint, NOW) < 0);
 });
+
+test('a slow-market row the rollup still alerts on (reverify only) keeps the 12h default, not 48h', () => {
+  const { auditTier } = require('./gap-audit-freshness.js');
+  const we = { id: 'we', status: 'open', category: 'west-end', openingDate: iso(10 * DAY) };
+  const reverifyOnly = { gaps: 1, uncollected: 0, slowMarketResidual: 1 };
+  assert.equal(auditTier(we, reverifyOnly, NOW), 2);
+  assert.equal(freshnessMsFor(we, reverifyOnly, { now: NOW }), 12 * 60 * 60 * 1000);
+});

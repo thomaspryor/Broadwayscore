@@ -41,7 +41,8 @@ function slowMarketListedGap(r) {
 // A row the audit has not re-checked recently can neither clear nor be fixed, so it
 // would hold the rollup card open (6 of 14 slow-market rows were 6-13 days old on
 // 2026-10-31). Clean in-window rows re-audit every 48h (gap-audit-freshness.js),
-// rows with a gap every 12h; 72h tolerates a day of skipped or starved runs.
+// rows this rollup counts (checkpoint slowMarketResidual > 0) every 12h; 72h
+// tolerates a day of skipped or starved runs.
 const SLOW_MARKET_MAX_ROW_AGE_HOURS = 72;
 
 /** True when the show is a slow-market opening inside the alert window, audited recently. */

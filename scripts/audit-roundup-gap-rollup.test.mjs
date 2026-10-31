@@ -132,6 +132,12 @@ test('a slow-market row not re-audited for 72h stays out (it can neither clear n
   assert.deepEqual([plan.alert.length, plan.resolve.length], [0, 0]);
 });
 
+test('a slow-market row audited 60h ago still alerts (inside the 72h cutoff)', () => {
+  const r = slow('mid', 'west-end', '2026-10-10', { missing: [{ url: 'https://m.example/r' }], computedAt: new Date(NOW - 60 * 3600000).toISOString() });
+  assert.deepEqual(planRoundupGapAlerts([r], true, NOW).alert.map(a => a.showId || a), planRoundupGapAlerts([{ ...r, computedAt: new Date(NOW - 3600000).toISOString() }], true, NOW).alert.map(a => a.showId || a));
+  assert.equal(planRoundupGapAlerts([r], true, NOW).alert.length, 1);
+});
+
 test('a reverify row recovered this run does not hold the slow-market alert', () => {
   const r = slow('rc', 'off-west-end', '2026-10-10', {
     flaggedMisses: [{ url: 'https://rv.example/r', reverify: true }],

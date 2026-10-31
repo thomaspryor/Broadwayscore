@@ -1973,7 +1973,7 @@ function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}
 // now files an 'auto' card (roundup-gap:<showId>); a later run that audits the show
 // with no residual resolves it. Slow markets (BRO-6687) join the same rollup below.
 const ROUNDUP_GAP_ALERT_DAYS = 3;
-const { slowMarketListedGap, inSlowMarketWindow } = require('./lib/slow-market-gap');
+const { slowMarketListedGap, inSlowMarketWindow, SLOW_MARKETS } = require('./lib/slow-market-gap');
 function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
   const alert = [];
   const resolve = [];
@@ -2421,6 +2421,10 @@ async function main(argv = process.argv.slice(2)) {
         // BRO-5513: the opening-window alert's own count (a closed show ignores census-only
         // hits), so gap-audit-freshness refreshes only rows that alert still reads.
         alertUncollected: currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) }),
+        // BRO-6687: the slow-market rollup's own count (cited rows plus reverify
+        // exclusions, which `uncollected` leaves out), so a show the rollup still
+        // alerts on keeps the 12h alerting cadence instead of the clean 48h one.
+        ...(SLOW_MARKETS.has(s.category) ? { slowMarketResidual: slowMarketListedGap(r).residual } : {}),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         ...(zeroCharStored && Object.keys(zeroCharStored).length ? { zeroChar: zeroCharStored } : {}),
@@ -2630,8 +2634,9 @@ async function main(argv = process.argv.slice(2)) {
       if (useCheckpoint && r.ingestResults.length && checkpoint[s.id]) {
         const recount = currentRunUncollected(r);
         const alertRecount = currentRunUncollected(r, { ignoreCensusTagged: !censusGapsAlert(alertShowState(r, new Map([[s.id, s]]))) });
-        if (recount !== checkpoint[s.id].uncollected || alertRecount !== checkpoint[s.id].alertUncollected) {
-          checkpoint[s.id] = { ...checkpoint[s.id], uncollected: recount, alertUncollected: alertRecount };
+        const slowRecount = SLOW_MARKETS.has(s.category) ? slowMarketListedGap(r).residual : undefined;
+        if (recount !== checkpoint[s.id].uncollected || alertRecount !== checkpoint[s.id].alertUncollected || slowRecount !== checkpoint[s.id].slowMarketResidual) {
+          checkpoint[s.id] = { ...checkpoint[s.id], uncollected: recount, alertUncollected: alertRecount, ...(slowRecount !== undefined ? { slowMarketResidual: slowRecount } : {}) };
           saveCheckpointEntries(CHECKPOINT_PATH, { [s.id]: checkpoint[s.id] });
         }
       }

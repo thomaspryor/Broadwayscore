@@ -52,13 +52,14 @@ function alertReadsRow(show, entry, now = Date.now()) {
 // These shows get their own tier between alerting rows and the back catalogue,
 // re-checked every 48h: about 25 audits/day for ~50 shows, against ~70/day of
 // observed audit throughput. Rows that still count uncollected reviews stay
-// tier 1 at the normal cadence.
+// tier 1, and rows the slow-market rollup still alerts on (slowMarketResidual,
+// which also counts reverify exclusions) keep the 12h default.
 const SLOW_MARKET_CLEAN_TIER = 1.5;
 const SLOW_MARKET_CLEAN_FRESHNESS_MS = 48 * 60 * 60 * 1000;
 function isSlowMarketCleanInWindow(show, entry, now = Date.now()) {
   return show?.status !== 'closed' && SLOW_MARKETS.has(show?.category)
     && inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS)
-    && !!entry && !(entry.uncollected > 0);
+    && !!entry && !(entry.uncollected > 0) && !(entry.slowMarketResidual > 0);
 }
 
 function inOpeningPriorityWindow(show, now = Date.now()) {
