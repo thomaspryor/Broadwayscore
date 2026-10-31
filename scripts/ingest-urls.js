@@ -27,6 +27,8 @@ const { findStaleFieldsAfterUpdate } = require('./lib/stale-merge-check');
 const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
 const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { unwrapWaybackUrl } = require('./lib/unwrap-wayback-url');
+const { parseIngestLine } = require('./lib/ingest-url-line');
+const { isPlausiblePersonName } = require('./lib/byline-recovery');
 
 // An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
 function isRegisteredOutletId(id) {
@@ -64,6 +66,7 @@ if (!showId || !urlsFile) {
   console.error('');
   console.error('URL file format: one URL per line. # comments and blank lines ignored.');
   console.error('Optional: append outlet ID after space: https://example.com/review my-outlet');
+  console.error('Optional: append " | Critic Name" when the byline is known: https://example.com/review | Jane Doe');
   process.exit(1);
 }
 
@@ -114,11 +117,8 @@ const rawLines = fs.readFileSync(urlsFile, 'utf8').split('\n');
 const entries = rawLines
   .map(line => line.trim())
   .filter(line => line && !line.startsWith('#'))
-  .map(line => {
-    // Support "URL outletId" format
-    const parts = line.split(/\s+/);
-    return { url: parts[0], outletOverride: parts[1] || null };
-  });
+  // "URL [outletId] [ | Critic Name ]" (BRO-6518: callers that know the byline pass it).
+  .map(line => parseIngestLine(line));
 
 if (entries.length === 0) {
   console.log('No URLs found in file (blank or all comments)');
@@ -148,7 +148,7 @@ async function main() {
   const results = { created: 0, updated: 0, skipped: 0, failed: 0, warnings: [], touchedPaths: [], fanShowIds: new Set() };
 
   for (let i = 0; i < entries.length; i++) {
-    let { url, outletOverride } = entries[i];
+    let { url, outletOverride, listedCritic } = entries[i];
     // A Wayback snapshot url is fetched as given but stored under the original article url (BRO-6448).
     const { fetchUrl, url: unwrappedUrl } = unwrapWaybackUrl(url);
     url = unwrappedUrl;
@@ -204,7 +204,7 @@ async function main() {
           // Name the critic now, the same way the collector does. Leaving every
           // ingest as 'Unknown' created an --unknown file that a later rebuild
           // merged into the named sibling and deleted (BRO-4185 follow-up).
-          try { criticName = extractAuthorFromHtml(result.content, extracted || '', { url }) || null; } catch { criticName = null; }
+          try { criticName = extractAuthorFromHtml(result.content, extracted || '', { url, outletId }) || null; } catch { criticName = null; }
           // Page metadata date (article:published_time / JSON-LD / <time>),
           // from the HTML already in hand. Without it the file's date came
           // from a later LLM guess, which slipped years and tripped the date
@@ -256,14 +256,23 @@ async function main() {
       }
     }
 
+    // A listed critic (BRO-6518: theatreinchicago.com names it beside the link) fills
+    // in only where the page gave none: TIC has its own typos ("Carey Sullivan"), and
+    // the two site-wide-author hosts now return no page byline. Joint or implausible
+    // names stay out.
+    const usableListed = listedCritic && !/\s(and|&)\s|\//i.test(listedCritic) && isPlausiblePersonName(listedCritic) ? listedCritic : null;
+
     // Create/merge review file
     const input = {
       outletId,
       outlet: outletName,
-      criticName: criticName || 'Unknown', // collect-review-texts fills it in later when the page gave none
+      criticName: criticName || usableListed || 'Unknown', // collect-review-texts fills it in later when neither gave one
       // Read off this URL's own HTML, so the writer may fill an existing
       // Unknown file at the same URL with it (BRO-4485).
       bylineFromOwnPage: !!criticName,
+      // Named for this exact URL by the listing the caller read it from, used only
+      // when the page gave no byline (BRO-6518).
+      bylineFromListing: !criticName && !!usableListed,
       url,
       source: 'ingest-urls',
       fields: {},
@@ -283,7 +292,7 @@ async function main() {
     // ingest-manual-review.js / ingest-review-from-url.js).
     let preExisting = null;
     if (!dryRun) {
-      try { preExisting = findExistingReviewFile(path.join(reviewTextsDir, showId), outletId, criticName || 'Unknown', originalUrl || url); } catch { preExisting = null; }
+      try { preExisting = findExistingReviewFile(path.join(reviewTextsDir, showId), outletId, criticName || usableListed || 'Unknown', originalUrl || url); } catch { preExisting = null; }
     }
     const writeResult = createOrMergeReviewFile(showId, input, {
       dryRun, reviewTextsDir, knownShowIds: showsData.shows.map((s) => s.id),

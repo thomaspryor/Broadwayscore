@@ -537,11 +537,12 @@ test('fullTextWrongAuthor breadcrumb does NOT extend to llmScore/llmMetadata (ap
   assert.equal(isIntentionalClear('llmMetadata', cleared), false);
 });
 
-test('collect-review-texts.js / backfill-theaterlife-bylines.js reset paths clear fullTextWrongAuthor(+At) together', () => {
+test('collect-review-texts.js / byline-backfill.js reset paths clear fullTextWrongAuthor(+At) together', () => {
   const collectSrc = require('node:fs').readFileSync(
     path.join(repoRoot, 'scripts/collect-review-texts.js'), 'utf8');
   const backfillSrc = require('node:fs').readFileSync(
-    path.join(repoRoot, 'scripts/backfill-theaterlife-bylines.js'), 'utf8');
+    path.join(repoRoot, 'scripts/lib/byline-backfill.js'), 'utf8');
+  // The theaterlife and Chicago byline backfills share renameOntoCritic there (BRO-6518).
   // Every site that deletes the flag must delete the freshness stamp alongside
   // it, or a stale stamp survives the "corrected" write and keeps suppressing
   // restores of a LATER, unrelated data loss on the same file.
@@ -552,7 +553,7 @@ test('collect-review-texts.js / backfill-theaterlife-bylines.js reset paths clea
   assert.ok(collectClearSites >= 3, 'expected the 3 known reset sites in collect-review-texts.js');
   assert.ok(backfillSrc.includes('delete newData.fullTextWrongAuthor;\n  delete newData.fullTextWrongAuthorAt;')
     || backfillSrc.includes('delete newData.fullTextWrongAuthor;\n\tdelete newData.fullTextWrongAuthorAt;'),
-    'backfill-theaterlife-bylines.js must clear fullTextWrongAuthorAt alongside fullTextWrongAuthor');
+    'scripts/lib/byline-backfill.js must clear fullTextWrongAuthorAt alongside fullTextWrongAuthor');
 });
 
 test('re-flagging invalidates the auto-clear stamp (inverted-ping-pong guard, ship-check 2026-08-04)', async () => {

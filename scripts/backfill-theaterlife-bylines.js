@@ -30,10 +30,11 @@
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
-const { extractTheaterLifeByline, computeContentFingerprint } = require('./lib/content-quality');
+const { extractTheaterLifeByline } = require('./lib/content-quality');
 const { extractArticleText } = require('./lib/article-extractor');
-const { normalizeCritic, normalizeUrl } = require('./lib/review-normalization');
-const { safeRenameReview, safeUnlinkReview } = require('./lib/review-write-guard');
+const { normalizeCritic } = require('./lib/review-normalization');
+const { sameReview, richness, renameOntoCritic: renameOntoCriticShared } = require('./lib/byline-backfill');
+const { safeUnlinkReview } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -104,66 +105,10 @@ function findPhantomFiles(root) {
   return out;
 }
 
-function wordSet(t) {
-  return new Set(String(t || '').toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(w => w.length > 3));
-}
-
-// Asymmetric containment: fraction of the SMALLER text's words present in the
-// larger. Robust to the theaterlife byline-header prefix (the correctly-named
-// sibling was often captured WITHOUT the "By: <name>" line, which offsets a
-// positional fingerprint even though the review body is identical).
-function containmentOf(A, B) {
-  if (!A.size || !B.size) return 0;
-  const [small, big] = A.size <= B.size ? [A, B] : [B, A];
-  let hits = 0;
-  for (const w of small) if (big.has(w)) hits++;
-  return hits / small.size;
-}
-
-function sameReview(a, b) {
-  // Same URL (normalized) → same underlying review.
-  const ua = a.url ? normalizeUrl(a.url) : null;
-  const ub = b.url ? normalizeUrl(b.url) : null;
-  if (ua && ub && ua === ub) return true;
-  // Same content fingerprint (identical text).
-  const fa = computeContentFingerprint(a.fullText || '', 500);
-  const fb = computeContentFingerprint(b.fullText || '', 500);
-  if (fa && fb && fa === fb) return true;
-  // Near-identical body (byline-prefix offset defeats the fingerprint). Two
-  // genuinely different reviews of one show share vocabulary but not phrasing
-  // (~0.3-0.5); the same review modulo the byline header is ~0.9+. Require both
-  // texts to carry real substance (>=40 distinct long words) before trusting
-  // containment — a short stub/excerpt is trivially "contained" in a full review
-  // even when they are different pieces, and this branch feeds a destructive
-  // dedup. Short pairs fall through to CONFLICT (manual triage).
-  const A = wordSet(a.fullText), B = wordSet(b.fullText);
-  if (Math.min(A.size, B.size) >= 40 && containmentOf(A, B) >= 0.85) return true;
-  return false;
-}
-
-// Write the phantom's data under the correct-critic filename, stamping the
-// corrected criticName + provenance and clearing stale byline-mismatch flags.
+// Write the phantom's data under the correct-critic filename.
 function renameOntoCritic(srcPath, dstPath, data, critic, recovered) {
-  const src = recovered ? 'theaterlife-byline-refetch' : 'theaterlife-byline-backfill';
-  const newData = { ...data, criticName: critic, criticEnrichedFrom: src, _priorCriticName: 'Barry Gordin' };
-  // Clear every stale byline-mismatch flag (mirror the canonical override in
-  // collect-review-texts.js). fullTextWrongAuthor / _authorMismatch matter most:
-  // review-guards.js excludes a review when fullTextWrongAuthor===true, so a stale
-  // value would silently drop the newly-correct review from the rebuild.
-  delete newData.misattributedFullText;
-  delete newData.extractedByline;
-  delete newData.expectedCritic;
-  delete newData.fullTextWrongAuthor;
-  delete newData.fullTextWrongAuthorAt;
-  delete newData._authorMismatch;
-  return safeRenameReview(srcPath, dstPath, { newData });
-}
-
-// A review carries more signal than another if its body is materially longer,
-// or it is scored while the other is not. Used to avoid discarding the fuller
-// copy when a phantom and its correctly-named sibling are the same review.
-function richness(d) {
-  return { len: (d.fullText || '').length, scored: d.assignedScore != null || !!d.llmScore };
+  const source = recovered ? 'theaterlife-byline-refetch' : 'theaterlife-byline-backfill';
+  return renameOntoCriticShared(srcPath, dstPath, data, critic, { source, priorCritic: 'Barry Gordin' });
 }
 
 function main() {

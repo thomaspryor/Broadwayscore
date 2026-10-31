@@ -74,6 +74,13 @@ describe('page-read byline upgrades an Unknown file (BRO-4485)', () => {
     }
   });
 
+  test('a listing that names the critic for this URL also upgrades (BRO-6518)', () => {
+    const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
+    const r = write(t.dir, 'Helen Shaw', { bylineFromOwnPage: false, bylineFromListing: true });
+    assert.equal(r.action, 'updated');
+    assert.deepEqual(t.list(), ['nytimes--helen-shaw.json']);
+  });
+
   test('without the page-read opt-in (aggregator rows) nothing changes', () => {
     const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
     write(t.dir, 'Helen Shaw', { bylineFromOwnPage: undefined, source: 'dtli' });

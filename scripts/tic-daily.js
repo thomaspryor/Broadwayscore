@@ -68,6 +68,12 @@ async function stageAndAdd() {
   fs.writeFileSync(PROMOTED, JSON.stringify(prev, null, 2) + '\n');
 }
 
+// Entries are {url, critic}; plain strings are URLs left in `pending` by runs before BRO-6518.
+function ingestLines(entries) {
+  const { formatIngestLine } = require('./lib/ingest-url-line');
+  return entries.map((e) => (typeof e === 'string' ? e : formatIngestLine({ url: e.url, critic: e.critic }))).join('\n');
+}
+
 function dispatchIngest() {
   const { dispatch } = require('./lib/rest-dispatch');
   const { checkCap } = require('./lib/workflow-queue-cap');
@@ -81,7 +87,7 @@ function dispatchIngest() {
     const cap = checkCap({ workflow: 'ingest-urls.yml' });
     if (!cap.ok) { console.log(`[tic-daily] deferred: ${cap.reason}`); left.push(a); continue; }
     try {
-      dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: a.urls.join('\n') } });
+      dispatch({ workflow: 'ingest-urls.yml', inputs: { show_id: a.id, urls: ingestLines(a.urls) } });
       console.log(`[tic-daily] ingest dispatched for ${a.id}`);
     } catch (e) {
       console.log(`::warning::ingest dispatch failed for ${a.id}: ${e.message}`);
