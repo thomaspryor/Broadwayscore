@@ -24,7 +24,7 @@ function withTimeout(p, ms, what) {
  */
 async function buildPressNightCensus({ showId, market = 'broadway', show, bwwUrl = null, noFetch = false, timeoutMs = 0 }) {
   const { buildCensusFromArchives, unionCensus, parseBwwRoundup } = require('./review-census');
-  const archive = buildCensusFromArchives(showId, { market, show: show || undefined });
+  const archive = buildCensusFromArchives(showId, { market, show: show || undefined, dropLegacyArchive: true });
   const nyc = ['broadway', 'off-broadway', 'nyc'].includes(market);
   if (!nyc || noFetch || archive.sourcesPresent.includes('bww-roundup') || !show) return { census: archive, note: 'archive only' };
   let url = bwwUrl || null;
@@ -44,7 +44,7 @@ async function buildPressNightCensus({ showId, market = 'broadway', show, bwwUrl
     if (!v.isValid && v.rejectReason !== 'no-significant-title-tokens') return { census: archive, note: `BWW roundup rejected (${v.rejectReason}): ${url}` };
     const rows = parseBwwRoundup(html, showId);
     if (!rows.length) return { census: archive, note: `BWW roundup parsed 0 reviews: ${url}` };
-    const merged = unionCensus([{ source: 'archive', reviews: archive.entries }, { source: 'bww-roundup-live', reviews: rows }]);
+    const merged = unionCensus([{ source: 'archive', reviews: archive.entries }, { source: 'bww-roundup-live', reviews: rows }], { dropLegacyArchive: true });
     merged.sourcesPresent = [...archive.sourcesPresent, 'bww-roundup-live'];
     merged.bwwRoundupUrl = url;
     return { census: merged, note: `archive + live BWW roundup (${rows.length} rows): ${url}` };

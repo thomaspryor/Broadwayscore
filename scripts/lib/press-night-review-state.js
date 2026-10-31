@@ -24,7 +24,7 @@ const SYNDICATED_REASONS = new Set(['knownSyndicationSecondary', 'syndicatedDupl
 
 // Reasons that say the listed article is about a different production/show, not this night's review.
 const WRONG_PRODUCTION_REASONS = new Set(['wrongProduction', 'wrongShow']);
-const urlKey = (u) => String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+const urlKey = (u) => String(u || '').trim().toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/#.*$/, '').replace(/[?&](utm_[^=&]*|fbclid|gclid)=[^&]*/g, '').replace(/\?$/, '').replace(/\/+$/, '');
 
 function outletIdOfFile(d) {
   const raw = String(d.outletId || d.outlet || '').trim();
@@ -108,7 +108,8 @@ function censusExclusions(census, files, opts = {}) {
   }
   const out = [];
   for (const e of census.entries) {
-    const wl = e.url && wrongListing.get(urlKey(e.url));
+    const urls = [...new Set([...(e.urls || []), ...(e.url ? [e.url] : [])])];
+    const wl = urls.length && urls.every((u) => wrongListing.has(urlKey(u))) && !(byOutlet.get(e.outletId) || []).some((f) => f.includable) && wrongListing.get(urlKey(urls[0]));
     if (wl) { out.push({ outletId: e.outletId, reason: `listing is another production's review (${wl.reason})` }); continue; }
     const fs_ = byOutlet.get(e.outletId) || byOutlet.get(e.outletId.replace(/-london$/, '')) || byOutlet.get(`${e.outletId}-london`) || [];
     if (!fs_.length || fs_.some((f) => f.includable)) continue;

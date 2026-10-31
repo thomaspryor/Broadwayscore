@@ -244,28 +244,29 @@ function sourceExtractors(market = 'west-end') {
 }
 
 /**
- * Union per-source review arrays into a deduped census keyed by normalized outlet.
- * Keeps the entry with a URL; merges the source list. Pure — testable.
- * @param {Array<{source:string, reviews:Array}>} perSource
- * @returns {{entries:Array, count:number, sourcesPresent:string[], hadAnySource:boolean}}
- */
-/**
  * BRO-6701: retired NYT archive hosts (theater.nytimes.com/mem/, query.nytimes.com) only carry pre-2008
  * reviews, so a roundup row there is an older production of a same-title show (Medea 2026 inherited one
- * from DTLI). A 2026 review can never live on them. Host match only; nothing is read out of the path.
+ * from DTLI). Opt-in (unionCensus opts.dropLegacyArchive, press-night census only): historical shows through
+ * ~2010 legitimately cite these hosts. Host match only; nothing is read out of the path.
  */
 function isLegacyArchiveUrl(url) {
   return /^https?:\/\/(theater|query)\.nytimes\.com\//i.test(String(url || '').trim());
 }
 
-function unionCensus(perSource) {
+/**
+ * Union per-source review arrays into a deduped census keyed by normalized outlet.
+ * Keeps the entry with a URL; merges the source list. Pure — testable.
+ * @param {Array<{source:string, reviews:Array}>} perSource
+ * @returns {{entries:Array, count:number, sourcesPresent:string[], hadAnySource:boolean}}
+ */
+function unionCensus(perSource, opts = {}) {
   const byOutlet = new Map();
   const sourcesPresent = [];
   for (const { source, reviews } of perSource) {
     if (!Array.isArray(reviews) || reviews.length === 0) continue;
     sourcesPresent.push(source);
     for (const r of reviews) {
-      if (isLegacyArchiveUrl(r.url)) continue;
+      if (opts.dropLegacyArchive && isLegacyArchiveUrl(r.url)) continue;
       // A source's own r.outletId always wins when present — some sources (e.g.
       // theatre-reviews) resolve shared-domain edition splits (telegraph vs
       // sunday-telegraph, timeout vs timeout-london) via byline/section text that
@@ -287,6 +288,8 @@ function unionCensus(perSource) {
         critic: r.critic && r.critic !== 'Unknown' ? r.critic : (existing && existing.critic) || 'Unknown',
         stars: r.stars != null ? r.stars : (existing && existing.stars) ?? null,
         url: r.url || (existing && existing.url) || '',
+        // every URL any source listed for the outlet (BRO-6701: exclusions must cover all of them)
+        urls: [...new Set([...((existing && existing.urls) || []), ...(r.urls || (r.url ? [r.url] : []))])],
         sources: existing ? [...new Set([...existing.sources, source])] : [source],
       };
       byOutlet.set(outletId, entry);
@@ -359,7 +362,7 @@ function buildCensusFromArchives(showId, opts = {}) {
     if ((!Array.isArray(reviews) || reviews.length === 0) && !s.softFail) zeroExtract.push(s.name);
     perSource.push({ source: s.name, reviews });
   }
-  return { ...unionCensus(perSource), archivesPresent, zeroExtract, wrongRoundup };
+  return { ...unionCensus(perSource, { dropLegacyArchive: !!opts.dropLegacyArchive }), archivesPresent, zeroExtract, wrongRoundup };
 }
 
 // Market-suffix tolerance: a roundup may label an outlet "Time Out"

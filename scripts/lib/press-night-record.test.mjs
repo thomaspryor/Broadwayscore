@@ -787,8 +787,10 @@ test('unionCensus drops legacy NYT archive rows (an older production of a same-t
   const legacy = 'http://theater.nytimes.com/mem/theater/treview.html?pagewanted=print&res=9B04E0D9173AF932A25751C1A9649C8B63&fta=y';
   assert.equal(isLegacyArchiveUrl(legacy), true);
   assert.equal(isLegacyArchiveUrl('https://www.nytimes.com/2026/10/30/theater/medea-review.html'), false);
-  const c = unionCensus([{ source: 'dtli', reviews: [{ outlet: 'The New York Times', critic: 'Unknown', url: legacy }, { outlet: 'Variety', url: 'https://variety.com/x' }] }]);
-  assert.deepEqual(c.entries.map((e) => e.outletId), ['variety']);
+  const src = [{ source: 'dtli', reviews: [{ outlet: 'The New York Times', critic: 'Unknown', url: legacy }, { outlet: 'Variety', url: 'https://variety.com/x' }] }];
+  assert.deepEqual(unionCensus(src, { dropLegacyArchive: true }).entries.map((e) => e.outletId), ['variety']);
+  // opt-in only: historical-show callers still see the row
+  assert.deepEqual(unionCensus(src).entries.map((e) => e.outletId).sort(), ['nytimes', 'variety']);
 });
 
 test('censusExclusions: a listing whose exact URL is wrongProduction leaves the census even when first seen before the window', () => {
@@ -803,4 +805,23 @@ test('censusExclusions: a listing whose exact URL is wrongProduction leaves the 
   const r = nightRec({}, files);
   r.reference['2h'] = lib.coverageAt(r, census, Date.parse(at(120)), { excluded: stateLib.censusExclusions(census, files, opts) });
   assert.deepEqual(r.reference['2h'].missing, ['variety']);
+});
+
+test('censusExclusions: wrong-production URL exclusion never excuses an outlet that also lists the current article (BRO-6701 review)', () => {
+  const old = 'http://www.ayoungertheatre.com/review-medea-2013/';
+  const cur = 'https://ayoungertheatre.com/medea-2026/';
+  const opts = { windowStartMs: Date.parse('2026-10-30T22:00:00.000Z'), night: '2026-10-30' };
+  const wrong = { outletId: 'a-younger-theatre', url: old, firstSeenAt: '2026-10-30T17:31:00.000Z', includable: false, reason: 'wrongProduction' };
+  const { unionCensus } = require('./review-census.js');
+  // two sources list the same outlet: old URL last must not hide the current one
+  const both = unionCensus([{ source: 'dtli', reviews: [{ outlet: 'A Younger Theatre', outletId: 'a-younger-theatre', url: cur }] }, { source: 'show-score', reviews: [{ outlet: 'A Younger Theatre', outletId: 'a-younger-theatre', url: old }] }]);
+  assert.deepEqual(stateLib.censusExclusions(both, [wrong], opts), []);
+  // an includable file for the outlet keeps it in the denominator
+  const only = { entries: [{ outletId: 'a-younger-theatre', url: old, urls: [old] }] };
+  assert.deepEqual(stateLib.censusExclusions(only, [wrong, { outletId: 'a-younger-theatre', url: cur, firstSeenAt: '2026-10-31T03:00:00.000Z', includable: true }], opts), []);
+  // query string identifies the article: ?id=2013 must not excuse ?id=2026
+  const q = { entries: [{ outletId: 'a-younger-theatre', url: 'https://x.com/review?id=2026' }] };
+  assert.deepEqual(stateLib.censusExclusions(q, [{ ...wrong, url: 'https://x.com/review?id=2013' }], opts), []);
+  // tracking params and www/http variants still match
+  assert.equal(stateLib.censusExclusions({ entries: [{ outletId: 'a-younger-theatre', url: 'https://ayoungertheatre.com/review-medea-2013/?utm_source=x' }] }, [wrong], opts).length, 1);
 });
