@@ -47,6 +47,10 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // It also switches off the content-verifier wrongShow / nonReview / film-TV promotions for that review, and a plan
   // cannot clear it (a manual edit is needed to undo a mistake), so set it only after reading the page.
   'allowCrossMarket',
+  // _auditAllowCrossMarket (BRO-6323): TRUE ONLY. audit-review-contamination class A / A2 skip the file. For a
+  // review whose date lands near a cross-market sibling's opening but whose URL and text name the folder's own
+  // production (a long-running show's later review). Read the page first; a plan cannot clear it.
+  '_auditAllowCrossMarket',
   'wrongShow', 'wrongShowManualClear',
   // showId (BRO-4317): only to repair a stale id left by a move, and only to the
   // folder the file lives in (FIELD_VALUE_CHECKS.showId). A mismatch can also
@@ -176,6 +180,7 @@ const FIELD_VALUE_CHECKS = {
     return storedLabelRelabelError(v, record);
   },
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
+  _auditAllowCrossMarket: (v) => (v === true ? null : '_auditAllowCrossMarket may only be set to true'),
   fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
   // the primary is excluded for a reason that does not apply to this copy.

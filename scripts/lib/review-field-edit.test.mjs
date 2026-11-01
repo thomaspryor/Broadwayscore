@@ -953,3 +953,13 @@ test('hasApprovedFlag: a cosmetic url swap (https, www, tracking params) keeps a
   assert.equal(hasApprovedFlag({ ...res.record, url: 'https://example.com/a?utm_source=x' }, 'wrongShow'), true);
   assert.equal(hasApprovedFlag({ ...res.record, url: 'https://example.com/b' }, 'wrongShow'), false);
 });
+
+test('_auditAllowCrossMarket can be set true only (BRO-6323)', () => {
+  assert.ok(REVIEW_TEXT_EDITABLE_FIELDS.includes('_auditAllowCrossMarket'));
+  const rec = { criticName: 'A', publishDate: '2024-01-01' };
+  const ok = applyReviewFieldEdit(rec, { field: '_auditAllowCrossMarket', oldValue: null, newValue: true }, stamp);
+  assert.equal(ok.ok, true, ok.reason);
+  assert.equal(ok.record._auditAllowCrossMarket, true);
+  assert.equal(applyReviewFieldEdit(rec, { field: '_auditAllowCrossMarket', oldValue: null, newValue: false }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit(rec, { field: '_auditAllowCrossMarket', oldValue: null, newValue: 'yes' }, stamp).ok, false);
+});
