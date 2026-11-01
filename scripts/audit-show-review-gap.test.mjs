@@ -1306,6 +1306,15 @@ test('BRO-6742: a roundup recorded as another show\'s is dropped; its owner and 
   assert.deepEqual(dropRoundupsOwnedByOtherShows([rr], 'from-the-heart-west-end-2026', owners), []);
   assert.deepEqual(dropRoundupsOwnedByOtherShows([rr + '?x=1'], 'from-the-heart-west-end-2026', owners), []);
   assert.deepEqual(dropRoundupsOwnedByOtherShows([rr], 'the-heart-off-broadway-2026', owners), [rr]);
+  assert.deepEqual(dropRoundupsOwnedByOtherShows([rr.replace('https://www.', 'http://')], 'from-the-heart-west-end-2026', owners), []);
+  // shared owner: the full, longer title the slug names wins (girls vs two-girls)
+  const tg = 'https://www.broadwayworld.com/article/Review-Roundup-TWO-GIRLS-at-the-Cherry-Lane-Theatre-20261023';
+  const shared = roundupOwnerMap([
+    { id: 'girls-off-west-end-2026', title: 'Girls', bwwRoundupUrl: tg },
+    { id: 'two-girls-off-broadway-2026', title: 'Two Girls', bwwRoundupUrl: tg },
+  ], {});
+  assert.deepEqual(dropRoundupsOwnedByOtherShows([tg], 'girls-off-west-end-2026', shared), []);
+  assert.deepEqual(dropRoundupsOwnedByOtherShows([tg], 'two-girls-off-broadway-2026', shared), [tg]);
   const other = 'https://www.broadwayworld.com/article/Review-Roundup-FROM-THE-HEART-London-20261009';
   assert.deepEqual(dropRoundupsOwnedByOtherShows([other], 'from-the-heart-west-end-2026', owners), [other]);
 });

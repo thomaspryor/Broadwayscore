@@ -1,8 +1,8 @@
 {
   "issueNumber": "bro-6742",
-  "planId": "d457ca50-8630-44ef-b1a9-8c02d75b04cc",
+  "planId": "d0f6f2ff-8478-45ad-88c3-a615ab047f84",
   "status": "pending",
-  "createdAt": "2026-11-01T00:57:47.271Z",
+  "createdAt": "2026-11-01T01:09:32.550Z",
   "submitter": {
     "name": null,
     "email": null
@@ -36,7 +36,7 @@
         "type": "run-script",
         "description": "Refetch Interested Bystander multi-show posts whose stored text lost its section headings, isolate this show's section, and clear wrongShow/wrongProduction verdicts that were made on the whole post (BRO-6742)",
         "script": "isolate-multi-show-sections.js",
-        "args": "--apply --refetch"
+        "args": "--apply --refetch --deadline-sec=240"
       }
     ]
   }

@@ -547,26 +547,55 @@ async function findAggregatorArticles(show) {
 // (off-Broadway, Laura Pels): one title token "heart" matched its slug, and six
 // NYC reviews were cited as missing for the London show.
 let _roundupOwners = null;
+/** Owner-map key: no scheme, www., query, hash or trailing slash; lowercased. */
+function roundupKey(u) {
+  return String(u).split('?')[0].split('#')[0].replace(/\/+$/, '').replace(/^https?:\/\/(www\.)?/i, '').toLowerCase();
+}
 function roundupOwnerMap(shows = null, persistedRoundups = null) {
   const cacheable = !shows && !persistedRoundups;
   if (_roundupOwners && cacheable) return _roundupOwners;
   const map = new Map();
   const add = (u, owner) => {
     if (typeof u !== 'string' || !u || !owner) return;
-    const k = u.split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase();
+    const k = roundupKey(u);
     if (!map.has(k)) map.set(k, new Set());
     map.get(k).add(owner);
   };
   for (const s of shows || getAllShowsForShowScore()) add(s && s.bwwRoundupUrl, s && s.id);
   for (const [owner, u] of Object.entries(persistedRoundups || getBwwRoundupUrlMap())) if (!owner.startsWith('_')) add(u, owner);
+  narrowSharedRoundupOwners(map, shows || getAllShowsForShowScore());
   if (cacheable) _roundupOwners = map;
+  return map;
+}
+
+/**
+ * A roundup recorded under several shows belongs to the one whose title the
+ * slug names in full, longest first: girls-off-west-end-2026 ("Girls") had
+ * the Cherry Lane "TWO-GIRLS" roundup copied onto it, so "two-girls" wins and
+ * the London show stops inheriting NYC reviews. Owners stay as recorded when
+ * no title, or more than one equally long title, matches.
+ */
+function narrowSharedRoundupOwners(map, shows) {
+  const titleById = new Map((shows || []).map((s) => [s && s.id, s && s.title]));
+  const slugOf = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  for (const [k, owners] of map) {
+    if (owners.size < 2) continue;
+    const hay = `-${k.replace(/[^a-z0-9]+/g, '-')}-`;
+    const scored = [...owners].map((id) => {
+      const t = slugOf(titleById.get(id));
+      return { id, len: t && hay.includes(`-${t}-`) ? t.length : 0 };
+    });
+    const best = Math.max(...scored.map((x) => x.len));
+    const winners = scored.filter((x) => x.len === best);
+    if (best > 0 && winners.length < owners.size) map.set(k, new Set(winners.map((x) => x.id)));
+  }
   return map;
 }
 
 /** Pure: urls minus those owned only by other shows. */
 function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
   return urls.filter((u) => {
-    const set = owners.get(String(u).split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase());
+    const set = owners.get(roundupKey(u));
     return !set || set.has(showId);
   });
 }

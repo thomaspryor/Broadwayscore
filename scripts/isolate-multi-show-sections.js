@@ -35,7 +35,7 @@ const { planIsolation, planRefetchedIsolation, needsRefetch } = require('./lib/m
 const { findSectionHeadings } = require('./lib/multi-show-section-extract');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
-const USAGE = 'Usage: node scripts/isolate-multi-show-sections.js [--apply] [--refetch] [--dir=PATH] [--show=ID]';
+const USAGE = 'Usage: node scripts/isolate-multi-show-sections.js [--apply] [--refetch] [--dir=PATH] [--show=ID] [--deadline-sec=N]';
 
 async function main() {
   const argv = process.argv.slice(2);
@@ -47,6 +47,12 @@ async function main() {
   const showArg = argv.find((a) => a.startsWith('--show='));
   const dir = dirArg ? dirArg.slice(6) : (process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts'));
   const onlyShow = showArg ? showArg.slice(7) : null;
+  // --deadline-sec: stop starting new refetches after N seconds so a caller with a
+  // hard kill (execute-approved-fix run-script, 5 min) ends cleanly; skipped files
+  // are listed and simply wait for the next run.
+  const deadlineArg = argv.find((a) => a.startsWith('--deadline-sec='));
+  const deadlineAt = deadlineArg ? Date.now() + Number(deadlineArg.slice(15)) * 1000 : Infinity;
+  let skippedForDeadline = 0;
   const at = new Date().toISOString();
   let changed = 0; let refused = 0;
   // listShowDirs: a dangling symlink must not crash the daily scheduled run.
@@ -59,6 +65,11 @@ async function main() {
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
       let plan = planIsolation(data, showId, at);
+      if (!plan && refetch && needsRefetch(data) && Date.now() > deadlineAt) {
+        skippedForDeadline++;
+        console.log(`  skip    ${showId}/${file} (deadline reached; next run)`);
+        continue;
+      }
       if (!plan && refetch && needsRefetch(data)) {
         const post = await fetchPostText(data.url, postCache);
         plan = post ? planRefetchedIsolation(data, showId, post, at) : null;
@@ -77,6 +88,7 @@ async function main() {
       if (apply) safeWriteReview(filePath, plan.data, { force: true, merge: false });
     }
   }
+  if (skippedForDeadline) console.log(`[isolate-multi-show-sections] ${skippedForDeadline} refetch(es) skipped at the deadline`);
   console.log(`[isolate-multi-show-sections] ${changed} file(s) ${apply ? 'rewritten' : 'would be rewritten'}, ${refused} left (no unique section)${apply ? '' : ' (dry run)'}`);
 }
 
