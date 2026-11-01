@@ -58,7 +58,7 @@ function parseLsaHeadline(html) {
   const head = t[1].replace(/&amp;|&#0?38;/g, '&').replace(/&nbsp;|&#160;/g, ' ')
     .replace(/\s+[-\u2013\u2014]\s+Lighting\s*&\s*Sound America.*$/i, '').trim();
   const m = head.match(/^(.*\S)\s*\(([^()]*)\)\s*$/);
-  return m ? { show: m[1].trim(), venue: m[2].trim() } : null;
+  return m ? { show: m[1].trim(), venue: m[2].trim() } : null;  // venue-write-guard-ok: parses an LSA headline for a date fallback; never written to shows.json
 }
 function headlineVenue(html) {
   const p = parseLsaHeadline(html);
