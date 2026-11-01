@@ -74,12 +74,35 @@ async function evaluate(row, ctx, io) {
 }
 
 /**
+ * Shows already on the site that the listing now credits with more reviews than we last
+ * linked. Only for cities that add shows from a first review (minOutlets < 3, BRO-6771),
+ * where a show would otherwise stay unscored forever.
+ */
+function pickTopups(listing, shows, seen, city = getCity('chicago')) {
+  if (!city.minOutlets || city.minOutlets >= stage.MIN_REVIEWS) return [];
+  const have = new Set(shows.map((x) => ticIdOf(x, city)).filter(Boolean));
+  return listing.filter((row) => have.has(row.id) && (seen[row.id]?.reviews ?? 0) < row.reviewCount);
+}
+
+/**
  * Run the day. Mutates `shows` (the parsed shows.json array) with accepted entries.
  * Returns { added:[{id, urls:[{url, critic}]}], seen } where `seen` is the updated memory.
  */
 async function runDaily({ listing, shows, seen, today, io, max = 15, log = () => {}, city = getCity('chicago') }) {
   const next = { ...seen };
   const added = [];
+  const topups = [];
+  for (const row of pickTopups(listing, shows, seen, city).slice(0, max)) {
+    try {
+      const links = stage.linkedReviews(await io.page(row.id)).map((r) => ({ url: r.url, critic: r.critic || null }));
+      const id = shows.find((x) => ticIdOf(x, city) === row.id).id;
+      next[row.id] = { ...(next[row.id] || { reason: 'added', retry: false, on: today }), id, reviews: links.length };
+      if (links.length) topups.push({ id, urls: links });
+      log(`top-up ${id} (${links.length} reviews listed)`);
+    } catch (e) {
+      log(`id ${row.id}: top-up ERROR ${e.message}`);
+    }
+  }
   for (const row of pickCandidates(listing, shows, seen, city).slice(0, max)) {
     let res;
     try {
@@ -98,11 +121,11 @@ async function runDaily({ listing, shows, seen, today, io, max = 15, log = () =>
       log(`id ${row.id}: add-show refused (${next[row.id].reason})`);
       continue;
     }
-    next[row.id] = { reason: 'added', id: res.show.id, retry: false, on: today };
+    next[row.id] = { reason: 'added', id: res.show.id, retry: false, on: today, reviews: res.reviews.length };
     added.push({ id: res.show.id, urls: res.reviews });
     log(`added ${res.show.id} (${res.reviews.length} reviews)`);
   }
-  return { added, seen: next };
+  return { added, topups, seen: next };
 }
 
-module.exports = { ticIdOf, pickCandidates, isRetry, evaluate, runDaily, RETRY_REASONS };
+module.exports = { ticIdOf, pickCandidates, pickTopups, isRetry, evaluate, runDaily, RETRY_REASONS };

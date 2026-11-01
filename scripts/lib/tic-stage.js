@@ -94,17 +94,22 @@ const IL_CITIES = ['Chicago Heights', 'Oak Park', 'Oak Brook', 'Oakbrook Terrace
 const IN_CITIES = ['Hammond', 'Gary', 'Munster', 'Valparaiso', 'Michigan City'];
 
 /**
- * Generic "<Theater>, <City>, <ST>": the LAST listed city in the address wins
- * ("1010 Chicago Ave Evanston" is Evanston). Returns null when no listed city
- * appears, so the caller can reject a venue outside the metro.
+ * Generic "<Theater>, <City>, <ST>": the address ends with the city ("1010 Chicago
+ * Ave Evanston" is Evanston), optionally followed by ", ST 12345". A listed name
+ * must be that trailing token: "1700 Washington Blvd Baltimore" is Baltimore, not DC
+ * (BRO-6771). Returns null when the trailing token is not a listed city, so the
+ * caller rejects a venue outside the metro.
  */
 function venueLineFromCities(theater, addr, cities) {
+  addr = String(addr).replace(/[,\s]+(?:[A-Z]{2}|Virginia|Maryland|District of Columbia)?[,\s]*\d{5}(?:-\d{4})?\s*$/i, '')
+    .replace(/[,\s]+(?:DC|D\.C\.|VA|MD|Virginia|Maryland)\s*$/i, '').trim();
   let best = null;
   for (const [name, state] of cities) {
     const re = new RegExp(`\\b${name.replace('.', '\\.')}\\b`, 'gi');
     let m;
     while ((m = re.exec(addr))) {
-      const end = m.index + name.length;
+      const end = m.index + m[0].length;
+      if (end !== addr.length) continue;
       if (!best || end > best.end || (end === best.end && name.length > best.name.length)) best = { name, state, end };
     }
   }

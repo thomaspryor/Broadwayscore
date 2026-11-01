@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Daily pickup of new Chicago productions from theatreinchicago.com (BRO-6518).
+ * Daily pickup of new productions from theatreinchicago.com / theatreindc.com (BRO-6518, BRO-6771).
  *
  *   node scripts/tic-daily.js [--dry-run] [--max=15]      # stage + write data/shows.json
  *   node scripts/tic-daily.js --dispatch-ingest          # after the core-data push: ingest + score
@@ -55,8 +55,11 @@ async function stageAndAdd() {
     detail: async (page) => tic.parseDetailPage((await fetchPage(tic.detailUrl(page.id, page.slug, CITY.base), { skipVerify: true })).content),
     dates: (page) => openingDateFor(page),
   };
-  const { added, seen: nextSeen } = await runDaily({ listing, shows, seen, today, io, max: Number(arg('max', 15)), log: console.log, city: CITY });
-  console.log(`[tic-daily] added ${added.length}`);
+  const { added, topups = [], seen: nextSeen } = await runDaily({ listing, shows, seen, today, io, max: Number(arg('max', 15)), log: console.log, city: CITY });
+  console.log(`[tic-daily] added ${added.length}, topped up ${topups.length}`);
+  // Top-ups ride the ingest queue (ingest-urls skips links it already has); they are not new shows, so no image promotion.
+  const queued = new Set(pending.map((p) => p.id));
+  for (const t of topups) if (!queued.has(t.id)) pending.push(t);
   if (flag('dry-run')) return;
   fs.mkdirSync(path.dirname(SEEN), { recursive: true });
   // shows.json first: a crash after it only re-evaluates the ids (dedupe catches them),

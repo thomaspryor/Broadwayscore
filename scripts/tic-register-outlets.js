@@ -24,6 +24,7 @@ const DC_TIER2 = ['Washington City Paper', 'DC Theatre Scene', 'DCTheaterScene',
 const DC_TIER3 = ['Washington Blade', 'DC Theater Arts', 'MD Theatre Guide', 'Maryland Theatre Guide', 'Metro Weekly', 'Stage and Cinema', 'Washington Examiner', 'DCist', 'Axios', 'Variety', 'Hollywood Reporter', 'Capital Gazette', 'ARLnow', 'Bethesda Magazine', 'Montgomery Community Media', 'K Street Magazine', 'Broadway World', 'BroadwayWorld'];
 const getArg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
 const CITY = getArg('city') || 'chicago';
+if (CITY !== 'chicago' && !getArg('manifest')) { console.error('--city=' + CITY + ' needs --manifest=<staged manifest> (the default index is Chicago\'s)'); process.exit(1); }
 const REGION = CITY === 'dc' ? 'washington-dc' : 'chicago';
 const tierOf = (name) => {
   const n = norm(name);
