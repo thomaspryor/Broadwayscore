@@ -539,7 +539,7 @@
       "resolvedAt": "2026-08-04T13:07:42.297Z"
     },
     "arm-yield:workflow:scoring-audit": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
@@ -549,7 +549,8 @@
       "lastSurfacedAt": "2026-10-31T17:19:17.394Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-01T18:00:25.032Z"
     },
     "scheduled-email-count:2026-08-02": {
       "status": "resolved",
@@ -1919,12 +1920,13 @@
       "title": "Scrape WestEndTheatre has stopped updating (90 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
       "incidentOpenedAt": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-10-31T17:19:17.417Z",
+      "lastSeen": "2026-11-01T18:00:24.982Z",
       "lastNotifiedAt": "2026-10-31T17:19:17.417Z",
       "lastSurfacedAt": "2026-10-31T17:19:17.417Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "arm-yield:outlet:nysr": {
       "status": "resolved",
