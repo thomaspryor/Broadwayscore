@@ -11,6 +11,15 @@
  * doesn't drift.
  */
 export const OPERA_SHOW_ID_PREFIXES: ReadonlySet<string> = new Set([
+  // English National Opera (BRO-6782; existing West End rows reclassified to opera)
+  'tosca-english-national-opera-west-end',
+  'adriana-mater-english-national-opera-west-end',
+  'iphigenie-en-tauride-english-national-opera-west-end',
+  'breaking-the-waves-english-national-opera-west-end',
+  // San Francisco Opera (BRO-6782)
+  'the-monkey-king-off-broadway',
+  'simon-boccanegra-off-broadway',
+  'mary-queen-of-scots-off-broadway',
   // Royal Opera House (BRO-6766)
   'a-masked-ball-off-west-end',
   'parsifal-off-west-end',

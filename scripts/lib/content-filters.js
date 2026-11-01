@@ -230,15 +230,39 @@ const NON_MET_OPERA_URL_MARKERS = [
  * @param {string} url - Full URL or URL slug
  * @returns {{ rejected: boolean, marker?: string }}
  */
-function hasNonMetOperaUrlMarker(url) {
+function hasNonMetOperaUrlMarker(url, house) {
   if (!url || typeof url !== 'string') return { rejected: false };
   const lower = url.toLowerCase();
-  for (const marker of NON_MET_OPERA_URL_MARKERS) {
+  // House-aware (BRO-6782): a show at a non-Met house keeps ITS OWN house
+  // markers (otherwise every ENO/SFO/ROH review URL is rejected) and instead
+  // rejects the Met's, so a Met "Tosca" page never lands on the ENO "Tosca".
+  const own = house && OPERA_HOUSE_MARKERS[house];
+  const markers = own
+    ? [...MET_OPERA_URL_MARKERS, ...NON_MET_OPERA_URL_MARKERS.filter(m => !own.includes(m))]
+    : NON_MET_OPERA_URL_MARKERS;
+  for (const marker of markers) {
     if (lower.includes(marker)) {
       return { rejected: true, marker };
     }
   }
   return { rejected: false };
+}
+
+/** Per-house slug markers (subset of NON_MET_OPERA_URL_MARKERS). */
+const OPERA_HOUSE_MARKERS = {
+  roh: ['royal-opera-house', 'royal-opera-', 'covent-garden'],
+  eno: ['london-coliseum', 'english-national-opera', '/eno-', '-eno-'],
+  sfo: ['sf-opera', 'san-francisco-opera'],
+};
+const MET_OPERA_URL_MARKERS = ['metropolitan-opera', 'met-opera', '/the-met-', '-at-the-met'];
+
+/** Venue string -> house key ('roh' | 'eno' | 'sfo'), or null for the Met / unknown. Mirrors src/lib/show-market.ts. */
+function operaHouseForVenue(venue) {
+  if (!venue) return null;
+  if (/royal (ballet and )?opera|covent garden/i.test(venue)) return 'roh';
+  if (/war memorial opera house|san francisco opera/i.test(venue)) return 'sfo';
+  if (/london coliseum|english national opera/i.test(venue)) return 'eno';
+  return null;
 }
 
 /**
@@ -368,6 +392,8 @@ module.exports = {
   hasTryoutUrlMarker,
   NON_MET_OPERA_URL_MARKERS,
   hasNonMetOperaUrlMarker,
+  operaHouseForVenue,
+  OPERA_HOUSE_MARKERS,
   PREVIEW_HEAVY_OUTLETS,
   DEFAULT_GRACE_DAYS_BEFORE_OPENING,
   PREVIEW_HEAVY_GRACE_DAYS,

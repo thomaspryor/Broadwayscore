@@ -37,9 +37,27 @@ export function isRoyalOperaVenue(venue: string | null | undefined): boolean {
   return !!venue && /royal (ballet and )?opera|covent garden/i.test(venue);
 }
 
-/** House-aware market label for an opera show ("Met Opera" or "Royal Opera House"). */
+/** Non-Met houses tracked for new productions and premieres (BRO-6782). */
+export const SFO_MARKET_LABEL = 'San Francisco Opera';
+export const SFO_DURATION_SUFFIX = 'at San Francisco Opera';
+export const ENO_MARKET_LABEL = 'English National Opera';
+export const ENO_DURATION_SUFFIX = 'at English National Opera';
+
+export function isSanFranciscoOperaVenue(venue: string | null | undefined): boolean {
+  return !!venue && /war memorial opera house|san francisco opera/i.test(venue);
+}
+
+export function isEnglishNationalOperaVenue(venue: string | null | undefined): boolean {
+  return !!venue && /london coliseum|english national opera/i.test(venue);
+}
+
+/** House-aware market label for an opera show ("Met Opera", "Royal Opera House", ...). */
 export function getOperaMarketLabel(show: { venue?: string } | null | undefined): string {
-  return isRoyalOperaVenue(show?.venue) ? ROH_MARKET_LABEL : OPERA_MARKET_LABEL;
+  const v = show?.venue;
+  if (isRoyalOperaVenue(v)) return ROH_MARKET_LABEL;
+  if (isSanFranciscoOperaVenue(v)) return SFO_MARKET_LABEL;
+  if (isEnglishNationalOperaVenue(v)) return ENO_MARKET_LABEL;
+  return OPERA_MARKET_LABEL;
 }
 
 
@@ -110,5 +128,9 @@ export function getOperaDurationSuffix(show: ShowLike | null | undefined): strin
 
 /** Non-null house-aware suffix for callers that already know the show is an opera. */
 export function getOperaHouseSuffix(show: { venue?: string } | null | undefined): string {
-  return isRoyalOperaVenue(show?.venue) ? ROH_DURATION_SUFFIX : OPERA_DURATION_SUFFIX;
+  const v = show?.venue;
+  if (isRoyalOperaVenue(v)) return ROH_DURATION_SUFFIX;
+  if (isSanFranciscoOperaVenue(v)) return SFO_DURATION_SUFFIX;
+  if (isEnglishNationalOperaVenue(v)) return ENO_DURATION_SUFFIX;
+  return OPERA_DURATION_SUFFIX;
 }

@@ -74,3 +74,14 @@ test('Royal Opera House shows get house-aware labels (BRO-6766)', async () => {
   assert.equal(m.isRoyalOperaVenue('Royal Ballet and Opera'), true);
   assert.equal(m.isRoyalOperaVenue('Metropolitan Opera House'), false);
 });
+
+test('SFO and ENO shows get house-aware labels (BRO-6782)', async () => {
+  const m = await import('../../src/lib/show-market');
+  const sfo = { type: 'opera', venue: 'War Memorial Opera House', category: 'off-broadway' };
+  const eno = { type: 'opera', venue: 'London Coliseum', category: 'west-end' };
+  assert.equal(m.getOperaMarketLabel(sfo), 'San Francisco Opera');
+  assert.equal(m.getOperaMarketLabel(eno), 'English National Opera');
+  assert.equal(m.getOperaDurationSuffix(sfo), 'at San Francisco Opera');
+  assert.equal(m.getOperaDurationSuffix(eno), 'at English National Opera');
+  assert.equal(m.getOperaDurationSuffix({ type: 'musical', venue: 'London Coliseum' }), null);
+});
