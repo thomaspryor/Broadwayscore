@@ -74,7 +74,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -2963,7 +2963,8 @@ showDirs.forEach(showId => {
       // BRO-6716: legacy wrongShow flags no current writer would set. Class B: a
       // CV "not a review" verdict an older rebuild filed as wrongShow (the
       // promotion now routes it to isNonReview). Class C: a "Generic homepage
-      // URL" collector verdict on a URL that points at one article. Runs before
+      // URL" collector verdict on a URL that points at one article. Class C2: a
+      // bulk-remediation "title not found" verdict the current body disproves. Runs before
       // the tier re-check below so a healed file is re-tiered in this pass.
       // wrongShowReason is removed so the stale-CV fallback cannot re-promote it.
       {
@@ -2972,6 +2973,7 @@ showDirs.forEach(showId => {
         let healKind = null;
         if (isMisFamilyCvPromotedWrongShow(data, { cvIsStale: computeCvIsStale(data), urlFiledUnderOtherShow })) healKind = 'cv-nonreview-misfamily';
         else if (isStaleGenericHomepageWrongShow(data, showById[showId], { urlFiledUnderOtherShow })) healKind = 'generic-homepage-legacy';
+        else if (isStaleBulkTitleWrongShow(data, showById[showId], { urlFiledUnderOtherShow })) healKind = 'bulk-title-legacy';
         if (healKind) {
           data.wrongShowSelfHealed = true;
           data.wrongShowSelfHealReason = `BRO-6716 ${healKind}: cleared legacy wrongShow (${String(data.wrongShowReason || '').slice(0, 120)})`;

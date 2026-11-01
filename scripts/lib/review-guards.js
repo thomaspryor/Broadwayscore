@@ -2865,6 +2865,41 @@ function isStaleGenericHomepageWrongShow(data, show, { urlFiledUnderOtherShow = 
   return Boolean(excerpt);
 }
 
+// Lowercased, accent- and punctuation-free, space-padded: " here there are blueberries ".
+const normTitlePhrase = (s) => ` ${String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')
+  .replace(/[’']/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim()} `;
+
+/**
+ * BRO-6716 (class C2): a wrongShow flag from the one-off 2026 bulk remediation,
+ * whose reason reads `CV-promoted (bulk-remediation): Show title "X" not found
+ * in content`. No current code writes it. Of the 17 such files (2026-11-01),
+ * the two 2026 Romeo and Juliet reviews from London Theatre name the show in
+ * full and sit inside its run; the flag on them is simply false.
+ *
+ * Clears only when the stated reason is falsified and the review is this run's:
+ * the body (500+ chars) contains the full show title as a phrase (the keyword
+ * matcher accepts one common word such as "music", which would clear a Daily
+ * Mail news story) and publishDate falls inside the show's own production
+ * window. A rejection, wrongProduction flag or person's note keeps it out.
+ *
+ * @param {object} data - Review-text JSON
+ * @param {object} show - shows.json entry for the folder the file sits in
+ * @param {{urlFiledUnderOtherShow?: boolean}} [ctx]
+ * @returns {boolean}
+ */
+function isStaleBulkTitleWrongShow(data, show, { urlFiledUnderOtherShow = false } = {}) {
+  if (!data || data.wrongShow !== true || urlFiledUnderOtherShow || !show || !show.title) return false;
+  if (!/^CV-promoted \(bulk-remediation\): Show title ".*" not found in content/.test(String(data.wrongShowReason || ''))) return false;
+  if (data.wrongShowNote || data.humanReviewedWrongShow === true) return false;
+  if (data.rejectedAt || data.rejectionReason) return false;
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'wrongShow')) return false;
+  const text = typeof data.fullText === 'string' ? data.fullText : '';
+  if (text.length < 500) return false;
+  const title = normTitlePhrase(show.title).trim();
+  if (title.length < 4 || !normTitlePhrase(text).includes(` ${title} `)) return false;
+  return isReviewWithinOwnProductionWindow(show, data.publishDate || null);
+}
+
 /**
  * BRO-6225: a "not a review" verdict the content verifier formed on the head
  * of a longer article (isCvVerdictFromPartialWindow). Rebuild treats it as
@@ -6779,6 +6814,7 @@ module.exports = {
   isStaleCvPromotedWrongShow,
   isMisFamilyCvPromotedWrongShow,
   isStaleGenericHomepageWrongShow,
+  isStaleBulkTitleWrongShow,
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
   isStaleCvNonReviewVerdictOverruled,

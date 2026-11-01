@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow } = require('../../scripts/lib/review-guards.js');
+const { isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, isStaleBulkTitleWrongShow } = require('../../scripts/lib/review-guards.js');
 const { isGarbageContent, stripLeadingCookieConsentBlock } = require('../../scripts/lib/content-quality.js');
 
 const cvPreview = { isValid: false, wrongArticle: true, wrongProduction: false, isFilmTv: false, confidence: 'high', verifiedAt: '2026-04-15T00:00:00Z' };
@@ -386,3 +386,25 @@ test('BRO-6716 ship-check: the rejection-delete breadcrumb only covers the exact
     assert.equal(G.isOwnCastEvidencePersistedWrongProduction({ ...r, contentVerification: { ...r.contentVerification, wrongArticle: false } }, show), true);
   });
 }
+
+// C2: bulk-remediation "title not found" verdicts the current body disproves.
+const rj = { id: 'romeo-and-juliet-west-end-2026', title: 'Romeo and Juliet', previewsStartDate: '2026-05-01', openingDate: '2026-05-12', closingDate: '2026-08-01' };
+const rjText = 'Sadie Sink and Noah Jupe lead Romeo and Juliet at the Harold Pinter, a staging of real urgency. '.repeat(8);
+const classC2 = (over = {}) => ({ wrongShow: true, wrongShowReason: 'CV-promoted (bulk-remediation): Show title "Romeo and Juliet" not found in content', fullText: rjText, publishDate: 'May 13th, 2026', url: 'https://www.londontheatre.co.uk/reviews/romeo-and-juliet', ...over });
+
+test('C2: in-run review whose body names the show in full is healed', () => {
+  assert.equal(isStaleBulkTitleWrongShow(classC2(), rj), true);
+});
+
+test('C2: a single title word, another run, a rejection or a person keeps the flag', () => {
+  const musicCity = { id: 'music-city-off-broadway-2026', title: 'Music City', openingDate: '2026-03-01' };
+  const news = 'Trainspotting is getting the musical treatment, with music by a Scottish band. '.repeat(10);
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ fullText: news, publishDate: '2026-03-02', wrongShowReason: 'CV-promoted (bulk-remediation): Show title "Music City" not found in content' }), musicCity), false, 'one common word');
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ publishDate: '2003-07-10' }), rj), false, 'earlier production');
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ publishDate: null }), rj), false, 'undated');
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ rejectionReason: 'not_a_review' }), rj), false, 'rejected');
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ wrongShowNote: 'read by hand' }), rj), false, 'human note');
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ fullText: rjText.slice(0, 300) }), rj), false, 'short body');
+  assert.equal(isStaleBulkTitleWrongShow(classC2(), rj, { urlFiledUnderOtherShow: true }), false, 'URL under another show');
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ wrongShowReason: 'CV-promoted: different show' }), rj), false, 'other writer');
+});
