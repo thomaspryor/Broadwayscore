@@ -1325,5 +1325,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-01T19:11:38.948Z"
+  },
+  {
+    "conditionKey": "land:land/money-welcome-2",
+    "title": "Landing blocked: lint-workflows red on land/money-welcome-2",
+    "description": "land.yml did not land land/money-welcome-2: the lint-workflows gate went red at 496de8ee27. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41339055902",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/money-welcome-2"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "496de8ee27716b26d048c3f314c22de8253291bd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41339055902"
+      }
+    ],
+    "queuedAt": "2026-11-01T19:19:38.827Z"
   }
 ]
