@@ -1,20 +1,52 @@
 {
-  "generatedAt": "2026-10-31T11:03:53.061Z",
-  "total": 414,
-  "armedCount": 406,
-  "refusedCount": 8,
+  "generatedAt": "2026-11-01T11:58:55.534Z",
+  "total": 393,
+  "armedCount": 382,
+  "refusedCount": 11,
   "byKind": {
-    "no-section": 1,
-    "shape": 7
+    "shape": 10,
+    "traversal": 1
   },
   "refused": [
     {
-      "id": "BRO-6704",
-      "name": "Opening-night audit 2026-10-31",
+      "id": "BRO-6755",
+      "name": "BSC Daily: Commercial model drift",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6704/opening-night-audit-2026-10-31",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6755/bsc-daily-commercial-model-drift",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-health-row-absent.js --row-b64 Q29tbWVyY2lhbCBtb2RlbCBkcmlmdA==)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-6734",
+      "name": "Quiz onboarding QA round 2: city step off-design, touring-city users get NYC shows, two-tap import, production-question copy",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6734/quiz-onboarding-qa-round-2-city-step-off-design-touring-city-users-get",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --test ../BroadwayScorecard-app/tests/unit/canvas-pairs.test.mjs)",
+      "kind": "traversal"
+    },
+    {
+      "id": "BRO-6730",
+      "name": "check-prod-deploy.js: fall back to the GitHub compare API when local ancestry is UNKNOWN (shallow cloud clone, VERCEL_TOKEN set)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6730/check-prod-deployjs-fall-back-to-the-github-compare-api-when-local",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/check-prod-deploy.js HEAD ; echo exit=$?)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-6728",
+      "name": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6728/national-tour-pages-show-wrong-information-31-page-problems-city-row",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-tour-pages.js --summary)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-6705",
+      "name": "Recover 24 real reviews hidden by a wrong LLM not_a_review verdict (BRO-6689 sweep)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6705/recover-24-real-reviews-hidden-by-a-wrong-llm-not-a-review-verdict-bro",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-show-review-gap.js --help)",
+      "kind": "shape"
     },
     {
       "id": "BRO-6642",
@@ -22,14 +54,6 @@
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6642/email-sign-in-add-a-captcha-cloudflare-turnstile-to-code-sends",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"fetch('[https://api.supabase.com/v1/projects/'+process.env.SUPABASE_PROJECT_REF+'/config/auth',{headers:{Author)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6630",
-      "name": "OB historical backfill 2015-06 to 2018-05 (owner approved option A), after BRO-6629",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6630/ob-historical-backfill-2015-06-to-2018-05-owner-approved-option-a",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const s=require('./data/shows.json');const n=(s.shows||s).filter(x=>String(x.discoverySource||'').startsWith('o)",
       "kind": "shape"
     },
     {
@@ -74,8 +98,8 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 319,
-    "checked": 319,
+    "total": 322,
+    "checked": 322,
     "complete": true,
     "cards": [
       {
@@ -89,30 +113,30 @@
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-6702",
-      "name": "P1: Opening night miss: Specimen (2026-10-30)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6702/p1-opening-night-miss-specimen-2026-10-30",
-      "cmd": "node --test scripts/press-night-miss-resolution.test.mjs",
+      "id": "BRO-6739",
+      "name": "Link-in-bio page: feature the show of the latest video so 'link in bio' lands on it",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6739/link-in-bio-page-feature-the-show-of-the-latest-video-so-link-in-bio",
+      "cmd": "node --test scripts/test-video-captions.test.mjs",
       "missingPaths": [
-        "scripts/press-night-miss-resolution.test.mjs"
+        "scripts/test-video-captions.test.mjs"
       ]
     },
     {
-      "id": "BRO-6701",
-      "name": "P1: Opening night miss: Medea (2026-10-30)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6701/p1-opening-night-miss-medea-2026-10-30",
-      "cmd": "node --test scripts/press-night-record.test.mjs",
+      "id": "BRO-6737",
+      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6737/video-captions-tagged-link-on-facebook-link-in-bio-on-tiktokinstagram",
+      "cmd": "node --test scripts/test-video-captions.test.mjs",
       "missingPaths": [
-        "scripts/press-night-record.test.mjs"
+        "scripts/test-video-captions.test.mjs"
       ]
     },
     {
-      "id": "BRO-6695",
-      "name": "P1: Opening night miss: The Moth (2026-10-30)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6695/p1-opening-night-miss-the-moth-2026-10-30",
-      "cmd": "node --test scripts/lib/press-night-timing.test.mjs",
+      "id": "BRO-6729",
+      "name": "Align the remaining Positive/Mixed/Negative counters with the verdict-based breakdown bar (status page, opening-night-status, mobile bd, review list badges)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6729/align-the-remaining-positivemixednegative-counters-with-the-verdict",
+      "cmd": "node --test scripts/lib/verdict-alignment-parity.test.mjs",
       "missingPaths": [
-        "scripts/lib/press-night-timing.test.mjs"
+        "scripts/lib/verdict-alignment-parity.test.mjs"
       ]
     },
     {
@@ -143,24 +167,6 @@
       ]
     },
     {
-      "id": "BRO-6657",
-      "name": "Press-night probe skips West End previews with no reviewEmbargoAt (The Lives of Others, Oct 29)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6657/press-night-probe-skips-west-end-previews-with-no-reviewembargoat-the",
-      "cmd": "node --test tests/unit/press-night-probe-embargo.test.mjs",
-      "missingPaths": [
-        "tests/unit/press-night-probe-embargo.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6570",
-      "name": "Outlet id alias split: 1 review filed under 'timeoutlondon' instead of 'timeout-london'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6570/outlet-id-alias-split-1-review-filed-under-timeoutlondon-instead-of",
-      "cmd": "node --test scripts/audit-outlet-identity-hygiene.test.mjs",
-      "missingPaths": [
-        "scripts/audit-outlet-identity-hygiene.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6548",
       "name": "NYC facts audit: 8 rows with no readable authoritative source (BRO-6489 leftovers)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6548/nyc-facts-audit-8-rows-with-no-readable-authoritative-source-bro-6489",
@@ -176,15 +182,6 @@
       "cmd": "node --test scripts/lib/push-aggregator-archive.test.mjs",
       "missingPaths": [
         "scripts/lib/push-aggregator-archive.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6498",
-      "name": "Investigate US city hubs (Chicago, DC, LA): inventory, competitors, plan",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6498/investigate-us-city-hubs-chicago-dc-la-inventory-competitors-plan",
-      "cmd": "test -f memory/us-city-hubs-report.md",
-      "missingPaths": [
-        "memory/us-city-hubs-report.md"
       ]
     },
     {
@@ -404,15 +401,6 @@
       ]
     },
     {
-      "id": "BRO-5983",
-      "name": "SEO: refresh data/seo-search-landings.json on a schedule (PostHog 90-day window)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5983/seo-refresh-dataseo-search-landingsjson-on-a-schedule-posthog-90-day",
-      "cmd": "node --test scripts/seo-search-landings.test.mjs",
-      "missingPaths": [
-        "scripts/seo-search-landings.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5956",
       "name": "Opening-night lane: West End fixture and adapters (WET, theatre.reviews, Stagedoor, The Stage, LBO) captured from The Lives of Others",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5956/opening-night-lane-west-end-fixture-and-adapters-wet-theatrereviews",
@@ -494,15 +482,6 @@
       ]
     },
     {
-      "id": "BRO-5680",
-      "name": "Awards data audit runs nowhere: wire audit-awards-data.js into CI (advisory) and fix its FAILs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5680/awards-data-audit-runs-nowhere-wire-audit-awards-datajs-into-ci",
-      "cmd": "node --test scripts/audit-awards-data.test.mjs",
-      "missingPaths": [
-        "scripts/audit-awards-data.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5673",
       "name": "Progress per dollar: more Codex, cap batch sessions, stop dead filers, consolidate watchers (owner chose A, 2026-10-19)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5673/progress-per-dollar-more-codex-cap-batch-sessions-stop-dead-filers",
@@ -518,15 +497,6 @@
       "cmd": "node --test scripts/lib/is-watchlist-entry-rated.test.mjs",
       "missingPaths": [
         "scripts/lib/is-watchlist-entry-rated.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5641",
-      "name": "Windfall/Trickle split for recouped shows with no reported return multiple (win-side twin of Did Not Recoup)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5641/windfalltrickle-split-for-recouped-shows-with-no-reported-return",
-      "cmd": "node --test tests/unit/win-designations.test.mjs",
-      "missingPaths": [
-        "tests/unit/win-designations.test.mjs"
       ]
     },
     {
@@ -716,15 +686,6 @@
       "cmd": "node --test tests/unit/review-age-caveat.test.mjs",
       "missingPaths": [
         "tests/unit/review-age-caveat.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4554",
-      "name": "UX audit: Feedback after action is below the fold. 'Date saved' confirmation in 'mobile__ios_date_wheel_sim' requires sc",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4554/ux-audit-feedback-after-action-is-below-the-fold-date-saved",
-      "cmd": "node --test tests/unit/mobile-date-wheel-confirmation.test.mjs",
-      "missingPaths": [
-        "tests/unit/mobile-date-wheel-confirmation.test.mjs"
       ]
     },
     {
@@ -1025,18 +986,6 @@
         "scripts/renew-cookies.js"
       ],
       "reason": "`test -f scripts/renew-cookies.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-6500",
-      "name": "Investigate UK regional theatre hubs: which markets, competitors, plan, cost, time, current-year vs backfill",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6500/investigate-uk-regional-theatre-hubs-which-markets-competitors-plan",
-      "cmd": "test -f memory/expansion-playbook.md",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "memory/expansion-playbook.md"
-      ],
-      "reason": "`test -f memory/expansion-playbook.md` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
     },
     {
       "id": "BRO-6488",
