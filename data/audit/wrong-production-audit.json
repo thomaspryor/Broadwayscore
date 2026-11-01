@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T23:00:24.248Z",
+  "timestamp": "2026-11-01T23:46:58.066Z",
   "stats": {
-    "totalReviews": 79039,
-    "alreadyFlagged": 21889,
-    "dateGuardCatches": 245,
+    "totalReviews": 79045,
+    "alreadyFlagged": 21891,
+    "dateGuardCatches": 246,
     "directorMismatch": 3400,
-    "tvFilmSignals": 2247,
+    "tvFilmSignals": 2248,
     "londonSignals": 3572,
     "offBroadwaySignals": 742,
     "yearMismatch": 344,
-    "noPublishDate": 8425
+    "noPublishDate": 8424
   },
   "findings": [
     {
@@ -20852,6 +20852,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"james lapine\" from falsettos-2016"
+        }
+      ]
+    },
+    {
+      "showId": "farinelli-and-the-king-2017",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "2017-12-17",
+      "url": "https://www.hollywoodreporter.com/review/farinelli-king-theater-1068729",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -85440,6 +85454,20 @@
       ]
     },
     {
+      "showId": "an-enemy-of-the-people-2012",
+      "file": "hollywood-reporter--thr-staff.json",
+      "score": 67,
+      "publishDate": "2012-09-28T13:08:48-04:00",
+      "url": "http://www.hollywoodreporter.com/review/an-enemy-of-the-people-theater-review-374734",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "an-enemy-of-the-people-west-end-2024",
       "file": "daily-mail--jason-chester.json",
       "score": 53,
@@ -102580,20 +102608,6 @@
       "score": 79,
       "publishDate": "2026-10-22",
       "url": "https://www.thereviewshub.com/ilford-boy-donmar-warehouse-london/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"donmar warehouse\""
-        }
-      ]
-    },
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "file": "westminsterextra--unknown.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://www.westminsterextra.co.uk/article/review-ilford-boy-at-donmar-warehouse",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -134038,6 +134052,18 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "file": "bachtrack--mark-pullinger.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 35d before show (2026-09-25 vs 2026-10-30)"
         }
       ]
     },
