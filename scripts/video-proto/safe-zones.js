@@ -45,4 +45,12 @@ function fit(bbox, channel, { withCaptions = true } = {}) {
   return { s: +s.toFixed(4), x: +x.toFixed(2), y: +y.toFixed(2), zone: z, cap: withCaptions ? { left: z.left, right: z.right, top: capTop, bottom: z.bottom } : null };
 }
 
-module.exports = { ZONES, CHANNELS, CAP_H, CAP_GAP, STAGE_W, STAGE_H, OUT_W, OUT_H, zone, fit };
+/** The box a redesigned format lays itself out in: the safe area minus the caption block (stage units). */
+function layout(channel, { withCaptions = true } = {}) {
+  const z = zone(channel), bottom = withCaptions ? z.bottom - CAP_H - CAP_GAP : z.bottom;
+  return { x: z.left, y: z.top, w: z.right - z.left, h: bottom - z.top };
+}
+// formats laid out straight into that box at full size (owner, 2026-11-01); the rest are shrunk to fit it
+const NATIVE = new Set(['verdict', 'versus', 'compare']);
+
+module.exports = { layout, NATIVE, ZONES, CHANNELS, CAP_H, CAP_GAP, STAGE_W, STAGE_H, OUT_W, OUT_H, zone, fit };

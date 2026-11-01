@@ -256,33 +256,45 @@ const sideCard = (x, label, sub) => $('abs card', `left:${x}px;width:150px;top:0
 // toggle via visibility so an element's own inline display (flex on the end card) survives
 const show = (el, o) => { el.style.opacity = o; el.style.visibility = o > 0 ? 'visible' : 'hidden'; };
 
+// Layout box for the redesigned formats (owner, 2026-11-01): render.js sets window.LAYOUT to the app's clear area minus
+// the caption block, and verdict, versus and compare are laid out straight into it at full size, instead of a
+// full-frame scene shrunk to fit. Without a channel the old full-frame box is used.
+const layoutBox = () => window.LAYOUT || { x: 16, y: 30, w: 328, h: 420 };
+const endCard = (L, logoPx, inner) => $('abs', `left:${L.x}px;top:${L.y}px;width:${L.w}px;height:${L.h}px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center`, inner);
+const ENDLINE = logoPx => `<div>${logo(logoPx)}</div><div style="margin-top:12px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:18px;font-size:16px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`;
+
 function voicedBuild(self, root, d, kicker) {
-  self.d = d; self.dur = d.dur; const A = d.A, r = Math.round(d.score);
-  self.head = $('abs', 'inset:0;z-index:5', `<div style="position:absolute;left:0;right:0;top:34px;text-align:center">${logo(14)}</div><div style="position:absolute;left:0;right:0;top:60px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d4a574">${kicker}</div>`);
+  self.d = d; self.dur = d.dur; const A = d.A, r = Math.round(d.score), L = layoutBox();
+  // the kicker is the only header: the app's own profile already names the account, and the end card carries the logo
+  self.head = $('abs', `left:${L.x}px;width:${L.w}px;top:${L.y}px;text-align:center;font-size:13px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#d4a574;z-index:5;white-space:nowrap`, esc(kicker));
   root.append(self.head);
-  // intro
-  const g1 = self.g1 = $('abs', 'inset:0');
-  g1.append($('abs card', 'left:100px;top:96px;width:160px;height:160px;padding:0;overflow:hidden;border-radius:1rem', artImg(d.art, 160, 'border-radius:0')));
-  self.art = g1.firstChild;
-  g1.append($('abs', 'left:12px;right:12px;top:268px;text-align:center;font-weight:800;font-size:24px;line-height:1.15;letter-spacing:-.02em', esc(d.show.title)));
-  g1.append($('abs', 'left:0;right:0;top:330px;display:flex;gap:6px;justify-content:center', pills(d.show, d.isNew, d.category)));
-  self.cnt = $('abs cap', 'left:20px;right:20px;top:362px;font-size:15px;color:#d4d4d8', `${d.count} reviews in`); g1.append(self.cnt);
-  // quotes
-  const h = d.quotes.length === 3 ? 118 : 124, gap = d.quotes.length === 3 ? 8 : 10, q0 = d.quotes.length === 3 ? 88 : 92;
-  self.qc = d.quotes.map((q, i) => quoteCard(q, q0 + i * (h + gap), h));
-  self.g2 = $('abs', 'inset:0'); self.qc.forEach(c => self.g2.append(c));
-  // scores
-  const g3 = self.g3 = $('abs', 'inset:0');
-  self.bc = $('abs card', 'left:20px;right:20px;top:92px;padding:10px 14px 8px', barHtml([])); g3.append(self.bc);
-  self.pair = $('abs', 'left:0;right:0;top:170px;height:200px');
-  self.ca = sideCard(20, 'Critics', `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`); self.cbw = badgeEl('lg'); self.ca.querySelector('.slot').append(self.cbw);
-  self.cb = sideCard(190, 'Audience', 'Audience grade'); self.cb.querySelector('.slot').innerHTML = gradeTile(d.audienceGrade);
-  self.pair.append(self.ca, self.cb); g3.append(self.pair);
-  self.vs = plusDot(162, 248, d.kind === 'versus' ? 'VS' : '+');
-  g3.append(self.vs);
-  self.ask = $('abs cap', 'left:20px;right:20px;top:388px;font-size:15px;color:#d4d4d8', 'Who is right? Tell us in the comments.'); g3.append(self.ask);
-  // end
-  self.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center', `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+  const T = L.y + 26, H = L.h - 26, box = extra => $('abs', `left:${L.x}px;width:${L.w}px;top:${T}px;height:${H}px;${extra}`);
+  // intro: poster, title, pills, review count, as big as the box allows
+  const artS = Math.max(110, Math.min(170, H - 130));
+  const g1 = self.g1 = box('display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center');
+  self.art = $('card', `width:${artS}px;height:${artS}px;padding:0;overflow:hidden;border-radius:1rem;flex-shrink:0`, artImg(d.art, artS, 'border-radius:0'));
+  g1.append(self.art, $('', 'font-weight:800;font-size:25px;line-height:1.12;letter-spacing:-.02em', esc(d.show.title)), $('', 'display:flex;gap:6px;justify-content:center', pills(d.show, d.isNew, d.category)));
+  self.cnt = $('cap', 'font-size:17px;color:#d4d4d8', `${d.count} reviews in`); g1.append(self.cnt);
+  // quotes: one big card at a time, each taking over when the voice names its outlet
+  self.g2 = box('display:grid;grid-template-columns:minmax(0,1fr);align-items:center');
+  self.qc = d.quotes.map(q => { const c = $('card', 'grid-area:1/1;padding:14px 16px;opacity:0',
+    `<div style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#d4a574;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(q.o)}</div><div style="font-size:13px;color:#9ca3af;margin-top:2px">${esc(q.cn)}</div></div><div class="score-badge bw-sm ${tierClass(q.s)}">${q.s}</div></div>
+     <div style="font-size:19px;line-height:1.35;color:#f4f4f5;margin-top:12px;font-style:italic;font-weight:500">&ldquo;${esc(q.q)}&rdquo;</div>`);
+    self.g2.append(c); return c; });
+  // scores: breakdown bar, then critics + audience side by side
+  const g3 = self.g3 = box('display:flex;flex-direction:column;justify-content:center;gap:12px');
+  self.bc = $('card wrap-legend', 'padding:10px 14px 8px', barHtml([])); g3.append(self.bc);
+  const cw = (L.w - 10) / 2, ch = Math.min(200, H - 130);
+  self.pair = $('', `position:relative;display:flex;gap:10px;height:${ch}px`);
+  const side = (label, sub) => $('card', `width:${cw}px;height:${ch}px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px`,
+    `<div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#d4a574">${label}</div><div class="slot" style="height:80px;display:flex;align-items:center;justify-content:center"></div><div class="sub" style="font-size:15px;font-weight:800;text-align:center">${sub}</div>`);
+  self.ca = side('Critics', `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`); self.cbw = badgeEl('lg'); self.ca.querySelector('.slot').append(self.cbw);
+  self.cb = side('Audience', 'Audience grade'); self.cb.querySelector('.slot').innerHTML = gradeTile(d.audienceGrade);
+  self.vs = plusDot(cw + 5 - 18, ch / 2 - 18, d.kind === 'versus' ? 'VS' : '+');
+  self.pair.append(self.ca, self.cb, self.vs); g3.append(self.pair);
+  self.ask = $('cap', 'font-size:16px;color:#d4d4d8', 'Who is right? Tell us in the comments.');
+  if (d.kind === 'versus') g3.append(self.ask);
+  self.end = endCard(L, Math.min(30, Math.floor(L.w / 10.5)), ENDLINE(Math.min(30, Math.floor(L.w / 10.5))));
   root.append(g1, self.g2, g3, self.end);
   self.cap = captions(root, d.words);
   self.events = [];
@@ -298,7 +310,9 @@ function voicedUpdate(self, t) {
   const a = eob(seg(t, 0.05, 0.8)); self.art.style.transform = `scale(${lerp(0.85, 1, a)})`;
   fade(self.cnt, seg(t, 0.9, 1.4));
   show(self.g2, Math.min(seg(t, q0 - 0.3, q0), 1 - seg(t, sc - 0.35, sc - 0.05)));
-  self.qc.forEach((c, i) => { const x = seg(t, d.quotes[i].t - 0.1, d.quotes[i].t + 0.3); fade(c, x, (1 - eo(x)) * 24); });
+  // each quote holds until the next one arrives, then slides up and out as the next slides in
+  self.qc.forEach((c, i) => { const x = seg(t, d.quotes[i].t - 0.1, d.quotes[i].t + 0.3), nx = d.quotes[i + 1] ? seg(t, d.quotes[i + 1].t - 0.1, d.quotes[i + 1].t + 0.3) : 0;
+    c.style.opacity = x * (1 - nx); c.style.transform = `translateY(${(1 - eo(x)) * 24 - eo(nx) * 18}px)`; });
   const end = seg(t, A.end - 0.1, A.end + 0.4);
   show(self.g3, Math.min(seg(t, sc - 0.3, sc), 1 - end));
   if (A.bar) { const k = Math.round(d.scores.length * eo(seg(t, A.bar, A.bar + 1.6))); self.bc.innerHTML = barHtml(d.scores.slice(0, k), d.scores.length); fade(self.bc, seg(t, A.bar - 0.2, A.bar + 0.2)); }
@@ -389,31 +403,33 @@ COMPS.duo = {
 /* ---------- Compare (BRO-6412): one show, two productions in different markets, voiced; tiers come per side ---------- */
 COMPS.compare = {
   build(root, d) {
-    this.d = d; this.dur = d.dur;
-    root.append($('abs', 'left:0;right:0;top:30px;text-align:center;z-index:5', logo(14)));
+    this.d = d; this.dur = d.dur; const L = layoutBox();
     this.g = $('abs', 'inset:0'); root.append(this.g);
-    // the puzzle first: same show, two cities, and the computed gap
-    this.h1 = $('abs', 'left:16px;right:16px;top:58px;text-align:center;font-size:23px;font-weight:800;letter-spacing:-.01em;line-height:1.1;opacity:0', esc(d.screen.l1));
-    this.h2 = $('abs', 'left:16px;right:16px;top:90px;text-align:center;font-size:16px;font-weight:700;color:#d4a574;opacity:0', esc(d.screen.l2));
-    this.g.append(this.h1, this.h2);
+    // the puzzle first: same show, two cities, the computed gap; the title once, not under each poster
+    const head = $('abs', `left:${L.x}px;width:${L.w}px;top:${L.y}px;text-align:center`);
+    this.h1 = $('', 'font-size:24px;font-weight:800;letter-spacing:-.015em;line-height:1.1;opacity:0', esc(d.screen.l1));
+    this.h2 = $('', 'margin-top:5px;font-size:16px;font-weight:700;color:#d4a574;line-height:1.2;opacity:0', esc(d.screen.l2));
+    this.tt = $('', 'margin-top:5px;font-size:13px;font-weight:600;color:#d4d4d8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0', esc(d.shows[0].title));
+    head.append(this.h1, this.h2, this.tt); this.g.append(head);
+    const HEAD = 84, top = L.y + HEAD, colH = L.h - HEAD, cw = (L.w - 12) / 2;
+    // per column: label 18, poster P, the badge sitting on the poster's bottom edge (like the site's share card), count 16
+    const OVER = 40, P = Math.max(90, Math.min(180, colH - 18 - 6 - (88 - OVER) - 8 - 16 - 4)), PW = Math.min(cw, Math.round(P * 2 / 3));
     this.cols = d.shows.map((s, i) => {
-      const col = $('abs', `left:${i ? 188 : 12}px;top:124px;width:160px;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0`);
-      col.innerHTML = `<div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#d4a574;margin-bottom:8px">${esc(s.label)}</div>`
-        + `<img src="${s.art}" style="width:92px;height:138px;border-radius:.7rem;object-fit:cover;display:block;box-shadow:0 6px 20px rgba(0,0,0,.5)">`
-        + `<div style="margin-top:7px;font-weight:800;font-size:12px;line-height:1.15;min-height:28px;display:flex;align-items:center">${esc(s.title)}</div>`;
-      const bw = badgeEl('lg', 'margin-top:10px'); col.append(bw);
-      const ct = $('', 'margin-top:6px;font-size:12px;color:#9ca3af;opacity:0', `${s.count} critics${s.soFar ? ', so far' : ''}`); col.append(ct);
-      this.g.append(col); return { col, bw, ct };
+      const col = $('abs', `left:${L.x + i * (cw + 12)}px;top:${top}px;width:${cw}px;z-index:3;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0`);
+      col.innerHTML = `<div style="font-size:11px;font-weight:800;letter-spacing:.02em;text-transform:uppercase;color:#d4a574;height:18px;white-space:nowrap">${esc(s.label)}</div>`
+        + `<img class="poster" src="${s.art}" style="margin-top:6px;width:${PW}px;height:${P}px;border-radius:.7rem;object-fit:cover;display:block;box-shadow:0 6px 20px rgba(0,0,0,.5)">`;
+      const bw = badgeEl('lg', `margin-top:${4 - OVER}px;z-index:3`); col.append(bw);
+      const ct = $('', 'margin-top:8px;font-size:13px;color:#9ca3af;opacity:0;white-space:nowrap', `${s.count} critics${s.soFar ? ', so far' : ''}`); col.append(ct);
+      this.g.append(col); return { col, bw, ct, poster: col.querySelector('.poster') };
     });
-    const note = (txt, gold) => $('abs card', `left:20px;right:20px;top:442px;padding:10px 14px;font-size:13px;line-height:1.35;color:#e4e4e7;text-align:center;opacity:0${gold ? ';border-color:#d4a574' : ''}`, esc(txt));
+    // the caveat and the open "maybe" take the posters' place once both scores are in, so they can be big
+    const note = (txt, gold) => $('abs card', `left:${L.x}px;width:${L.w}px;top:${top + 24}px;height:${P}px;padding:10px 14px ${OVER + 16}px;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1.35;color:#e4e4e7;text-align:center;opacity:0${gold ? ';border-color:#d4a574' : ''}`, esc(txt));
     this.cav = note(d.caveat); this.poss = note(d.screen.poss, true);
     this.g.append(this.cav, this.poss);
-    // closing scene: the open question, big
-    const qs = d.screen.question.split(/(?<=\?) /);
-    this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center',
-      `<div style="padding:0 26px;font-size:28px;font-weight:800;line-height:1.15;letter-spacing:-.01em">${esc(qs[0])}</div>`
+    const qs = d.screen.question.split(/(?<=\?) /), lp = Math.min(26, Math.floor(L.w / 11));
+    this.end = endCard(L, lp, `<div style="font-size:28px;font-weight:800;line-height:1.15;letter-spacing:-.01em">${esc(qs[0])}</div>`
       + `<div style="margin-top:12px;font-size:20px;font-weight:700;color:#d4a574">${esc(qs.slice(1).join(' '))}</div>`
-      + `<div style="margin-top:34px">${logo(24)}</div><div style="margin-top:12px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+      + `<div style="margin-top:30px">${logo(lp)}</div><div style="margin-top:10px;font-size:16px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
     root.append(this.end);
     this.events = d.shows.flatMap(s => { const T = window.TIERS_BY[s.category];
       return [...Array(10)].map((_, i) => ({ t: s.say + (s.land - s.say) * i / 10, k: 'tick', p: i / 10 })).concat({ t: s.land, k: s.score >= T.gold ? 'chime' : 'pop' }); });
@@ -424,19 +440,20 @@ COMPS.compare = {
     this.g.style.opacity = out; this.g.style.display = out <= 0 ? 'none' : 'block';
     this.end.style.opacity = seg(t, d.end - 0.1, d.end + 0.4); this.end.style.display = t < d.end - 0.15 ? 'none' : 'flex';
     fade(this.h1, seg(t, d.hookAt - 0.1, d.hookAt + 0.3), (1 - seg(t, d.hookAt - 0.1, d.hookAt + 0.3)) * 8);
+    fade(this.tt, seg(t, d.hookAt + 0.2, d.hookAt + 0.6));
     fade(this.h2, seg(t, d.gapAt - 0.3, d.gapAt + 0.2), (1 - seg(t, d.gapAt - 0.3, d.gapAt + 0.2)) * 8);
+    const cin = seg(t, d.caveatAt - 0.1, d.caveatAt + 0.3), cout = seg(t, d.possAt - 0.25, d.possAt + 0.05), pin = seg(t, d.possAt, d.possAt + 0.35);
     d.shows.forEach((s, i) => { const c = this.cols[i], T = window.TIERS_BY[s.category], a = seg(t, s.say - 0.5, s.say + 0.1);
       c.col.style.opacity = a; c.col.style.transform = `scale(${lerp(0.92, 1, eob(a))})`;
+      c.poster.style.opacity = 1 - cin; // the notes take the posters' place
       const k = seg(t, s.say, s.land), v = Math.round(s.score * eo(k));
       const b = c.bw.querySelector('.score-badge'), cr = c.bw.querySelector('.crown');
-      b.className = `score-badge bw-lg ${v <= 0 ? 'score-none' : TIER_CLASS[T.id[clamp(v, 0, 100)]]}`; b.textContent = v <= 0 ? '\u2013' : v;
+      b.className = `score-badge bw-lg ${v <= 0 ? 'score-none' : TIER_CLASS[T.id[clamp(v, 0, 100)]]}`; b.textContent = v <= 0 ? '–' : v;
       cr.style.display = v >= T.gold ? 'block' : 'none';
       const pop = t > s.land ? 1 + 0.22 * Math.sin(Math.PI * seg(t, s.land, s.land + 0.5)) : 1;
       c.bw.style.transform = `scale(${1.1 * pop})`;
       fade(c.ct, seg(t, s.countAt - 0.2, s.countAt + 0.2), 0); });
-    const cin = seg(t, d.caveatAt - 0.1, d.caveatAt + 0.3), cout = seg(t, d.possAt - 0.25, d.possAt + 0.05);
     fade(this.cav, cin * (1 - cout), (1 - cin) * 8);
-    const pin = seg(t, d.possAt, d.possAt + 0.35);
     fade(this.poss, pin, (1 - pin) * 8);
     this.cap(t);
   },

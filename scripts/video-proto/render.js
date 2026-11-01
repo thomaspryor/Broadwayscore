@@ -317,7 +317,7 @@ async function renderChannel(browser, d, ch) {
   await page.evaluate(() => document.fonts.ready);
   const TIERS = { gold: getGoldThreshold(d.category), label: SCORE_TIER_LABELS, id: Array.from({ length: 101 }, (_, i) => getScoreTierId(i, d.category)) };
   const capBox = SZ.fit({ left: 0, top: 0, right: 360, bottom: 640 }, ch, { withCaptions: hasCaps }).cap;
-  await page.addScriptTag({ content: `window.TIERS=${JSON.stringify(TIERS)};window.TIERS_BY=${JSON.stringify(d.tiersBy || {})};window.CAPBOX=${JSON.stringify(capBox)};` + fs.readFileSync(path.join(__dirname, 'stage.js'), 'utf8') + `;window.__C=COMPS;` });
+  await page.addScriptTag({ content: `window.TIERS=${JSON.stringify(TIERS)};window.TIERS_BY=${JSON.stringify(d.tiersBy || {})};window.CAPBOX=${JSON.stringify(capBox)};window.LAYOUT=${JSON.stringify(SZ.NATIVE.has(name) ? SZ.layout(ch, { withCaptions: hasCaps }) : null)};` + fs.readFileSync(path.join(__dirname, 'stage.js'), 'utf8') + `;window.__C=COMPS;` });
   const info = await page.evaluate(([n, dd]) => { const c = window.__C[n]; window.C = c; c.build(document.getElementById('fit'), dd); return { dur: c.dur, events: c.events }; }, [name, d]);
   const seek = t => page.evaluate(t => { C.update(t); document.getAnimations().forEach(a => { a.pause(); a.currentTime = t * 1000; }); }, t);
   // the scene's envelope over the whole timeline, so one placement holds for the whole video (nothing jumps)

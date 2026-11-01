@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { ZONES, CHANNELS, zone, fit, CAP_H } = require('./video-proto/safe-zones.js');
+const { ZONES, CHANNELS, zone, fit, layout, NATIVE, CAP_H, CAP_GAP } = require('./video-proto/safe-zones.js');
 
 // a full-frame scene like the voiced formats: logo at the top, cards down to ~480
 const SCENE = { left: 20, top: 32, right: 344, bottom: 523 };
@@ -47,3 +47,16 @@ test('silent formats get the whole safe area', () => {
 });
 
 test('an unknown channel stops the render', () => assert.throws(() => zone('myspace'), /no safe zone/));
+
+for (const ch of CHANNELS) {
+  test(`${ch}: the layout box for redesigned formats sits inside the safe area, above the captions`, () => {
+    const L = layout(ch), z = zone(ch);
+    assert.equal(L.x, z.left); assert.equal(L.y, z.top);
+    assert.ok(Math.abs(L.x + L.w - z.right) < 0.01);
+    assert.ok(Math.abs(L.y + L.h - (z.bottom - CAP_H - CAP_GAP)) < 0.01);
+    assert.ok(L.w >= 260 && L.h >= 300, `box ${L.w}x${L.h} too small for the verdict and compare layouts`);
+  });
+}
+test('verdict, versus and compare are laid out for each app, not shrunk', () => {
+  for (const f of ['verdict', 'versus', 'compare']) assert.ok(NATIVE.has(f));
+});
