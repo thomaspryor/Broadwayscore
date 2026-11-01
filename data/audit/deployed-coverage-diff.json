@@ -1,13 +1,112 @@
 {
-  "generatedAt": "2026-11-01T17:16:29.756Z",
+  "generatedAt": "2026-11-01T17:41:52.343Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 298,
-  "clean": 298,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 292,
+  "defective": 6,
+  "byType": {
+    "score-drift": 6
+  },
+  "shows": [
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.1 vs local 66.2 (Δ0.9)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-01T17:41:46.366Z"
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "title": "Dirty Dancing",
+      "openingDate": "2026-08-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.62 vs local 77.88 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-01T17:41:46.366Z"
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.26 vs local 82.18 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 39,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-11-01T17:41:46.366Z"
+    },
+    {
+      "showId": "little-shop-of-horrors-off-broadway-2019",
+      "title": "Little Shop of Horrors",
+      "openingDate": "2019-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.65 vs local 83.72 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-11-01T17:41:46.366Z"
+    },
+    {
+      "showId": "hadestown-2019",
+      "title": "Hadestown",
+      "openingDate": "2019-04-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.01 vs local 83.28 (Δ0.27)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 51,
+      "deployedCount": 51,
+      "firstDefectAt": "2026-11-01T16:47:40.718Z"
+    },
+    {
+      "showId": "hamilton-2015",
+      "title": "Hamilton",
+      "openingDate": "2015-08-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 91.22 vs local 91.33 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 42,
+      "deployedCount": 43,
+      "firstDefectAt": "2026-11-01T16:47:40.718Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
