@@ -1,12 +1,12 @@
 # Broadway Scorecard — Brand & Social Asset Kit
 
-Complete asset suite for social, marketing, and partner use. All PNGs rendered at 2× DPI using the exact CSS tokens from the production site, so colors, gradients, shadows, and proportions match broadwayscorecard.com pixel-for-pixel.
+Complete asset suite for social, marketing, and partner use. All PNGs (the opera files are 1× DPI, the rest 2×) rendered using the exact CSS tokens from the production site, so colors, gradients, shadows, and proportions match broadwayscorecard.com pixel-for-pixel.
 
 ## Easiest way to use (no setup)
 
 Go to **https://broadwayscorecard.com/brand** → scroll to Downloads.
 
-- **Download Entire Brand Kit** button grabs everything as one zip (52 PNGs + this README).
+- **Download Entire Brand Kit** button grabs everything as one zip (59 PNGs + this README; the zip itself still holds the original 52, the opera files are in the folders).
 - Or click any individual tile (logo, badge, social template) to download just that one PNG.
 - Transparent variants have an alpha channel — drop them onto any background in Canva, Buffer, PowerPoint, email, etc.
 
@@ -16,9 +16,9 @@ Go to **https://broadwayscorecard.com/brand** → scroll to Downloads.
 2. Drag the PNG into Canva, Buffer, Figma, Keynote, Gmail — wherever.
 3. Done.
 
-## Folder map (52 PNGs)
+## Folder map (59 PNGs)
 
-### `logos/` — 8 files
+### `logos/` — 11 files
 - **Wordmarks** (1200 px wide): `{brand}-wordmark-{variant}.png`
   - brands: `broadway`, `west-end`, `opera` (1200 px, `scripts/generate-opera-brand-kit.js`)
   - variants: `dark` (on dark background), `transparent` (alpha for overlay on dark), `light` (for light backgrounds — inverted colors)
@@ -46,7 +46,7 @@ Overview sheets showing all tiers side-by-side with BroadwayScorecard™ brandin
 - `score-tiers-{dark|transparent}.png` — all 5 critic tiers horizontal
 - `grade-tiers-{dark|transparent}.png` — all 11 audience grades, 3-row grid
 
-### `social/` — 8 files
+### `social/` — 12 files
 Brand-only placeholder cards at correct platform aspect ratios. Drop text/images over them, or use as "splash" posts when launching campaigns:
 - `{broadway|west-end}-instagram-square-1080x1080.png` — IG feed post
 - `{broadway|west-end}-instagram-story-1080x1920.png` — IG/TikTok/Reels story
