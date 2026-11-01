@@ -25,3 +25,8 @@ test('no credit table or a stub body fails loud (null)', () => {
   assert.equal(extractCurtainUpBody('<html><body><table></table>short</body></html>'), null);
   assert.equal(extractCurtainUpBody(PAGE.replace(/Synthetic review paragraph [1-4][^\n]*/g, 'x')), null);
 });
+
+test('credit table with several class tokens still anchors', () => {
+  const t = extractCurtainUpBody(PAGE.replace('class = credit', 'class="box credit"'));
+  assert.ok(t && t.includes('paragraph 3'));
+});

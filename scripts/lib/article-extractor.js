@@ -393,7 +393,7 @@ function extractLsaBody(html) {
  * table; return null (fail loud) when it is absent.
  */
 function extractCurtainUpBody(html) {
-  const credit = /<table\b[^>]*class\s*=\s*["']?credit/i.exec(html);
+  const credit = /<table\b[^>]*class\s*=\s*["']?[^"'>]*\bcredit\b/i.exec(html);
   if (!credit) return null;
   const region = html.slice(0, credit.index);
   const start = region.toLowerCase().lastIndexOf('</table>');
