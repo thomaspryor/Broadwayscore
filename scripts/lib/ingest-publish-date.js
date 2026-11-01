@@ -32,7 +32,36 @@ function listingOpeningDate(html) {
   return `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 }
 
-function resolveIngestPublishDate({ publishDateArg = null, html = null, url, text = null, stagePublishDate = null, showOpeningDate = null } = {}) {
+// BRO-6742: Lighting & Sound America review pages carry no date anywhere, only
+// a headline that names the theatre: "Theatre in Review: Giant (Music Box Theatre)".
+// Venue names vary ("Second Stage/Hayes Theater" for "Helen Hayes Theater"), so
+// compare the distinctive words. A match on THIS production's venue, and on no
+// other production's venue, dates the review to this production's opening.
+const GENERIC_VENUE_WORDS = new Set(['the', 'theatre', 'theater', 'theatres', 'theaters', 'stage', 'center', 'centre', 'at', 'of', 'and', 'company', 'playhouse', 'hall', 'house']);
+function venueWords(v) {
+  return String(v || '').toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, ' ').split(' ')
+    .filter((w) => w.length >= 2 && !GENERIC_VENUE_WORDS.has(w));
+}
+function headlineVenue(html) {
+  if (typeof html !== 'string') return null;
+  const t = html.match(/<title>\s*Theatre in Review:([^<]*)<\/title>/i);
+  if (!t) return null;
+  const head = t[1].replace(/&amp;/g, '&').replace(/\s+-\s+Lighting\s*&\s*Sound America.*$/i, '').trim();
+  const m = head.match(/\(([^()]*)\)\s*$/);
+  return m ? m[1].trim() : null;
+}
+function headlineVenueDate(html, { showVenue = null, showOpeningDate = null, otherVenues = [] } = {}) {
+  if (!showVenue || !showOpeningDate) return null;
+  const v = headlineVenue(html);
+  if (!v) return null;
+  const words = new Set(venueWords(v));
+  const hits = (venue) => venueWords(venue).some((w) => words.has(w));
+  if (!hits(showVenue)) return null;
+  if ((otherVenues || []).some(hits)) return null;
+  return String(showOpeningDate).slice(0, 10);
+}
+
+function resolveIngestPublishDate({ publishDateArg = null, html = null, url, text = null, stagePublishDate = null, showOpeningDate = null, showVenue = null, otherVenues = [] } = {}) {
   if (publishDateArg) return { publishDate: publishDateArg, dateSource: null, from: 'arg' };
   const page = html ? extractPublishDate(html, url) : null;
   if (page) return { publishDate: page, dateSource: null, from: 'page' };
@@ -48,8 +77,12 @@ function resolveIngestPublishDate({ publishDateArg = null, html = null, url, tex
   if (listed && showOpeningDate && listed === String(showOpeningDate).slice(0, 10)) {
     return { publishDate: listed, dateSource: 'listing-opening-date', from: 'listing' };
   }
+  const byVenue = headlineVenueDate(html, { showVenue, showOpeningDate, otherVenues });
+  if (byVenue && fallback.reason !== 'body-url-conflict') {
+    return { publishDate: byVenue, dateSource: 'headline-venue-opening-date', from: 'venue' };
+  }
   // body-url-conflict: neither date wins; the rebuild's backfill settles it (BRO-5351).
   return { publishDate: null, dateSource: null, from: null, reason: fallback.reason };
 }
 
-module.exports = { resolveIngestPublishDate, listingOpeningDate };
+module.exports = { resolveIngestPublishDate, listingOpeningDate, headlineVenueDate, headlineVenue };

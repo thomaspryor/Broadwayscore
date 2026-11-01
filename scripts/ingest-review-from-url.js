@@ -191,6 +191,13 @@ if (!showId || !url) {
 // Verify show exists before doing any expensive work.
 const showsData = require('../data/shows.json');
 const show = showsData.shows.find((s) => s.id === showId);
+// BRO-6742: the venues of other productions of this title, so an undated page
+// whose headline names a theatre is dated only when no other run played there.
+function otherProductionVenues(sh) {
+  if (!sh || !sh.title) return [];
+  const t = String(sh.title).toLowerCase().trim();
+  return showsData.shows.filter((o) => o.id !== sh.id && String(o.title || '').toLowerCase().trim() === t && o.venue).map((o) => o.venue);
+}
 if (!show) {
   console.error(`Show not found: ${showId}`);
   process.exit(1);
@@ -503,12 +510,16 @@ if (!show) {
   const resolvedDate = require('./lib/ingest-publish-date').resolveIngestPublishDate({
     publishDateArg, html, url, text: hasBody ? text : null, stagePublishDate: stageMeta && stageMeta.publishDate,
     showOpeningDate: show && show.openingDate,
+    showVenue: show && show.venue,
+    otherVenues: otherProductionVenues(show),
   });
   const publishDate = resolvedDate.publishDate;
   if (resolvedDate.from === 'page' || resolvedDate.from === 'stage') {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
   } else if (resolvedDate.from === 'text') {
     console.log(`  → Extracted publishDate from the byline text: ${publishDate}`);
+  } else if (resolvedDate.from === 'venue') {
+    console.log(`  → No article date; the headline names this production's theatre, dated to its opening: ${publishDate}`);
   } else if (resolvedDate.from === 'listing') {
     console.log(`  → No article date; the listing's run block names this production's opening: ${publishDate}`);
   } else if (resolvedDate.reason === 'body-url-conflict') {

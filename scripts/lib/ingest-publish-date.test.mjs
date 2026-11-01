@@ -41,3 +41,32 @@ test('nothing to go on gives null', () => {
   const r = resolveIngestPublishDate({ html: '<html></html>', url: URL_, text: 'short' });
   assert.equal(r.publishDate, null);
 });
+
+// BRO-6742: Lighting & Sound America pages have no date, only a venue in the headline.
+const { headlineVenueDate, headlineVenue } = require('./ingest-publish-date.js');
+const lsa = (h) => `<html><head><title>Theatre in Review: ${h} - Lighting&amp;Sound America Online - News</title></head><body></body></html>`;
+const LSA = 'http://www.lightingandsoundamerica.com/news/story.asp?ID=TCKSKA';
+
+test('LSA headline naming this production\'s theatre dates the review to its opening', () => {
+  const r = resolveIngestPublishDate({ html: lsa('Giant (Music Box Theatre)'), url: LSA, text: 'x'.repeat(2000),
+    showOpeningDate: '2026-03-23', showVenue: 'Music Box Theatre', otherVenues: ['Royal Court', 'Harold Pinter Theatre', 'The Public Theater'] });
+  assert.equal(r.publishDate, '2026-03-23');
+  assert.equal(r.from, 'venue');
+});
+
+test('venue names that differ in form still match on the distinctive word', () => {
+  assert.equal(headlineVenueDate(lsa('Marjorie Prime (Second Stage/Hayes Theater)'), { showVenue: 'Helen Hayes Theater', showOpeningDate: '2025-12-08' }), '2025-12-08');
+  assert.equal(headlineVenue(lsa('Two Strangers (Carry a Cake Across New York) (Longacre Theatre)')), 'Longacre Theatre');
+});
+
+test('a headline naming a prior production\'s theatre is not dated', () => {
+  assert.equal(headlineVenueDate(lsa('Oedipus (The Old Vic)'), { showVenue: 'Studio 54', showOpeningDate: '2025-11-13', otherVenues: ["Wyndham's Theatre", 'The Old Vic'] }), null);
+});
+
+test('a revival in the same theatre as an earlier run stays undated', () => {
+  assert.equal(headlineVenueDate(lsa('Cabaret (Studio 54)'), { showVenue: 'Studio 54', showOpeningDate: '2024-04-21', otherVenues: ['Studio 54'] }), null);
+});
+
+test('a page without the LSA headline shape is not dated by venue', () => {
+  assert.equal(headlineVenueDate('<html><title>Giant (Music Box Theatre)</title></html>', { showVenue: 'Music Box Theatre', showOpeningDate: '2026-03-23' }), null);
+});
