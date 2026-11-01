@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T21:06:54.674Z",
+  "timestamp": "2026-11-01T21:20:36.616Z",
   "stats": {
-    "totalReviews": 78987,
-    "alreadyFlagged": 21853,
+    "totalReviews": 78990,
+    "alreadyFlagged": 21856,
     "dateGuardCatches": 245,
     "directorMismatch": 3398,
-    "tvFilmSignals": 2242,
-    "londonSignals": 3564,
+    "tvFilmSignals": 2243,
+    "londonSignals": 3568,
     "offBroadwaySignals": 741,
     "yearMismatch": 343,
-    "noPublishDate": 8429
+    "noPublishDate": 8425
   },
   "findings": [
     {
@@ -63548,6 +63548,24 @@
       ]
     },
     {
+      "showId": "the-constituent-west-end-2024",
+      "file": "city-am--adam-bloodworth.json",
+      "publishDate": "2024-06-26",
+      "url": "https://www.cityam.com/the-constituent-old-vic-review-james-corden-cant-save-this/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-cottage-2023",
       "file": "queerty--matthew-wexler.json",
       "score": 60,
@@ -112881,6 +112899,20 @@
     },
     {
       "showId": "old-friends-west-end-2023",
+      "file": "getthechance--unknown.json",
+      "score": null,
+      "publishDate": "2023-11-09",
+      "url": "https://getthechance.wales/2023/11/09/review-steven-sondheims-old-friends-gielgud-theatre-london-by-james-ellis/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "old-friends-west-end-2023",
       "file": "guardian--claire-armitstead.json",
       "score": 65,
       "publishDate": "October 4th, 2023",
@@ -123831,6 +123863,19 @@
     },
     {
       "showId": "the-constituent-west-end-2024",
+      "file": "sunday-express--neil-norman.json",
+      "publishDate": "2024-06-26",
+      "url": "https://www.express.co.uk/entertainment/theatre/1915736/the-constituent-review-james-corden",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-constituent-west-end-2024",
       "file": "telegraph--dominic-cavendish.json",
       "score": 66,
       "publishDate": "2024-06-25",
@@ -126583,6 +126628,19 @@
       "score": null,
       "publishDate": null,
       "url": "https://www.standard.co.uk/culture/theatre/the-importance-of-being-earnest-national-theatre-review-ncuti-gatwa-b1197140.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2024",
+      "file": "the-rendition--guest-user.json",
+      "publishDate": "2024-11-29",
+      "url": "https://www.therendition.co.uk/reviews/the-importance-of-being-earnest-review-national-theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
