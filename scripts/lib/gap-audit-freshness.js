@@ -109,10 +109,12 @@ function inOpeningPriorityWindow(show, now = Date.now()) {
 function freshnessMsFor(show, lastEntry, opts = {}) {
   const now = opts.now ?? Date.now();
   let base = baseFreshnessMs(show, lastEntry, opts);
-  // BRO-6687 caps last-year skips at 30d; BRO-6751 exempts a mature closed show
-  // that audited clean (a show that closed in its first month keeps the cap,
-  // since 11% of reviews land 8-30 days after opening).
-  const matureClosedClean = show?.status === 'closed' && !!lastEntry && lastEntry.gaps === 0 && isMature(show, now);
+  // BRO-6687 caps last-year skips at 30d; BRO-6751 exempts a closed show whose
+  // clean audit itself ran more than 30 days after opening. Judged at audit
+  // time, not now: a show audited clean on day 10 still gets its one capped
+  // re-look (11% of reviews land 8-30 days after opening).
+  const matureClosedClean = show?.status === 'closed' && !!lastEntry && lastEntry.gaps === 0
+    && isMature(show, checkpointTs(lastEntry));
   if (inLastYear(show, now) && !matureClosedClean) base = Math.min(base, LAST_YEAR_MAX_FRESHNESS_MS);
   // BRO-6687: in-window slow-market shows re-audit at least daily, whatever the
   // closed/clean skip or the configured freshness would otherwise allow.
@@ -141,7 +143,9 @@ function baseFreshnessMs(show, lastEntry, { freshnessHours = 12, now = Date.now(
       : OPENING_WARM_FRESHNESS_MS;
   }
   // BRO-6751: fixed weekly for a mature open show (--freshness-hours does not
-  // shorten it; that flag tunes the young-show cadence).
+  // shorten it; that flag tunes the young-show cadence). Rows with uncollected
+  // reviews go weekly too: past day 21 no alert reads them, and the re-audit
+  // only re-confirms the gap; collecting the review is another job's work.
   if (isMature(show, now)) return MATURE_OPEN_FRESHNESS_MS;
   return freshnessHours * 60 * 60 * 1000; // open/previews — re-check often for new reviews
 }

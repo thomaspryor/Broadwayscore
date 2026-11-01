@@ -214,7 +214,7 @@ test('closed slow-market show inside the window still re-audits daily (no 365d/1
   // past its first month keeps the 365d skip; only one closed in its first month
   // keeps the 30d last-year cap)
   const fresh = new Date(NOW - DAY).toISOString();
-  assert.equal(freshnessMsFor({ ...closed, openingDate: iso(40 * DAY) }, { gaps: 0 }, { now: NOW }), 365 * DAY);
+  assert.equal(freshnessMsFor({ ...closed, openingDate: iso(40 * DAY) }, { at: fresh, gaps: 0 }, { now: NOW }), 365 * DAY);
   assert.equal(freshnessMsFor({ ...closed, openingDate: iso(25 * DAY) }, { gaps: 0 }, { now: NOW }), 30 * DAY);
   assert.equal(freshnessMsFor({ ...closed, openingDate: iso(400 * DAY) }, { gaps: 0 }, { now: NOW }), 365 * DAY);
   assert.equal(auditTier({ ...closed, openingDate: iso(40 * DAY) }, { at: fresh, gaps: 0 }, NOW), 2);
@@ -301,11 +301,17 @@ test('last-year show: tier 1.75 when unaudited or 14d stale, tier 2 when recentl
 
 test('BRO-6751: last-year closed show keeps the 30d cap only while it has gaps or closed in its first month', () => {
   const { LAST_YEAR_MAX_FRESHNESS_MS } = require('./gap-audit-freshness.js');
-  const clean = { gaps: 0, uncollected: 0 };
+  const clean = { at: new Date(NOW - DAY).toISOString(), gaps: 0, uncollected: 0 };
   assert.equal(freshnessMsFor(closedClean, clean, { now: NOW }), 365 * DAY);
   assert.equal(freshnessMsFor(closedClean, { gaps: 2, uncollected: 0 }, { now: NOW }), 14 * DAY);
   const shortRun = { id: 'short', status: 'closed', category: 'broadway', openingDate: iso(10 * DAY) };
   assert.equal(freshnessMsFor(shortRun, clean, { now: NOW }), LAST_YEAR_MAX_FRESHNESS_MS);
+  // judged at audit time: clean audit on day 10, checked again on day 45, keeps the cap
+  const openedDay45 = { id: 'd45', status: 'closed', category: 'broadway', openingDate: iso(45 * DAY) };
+  const earlyClean = { at: new Date(NOW - 35 * DAY).toISOString(), gaps: 0, uncollected: 0 };
+  assert.equal(freshnessMsFor(openedDay45, earlyClean, { now: NOW }), LAST_YEAR_MAX_FRESHNESS_MS);
+  const lateClean = { at: new Date(NOW - 5 * DAY).toISOString(), gaps: 0, uncollected: 0 };
+  assert.equal(freshnessMsFor(openedDay45, lateClean, { now: NOW }), 365 * DAY);
   const older = { id: 'older', status: 'closed', openingDate: iso(400 * DAY) };
   assert.ok(freshnessMsFor(older, clean, { now: NOW }) > LAST_YEAR_MAX_FRESHNESS_MS);
   // a shorter cadence is never lengthened
