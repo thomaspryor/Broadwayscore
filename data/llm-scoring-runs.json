@@ -3233891,21 +3233891,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T06:26:16.990Z",
-    "completedAt": "2026-11-01T06:26:34.961Z",
-    "totalReviews": 6,
-    "processed": 4,
+    "startedAt": "2026-11-01T06:27:13.002Z",
+    "completedAt": "2026-11-01T06:27:27.161Z",
+    "totalReviews": 5,
+    "processed": 3,
     "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 23185,
-      "output": 1165,
+      "input": 18455,
+      "output": 921,
       "cacheRead": 11421,
-      "cacheWrite": 3807,
-      "total": 59118
+      "cacheWrite": 0,
+      "total": 45942
     },
-    "costUsd": 0.10064665,
-    "runId": "41280334187",
+    "costUsd": 0.0694083,
+    "runId": "41280369986",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3247280,6 +3247280,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "fairview-regional-2023",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "faith-healer-1979",
         "ourDistribution": {
           "up": 11,
@@ -3248389,16 +3248399,6 @@
           "flat": 1,
           "down": 0,
           "total": 27
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "from-the-mississippi-delta-regional-2023",
-        "ourDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 0,
-          "total": 4
         },
         "hasDisagreement": false
       },
@@ -3280789,8 +3280789,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T06:31:32.182Z",
-    "completedAt": "2026-11-01T06:31:32.186Z",
+    "startedAt": "2026-11-01T06:32:25.029Z",
+    "completedAt": "2026-11-01T06:32:25.031Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3280803,7 +3280803,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41280334187",
+    "runId": "41280369986",
     "source": "comparative-rescore",
     "errorDetails": []
   }
