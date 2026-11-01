@@ -60,6 +60,19 @@ test('digest workflow: send mode is one transactional message to the owner, guar
   assert.match(WF, /PUBKEY_B64: \$\{\{ inputs\.pubkey_b64 \}\}/);
 });
 
+test('digest workflow: the public log never carries the recipient address or subject', () => {
+  const { execFileSync } = require('node:child_process');
+  const m = WF.match(/\| sed -E '([^\n]*)' \|\| true/);
+  assert.ok(m, 'the send step filters the digest log through sed');
+  const lines = [
+    '[digest] sent to owner@example.com (subject: Private subject · id re_123)',
+    '[digest] already sent to owner@example.com today (ET 2026-11-04, Resend id re_9) — refusing duplicate send.',
+  ].join('\n');
+  const out = execFileSync('sed', ['-E', m[1].replace(/\\\\/g, '\\')], { input: lines }).toString();
+  assert.doesNotMatch(out, /owner@example\.com|Private subject/);
+  assert.match(out, /id re_123/);
+});
+
 test('digest workflow: send mode skips the Mac fetch / snapshot pin / compare (the Mac is gone)', () => {
   for (const name of ["Fetch today's Mac-sent digest from Resend", 'Pin snapshots to when the Mac sent']) {
     assert.match(WF, new RegExp(`- name: ${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\n {8}if: env\\.SEND_MODE != 'true'`));
