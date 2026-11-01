@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T17:43:17.450Z",
+  "generatedAt": "2026-11-01T18:17:07.763Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -243,6 +243,10 @@
         {
           "name": "WNYC",
           "isDualMarket": false
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
         },
         {
           "name": "Rolling Stone",
@@ -1615,26 +1619,25 @@
       "status": "open",
       "slug": "the-moth-off-west-end",
       "thumbnail": "/images/shows/the-moth-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 56.03,
-      "liveScore": 56,
-      "scoreDrift": -0.030000000000001137,
+      "siteScore": 55.06,
+      "liveScore": 55,
+      "scoreDrift": -0.060000000000002274,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 0,
       "t2": 2,
-      "t3": 5,
+      "t3": 6,
       "positive": 2,
       "mixed": 1,
-      "negative": 4,
+      "negative": 5,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:0/3"
         ],
-        "highConfidence": 7,
+        "highConfidence": 8,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1841,6 +1844,18 @@
           "p": 2,
           "m": 1,
           "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-01T17:56:47.844Z",
+          "rc": 8,
+          "s": 55.06,
+          "t1": 0,
+          "t2": 2,
+          "t3": 6,
+          "p": 2,
+          "m": 1,
+          "n": 5,
           "bc": "waiting"
         }
       ]

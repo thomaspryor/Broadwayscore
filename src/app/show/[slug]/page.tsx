@@ -35,6 +35,7 @@ import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, ge
 import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol, isUkRegionalShow } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
+import { liveInHdLine, liveInHdDescription, liveInHdIsCurrent } from '@/lib/met-live-in-hd';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -199,9 +200,14 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
       ? `Reviews of ${show.title} ${marketLabel} are coming in as local critics see it in each city.`
       : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
   ).trim();
-  const truncatedDescription = description.length > 160
-    ? description.slice(0, 157).replace(/\s\S*$/, '...')
-    : description;
+  // The Live in HD sentence goes before the synopsis snippet (which is what gets cut at 160 chars).
+  const hdSentence = isOperaMeta ? liveInHdDescription(show.title, show.liveInHd) : null;
+  const fullDescription = hdSentence && synopsisSnippet && description.endsWith(synopsisSnippet)
+    ? `${description.slice(0, description.length - synopsisSnippet.length).trimEnd()} ${hdSentence} ${synopsisSnippet}`
+    : hdSentence ? `${description} ${hdSentence}` : description;
+  const truncatedDescription = fullDescription.length > 160
+    ? fullDescription.slice(0, 157).replace(/\s\S*$/, '...')
+    : fullDescription;
 
   const canonicalUrl = `${BASE_URL}/show/${params.slug}`;
 
@@ -212,7 +218,9 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
   return {
     title: {
-      absolute: roundedScore && titleSentimentWord
+      absolute: isOperaMeta && liveInHdIsCurrent(show.liveInHd)
+        ? `${seoTitle}${titleYearSuffix} Reviews & Met Live in HD${roundedScore && titleSentimentWord ? ` (${roundedScore}/100)` : ''} | ${siteName}`
+        : roundedScore && titleSentimentWord
         ? `${seoTitle}${titleYearSuffix} Reviews: ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
         // A tour's seoTitle already says "National Tour"; the market label would repeat it.
         : `${seoTitle}${titleYearSuffix} Reviews${isTourMeta ? '' : ` ${marketLabel}`} | ${siteName}`,
@@ -759,6 +767,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 )}
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span aria-hidden="true" className="text-white/25">·</span> {show.runtime}</span>
+                )}
+                {isOpera && liveInHdLine(show.liveInHd) && (
+                  <span className="whitespace-nowrap" data-testid="live-in-hd"> <span aria-hidden="true" className="text-white/25">·</span> <a href={show.liveInHd!.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-brand transition-colors">{liveInHdLine(show.liveInHd)}</a></span>
                 )}
                 {/* Date-line segments come from the shared show-date-line
                     module (src/lib/show-date-line.ts) — the single source

@@ -97,6 +97,7 @@ export interface RawShow {
   ageRecommendation?: string;  // e.g., "Ages 12+", "All ages"
   limitedRun?: boolean;        // true for shows with announced closing dates
   previewsStartDate?: string;  // First preview performance (for upcoming shows)
+  liveInHd?: { date: string; encoreDate?: string | null; sourceUrl: string } | null; // BRO-6769: Met Live in HD cinema broadcast
   firstRunStart?: string;      // BRO-4768: first performance of an earlier run of this same production (return engagement)
   ticketLinks?: TicketLink[];
   officialUrl?: string;
@@ -271,6 +272,7 @@ export interface ComputedShow {
   ageRecommendation?: string;
   limitedRun?: boolean;
   previewsStartDate?: string;  // For upcoming shows
+  liveInHd?: { date: string; encoreDate?: string | null; sourceUrl: string } | null; // BRO-6769
   ticketLinks?: TicketLink[];
   officialUrl?: string;
   trailerUrl?: string;
@@ -683,6 +685,7 @@ export function computeShowData(
     ageRecommendation: show.ageRecommendation,
     limitedRun: show.limitedRun,
     previewsStartDate: show.previewsStartDate,
+    liveInHd: show.liveInHd ?? null,
     ticketLinks: show.ticketLinks,
     officialUrl: show.officialUrl,
     trailerUrl: show.trailerUrl,

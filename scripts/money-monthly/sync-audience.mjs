@@ -5,7 +5,7 @@
 // never printed in full.
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { planAudienceSync } = require('./audience.js');
+const { planAudienceSync, readAllContactPages } = require('./audience.js');
 const { hasHelpFlag } = require('../lib/cli-help.js');
 
 if (hasHelpFlag(process.argv.slice(2))) {
@@ -39,10 +39,14 @@ async function readSignups() {
   throw new Error('Supabase read exceeded page cap');
 }
 async function readAudience(id) {
-  const res = await fetch(`https://api.resend.com/audiences/${id}/contacts`, { signal: AbortSignal.timeout(30000), headers: { Authorization: `Bearer ${rk}` } });
-  if (!res.ok) throw new Error(`Resend contacts read failed for ${id.slice(0, 8)}: ${res.status}`);
-  const j = await res.json();
-  return j.data || [];
+  // Pages with limit/after until has_more is false. A short read would re-add
+  // someone who unsubscribed, or double-mail a General contact.
+  return readAllContactPages(async (after) => {
+    const qs = `limit=100${after ? `&after=${encodeURIComponent(after)}` : ''}`;
+    const res = await fetch(`https://api.resend.com/audiences/${id}/contacts?${qs}`, { signal: AbortSignal.timeout(30000), headers: { Authorization: `Bearer ${rk}` } });
+    if (!res.ok) throw new Error(`Resend contacts read failed for ${id.slice(0, 8)}: ${res.status}`);
+    return res.json();
+  });
 }
 
 const signups = await readSignups(); // BRO-6309: planAudienceSync honors unsubscribed_at
@@ -59,7 +63,7 @@ for (const email of plan.toAdd) {
   const res = await fetch(`https://api.resend.com/audiences/${MONEY_ID}/contacts`, {
     method: 'POST', signal: AbortSignal.timeout(30000),
     headers: { Authorization: `Bearer ${rk}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, unsubscribed: false }),
+    body: JSON.stringify({ email }), // no subscribe flag: sending one could resubscribe someone
   });
   if (res.ok) added++; else { errors++; if (errors <= 3) console.error(`add failed for ${mask(email)}: ${res.status}`); }
   await delay(200);

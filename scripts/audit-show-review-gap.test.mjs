@@ -8,6 +8,102 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
+const { showScoreSiblingPriorRunSources } = require('./lib/show-score-gap-identity.js');
+const { fetchAllShowScoreCriticTiles } = require('./lib/show-score-discover.js');
+
+for (const [title, opening, closing, transferOpening] of [
+  ['Sweat', '2016-11-03', '2016-12-04', '2017-03-26'],
+  ['Dear Evan Hansen', '2016-05-01', '2016-05-29', '2016-12-04'],
+  ['Eclipsed', '2015-10-14', '2015-11-29', '2016-03-06'],
+]) {
+  test(`BRO-6733: ${title}'s transfer source page tags dated and undated links, keeping this run's dated review`, async () => {
+    const show = { id: 'original-2016', title, category: 'off-broadway', openingDate: opening, closingDate: closing, status: 'closed' };
+    const transfer = { id: 'transfer-2017', title, category: 'broadway', openingDate: transferOpening };
+    const tile = (url, date) => `<div class="review-tile-v2 -critic"><span class="review-tile-v2__date">${date}</span><a href="${url}">Read more</a></div>`;
+    const format = (date) => new Date(date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+    const first = [1, 2, 3].map(n => tile(`https://critic.example/review-${n}`, format(transferOpening))).join('')
+      + tile('https://critic.example/off-broadway-transfer', format(opening))
+      + '<div data-next-page-path="/shows/transfer/paginate_critic_reviews" data-total-count="9"></div>';
+    const paginated = tile('https://critic.example/undated-review', '');
+    const urls = [];
+    const tiles = await fetchAllShowScoreCriticTiles('https://www.show-score.com/off-broadway-shows/transfer', async url => {
+      urls.push(url);
+      return urls.length === 1 ? first : JSON.stringify({ html: urls.length === 2 ? paginated : ' ' });
+    });
+    assert.equal(tiles.length, 5);
+    assert.ok(urls[1].includes('page=2'), 'pagination is part of the source page');
+    const sources = showScoreSiblingPriorRunSources(tiles, show, [show, transfer]);
+    assert.equal(sources.size, 4);
+    assert.equal(sources.get('https://critic.example/review-1'), 'show-score-tile-sibling:transfer-2017');
+    assert.equal(sources.get('https://critic.example/undated-review'), 'show-score-page-sibling:transfer-2017');
+    assert.equal(sources.has('https://critic.example/off-broadway-transfer'), false);
+    assert.equal(showScoreSiblingPriorRunSources(tiles.filter(t => t.date !== opening), transfer, [show, transfer]).size, 0);
+  });
+}
+
+test('BRO-6733: undated or inconclusive source pages fail open; inherited coverage keeps its dated and undated links', () => {
+  const show = { id: 'show-2026', title: 'Example', category: 'broadway', openingDate: '2026-10-01' };
+  const older = { ...show, id: 'show-2025', openingDate: '2025-10-01' };
+  const tiles = [1, 2, 3].map(n => ({ url: `https://critic.example/${n}`, date: '2025-10-01' }));
+  tiles.push({ url: 'https://critic.example/undated', date: null });
+  assert.equal(showScoreSiblingPriorRunSources(tiles.slice(-1), show, [show, older]).size, 0);
+  assert.equal(showScoreSiblingPriorRunSources([tiles[0], tiles[3]], show, [show, older]).has(tiles[3].url), false);
+  const priorRun = { openingDate: '2025-10-01', closingDate: '2025-11-01' };
+  const inheriting = { ...show, priorRuns: [priorRun] };
+  assert.equal(showScoreSiblingPriorRunSources(tiles, inheriting, [inheriting, older]).size, 0);
+  const separate = { ...show, priorRuns: [{ ...priorRun, inheritReviews: false }] };
+  assert.equal(showScoreSiblingPriorRunSources(tiles, separate, [separate, older]).size, 4);
+});
+
+test('BRO-6733: carried-over tiles do not vote for the page; a late transfer review inherits the confirmed source run', () => {
+  const show = { id: 'sweat-ob-2016', title: 'Sweat', category: 'off-broadway', openingDate: '2016-11-03', closingDate: '2016-12-04', status: 'closed' };
+  const transfer = { id: 'sweat-2017', title: 'Sweat', category: 'broadway', openingDate: '2017-03-26' };
+  const current = [1, 2, 3].map(n => ({ url: `https://critic.example/transfer-${n}`, date: '2017-03-26' }));
+  const previous = [1, 2, 3, 4].map(n => ({ url: `https://critic.example/public-${n}`, date: '2016-11-03', previousProduction: true }));
+  const tiles = [...current, ...previous,
+    { url: 'https://critic.example/late', date: '2017-05-10' },
+    { url: 'https://critic.example/undated', date: null },
+    { url: 'https://critic.example/undated-previous', date: null, previousProduction: true },
+  ];
+  const sources = showScoreSiblingPriorRunSources(tiles, show, [show, transfer]);
+  assert.equal(sources.size, 5);
+  assert.equal(sources.get('https://critic.example/late'), 'show-score-page-sibling:sweat-2017');
+  assert.equal(sources.get('https://critic.example/undated'), 'show-score-page-sibling:sweat-2017');
+  for (const tile of previous) assert.equal(sources.has(tile.url), false);
+  assert.equal(sources.has('https://critic.example/undated-previous'), false);
+});
+
+test('BRO-6733: audit output records the source page and blocks its transfer URLs', () => {
+  const output = execFileSync(process.execPath, ['-e', `
+    process.env.SERP_GAP_CENSUS_DISABLED = '1';
+    process.env.WE_GAP_REFERENCE_DISABLED = '1';
+    require('./scripts/lib/url-discovery').serpQuery = async () => [];
+    require('./scripts/lib/scraper').fetchPage = async () => { throw new Error('unexpected fetch'); };
+    const tiles = [1, 2, 3].map(n => ({ url: 'https://www.timeout.com/newyork/theater/transfer-review-' + n, date: '2017-03-26' }));
+    tiles.push({ url: 'https://www.timeout.com/newyork/theater/undated-transfer-review', date: null });
+    require('./scripts/lib/show-score-discover').fetchAllShowScoreCriticTiles = async () => tiles;
+    const show = { id: 'gap-test-original-2016', title: 'Gap Test Transfer', category: 'off-broadway', status: 'closed', openingDate: '2016-11-03', closingDate: '2016-12-04' };
+    const transfer = { ...show, id: 'gap-test-transfer-2017', category: 'broadway', openingDate: '2017-03-26', closingDate: '2017-06-25' };
+    require('./scripts/audit-show-review-gap').auditShow(show, { allShows: [show, transfer] }).then(result => {
+      console.log(JSON.stringify(result.missing));
+    }).catch(e => { console.error(e); process.exitCode = 1; });
+  `], { cwd: path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'), encoding: 'utf8' });
+  const rows = JSON.parse(output.trim().split('\n').at(-1));
+  assert.equal(rows.length, 4);
+  for (const row of rows) {
+    assert.equal(row.priorRun, true);
+    assert.match(row.priorRunSource, /^show-score-(tile|page)-sibling:gap-test-transfer-2017$/);
+    assert.deepEqual(row.sources, [{ source: 'show-score', sourceUrl: 'https://www.show-score.com/off-broadway-shows/gap-test-transfer' }]);
+  }
+});
+
+test('BRO-6733: an overlapping sibling cannot claim this continuing run\'s dated or undated reviews', () => {
+  const show = { id: 'show-2025', title: 'Example', category: 'broadway', previewsStartDate: '2025-01-01', openingDate: '2025-01-15', status: 'open' };
+  const sibling = { ...show, id: 'show-2026', openingDate: '2026-01-15' };
+  const tiles = [1, 2, 3].map(n => ({ url: `https://critic.example/${n}`, date: '2026-01-15' }));
+  tiles.push({ url: 'https://critic.example/undated', date: null });
+  assert.equal(showScoreSiblingPriorRunSources(tiles, show, [show, sibling]).size, 0);
+});
 
 // Same incident class as the 2026-07-14 bsc-conductor bug and the
 // autonomous-run.js/autonomous-probe.js/autonomous-merge.js --help fixes
@@ -824,7 +920,7 @@ test('serpCensus provenance is census-only: tagged from serpCensusOnlyUrls, neve
   assert.match(src, /serpCensusOnlyUrls = new Set\(\[\.\.\.serpCensusUrls\]\.filter\(u => !aggUrls\.has\(u\)\)\)/);
   assert.match(src, /if \(serpCensusOnlyUrls\.has\(m\.url\) && !m\.weRef\) m\.serpCensus = true;/);
   assert.doesNotMatch(src, /if \(serpCensusUrls\.has\(m\.url\)\) m\.serpCensus = true;/);
-  assert.ok(src.indexOf('serpCensusOnlyUrls = new Set') < src.indexOf('for (const u of serpCensusUrls) aggUrls.add(u);'));
+  assert.ok(src.indexOf('serpCensusOnlyUrls = new Set') < src.indexOf("for (const u of serpCensusUrls) addSourceUrl(u, 'serp-census');"));
 });
 
 // BRO-5500: a high-confidence CV non-review (critic never saw the show) that a

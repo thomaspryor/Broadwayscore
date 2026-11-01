@@ -67,6 +67,12 @@ import { parseArgs, ledgerTaskId, envMs, main, reportDispatchOnIssue } from '../
 // normally, same as running the CLI for real.
 const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 
+// main() without --model loads the daily Opus budget, which asks LIVE Linear for cloud Opus
+// claims (opus-budget.js fetchClaims). Under a Linear 429 the client backs off 60s and the
+// 15s subprocess tests time out (seen 2026-11-01, BRO-6764). Off for every test here, inherited
+// by spawned subprocesses; the BRO-6684 budget test turns it back on with its own env.
+if (process.env.OPUS_BUDGET_DISABLED === undefined) process.env.OPUS_BUDGET_DISABLED = '1';
+
 // A no-op Linear client for any main() test whose launch path reaches
 // reportDispatchOnIssue() — without this, main()'s default `deps.linear`
 // falls through to the REAL scripts/lib/linear-client.js, and a successful

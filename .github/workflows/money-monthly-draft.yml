@@ -88,9 +88,11 @@ jobs:
           MONEY_SUBJECT_PREFIX: ${{ github.event.inputs.subjectPrefix || '[DRAFT]' }}
         run: node scripts/money-monthly/send-preview.mjs --file="${{ steps.gen.outputs.file }}"
 
-      # Audience sync is read-only here (no --apply). The owner applies it once
-      # RESEND_MONEY_AUDIENCE_ID exists. Best effort: never fails the draft.
-      - name: Audience sync (DRY RUN)
+      # Adds new sign-ups to the "Profitability Scorecard sign-ups" Resend
+      # audience (created 2026-11-01, not a secret: an id alone cannot send).
+      # Contacts only: never creates or sends a broadcast, never writes to
+      # General (sync-audience.mjs refuses). Best effort: never fails the draft.
+      - name: Audience sync
         shell: bash
         if: steps.gate.outputs.run == 'true'
         continue-on-error: true
@@ -98,7 +100,8 @@ jobs:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: node scripts/money-monthly/sync-audience.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+          RESEND_MONEY_AUDIENCE_ID: 8896da5c-a3a9-42d0-8491-99a4c770e241
+        run: node scripts/money-monthly/sync-audience.mjs --apply | tee -a "$GITHUB_STEP_SUMMARY"
 
       # Estimate baseline lives in the Actions cache (private-data derived, so it is
       # never committed to this public repo). Only the scheduled run advances it;
