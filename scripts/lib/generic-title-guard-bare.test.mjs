@@ -25,3 +25,8 @@ test('Baby: real review headlines still pass', () => {
 test('non-generic one-word titles untouched', () => {
   assert.equal(passesGenericTitleIdentity('Wicked cast news', 'Wicked'), true);
 });
+test('Baby: bare headline and review-adjacent forms pass', () => {
+  for (const h of ['Baby', "Maltby and Shire's Baby review – tender revival", 'https://x.com/stage/maltby-shire-baby-musical-review', 'https://x.com/the-musical-baby-review']) {
+    assert.equal(passesGenericTitleIdentity(h, 'Baby'), true, h);
+  }
+});

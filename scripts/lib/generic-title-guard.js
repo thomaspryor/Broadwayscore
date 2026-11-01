@@ -68,7 +68,9 @@ function passesGenericTitleIdentity(text, title) {
   // "national-theatre-story-review": the word directly after a venue token.
   const afterVenue = new RegExp('(?:^| )(?:theatre|theater|olivier|dorfman|lyttelton) ' + word + '(?: |$)');
   const bare = phrase === word;
-  return candidates.some(c => (!bare && (' ' + c + ' ').includes(' ' + phrase + ' ')) || c.startsWith(word + ' ') || afterReview.test(c) || afterVenue.test(c));
+  // Bare title: the whole headline, or the word beside review/musical/revival, is identity.
+  const bareCtx = new RegExp('(?:^| )(?:reviews? (?:of )?|musical |revival )' + word + '(?: |$)|(?:^| )' + word + ' (?:reviews?|the musical|musical|revival)(?: |$)');
+  return candidates.some(c => (!bare && (' ' + c + ' ').includes(' ' + phrase + ' ')) || (bare && (c === word || bareCtx.test(c))) || c.startsWith(word + ' ') || afterReview.test(c) || afterVenue.test(c));
 }
 
 module.exports = { genericSingleWordTitle, passesGenericTitleIdentity, GENERIC_SINGLE_TITLE_WORDS, BARE_GENERIC_TITLE_WORDS };

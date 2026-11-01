@@ -406,7 +406,7 @@ async function processShow(showId, deps = {}) {
     // BRO-6321: an rss-discovery stub whose headline AND url slug do not name the
     // show (celebrity-baby news filed under the musical "Baby") is junk, not a
     // stuck review. Tag it like the sweep does so it never reaches the alert.
-    if (data.source === 'rss-discovery' && show?.title) {
+    if (data.source === 'rss-discovery' && show?.title && require('./lib/generic-title-guard').genericSingleWordTitle(show.title)) {
       const { titleMatchesShow, urlSlugMatchesShow } = require('./lib/rss-discovery');
       const identityOk = (data.title && titleMatchesShow(data.title, show.title))
         || (data.articleTitle && titleMatchesShow(data.articleTitle, show.title))
