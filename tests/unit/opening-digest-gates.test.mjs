@@ -27,7 +27,7 @@ test('MIN_AUDIENCE_REVIEWS mirrors the site (shared config minReviews)', () => {
 });
 
 const buzz = (n) => ({
-  shows: { x: { combinedScore: 42, designation: 'Mixed', sources: { a: { reviewCount: n } } } },
+  shows: { x: { combinedScore: 42, designation: 'Mixed', sources: { a: { score: 42, reviewCount: n } } } },
 });
 
 test('audience grade suppressed below the shared minimum', () => {
