@@ -14,7 +14,8 @@
 import { NOT_URGENT } from './ugc-roundtrip-urgency.mjs';
 
 export const TOKEN_RE = /^[a-f0-9]{32}$/;
-export const ENTRY_KEYS = ['logged', 'planned_date', 'show_id'];
+// curtain_time since 20261101 (BRO-6781): the owner's showtime on dated rows, null otherwise.
+export const ENTRY_KEYS = ['curtain_time', 'logged', 'planned_date', 'show_id'];
 export const PAYLOAD_KEYS = ['entries', 'name', 'showBooked', 'showUnbooked'];
 
 const FUTURE_SHOW = 'wicked-2003';
@@ -117,8 +118,12 @@ export async function runPlanSharesChecks(ctx) {
   const pub = await rpc(anonKey, 'get_shared_plans', { p_token: tokenOld });
   const payload = pub.json;
   check('plans: anonymous reads the share via get_shared_plans', pub.ok && payload && typeof payload === 'object', `HTTP ${pub.status}`, NOT_URGENT);
-  const problems = payloadProblems(payload, { forbiddenText: [userA.id, '19:00', 'evening', 'Roundtrip Test'] });
+  const problems = payloadProblems(payload, { forbiddenText: [userA.id, 'evening', 'Roundtrip Test'] });
   check('plans: payload carries only the allowed fields', problems.length === 0, problems.join('; '));
+  const byId = new Map((payload?.entries || []).map(e => [e.show_id, e]));
+  check('plans: a booked row carries its curtain time, an undated row none (BRO-6781)',
+    byId.get(FUTURE_SHOW)?.curtain_time === '19:00:00' && (byId.get(UNDATED_SHOW)?.curtain_time ?? null) === null,
+    `booked=${byId.get(FUTURE_SHOW)?.curtain_time} undated=${byId.get(UNDATED_SHOW)?.curtain_time}`, NOT_URGENT);
   const ids = new Set((payload?.entries || []).map(e => e.show_id));
   check('plans: booked and want-to-see rows present', ids.has(FUTURE_SHOW) && ids.has(UNDATED_SHOW), `ids=${[...ids].join(',')}`, NOT_URGENT);
   if (pastUnloggedShowId) {

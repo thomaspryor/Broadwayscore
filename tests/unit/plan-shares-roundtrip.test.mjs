@@ -55,9 +55,11 @@ function fakeServer(bugs = {}) {
       if (!share || !share.enabled || body.p_token !== share.token) return res(200, null);
       const entries = watch
         .filter(w => bugs.leakPast || w.show_id !== PAST_SHOW)
-        .map(w => (bugs.leakTime
-          ? { show_id: w.show_id, planned_date: w.planned_date ?? null, logged: false, curtain_time: w.curtain_time }
-          : { show_id: w.show_id, planned_date: w.planned_date ?? null, logged: false }));
+        .map(w => ({
+          show_id: w.show_id, planned_date: w.planned_date ?? null, logged: false,
+          curtain_time: bugs.dropTime || !w.planned_date ? null : w.curtain_time,
+          ...(bugs.leakSlot ? { time_slot: 'evening' } : {}),
+        }));
       return res(200, { name: share.display_name, showBooked: true, showUnbooked: true, entries });
     }
     if (path === 'rpc/rotate_plan_share_token') {
@@ -99,7 +101,8 @@ for (const [bug, expectFail] of [
   ['keepClientToken', 'plans: server mints the token (client value ignored)'],
   ['tokenWritable', 'plans: owner cannot overwrite the token'],
   ['leakToB', 'plans: RLS hides the share from another user'],
-  ['leakTime', 'plans: payload carries only the allowed fields'],
+  ['leakSlot', 'plans: payload carries only the allowed fields'],
+  ['dropTime', 'plans: a booked row carries its curtain time, an undated row none (BRO-6781)'],
   ['leakPast', 'plans: a past, unlogged plan stays private'],
   ['anonRotate', 'plans: anonymous cannot rotate'],
   ['upsertRotates', 'plans: client upsert succeeds and keeps the token'],
@@ -113,10 +116,10 @@ for (const [bug, expectFail] of [
 }
 
 test('payloadProblems flags extra keys and forbidden text', () => {
-  const clean = { name: 'T', showBooked: true, showUnbooked: true, entries: [{ show_id: 'x', planned_date: null, logged: false }] };
+  const clean = { name: 'T', showBooked: true, showUnbooked: true, entries: [{ show_id: 'x', planned_date: null, curtain_time: null, logged: false }] };
   assert.deepEqual(payloadProblems(clean), []);
   assert.match(payloadProblems({ ...clean, user_id: 'u' })[0], /top-level keys/);
-  assert.match(payloadProblems({ ...clean, entries: [{ ...clean.entries[0], curtain_time: '19:30' }] })[0], /entry keys/);
+  assert.match(payloadProblems({ ...clean, entries: [{ ...clean.entries[0], time_slot: 'evening' }] })[0], /entry keys/);
   assert.match(payloadProblems(clean, { forbiddenText: ['"T"'] })[0], /contains/);
   assert.deepEqual(payloadProblems(null), ['payload is not an object']);
 });
