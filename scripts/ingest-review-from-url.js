@@ -798,7 +798,7 @@ if (!show) {
       const fan = applyMultiShowFanoutToFile(result.filepath, { reviewTextsDir });
       if (fan.applied) {
         // Only a child this run wrote: a skipped, held or refused one is not ours to push or score.
-        const WROTE_CHILD = new Set(['create', 'fill']);
+        const WROTE_CHILD = new Set(['create', 'fill', 'held-trim']);
         for (const c of fan.children) {
           const childFile = path.join(reviewTextsDir, c.showId, path.basename(result.filepath));
           if (WROTE_CHILD.has(c.action) && fs.existsSync(childFile)) { landPaths.push(childFile); landShowIds.push(c.showId); }
