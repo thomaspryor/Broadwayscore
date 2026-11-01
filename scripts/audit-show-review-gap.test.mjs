@@ -1318,3 +1318,18 @@ test('BRO-6742: a roundup recorded as another show\'s is dropped; its owner and 
   const other = 'https://www.broadwayworld.com/article/Review-Roundup-FROM-THE-HEART-London-20261009';
   assert.deepEqual(dropRoundupsOwnedByOtherShows([other], 'from-the-heart-west-end-2026', owners), [other]);
 });
+
+// BRO-6761: while the never-audited backlog is large the catalogue lane doubles, then halves back.
+test('BRO-6761: catalogue lane doubles for a large never-audited backlog and stays on a valid slot', () => {
+  const { catalogueEveryFor, CATALOGUE_RESERVE_EVERY: BASE, CATALOGUE_RESERVE_AT: AT, CATALOGUE_BACKLOG_THRESHOLD } = require('./lib/gap-audit-freshness.js');
+  assert.equal(catalogueEveryFor(CATALOGUE_BACKLOG_THRESHOLD - 1), BASE);
+  const every = catalogueEveryFor(CATALOGUE_BACKLOG_THRESHOLD);
+  assert.ok(every < BASE && every > AT, 'doubled lane still has catalogueAt < every');
+  const opening = Array.from({ length: 30 }, (_, i) => ({ id: `opening-${i}` }));
+  const never = Array.from({ length: 6 }, (_, i) => ({ id: `old-${i}` }));
+  const catalogueIds = new Set(never.map(s => s.id));
+  const base = reserveStalestSlots([...opening, ...never], new Map(), { catalogueIds });
+  const boosted = reserveStalestSlots([...opening, ...never], new Map(), { catalogueIds, catalogueEvery: every });
+  const inFirst20 = (r) => r.targets.slice(0, 20).filter(s => catalogueIds.has(s.id)).length;
+  assert.ok(inFirst20(boosted) > inFirst20(base), `${inFirst20(boosted)} > ${inFirst20(base)}`);
+});

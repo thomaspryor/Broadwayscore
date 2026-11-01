@@ -249,6 +249,16 @@ const STALE_RESERVE_EVERY = 4;
 // If the tier-2 queue is empty the slot falls back to the stale lane.
 const CATALOGUE_RESERVE_EVERY = 12;
 const CATALOGUE_RESERVE_AT = 5;
+// BRO-6761: at 1 in 12 a run audits ~1.5 never-checked back-catalogue shows, so
+// 2,111 shows opened >1 year ago sat unaudited (654 of the 870 under 3 years old).
+// While the never-audited backlog is large the lane doubles (slots 5, 11, 17, ...;
+// 5 % 6 === 5 keeps catalogueAt valid). It halves back once the backlog drains, so
+// the extra spend is bounded by the backlog, not permanent.
+const CATALOGUE_BACKLOG_THRESHOLD = 100;
+const CATALOGUE_RESERVE_EVERY_BACKLOG = 6;
+function catalogueEveryFor(neverAuditedBacklog) {
+  return neverAuditedBacklog >= CATALOGUE_BACKLOG_THRESHOLD ? CATALOGUE_RESERVE_EVERY_BACKLOG : CATALOGUE_RESERVE_EVERY;
+}
 
 // showId -> computedAt ms, from a parsed show-review-gap.json. Rows that
 // cannot be stale in a way a re-audit fixes are left out: no/unparseable
@@ -379,6 +389,8 @@ module.exports = {
   STALE_RESERVE_EVERY,
   CATALOGUE_RESERVE_EVERY,
   CATALOGUE_RESERVE_AT,
+  CATALOGUE_BACKLOG_THRESHOLD,
+  catalogueEveryFor,
   gapRowTimestamps,
   gapRowShowIds,
   schedulingCheckpoint,

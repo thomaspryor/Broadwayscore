@@ -245,7 +245,7 @@ function writeJsonAtomic(filePath, obj) {
 // Freshness + ordering policy (extracted 2026-07-14 — opening-week shows must
 // re-audit every hourly run and sort ahead of the back-catalogue grind; The
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
-const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, gapRowShowIds, schedulingCheckpoint, reserveStalestSlots, oldestGapRow, pickDueLane, STALE_RESERVE_EVERY, CATALOGUE_RESERVE_EVERY } = require('./lib/gap-audit-freshness');
+const { freshnessMsFor, compareAuditPriority, auditTier, checkpointTs, gapRowTimestamps, gapRowShowIds, schedulingCheckpoint, reserveStalestSlots, oldestGapRow, pickDueLane, STALE_RESERVE_EVERY, catalogueEveryFor } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
 const { mergeGapAudit, countsFor, priorCensusUrls, seedPriorCensusUrls, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock, BLAST_RADIUS_ALERT_KEY, blastRadiusClearedKeys } = require('./lib/gap-audit-merge');
 const { corpusDirProblem } = require('./lib/list-show-dirs');
@@ -2467,11 +2467,12 @@ async function main(argv = process.argv.slice(2)) {
     // shows (no gap row, invisible to the stale lane) still get audited.
     const catalogueIds = new Set(targets.filter(s => auditTier(s, schedCheckpoint[s.id], now) === 2).map(s => s.id));
     neverAuditedDueAtStart = targets.filter(s => !schedCheckpoint[s.id]).length;
-    const reserved = reserveStalestSlots(targets, gapRowTsAtStart, { preferIds: alertingIds, catalogueIds });
+    const catalogueEvery = catalogueEveryFor(neverAuditedDueAtStart); // BRO-6761
+    const reserved = reserveStalestSlots(targets, gapRowTsAtStart, { preferIds: alertingIds, catalogueIds, catalogueEvery });
     targets = reserved.targets;
     staleReservedIds = reserved.reservedIds;
     catalogueReservedIds = reserved.catalogueReservedIds;
-    console.log(`audit-show-review-gap: ${neverAuditedDueAtStart} due show(s) never audited; 1 in ${CATALOGUE_RESERVE_EVERY} slots reserved for the back catalogue (first: ${catalogueReservedIds.slice(0, 3).join(', ') || 'none'})`);
+    console.log(`audit-show-review-gap: ${neverAuditedDueAtStart} due show(s) never audited; 1 in ${catalogueEvery} slots reserved for the back catalogue (first: ${catalogueReservedIds.slice(0, 3).join(', ') || 'none'})`);
     const oldest = oldestDueAtStart = oldestGapRow(gapRowTsAtStart, targets.map(s => s.id), now);
     if (oldest) console.log(`audit-show-review-gap: oldest due gap row ${oldest.showId} (${oldest.ageHours}h, computedAt ${oldest.computedAt}); 1 in ${STALE_RESERVE_EVERY} slots reserved for stalest rows`);
   }
@@ -3047,7 +3048,7 @@ async function main(argv = process.argv.slice(2)) {
     at: new Date().toISOString(),
     reserveEvery: STALE_RESERVE_EVERY,
     reservedAttempted: staleReservedIds.filter(id => auditedThisRunIds.has(id)),
-    catalogueReserveEvery: CATALOGUE_RESERVE_EVERY,
+    catalogueReserveEvery: catalogueEveryFor(neverAuditedDueAtStart),
     catalogueAttempted: catalogueReservedIds.filter(id => auditedThisRunIds.has(id)),
     neverAuditedDueAtStart,
     oldestDueRowAtStart: oldestDueAtStart,
