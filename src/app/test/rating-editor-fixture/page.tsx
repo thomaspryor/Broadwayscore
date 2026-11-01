@@ -118,7 +118,7 @@ function RatingEditorFixtureInner() {
 
         {saved && (
           <div className="mt-4 text-xs text-gray-400" data-testid="last-saved">
-            saved:{saved.rating}:{saved.reviewText ?? ''}:{saved.dateSeen ?? ''}:{saved.reviewId ?? ''}
+            saved:{saved.rating}:{saved.reviewText ?? ''}:{saved.dateSeen ?? ''}:{saved.reviewId ?? ''}:{JSON.stringify(saved.showtimeSeat ?? {})}
           </div>
         )}
 
