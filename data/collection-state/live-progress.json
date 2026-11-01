@@ -1,21 +1,37 @@
 {
-  "updatedAt": "2026-11-01T23:49:41.365Z",
-  "processed": 1186,
-  "failed": 605,
-  "successRate": "66.2%",
+  "updatedAt": "2026-11-01T23:51:40.698Z",
+  "processed": 1284,
+  "failed": 625,
+  "successRate": "67.3%",
   "tierBreakdown": {
-    "playwright": 728,
+    "playwright": 777,
     "amp": 5,
     "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 33,
+    "scrapingdog": 21,
+    "scrapingbee": 34,
     "brightdata": 65,
-    "archiveToday": 330,
-    "archive": 362
+    "archiveToday": 331,
+    "archive": 389
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 10,
   "recentActivity": [
+    {
+      "t": "2026-11-01T20:58:40.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-01T21:00:30.232Z",
+      "event": "bb-session",
+      "session": "06351821",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-01T21:00:30.687Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
     {
       "t": "2026-11-01T22:17:07.594Z",
       "event": "bb-session",
@@ -97,37 +113,21 @@
       "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     },
     {
-      "t": "2026-11-01T23:41:59.240Z",
+      "t": "2026-11-01T23:27:50.155Z",
       "event": "bb-session",
-      "session": "fb401ddc",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "b8b33ed2",
+      "url": "https://www.myguidelondon.com/events/larger-than-life-starring-wallace-gromit-sh"
     },
     {
-      "t": "2026-11-01T23:42:00.127Z",
+      "t": "2026-11-01T23:38:18.531Z",
+      "event": "bb-session",
+      "session": "af660bcc",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch933.html"
+    },
+    {
+      "t": "2026-11-01T23:38:19.424Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-01T23:48:45.090Z",
-      "event": "bb-session",
-      "session": "e383830f",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-11-01T23:48:45.995Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-11-01T23:48:56.421Z",
-      "event": "bb-session",
-      "session": "2fcdd89c",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-11-01T23:48:57.314Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
     }
   ]
 }
