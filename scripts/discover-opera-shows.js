@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const roh = require('./lib/roh-opera-discovery');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
@@ -34,6 +35,8 @@ const USAGE = `discover-opera-shows.js — Discovers Met Opera productions from 
 
 Usage:
   node scripts/discover-opera-shows.js [options]
+  --house=met|roh|all   which house to scan (default all; BRO-6766 added roh)
+  --dry-run             print what would be added, write nothing
   node scripts/discover-opera-shows.js --help, -h    print this usage and exit
 `;
 // hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
@@ -49,6 +52,9 @@ const OPERA_IDS_FILE = (() => {
 })();
 
 const dryRun = process.argv.includes('--dry-run');
+const houseArg = (process.argv.find(a => a.startsWith('--house=')) || '--house=all').split('=')[1];
+const RUN_MET = houseArg === 'met' || houseArg === 'all';
+const RUN_ROH = houseArg === 'roh' || houseArg === 'all';
 
 // Which seasons to scan (default: current + next)
 const seasonArgs = process.argv.filter(a => a.startsWith('--season=')).map(a => a.split('=')[1]);
@@ -272,7 +278,7 @@ async function main() {
 
   const toAdd = [];
 
-  for (const seasonSlug of SEASONS) {
+  for (const seasonSlug of (RUN_MET ? SEASONS : [])) {
     let html;
     try {
       html = await scrapeSeasonPage(seasonSlug);
@@ -324,6 +330,33 @@ async function main() {
 
       toAdd.push({ showEntry, idPrefix, seasonSlug });
       existingIds.add(id); // prevent duplicates across seasons (e.g. La Bohème in both)
+    }
+  }
+
+  if (RUN_ROH) {
+    // Royal Opera House: NEW productions / premieres only (BRO-6766). A failure
+    // here must not block the Met path, so it only logs.
+    try {
+      const listing = await fetchPage('https://www.rbo.org.uk/tickets-and-events');
+      const slugs = roh.extractProductionSlugs(listing.html || listing.text || '');
+      console.log(`  ROH: ${slugs.length} candidate production pages`);
+      for (const slug of slugs) {
+        let prod;
+        try {
+          const page = await fetchPage(`${roh.ROH_BASE}/production/${slug}`);
+          prod = roh.parseRohProduction(page.html || page.text || '', slug);
+        } catch (e) {
+          console.error(`  ✗ ROH ${slug}: ${e.message}`);
+          continue;
+        }
+        if (!prod.isOpera || !prod.isNewProduction || !prod.openingDate) continue;
+        const { id, idPrefix, entry } = roh.buildRohShowEntry(prod);
+        if (existingIds.has(id)) { console.log(`  already in DB: ${id}`); continue; }
+        toAdd.push({ showEntry: entry, idPrefix, seasonSlug: 'roh' });
+        existingIds.add(id);
+      }
+    } catch (e) {
+      console.error(`  ✗ ROH listing failed: ${e.message}`);
     }
   }
 

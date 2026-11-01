@@ -1,0 +1,253 @@
+{
+  "issueNumber": "bro-6766",
+  "planId": "3198bc6a-41f5-47f2-a06d-940ada55998e",
+  "status": "pending",
+  "createdAt": "2026-11-01T14:52:44.898Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add five Royal Opera House 2026-27 new productions (Parsifal, Gotterdammerung, Cosi fan tutte, La Gioconda, Hercules) as type opera, off-west-end",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "parsifal-off-west-end-2026",
+          "title": "Parsifal",
+          "slug": "parsifal-off-west-end-2026",
+          "venue": "Royal Opera House",
+          "openingDate": "2026-10-01",
+          "closingDate": "2026-10-17",
+          "previewsStartDate": "2026-10-01",
+          "status": "closed",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Wagner's final opera, a new Royal Opera production directed by Evgeny Titov in his Royal Opera debut and conducted by Jakub Hrůša, opening the 2026/27 Wagner programme at Covent Garden.",
+          "openingDateSource": "rbo.org.uk",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "Bow Street, London WC2E 9DD",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Richard Wagner",
+              "role": "Composer"
+            },
+            {
+              "name": "Evgeny Titov",
+              "role": "Director"
+            },
+            {
+              "name": "Jakub Hrůša",
+              "role": "Conductor"
+            }
+          ],
+          "statusSource": "BRO-6766 2026-11-01: Royal Ballet and Opera 2026/27 season announcement, new Royal Opera production, 2026-10-01 to 2026-10-17",
+          "evidenceUrls": [
+            "https://www.rbo.org.uk/latest-news/royal-ballet-and-opera-2627-season",
+            "https://eventslist.co.uk/london/events/parsifal-2026-10-01"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "gotterdammerung-off-west-end-2027",
+          "title": "Götterdämmerung",
+          "slug": "gotterdammerung-off-west-end-2027",
+          "venue": "Royal Opera House",
+          "openingDate": "2027-01-21",
+          "closingDate": "2027-02-07",
+          "previewsStartDate": "2027-01-21",
+          "status": "upcoming",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [
+            "upcoming"
+          ],
+          "synopsis": "Barrie Kosky's new production of Wagner's Götterdämmerung completes his Royal Opera Ring cycle, conducted by Antonio Pappano.",
+          "openingDateSource": "rbo.org.uk",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "Bow Street, London WC2E 9DD",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Richard Wagner",
+              "role": "Composer"
+            },
+            {
+              "name": "Barrie Kosky",
+              "role": "Director"
+            },
+            {
+              "name": "Antonio Pappano",
+              "role": "Conductor"
+            }
+          ],
+          "statusSource": "BRO-6766 2026-11-01: Royal Ballet and Opera 2026/27 season announcement, new Royal Opera production, 2027-01-21 to 2027-02-07",
+          "evidenceUrls": [
+            "https://www.rbo.org.uk/latest-news/royal-ballet-and-opera-2627-season",
+            "https://bachtrack.com/opera-event/gotterdammerung-the-royal-opera-royal-opera-house-covent-garden-21-january-2027/439027"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cosi-fan-tutte-off-west-end-2027",
+          "title": "Così fan tutte",
+          "slug": "cosi-fan-tutte-off-west-end-2027",
+          "venue": "Royal Opera House",
+          "openingDate": "2027-02-10",
+          "closingDate": "2027-02-28",
+          "previewsStartDate": "2027-02-10",
+          "status": "upcoming",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [
+            "upcoming"
+          ],
+          "synopsis": "A new Royal Opera production of Mozart's Così fan tutte directed by Netia Jones in her Main Stage debut, conducted by Thomas Hengelbrock.",
+          "openingDateSource": "rbo.org.uk",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "Bow Street, London WC2E 9DD",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Wolfgang Amadeus Mozart",
+              "role": "Composer"
+            },
+            {
+              "name": "Netia Jones",
+              "role": "Director"
+            },
+            {
+              "name": "Thomas Hengelbrock",
+              "role": "Conductor"
+            }
+          ],
+          "statusSource": "BRO-6766 2026-11-01: Royal Ballet and Opera 2026/27 season announcement, new Royal Opera production, 2027-02-10 to 2027-02-28",
+          "evidenceUrls": [
+            "https://www.rbo.org.uk/latest-news/royal-ballet-and-opera-2627-season",
+            "https://bachtrack.com/opera-event/cosi-fan-tutte-the-royal-opera-royal-opera-house-covent-garden-10-february-2027/439030"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "la-gioconda-off-west-end-2027",
+          "title": "La Gioconda",
+          "slug": "la-gioconda-off-west-end-2027",
+          "venue": "Royal Opera House",
+          "openingDate": "2027-04-29",
+          "closingDate": "2027-05-18",
+          "previewsStartDate": "2027-04-29",
+          "status": "upcoming",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [
+            "upcoming"
+          ],
+          "synopsis": "Oliver Mears's production of Ponchielli's La Gioconda, set in modern-day Venice and led by Anna Netrebko, is the Royal Opera's first staging of the work at Covent Garden, conducted by Antonio Pappano.",
+          "openingDateSource": "rbo.org.uk",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "Bow Street, London WC2E 9DD",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Amilcare Ponchielli",
+              "role": "Composer"
+            },
+            {
+              "name": "Oliver Mears",
+              "role": "Director"
+            },
+            {
+              "name": "Antonio Pappano",
+              "role": "Conductor"
+            }
+          ],
+          "statusSource": "BRO-6766 2026-11-01: Royal Ballet and Opera 2026/27 season announcement, new Royal Opera production, 2027-04-29 to 2027-05-18",
+          "evidenceUrls": [
+            "https://www.rbo.org.uk/latest-news/royal-ballet-and-opera-2627-season",
+            "https://bachtrack.com/opera-event/la-gioconda-the-royal-opera-royal-opera-house-covent-garden-29-april-2027/439044"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hercules-off-west-end-2027",
+          "title": "Hercules",
+          "slug": "hercules-off-west-end-2027",
+          "venue": "Royal Opera House",
+          "openingDate": "2027-06-18",
+          "closingDate": "2027-07-09",
+          "previewsStartDate": "2027-06-18",
+          "status": "upcoming",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-west-end",
+          "market": "west-end",
+          "tags": [
+            "upcoming"
+          ],
+          "synopsis": "Barrie Kosky's new Royal Opera production of Handel's Hercules, conducted by Laurence Cummings.",
+          "openingDateSource": "rbo.org.uk",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "Bow Street, London WC2E 9DD",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "George Frideric Handel",
+              "role": "Composer"
+            },
+            {
+              "name": "Barrie Kosky",
+              "role": "Director"
+            },
+            {
+              "name": "Laurence Cummings",
+              "role": "Conductor"
+            }
+          ],
+          "statusSource": "BRO-6766 2026-11-01: Royal Ballet and Opera 2026/27 season announcement, new Royal Opera production, 2027-06-18 to 2027-07-09",
+          "evidenceUrls": [
+            "https://www.rbo.org.uk/latest-news/royal-ballet-and-opera-2627-season",
+            "https://www.rbo.org.uk/production/hercules-barrie-kosky"
+          ]
+        }
+      }
+    ]
+  }
+}

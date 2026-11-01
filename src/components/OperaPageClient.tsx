@@ -29,7 +29,7 @@ const statusParamToFilter: Record<StatusParam, string> = {
 };
 
 function operaTitleSlug(fullSlug: string): string {
-  return fullSlug.replace(/-off-broadway/, '');
+  return fullSlug.replace(/-off-broadway|-off-west-end/, '');
 }
 
 function operaHasEnoughReviews(show: ShowCardShow): boolean {
@@ -173,14 +173,14 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
           </span>
         </div>
         <p className="text-gray-400 text-lg sm:text-xl">
-          Every Met production. Every critic. One score.
+          Every Met production and major new premieres from the Royal Opera House. Every critic. One score.
         </p>
         <p className="text-fg-muted text-sm sm:text-base mt-1">
           {totalShows} productions. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
         {openCount > 0 && (
           <p className="text-fg-muted text-xs sm:text-sm mt-1">
-            {openCount} currently running at the Metropolitan Opera House.
+            {openCount} currently running at the Metropolitan Opera House and the Royal Opera House.
           </p>
         )}
       </div>
@@ -225,8 +225,8 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
       </div>
 
       {/* Show list */}
-      <h2 className="sr-only">Met Opera productions</h2>
-      <div className="space-y-3" role="list" aria-label="Met Opera productions">
+      <h2 className="sr-only">Opera productions</h2>
+      <div className="space-y-3" role="list" aria-label="Opera productions">
         {filteredAndSortedShows.map((show, index) => (
           <ShowListCard key={show.id} show={show} index={index} hideStatus={shouldHideStatus} scoreMode={scoreMode} overrideHref={`/opera/${operaTitleSlug(show.slug)}`} />
         ))}
@@ -296,7 +296,7 @@ export default function OperaPageClient(props: OperaPageClientProps) {
             Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
             <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
           </div>
-          <p className="text-gray-400 text-lg sm:text-xl">Every Met production. Every critic. One score.</p>
+          <p className="text-gray-400 text-lg sm:text-xl">Every Met production and major new premieres from the Royal Opera House. Every critic. One score.</p>
         </div>
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-surface-overlay rounded w-3/4"></div>

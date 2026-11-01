@@ -348,7 +348,7 @@ export function getNotableOffBroadwayShows(limit = NOTABILITY_THRESHOLDS.cap): C
 }
 
 /**
- * Get all Opera shows (Met Opera productions, categorized as off-broadway for
+ * Get all Opera shows (Met Opera productions plus Royal Opera House premieres, BRO-6766; categorized as off-broadway for
  * routing but tagged type='opera'). Powers the /opera route + operascorecard.com.
  */
 export function getOperaShows(): ComputedShow[] {
@@ -357,7 +357,7 @@ export function getOperaShows(): ComputedShow[] {
 
 /** 'la-traviata-off-broadway' → 'la-traviata', 'la-boheme-off-broadway-2025' → 'la-boheme-2025' */
 export function getOperaTitleSlug(fullSlug: string): string {
-  return fullSlug.replace(/-off-broadway/, '');
+  return fullSlug.replace(/-off-broadway|-off-west-end/, '');
 }
 
 export function getOperaShowByTitleSlug(titleSlug: string): ComputedShow | undefined {

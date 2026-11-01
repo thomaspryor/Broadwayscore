@@ -10,9 +10,9 @@ const currentYear = new Date().getFullYear();
 const operaOgImageUrl = `${BASE_URL}/og/opera.png`;
 
 export const metadata: Metadata = {
-  title: `Met Opera Reviews & Ratings (${currentYear}) | OperaScorecard`,
+  title: `Opera Reviews & Ratings: Met Opera and Royal Opera House (${currentYear}) | OperaScorecard`,
   description:
-    'CriticScore ratings for Metropolitan Opera productions. Aggregated from The New York Times, Operawire, Parterre Box, New York Classical Review, Bachtrack, and more. All opera critic voices count equally.',
+    'CriticScore ratings for Metropolitan Opera productions and new Royal Opera House premieres. Aggregated from The New York Times, Operawire, Parterre Box, New York Classical Review, Bachtrack, and more. All opera critic voices count equally.',
   alternates: {
     canonical: `${BASE_URL}/opera`,
   },
@@ -77,7 +77,7 @@ export default function OperaPage() {
     name: 'Opera Scorecard',
     url: 'https://operascorecard.com',
     logo: `${BASE_URL}/og/opera.png`,
-    description: 'Aggregated critic ratings for Metropolitan Opera productions',
+    description: 'Aggregated critic ratings for Metropolitan Opera productions and new productions at the Royal Opera House',
     inLanguage: 'en',
   };
 

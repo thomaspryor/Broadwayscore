@@ -68,7 +68,7 @@ import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getCurrencySymbol, getRegionalLabel } from '@/lib/market-utils';
-import { isOperaShow } from '@/lib/show-market';
+import { isOperaShow, getOperaMarketLabel } from '@/lib/show-market';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
@@ -452,7 +452,7 @@ function Inner({
         : `/theater/${slugify(foldVenueName(show.venue))}`;
 
   // Market + format in the poster alt text (image search / a11y), as the legacy header had.
-  const posterMarketLabel = isOperaShow(show) ? 'Met Opera'
+  const posterMarketLabel = isOperaShow(show) ? getOperaMarketLabel(show)
     : isWestEnd ? 'West End'
     : isOffBroadway ? 'Off-Broadway'
     : show.category === 'regional' ? getRegionalLabel(show)

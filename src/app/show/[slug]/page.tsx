@@ -34,7 +34,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, getShowFAQs, BASE_URL } from '@/lib/seo';
 import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol, isUkRegionalShow } from '@/lib/market-utils';
-import { isOperaShow } from '@/lib/show-market';
+import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -135,7 +135,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   // Regional shows roll up under the Broadway Scorecard brand (site name), but must NOT be
   // labelled "on Broadway" — use a neutral, honest market label in titles/meta.
   const siteName = isOperaMeta ? 'Opera Scorecard' : isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isUkRegionalMeta ? 'in the UK' : isRegionalMeta ? 'in a regional production' : isTourMeta ? 'on its national tour' : 'on Broadway';
+  const marketLabel = isOperaMeta ? getOperaHouseSuffix(show) : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isUkRegionalMeta ? 'in the UK' : isRegionalMeta ? 'in a regional production' : isTourMeta ? 'on its national tour' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
   // Sentiment label maps tier → SEO-friendly phrase used in title + description.
@@ -577,7 +577,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                     show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
                     show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
                   ]}
-                  alt={`${show.title} ${isOpera ? 'Met Opera' : isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'Regional' : isTour ? 'National Tour' : 'Broadway'} ${show.type} poster`}
+                  alt={`${show.title} ${isOpera ? getOperaMarketLabel(show) : isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'Regional' : isTour ? 'National Tour' : 'Broadway'} ${show.type} poster`}
                   width={176}
                   height={264}
                   decoding="async"
