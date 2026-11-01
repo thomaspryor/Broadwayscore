@@ -7,7 +7,7 @@ const { applyUtm } = require('./email-utm.js');
 
 const opts = { source: 'newsletter', campaign: 'weekly-2026-05-30' };
 // Output is entity-escaped (&amp;) to stay valid HTML and match escapeHtml() in templates.
-const Q = 'utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=weekly-2026-05-30&amp;list=1';
+const Q = 'utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=weekly-2026-05-30';
 
 test('tags a plain first-party content link', () => {
   const out = applyUtm('<a href="https://broadwayscorecard.com/show/giant">x</a>', opts);
@@ -117,9 +117,12 @@ test('throws when source or campaign missing', () => {
   assert.throws(() => applyUtm('<a href="x">y</a>', { campaign: 'c' }));
 });
 
-test('every tagged link opens the Profitability Scorecard for the list (?list=1); skipped links do not', () => {
-  const out = applyUtm('<a href="https://broadwayscorecard.com/biz">a</a><a href="https://broadwayscorecard.com/unsubscribe?e=x">u</a><a href="https://example.com/">e</a>', { source: 'newsletter', campaign: 'c' });
-  assert.match(out, /\/biz\?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=c&amp;list=1"/);
-  assert.doesNotMatch(out, /unsubscribe[^"]*list=1/);
-  assert.doesNotMatch(out, /example\.com[^"]*list=1/);
+test('listLink:true adds subscriber=1 to tagged links only; default and skipped links do not (BRO-6772)', () => {
+  const html = '<a href="https://broadwayscorecard.com/biz">a</a><a href="https://broadwayscorecard.com/unsubscribe?e=x">u</a><a href="https://example.com/">e</a><a href="https://broadwayscorecard.com/x?subscriber=0">k</a>';
+  const out = applyUtm(html, { source: 'newsletter', campaign: 'c', listLink: true });
+  assert.match(out, /\/biz\?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=c&amp;subscriber=1"/);
+  assert.doesNotMatch(out, /unsubscribe[^"]*subscriber=1/);
+  assert.doesNotMatch(out, /example\.com[^"]*subscriber=1/);
+  assert.match(out, /\/x\?subscriber=0&amp;utm_source/, 'an existing value is never overwritten');
+  assert.doesNotMatch(applyUtm(html, { source: 'btc', campaign: 'c' }), /subscriber=1/, 'off by default');
 });

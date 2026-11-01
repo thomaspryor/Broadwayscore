@@ -20,7 +20,7 @@ const FIRST_PARTY_HOSTS = new Set([
 
 // Mirrors MONEY_LIST_LINK_PARAM in src/lib/money-gate.ts (pinned by
 // tests/unit/money-gate.test.mjs so the two cannot drift).
-const LIST_LINK_PARAM = 'list';
+const LIST_LINK_PARAM = 'subscriber';
 
 // Never tag these paths — list-management links must stay clean (UTMs on an
 // unsubscribe link pollute attribution and can break one-click unsubscribe
@@ -41,7 +41,7 @@ function shouldSkip(u) {
 // Build the tagged URL. URL handles query-merge and fragment ordering for us
 // (params always serialize before the #fragment), so `/x#best-musical` becomes
 // `/x?utm_...#best-musical` correctly.
-function tagUrl(rawUrl, { source, medium, campaign }) {
+function tagUrl(rawUrl, { source, medium, campaign, listLink }) {
   // hrefs in email HTML are usually entity-escaped (escapeHtml turns `&` into
   // `&amp;`), so a multi-param query arrives as `?a=1&amp;b=2`. Decode to a
   // valid URL before parsing — otherwise `new URL()` reads a junk `amp;b`
@@ -58,17 +58,21 @@ function tagUrl(rawUrl, { source, medium, campaign }) {
   u.searchParams.set('utm_source', source);
   u.searchParams.set('utm_medium', medium);
   u.searchParams.set('utm_campaign', campaign);
-  // Everyone who gets these emails is on the owner's list, so the link also
-  // opens the Profitability Scorecard without its email sign-up (`?list=1`,
-  // src/lib/money-gate.ts MONEY_LIST_LINK_PARAM; owner, 2026-11-01).
-  u.searchParams.set(LIST_LINK_PARAM, '1');
+  // Emails to the owner's list (newsletter, opening-night broadcast) pass
+  // listLink:true so the link also opens the Profitability Scorecard without
+  // its email sign-up (src/lib/money-gate.ts MONEY_LIST_LINK_PARAM; owner,
+  // 2026-11-01). Contest and fantasy emails go to people not on the list and
+  // do not pass it.
+  if (listLink && !u.searchParams.has(LIST_LINK_PARAM)) u.searchParams.set(LIST_LINK_PARAM, '1');
   return u.toString().replace(/&/g, '&amp;');
 }
 
 /**
  * Append UTM params to every first-party content link in an email's HTML.
  * @param {string} html  Final email HTML.
- * @param {{campaign:string, source:string, medium?:string}} opts
+ * @param {{campaign:string, source:string, medium?:string, listLink?:boolean}} opts
+ *   listLink: the recipients are on the owner's list; links also carry
+ *   `?subscriber=1`, which opens the Profitability Scorecard without sign-up.
  * @returns {string} HTML with UTMs applied (idempotently).
  */
 function applyUtm(html, opts) {
@@ -78,7 +82,7 @@ function applyUtm(html, opts) {
   if (!source || !campaign) {
     throw new Error('applyUtm: { source, campaign } are required');
   }
-  const cfg = { source, medium, campaign };
+  const cfg = { source, medium, campaign, listLink: opts.listLink === true };
   // Match the `href` attribute only — capture the quote so we re-emit it. The
   // (?<![\w-]) lookbehind keeps it from matching `data-href`, `x-href`, etc.
   // (where `href=` is a substring), which would corrupt non-link metadata.
