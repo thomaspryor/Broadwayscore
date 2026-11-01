@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T01:53:10.421Z",
+  "timestamp": "2026-11-01T02:11:21.853Z",
   "stats": {
-    "totalReviews": 77085,
+    "totalReviews": 77152,
     "alreadyFlagged": 21745,
-    "dateGuardCatches": 238,
-    "directorMismatch": 3258,
+    "dateGuardCatches": 240,
+    "directorMismatch": 3272,
     "tvFilmSignals": 2188,
     "londonSignals": 3522,
     "offBroadwaySignals": 722,
     "yearMismatch": 326,
-    "noPublishDate": 8848
+    "noPublishDate": 8872
   },
   "findings": [
     {
@@ -7412,6 +7412,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "beautiful-the-carole-king-musical-regional-2023",
+      "file": "deadline--greg-evans.json",
+      "score": null,
+      "publishDate": "2018-09-16",
+      "url": "https://deadline.com/2018/09/beautiful-review-carole-king-musical-los-angeles-pantages-sarah-bockel-1202465309/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1881d before show (2018-09-16 vs 2023-11-10)"
         }
       ]
     },
@@ -27461,6 +27475,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": null,
+      "publishDate": "February 5th, 2018",
+      "url": "https://www.hollywoodreporter.com/review/hangmen-theater-1081505",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
         }
       ]
     },
@@ -55594,6 +55622,7 @@
     {
       "showId": "stand-up-if-youre-here-tonight-regional-2022",
       "file": "around-the-town-chicago--alan-bresloff.json",
+      "score": 89,
       "publishDate": null,
       "url": "http://www.aroundthetownchicago.com/theatre-reviews/stand-up-if-youre-here-tonight/",
       "findings": [
@@ -63514,6 +63543,84 @@
       ]
     },
     {
+      "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "around-the-town-chicago--julia-w-rath.json",
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-gospel-at-colonus-reviewed-by-julia-w-rath/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "buzznews--wesley-david.json",
+      "publishDate": "2023-05-22",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5197-let-the-weeping-cease-the-gospel-at-colonus-opens-at-court-theatre.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": "2023-05-21",
+      "url": "https://chicago.suntimes.com/2023/5/21/23732027/gospel-at-colonus-review-court-theatre-oedipus-kevin-roston-jr-sophocles",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2023-05-22",
+      "url": "https://www.chicagotheatrereview.com/2023/05/a-celebration-of-life/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2023-05-20",
+      "url": "https://www.letsplaytheatricalreview.com/blog/the-gospel-of-colonus",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "picksinsix--ronald-keaton.json",
+      "publishDate": "2023-05-22",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2023/5/22/picksinsix-review-the-gospel-at-colonus-court-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
       "showId": "the-grapes-of-wrath-west-end-2024",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 60,
@@ -65341,6 +65448,20 @@
       ]
     },
     {
+      "showId": "the-house-party-chichester-festival-regional-2024",
+      "file": "deadline--greg-evans.json",
+      "score": null,
+      "publishDate": "2023-01-12",
+      "url": "https://deadline.com/2023/01/house-party-review-movie-reboot-warner-bros-1235220333/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 486d before show (2023-01-12 vs 2024-05-12)"
+        }
+      ]
+    },
+    {
       "showId": "the-human-voice-west-end-2022",
       "file": "londontheatre1--chris-omaweng.json",
       "score": 61,
@@ -65575,6 +65696,71 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2026 (0x). 2001 matches production: the-invention-of-love-2001"
+        }
+      ]
+    },
+    {
+      "showId": "the-island-regional-2022",
+      "file": "around-the-town-chicago--frank-meccia.json",
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-island-reviewed-by-frank-meccia/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from the-island-1974"
+        }
+      ]
+    },
+    {
+      "showId": "the-island-regional-2022",
+      "file": "buzznews--wesley-david.json",
+      "publishDate": "2022-11-23",
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5059-review-the-island-at-court-theatre.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from the-island-1974"
+        }
+      ]
+    },
+    {
+      "showId": "the-island-regional-2022",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2022-11-21",
+      "url": "https://chicago.suntimes.com/2022/11/21/23471085/the-island-review-court-theatre-chicago-athol-fugard-john-kani-winston-ntshona",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from the-island-1974"
+        }
+      ]
+    },
+    {
+      "showId": "the-island-regional-2022",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2022-11-19",
+      "url": "https://www.letsplaytheatricalreview.com/blog/the-island",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from the-island-1974"
+        }
+      ]
+    },
+    {
+      "showId": "the-island-regional-2022",
+      "file": "new-city-stage--tristan-bruns.json",
+      "publishDate": "2022-12-01",
+      "url": "https://www.newcitystage.com/2022/12/01/courage-brothers-a-review-of-the-island-at-court-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from the-island-1974"
         }
       ]
     },
@@ -67031,6 +67217,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-regional-2022",
+      "file": "observer--david-cote.json",
+      "score": null,
+      "publishDate": "2024-03-19",
+      "url": "https://observer.com/2024/03/theater-review-broadways-the-notebook-is-shallow-boring-and-slow/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
         }
       ]
     },
