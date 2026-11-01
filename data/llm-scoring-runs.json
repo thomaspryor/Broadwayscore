@@ -3074220,21 +3074220,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T18:04:47.706Z",
-    "completedAt": "2026-11-01T18:05:12.536Z",
-    "totalReviews": 6,
-    "processed": 5,
-    "skipped": 1,
+    "startedAt": "2026-11-01T18:06:09.423Z",
+    "completedAt": "2026-11-01T18:06:35.832Z",
+    "totalReviews": 5,
+    "processed": 4,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 31149,
-      "output": 1491,
+      "input": 31215,
+      "output": 1373,
       "cacheRead": 19035,
       "cacheWrite": 0,
-      "total": 77075
+      "total": 77008
     },
-    "costUsd": 0.1163622,
-    "runId": "41333953568",
+    "costUsd": 0.11485530000000001,
+    "runId": "41334124813",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3103658,16 +3103658,6 @@
         "disagreementDetails": "BWW: Flat thumbs differ by 26% (ours: 26%, theirs: 0%)"
       },
       {
-        "showId": "precarious-regional-2026",
-        "ourDistribution": {
-          "up": 4,
-          "flat": 1,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "prelude-to-a-kiss-2007",
         "ourDistribution": {
           "up": 3,
@@ -3105794,6 +3105784,16 @@
           "flat": 0,
           "down": 1,
           "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "sally-and-tom-regional-2026",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 1,
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -3121884,8 +3121884,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T18:10:10.381Z",
-    "completedAt": "2026-11-01T18:10:10.383Z",
+    "startedAt": "2026-11-01T18:11:35.322Z",
+    "completedAt": "2026-11-01T18:11:35.324Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3121898,7 +3121898,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41333953568",
+    "runId": "41334124813",
     "source": "comparative-rescore",
     "errorDetails": []
   }
