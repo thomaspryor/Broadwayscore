@@ -6,11 +6,16 @@
  * and others publish the morning after press night), the stored date sits after a
  * review. reconcileOpeningDate() moves it to the earliest full-date review.
  *
+ * BRO-6697: theatreinchicago rows seeded from the first review TIC listed
+ * ('tic-first-review', scripts/lib/tic-stage.js) have the same shape: other outlets'
+ * earlier reviews arrive after staging and the date stayed late (12 of 17 rows in the
+ * "opening date vs review dates" health row, 2026-11-01).
+ *
  * Pure: takes the show row and its review publish dates, returns a decision.
  * A gap wider than MAX_GAP_DAYS is not trusted (a stray review of another run or a
  * mis-dated page) and is reported for a human instead of applied.
  */
-const SEEDED_SOURCES = new Set(['guardian-review', 'census-review', 'first-review-date']);
+const SEEDED_SOURCES = new Set(['guardian-review', 'census-review', 'first-review-date', 'tic-first-review']);
 const MAX_GAP_DAYS = 14;
 const FIRST_REVIEW_SOURCE = 'first-review-date';
 const isDay = (d) => typeof d === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(d) && Number.isFinite(Date.parse(d));

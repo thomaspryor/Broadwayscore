@@ -2,7 +2,7 @@
 /**
  * reconcile-uk-regional-opening-dates.js (BRO-6725)
  *
- * UK regional opening dates seeded from the first Guardian/census review are an upper
+ * UK regional (and, BRO-6697, theatreinchicago) opening dates seeded from the first Guardian/census review are an upper
  * bound on press night. Where any outlet reviewed earlier, move the date to the earliest
  * full-date review (source 'first-review-date', still unconfirmed so Playbill/theatremonkey
  * can overwrite). Gaps wider than 14 days are listed, never applied.
@@ -20,12 +20,16 @@ const { reconcileOpeningDate } = require('./lib/uk-regional-opening-date');
 const { isUkRegionalVenue } = require('./lib/market-label');
 const { isLocalOnlyShow } = require('./lib/local-market');
 
+// BRO-6697: theatreinchicago rows are localOnly regional rows seeded the same way
+// ('tic-first-review'); they stay in scope after a move re-stamps the source.
+const isTicRow = (s) => s.discoverySource === 'theatreinchicago';
+
 function plan(shows, reviews) {
   const by = {};
   for (const r of reviews) (by[r.showId] = by[r.showId] || []).push(r.publishDate);
   const moves = []; const manual = [];
   for (const s of shows) {
-    if (s.category !== 'regional' || !isUkRegionalVenue(s.venue) || isLocalOnlyShow(s)) continue;
+    if (s.category !== 'regional' || !(isTicRow(s) || (isUkRegionalVenue(s.venue) && !isLocalOnlyShow(s)))) continue;
     const d = reconcileOpeningDate(s, by[s.id]);
     if (d.action === 'move') moves.push({ show: s, ...d });
     else if (d.action === 'manual') manual.push({ show: s, ...d });

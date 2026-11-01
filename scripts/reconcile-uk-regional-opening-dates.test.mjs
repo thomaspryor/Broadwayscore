@@ -40,3 +40,24 @@ test('applyMoves skips a move that would create a duplicate row (the write guard
   assert.equal(moved.length, 0, 'the duplicate-creating move is skipped');
   assert.deepEqual(shows, before, 'rows are restored untouched');
 });
+
+test('BRO-6697: a theatreinchicago row seeded from its first TIC review moves to an earlier review', () => {
+  // Shape of top-girls-regional-2026: TIC's first listed review 02-26, Sun-Times reviewed 02-20.
+  const tic = (id, d, src = 'tic-first-review') => ({
+    id, title: id, slug: id, category: 'regional', venue: 'Goodman Theatre, Chicago, IL', status: 'closed', type: 'play',
+    openingDate: d, openingDateSource: src, discoverySource: 'theatreinchicago', localOnly: true,
+  });
+  const shows = [tic('top-girls-regional-2026', '2026-02-26'), tic('other-chicago-regional-2026', '2026-02-26', 'ibdb')];
+  const reviews = [rev('top-girls-regional-2026', '2026-02-20'), rev('top-girls-regional-2026', '2026-02-26'), rev('other-chicago-regional-2026', '2026-02-20')];
+  const moved = applyMoves(shows, reviews);
+  assert.deepEqual(moved.map((m) => m.show.id), ['top-girls-regional-2026'], 'only the review-seeded TIC row moves');
+  assert.equal(shows[0].openingDate, '2026-02-20');
+  assert.equal(shows[0].openingDateSource, 'first-review-date');
+  assert.equal(shows[1].openingDate, '2026-02-26', 'a sourced (non-seeded) date is never moved');
+  assert.equal(applyMoves(shows, reviews).length, 0, 'idempotent once re-stamped first-review-date');
+});
+
+test('BRO-6697: a localOnly non-TIC regional row stays out of scope', () => {
+  const shows = [{ ...row('c-local-2026', 'Gamma', '2026-10-11'), localOnly: true, venue: 'Some Hall, Springfield, IL' }];
+  assert.equal(applyMoves(shows, [rev('c-local-2026', '2026-10-05')]).length, 0);
+});
