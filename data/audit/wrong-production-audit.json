@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T05:18:10.917Z",
+  "timestamp": "2026-11-01T05:34:01.509Z",
   "stats": {
-    "totalReviews": 77840,
+    "totalReviews": 77909,
     "alreadyFlagged": 21725,
     "dateGuardCatches": 241,
     "directorMismatch": 3296,
-    "tvFilmSignals": 2204,
-    "londonSignals": 3534,
+    "tvFilmSignals": 2206,
+    "londonSignals": 3535,
     "offBroadwaySignals": 727,
-    "yearMismatch": 327,
-    "noPublishDate": 9081
+    "yearMismatch": 326,
+    "noPublishDate": 9108
   },
   "findings": [
     {
@@ -19716,20 +19716,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
-        }
-      ]
-    },
-    {
-      "showId": "every-brilliant-thing-2026",
-      "file": "la-voce-di-new-york--jk-clarke.json",
-      "score": 94,
-      "publishDate": "2026-04-14",
-      "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2024 (2x) more than 2026 (0x). 2024 matches production: every-brilliant-thing-regional-2024"
         }
       ]
     },
@@ -73587,6 +73573,32 @@
       ]
     },
     {
+      "showId": "tick-tick-boom-regional-2023",
+      "file": "broadwayworld--kathleen-anwar.json",
+      "publishDate": "2023-01-20",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-TICK-TICK-BOOM-Rocks-the-House-at-BoHoTheatre-20230120",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tick-tick-boom-regional-2023",
+      "file": "chi-mt--cori-lang.json",
+      "publishDate": "2023-01-23",
+      "url": "https://www.chi-mt.com/reviews/tick-tick-boom-boho-jan-23",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "time-stands-still-2010",
       "file": "ap--charles-isherwood.json",
       "score": 67,
@@ -106350,6 +106362,19 @@
       "score": 89,
       "publishDate": "2026-10-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "london-now--emily-davison.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
