@@ -72,4 +72,23 @@ function redispatchPlan(deferred, runShows) {
   return { shows: stalled ? [] : d, stalled };
 }
 
-module.exports = { recordDeferredShows, collectDeferredShows, redispatchPlan };
+/**
+ * Shows of shards that left no deferred-list artifact at all (BRO-6743). A shard
+ * killed at its job timeout (or lost with its runner) may never reach the
+ * `if: always()` upload, so its unfinished shows were silently dropped. A shard
+ * that finished cleanly still uploads its (empty) file, so a missing artifact
+ * means the shard's whole assignment is unaccounted for.
+ * @param {Array<{batch_id:number|string, shows:string}>} matrix  prepare's matrix `include` rows
+ * @param {Array<number|string>} reportedBatchIds  batch ids that uploaded a list
+ * @returns {string[]}
+ */
+function unreportedShardShows(matrix, reportedBatchIds) {
+  const reported = new Set((Array.isArray(reportedBatchIds) ? reportedBatchIds : []).map(String));
+  const texts = [];
+  for (const row of Array.isArray(matrix) ? matrix : []) {
+    if (row && !reported.has(String(row.batch_id))) texts.push(String(row.shows || ''));
+  }
+  return collectDeferredShows(texts);
+}
+
+module.exports = { recordDeferredShows, collectDeferredShows, redispatchPlan, unreportedShardShows };
