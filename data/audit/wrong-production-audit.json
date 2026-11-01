@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T06:09:50.940Z",
+  "timestamp": "2026-11-01T06:28:32.648Z",
   "stats": {
-    "totalReviews": 78020,
+    "totalReviews": 78101,
     "alreadyFlagged": 21725,
     "dateGuardCatches": 241,
     "directorMismatch": 3313,
-    "tvFilmSignals": 2207,
+    "tvFilmSignals": 2208,
     "londonSignals": 3535,
     "offBroadwaySignals": 727,
     "yearMismatch": 327,
-    "noPublishDate": 9160
+    "noPublishDate": 9196
   },
   "findings": [
     {
@@ -25106,6 +25106,19 @@
       "score": 39,
       "publishDate": "August 20, 2007",
       "url": "https://www.nytimes.com/2007/08/20/theater/reviews/20grea.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "grease-regional-2023",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2023-04-22",
+      "url": "https://www.chicagotheatrereview.com/2023/04/hopelessly-devoted-to-you/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
