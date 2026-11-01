@@ -533,6 +533,32 @@ async function tryAutoFix(checkResult) {
 // bare-day rule, clamp at 0). Covered by scripts/tests/health-check-hours-ago.test.mjs.
 const { hoursAgo, formatAge } = require('./lib/hours-ago');
 
+// BRO-6697: a plain review-texts copy that stopped syncing reads as a clean corpus.
+// The main Mac checkout held 1449 of 3737 reviewed shows (2026-11-01), so the
+// "opening date vs review dates" row went green on --live while CI still flagged
+// 20 shows, and the dispatcher logged that false pass as live evidence. Rows that
+// read review-texts skip (and --live reports "cannot verify") when more than
+// REVIEW_TEXTS_STALE_SHARE of reviews.json's shows have no folder; a fresh clone
+// misses ~0.1%.
+const REVIEW_TEXTS_STALE_SHARE = 0.05;
+let reviewTextsSkipCache;
+function reviewTextsSkipReason(dataDir) {
+  if (dataDir === undefined) {
+    if (reviewTextsSkipCache === undefined) reviewTextsSkipCache = reviewTextsSkipReason(DATA_DIR);
+    return reviewTextsSkipCache;
+  }
+  const rtDir = path.join(dataDir, 'review-texts');
+  if (!fs.existsSync(rtDir)) return 'review-texts not checked out';
+  let ids = [];
+  try {
+    ids = [...new Set((readJSON(path.join(dataDir, 'reviews.json'))?.reviews || []).map((r) => r && r.showId).filter(Boolean))];
+  } catch { /* unreadable reviews.json: nothing to compare against */ }
+  const missing = ids.filter((id) => !fs.existsSync(path.join(rtDir, id))).length;
+  return ids.length && missing / ids.length > REVIEW_TEXTS_STALE_SHARE
+    ? `review-texts checkout stale: ${missing} of ${ids.length} reviewed shows have no folder`
+    : null;
+}
+
 function readJSON(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
 }
@@ -787,6 +813,10 @@ function checkSync() {
       }
     }
     // review-texts live in a private repo — if not checked out, skip this check
+    const rtSkip = reviewTextsSkipReason();
+    if (rtSkip && fileCount > 0) {
+      return { name: 'Sync: review-texts vs reviews.json', status: 'pass', message: `Skipped (${rtSkip})` };
+    }
     if (fileCount === 0) {
       return { name: 'Sync: review-texts vs reviews.json', status: 'pass', message: 'Skipped — review-texts not checked out (private repo)' };
     }
@@ -1268,8 +1298,9 @@ function checkQuality() {
       const name = 'Quality: opening date vs review dates';
       const { scanOpeningDateContradictions, loadAcks } = require('./lib/opening-date-contradiction');
       const rtDir = path.join(DATA_DIR, 'review-texts');
-      if (!fs.existsSync(rtDir)) {
-        return { name, status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      const rtSkip = reviewTextsSkipReason();
+      if (rtSkip) {
+        return { name, status: 'pass', message: `Skipped (${rtSkip})` };
       }
       const showsData = readJSON(path.join(DATA_DIR, 'shows.json'));
       const shows = Array.isArray(showsData) ? showsData : (showsData?.shows || []);
@@ -1284,8 +1315,9 @@ function checkQuality() {
     runCheck('Quality: star-vs-score mismatch', () => {
       const { scanReviewTexts } = require('./lib/star-score-mismatch');
       const rtDir = path.join(DATA_DIR, 'review-texts');
-      if (!fs.existsSync(rtDir)) {
-        return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      const rtSkip = reviewTextsSkipReason();
+      if (rtSkip) {
+        return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: `Skipped (${rtSkip})` };
       }
       // BRO-3364: acks expire after 90 days (scripts/lib/baseline-ttl.js).
       const { activeBaselineKeys, describeExpiry } = require('./lib/baseline-ttl');
@@ -1393,8 +1425,9 @@ function checkQuality() {
     // human to confirm, never write.
     runCheck('Quality: missing contentTier', () => {
       const rtDir = path.join(DATA_DIR, 'review-texts');
-      if (!fs.existsSync(rtDir)) {
-        return { name: 'Quality: missing contentTier', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      const rtSkip = reviewTextsSkipReason();
+      if (rtSkip) {
+        return { name: 'Quality: missing contentTier', status: 'pass', message: `Skipped (${rtSkip})` };
       }
       const { scanMissingContentTier } = require('./lib/silent-exclusion-detectors');
       let showsById = {};
@@ -1531,8 +1564,9 @@ function checkQuality() {
     // genuinely un-extractable pages), never writes.
     runCheck('Quality: outlet stub rate', () => {
       const rtDir = path.join(DATA_DIR, 'review-texts');
-      if (!fs.existsSync(rtDir)) {
-        return { name: 'Quality: outlet stub rate', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      const rtSkip = reviewTextsSkipReason();
+      if (rtSkip) {
+        return { name: 'Quality: outlet stub rate', status: 'pass', message: `Skipped (${rtSkip})` };
       }
       const { collectReviewRecords, computeOutletStubRates } = require('./audit-outlet-stub-rate.js');
       const records = collectReviewRecords(rtDir);
@@ -1565,8 +1599,9 @@ function checkQuality() {
     // /^Quality:/ playbook route, never writes.
     runCheck('Quality: outlet invalid-content rate', () => {
       const rtDir = path.join(DATA_DIR, 'review-texts');
-      if (!fs.existsSync(rtDir)) {
-        return { name: 'Quality: outlet invalid-content rate', status: 'pass', message: 'Skipped (review-texts not checked out)' };
+      const rtSkip = reviewTextsSkipReason();
+      if (rtSkip) {
+        return { name: 'Quality: outlet invalid-content rate', status: 'pass', message: `Skipped (${rtSkip})` };
       }
       const { collectReviewRecords, computeOutletInvalidRates } = require('./audit-outlet-stub-rate.js');
       const records = collectReviewRecords(rtDir);
@@ -6459,4 +6494,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { reviewTextsSkipReason, evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
