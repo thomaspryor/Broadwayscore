@@ -385,6 +385,24 @@ function extractLsaBody(html) {
 }
 
 /**
+ * CurtainUp (curtainup.com) — BRO-6761. 1990s-style table layout: no container
+ * div, the review is bare text between the last layout </table> (the show-photo
+ * "pic" table) and the "credit" table (cast / dates / "Reviewed by ..."). Every
+ * generic pattern returned 0 chars ("pattern may be missing for this outlet"),
+ * failing 17+ gap-audit ingests across back-catalogue shows. Anchor on the credit
+ * table; return null (fail loud) when it is absent.
+ */
+function extractCurtainUpBody(html) {
+  const credit = /<table\b[^>]*class\s*=\s*["']?credit/i.exec(html);
+  if (!credit) return null;
+  const region = html.slice(0, credit.index);
+  const start = region.toLowerCase().lastIndexOf('</table>');
+  if (start < 0) return null;
+  const body = stripHtml(region.slice(start + 8));
+  return body.length >= 300 ? body : null;
+}
+
+/**
  * La Voce di New York (lavocedinewyork.com) — Jannah/JNews WordPress theme.
  * No DOM class is stable across templates (verified: no entry-content,
  * post-content, or jeg_inner_content wrapper on live pages), so every
@@ -862,7 +880,7 @@ const PATTERNS = [
 const DEDICATED_EXTRACTOR_HOSTS = [
   'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
   'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
-  'talkinbroadway.com', 'theatreweekly.com',
+  'talkinbroadway.com', 'theatreweekly.com', 'curtainup.com',
 ];
 
 const PROMO_BOILERPLATE_PATTERNS = [
@@ -989,6 +1007,11 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
   if (host.includes('lightingandsoundamerica.com')) {
     const lsaText = extractLsaBody(html);
     if (lsaText && lsaText.length >= 300) return lsaText;
+  }
+
+  if (host.includes('curtainup.com')) {
+    const cuText = extractCurtainUpBody(html);
+    if (cuText) return cuText;
   }
 
   // theatreweekly.com — see extractTheatreWeeklyBody above. Returns null
@@ -1304,4 +1327,4 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody };
+module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody, extractCurtainUpBody };
