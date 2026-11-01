@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6742-b",
   "planId": "0202e514-893e-41ae-9c8d-ddb9e3185fb5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T02:38:35.414Z",
   "submitter": {
     "name": null,
@@ -111,5 +111,64 @@
         "description": "Reason for the regional wrongProduction"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T02:46:27.877Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queen-versailles-2025/pages-on-stages--mason-pilevsky.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queen-versailles-2025/pages-on-stages--mason-pilevsky.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/amny--matt-windman.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/amny--matt-windman.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "every-brilliant-thing-2026/theatre-reviews-limited--david-roberts.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran restore-released-quarantined-body.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-bway-2025/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-bway-2025/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/lighting-and-sound-america--david-barbour.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025/lighting-and-sound-america--david-barbour.json wrongProductionReason: null -> \"BRO-6742: review text names the Longacre Theatre (Broadway run); the Broadway copy is the live one\""
+    }
+  ],
+  "executedIn": "ci"
 }
