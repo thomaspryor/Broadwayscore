@@ -324,7 +324,36 @@ function clearAutomatedTextRejectionOnRefetch(d, now) {
   return true;
 }
 
+/**
+ * BRO-6747: the body itself was just REPLACED (a clean fetch over a page-dump
+ * body), so any automated rejection of the old body is void, including the
+ * ensemble residue that carries rejectedBy/rejectedAt/rejectionReasoning with a
+ * null rejectionReason (the WhatsOnStage consent-banner case), which the
+ * reason-gated predicates above never match. Unlike the refetch sweep this does
+ * not need the text-fingerprint test: the caller knows the text changed.
+ * wrong_production / wrong_show and every human verdict are left alone.
+ * Mutates.
+ *
+ * @returns {boolean} true when a rejection was cleared
+ */
+function voidRejectionOnBodyReplacement(d, now) {
+  if (!d || typeof d !== 'object' || hasHumanVerdict(d)) return false;
+  if (!isAutomatedRejecter(d.rejectedBy)) return false;
+  if (d.rejectionReason != null && !TEXT_QUALITY_REASONS.has(d.rejectionReason)) return false;
+  const at = now || new Date().toISOString();
+  const prior = { clearedAt: at, clearedBy: 'junk-body-replacement' };
+  _clearInto(d, REJECTION_FIELDS, prior);
+  if (d.rejectedTextHash != null) { prior.rejectedTextHash = d.rejectedTextHash; d.rejectedTextHash = null; }
+  if (d.promptVersion != null) { prior.promptVersion = d.promptVersion; d.promptVersion = null; }
+  const parked = parkTextDerivedScore(d, at);
+  if (parked) prior.parkedScore = parked;
+  _pushBreadcrumb(d, prior);
+  _markRescore(d, at);
+  return true;
+}
+
 module.exports = {
+  voidRejectionOnBodyReplacement,
   isHumanRejecter,
   isAutomatedRejecter,
   isAutomatedTextRejection,

@@ -1208,6 +1208,41 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
   // e.g. after refinement, outletId='timeout-london' not 'timeout' for timeout.com/london URLs.
   let existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
 
+  // --- BRO-6747: junk body parked under the WRONG outlet slot ---
+  // An explicit-url ingest of a clean article whose url is already held by a
+  // sibling file whose body is a page dump (a raw HTML document filed under
+  // broadway-blog for a 1minutecritic.com url): findExistingReviewFile's pass 0
+  // is outlet-gated, so the clean fetch would become a second file and the
+  // url-collision guard would keep the junk one primary. Move the junk file to
+  // the right slot (safeRenameReview, retagging its outlet) so the body
+  // replacement in _mergeIntoExisting lands on it. Same url, junk-vs-clean, not
+  // locked/manual; anything else is left to the normal path.
+  if (!existing && input && input.replaceBadBody === true && input.url && typeof fields.fullText === 'string'
+      && !fs.existsSync(filepath)) {
+    const junk = require('./junk-body');
+    const { sameArticleUrl } = require('./review-url-collision');
+    let siblings = [];
+    try { siblings = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); } catch { /* no dir yet */ }
+    for (const f of siblings) {
+      let data;
+      try { data = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { continue; }
+      if (!data || !data.url || String(data.outletId || '') === String(outletId)) continue;
+      if (data._locked === true || data.manualContentTier || data.multiShowSplitParent === true) continue;
+      if (!sameArticleUrl(data.url, input.url) || !junk.isCleanReplacementForJunk(data.fullText, fields.fullText)) continue;
+      if (dryRun) { existing = { path: path.join(showDir, f), data }; break; }
+      const moved = { ...data, outletId };
+      const outletLabel = input.outlet || fields.outlet;
+      if (outletLabel) moved.outlet = outletLabel;
+      moved.outletRelocatedFrom = data.outletId || null;
+      const rename = safeRenameReview(path.join(showDir, f), filepath, { newData: moved });
+      if (rename && rename.wrote !== false) {
+        console.log(`  ↪ Moved junk-body file ${f} to ${filename} (url belongs to ${outletId})`);
+        existing = { path: filepath, data: moved };
+        break;
+      }
+    }
+  }
+
   // --- Slot collision for a LANE review (BRO-4805, BRO-4782 wiring A) ---
   // The slot (outlet + critic) already holds a DIFFERENT review that the corpus flagged (wrongProduction, rejected,
   // duplicateOf...). Merging the lane review into it would inherit the flag and hide a review an aggregator already
@@ -1888,6 +1923,25 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       && _bodyUpgradeTierOk()) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
     existing.fullText = fields.fullText;
+    changed = true;
+  }
+  // BRO-6747: a stored body that is a page dump (a consent banner glued to the
+  // article, or a raw HTML document) is replaced by a clean fetch of the SAME
+  // url, whatever its length. The block above wants a longer body of the same
+  // article, which a 2k review never is against a 9k banner. Both halves of
+  // junk-body.isCleanReplacementForJunk must hold, and the stored url must be
+  // this ingest's url, so one real review never replaces another.
+  else if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
+      && fullTextBefore && existing.fullText === fullTextBefore
+      && !existing.manualContentTier && existing._locked !== true
+      && existing.multiShowSplitParent !== true
+      && (!existing.url || !input.url || require('./review-url-collision').sameArticleUrl(existing.url, input.url))
+      && require('./junk-body').isCleanReplacementForJunk(fullTextBefore, fields.fullText)) {
+    console.log(`  ↑ Replacing junk stored body (${require('./junk-body').junkBodyReason(fullTextBefore)}, ${fullTextBefore.length} chars) with a clean fetch (${fields.fullText.length} chars)`);
+    existing.fullText = fields.fullText;
+    existing.junkBodyReplacedAt = new Date().toISOString();
+    if (fields.textFetchedAt) existing.textFetchedAt = fields.textFetchedAt;
+    require('./stale-automated-text-verdict').voidRejectionOnBodyReplacement(existing);
     changed = true;
   }
 
