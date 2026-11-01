@@ -18,9 +18,9 @@ test('every channel the video scheduler posts to has a safe zone', () => {
 
 test('TikTok keeps clear of the search bar, the button column and the caption block (owner screenshot)', () => {
   const z = zone('tiktok');
-  assert.ok(z.top >= 80, 'search bar ends ~80 stage px down');
-  assert.ok(z.right <= 302, 'button column starts ~302 stage px across');
-  assert.ok(z.bottom <= 555, 'account name starts ~555 stage px down');
+  assert.ok(z.top >= 81 + 10, 'search bar ends ~81 stage px down; keep a margin');
+  assert.ok(z.right <= 302 - 10, 'button column starts ~302 stage px across; keep a margin');
+  assert.ok(z.bottom <= 560 - 40, 'account name starts ~560 stage px down; shorter phones cover more');
   assert.ok(z.left >= 14, 'tall phones crop ~14 stage px off each side');
 });
 

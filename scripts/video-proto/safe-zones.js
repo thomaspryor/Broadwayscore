@@ -6,12 +6,14 @@
 //
 // Insets are in 1080x1920 output pixels. Neither TikTok nor Meta publishes organic safe zones; these take the
 // cautious end of the 2026 creator guides (upload-post.com, adaptlypost.com, adkit.so) and were checked against the
-// owner's TikTok screenshots (iPhone, 2026-11-01): search bar ends ~240px down, button column starts ~900px across,
-// account name starts ~1490px down. Tall phones also crop ~40px off each side of a TikTok, hence the left margin.
+// owner's TikTok screenshots (iPhone, 2026-11-01): search bar ends ~243px down, button column starts ~906px across,
+// account name starts ~1680px down. Tall phones also crop ~40px off each side of a TikTok, hence the left margin.
 const OUT_W = 1080, OUT_H = 1920, STAGE_W = 360, STAGE_H = 640, K = OUT_W / STAGE_W; // stage units are 1/3 output px
 
 const ZONES = {
-  tiktok: { top: 252, bottom: 450, left: 60, right: 180, label: 'TikTok' },
+  // TikTok, measured on two owner screenshots (2026-11-01): search bar ends at 243px, button column starts at 906px
+  // (and runs from 843px down to the bottom), account name starts at 1680px. Margins of ~45px top, ~36px right.
+  tiktok: { top: 288, bottom: 450, left: 60, right: 210, label: 'TikTok' },
   instagram: { top: 220, bottom: 480, left: 60, right: 180, label: 'Instagram Reels' },
   facebook: { top: 220, bottom: 480, left: 60, right: 180, label: 'Facebook Reels' },
   youtube: { top: 200, bottom: 450, left: 60, right: 192, label: 'YouTube Shorts' },
