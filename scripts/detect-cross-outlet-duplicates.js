@@ -51,6 +51,8 @@ const { getTier } = require('./lib/outlet-tiers');
 const { GEMINI_FLASH } = require('./lib/models');
 const { crossOutletPointer, skipAsAlreadyFlagged, excludeFromCrossOutletCompare } = require('./lib/cross-outlet-pointer');
 const { wouldCloseCrossOutletCycle } = require('./lib/cross-outlet-cycle');
+// BRO-6759: two DIFFERENT named critics are only hidden on verified evidence.
+const { classifyCrossOutletPair } = require('./lib/cross-outlet-pair-policy');
 
 // ============================================================
 // Text Processing
@@ -200,6 +202,9 @@ async function main() {
   // BRO-5348: pairs where one row points at the other outlet's file. Reported
   // for a human or a byline check, never auto-flagged.
   const pointerPairs = [];
+  // BRO-6759: matching text under two different named critics with no verified
+  // link. One file may hold the other's text. Reported, never flagged.
+  const wrongTextCandidates = [];
 
   for (const showId of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
@@ -275,21 +280,29 @@ async function main() {
       const primary = plain[0];
 
       for (let i = 1; i < plain.length; i++) {
-        const secondary = plain[i];
+        let keep = primary;
+        let copy = plain[i];
+        const verdict = classifyCrossOutletPair(keep, copy, { similarity: 100 });
+        if (verdict.action === 'review') {
+          wrongTextCandidates.push({ showId, method: 'fingerprint', similarity: 100, reason: verdict.reason, files: [keep.file, copy.file], outlets: [keep.outlet, copy.outlet], critics: [keep.criticName, copy.criticName] });
+          continue;
+        }
+        // The file whose own text names the other outlet is the copy, whatever the tier.
+        if (verdict.copy === 'a') { keep = plain[i]; copy = primary; }
         duplicates.push({
           showId,
           method: 'fingerprint',
           similarity: 100,
-          primaryFile: primary.file,
-          primaryOutlet: primary.outlet,
-          primaryCritic: primary.criticName,
-          secondaryFile: secondary.file,
-          secondaryOutlet: secondary.outlet,
-          secondaryCritic: secondary.criticName,
-          primaryScore: primary.score,
-          secondaryScore: secondary.score,
-          scoreDiff: Math.abs((primary.score || 0) - (secondary.score || 0)),
-          textSource: secondary.textSource,
+          primaryFile: keep.file,
+          primaryOutlet: keep.outlet,
+          primaryCritic: keep.criticName,
+          secondaryFile: copy.file,
+          secondaryOutlet: copy.outlet,
+          secondaryCritic: copy.criticName,
+          primaryScore: keep.score,
+          secondaryScore: copy.score,
+          scoreDiff: Math.abs((keep.score || 0) - (copy.score || 0)),
+          textSource: copy.textSource,
         });
       }
     }
@@ -314,6 +327,13 @@ async function main() {
 
         stats.similarityMatches++;
 
+        // BRO-6759: different named critics need verified evidence before either file is hidden.
+        const verdict = classifyCrossOutletPair(r1, r2, { similarity: sim });
+        if (verdict.action === 'review') {
+          wrongTextCandidates.push({ showId, method: 'similarity', similarity: sim, reason: verdict.reason, files: [r1.file, r2.file], outlets: [r1.outlet, r2.outlet], critics: [r1.criticName, r2.criticName] });
+          continue;
+        }
+
         // Layer 3: LLM confirmation for borderline (40-70% similarity)
         let llmResult = null;
         if (!SKIP_LLM && sim < 70) {
@@ -331,8 +351,10 @@ async function main() {
         const primaryIdx = getTier(r1.outletId) < getTier(r2.outletId) ? 0 :
                           getTier(r1.outletId) > getTier(r2.outletId) ? 1 :
                           r1.text.length >= r2.text.length ? 0 : 1;
-        const primary = primaryIdx === 0 ? r1 : r2;
-        const secondary = primaryIdx === 0 ? r2 : r1;
+        // The file whose own text names the other outlet is the copy, whatever the tier.
+        const copyIdx = verdict.copy === 'a' ? 0 : verdict.copy === 'b' ? 1 : (primaryIdx === 0 ? 1 : 0);
+        const primary = copyIdx === 0 ? r2 : r1;
+        const secondary = copyIdx === 0 ? r1 : r2;
 
         if (primary.pointerAcross || secondary.pointerAcross) {
           pointerPairs.push({ showId, method: 'similarity', similarity: sim, files: [primary.file, secondary.file], outlets: [primary.outlet, secondary.outlet], critics: [primary.criticName, secondary.criticName] });
@@ -359,6 +381,7 @@ async function main() {
 
   // --- Results ---
   console.log('\n=== RESULTS ===');
+  console.log(`Wrong-text candidates (not flagged): ${wrongTextCandidates.length}`);
   console.log(`Shows scanned: ${stats.showsScanned}`);
   console.log(`Reviews scanned: ${stats.reviewsScanned}`);
   console.log(`Already flagged: ${stats.alreadyFlagged}`);
@@ -425,6 +448,8 @@ async function main() {
       duplicates: unique,
       // BRO-5348: one row points at the other outlet's file; for review only.
       crossOutletPointerPairs: pointerPairs,
+      // BRO-6759: different named critics, matching text, no verified link.
+      wrongTextCandidates,
     };
     const reportPath = path.join(AUDIT_DIR, 'cross-outlet-duplicates.json');
     fs.writeFileSync(reportPath, JSON.stringify(report, null, 2) + '\n');
