@@ -861,34 +861,31 @@
     "queuedAt": "2026-11-01T17:29:47.582Z"
   },
   {
-    "conditionKey": "land:land/bro-6743-gather-unreported-shards",
-    "title": "Landing blocked: unit-tests-node red on land/bro-6743-gather-unreported-shards",
-    "description": "land.yml did not land land/bro-6743-gather-unreported-shards: the unit-tests-node gate went red at 26fdadf8f8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41331188117",
-    "severity": "error",
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: fallbackFromLabel: unknown skipReason \"sb-host-cooldown\" https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-6743-gather-unreported-shards"
-      },
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "tip",
-        "value": "26fdadf8f89a5acc7fe466b817020cda75c06993"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331188117"
-      }
-    ],
-    "queuedAt": "2026-11-01T17:48:14.304Z"
+    "fields": [],
+    "queuedAt": "2026-11-01T17:42:30.208Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-ask-off-broadway-2026",
+    "title": "1 review(s) for the-ask-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--24124b82.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/paul-mccartney-upcoming-beatles-biopics/6560611/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T17:43:14.818Z"
   }
 ]
