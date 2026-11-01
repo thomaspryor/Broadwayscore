@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T17:56:35.454Z",
+  "timestamp": "2026-11-01T18:16:46.609Z",
   "stats": {
-    "totalReviews": 78719,
-    "alreadyFlagged": 21829,
+    "totalReviews": 78752,
+    "alreadyFlagged": 21830,
     "dateGuardCatches": 244,
-    "directorMismatch": 3388,
+    "directorMismatch": 3389,
     "tvFilmSignals": 2237,
-    "londonSignals": 3554,
+    "londonSignals": 3555,
     "offBroadwaySignals": 733,
     "yearMismatch": 341,
-    "noPublishDate": 8534
+    "noPublishDate": 8540
   },
   "findings": [
     {
@@ -49802,6 +49802,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "atheatregoersthoughts--paul-webb.json",
+      "score": 79,
       "publishDate": "2026-06-27",
       "url": "https://theatregoerthoughts.blogspot.com/2026/06/pippin-signature-theatre-arlington-va.html?m=1",
       "findings": [
@@ -49815,6 +49816,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "broadwayworld--aidan-oconnor.json",
+      "score": 94,
       "publishDate": "2026-05-21",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-PIPPIN-at-Signature-Theatre-20260521",
       "findings": [
@@ -49833,6 +49835,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "hillrag--matthew-mcclure.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.hillrag.com/2026/05/29/signatures-pippin-is-2026s-most-entertaining-musical/",
       "findings": [
@@ -49846,6 +49849,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 91,
       "publishDate": "2026-05-23",
       "url": "https://mdtheatreguide.com/2026/05/theatre-review-pippin-at-signature-theatre/",
       "findings": [
@@ -49859,6 +49863,7 @@
     {
       "showId": "pippin-regional-2026",
       "file": "stageandcinema--barbara-papendorp.json",
+      "score": 91,
       "publishDate": "2026-05-23",
       "url": "https://stageandcinema.com/2026/05/22/pippin-review-signature-theatre-arlington/",
       "findings": [
@@ -52002,6 +52007,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"adam penford\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "purlie-victorious-regional-2026",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-05-13",
+      "url": "https://mdtheatreguide.com/2026/05/theatre-review-purlie-victorious-a-non-confederate-romp-through-the-cotton-patch-at-studio-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kenny leon\" from purlie-victorious-2023"
         }
       ]
     },
@@ -90449,6 +90467,19 @@
       "score": 91,
       "publishDate": "2026-08-08",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "file": "londontheatredirect--unknown.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/musical/ceilidh-tickets?srsltid=AYCX9vImRn3xYYmy7-iHgwvouDUWbSR2YJ0ibJbZdgDJBoTKzUEGZ8ZX",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
