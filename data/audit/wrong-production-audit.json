@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T10:07:08.377Z",
+  "timestamp": "2026-11-01T10:41:00.163Z",
   "stats": {
-    "totalReviews": 78246,
-    "alreadyFlagged": 21747,
+    "totalReviews": 78251,
+    "alreadyFlagged": 21749,
     "dateGuardCatches": 242,
-    "directorMismatch": 3323,
-    "tvFilmSignals": 2214,
+    "directorMismatch": 3328,
+    "tvFilmSignals": 2216,
     "londonSignals": 3540,
     "offBroadwaySignals": 729,
     "yearMismatch": 328,
-    "noPublishDate": 9082
+    "noPublishDate": 8999
   },
   "findings": [
     {
@@ -43806,6 +43806,19 @@
       ]
     },
     {
+      "showId": "night-watch-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-10-17",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-night-watch-raven-theatre-review-20231017-q7nkvli355d2bkrjpue6mnlsca-story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
       "showId": "nine-2003",
       "file": "curtainup--unknown.json",
       "score": 78,
@@ -72333,6 +72346,19 @@
       ]
     },
     {
+      "showId": "the-spongebob-musical-regional-2023",
+      "file": "chicagotribune--emily-mcclanathan.json",
+      "publishDate": "2023-07-31",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-spongebob-musical-kokandy-review-20230731-2wjvpbhm3jhytkzc4jl5h56a4u-story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
       "file": "guardian--mark-lawson.json",
       "score": 85,
@@ -73385,9 +73411,35 @@
     },
     {
       "showId": "the-whos-tommy-regional-2023",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": "2023-06-28",
+      "url": "https://www.buzznews.net/theatre/theatre-reviews/item/5220-made-in-chicago-the-who-s-tommy-is-the-theater-event-of-the-season.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-regional-2023",
       "file": "chi-mt--patrick-obrien.json",
       "publishDate": "2023-07-12",
       "url": "https://www.chi-mt.com/reviews/studebaker-personality-goodman-tommy-jun-23",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-regional-2023",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2023-06-29",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/see-him-feel-him/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -73450,6 +73502,32 @@
     },
     {
       "showId": "the-whos-tommy-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-06-27",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-tommy-goodman-theatre-review-20230627-axhlav6iy5apzjaca2ooguv3om-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-regional-2023",
+      "file": "daily-herald--barbara-vitello.json",
+      "publishDate": "2023-06-28",
+      "url": "https://www.dailyherald.com/entlife/20230628/goodman-delivers-magnificent-4-star-revival-of-the-whos-tommy",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-regional-2023",
       "file": "letsplaytheatricalreview--rick-mccain.json",
       "publishDate": "2023-06-26",
       "url": "https://www.letsplaytheatricalreview.com/blog/zp2vkmtizftl0fm956hyttywcfjzsh",
@@ -73492,6 +73570,19 @@
       "file": "thefourthwalsh--katy-walsh.json",
       "publishDate": "2023-07-01",
       "url": "https://thefourthwalsh.com/2023/07/review-the-whos-tommy-goodman-theatre-goodman-rocks-this-hard/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-regional-2023",
+      "file": "third-coast-review--karin-mckie.json",
+      "publishDate": "2023-06-29",
+      "url": "https://thirdcoastreview.com/2023/06/29/stages-review-the-whos-tommy-at-goodman-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
