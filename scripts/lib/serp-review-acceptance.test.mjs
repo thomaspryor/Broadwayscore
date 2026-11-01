@@ -49,8 +49,11 @@ test('accepts WSJ "1984 review" slug where the number leads (numeric title, no t
   assert.equal(ev({ url: 'https://www.wsj.com/articles/1984-review-a-stunning-dystopia-on-our-telescreens-11585859139', showTitle: '1984' }).ok, true);
 });
 
-test('podcast outlets we ingest on purpose are exempt from the podcast path rule', () => {
-  assert.equal(ev({ url: 'https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46', showTitle: 'Hungry Women' }).ok, true);
+test('podcast hosts stay exempt from the podcast path rule; BPN episode pages are refused as podcast-episode (BRO-6742)', () => {
+  assert.equal(ev({ url: 'https://pod.wave.co/podcast/some-show/hungry-women-review', showTitle: 'Hungry Women' }).ok, true);
+  // An interview episode ("with Julia Lester") is audio, not a written review: refused before the path rule.
+  assert.deepEqual(ev({ url: 'https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46', showTitle: 'Hungry Women' }),
+    { ok: false, reason: 'non-review-url:podcast-episode' });
 });
 
 test('longerQuotedWork ignores an exact-title quote and stage words', () => {
