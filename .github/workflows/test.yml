@@ -2572,6 +2572,8 @@ on:
       - 'scripts/monitor-flag-parity.js'
       # Score-tier label display/data decoupling contract (Skippable wire key vs Mixed display).
       - 'scripts/newsletter/**'
+      # BRO-6773: money-monthly email generator; its tests live in tests/unit/money-monthly.test.mjs
+      - 'scripts/money-monthly/**'
       # Structural guard: the refresh workflow's allowGaps input must stay a
       # STRING ('1'), and the ADC fallback in popular-pages.mjs must stay gated
       # to non-CI. Test-only (no lib file); runs in the scripts/lib/*.test.mjs

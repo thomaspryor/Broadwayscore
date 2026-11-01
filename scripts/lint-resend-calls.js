@@ -87,6 +87,8 @@ const ALLOWLIST = new Set([
   'scripts/newsletter/create-broadcast-draft.mjs',
   'scripts/lib/resend-draft-upsert.js', // not a new sender: the GET/PATCH/POST /broadcasts draft lookup moved out of three allowlisted wrappers (fantasy-weekly-email, send-opening-night-broadcast, create-broadcast-draft) so they share one dedup (BRO-3494/3493); never calls /send
   'scripts/newsletter/send-test.mjs',
+  'scripts/money-monthly/send-preview.mjs', // BRO-6773 (owner asked for this monthly money email, 2026-10-31): one transactional /emails POST to the owner, recipient from MONEY_PREVIEW_RECIPIENT/OWNER_EMAIL; no broadcasts or /send anywhere in the file
+  'scripts/money-monthly/sync-audience.mjs', // BRO-6773 (same owner request): read-only unless --apply, which POSTs contacts to the separate money audience only; refuses the General audience; no broadcasts or /send
   '.github/workflows/btc-results-preview.yml',
   '.github/workflows/scraper-cost-report.yml',
   '.github/workflows/weekly-stubhub-validate.yml',
