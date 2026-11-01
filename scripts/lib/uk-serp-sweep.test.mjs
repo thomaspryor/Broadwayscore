@@ -29,3 +29,14 @@ test('one per outlet, held outlet and forum skipped', () => {
   assert.equal(pickForShow(show, rs, ctx(['outlet:guardian'])).length, 1);
   assert.equal(pickForShow(show, [{ url: 'https://www.guardian.com/thread/1/animal-farm-leeds-playhouse-review', title: 'Animal Farm Leeds Playhouse review' }], ctx()).length, 0);
 });
+
+const glasgow = { id: 'macbeth-citizens', title: 'Macbeth', venue: 'Citizens Theatre, Glasgow', openingDate: '2025-03-14' };
+test('town alone is not the house', () => {
+  assert.ok(!resultMatchesShow(glasgow, { url: 'https://x.co.uk/2025/03/macbeth-review-tron-theatre-glasgow/', title: 'Macbeth review Tron Theatre Glasgow' }));
+});
+test('"Once" does not take "Once in a Lifetime"', () => {
+  assert.ok(!resultMatchesShow({ ...show, title: 'Once' }, { url: 'https://x.co.uk/2025/03/once-in-a-lifetime-review-leeds-playhouse/', title: 'Once in a Lifetime review Leeds Playhouse' }));
+});
+test('host name is not review evidence', () => {
+  assert.ok(!resultMatchesShow(show, { url: 'https://www.thereviewshub.com/animal-farm-leeds-playhouse-interview/', title: 'Animal Farm Leeds Playhouse interview' }));
+});

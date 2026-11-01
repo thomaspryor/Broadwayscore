@@ -19,7 +19,8 @@ const key = (s) => norm(String(s || '').replace(/\([^)]*\)/g, ' ')).replace(/^th
 function housePhrases(show) {
   const [house, town] = String(show.venue || '').split(',').map((p) => norm(p));
   const words = (house || '').split(' ').filter((w) => w.length >= 4 && !GENERIC.has(w) && w !== town);
-  return [house, town, ...words].filter((p) => p && p.length >= 4);
+  // The town alone is weak (a tour page names the next city), so only the house and its distinctive words count.
+  return [house, ...words].filter((p) => p && p.length >= 4);
 }
 
 function urlYears(url) {
@@ -29,13 +30,13 @@ function urlYears(url) {
 }
 
 // Words that can follow a title in a headline ("Lear review", "Lear at the Crucible"); same idea as uk-regional-census-match.
-const TITLE_END = new Set(['review', 'at', 'with', 'by', 'musical', 'theatre', 'starring', 'from', 'tour', 'in', 'live', 'is', 'a', 'an', 'the']);
+const TITLE_END = new Set(['review', 'at', 'with', 'by', 'musical', 'theatre', 'starring', 'from', 'tour', 'live']); // not 'in'/'the': "Once" must not take "Once in a Lifetime"
 
 function leads(text, t, show) {
   const lead = ` ${norm(text).replace(/^(?:theatre |show )?review (?:of )?/, '').replace(/^the /, '')} `;
   if (!lead.startsWith(` ${t} `)) return false;
   const next = lead.slice(t.length + 2).split(' ')[0];
-  return !next || TITLE_END.has(next) || housePhrases(show).some((p) => p.startsWith(next));
+  return !next || TITLE_END.has(next) || housePhrases(show).some((p) => ` ${lead.slice(t.length + 2)}`.trimStart().startsWith(`${p} `));
 }
 
 /** Does this SERP result review this show? */
@@ -46,12 +47,12 @@ function resultMatchesShow(show, r) {
   const slugText = slug.replace(/\.[a-z]+$/, '').replace(/-/g, ' ');
   const titleOk = leads(r.title, t, show) || leads(slugText, t, show);
   const hay = ` ${norm(`${r.title || ''} ${r.url} ${r.description || ''}`)} `;
-  if (!/review/.test(hay)) return false; // previews, news and interviews are not reviews
+  if (!/review/.test(norm(`${r.title || ''} ${slugText}`))) return false; // previews, news and interviews are not reviews
   if (!titleOk) return false;
   if (!housePhrases(show).some((p) => hay.includes(` ${p} `))) return false;
   const open = Number(String(show.openingDate || '').slice(0, 4));
   const years = urlYears(r.url);
-  if (open && years.length && !years.some((y) => y === open || y === open + 1)) return false;
+  if (open && years.length && !years.some((y) => y === open - 1 || y === open || y === open + 1)) return false;
   return true;
 }
 
