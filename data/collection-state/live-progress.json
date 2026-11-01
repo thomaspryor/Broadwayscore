@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-01T15:40:52.120Z",
-  "processed": 90,
-  "failed": 60,
-  "successRate": "60.0%",
+  "updatedAt": "2026-11-01T15:48:10.455Z",
+  "processed": 850,
+  "failed": 113,
+  "successRate": "88.3%",
   "tierBreakdown": {
-    "playwright": 50,
+    "playwright": 543,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 5,
-    "brightdata": 1,
-    "archiveToday": 18,
-    "archive": 24
+    "scrapingdog": 4,
+    "scrapingbee": 26,
+    "brightdata": 0,
+    "archiveToday": 55,
+    "archive": 249
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-01T14:41:16.633Z",
@@ -69,8 +69,30 @@
     {
       "t": "2026-11-01T15:32:19.824Z",
       "event": "bb-session",
-      "session": "13408ab0",
-      "url": "http://www.publictheater.org/"
+      "session": "c48cfbf6",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-11-01T15:39:56.296Z",
+      "event": "bb-session",
+      "session": "50f9a70e",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-01T15:39:57.151Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-01T15:42:25.247Z",
+      "event": "bb-session",
+      "session": "4a86f385",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-01T15:42:26.091Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
