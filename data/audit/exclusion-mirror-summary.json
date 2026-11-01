@@ -1,21 +1,21 @@
 {
-  "generatedAt": "2026-11-01T03:35:38.092Z",
-  "totalScanned": 77643,
-  "totalExcluded": 30546,
+  "generatedAt": "2026-11-01T03:55:03.759Z",
+  "totalScanned": 77721,
+  "totalExcluded": 30532,
   "ruleCounts": {
-    "wrongProduction": 19595,
+    "wrongProduction": 19590,
     "duplicateOf": 2226,
-    "noTextOrScoreSignal": 1496,
-    "rejectionReason": 1365,
-    "wrongShow": 1221,
+    "noTextOrScoreSignal": 1520,
+    "rejectionReason": 1364,
+    "wrongShow": 1220,
     "unverifiableWebSearchRow": 907,
-    "nonReview": 893,
-    "cvWrongArticleHighConfidence": 472,
+    "nonReview": 881,
+    "cvWrongArticleHighConfidence": 454,
     "wrongAttribution": 348,
     "isRoundupArticle": 291,
     "blockedReviewUrl": 247,
     "bodylessAggregatorScoreUncorroborated": 208,
-    "crossOutletDuplicate": 207,
+    "crossOutletDuplicate": 206,
     "knownSyndicationSecondary": 158,
     "isSyndicatedDuplicate": 148,
     "previewPlaceholder": 120,
@@ -44,23 +44,26 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 4,
-    "noTextOrScoreSignal": 14,
-    "nonReview": -3,
-    "cvWrongArticleHighConfidence": -14
+    "wrongProduction": -5,
+    "noTextOrScoreSignal": 24,
+    "rejectionReason": -1,
+    "wrongShow": -1,
+    "nonReview": -12,
+    "cvWrongArticleHighConfidence": -18,
+    "crossOutletDuplicate": -1
   },
-  "previousGeneratedAt": "2026-11-01T03:16:06.598Z",
+  "previousGeneratedAt": "2026-11-01T03:35:38.092Z",
   "mirror": {
-    "comparedShows": 4404,
-    "comparedFiles": 77003,
-    "agreeExcluded": 32231,
-    "agreeIncluded": 44086,
-    "mirrorOnly": 402,
+    "comparedShows": 4413,
+    "comparedFiles": 77081,
+    "agreeExcluded": 32265,
+    "agreeIncluded": 44148,
+    "mirrorOnly": 384,
     "rebuildOnly": 284,
-    "disagreements": 686,
-    "disagreementRate": 0.0089,
+    "disagreements": 668,
+    "disagreementRate": 0.0087,
     "mirrorOnlyByRule": {
-      "cvWrongArticleHighConfidence": 358,
+      "cvWrongArticleHighConfidence": 340,
       "contentTierInvalid": 32,
       "noTextOrScoreSignal": 7,
       "knownSyndicationSecondary": 2,
@@ -91,5 +94,5 @@
     "notComparedShows": 75,
     "notComparedFiles": 640
   },
-  "previousDisagreementRate": 0.0091
+  "previousDisagreementRate": 0.0089
 }
