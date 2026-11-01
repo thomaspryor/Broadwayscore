@@ -9952,12 +9952,13 @@
       "title": "Overdue P0/P1 queue: 6 P0 older than 24h, 12 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-01T09:17:56.266Z",
+      "lastSeen": "2026-11-01T14:14:46.882Z",
       "lastNotifiedAt": "2026-11-01T09:17:56.266Z",
       "lastSurfacedAt": "2026-11-01T09:17:56.266Z",
       "notifyCount": 29,
       "cardId": null,
-      "linearIdentifier": "BRO-5613"
+      "linearIdentifier": "BRO-5613",
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -17783,13 +17784,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-01T09:19:58.270Z",
+      "lastSeen": "2026-11-01T14:33:49.433Z",
       "lastNotifiedAt": "2026-10-28T08:32:12.361Z",
       "lastSurfacedAt": "2026-10-28T08:32:12.361Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -18744,17 +18745,16 @@
     },
     "llm-scoring:daily-cost-breach": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-11-01T14:15:08.786Z",
-      "lastNotifiedAt": "2026-10-31T18:27:00.864Z",
-      "lastSurfacedAt": "2026-10-31T18:27:00.864Z",
-      "notifyCount": 15,
+      "lastSeen": "2026-11-01T14:33:50.076Z",
+      "lastNotifiedAt": "2026-11-01T14:33:50.076Z",
+      "lastSurfacedAt": "2026-11-01T14:33:50.076Z",
+      "notifyCount": 16,
       "cardId": null,
-      "linearIdentifier": "BRO-6732",
-      "silentRefires": 107
+      "linearIdentifier": "BRO-6732"
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -23865,12 +23865,13 @@
       "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T07:38:11.543Z",
       "incidentOpenedAt": "2026-10-22T07:38:11.543Z",
-      "lastSeen": "2026-11-01T09:18:39.600Z",
+      "lastSeen": "2026-11-01T14:15:28.967Z",
       "lastNotifiedAt": "2026-11-01T09:18:39.600Z",
       "lastSurfacedAt": "2026-11-01T09:18:39.600Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-5887-probe": {
       "status": "resolved",
@@ -24665,12 +24666,13 @@
       "title": "billy-crystal-860-2026: 2 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.185Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.185Z",
-      "lastSeen": "2026-11-01T09:18:39.535Z",
+      "lastSeen": "2026-11-01T14:15:28.905Z",
       "lastNotifiedAt": "2026-11-01T09:18:39.535Z",
       "lastSurfacedAt": "2026-11-01T09:18:39.535Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026": {
       "status": "resolved",
@@ -26846,12 +26848,13 @@
       "title": "harry-potter-and-the-cursed-child-one-part-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-25T07:39:27.517Z",
       "incidentOpenedAt": "2026-10-25T07:39:27.517Z",
-      "lastSeen": "2026-11-01T09:18:39.731Z",
+      "lastSeen": "2026-11-01T14:15:29.091Z",
       "lastNotifiedAt": "2026-11-01T09:18:39.731Z",
       "lastSurfacedAt": "2026-11-01T09:18:39.731Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "live-data-test:tests/unit/sound-of-music-synopsis.test.mjs::the-sound-of-music-1998 has a synopsis of at least 40 characters": {
       "status": "resolved",
@@ -34365,12 +34368,13 @@
       "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.554Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.554Z",
-      "lastSeen": "2026-11-01T09:18:39.554Z",
+      "lastSeen": "2026-11-01T14:15:28.920Z",
       "lastNotifiedAt": "2026-11-01T09:18:39.554Z",
       "lastSurfacedAt": "2026-11-01T09:18:39.554Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "coverage-holes:the-moth-off-west-end-2026": {
       "status": "open",
@@ -34378,12 +34382,13 @@
       "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.622Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.622Z",
-      "lastSeen": "2026-11-01T09:18:39.622Z",
+      "lastSeen": "2026-11-01T14:15:28.991Z",
       "lastNotifiedAt": "2026-11-01T09:18:39.622Z",
       "lastSurfacedAt": "2026-11-01T09:18:39.622Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-6736-mvxsck8q": {
       "status": "resolved",
@@ -34422,6 +34427,19 @@
       "lastSeen": "2026-11-01T14:12:22.241Z",
       "lastNotifiedAt": "2026-11-01T14:12:22.241Z",
       "lastSurfacedAt": "2026-11-01T14:12:22.241Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:tosca-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-11-01T14:15:28.863Z",
+      "incidentOpenedAt": "2026-11-01T14:15:28.863Z",
+      "lastSeen": "2026-11-01T14:15:28.863Z",
+      "lastNotifiedAt": "2026-11-01T14:15:28.863Z",
+      "lastSurfacedAt": "2026-11-01T14:15:28.863Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
