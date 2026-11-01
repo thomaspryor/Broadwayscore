@@ -700,6 +700,70 @@ function captionSectionsCrossTalk(sections, shows) {
   return false;
 }
 
+// "Broadway: Chess At the Imperial Theatre": the review-header line The
+// Interested Bystander (and sibling blog-style columns) opens every show's
+// section with, after a "Title (c) Photographer" caption (BRO-6744).
+const HEADER_RE = /(?:Broadway|Off[- ]Broadway|Theat(?:er|re)|West End|Opera|Dance|Concert|Cabaret)\s*:\s*([^\n]{2,90}?)\s+At\s+(?:the\s+)?[A-Z]/g;
+const HEADER_REF_WINDOW_DAYS = 300;
+
+/**
+ * Strategy 4 (header): one critic reviews several shows under repeated
+ * "<Kind>: <Title> At <Venue>" headers. Every header bounds a section, even
+ * for a show we do not track (its text must not leak into the previous
+ * show's section). Returns { sections, headerCount }; sections only holds
+ * tracked shows with a section of MIN_SECTION_CHARS or more.
+ */
+function headerSections(text, shows, ownShowId, publishDate) {
+  const none = { sections: [], headerCount: 0 };
+  const ownShow = shows.find((s) => s.id === ownShowId) || null;
+  if (!ownShow) return none;
+  const heads = [];
+  HEADER_RE.lastIndex = 0;
+  let hm;
+  while ((hm = HEADER_RE.exec(text))) heads.push({ at: hm.index, end: hm.index + hm[0].length, title: hm[1].trim() });
+  if (heads.length < 2) return none;
+  // Pull each header back over its "<Title> (c) Photographer" caption.
+  heads.forEach((h, i) => {
+    h.start = h.at;
+    const floor = i ? heads[i - 1].end : 0;
+    const winStart = Math.max(floor, h.at - 220);
+    const win = text.slice(winStart, h.at);
+    const j = win.lastIndexOf('(c)');
+    if (j < 0) return;
+    const t = h.title.toLowerCase();
+    const k = win.toLowerCase().lastIndexOf(t, j);
+    if (k >= 0 && j - (k + t.length) <= 2) h.start = winStart + k;
+  });
+  // Tracked productions near the article's date, one per normalized title.
+  const dates = require('./date-utils');
+  const ref = dates.toDateMs(publishDate) || Date.parse(ownShow.openingDate || ownShow.previewsStartDate || '');
+  if (!ref) return none;
+  const market = marketOf(ownShow.category);
+  const cands = shows.filter((s) => {
+    if (!s || !s.id || !s.title) return false;
+    if (s.id === ownShowId) return true;
+    if (market && marketOf(s.category) !== market) return false;
+    const od = Date.parse(s.openingDate || s.previewsStartDate || '');
+    return !!od && Math.abs(od - ref) <= HEADER_REF_WINDOW_DAYS * DAY_MS;
+  });
+  const byTitle = new Map();
+  for (const s of dedupeProductions(cands, ownShowId, new Date(ref).toISOString())) {
+    byTitle.set(normalizeTitle(s.title), s);
+    for (const v of titleVariants(s.title)) if (!byTitle.has(normalizeTitle(v))) byTitle.set(normalizeTitle(v), s);
+  }
+  const sections = [];
+  const seen = new Set();
+  heads.forEach((h, i) => {
+    const show = byTitle.get(normalizeTitle(h.title));
+    if (!show || seen.has(show.id)) return;
+    const sectionText = text.slice(h.start, i + 1 < heads.length ? heads[i + 1].start : text.length).trim();
+    if (sectionText.length < MIN_SECTION_CHARS) return;
+    seen.add(show.id);
+    sections.push({ showId: show.id, showTitle: show.title, sectionText, anchorKind: 'header' });
+  });
+  return { sections, headerCount: heads.length };
+}
+
 /**
  * The joint strategy is on by default after a corpus-wide dry run (BRO-5895).
  * opts.joint=false or MULTI_SHOW_JOINT=0 turns it off for new splits; a
@@ -733,42 +797,62 @@ function planMultiShowFanout(data, shows, opts = {}) {
       && data.fullText.length > data.multiShowSplitTextLength + 200;
     if (!retrimmed) return null;
   }
+  // A critic's own verdict (hand clear or reject) is never overridden here.
+  const humanJudged = !!(data.wrongShowManualClear || data.wrongShowOverride || data.wrongProductionManualClear
+    || data.wrongProductionOverride || data.manualContentTier
+    || /manual|human|owner|admin/i.test(`${data.rejectedBy || ''} ${data.wrongShowSource || ''}`));
   // Aggregator round-ups quote many critics; they are not one critic's review.
-  if (data.isRoundupArticle) return null;
-  if (data.wrongProduction === true) return null;
+  // An automated roundup / wrong-production flag on a column that reviews each
+  // show under its own header is the one exception (header strategy only,
+  // BRO-6744): the flags were set against the whole multi-show article.
+  const autoExcluded = data.isRoundupArticle === true || data.wrongProduction === true;
+  if (autoExcluded && humanJudged) return null;
   // A duplicate record of another file splits with that file, not again
   // under its own critic slot (BRO-5942: Theater Life "--unknown" copies).
   if (data.duplicateOf) return null;
   if (PARTIAL_TIERS.has(data.contentTier)) return null;
-  if (data.contentTier === 'invalid' && !/wrong\s*show|multi[\s-]?show/i.test(data.contentTierReason || '')) return null;
-  const text = data.fullText;
+  if (data.contentTier === 'invalid' && !autoExcluded && !/wrong\s*show|multi[\s-]?show/i.test(data.contentTierReason || '')) return null;
+  // The rejected article text a content check set aside (wrongFullText) is
+  // the whole multi-show post: only the header strategy may read it.
+  const fromRejected = !(typeof data.fullText === 'string' && data.fullText.length >= MIN_TEXT_CHARS)
+    && typeof data.wrongFullText === 'string' && !humanJudged;
+  const headerOnly = autoExcluded || fromRejected;
+  const text = fromRejected ? data.wrongFullText : data.fullText;
   if (typeof text !== 'string' || text.length < MIN_TEXT_CHARS) return null;
   const ownShowId = opts.ownShowId || data.showId;
   if (!ownShowId) return null;
   const showIds = new Set(shows.map((s) => s.id));
 
   let strategy = 'caption';
-  let sections = splitMultiShowArticle(text, shows).filter((s) => showIds.has(s.showId));
+  let sections = headerOnly ? [] : splitMultiShowArticle(text, shows).filter((s) => showIds.has(s.showId));
+  let trimOnly = false;
   // Captions already showed one essay moving between the shows (BRO-4431):
   // no later strategy may cut it either.
   const interwoven = sections.length >= 2 && captionSectionsCrossTalk(sections, shows);
   if (interwoven) sections = [];
   if (sections.length < 2 || !sections.some((s) => s.showId === ownShowId)) {
+    strategy = 'header';
+    const h = headerSections(text, shows, ownShowId, data.publishDate);
+    sections = h.sections;
+    // Headers for untracked shows still prove the post is a multi-show column.
+    trimOnly = sections.some((s) => s.showId === ownShowId) && h.headerCount >= 2;
+  }
+  if (!headerOnly && !trimOnly && sections.length < 2 && !interwoven) {
     strategy = 'intro';
     sections = introSections(text, shows, ownShowId, data.publishDate);
   }
-  if (sections.length < 2 && !interwoven && jointEnabled(opts, data)) {
+  if (!headerOnly && !trimOnly && sections.length < 2 && !interwoven && jointEnabled(opts, data)) {
     strategy = 'joint';
     sections = jointSections(text, shows, ownShowId, data.publishDate || data.firstSeenAt, { dateIsFirstSeen: !data.publishDate });
   }
-  if (sections.length < 2) return null;
+  if (sections.length < 2 && !trimOnly) return null;
   // The last section carries the page footer (newsletter/subscribe chrome).
   const { stripTrailingJunk } = require('./text-cleaning');
   sections = sections.map((sec) => ({ ...sec, sectionText: stripTrailingJunk(sec.sectionText) || sec.sectionText }));
   const ownSection = sections.find((s) => s.showId === ownShowId);
   if (!ownSection) return null;
   const otherSections = sections.filter((s) => s.showId !== ownShowId);
-  return { ownSection, otherSections, strategy };
+  return { ownSection, otherSections, strategy, trimOnly: trimOnly && strategy === 'header' && otherSections.length === 0, text };
 }
 
 function wordCount(s) {
@@ -784,7 +868,7 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   out.multiShowSplitParent = true;
   out.multiShowSplitChildShowIds = childShowIds;
   out.multiShowSplitAnchorKind = ownSection.anchorKind;
-  out.multiShowSplitOriginalLength = (data.fullText || '').length;
+  out.multiShowSplitOriginalLength = (data.fullText || data.wrongFullText || '').length;
   // Lets the planner notice a later re-collection that put the whole article
   // back into fullText (the processed marker survives merges) and re-trim.
   out.multiShowSplitTextLength = out.fullText.length;
@@ -809,6 +893,40 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
     delete out.rejectionReasoning;
     out.wrongShowClearedBy = 'multi-show-splitter';
     out.wrongShowClearedAt = now;
+  }
+
+  // Header strategy (BRO-6744): the automated roundup / wrong-production /
+  // wrong-content verdicts were read off the WHOLE multi-show post. The file
+  // now holds only its own section, so retire them. The content check's own
+  // verdict is rewritten too, or the rebuild would promote it straight back.
+  if (ownSection.anchorKind === 'header') {
+    const hadFlag = out.isRoundupArticle === true || out.wrongProduction === true || out.wrongShow === true;
+    delete out.isRoundupArticle;
+    delete out.roundupNote;
+    delete out.wrongProduction;
+    delete out.wrongProductionReason;
+    delete out.wrongShow;
+    delete out.wrongShowReason;
+    delete out.wrongFullText;
+    delete out.incompleteReason;
+    delete out.incompleteDetail;
+    delete out.tierReason;
+    if (out.contentVerification && typeof out.contentVerification === 'object') {
+      out.contentVerification = { ...out.contentVerification, isValid: true, wrongProduction: false, wrongArticle: false, issues: [], multiShowSplitCleared: now };
+    }
+    delete out.contentVerificationPromoted;
+    if (out.rejectionReason && !humanVerdict && /^(?:ensemble|collector|llm|cv|content-verif|auto)/i.test(String(out.rejectedBy || ''))) {
+      for (const k of ['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning']) delete out[k];
+    }
+    if (hadFlag) {
+      out.wrongShowClearedBy = 'multi-show-splitter';
+      out.wrongShowClearedAt = now;
+    }
+    out.contentTier = 'complete';
+    out.contentTierReason = 'multi-show-split: trimmed to own show section';
+    out.isFullReview = true;
+    out.textStatus = 'complete';
+    out.textQuality = 'full';
   }
 
   // The file is now SINGLE-show after trimming — clear isMultiShowReview so
@@ -900,7 +1018,7 @@ function childWriteDecision(existing, parentData) {
 // already held. When every sibling slot holds a different review, apply
 // leaves the article whole, so a dry run must not count it as splittable.
 function fanoutMovesText(fan) {
-  return !!(fan && fan.applied && fan.children.some((c) => c.action === 'create' || c.action === 'fill' || c.action === 'held'));
+  return !!(fan && fan.applied && (fan.trimOnly || fan.children.some((c) => c.action === 'create' || c.action === 'fill' || c.action === 'held')));
 }
 
 /**
@@ -965,8 +1083,9 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   // section re-ingested after its sibling was split earlier). When every
   // sibling slot holds a DIFFERENT review (or was refused), the article stays
   // whole rather than losing text no file holds.
-  if (!dryRun && written + held === 0) return result;
-  const parent = rewriteParent(data, plan.ownSection, plan.otherSections.map((s) => s.showId), now);
+  if (plan.trimOnly) result.trimOnly = true;
+  if (!dryRun && written + held === 0 && !plan.trimOnly) return result;
+  const parent = rewriteParent(plan.text === data.fullText ? data : { ...data, fullText: plan.text }, plan.ownSection, plan.otherSections.map((s) => s.showId), now);
   result.parentRewritten = true;
   // Deliberate text trim: replace (not merge) so the stale whole-article
   // llmScore/ensembleData really go; the guard's other checks still apply.
@@ -1057,6 +1176,7 @@ module.exports = {
   fanoutMovesText,
   urlKey,
   planMultiShowFanout,
+  headerSections,
   captionSectionsCrossTalk,
   isWholeArticleBackOnBadSplit,
   applyMultiShowFanoutToFile,

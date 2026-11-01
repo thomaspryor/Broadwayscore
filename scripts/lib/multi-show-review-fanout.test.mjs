@@ -780,3 +780,75 @@ test('listing block + lede before the next title move into that section', () => 
   const tenor = plan.otherSections.find((s) => s.showId === 'lend-me-a-tenor-2010');
   assert.ok(tenor.sectionText.startsWith('Music Box Theatre,'), tenor.sectionText.slice(0, 80));
 });
+
+// ---- BRO-6744: "Title (c) Photographer / Kind: Title At Venue" columns --------
+const { rewriteParent, headerSections } = require('./multi-show-review-fanout.js');
+const HSHOWS = [
+  { id: 'chess-2025', title: 'Chess', category: 'broadway', openingDate: '2025-11-16' },
+  { id: 'dog-day-afternoon-2026', title: 'Dog Day Afternoon', category: 'broadway', openingDate: '2026-03-30' },
+  { id: 'cats-the-jellicle-ball-2026', title: 'Cats: The Jellicle Ball', category: 'broadway', openingDate: '2026-04-07' },
+  { id: 'cats-2016', title: 'Cats', category: 'broadway', openingDate: '2016-07-31' },
+];
+const bystander = (parts) => parts.map(([title, kind, body]) =>
+  `${title} (c) Some PhotographerPhoto ${kind}: ${title} At the Some Theatre ${body}`).join(' ');
+const FULL = bystander([
+  ['Initiative', 'Theater', filler('initiative', 8)],
+  ['Chess', 'Broadway', filler('chess', 8)],
+  ['Dog Day Afternoon', 'Broadway', filler('heist', 8)],
+  ['Cats: The Jellicle Ball', 'Broadway', filler('runway', 8)],
+]).replace(/Photo (Theater|Broadway):/g, '$1:');
+
+test('header: Bystander post flagged roundup/wrongProduction splits per show and retires the whole-post verdicts', () => {
+  const data = {
+    showId: 'dog-day-afternoon-2026', outletId: 'the-interested-bystander', fullText: null, wrongFullText: FULL,
+    contentTier: 'invalid', isRoundupArticle: true, wrongProduction: true, wrongShow: true,
+    wrongProductionReason: 'Collector LLM: reviews Chess', rejectedBy: 'ensemble-scoreability-check',
+    rejectionReason: 'not_a_review', rejectedAt: '2026-04-26T00:00:00Z', incompleteReason: 'wrong_content',
+    contentVerification: { isValid: false, wrongProduction: true, issues: ['wrong production'] },
+  };
+  const plan = planMultiShowFanout(data, HSHOWS);
+  assert.ok(plan, 'expected a header split');
+  assert.equal(plan.strategy, 'header');
+  assert.deepEqual([plan.ownSection, ...plan.otherSections].map((s) => s.showId).sort(),
+    ['chess-2025', 'cats-the-jellicle-ball-2026', 'dog-day-afternoon-2026'].sort());
+  // Each section holds only its own show's prose; the untracked "Initiative" column is not in any.
+  assert.ok(plan.ownSection.sectionText.startsWith('Dog Day Afternoon (c)'));
+  assert.ok(!/initiative sequence|chess sequence|runway sequence/.test(plan.ownSection.sectionText));
+  const out = rewriteParent({ ...data, fullText: plan.text }, plan.ownSection, plan.otherSections.map((s) => s.showId));
+  for (const k of ['isRoundupArticle', 'wrongProduction', 'wrongShow', 'wrongFullText', 'rejectionReason', 'incompleteReason']) {
+    assert.equal(out[k], undefined, k);
+  }
+  assert.equal(out.contentTier, 'complete');
+  assert.equal(out.contentVerification.wrongProduction, false);
+  assert.ok(out.fullText.length < FULL.length / 2);
+});
+
+test('header: untracked sibling header still trims the own section (trimOnly)', () => {
+  const text = bystander([['Initiative', 'Theater', filler('initiative', 8)], ['Chess', 'Broadway', filler('chess', 8)]])
+    .replace(/Photo (Theater|Broadway):/g, '$1:');
+  const plan = planMultiShowFanout({ showId: 'chess-2025', fullText: null, wrongFullText: text, isRoundupArticle: true, wrongProduction: true, contentTier: 'invalid' }, HSHOWS);
+  assert.ok(plan && plan.trimOnly, 'expected trimOnly');
+  assert.equal(plan.otherSections.length, 0);
+  assert.ok(!/initiative sequence/.test(plan.ownSection.sectionText));
+  assert.equal(fanoutMovesText({ applied: true, trimOnly: true, children: [] }), true);
+});
+
+test('header: a hand verdict, or a roundup with no per-show headers, is never split', () => {
+  const base = { showId: 'chess-2025', fullText: null, wrongFullText: FULL, isRoundupArticle: true, wrongProduction: true, contentTier: 'invalid' };
+  assert.equal(planMultiShowFanout({ ...base, wrongProductionManualClear: true }, HSHOWS), null);
+  assert.equal(planMultiShowFanout({ ...base, rejectedBy: 'human-admin' }, HSHOWS), null);
+  const digest = 'Critics weigh in on Chess and Dog Day Afternoon this week. '.repeat(40);
+  assert.equal(planMultiShowFanout({ ...base, wrongFullText: digest }, HSHOWS), null);
+  assert.equal(headerSections(digest, HSHOWS, 'chess-2025', null).sections.length, 0);
+});
+
+test('header: a same-title revival outside the date window is not picked for a sibling', () => {
+  const plan = planMultiShowFanout({
+    showId: 'dog-day-afternoon-2026', fullText: null, wrongFullText: bystander([
+      ['Dog Day Afternoon', 'Broadway', filler('heist', 8)], ['Cats', 'Broadway', filler('old', 8)]]).replace(/Photo (Theater|Broadway):/g, '$1:'),
+    wrongProduction: true, contentTier: 'invalid',
+  }, HSHOWS);
+  // "Cats" 2016 is >300 days from the 2026 column: no tracked sibling, still trimmed.
+  assert.ok(plan && plan.trimOnly);
+  assert.equal(plan.otherSections.length, 0);
+});
