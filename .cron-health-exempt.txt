@@ -325,3 +325,6 @@ commercial-broadway-journal-sweep.yml
 # BRO-6763: 15-minute owner email per new Money Scorecard sign-up; a missed run only delays the email until the next one, the daily digest still counts sign-ups. Failures go through notify-failure.
 money-signup-notify.yml
 money-monthly-draft.yml  # monthly owner-only [DRAFT] preview; nothing sends without the owner (BRO-6773)
+
+# BRO-6309: hourly welcome email for new Profitability Scorecard sign-ups; a missed run only delays the welcome. Failures go through notify-failure
+money-welcome.yml

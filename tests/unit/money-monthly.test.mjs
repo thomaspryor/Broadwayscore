@@ -120,6 +120,23 @@ test('with a baseline, a brand-new production with a disclosed capitalization co
   assert.equal(issue.sections.capitalization.length, 1);
 });
 
+test('BRO-6309: unsubscribed sign-ups are never added and are flagged if already in the audience', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { planAudienceSync } = req('../../scripts/money-monthly/audience.js');
+  const plan = planAudienceSync({
+    signups: [
+      { email: 'gone@real.org', unsubscribed_at: '2026-11-02' },
+      { email: 'gone2@real.org', unsubscribed_at: '2026-11-02' },
+      { email: 'stay@real.org', unsubscribed_at: null },
+    ],
+    general: [],
+    existing: [{ id: 'c1', email: 'gone@real.org', unsubscribed: false }],
+  });
+  assert.deepEqual(plan.toAdd, ['stay@real.org']);
+  assert.deepEqual(plan.toUnsubscribe.map((c) => c.id), ['c1']);
+});
+
 test('readAllContactPages follows has_more so an unsubscribed contact on page 2 is never re-added', async () => {
   const pages = [
     { data: [{ id: 'a', email: 'x@e.com' }], has_more: true },

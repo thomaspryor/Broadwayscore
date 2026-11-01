@@ -28,7 +28,7 @@ async function readSignups() {
   const rows = [];
   for (let page = 0; page < 100; page++) {
     const u = new URL('/rest/v1/money_scorecard_signups', url);
-    u.search = new URLSearchParams({ select: 'email,created_at', order: 'created_at.asc,email.asc', limit: '1000', offset: String(rows.length) }).toString();
+    u.search = new URLSearchParams({ select: 'email,created_at,unsubscribed_at', order: 'created_at.asc,email.asc', limit: '1000', offset: String(rows.length) }).toString();
     const res = await fetch(u, { cache: 'no-store', signal: AbortSignal.timeout(15000), headers: { apikey: key, Authorization: `Bearer ${key}` } });
     if (!res.ok) throw new Error(`Supabase read failed: ${res.status}`);
     const batch = await res.json();
@@ -49,7 +49,7 @@ async function readAudience(id) {
   });
 }
 
-const signups = await readSignups();
+const signups = await readSignups(); // BRO-6309: planAudienceSync honors unsubscribed_at
 const general = await readAudience(GENERAL_ID);
 const existing = MONEY_ID ? await readAudience(MONEY_ID) : [];
 const plan = planAudienceSync({ signups, general, existing });
@@ -68,5 +68,16 @@ for (const email of plan.toAdd) {
   if (res.ok) added++; else { errors++; if (errors <= 3) console.error(`add failed for ${mask(email)}: ${res.status}`); }
   await delay(200);
 }
-console.log(`added=${added} errors=${errors}`);
+// BRO-6309: someone who unsubscribed via the welcome email must also stop getting the monthly.
+let unsubscribed = 0;
+for (const c of plan.toUnsubscribe) {
+  const res = await fetch(`https://api.resend.com/audiences/${MONEY_ID}/contacts/${c.id}`, {
+    method: 'PATCH', signal: AbortSignal.timeout(30000),
+    headers: { Authorization: `Bearer ${rk}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ unsubscribed: true }),
+  });
+  if (res.ok) unsubscribed++; else { errors++; console.error(`unsubscribe failed: ${res.status}`); }
+  await delay(200);
+}
+console.log(`added=${added} unsubscribed=${unsubscribed} errors=${errors}`);
 if (errors) process.exit(1);
