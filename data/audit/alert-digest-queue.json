@@ -1431,20 +1431,6 @@
     "queuedAt": "2026-11-01T19:57:09.317Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Lincoln in the Bardo (washpost), High School Musical (daily-mail)). Checked 2026-11-01.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T21:24:44.938Z"
-  },
-  {
     "conditionKey": "land:land/bro-6782-opera-houses",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-6782-opera-houses",
     "description": "land.yml did not land land/bro-6782-opera-houses: the scripts-lib-tests gate went red at 038be9a889. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41346678843",
@@ -1519,5 +1505,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-01T21:45:23.530Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tosca-off-broadway-2026",
+    "title": "Review gap — \"Tosca\" missing 2 cited review(s)",
+    "description": "Tosca (tosca-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T22:26:25.661Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Lincoln in the Bardo (washpost), High School Musical (daily-mail)). Checked 2026-11-01.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T22:26:46.385Z"
   }
 ]

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T21:25:04.733Z",
+  "generatedAt": "2026-11-01T22:27:05.290Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -17,6 +17,11 @@
       "id": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "openingDate": "2026-10-29"
+    },
+    {
+      "id": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "openingDate": "2026-10-30"
     },
     {
       "id": "medea-off-broadway-2026",
@@ -127,20 +132,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -163,9 +160,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 665,
-  "matchedGaps": 4,
-  "possibleGaps": 10,
+  "itemsScanned": 773,
+  "matchedGaps": 5,
+  "possibleGaps": 11,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -193,6 +190,15 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/tosca-english-national-opera/",
+      "headline": "Tosca, English National Opera",
+      "publishDate": "2026-11-01"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -274,6 +280,15 @@
       "url": "https://stageandcinema.com/2026/10/28/assimilation-word-for-word-z-below-san-francisco-review/",
       "headline": "Theater Review: ASSIMILATION (Word for Word / San Francisco)",
       "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
+      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
+      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-heart-off-broadway-2026",
