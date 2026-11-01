@@ -2835,7 +2835,10 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   const badContent = !contentState.fullText
     || (contentState.contentTier && contentState.contentTier !== 'complete')
     || contentState.needsRefetch
-    || corroboratedOverAutoPin;
+    || corroboratedOverAutoPin
+    // BRO-6742: an interview holding the critic's slot is complete text, but
+    // not this review; the same outlet's review url takes the slot.
+    || require('./review-slot-guards').isInterviewSlotSupersededBy(contentState, newUrl);
   if (!badContent) return false;
 
   // Roundup-page guard (BRO-4128): a candidate that is itself a roundup/

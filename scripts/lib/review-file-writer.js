@@ -38,7 +38,7 @@ const laneBypasses = (...args) => require('./opening-night-lane/trust-model').la
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { siblingUrlHolder } = require('./sibling-same-url');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
-const { isStaleNonReviewSlot, isAggregatorPageUrl, flaggedSlotSupersededBy } = require('./review-slot-guards');
+const { isStaleNonReviewSlot, isInterviewSlotSupersededBy, isAggregatorPageUrl, flaggedSlotSupersededBy } = require('./review-slot-guards');
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
@@ -2014,7 +2014,8 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // Decided BEFORE the swap: only a stale non-review slot's byline came from
   // the page being replaced (913); an ordinary url upgrade (amp->canonical,
   // round-up->direct) keeps the file's enriched byline.
-  const staleSlotMove = !!(input.url && isStaleNonReviewSlot(preMergeSnapshot, input.url));
+  const staleSlotMove = !!(input.url && (isStaleNonReviewSlot(preMergeSnapshot, input.url)
+    || isInterviewSlotSupersededBy(preMergeSnapshot, input.url)));
   if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, {
     showTitle: _getShowTitle(showId),
     show: _getShowById(showId),
