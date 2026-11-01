@@ -315,6 +315,36 @@ async function main() {
     });
     check('rating: owner can edit', Array.isArray(upd.json) && upd.json[0]?.rating === 5.0, '', NOT_URGENT);
 
+    // ── DIARY TIME + SEAT (20261101_review_showtime_seat.sql, BRO-6783) ──
+    // Web + iOS send these keys only when set, so a missing migration shows up
+    // here as "column does not exist" (skipped until applied), not as a
+    // broken rating save.
+    const rTime = await rest('PATCH', `reviews?id=eq.${reviewId}&user_id=eq.${userA.id}`, tokenA, {
+      time_slot: 'matinee', curtain_time: '14:00:00', seat: 'Dress Circle C14',
+    });
+    if (!rTime.ok && /time_slot|curtain_time|seat|PGRST204|42703/.test(rTime.text)) {
+      console.log('  (diary time + seat checks skipped: 20261101_review_showtime_seat.sql not applied yet)');
+    } else {
+      const row = Array.isArray(rTime.json) ? rTime.json[0] : null;
+      check('rating: performance time + seat save', rTime.ok && row?.time_slot === 'matinee'
+        && String(row?.curtain_time ?? '').startsWith('14:00') && row?.seat === 'Dress Circle C14',
+        `HTTP ${rTime.status} ${rTime.ok ? JSON.stringify({ t: row?.time_slot, c: row?.curtain_time, s: row?.seat }) : rTime.text.slice(0, 160)}`);
+      const rReadB = await rest('GET', `reviews?id=eq.${reviewId}&select=seat`, tokenB);
+      check('rating: seat stays private to its owner',
+        rReadB.ok && Array.isArray(rReadB.json) && rReadB.json.length === 0);
+      const rOrphan = await rest('PATCH', `reviews?id=eq.${reviewId}&user_id=eq.${userA.id}`, tokenA, {
+        time_slot: null, curtain_time: '14:00:00',
+      });
+      check('rating: curtain_time without a slot is rejected', !rOrphan.ok, `HTTP ${rOrphan.status}`, NOT_URGENT);
+      const rLong = await rest('PATCH', `reviews?id=eq.${reviewId}&user_id=eq.${userA.id}`, tokenA, { seat: 'x'.repeat(41) });
+      check('rating: seat over 40 chars is rejected', !rLong.ok, `HTTP ${rLong.status}`, NOT_URGENT);
+      const rClear = await rest('PATCH', `reviews?id=eq.${reviewId}&user_id=eq.${userA.id}`, tokenA, {
+        time_slot: null, curtain_time: null, seat: null,
+      });
+      check('rating: time + seat clear', rClear.ok && Array.isArray(rClear.json)
+        && rClear.json[0]?.time_slot === null && rClear.json[0]?.seat === null, `HTTP ${rClear.status}`, NOT_URGENT);
+    }
+
     // ── WATCHLIST ──
     const wIns = await rest('POST', 'watchlist', tokenA, { user_id: userA.id, show_id: SHOW_ID });
     check('watchlist: add saves', wIns.status === 201, '', NOT_URGENT);
