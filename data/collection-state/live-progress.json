@@ -1,19 +1,42 @@
 {
-  "updatedAt": "2026-11-01T03:37:38.060Z",
+  "updatedAt": "2026-11-01T04:17:38.134Z",
   "processed": 3,
-  "failed": 1,
-  "successRate": "75.0%",
+  "failed": 18,
+  "successRate": "14.3%",
   "tierBreakdown": {
     "playwright": 2,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 3,
     "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-11-01T04:08:37.792Z",
+      "event": "bb-session",
+      "session": "7b3fb39d",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-01T04:08:38.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-01T04:10:21.572Z",
+      "event": "bb-session",
+      "session": "da20cc8a",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-01T04:10:21.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
