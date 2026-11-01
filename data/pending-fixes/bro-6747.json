@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6747",
   "planId": "dfcacc37-c5e1-40a3-b1fe-e0a57f7cbee4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T07:16:40.106720Z",
   "submitter": {
     "name": null,
@@ -69,5 +69,54 @@
         "args": "--show=stephen-sondheims-old-friends-2025 --url=https://1minutecritic.com/sondheims-old-friends-broadway-review/ --outlet=one-minute-critic --critic=\"Matthew Wexler\""
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T08:15:55.836Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
