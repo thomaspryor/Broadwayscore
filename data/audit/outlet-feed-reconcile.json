@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T05:08:31.090Z",
+  "generatedAt": "2026-11-01T05:21:07.637Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,12 +127,16 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
+    },
+    {
+      "outletId": "british-theatre",
+      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
     },
     {
       "outletId": "slantmagazine",
@@ -155,7 +159,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 781,
+  "itemsScanned": 750,
   "matchedGaps": 6,
   "possibleGaps": 13,
   "gaps": [
