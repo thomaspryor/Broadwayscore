@@ -2172,5 +2172,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-01T06:15:57.554Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6661-press-night-autolog",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6661-press-night-autolog",
+    "description": "land.yml did not land land/bro-6661-press-night-autolog: the unit-tests-node gate went red at efa19dc772. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41279211456",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6661-press-night-autolog"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "efa19dc7727171d146f2d9b359f83a61b4fed192"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41279211456"
+      }
+    ],
+    "queuedAt": "2026-11-01T06:22:41.673Z"
   }
 ]
