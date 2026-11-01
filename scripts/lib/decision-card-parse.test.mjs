@@ -103,7 +103,11 @@ test('a context URL in the question is not the button target; a signed owner lin
   const html = renderNamedDigestBlock('Decisions', section, { actionCards: true });
   assert.match(html, />Is Cyrus Team Cloud still used\?<\/a>/);
   assert.match(html, /Do you still use Cyrus\? The relay/);
-  assert.match(html, />Tap to do this \u2192<\/a>/);
+  // BRO-6715: decision cards render signed Approved/Rejected/own-words buttons; the signed owner link stays the headline link.
+  assert.match(html, />Approved<\/a>/);
+  assert.match(html, />Rejected<\/a>/);
+  assert.match(html, /href="https:\/\/broadwayscorecard\.com\/api\/admin\/gmail-reauth\?e=1793000000[^"]*"[^>]*>Renew Gmail login<\/a>/);
+  assert.doesNotMatch(html, /href="https:\/\/cyrus-relay/);
   assert.match(html, /see the full card/);
 });
 
