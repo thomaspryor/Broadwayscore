@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T06:28:32.648Z",
+  "timestamp": "2026-11-01T06:45:33.856Z",
   "stats": {
-    "totalReviews": 78101,
-    "alreadyFlagged": 21725,
+    "totalReviews": 78146,
+    "alreadyFlagged": 21726,
     "dateGuardCatches": 241,
-    "directorMismatch": 3313,
+    "directorMismatch": 3315,
     "tvFilmSignals": 2208,
-    "londonSignals": 3535,
-    "offBroadwaySignals": 727,
+    "londonSignals": 3537,
+    "offBroadwaySignals": 728,
     "yearMismatch": 327,
-    "noPublishDate": 9196
+    "noPublishDate": 9207
   },
   "findings": [
     {
@@ -2685,6 +2685,19 @@
       "score": 82,
       "publishDate": "2023-09-14",
       "url": "https://thirdcoastreview.com/2023/09/14/stages-review-shattered-globe-a-view-from-the-bridge/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-tron-regional-2025",
+      "file": "thestage--fergus-morgan.json",
+      "publishDate": "2025-02-26",
+      "url": "https://www.thestage.co.uk/reviews/a-view-from-the-bridge-review-tron-theatre-glasgow-arthur-miller-jemima-levick-nicholas-karimi-mark-holgate-nicole-cooper-holly-howden-gilchrist",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15970,6 +15983,19 @@
       "score": 85,
       "publishDate": "2025-02-06",
       "url": "https://www.thereviewshub.com/death-and-the-kings-horseman-crucible-theatre-sheffield/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"wole soyinka\" from death-and-the-kings-horseman-1987"
+        }
+      ]
+    },
+    {
+      "showId": "death-and-the-kings-horseman-crucible-regional-2025",
+      "file": "thestage--john-murphy.json",
+      "publishDate": "2025-02-05",
+      "url": "https://www.thestage.co.uk/reviews/death-and-the-kings-horseman-review-at-crucible-theatre-sheffield-by-wole-soyinka",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -104793,6 +104819,20 @@
     },
     {
       "showId": "linda-vista-2019",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 80,
+      "publishDate": "2019-10-17",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-L3K0IX",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "linda-vista-2019",
       "file": "slantmagazine--dan-rubins.json",
       "score": null,
       "publishDate": null,
@@ -104863,6 +104903,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "london-assurance-off-broadway-2019",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "2019-12-15",
+      "url": "https://www.theatermania.com/off-broadway/reviews/london-assurance-victorian-comedy-boucicault_90309.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -118917,6 +118971,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "sweeney-todd-west-end-2012",
+      "file": "islington-gazette--tom-marshall.json",
+      "score": null,
+      "publishDate": "2012-07-11",
+      "url": "https://www.islingtongazette.co.uk/news/21243985.theatre-review-sweeney-todd-adelphi-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
