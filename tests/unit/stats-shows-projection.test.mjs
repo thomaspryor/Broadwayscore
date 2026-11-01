@@ -71,7 +71,11 @@ test('real app feed: every score, count and grade survives the projection', { sk
     if (r.st && r.st !== 'closed') assert.equal(out.shows[r.id]?.[3], r.st, `${r.id} status`);
   }
   assert.ok(scored > 1000, `expected >1000 scored shows, got ${scored}`);
-  // The point of the file: an order of magnitude smaller than the app feed.
+  // The point of the file: far smaller than the app feed. Relative, not an
+  // absolute KB cap, so it scales as the catalog grows (a fixed 250 KB cap went
+  // red on data growth alone, BRO-6784) yet still fails if the projection starts
+  // copying feed fields.
   const size = JSON.stringify(out).length;
-  assert.ok(size < 250 * 1024, `stats-shows.json grew to ${(size / 1024).toFixed(0)} KB`);
+  const feedSize = readFileSync(MOBILE, 'utf8').length;
+  assert.ok(size < feedSize * 0.15, `stats-shows.json is ${(size / 1024).toFixed(0)} KB, ${((size / feedSize) * 100).toFixed(1)}% of the ${(feedSize / 1024).toFixed(0)} KB app feed (limit 15%)`);
 });
