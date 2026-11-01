@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-01T05:58:27.218Z",
+  "generatedAt": "2026-11-01T06:15:48.014Z",
   "windowDays": 21,
-  "targets": 16,
-  "auditedThisRun": 16,
-  "carriedForward": 1549,
+  "targets": 20,
+  "auditedThisRun": 20,
+  "carriedForward": 1545,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 561,
-    "missingCurrentRun": 1227,
+    "withGap": 559,
+    "missingCurrentRun": 1225,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 731,
+    "totalFlaggedMisses": 733,
     "totalRecoverable": 51,
     "totalRecovered": 81,
     "humanExcluded": 18,
-    "automatedExcluded": 725,
-    "automatedExcludedListed": 524,
-    "priorProductionCitations": 5500
+    "automatedExcluded": 726,
+    "automatedExcludedListed": 526,
+    "priorProductionCitations": 5505
   },
   "results": [
     {
@@ -60,11 +60,13 @@
       "openingDate": "2026-02-11",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211"
+      ],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
-        "https://www.theatermania.com/news/review-in-11-to-midnight-cost-n-mayor-bring-new-years-resolutions-to-viral-tiktok-trends_1823729/",
-        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/"
+        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
+        "https://www.theatermania.com/news/review-in-11-to-midnight-cost-n-mayor-bring-new-years-resolutions-to-viral-tiktok-trends_1823729/"
       ],
       "dirFiles": 5,
       "dirClean": 4,
@@ -111,8 +113,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 288,
+        "byReason": {
+          "aggregator-internal-nav": 211,
+          "not-http-url": 56,
+          "aggregator-section-root": 6,
+          "non-review-host": 15
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -154,7 +161,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-01T05:07:49.778Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "12-ophelias-regional-2026",
@@ -20567,7 +20574,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-01T05:07:49.778Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "another-shot-off-broadway-2024",
@@ -26603,7 +26610,7 @@
         "liveCount": 22,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "babe-off-broadway-2024",
@@ -28566,48 +28573,40 @@
       "openingDate": "2026-04-06",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-BECKY-SHAW-Opens-on-Broadway-Starring-Madeline-Brewer-Lauren-Patten-and-More-20260406"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/04/06/theater/becky-shaw-review-alden-ehrenreich.html",
-        "https://www.vulture.com/article/becky-shaw-broadway-play-review.html",
-        "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway-0e929905",
-        "https://www.timeout.com/newyork/news/broadway-review-becky-shaw-a-romantic-rectangle-with-all-the-right-angles-040726",
-        "https://nystagereview.com/2026/04/06/becky-shaw-social-climbing-in-the-21st-century/",
-        "https://nystagereview.com/2026/04/06/becky-shaw-a-brilliant-dissection-of-love-and-family-dysfunction/",
-        "https://ew.com/becky-shaw-review-broadway-alden-ehrenreich-steals-the-show-11943173",
-        "https://www.nydailynews.com/2026/04/06/becky-shaw-broadway-review/",
-        "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenreich-patrick-ball-comedy-1236708566/",
-        "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/",
-        "https://newyorktheater.me/2026/04/06/becky-shaw-broadway-review/",
-        "https://www.theatrely.com/post/becky-shaw-the-irresistible-spikiness-of-wrong-matches---review",
-        "https://cititour.com/NYC_Broadway/Becky-Shaw/1366",
-        "https://culturesauce.com/2026/04/06/becky-shaw-broadway-review/",
-        "https://www.theguardian.com/stage/2026/apr/06/becky-shaw-broadway-review",
-        "https://nypost.com/2026/04/06/entertainment/becky-shaw-review-alden-ehrenreich-is-incredible-in-viciously-funny-first-date-broadway-comedy/",
         "https://www.newyorktheatreguide.com/reviews/becky-shaw-broadway-review",
-        "https://davidcote1.substack.com/p/five-things-i-love-about-becky-shaw",
-        "https://thecontending.com/becky-shaw-the-funniest-boldest-broadway-show-of-the-season-so-far/",
+        "https://www.timeout.com/newyork/news/broadway-review-becky-shaw-a-romantic-rectangle-with-all-the-right-angles-040726",
+        "https://www.vulture.com/article/becky-shaw-broadway-play-review.html",
+        "https://variety.com/2026/legit/reviews/becky-shaw-broadway-review-alden-ehrenreich-patrick-ball-comedy-1236708566/",
+        "https://ew.com/becky-shaw-review-broadway-alden-ehrenreich-steals-the-show-11943173",
         "https://www.theatermania.com/news/review-broadway-finally-meets-becky-shaw-and-shes-got-a-sharp-tongue_1831828/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-G6WH9I",
         "https://www.talkinbroadway.com/page/world/BeckyShaw.html",
         "https://www.theaterscene.net/plays/broadway-plays/becky-shaw/samuel-l-leiter/",
         "https://www.theatrereviews.com/broadway-mini-review-becky-shaw-at-second-stages-helen-hayes-theatre-through-sunday-june-14-2026/",
+        "https://newyorktheater.me/2026/04/06/becky-shaw-broadway-review/",
+        "https://culturesauce.com/2026/04/06/becky-shaw-broadway-review/",
         "https://pagesonstages.com/2026/04/10/becky-shaw/",
         "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
-        "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html"
+        "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html",
+        "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway-0e929905",
+        "https://nystagereview.com/2026/04/06/becky-shaw-social-climbing-in-the-21st-century/",
+        "https://nystagereview.com/2026/04/06/becky-shaw-a-brilliant-dissection-of-love-and-family-dysfunction/",
+        "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/",
+        "https://cititour.com/NYC_Broadway/Becky-Shaw/1366",
+        "https://www.theguardian.com/stage/2026/apr/06/becky-shaw-broadway-review",
+        "https://nypost.com/2026/04/06/entertainment/becky-shaw-review-alden-ehrenreich-is-incredible-in-viciously-funny-first-date-broadway-comedy/",
+        "https://davidcote1.substack.com/p/five-things-i-love-about-becky-shaw",
+        "https://thecontending.com/becky-shaw-the-funniest-boldest-broadway-show-of-the-season-so-far/",
+        "https://www.nydailynews.com/2026/04/06/becky-shaw-broadway-review/",
+        "https://www.theatrely.com/post/becky-shaw-the-irresistible-spikiness-of-wrong-matches---review"
       ],
-      "dirFiles": 40,
-      "dirClean": 31,
-      "inReviewsJson": 32,
-      "missing": [
-        {
-          "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
-          "host": "lavocedinewyork.com",
-          "knownOutletId": "la-voce-di-new-york"
-        }
-      ],
+      "dirFiles": 41,
+      "dirClean": 32,
+      "inReviewsJson": 33,
+      "missing": [],
       "dirOnly": [
         {
           "host": "chicagotribune.com",
@@ -28664,6 +28663,7 @@
             "non-review"
           ],
           "copyOfLiveReview": true,
+          "serpCensus": true,
           "reverify": false
         },
         {
@@ -28693,6 +28693,7 @@
             "wrongAttribution"
           ],
           "copyOfLiveReview": true,
+          "serpCensus": true,
           "reverify": false
         }
       ],
@@ -28703,45 +28704,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 307,
-        "byReason": {
-          "aggregator-internal-nav": 208,
-          "not-http-url": 78,
-          "aggregator-section-root": 6,
-          "non-review-host": 15
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
-          "host": "lavocedinewyork.com",
-          "outletId": "la-voce-di-new-york",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "becky-shaw-2026: https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/ is already owned by every-brilliant-thing-2026 — one of the two is contaminated. Inspect data/review-texts/every-brilliant-thing-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "la-voce-di-new-york",
-            "outlet": "la-voce-di-new-york",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/"
-          },
           {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
@@ -28766,14 +28737,8 @@
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
-            "url": "https://www.vulture.com/article/becky-shaw-broadway-play-review.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway-0e929905",
-            "outletId": "wsj.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/becky-shaw-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
@@ -28784,20 +28749,8 @@
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
-            "url": "https://nystagereview.com/2026/04/06/becky-shaw-social-climbing-in-the-21st-century/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/04/06/becky-shaw-a-brilliant-dissection-of-love-and-family-dysfunction/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://ew.com/becky-shaw-review-broadway-alden-ehrenreich-steals-the-show-11943173",
-            "outletId": "ew.com",
+            "url": "https://www.vulture.com/article/becky-shaw-broadway-play-review.html",
+            "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
@@ -28808,56 +28761,8 @@
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
-            "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/04/06/becky-shaw-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Becky-Shaw/1366",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://culturesauce.com/2026/04/06/becky-shaw-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/apr/06/becky-shaw-broadway-review",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://nypost.com/2026/04/06/entertainment/becky-shaw-review-alden-ehrenreich-is-incredible-in-viciously-funny-first-date-broadway-comedy/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/becky-shaw-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://davidcote1.substack.com/p/five-things-i-love-about-becky-shaw",
-            "outletId": "davidcote1.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://thecontending.com/becky-shaw-the-funniest-boldest-broadway-show-of-the-season-so-far/",
-            "outletId": "thecontending.com",
+            "url": "https://ew.com/becky-shaw-review-broadway-alden-ehrenreich-steals-the-show-11943173",
+            "outletId": "ew.com",
             "state": "live",
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
@@ -28892,8 +28797,26 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
+            "url": "https://newyorktheater.me/2026/04/06/becky-shaw-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://culturesauce.com/2026/04/06/becky-shaw-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
             "url": "https://pagesonstages.com/2026/04/10/becky-shaw/",
             "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
+            "outletId": "lavocedinewyork.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -28904,11 +28827,58 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
-            "outletId": "la-voce-di-new-york",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "url": "https://www.wsj.com/articles/becky-shaw-review-love-sex-and-scheming-on-broadway-0e929905",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/04/06/becky-shaw-social-climbing-in-the-21st-century/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/04/06/becky-shaw-a-brilliant-dissection-of-love-and-family-dysfunction/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://deadline.com/2026/04/becky-shaw-broadway-review-1236780120/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Becky-Shaw/1366",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/apr/06/becky-shaw-broadway-review",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://nypost.com/2026/04/06/entertainment/becky-shaw-review-alden-ehrenreich-is-incredible-in-viciously-funny-first-date-broadway-comedy/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://davidcote1.substack.com/p/five-things-i-love-about-becky-shaw",
+            "outletId": "davidcote1.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://thecontending.com/becky-shaw-the-funniest-boldest-broadway-show-of-the-season-so-far/",
+            "outletId": "thecontending.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
             "url": "https://www.nydailynews.com/2026/04/06/becky-shaw-broadway-review/",
@@ -28926,10 +28896,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 23,
+        "liveCount": 24,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-01T04:55:45.004Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "becoming-eve-off-broadway-2025",
@@ -32979,16 +32949,10 @@
         "https://pagesonstages.com/2026/03/01/bigfoot/",
         "https://1minutecritic.com/bigfoot-musical-grey-henson-off-broadway-review/"
       ],
-      "dirFiles": 29,
-      "dirClean": 19,
-      "inReviewsJson": 19,
-      "missing": [
-        {
-          "url": "https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture"
-        }
-      ],
+      "dirFiles": 30,
+      "dirClean": 20,
+      "inReviewsJson": 20,
+      "missing": [],
       "dirOnly": [
         {
           "host": "cititour.com",
@@ -33035,35 +32999,9 @@
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html",
-          "host": "vulture.com",
-          "outletId": "vulture",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "bigfoot-off-broadway-2026: https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html is already owned by night-side-songs-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/night-side-songs-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "vulture",
-            "outlet": "vulture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -33075,6 +33013,12 @@
           {
             "url": "https://www.newyorktheatreguide.com/reviews/bigfoot-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html",
+            "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -33137,20 +33081,13 @@
             "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html",
-            "outletId": "vulture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
+        "liveCount": 13,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-01T05:07:49.778Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "billy-crystal-860-2026",
@@ -76533,7 +76470,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-01T05:07:49.778Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "end-of-the-rainbow-west-end-2026",
@@ -78440,10 +78377,8 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://luxurygoodspartty.com/erebus-ascent-haq-review-designer-design/",
-        "https://www.watchforum.com/threads/erebus-origin-gmt-classic-black.11588/",
-        "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
         "https://thecalibratedwrist.com/tag/erebus-watches/",
+        "https://luxurygoodspartty.com/erebus-ascent-haq-review-designer-design/",
         "https://gearspace.com/threads/dreadbox-erebus-3.1214119/page-8"
       ],
       "dirFiles": 3,
@@ -78455,43 +78390,10 @@
           "host": "luxurygoodspartty.com",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
-          "host": "watchcrunch.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-07-27",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.watchforum.com/threads/erebus-origin-gmt-classic-black.11588/",
-          "host": "watchforum.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "watchforum--unknown.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.watchforum.com/threads/erebus-origin-gmt-classic-black.11588/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-06-27",
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://thecalibratedwrist.com/tag/erebus-watches/",
           "host": "thecalibratedwrist.com",
@@ -78566,8 +78468,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -78587,7 +78489,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -78597,23 +78499,22 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 21,
         "byReason": {
-          "non-review-host": 11,
+          "non-review-host": 17,
           "bare-host": 1,
-          "no-review-evidence": 2,
-          "census-junk-host": 4,
-          "ugc-platform": 1
+          "ugc-platform": 1,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -78625,13 +78526,6 @@
           "host": "luxurygoodspartty.com",
           "priorRun": false,
           "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
-          "host": "watchcrunch.com",
-          "priorRun": true,
-          "reason": "prior-run",
           "censusGateOn": true
         }
       ],
@@ -78690,7 +78584,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "ernest-shackleton-loves-me-off-broadway-2017",
@@ -80930,7 +80824,7 @@
         "liveCount": 33,
         "candidateCount": 35
       },
-      "computedAt": "2026-11-01T04:55:45.004Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "everybody-off-broadway-2017",
@@ -110840,7 +110734,7 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T05:07:49.778Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "hay-fever-west-end-2026",
@@ -119978,7 +119872,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -119987,7 +119881,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -120014,22 +119908,24 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 1,
         "error": null
       },
       "candidatesRejected": {
-        "count": 137,
+        "count": 134,
         "byReason": {
-          "aggregator-internal-nav": 47,
+          "aggregator-internal-nav": 44,
           "not-http-url": 20,
           "production-database-listing": 11,
           "aggregator-section-root": 5,
-          "non-review-host": 47,
+          "non-review-host": 41,
           "non-stage-review": 1,
-          "census-junk-host": 1,
-          "ticketing-listing": 1,
-          "show-listing-page": 2,
-          "venue-production-page": 1,
+          "bare-host": 1,
+          "roundup-page": 2,
+          "census-junk-host": 2,
+          "write-path-blocked": 2,
+          "no-review-evidence": 2,
+          "venue-production-page": 2,
           "merch-store": 1
         }
       },
@@ -120105,7 +120001,7 @@
         "liveCount": 5,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-01T02:53:08.620Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "i-can-die-too-pitlochry-festival-regional-2026",
@@ -180242,7 +180138,7 @@
         "liveCount": 11,
         "candidateCount": 12
       },
-      "computedAt": "2026-11-01T05:20:32.260Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "my-life-as-a-cowboy-regional-2026",
@@ -208140,7 +208036,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-01T05:07:49.778Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -279218,7 +279114,7 @@
         "liveCount": 14,
         "candidateCount": 16
       },
-      "computedAt": "2026-11-01T05:07:49.778Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "the-moors-off-broadway-2017",
@@ -282712,18 +282608,34 @@
       "openingDate": "2026-01-30",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-the-other-place-off-broadway-starring-house-of-the-dragons-emma-darcy",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-OTHER-PLACE-Opens-on-Broadway-Updating-LIVE-20130110"
+      ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
+        "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
+        "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
+        "https://newyorktheater.me/2026/02/11/the-other-place-review/",
         "https://www.newyorktheatreguide.com/reviews/the-other-place-off-broadway-review",
+        "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
+        "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
         "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
+        "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
+        "http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html",
+        "http://www.amny.com/urbanite-1.812039/theater-review-the-other-place-2-stars-1.4432208",
+        "http://www.usatoday.com/story/life/2013/01/10/the-other-place-broadway-review/1817177/",
+        "http://www.backstage.com/review/ny-theater/broadway/the-other-place-manhattan-theatre-club-laurie-metcalf/",
+        "http://www.vulture.com/2013/01/theater-review-the-other-place.html",
+        "http://www.nbcnewyork.com/entertainment/the-scene/other-place-review-186373741.html",
+        "http://www.bloomberg.com/news/2013-01-11/metcalf-s-wit-hides-ravaged-mind-in-other-place-review.html",
+        "http://www.newsday.com/entertainment/theater/laurie-metcalf-in-the-other-place-review-1.4425612",
+        "http://www.northjersey.com/arts_entertainment/theater/186423441_Theater_review___The_Other_Place_.html",
+        "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
         "https://www.vulture.com/article/theater-review-the-other-place-is-a-low-stakes-antigone.html",
         "https://www.wsj.com/articles/the-other-place-review-greek-roots-naturalistic-surface-fa64e3b9",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB",
-        "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
         "https://www.theaterscene.net/plays/offbway-plays/the-other-place/victor-gluck/",
         "https://www.theatrereviews.com/off-broadway-review-the-other-place-at-the-shed-through-sunday-march-1-2026/",
-        "https://newyorktheater.me/2026/02/11/the-other-place-review/",
         "https://twi-ny.com/2026/02/14/the-other-place-alexander-zeldin-the-shed/",
         "https://www.offoffonline.com/offoffonline/2026/2/12/the-other-place-g9ZK7",
         "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-provides.html"
@@ -282738,27 +282650,179 @@
           "count": 1
         },
         {
-          "host": "1minutecritic.com",
-          "count": 1
-        },
-        {
-          "host": "theaterpizzazz.com",
-          "count": 1
-        },
-        {
-          "host": "theatermania.com",
-          "count": 1
-        },
-        {
           "host": "thestage.co.uk",
-          "count": 1
-        },
-        {
-          "host": "thewrap.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "http://www.amny.com/urbanite-1.812039/theater-review-the-other-place-2-stars-1.4432208",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.amny.com/urbanite-1.812039/theater-review-the-other-place-2-stars-1.4432208"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.usatoday.com/story/life/2013/01/10/the-other-place-broadway-review/1817177/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "usatoday--elysa-gardner.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.usatoday.com/story/life/2013/01/10/the-other-place-broadway-review/1817177/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.backstage.com/review/ny-theater/broadway/the-other-place-manhattan-theatre-club-laurie-metcalf/",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "backstage--erik-haagensen.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.backstage.com/review/ny-theater/broadway/the-other-place-manhattan-theatre-club-laurie-metcalf/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/other-place-review-186373741.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nbcny--robert-kahn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/other-place-review-186373741.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.bloomberg.com/news/2013-01-11/metcalf-s-wit-hides-ravaged-mind-in-other-place-review.html",
+          "host": "bloomberg.com",
+          "knownOutletId": "bloomberg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bloomberg--jeremy-gerard.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.bloomberg.com/news/2013-01-11/metcalf-s-wit-hides-ravaged-mind-in-other-place-review.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/laurie-metcalf-in-the-other-place-review-1.4425612",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/laurie-metcalf-in-the-other-place-review-1.4425612"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.northjersey.com/arts_entertainment/theater/186423441_Theater_review___The_Other_Place_.html",
+          "host": "northjersey.com",
+          "knownOutletId": "northjerseycom",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "northjerseycom--robert-feldberg.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.northjersey.com/arts_entertainment/theater/186423441_Theater_review___The_Other_Place_.html?page=all"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB",
           "host": "lightingandsoundamerica.com",
@@ -282789,26 +282853,27 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 374,
+        "byReason": {
+          "aggregator-internal-nav": 258,
+          "not-http-url": 63,
+          "production-database-listing": 6,
+          "aggregator-section-root": 10,
+          "non-review-host": 34,
+          "non-stage-review": 1,
+          "roundup-page": 1,
+          "podcast-episode": 1
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
-      "unextractable": [],
-      "recoveryResults": [
+      "priorRunArticles": [
         {
-          "url": "https://www.thestage.co.uk/long-reviews/all-is-but-fantasy-review-other-place-stratford-upon-avon-royal-shakespeare-company-whitney-white",
-          "host": "thestage.co.uk",
-          "file": "thestage--neil-norman.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 3,
-          "uncited": true
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-OTHER-PLACE-Opens-on-Broadway-Updating-LIVE-20130110",
+          "publishDate": "2013-01-10"
         }
       ],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -282823,8 +282888,20 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
-            "outletId": "nytimes.com",
+            "url": "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/02/11/the-other-place-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -282835,8 +282912,44 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
+            "url": "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
             "url": "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "http://theater.nytimes.com/2013/01/11/theater/reviews/the-other-place-at-samuel-j-friedman-theater.html",
+            "outletId": "theater.nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "http://www.vulture.com/2013/01/theater-review-the-other-place.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -282853,12 +282966,6 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://www.theaterscene.net/plays/offbway-plays/the-other-place/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -282867,12 +282974,6 @@
           {
             "url": "https://www.theatrereviews.com/off-broadway-review-the-other-place-at-the-shed-through-sunday-march-1-2026/",
             "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/02/11/the-other-place-review/",
-            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -282903,10 +283004,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
-        "candidateCount": 13
+        "liveCount": 17,
+        "candidateCount": 18
       },
-      "computedAt": "2026-11-01T04:55:45.004Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "the-outsiders-2024",
@@ -298108,7 +298209,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-01T05:20:32.260Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "the-traitors-live-experience-off-west-end-2026",
@@ -298942,9 +299043,9 @@
       "aggregatorListedUrls": [
         "https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic",
         "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
+        "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
         "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
         "https://www.newjerseystage.com/articles3/2026/09/02/george-street-playhouse-presents-the-unexpected-3rd/",
-        "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
         "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-200pm",
         "https://www.newjerseystage.com/events/2026/10/31/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-31-730pm",
         "https://www.newjerseystage.com/events/2026/10/30/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-30-200pm",
@@ -299064,7 +299165,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 2,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -299105,15 +299206,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 28,
         "byReason": {
           "production-database-listing": 1,
-          "non-review-host": 19,
+          "non-review-host": 21,
           "non-stage-review": 1,
-          "no-review-evidence": 2,
-          "ticketing-listing": 1,
-          "non-review-path": 2,
-          "write-path-blocked": 1
+          "ticketing-listing": 2,
+          "non-review-path": 1,
+          "write-path-blocked": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -299310,7 +299411,7 @@
         "liveCount": 3,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-01T02:53:08.620Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "the-unknown-off-broadway-2026",
@@ -299614,7 +299715,7 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T05:58:27.218Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "the-unseen-regional-2025",
@@ -306766,7 +306867,7 @@
         "liveCount": 30,
         "candidateCount": 32
       },
-      "computedAt": "2026-11-01T04:55:45.004Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -312045,14 +312146,16 @@
       "openingDate": "2026-03-19",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-TRU-Starring-Jesse-Tyler-Ferguson-Off-Broadway-20260327"
+      ],
       "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/tru-off-broadway-review-jesse-tyler-ferguson",
-        "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
         "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
         "https://nystagereview.com/2026/03/19/tru-very-up-close-and-personal-with-truman-capote/",
         "https://nystagereview.com/2026/03/19/tru-gossipy-truman-capote-on-the-uproarious-warpath/",
+        "https://www.newyorktheatreguide.com/reviews/tru-off-broadway-review-jesse-tyler-ferguson",
+        "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
         "https://www.nysun.com/article/jesse-tyler-ferguson-zings-tru-as-capote-in-a-poignant-revival",
         "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.html"
       ],
@@ -312101,8 +312204,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 279,
+        "byReason": {
+          "aggregator-internal-nav": 212,
+          "not-http-url": 46,
+          "aggregator-section-root": 6,
+          "non-review-host": 15
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -312121,18 +312229,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/tru-off-broadway-review-jesse-tyler-ferguson",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
             "outletId": "thewrap.com",
             "state": "live",
@@ -312147,6 +312243,18 @@
           {
             "url": "https://nystagereview.com/2026/03/19/tru-gossipy-truman-capote-on-the-uproarious-warpath/",
             "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/tru-off-broadway-review-jesse-tyler-ferguson",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -312174,7 +312282,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-01T05:20:32.260Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "tru-off-west-end-2026",
@@ -333147,19 +333255,20 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
+        "https://playbill.com/article/what-are-reviews-for-you-got-older-off-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-Alia-Shawkat-and-More-Star-in-YOU-GOT-OLDER-At-Cherry-Lane-Theatre-20260223"
       ],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/newyork/theater/you-got-older-review-revival-alia-shawkat-peter-friedman-clare-barron",
-        "https://nystagereview.com/2026/02/23/you-got-older-quirkiness-masquerading-as-cleverness/",
         "https://newyorktheater.me/2026/02/22/you-got-older-review/",
-        "https://www.newyorktheatreguide.com/reviews/you-got-older-off-broadway-review",
-        "https://www.theatrereviews.com/off-broadway-review-you-got-older-at-the-cherry-lane-theatre-extended-through-sunday-april-26-2026/",
-        "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/",
-        "https://culturesauce.com/2026/03/06/you-got-older-alia-shawkat-off-broadway-review/",
-        "https://pagesonstages.com/2026/03/26/you-got-older/",
+        "https://nystagereview.com/2026/02/23/you-got-older-quirkiness-masquerading-as-cleverness/",
         "https://1minutecritic.com/you-got-older-clare-barron-review/",
-        "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman-barron.html"
+        "https://culturesauce.com/2026/03/06/you-got-older-alia-shawkat-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/you-got-older-off-broadway-review",
+        "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman-barron.html",
+        "https://www.timeout.com/newyork/theater/you-got-older-review-revival-alia-shawkat-peter-friedman-clare-barron",
+        "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/",
+        "https://www.theatrereviews.com/off-broadway-review-you-got-older-at-the-cherry-lane-theatre-extended-through-sunday-april-26-2026/",
+        "https://pagesonstages.com/2026/03/26/you-got-older/"
       ],
       "dirFiles": 28,
       "dirClean": 16,
@@ -333226,12 +333335,14 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 299,
+        "count": 395,
         "byReason": {
-          "not-http-url": 71,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 207,
-          "aggregator-section-root": 6
+          "aggregator-internal-nav": 251,
+          "not-http-url": 91,
+          "production-database-listing": 6,
+          "aggregator-section-root": 11,
+          "non-review-host": 35,
+          "non-stage-review": 1
         }
       },
       "dedupedVariants": [],
@@ -333251,8 +333362,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.timeout.com/newyork/theater/you-got-older-review-revival-alia-shawkat-peter-friedman-clare-barron",
-            "outletId": "timeout.com",
+            "url": "https://newyorktheater.me/2026/02/22/you-got-older-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -333263,20 +333374,8 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://newyorktheater.me/2026/02/22/you-got-older-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/you-got-older-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/off-broadway-review-you-got-older-at-the-cherry-lane-theatre-extended-through-sunday-april-26-2026/",
-            "outletId": "theatrereviews.com",
+            "url": "https://1minutecritic.com/you-got-older-clare-barron-review/",
+            "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -333287,20 +333386,32 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://pagesonstages.com/2026/03/26/you-got-older/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://1minutecritic.com/you-got-older-clare-barron-review/",
-            "outletId": "1minutecritic.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/you-got-older-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
             "url": "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman-barron.html",
             "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/you-got-older-review-revival-alia-shawkat-peter-friedman-clare-barron",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-you-got-older-at-the-cherry-lane-theatre-extended-through-sunday-april-26-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/03/26/you-got-older/",
+            "outletId": "pagesonstages.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -333316,7 +333427,7 @@
         "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-01T05:20:32.260Z"
+      "computedAt": "2026-11-01T06:15:48.014Z"
     },
     {
       "showId": "your-own-personal-exegesis-off-broadway-2022",
