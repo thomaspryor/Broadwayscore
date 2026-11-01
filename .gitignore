@@ -508,7 +508,9 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/audit/bro-3875-soft-type-wrongshow.md
 !/docs/audit/bro-5603-outlet-displaynames.md
 !/docs/BRO-6450-we-season-completeness.md
-/memory/
+/memory/*
+# BRO-6498: keep the requested public research report in the runner's diff.
+!/memory/us-city-hubs-report.md
 /data/deep-research/
 /data/theater-research/
 /data/audit/**/*.md
