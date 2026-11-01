@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6766",
   "planId": "3198bc6a-41f5-47f2-a06d-940ada55998e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T14:52:44.898Z",
   "submitter": {
     "name": null,
@@ -247,5 +247,34 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T20:01:42.923Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added parsifal-off-west-end-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added gotterdammerung-off-west-end-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cosi-fan-tutte-off-west-end-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added la-gioconda-off-west-end-2027"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hercules-off-west-end-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
