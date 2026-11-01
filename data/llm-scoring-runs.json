@@ -2752305,59 +2752305,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T02:33:26.110Z",
-    "completedAt": "2026-11-01T02:33:28.702Z",
-    "totalReviews": 1,
-    "processed": 0,
-    "skipped": 0,
+    "startedAt": "2026-11-01T02:41:39.162Z",
+    "completedAt": "2026-11-01T02:41:49.203Z",
+    "totalReviews": 3,
+    "processed": 2,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 4193,
-      "output": 121,
+      "input": 11538,
+      "output": 662,
       "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 12150
+      "cacheWrite": 3807,
+      "total": 29531
     },
-    "costUsd": 0.014756000000000002,
-    "runId": "41265183895",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-01T02:38:27.989Z",
-    "completedAt": "2026-11-01T02:38:27.990Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41265183895",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-01T02:34:11.991Z",
-    "completedAt": "2026-11-01T02:34:50.039Z",
-    "totalReviews": 11,
-    "processed": 8,
-    "skipped": 3,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 49225,
-      "output": 2427,
-      "cacheRead": 30456,
-      "cacheWrite": 0,
-      "total": 122502
-    },
-    "costUsd": 0.1843804,
-    "runId": "41265214529",
+    "costUsd": 0.05760845,
+    "runId": "41265857943",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2759637,16 +2759599,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "boulevard-of-bold-dreams-regional-2023",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 0,
-          "down": 0,
-          "total": 8
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "bowl-ep-off-broadway-2025",
         "ourDistribution": {
           "up": 8,
@@ -2760581,6 +2760533,16 @@
           "flat": 5,
           "down": 2,
           "total": 26
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "campaigns-inc-regional-2022",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 2,
+          "down": 0,
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -2764365,10 +2764327,10 @@
       {
         "showId": "dreamgirls-regional-2022",
         "ourDistribution": {
-          "up": 1,
-          "flat": 0,
+          "up": 6,
+          "flat": 1,
           "down": 0,
-          "total": 1
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -2765499,6 +2765461,16 @@
           "flat": 0,
           "down": 0,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "failure-a-love-story-regional-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2793616,6 +2793588,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-sound-of-music-regional-2022",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 0,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-sound-of-music-tour-2025",
         "ourDistribution": {
           "up": 43,
@@ -2798622,8 +2798604,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T02:39:47.837Z",
-    "completedAt": "2026-11-01T02:39:47.839Z",
+    "startedAt": "2026-11-01T02:46:46.032Z",
+    "completedAt": "2026-11-01T02:46:46.034Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2798636,7 +2798618,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41265214529",
+    "runId": "41265857943",
     "source": "comparative-rescore",
     "errorDetails": []
   }
