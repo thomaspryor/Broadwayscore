@@ -3023075,21 +3023075,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T17:49:55.105Z",
-    "completedAt": "2026-11-01T17:50:00.841Z",
-    "totalReviews": 2,
-    "processed": 1,
+    "startedAt": "2026-11-01T17:51:25.932Z",
+    "completedAt": "2026-11-01T17:52:07.301Z",
+    "totalReviews": 9,
+    "processed": 8,
     "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 6014,
-      "output": 251,
-      "cacheRead": 3807,
+      "input": 57671,
+      "output": 2517,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 15029
+      "total": 135006
     },
-    "costUsd": 0.0221835,
-    "runId": "41332959151",
+    "costUsd": 0.2106472,
+    "runId": "41332931865",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3038188,16 +3038188,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "get-down-tonight-classic-funk-regional-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "get-out-alive-regional-2022",
         "ourDistribution": {
           "up": 1,
@@ -3052160,20 +3052150,30 @@
       {
         "showId": "pippin-regional-2023",
         "ourDistribution": {
-          "up": 12,
+          "up": 20,
           "flat": 0,
           "down": 0,
-          "total": 12
+          "total": 20
         },
         "hasDisagreement": false
       },
       {
         "showId": "pippin-regional-2025",
         "ourDistribution": {
-          "up": 12,
+          "up": 20,
           "flat": 0,
           "down": 0,
-          "total": 12
+          "total": 20
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "pippin-regional-2026",
+        "ourDistribution": {
+          "up": 20,
+          "flat": 0,
+          "down": 0,
+          "total": 20
         },
         "hasDisagreement": false
       },
@@ -3069569,16 +3069569,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "what-became-of-us-regional-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "what-happened-was-off-broadway-2026",
         "ourDistribution": {
           "up": 7,
@@ -3070709,8 +3070699,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T17:54:56.759Z",
-    "completedAt": "2026-11-01T17:54:56.760Z",
+    "startedAt": "2026-11-01T17:57:04.697Z",
+    "completedAt": "2026-11-01T17:57:04.699Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3070723,7 +3070713,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41332959151",
+    "runId": "41332931865",
     "source": "comparative-rescore",
     "errorDetails": []
   }
