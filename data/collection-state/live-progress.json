@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-01T16:27:06.095Z",
-  "processed": 926,
-  "failed": 400,
-  "successRate": "69.8%",
+  "updatedAt": "2026-11-01T16:51:09.012Z",
+  "processed": 84,
+  "failed": 66,
+  "successRate": "56.0%",
   "tierBreakdown": {
-    "playwright": 588,
+    "playwright": 43,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 26,
-    "brightdata": 60,
-    "archiveToday": 193,
-    "archive": 266
+    "scrapingdog": 10,
+    "scrapingbee": 7,
+    "brightdata": 1,
+    "archiveToday": 15,
+    "archive": 28
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-11-01T15:49:43.966Z",
@@ -48,6 +48,12 @@
       "t": "2026-11-01T16:06:43.260Z",
       "event": "bb-cookie-inject",
       "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-01T16:37:16.356Z",
+      "event": "bb-session",
+      "session": "d39674c8",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
