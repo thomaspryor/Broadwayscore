@@ -1,80 +1,13 @@
 {
-  "generatedAt": "2026-11-01T16:47:43.814Z",
+  "generatedAt": "2026-11-01T17:16:29.756Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 298,
-  "clean": 294,
-  "defective": 4,
-  "byType": {
-    "score-drift": 4
-  },
-  "shows": [
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.17 vs local 76.31 (Δ0.14)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-01T16:47:40.718Z"
-    },
-    {
-      "showId": "stranger-things-the-first-shadow-west-end-2023",
-      "title": "Stranger Things: The First Shadow",
-      "openingDate": "2023-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.13 vs local 82.71 (Δ0.42)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34,
-      "firstDefectAt": "2026-11-01T16:47:40.718Z"
-    },
-    {
-      "showId": "hadestown-2019",
-      "title": "Hadestown",
-      "openingDate": "2019-04-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.28 vs local 83.07 (Δ0.21)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 51,
-      "deployedCount": 51,
-      "firstDefectAt": "2026-11-01T16:47:40.718Z"
-    },
-    {
-      "showId": "hamilton-2015",
-      "title": "Hamilton",
-      "openingDate": "2015-08-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 91.33 vs local 91.75 (Δ0.42)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 42,
-      "deployedCount": 42,
-      "firstDefectAt": "2026-11-01T16:47:40.718Z"
-    }
-  ],
+  "clean": 298,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

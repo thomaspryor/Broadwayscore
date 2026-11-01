@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T16:47:44.084Z",
+  "generatedAt": "2026-11-01T17:16:30.149Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -128,11 +128,31 @@
     {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
+    },
+    {
+      "outletId": "cote-notices",
+      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "plays-international",
+      "error": "AggregateError"
+    },
+    {
+      "outletId": "theartsdispatch",
+      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
+    },
+    {
+      "outletId": "rolandcat",
+      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
+    },
+    {
+      "outletId": "matineemouse",
+      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 801,
-  "matchedGaps": 10,
-  "possibleGaps": 12,
+  "itemsScanned": 763,
+  "matchedGaps": 3,
+  "possibleGaps": 11,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -153,33 +173,6 @@
       "publishDate": "2026-10-28"
     },
     {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "matched",
-      "outletId": "south-london",
-      "url": "https://southlondon.co.uk/area/southwark/review-girls-young-vic/",
-      "headline": "Review: Girls – Young Vic",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "level": "matched",
-      "outletId": "nytimes",
-      "url": "https://www.nytimes.com/2026/11/01/theater/in-the-heights-review-lin-manuel-miranda.html",
-      "headline": "‘In the Heights’ Review: An Exuberant Revival of Lin-Manuel Miranda’s Musical",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
-      "headline": "Metropolitan Opera 2026-27 Review: Medea",
-      "publishDate": "2026-11-01"
-    },
-    {
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "matched",
@@ -187,42 +180,6 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
-      "outletId": "theatre-reviews-limited",
-      "url": "https://www.theatrereviews.com/off-broadway-review-the-heart-at-roundabout-theatre-companys-laura-pels-theatre-in-the-harold-and-miriam-steinberg-center-for-theatre-through-sunday-december-13-2026/",
-      "headline": "Off-Broadway Review: &#8220;The Heart&#8221; at Roundabout Theatre Company&#8217;s Laura Pels Theatre in the Harold and Miriam Steinberg Center for Theatre (Through Sunday, December 13, 2026)",
-      "publishDate": "2026-10-31"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
-      "headline": "TOSCA",
-      "publishDate": "2026-10-31"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "theatre-weekly",
-      "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
-      "headline": "Review: Tosca at London Coliseum",
-      "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
-      "headline": "ENO: Tosca &#8211; London Coliseum",
-      "publishDate": "2026-10-31"
     },
     {
       "showId": "girls-off-west-end-2026",
@@ -313,15 +270,6 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-birmingham-royal-ballets-swan-lake-sadlers-wells",
       "headline": "Review: Birmingham Royal Ballet’s SWAN LAKE, Sadler’s Wells",
       "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "possible",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
-      "headline": "Review of &#8216;The Moth&#8217;: &#8220;Dusty play doesn&#8217;t emerge from its cocoon&#8221;",
-      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-moth-off-west-end-2026",
