@@ -348,6 +348,7 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # PARENT directory is itself excluded, so a blanket `/docs/` would make
 # `!/docs/experiments/` a no-op (git never traverses into an excluded dir).
 /docs/*
+!/docs/bro-6743-gather-timeouts.md
 !/docs/bro-6493-opening-dates.md
 # BRO-6622: the lane switch runbook CLOUD.md points sessions to.
 !/docs/opening-night-lane-switch-runbook.md
