@@ -279,7 +279,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   let sharpLib;
   try { sharpLib = require('sharp'); } catch { console.log('   ⚠ sharp unavailable — cannot process regional venue images'); return null; }
   const { REGIONAL_FEEDER_VENUES } = require('./lib/aggregator-candidate-extract');
-  const venueEntry = REGIONAL_FEEDER_VENUES.find(v => v.re.test(show.venue || ''));
+  const venueEntry = REGIONAL_FEEDER_VENUES.find(v => v.re.test(show.venue || '')) || require('./lib/regional-image-venues').imageOnlyVenue(show.venue);
 
   const localPaths = {
     poster: `/images/shows/${show.id}/poster.webp`,
