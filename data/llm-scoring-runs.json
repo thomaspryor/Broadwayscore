@@ -2563867,21 +2563867,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T01:48:08.076Z",
-    "completedAt": "2026-11-01T01:48:22.988Z",
-    "totalReviews": 5,
-    "processed": 3,
-    "skipped": 2,
+    "startedAt": "2026-11-01T01:48:22.807Z",
+    "completedAt": "2026-11-01T01:48:27.215Z",
+    "totalReviews": 1,
+    "processed": 1,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 17318,
-      "output": 925,
-      "cacheRead": 11421,
+      "input": 5155,
+      "output": 314,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 44299
+      "total": 13856
     },
-    "costUsd": 0.06612380000000001,
-    "runId": "41262069920",
+    "costUsd": 0.020290100000000002,
+    "runId": "41262076142",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2575853,6 +2575853,16 @@
           "flat": 0,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "dreamgirls-regional-2022",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -2610006,8 +2610016,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T01:53:20.764Z",
-    "completedAt": "2026-11-01T01:53:20.766Z",
+    "startedAt": "2026-11-01T01:53:25.231Z",
+    "completedAt": "2026-11-01T01:53:25.232Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2610020,7 +2610030,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41262069920",
+    "runId": "41262076142",
     "source": "comparative-rescore",
     "errorDetails": []
   }
