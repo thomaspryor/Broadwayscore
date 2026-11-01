@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-01T03:53:58.113Z",
+  "generatedAt": "2026-11-01T04:06:15.114Z",
   "windowDays": 21,
-  "targets": 15,
-  "auditedThisRun": 15,
-  "carriedForward": 1550,
+  "targets": 7,
+  "auditedThisRun": 7,
+  "carriedForward": 1558,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 594,
-    "missingCurrentRun": 1253,
+    "withGap": 593,
+    "missingCurrentRun": 1237,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 788,
     "totalRecoverable": 51,
@@ -16,7 +16,7 @@
     "humanExcluded": 18,
     "automatedExcluded": 782,
     "automatedExcludedListed": 579,
-    "priorProductionCitations": 5546
+    "priorProductionCitations": 5567
   },
   "results": [
     {
@@ -699,16 +699,74 @@
       "category": "tour",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+        "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+        "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+        "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
+        "https://www.broadwayworld.com/phoenix/article/Review-REVIEW-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-ASU-Gammage-20260129",
+        "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
+        "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
         "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
         "https://www.greaterlansingtheatre.net/reviews/the-neil-diamond-musical-a-beautiful-noise",
         "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/",
-        "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
         "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/"
       ],
       "dirFiles": 16,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+          "host": "rhetoricalreview.com",
+          "knownOutletId": "rhetoricalreview",
+          "priorRun": true,
+          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+          "serpCensus": true
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+          "serpCensus": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
+        },
+        {
+          "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
+          "host": "hotchka.com",
+          "knownOutletId": "hotchka",
+          "priorRun": true,
+          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/phoenix/article/Review-REVIEW-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-ASU-Gammage-20260129",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "priorRun": true,
+          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
+          "host": "houstonchronicle.com",
+          "knownOutletId": "houston-chronicle",
+          "priorRun": true,
+          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
         {
           "url": "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
           "host": "theatermania.com",
@@ -728,12 +786,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "serpCensus": true
-        },
-        {
           "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/",
           "host": "limelight-arts.com.au",
           "knownOutletId": "limelight-magazine-au",
@@ -745,17 +797,115 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Beautiful Noise, The Neil Diamond Musical\" review american",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 22,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 18,
+          "non-stage-review": 1,
+          "bare-host": 1,
+          "non-review-path": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://rhetoricalreview.com/review-a-beautiful-noise-brings-neil-diamonds-music-to-life-at-salt-lake-citys-eccles-theater/",
+          "host": "rhetoricalreview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-a-beautiful-noise-the-neil-diamond-musical-at-the-hippodrome-theatre/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
+          "host": "hotchka.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/phoenix/article/Review-REVIEW-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-ASU-Gammage-20260129",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
+          "host": "houstonchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.greaterlansingtheatre.net/reviews/the-neil-diamond-musical-a-beautiful-noise",
           "host": "greaterlansingtheatre.net",
@@ -765,6 +915,36 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
         {
           "url": "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
           "host": "theatermania.com",
@@ -796,21 +976,6 @@
           "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "a-beautiful-noise-the-neil-diamond-musical-tour-2026: https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
-        },
-        {
           "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/",
           "host": "limelight-arts.com.au",
           "outletId": "limelight-magazine-au",
@@ -830,6 +995,20 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works"
+          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -852,13 +1031,6 @@
             "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works"
-          },
-          {
             "outletId": "limelight-magazine-au",
             "outlet": "limelight-magazine-au",
             "critic": "Unknown",
@@ -868,6 +1040,20 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-neil-diamond-musical-a-beautiful-mind/",
+            "outletId": "around-the-town-chicago",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T04:06:15.114Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
           {
             "url": "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
             "outletId": "theatermania",
@@ -890,13 +1076,6 @@
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T03:22:12.044Z"
-          },
-          {
             "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-2/2026-10-07/",
             "outletId": "limelight-magazine-au",
             "state": "GAP",
@@ -906,9 +1085,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 5
       },
-      "computedAt": "2026-11-01T00:08:34.874Z"
+      "computedAt": "2026-11-01T04:06:15.114Z"
     },
     {
       "showId": "a-boy-called-christmas-chichester-festival-regional-2025",
@@ -37656,227 +37835,53 @@
       "status": "open",
       "category": "tour",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
-        "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Kicks-Off-North-American-Tour-20261028",
-        "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-BETTY-BOOP-MUSICAL-Opens-Pre-Broadway-Run-in-Chicago-20231207"
+        "https://playbill.com/article/reviews-see-what-critics-have-to-say-about-boop-the-betty-boop-musical-in-chicago",
+        "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
-        "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
+        "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
+        "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
+        "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
+        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
+        "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
+        "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
+        "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
+        "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
         "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
-        "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
-        "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
-        "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
-        "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
-        "https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
-        "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
-        "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+        "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
+        "https://cititour.com/NYC_Broadway/Boop/1293",
         "https://culturesauce.com/2025/04/07/betty-boop-musical-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
-        "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
-        "https://www.slantmagazine.com/theater/boop-the-musical-review/",
         "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
+        "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
+        "https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
+        "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
+        "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
+        "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
+        "https://www.slantmagazine.com/theater/boop-the-musical-review/",
+        "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
+        "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
+        "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
         "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
+        "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
         "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
-        "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/",
         "https://www.leagueofcincytheatres.info/review-boop-has-something-for-everyoneand-then-some/",
         "https://www.leagueofcincytheatres.info/review-boop-the-musical-bursts-into-color-on-aronoff-stage/",
-        "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/jasmine-amy-rogers-boop-spelling-bee-is-where-she-wants-to-be-re-release/190",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/revisiting-boop-the-musical-and-highlights-from-broadway-bares-and-the-2025-jimmy-awards/300",
-        "https://broadwaypodcastnetwork.com/podcasts/why-i-ll-never-make-it/aubie-merrylees-on-the-joys-of-boop-and-the-disappointments-of-kpop/381",
-        "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/91-jasmine-amy-rogers-bringing-betty-boop-to-life/96",
-        "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-ainsley-melham-boop-the-musical-on-broadway-broadway-time/37",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/inside-boop-the-musical-a-conversation-with-jerry-mitchell/282",
-        "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/inside-boop-musical-s-opening-night-on-broadway-with-jasmine-amy-rogers-jerry-mitchell-more/159",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
-        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
-        "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
-        "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
-        "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
-        "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
-        "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
-        "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
-        "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
         "https://meganannrasmussen.com/reviews/boop-the-musical",
         "https://popcultblog.com/review-revisited-boop-hits-broadway",
         "https://reallytallguy.com/theatre/reviews/boop/",
         "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
-        "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/"
+        "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/",
+        "https://www.saratogian.com/2026/10/14/review-boop-the-musical-turns-a-comic-icon-into-a-star-of-a-broadway-musical/"
       ],
       "dirFiles": 12,
       "dirClean": 7,
       "inReviewsJson": 6,
       "missing": [
         {
-          "url": "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://culturesauce.com/2025/04/07/betty-boop-musical-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.slantmagazine.com/theater/boop-the-musical-review/",
-          "host": "slantmagazine.com",
-          "knownOutletId": "slantmagazine",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/jasmine-amy-rogers-boop-spelling-bee-is-where-she-wants-to-be-re-release/190",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/revisiting-boop-the-musical-and-highlights-from-broadway-bares-and-the-2025-jimmy-awards/300",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/why-i-ll-never-make-it/aubie-merrylees-on-the-joys-of-boop-and-the-disappointments-of-kpop/381",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/91-jasmine-amy-rogers-bringing-betty-boop-to-life/96",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-ainsley-melham-boop-the-musical-on-broadway-broadway-time/37",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/inside-boop-the-musical-a-conversation-with-jerry-mitchell/282",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/inside-boop-musical-s-opening-night-on-broadway-with-jasmine-amy-rogers-jerry-mitchell-more/159",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
-          "host": "wttw.com",
-          "knownOutletId": "wttw",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
-          "host": "suntimes.com",
-          "knownOutletId": "chicago-sun-times",
+          "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
+          "host": "chicagoconcertreviews.com",
+          "knownOutletId": "chicagoconcertreviews",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -37888,16 +37893,16 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
-          "host": "shawlocal.com",
-          "knownOutletId": "shaw-local",
+          "url": "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
-          "host": "rollingout.com",
-          "knownOutletId": "rollingout",
+          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -37909,28 +37914,161 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
-          "host": "chicagoconcertreviews.com",
-          "knownOutletId": "chicagoconcertreviews",
+          "url": "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
+          "host": "rollingout.com",
+          "knownOutletId": "rollingout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
+          "host": "shawlocal.com",
+          "knownOutletId": "shaw-local",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
+          "host": "wttw.com",
+          "knownOutletId": "wttw",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Boop/1293",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2025/04/07/betty-boop-musical-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/boop-the-musical-review/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
           "host": "meganannrasmussen.com",
-          "knownOutletId": null,
+          "knownOutletId": "megan-ann-rasmussen",
           "serpCensus": true
         },
         {
           "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
           "host": "popcultblog.com",
-          "knownOutletId": null,
+          "knownOutletId": "pop-cult-blog",
           "serpCensus": true
         },
         {
           "url": "https://reallytallguy.com/theatre/reviews/boop/",
           "host": "reallytallguy.com",
-          "knownOutletId": null,
+          "knownOutletId": "really-tall-guy",
           "serpCensus": true
         },
         {
@@ -37989,6 +38127,7 @@
           "confirmedBasis": [
             "non-review"
           ],
+          "serpCensus": true,
           "reverify": false
         }
       ],
@@ -37999,104 +38138,306 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 818,
+        "count": 272,
         "byReason": {
-          "not-http-url": 111,
-          "non-review-host": 53,
-          "aggregator-internal-nav": 639,
-          "aggregator-section-root": 13,
-          "roundup-page": 2
+          "podcast-episode": 8,
+          "aggregator-internal-nav": 140,
+          "not-http-url": 11,
+          "production-database-listing": 57,
+          "aggregator-section-root": 8,
+          "non-review-host": 41,
+          "non-stage-review": 6,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-MUSICAL-Opens-on-Broadway-20250407",
-          "publishDate": "2025-04-07"
+          "url": "https://playbill.com/article/reviews-see-what-critics-have-to-say-about-boop-the-betty-boop-musical-in-chicago",
+          "publishDate": "2023-12-07"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BOOP-THE-BETTY-BOOP-MUSICAL-Opens-Pre-Broadway-Run-in-Chicago-20231207",
-          "publishDate": "2023-12-07"
+          "url": "https://playbill.com/article/read-the-reviews-for-boop-the-musical-on-broadway",
+          "publishDate": "2025-04-07"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://chicagoconcertreviews.com/2023/12/06/boop-cibc-theatre/",
+          "host": "chicagoconcertreviews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://chicagocultureauthority.com/2023/12/07/boop-the-musical-proves-ready-for-its-colorful-close-up-in-pre-broadway-chicago-premiere/",
+          "host": "chicagocultureauthority.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://chicago.suntimes.com/2023/12/7/23992246/boop-review-betty-musical-chicago-cibc-theatre-jasmine-amy-rogers-jerry-mitchell",
+          "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-boop-musical-chicago-review-20231207-il5ulvagu5awzhoi3t4nx7z5gy-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newcitystage.com/2023/12/08/in-living-color-a-review-of-boop-the-betty-boop-musical-at-broadway-in-chicago/",
+          "host": "newcitystage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://rollingout.com/2023/12/08/boop-blending-fantasy-and-real-life/",
+          "host": "rollingout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.shawlocal.com/northwest-herald/2023/12/08/boop-the-musical-a-3d-rainbow-playing-chicago-before-heading-to-broadway/",
+          "host": "shawlocal.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://news.wttw.com/2023/12/07/girl-named-boop-headed-broadway-review",
+          "host": "wttw.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/boop-the-musical-boop-oop-a-dont/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/2025/04/07/review-boop-the-musical-broadway/",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Boop/1293",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2025/04/07/betty-boop-musical-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-boop-the-musical-should-turn-betty-boop-into-the-new-barbie/",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2025/04/07/entertainment/boop-review-broadway-star-jasmine-amy-rogers-is-born-in-new-musical/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/07/boop-boop-oop-a-doop/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/07/boop-betty-brightens-broadway-but/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2025/04/07/boop-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/boop-the-musical-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2025/04/07/theater/boop-the-musical-review-broadway.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/boop-the-musical-review/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/boop-the-musical-betty-lands-on-broadway-and-broadway-gains-a-star-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/boop-the-musical-broadway-review-betty-boop-jasmine-amy-rogers",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/boop-review-broadway-musical-1236361705/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/boop-the-musical-broadway-review-david-foster/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
+          "host": "meganannrasmussen.com",
+          "outletId": "megan-ann-rasmussen",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://meganannrasmussen.com/reviews/boop-the-musical looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
+          "host": "popcultblog.com",
+          "outletId": "pop-cult-blog",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://popcultblog.com/review-revisited-boop-hits-broadway looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://reallytallguy.com/theatre/reviews/boop/",
+          "host": "reallytallguy.com",
+          "outletId": "really-tall-guy",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://reallytallguy.com/theatre/reviews/boop/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/",
+          "host": "broadwaynews.com",
+          "outletId": "broadwaynews",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://www.broadwaynews.com/boop-the-musical-sets-50-week-north-american-tour/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/",
+          "host": "didtheylikeit.com",
+          "outletId": "dtli",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "tour-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "boop-tour-2026: https://didtheylikeit.com/shows/boop-the-musical/boop-broadway-review/ looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/jasmine-amy-rogers-boop-spelling-bee-is-where-she-wants-to-be-re-release/190"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/revisiting-boop-the-musical-and-highlights-from-broadway-bares-and-the-2025-jimmy-awards/300"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/why-i-ll-never-make-it/aubie-merrylees-on-the-joys-of-boop-and-the-disappointments-of-kpop/381"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/91-jasmine-amy-rogers-bringing-betty-boop-to-life/96"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-ainsley-melham-boop-the-musical-on-broadway-broadway-time/37"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/inside-boop-the-musical-a-conversation-with-jerry-mitchell/282"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/inside-boop-musical-s-opening-night-on-broadway-with-jasmine-amy-rogers-jerry-mitchell-more/159"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271"
-          },
-          {
-            "outletId": "meganannrasmussen.com",
-            "outlet": "meganannrasmussen.com",
+            "outletId": "megan-ann-rasmussen",
+            "outlet": "megan-ann-rasmussen",
             "critic": "Unknown",
             "stars": null,
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical"
           },
           {
-            "outletId": "popcultblog.com",
-            "outlet": "popcultblog.com",
+            "outletId": "pop-cult-blog",
+            "outlet": "pop-cult-blog",
             "critic": "Unknown",
             "stars": null,
             "url": "https://popcultblog.com/review-revisited-boop-hits-broadway"
           },
           {
-            "outletId": "reallytallguy.com",
-            "outlet": "reallytallguy.com",
+            "outletId": "really-tall-guy",
+            "outlet": "really-tall-guy",
             "critic": "Unknown",
             "stars": null,
             "url": "https://reallytallguy.com/theatre/reviews/boop/"
@@ -38144,78 +38485,22 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/jasmine-amy-rogers-boop-spelling-bee-is-where-she-wants-to-be-re-release/190",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/revisiting-boop-the-musical-and-highlights-from-broadway-bares-and-the-2025-jimmy-awards/300",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/why-i-ll-never-make-it/aubie-merrylees-on-the-joys-of-boop-and-the-disappointments-of-kpop/381",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/91-jasmine-amy-rogers-bringing-betty-boop-to-life/96",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-ainsley-melham-boop-the-musical-on-broadway-broadway-time/37",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/inside-boop-the-musical-a-conversation-with-jerry-mitchell/282",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/inside-boop-musical-s-opening-night-on-broadway-with-jasmine-amy-rogers-jerry-mitchell-more/159",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/boop-the-musical-broadway-a-post-show-analysis/271",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://meganannrasmussen.com/reviews/boop-the-musical",
-            "outletId": "meganannrasmussen.com",
+            "outletId": "megan-ann-rasmussen",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
           },
           {
             "url": "https://popcultblog.com/review-revisited-boop-hits-broadway",
-            "outletId": "popcultblog.com",
+            "outletId": "pop-cult-blog",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-09T16:54:53.545Z"
           },
           {
             "url": "https://reallytallguy.com/theatre/reviews/boop/",
-            "outletId": "reallytallguy.com",
+            "outletId": "really-tall-guy",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-13T04:11:59.529Z"
@@ -38244,9 +38529,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 2,
-        "candidateCount": 9
+        "candidateCount": 8
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T04:06:15.114Z"
     },
     {
       "showId": "both-regional-2026",
@@ -63893,217 +64178,16 @@
       "openingDate": "2026-09-12",
       "status": "open",
       "category": "tour",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-broadway-reviews-for-death-becomes-her",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-the-broadway-bound-death-becomes-her-musical",
-        "https://www.broadwayworld.com/article/Review-Roundup-DEATH-BECOMES-HER-Launches-North-American-Tour-20260923",
-        "https://www.broadwayworld.com/article/Review-Roundup-DEATH-BECOMES-HER-Opens-Pre-Broadway-Run-in-Chicago-20240520"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.chicagotribune.com/2024/11/21/review-death-becomes-her-on-broadway-has-fun-frenemies-and-a-wacky-good-time/",
-        "https://cititour.com/NYC_Broadway/Death-Becomes-Her/1268",
-        "https://culturesauce.com/2024/11/21/death-becomes-her-musical-broadway-review/",
-        "https://www.thedailybeast.com/review-death-becomes-her-is-the-most-fun-night-out-on-broadway/",
-        "https://deadline.com/2024/11/death-becomes-her-broadway-review-1236182456/",
-        "https://www.digitaljournal.com/entertainment/review-megan-hilty-and-jennifer-simard-star-in-death-becomes-her-on-broadway/article",
-        "https://ew.com/death-becomes-her-review-cult-classic-full-camp-broadway-8747683",
-        "https://www.theguardian.com/stage/2024/nov/21/death-becomes-her-review-broadway",
-        "https://www.vulture.com/article/theater-review-death-becomes-her-broadway-musical.html",
-        "https://nypost.com/2024/11/21/entertainment/death-becomes-her-review-claws-are-out-in-broadway-camp-fest/",
-        "https://nystagereview.com/2024/11/21/death-becomes-her-the-rare-screen-to-stage-musical-that-improves-on-the-original/",
-        "https://newyorktheater.me/2024/11/21/death-becomes-her-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/death-becomes-her-broadway-review",
-        "https://www.nytimes.com/2024/11/21/theater/death-becomes-her-review-hilty-simard.html",
-        "https://www.theatermania.com/news/review-death-becomes-her-is-broadway-musical-comedy-heaven_1756248/",
-        "https://www.theatrely.com/post/death-becomes-her-is-broadway-comedy-gold-review",
-        "https://www.timeout.com/newyork/theater/death-becomes-her-broadway-musical-review",
-        "https://variety.com/2024/legit/reviews/death-becomes-her-review-broadway-musical-1236216493/",
-        "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-hilty-jennifer-simard-58c2761b",
-        "https://www.thewrap.com/death-becomes-her-broadway-review/",
-        "https://chicagoreader.com/arts-culture/theater/theater-review/death-becomes-her-broadway-in-chicago",
-        "https://www.chicagotribune.com/2024/05/20/review-death-becomes-her-has-retro-comedic-charm-but-needs-more-emotional-connection/",
-        "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-1236010777/",
         "https://www.news-herald.com/2026/09/21/death-becomes-her-at-playhouse-square-review-a-fatally-fun-time/",
         "https://www.cleveland.com/entertainment/2026/09/death-becomes-her-review-hit-musicals-tour-launch-is-a-killer-good-time-at-playhouse-square.html",
-        "https://www.clevescene.com/arts/death-becomes-her-begins-a-new-life-with-tour-launch-at-playhouse-square/",
-        "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep252-dee-roscioli-grizabella-on-us-national-tour-5-standby-in-death-becomes-her/290",
-        "https://broadwaypodcastnetwork.com/podcasts/a-musical-theatre-podcast/death-becomes-her-with-marco-pennette-and-kaleigh-cronin/156",
-        "https://broadwaypodcastnetwork.com/podcasts/super-swings/10-johanna-moise-hamilton-death-becomes-her/15",
-        "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-christopher-sieber-death-becomes-her-on-broadway-broadway-time/34",
-        "https://www.thegoldknight.com/2024/05/review-death-becomes-her-camps-it-up-in.html"
+        "https://www.clevescene.com/arts/death-becomes-her-begins-a-new-life-with-tour-launch-at-playhouse-square/"
       ],
       "dirFiles": 21,
       "dirClean": 7,
       "inReviewsJson": 7,
-      "missing": [
-        {
-          "url": "https://culturesauce.com/2024/11/21/death-becomes-her-musical-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-death-becomes-her-is-the-most-fun-night-out-on-broadway/",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://deadline.com/2024/11/death-becomes-her-broadway-review-1236182456/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://ew.com/death-becomes-her-review-cult-classic-full-camp-broadway-8747683",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2024/nov/21/death-becomes-her-review-broadway",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/article/theater-review-death-becomes-her-broadway-musical.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nypost.com/2024/11/21/entertainment/death-becomes-her-review-claws-are-out-in-broadway-camp-fest/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2024/11/21/death-becomes-her-the-rare-screen-to-stage-musical-that-improves-on-the-original/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2024/11/21/death-becomes-her-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/death-becomes-her-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2024/11/21/theater/death-becomes-her-review-hilty-simard.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-death-becomes-her-is-broadway-musical-comedy-heaven_1756248/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/death-becomes-her-is-broadway-comedy-gold-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/death-becomes-her-broadway-musical-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-broadway-musical-1236216493/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/death-becomes-her-review-a-broadway-musical-megan-hilty-jennifer-simard-58c2761b",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/death-becomes-her-broadway-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicagoreader.com/arts-culture/theater/theater-review/death-becomes-her-broadway-in-chicago",
-          "host": "chicagoreader.com",
-          "knownOutletId": "chicago-reader",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.chicagotribune.com/2024/05/20/review-death-becomes-her-has-retro-comedic-charm-but-needs-more-emotional-connection/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2024/legit/reviews/death-becomes-her-review-musical-chicago-1236010777/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep252-dee-roscioli-grizabella-on-us-national-tour-5-standby-in-death-becomes-her/290",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/a-musical-theatre-podcast/death-becomes-her-with-marco-pennette-and-kaleigh-cronin/156",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/super-swings/10-johanna-moise-hamilton-death-becomes-her/15",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-christopher-sieber-death-becomes-her-on-broadway-broadway-time/34",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://www.thegoldknight.com/2024/05/review-death-becomes-her-camps-it-up-in.html",
-          "host": "thegoldknight.com",
-          "knownOutletId": "the-gold-knight",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "broadwayworld.com",
@@ -64122,80 +64206,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.chicagotribune.com/2024/11/21/review-death-becomes-her-on-broadway-has-fun-frenemies-and-a-wacky-good-time/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chicagotribune--chris-jones.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.chicagotribune.com/2024/11/21/review-death-becomes-her-on-broadway-has-fun-frenemies-and-a-wacky-good-time/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Death-Becomes-Her/1268",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cititour--brian-scott-lipton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://cititour.com/NYC_Broadway/Death-Becomes-Her/1268"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-megan-hilty-and-jennifer-simard-star-in-death-becomes-her-on-broadway/article",
-          "host": "digitaljournal.com",
-          "knownOutletId": "digital-journal",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "digital-journal--markos-papadatos.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.digitaljournal.com/entertainment/review-megan-hilty-and-jennifer-simard-star-in-death-becomes-her-on-broadway/article"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -64203,67 +64214,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 807,
+        "count": 4,
         "byReason": {
-          "not-http-url": 121,
-          "non-review-host": 79,
-          "aggregator-internal-nav": 560,
-          "aggregator-section-root": 19,
-          "production-database-listing": 22,
-          "non-stage-review": 4,
-          "bare-host": 1,
-          "write-path-blocked": 1
+          "podcast-episode": 4
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-the-broadway-reviews-for-death-becomes-her",
-          "publishDate": "2024-11-21"
-        },
-        {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-the-broadway-bound-death-becomes-her-musical",
-          "publishDate": "2024-05-20"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-DEATH-BECOMES-HER-Opens-Pre-Broadway-Run-in-Chicago-20240520",
-          "publishDate": "2024-05-20"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep252-dee-roscioli-grizabella-on-us-national-tour-5-standby-in-death-becomes-her/290"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/a-musical-theatre-podcast/death-becomes-her-with-marco-pennette-and-kaleigh-cronin/156"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/super-swings/10-johanna-moise-hamilton-death-becomes-her/15"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-christopher-sieber-death-becomes-her-on-broadway-broadway-time/34"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -64283,41 +64244,13 @@
             "outletId": "clevescene.com",
             "state": "live",
             "firstSeenAt": "2026-10-05T01:35:25.861Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep252-dee-roscioli-grizabella-on-us-national-tour-5-standby-in-death-becomes-her/290",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/a-musical-theatre-podcast/death-becomes-her-with-marco-pennette-and-kaleigh-cronin/156",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/super-swings/10-johanna-moise-hamilton-death-becomes-her/15",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-weekly-dose-of-joel/broadway-time-at-carmine-s-christopher-sieber-death-becomes-her-on-broadway-broadway-time/34",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 3,
-        "candidateCount": 4
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T04:06:15.114Z"
     },
     {
       "showId": "death-let-me-do-my-show-off-broadway-2023",
@@ -68849,18 +68782,37 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 309,
+        "count": 310,
         "byReason": {
-          "not-http-url": 77,
-          "non-review-host": 15,
+          "podcast-episode": 1,
           "aggregator-internal-nav": 210,
+          "not-http-url": 77,
           "aggregator-section-root": 5,
+          "non-review-host": 15,
           "roundup-page": 2
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/",
+          "host": "theoaklandpress.com",
+          "outletId": "the-oakland-press",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/dirty-dancing-tour-2026/the-oakland-press--gary-graff.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -68926,7 +68878,7 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T04:06:15.114Z"
     },
     {
       "showId": "dirty-laundry-off-broadway-2024",
@@ -189270,48 +189222,83 @@
       "status": "open",
       "category": "tour",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-National-Tour-20261007",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-at-the-Lucille-Lortel-Theatre-20240208"
+        "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
+        "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-National-Tour-20261007"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
-        "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
-        "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
-        "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+        "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+        "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+        "https://thefrontrowcenter.com/2024/02/oh-mary/",
+        "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+        "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+        "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+        "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+        "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+        "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
+        "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+        "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
+        "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
+        "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
+        "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
+        "https://londonist.com/london/on-stage/oh-mary-west-end-review",
+        "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
+        "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
+        "https://www.londontheatredirect.com/news/oh-mary-review",
+        "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
+        "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
+        "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
+        "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
+        "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
+        "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
+        "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
+        "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
+        "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
+        "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
+        "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
+        "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+        "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+        "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
+        "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
+        "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+        "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
         "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
         "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
-        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-        "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-        "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
         "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
         "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
-        "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+        "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
         "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
         "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
-        "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+        "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+        "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
         "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+        "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
+        "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+        "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+        "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+        "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+        "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+        "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+        "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+        "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+        "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
         "https://www.courant.com/2026/09/21/theater-review-tour-premiere-of-freaky-farce-oh-mary-lives-up-to-the-hype-at-the-bushnell/",
         "https://www.sdjewishworld.com/2026/10/01/oh-mary-is-a-blue-funny-farce-about-mary-and-abe-lincoln/",
         "https://timesofsandiego.com/arts/2026/10/01/oh-mary-san-diego-national-tour/",
         "https://www.sandiegouniontribune.com/2026/10/01/review-buckle-your-seat-belts-for-a-wild-oh-mary-ride-at-the-civic-theatre/",
         "https://www.marinij.com/2026/10/16/review-oh-mary-in-sf/",
         "https://sfist.com/2026/10/16/oh-mary-just-as-subversively-hilarious-on-tour-at-sfs-curran-as-it-was-on-broadway/",
-        "https://broadwaypodcastnetwork.com/podcasts/good-show/oh-mary-with-bianca-leigh/20",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/a-broadway-conversation-with-bianca-leigh-oh-mary/205",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-broadway-a-post-show-analysis/204",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-a-post-show-analysis/174",
-        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
-        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
-        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
-        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-        "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
-        "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
-        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-        "https://www.paramounttheatreseattle.net/events/oh-mary-06-november-2026/",
         "https://destinationcompass.travel.blog/2026/02/24/review-is-oh-mary-on-broadway-a-must-see-cole-e/"
       ],
       "dirFiles": 30,
@@ -189319,23 +189306,254 @@
       "inReviewsJson": 14,
       "missing": [
         {
-          "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+          "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2024/02/oh-mary/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
           "host": "vulture.com",
           "knownOutletId": "vulture",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
+          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
+          "host": "liamodell.com",
+          "knownOutletId": "liamodell",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
+          "host": "huffingtonpost.co.uk",
+          "knownOutletId": "huffpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
+          "host": "the-independent.com",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
+          "host": "jonathanbaz.com",
+          "knownOutletId": "jonathan-baz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
+          "host": "lbc.co.uk",
+          "knownOutletId": "lbc",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
+          "host": "londonist.com",
+          "knownOutletId": "londonist",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
+          "host": "loureviews.blog",
+          "knownOutletId": "loureviews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
+          "host": "readaboutstuff.com",
+          "knownOutletId": "readaboutstuff",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -189354,34 +189572,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
           "host": "hollywoodreporter.com",
           "knownOutletId": "hollywood-reporter",
@@ -189396,9 +189586,16 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
+          "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -189417,9 +189614,79 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
           "host": "newyorktheatreguide.com",
           "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -189429,53 +189696,6 @@
           "knownOutletId": "marin-independent-journal"
         },
         {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/oh-mary-with-bianca-leigh/20",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/a-broadway-conversation-with-bianca-leigh-oh-mary/205",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-broadway-a-post-show-analysis/204",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-a-post-show-analysis/174",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
-          "host": "queerty.com",
-          "knownOutletId": "queerty",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.paramounttheatreseattle.net/events/oh-mary-06-november-2026/",
-          "host": "paramounttheatreseattle.net",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://destinationcompass.travel.blog/2026/02/24/review-is-oh-mary-on-broadway-a-must-see-cole-e/",
           "host": "travel.blog",
           "knownOutletId": null,
@@ -189483,10 +189703,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 3
-        },
         {
           "host": "dailyactor.com",
           "count": 1
@@ -189514,48 +189730,48 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": true,
-          "recoverableFile": "nytimes--laura-collins-hughes.json",
-          "recoverableOutletId": "nytimes",
-          "recoverableCritic": "Laura Collins-Hughes",
+          "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--laura-collins-hughes.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.nytimes.com/2026/09/09/theater/liberation-purpose-oh-mary-mexodus-shows-in-us-2026.html?eafs_enabled=false"
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "noTextOrScoreSignal"
+            "wrongProduction"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "reverify": false
         },
         {
-          "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": true,
-          "recoverableFile": "theatrely--juan-a-ramirez.json",
-          "recoverableOutletId": "theatrely",
-          "recoverableCritic": "Juan A. Ramirez",
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatrely--juan-a-ramirez.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.theatrely.com/post/review-roundup-pre-existing-condition-the-body-of-mary"
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "noTextOrScoreSignal"
+            "wrongProduction"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
@@ -189580,6 +189796,34 @@
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
@@ -189634,76 +189878,72 @@
           "reverify": false
         },
         {
-          "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--laura-collins-hughes.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Laura Collins-Hughes",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nypost--johnny-oleksinski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/"
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.nytimes.com/2026/09/09/theater/liberation-purpose-oh-mary-mexodus-shows-in-us-2026.html?eafs_enabled=false"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "noTextOrScoreSignal"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "reverify": false
         },
         {
-          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--laura-collins-hughes.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Laura Collins-Hughes",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nysr--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/"
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.nytimes.com/2026/09/09/theater/liberation-purpose-oh-mary-mexodus-shows-in-us-2026.html?eafs_enabled=false"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "noTextOrScoreSignal"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
           "reverify": false
         },
         {
-          "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+          "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "theatrely--juan-a-ramirez.json",
+          "recoverableOutletId": "theatrely",
+          "recoverableCritic": "Juan A. Ramirez",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatrely--emily-wyrwa.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review"
+              "file": "theatrely--juan-a-ramirez.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.theatrely.com/post/review-roundup-pre-existing-condition-the-body-of-mary"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "ensemble-3-agree"
+            "noTextOrScoreSignal"
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date",
@@ -189717,47 +189957,286 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 876,
+        "count": 645,
         "byReason": {
-          "aggregator-internal-nav": 634,
-          "not-http-url": 172,
-          "aggregator-section-root": 16,
-          "non-review-host": 48,
-          "non-stage-review": 2,
-          "roundup-page": 4
+          "podcast-episode": 14,
+          "aggregator-internal-nav": 416,
+          "not-http-url": 75,
+          "production-database-listing": 33,
+          "aggregator-section-root": 17,
+          "non-review-host": 76,
+          "non-stage-review": 7,
+          "bare-host": 3,
+          "roundup-page": 3,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-          "publishDate": "2024-07-11"
+          "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
+          "publishDate": "2024-02-09"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-at-the-Lucille-Lortel-Theatre-20240208",
-          "publishDate": "2024-02-08"
+          "url": "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
+          "publishDate": "2025-12-19"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
+          "publishDate": "2024-07-11"
         }
       ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+          "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2024/02/oh-mary/",
+          "host": "thefrontrowcenter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
           "host": "vulture.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
-          "host": "wsj.com",
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+          "host": "nystagereview.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
-          "host": "timeout.com",
+          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+          "host": "allthatdazzles.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
+          "host": "liamodell.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
+          "host": "huffingtonpost.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
+          "host": "the-independent.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
+          "host": "jonathanbaz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
+          "host": "lbc.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
+          "host": "londonist.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
+          "host": "londontheatredirect.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
+          "host": "loureviews.blog",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
+          "host": "musicaltheatrereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
+          "host": "readaboutstuff.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
+          "host": "theatreweekly.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
+          "host": "westendbestfriend.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+          "host": "digitaljournal.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -189777,34 +190256,6 @@
           "censusGateOn": true
         },
         {
-          "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
-          "host": "nypost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
           "host": "hollywoodreporter.com",
           "priorRun": true,
@@ -189819,8 +190270,15 @@
           "censusGateOn": true
         },
         {
-          "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
-          "host": "observer.com",
+          "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+          "host": "nypost.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -189840,6 +190298,20 @@
           "censusGateOn": true
         },
         {
+          "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
           "host": "newyorktheatreguide.com",
           "priorRun": true,
@@ -189847,31 +190319,59 @@
           "censusGateOn": true
         },
         {
-          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-          "host": "nystagereview.com",
+          "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+          "host": "nj.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
-          "host": "queerty.com",
+          "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+          "host": "observer.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-          "host": "newyorktheatreguide.com",
+          "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+          "host": "theatermania.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.paramounttheatreseattle.net/events/oh-mary-06-november-2026/",
-          "host": "paramounttheatreseattle.net",
-          "priorRun": false,
-          "reason": "unregistered-host",
+          "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         },
         {
@@ -189897,66 +190397,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/oh-mary-with-bianca-leigh/20",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "oh-mary-tour-2026: https://broadwaypodcastnetwork.com/podcasts/good-show/oh-mary-with-bianca-leigh/20 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/a-broadway-conversation-with-bianca-leigh-oh-mary/205",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "oh-mary-tour-2026: https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/a-broadway-conversation-with-bianca-leigh-oh-mary/205 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-broadway-a-post-show-analysis/204",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "oh-mary-tour-2026: https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-broadway-a-post-show-analysis/204 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-a-post-show-analysis/174",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "tour-review",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "oh-mary-tour-2026: https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-a-post-show-analysis/174 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
         }
       ],
       "ingestSkippedByCap": [],
@@ -189971,41 +190411,6 @@
             "url": "https://www.marinij.com/2026/10/16/review-oh-mary-in-sf/"
           },
           {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/oh-mary-with-bianca-leigh/20"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/a-broadway-conversation-with-bianca-leigh-oh-mary/205"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-broadway-a-post-show-analysis/204"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-a-post-show-analysis/174"
-          },
-          {
-            "outletId": "paramounttheatreseattle.net",
-            "outlet": "paramounttheatreseattle.net",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.paramounttheatreseattle.net/events/oh-mary-06-november-2026/"
-          },
-          {
             "outletId": "travel.blog",
             "outlet": "travel.blog",
             "critic": "Unknown",
@@ -190015,6 +190420,12 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T04:06:15.114Z"
+          },
           {
             "url": "https://www.courant.com/2026/09/21/theater-review-tour-premiere-of-freaky-farce-oh-mary-lives-up-to-the-hype-at-the-bushnell/",
             "outletId": "courant.com",
@@ -190053,41 +190464,6 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/good-show/oh-mary-with-bianca-leigh/20",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/a-broadway-conversation-with-bianca-leigh-oh-mary/205",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-broadway-a-post-show-analysis/204",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-a-post-show-analysis/174",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.paramounttheatreseattle.net/events/oh-mary-06-november-2026/",
-            "outletId": "paramounttheatreseattle.net",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T19:06:54.776Z"
-          },
-          {
             "url": "https://destinationcompass.travel.blog/2026/02/24/review-is-oh-mary-on-broadway-a-must-see-cole-e/",
             "outletId": "travel.blog",
             "state": "GAP",
@@ -190096,10 +190472,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
-        "candidateCount": 9
+        "liveCount": 6,
+        "candidateCount": 8
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T04:06:15.114Z"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -235619,23 +235995,116 @@
         "https://thefrontrowcenter.com/2026/05/specimen/",
         "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
         "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
-        "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/"
+        "https://twi-ny.com/2026/10/14/axis-theatre-company-specimen-relaunch/",
+        "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
       ],
       "dirFiles": 6,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-27",
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Specimen\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Specimen\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Specimen\" review axis",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Specimen Axis Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Specimen Axis Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Specimen Axis Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "aggregator-internal-nav": 2,
+          "non-review-host": 33,
+          "bare-host": 1,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -235680,7 +236149,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-01T00:08:34.874Z"
+      "computedAt": "2026-11-01T04:06:15.114Z"
     },
     {
       "showId": "spellbound-off-broadway-2026",
@@ -296587,12 +297056,77 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Séance\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Séance\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Séance\" review greenwich",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Séance Greenwich Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Séance Greenwich Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Séance Greenwich Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 22,
+        "byReason": {
+          "aggregator-internal-nav": 3,
+          "non-review-host": 12,
+          "census-junk-host": 1,
+          "show-listing-page": 1,
+          "write-path-blocked": 3,
+          "review-hub-page": 1,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -296647,7 +297181,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-01T00:08:34.874Z"
+      "computedAt": "2026-11-01T04:06:15.114Z"
     },
     {
       "showId": "the-seat-of-our-pants-off-broadway-2025",

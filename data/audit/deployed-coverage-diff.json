@@ -1,48 +1,13 @@
 {
-  "generatedAt": "2026-11-01T03:54:48.947Z",
+  "generatedAt": "2026-11-01T04:06:49.310Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 301,
-  "clean": 299,
-  "defective": 2,
-  "byType": {
-    "score-drift": 2
-  },
-  "shows": [
-    {
-      "showId": "some-woman-west-end-2026",
-      "title": "Some Woman",
-      "openingDate": "2026-10-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.01 vs local 69.26 (Δ0.25)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 35,
-      "deployedCount": 35,
-      "firstDefectAt": "2026-11-01T03:54:42.121Z"
-    },
-    {
-      "showId": "the-cherry-orchard-west-end-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-10-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.72 vs local 73.55 (Δ0.17)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 46,
-      "deployedCount": 46,
-      "firstDefectAt": "2026-11-01T03:54:42.121Z"
-    }
-  ],
+  "checked": 304,
+  "clean": 304,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
