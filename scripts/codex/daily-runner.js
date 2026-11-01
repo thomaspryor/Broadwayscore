@@ -464,7 +464,7 @@ let modelIdx = 0;
 function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
   const last = path.join(LOG_DIR, `${id}-${tag}-last.md`);
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}-prompt.md`), prompt);
-  const cfg = R.codexSettings(process.env, id);
+  const cfg = R.codexSettings(process.env, id, SLOT);
   const exec = () => {
     const model = cfg.models[modelIdx];
     return { model, r: sh('codex', ['exec', '--dangerously-bypass-hook-trust', '--sandbox', codexSandboxMode(), '--color', 'never',
@@ -485,7 +485,7 @@ function runCodex(id, prompt, tag, timeoutMs = CODEX_TIMEOUT_MS) {
   }
   if (model && !codexUsed.model.split(' then ').includes(model)) codexUsed.model = codexUsed.model ? `${codexUsed.model} then ${model}` : model;
   codexUsed.cards[id] = { effort: cfg.effort, model: model || '' };
-  log(`${id}: codex exec model ${model || 'CLI default'}, effort ${cfg.effort}${cfg.arm ? ' (A/B arm)' : ''}`);
+  log(`${id}: codex exec model ${model || R.CODEX_CLI_DEFAULT_MODEL}, effort ${cfg.effort}${cfg.arm ? ' (A/B arm)' : ''}`);
   fs.writeFileSync(path.join(LOG_DIR, `${id}-${tag}.log`), r.out);
   saveLogin(); // refresh tokens rotate: persist the newest login after every exec
   let report = '';

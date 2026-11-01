@@ -1393,6 +1393,42 @@ test('codexSettings: CODEX_EFFORT sets one effort; unknown efforts fall back to 
   assert.equal(r.codexSettings({ CODEX_EFFORT: 'turbo' }, 'BRO-1').effort, 'high');
   assert.equal(r.codexSettings({ CODEX_EFFORT_AB: 'turbo,nope' }, 'BRO-1').arm, null);
 });
+test('codexSettings: unset env with a slot is still today\'s exec', () => {
+  for (const slot of [0, 1, 3, null]) assert.deepEqual(r.codexSettings({}, 'BRO-1', slot), { models: [], effort: 'high', arm: null });
+});
+test('codexSettings: CODEX_REASONING_EFFORT sets one effort and wins over CODEX_EFFORT', () => {
+  assert.equal(r.codexSettings({ CODEX_REASONING_EFFORT: 'xhigh' }, 'BRO-1').effort, 'xhigh');
+  assert.equal(r.codexSettings({ CODEX_REASONING_EFFORT: 'medium', CODEX_EFFORT: 'xhigh' }, 'BRO-1').effort, 'medium');
+  assert.equal(r.codexSettings({ CODEX_REASONING_EFFORT: 'turbo', CODEX_EFFORT: 'xhigh' }, 'BRO-1').effort, 'xhigh', 'bad name falls through');
+  assert.equal(r.codexSettings({ CODEX_REASONING_EFFORT: 'xhigh' }, 'BRO-1').arm, null, 'one effort is not an A/B arm');
+});
+test('parseEffortBySlot: slot=effort pairs, bad parts dropped', () => {
+  assert.deepEqual(r.parseEffortBySlot('0=xhigh,1=high, 2 = high'), { 0: 'xhigh', 1: 'high', 2: 'high' });
+  assert.deepEqual(r.parseEffortBySlot('0=turbo,x=high,3=,=high,4=low;rm'), {});
+  assert.deepEqual(r.parseEffortBySlot(''), {});
+});
+test('codexSettings: CODEX_EFFORT_BY_SLOT tags listed slots, others fall back', () => {
+  const env = { CODEX_EFFORT_BY_SLOT: '0=xhigh,1=high,2=high', CODEX_EFFORT: 'medium' };
+  assert.deepEqual(r.codexSettings(env, 'BRO-1', 0), { models: [], effort: 'xhigh', arm: 'xhigh' });
+  assert.deepEqual(r.codexSettings(env, 'BRO-1', 1), { models: [], effort: 'high', arm: 'high' });
+  assert.deepEqual(r.codexSettings(env, 'BRO-1', 3), { models: [], effort: 'medium', arm: null }, 'unlisted slot');
+  assert.deepEqual(r.codexSettings(env, 'BRO-1'), { models: [], effort: 'medium', arm: null }, 'no slot passed');
+  // A listed slot wins over the card-id A/B; an unlisted one still uses it.
+  const both = { CODEX_EFFORT_BY_SLOT: '3=low', CODEX_EFFORT_AB: 'high,xhigh' };
+  assert.equal(r.codexSettings(both, 'BRO-6001', 3).effort, 'low');
+  assert.equal(r.codexSettings(both, 'BRO-6001', 4).effort, r.codexSettings({ CODEX_EFFORT_AB: 'high,xhigh' }, 'BRO-6001').effort);
+});
+test('settings line: unpinned model reads cli-default and per-slot efforts reach abReport', () => {
+  const cards = {};
+  for (const [id, slot] of [['BRO-1', 0], ['BRO-2', 1], ['BRO-3', 0]]) cards[id] = { effort: r.codexSettings({ CODEX_EFFORT_BY_SLOT: '0=xhigh,1=high' }, id, slot).effort };
+  const line = r.codexSettingsLine({ model: '', cards });
+  assert.equal(line, '- Codex settings: model cli-default; effort high: BRO-2; xhigh: BRO-1 BRO-3');
+  assert.deepEqual(r.parseCodexSettingsLine(line), { model: 'cli-default', byEffort: { high: ['BRO-2'], xhigh: ['BRO-1', 'BRO-3'] } });
+  // Summaries posted before this change still parse.
+  assert.equal(r.parseCodexSettingsLine('- Codex settings: model CLI default (not pinned); effort high: BRO-9').model, 'CLI default (not pinned)');
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /R\.codexSettings\(process\.env, id, SLOT\)/, 'the runner passes its slot');
+});
 test('isUnknownModelError: model refusals yes, transient, plain and tool-output mentions no', () => {
   assert.ok(r.isUnknownModelError('ERROR: The model `gpt-6-astra` does not exist or you do not have access to it'));
   assert.ok(r.isUnknownModelError('working\nERROR: unsupported model: gpt-x'));

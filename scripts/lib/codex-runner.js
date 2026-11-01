@@ -1299,7 +1299,8 @@ function lockStartedMs(body) {
 }
 
 // BRO-6236: pinned Codex model and the high vs xhigh effort A/B. All default-off: with none of
-// CODEX_MODEL / CODEX_EFFORT / CODEX_EFFORT_AB set, codexSettings returns today's exec settings.
+// CODEX_MODEL / CODEX_REASONING_EFFORT / CODEX_EFFORT / CODEX_EFFORT_AB / CODEX_EFFORT_BY_SLOT set,
+// codexSettings returns today's exec settings (CLI default model, high).
 const CODEX_EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 const CODEX_DEFAULT_EFFORT = 'high';
 /** "a, b" -> ['a', 'b'] (a model preference list, strongest first). */
@@ -1312,20 +1313,39 @@ function abBucket(cardId, n) {
   for (const ch of String(cardId || '')) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
   return n > 0 ? h % n : 0;
 }
+/** The label for an unpinned model (no CODEX_MODEL): whatever the installed Codex CLI defaults to. */
+const CODEX_CLI_DEFAULT_MODEL = 'cli-default';
+/** "0=xhigh, 1=high" -> { 0: 'xhigh', 1: 'high' }. Bad slots or unknown efforts are dropped. */
+function parseEffortBySlot(raw) {
+  const out = {};
+  for (const part of String(raw || '').split(',')) {
+    const m = part.trim().match(/^(\d+)\s*=\s*([a-z]+)$/);
+    if (m && CODEX_EFFORTS.includes(m[2])) out[Number(m[1])] = m[2];
+  }
+  return out;
+}
 /**
  * Exec settings for one card -> { models, effort, arm }. models is the preference list ([] = the
- * CLI default, today's behaviour). effort comes from CODEX_EFFORT_AB (e.g. "high,xhigh": the arm
- * is chosen by card id, not slot, so both arms draw from the same cards and the same firings),
- * else CODEX_EFFORT, else high. An unknown effort name falls back to high.
+ * CLI default, today's behaviour). effort, first match wins:
+ *   1. CODEX_EFFORT_BY_SLOT ("0=xhigh,1=high") for a listed slot. Slots start staggered and take
+ *      cards in list order, so slot arms mix effort with slot order; prefer CODEX_EFFORT_AB.
+ *   2. CODEX_EFFORT_AB ("high,xhigh"): the arm is chosen by card id, so both arms draw from the
+ *      same cards and the same firings.
+ *   3. CODEX_REASONING_EFFORT, else CODEX_EFFORT (one effort for every card).
+ *   4. high. An unknown effort name falls back to the next rule.
+ * arm is the effort when it came from an A/B rule (1 or 2), else null.
  */
-function codexSettings(env, cardId) {
-  const valid = (e) => CODEX_EFFORTS.includes(e);
-  const ab = String((env || {}).CODEX_EFFORT_AB || '').split(',').map((x) => x.trim()).filter(valid);
-  const single = String((env || {}).CODEX_EFFORT || '').trim();
-  let effort = valid(single) ? single : CODEX_DEFAULT_EFFORT;
+function codexSettings(env, cardId, slot = null) {
+  const e = env || {};
+  const valid = (x) => CODEX_EFFORTS.includes(x);
+  const bySlot = parseEffortBySlot(e.CODEX_EFFORT_BY_SLOT);
+  const ab = String(e.CODEX_EFFORT_AB || '').split(',').map((x) => x.trim()).filter(valid);
+  const single = [e.CODEX_REASONING_EFFORT, e.CODEX_EFFORT].map((x) => String(x || '').trim()).find(valid);
+  let effort = single || CODEX_DEFAULT_EFFORT;
   let arm = null;
-  if (ab.length > 1) { effort = ab[abBucket(cardId, ab.length)]; arm = effort; }
-  return { models: parseModelCandidates((env || {}).CODEX_MODEL), effort, arm };
+  if (slot !== null && Number.isInteger(Number(slot)) && bySlot[Number(slot)]) { effort = bySlot[Number(slot)]; arm = effort; }
+  else if (ab.length > 1) { effort = ab[abBucket(cardId, ab.length)]; arm = effort; }
+  return { models: parseModelCandidates(e.CODEX_MODEL), effort, arm };
 }
 /**
  * True when Codex's own ERROR lines (the last 40 lines, like codexExitTransient) say the model name is
@@ -1341,7 +1361,7 @@ function codexSettingsLine(used) {
   const byEffort = {};
   for (const [id, u] of Object.entries(used.cards || {})) (byEffort[u.effort] = byEffort[u.effort] || []).push(id);
   const parts = Object.keys(byEffort).sort().map((e) => `${e}: ${byEffort[e].join(' ')}`);
-  return `- Codex settings: model ${used.model || 'CLI default (not pinned)'}; effort ${parts.join('; ') || 'none run'}`;
+  return `- Codex settings: model ${used.model || CODEX_CLI_DEFAULT_MODEL}; effort ${parts.join('; ') || 'none run'}`;
 }
 /** -> { model, byEffort: { effort: [ids] } } from a run summary, or null when it has no settings line. */
 function parseCodexSettingsLine(body) {
@@ -1653,7 +1673,7 @@ module.exports = {
   landWaitMinutes,
   firingThroughput,
   summaryHeading, parseSummaryHeading, laneOfSummary,
-  parseModelCandidates, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
+  parseModelCandidates, parseEffortBySlot, CODEX_CLI_DEFAULT_MODEL, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
   authAccessExpires, parseAuthMeta,
   STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
   runnerSummaryFacts, runnerSummaryText, codexLadderAccess, reviewTextsPlan, ladderSkip,
