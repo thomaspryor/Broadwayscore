@@ -2377714,21 +2377714,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T00:30:22.583Z",
-    "completedAt": "2026-11-01T00:30:51.651Z",
-    "totalReviews": 8,
+    "startedAt": "2026-11-01T00:30:06.050Z",
+    "completedAt": "2026-11-01T00:30:34.661Z",
+    "totalReviews": 9,
     "processed": 6,
-    "skipped": 2,
+    "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 33640,
-      "output": 1840,
+      "input": 36735,
+      "output": 1818,
       "cacheRead": 22842,
       "cacheWrite": 0,
-      "total": 87012
+      "total": 91599
     },
-    "costUsd": 0.12886360000000002,
-    "runId": "41256639233",
+    "costUsd": 0.1377534,
+    "runId": "41256518939",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2393061,6 +2393061,16 @@
         "ourDistribution": {
           "up": 5,
           "flat": 1,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "grandmas-jukebox-regional-2022",
+        "ourDistribution": {
+          "up": 6,
+          "flat": 0,
           "down": 0,
           "total": 6
         },
@@ -2423173,8 +2423183,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T00:35:49.179Z",
-    "completedAt": "2026-11-01T00:35:49.180Z",
+    "startedAt": "2026-11-01T00:35:31.498Z",
+    "completedAt": "2026-11-01T00:35:31.499Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2423187,7 +2423197,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41256639233",
+    "runId": "41256518939",
     "source": "comparative-rescore",
     "errorDetails": []
   }
