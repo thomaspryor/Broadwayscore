@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6697",
   "planId": "d5283210-4509-44aa-baf2-e0dfd7e7ae49",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T12:50:16.512Z",
   "submitter": {
     "name": null,
@@ -164,5 +164,84 @@
         "description": "Clear the pin so a press-night source can still refine this date"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T13:43:59.027Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for an-american-in-paris-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for an-american-in-paris-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for an-american-in-paris-west-end-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for pen-pals-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for pen-pals-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for pen-pals-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for little-shop-of-horrors-crucible-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for little-shop-of-horrors-crucible-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for little-shop-of-horrors-crucible-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for sister-act-regional-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for sister-act-regional-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for sister-act-regional-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for brigadoon-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for brigadoon-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: humanCorrectedOpeningDate updated for brigadoon-regional-2023"
+    }
+  ],
+  "executedIn": "ci"
 }
