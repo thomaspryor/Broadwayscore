@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T04:32:46.089Z",
+  "timestamp": "2026-11-01T04:49:24.863Z",
   "stats": {
-    "totalReviews": 77676,
-    "alreadyFlagged": 21727,
+    "totalReviews": 77743,
+    "alreadyFlagged": 21725,
     "dateGuardCatches": 241,
-    "directorMismatch": 3294,
-    "tvFilmSignals": 2200,
+    "directorMismatch": 3295,
+    "tvFilmSignals": 2204,
     "londonSignals": 3534,
     "offBroadwaySignals": 727,
     "yearMismatch": 327,
-    "noPublishDate": 9008
+    "noPublishDate": 9037
   },
   "findings": [
     {
@@ -48911,6 +48911,7 @@
     {
       "showId": "pippin-regional-2023",
       "file": "buzznews--cj-burroughs.json",
+      "score": 86,
       "publishDate": "2023-06-03",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5207-review-pippin-at-north-shore-center-for-the-performing-arts.html",
       "findings": [
@@ -48924,6 +48925,7 @@
     {
       "showId": "pippin-regional-2023",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 81,
       "publishDate": "2023-06-05",
       "url": "https://www.chicagotheatrereview.com/2023/06/on-the-right-track/",
       "findings": [
@@ -48937,6 +48939,7 @@
     {
       "showId": "pippin-regional-2023",
       "file": "thefourthwalsh--katy-walsh.json",
+      "score": 74,
       "publishDate": "2023-06-05",
       "url": "https://thefourthwalsh.com/2023/06/review-pippin-music-theater-works-wacky/",
       "findings": [
@@ -51525,6 +51528,19 @@
       "score": 75,
       "publishDate": "2011-10-21",
       "url": "https://www.nytimes.com/2011/10/21/theater/reviews/relatively-speaking-at-brooks-atkinson-theater-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "rent-regional-2022",
+      "file": "thefourthwalsh--katy-walsh.json",
+      "publishDate": "2022-11-04",
+      "url": "http://thefourthwalsh.com/2022/11/review-rent-porchlight-music-theatre-dont-forget-to-pay-for-rent-this-month/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -56290,6 +56306,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stew-regional-2022",
+      "file": "chicagostageandscreen--angela-allyn.json",
+      "score": 77,
+      "publishDate": "2022-09-19",
+      "url": "https://www.chicagostageandscreen.com/post/shattered-globe-serves-up-a-rich-stew",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -67111,6 +67141,32 @@
       ]
     },
     {
+      "showId": "the-mark-of-kane-regional-2022",
+      "file": "around-the-town-chicago--julia-w-rath.json",
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-mark-of-kane-reviewed-by-julia-w-rath/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-mark-of-kane-regional-2022",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2022-11-01",
+      "url": "https://www.chicagotheatrereview.com/2022/10/batman-begins/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-merchant-of-venice-2010",
       "file": "vulture--jesse-green.json",
       "score": 77,
@@ -70587,6 +70643,7 @@
     {
       "showId": "the-producers-regional-2023",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 74,
       "publishDate": "2023-08-13",
       "url": "https://www.chicagotheatrereview.com/2023/08/where-did-we-go-right/",
       "findings": [
@@ -74599,6 +74656,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
+      "file": "playbill--unknown.json",
+      "publishDate": "2026-03-20",
+      "url": "https://playbill.com/article/what-do-reviews-think-of-tru-off-broadway-starring-jesse-tyler-ferguson-as-truman-capote",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
         }
       ]
     },
