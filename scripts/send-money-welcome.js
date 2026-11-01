@@ -71,8 +71,11 @@ async function main() {
     if (r.statusCode < 200 || r.statusCode >= 300) process.exit(1);
     return;
   }
-  if (!w.runAllowed({ enabled: process.env.MONEY_WELCOME_ENABLED, preview: dryRun })) {
-    console.log('Money welcome emails are switched OFF (repo variable MONEY_WELCOME_ENABLED is not "true"). Nothing to do.');
+  let fileEnabled = false;
+  try { fileEnabled = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, 'config', 'money-welcome.json'), 'utf8')).enabled === true; } catch { fileEnabled = false; }
+  const enabled = w.resolveEnabled({ envValue: process.env.MONEY_WELCOME_ENABLED, fileEnabled });
+  if (!w.runAllowed({ enabled, preview: dryRun })) {
+    console.log('Money welcome emails are switched OFF (scripts/config/money-welcome.json is not enabled, or MONEY_WELCOME_ENABLED is "false"). Nothing to do.');
     return;
   }
   const res = await fetch(`${base()}/rest/v1/money_scorecard_signups?select=email,created_at,welcomed_at,unsubscribed_at&welcomed_at=is.null&unsubscribed_at=is.null&order=created_at.asc,email.asc&limit=${w.PER_RUN_CAP * 4}`,

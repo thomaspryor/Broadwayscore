@@ -309,3 +309,18 @@ describe('replay-pending-bylines: closes the pending-unrecoverable condition (BR
     assert.deepEqual(resolved, []);
   });
 });
+
+describe('replay-pending-bylines: rss stub that never names the show (BRO-6321)', () => {
+  test('off-topic rss-discovery stub is tagged, never fetched, never alerted', async (t) => {
+    const s = seed(zeroTextStub({
+      outletId: 'nbcny', outlet: 'NBC New York', source: 'rss-discovery',
+      url: 'https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy/6561122/',
+    }), 'nbcny--5f72cba5.json');
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    const f = fakes({ fetchImpl: () => { throw new Error('identity-rejected stub must never fetch'); } });
+    const result = await replay.processShow(SHOW.id, { root: s.root, show: { ...SHOW, title: 'Baby' }, dryRun: false, explicitScope: true, ...f.deps });
+    assert.equal(result.unrecoverable, 0);
+    assert.deepEqual(f.calls, { fetch: [], alert: [], emit: [] });
+    assert.equal(JSON.parse(fs.readFileSync(s.filepath, 'utf8')).rssIdentityRejected, true);
+  });
+});

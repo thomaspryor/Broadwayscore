@@ -25,6 +25,11 @@ const ARTICLES = new Set(['the', 'a', 'an']);
 // (the-visit-2015 THR/StuOnBroadway). Add a word only with corpus evidence.
 const GENERIC_SINGLE_TITLE_WORDS = new Set(['story', 'stories', 'tale', 'tales']);
 
+// BRO-6321: bare one-word titles with proven noise. "Baby" matched every NBC New
+// York celebrity-baby headline (6 junk _pending stubs on baby-off-west-end-2026).
+// No article, so the phrase alone is not identity; needs a leading word, "review baby" or a venue token.
+const BARE_GENERIC_TITLE_WORDS = new Set(['baby']);
+
 const norm = s => foldDiacritics(String(s || '')).toLowerCase()
   .replace(/[‘’ʼ]/g, "'")
   .replace(/[^a-z0-9]+/g, ' ').trim();
@@ -35,6 +40,7 @@ const norm = s => foldDiacritics(String(s || '')).toLowerCase()
  */
 function genericSingleWordTitle(title) {
   const words = norm(title).split(' ').filter(Boolean);
+  if (words.length === 1) return BARE_GENERIC_TITLE_WORDS.has(words[0]) ? words[0] : null;
   if (words.length !== 2 || !ARTICLES.has(words[0])) return null;
   return GENERIC_SINGLE_TITLE_WORDS.has(words[1]) ? words[1] : null;
 }
@@ -61,7 +67,10 @@ function passesGenericTitleIdentity(text, title) {
   const afterReview = new RegExp('(?:^| )reviews? (?:of )?' + word + '(?: |$)');
   // "national-theatre-story-review": the word directly after a venue token.
   const afterVenue = new RegExp('(?:^| )(?:theatre|theater|olivier|dorfman|lyttelton) ' + word + '(?: |$)');
-  return candidates.some(c => (' ' + c + ' ').includes(' ' + phrase + ' ') || c.startsWith(word + ' ') || afterReview.test(c) || afterVenue.test(c));
+  const bare = phrase === word;
+  // Bare title: the whole headline, or the word beside review/musical/revival, is identity.
+  const bareCtx = new RegExp('(?:^| )(?:reviews? (?:of )?|musical |revival )' + word + '(?: |$)|(?:^| )' + word + ' (?:reviews?|the musical|musical|revival)(?: |$)');
+  return candidates.some(c => (!bare && (' ' + c + ' ').includes(' ' + phrase + ' ')) || (bare && (c === word || bareCtx.test(c))) || c.startsWith(word + ' ') || afterReview.test(c) || afterVenue.test(c));
 }
 
-module.exports = { genericSingleWordTitle, passesGenericTitleIdentity, GENERIC_SINGLE_TITLE_WORDS };
+module.exports = { genericSingleWordTitle, passesGenericTitleIdentity, GENERIC_SINGLE_TITLE_WORDS, BARE_GENERIC_TITLE_WORDS };

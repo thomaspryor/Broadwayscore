@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-01T19:56:18.235Z",
+  "generatedAt": "2026-11-01T20:47:57.925Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 311,
-  "clean": 311,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 309,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "openingDate": "2026-11-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 61.28 vs local 64.32 (Δ3.04)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 7,
+      "deployedCount": 7,
+      "firstDefectAt": "2026-11-01T20:47:54.570Z"
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "title": "Avenue Q",
+      "openingDate": "2026-04-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.26 vs local 82.17 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 39,
+      "deployedCount": 39,
+      "firstDefectAt": "2026-11-01T20:47:54.570Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
