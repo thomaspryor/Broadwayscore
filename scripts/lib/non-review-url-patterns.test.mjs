@@ -732,3 +732,23 @@ test('canonicalPublicationHost: ingest resolver and outlet-domain check accept m
   // A mirror never matches a different outlet's domain.
   assert.equal(hostMatchesOutletDomain('https://slleiter.blogspot.co.uk/x', 'nytimes', registry), false);
 });
+
+// BRO-6742: Broadway Podcast Network episode pages (Show Score critic tiles) are audio
+// episodes, not written reviews. The gap audit cited 22 of them as "missing" on
+// boop/oh-mary/death-becomes-her tours and Schmigadoon; none could ever score.
+test('BRO-6742: BPN /podcasts/ episode pages are refused as podcast-episode, other BPN pages unaffected', () => {
+  const { classifyReviewUrl, ingestRefusalReason, INGEST_REFUSED_URL_REASONS } = require('./non-review-url-patterns.js');
+  const ep = [
+    'https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720',
+    'https://www.broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/oh-mary-a-post-show-analysis/12',
+  ];
+  for (const u of ep) {
+    assert.deepEqual(classifyReviewUrl(u), { ok: false, reason: 'podcast-episode' }, u);
+    assert.equal(classifyGapCandidateUrl(u).ok, false, u);
+    assert.equal(ingestRefusalReason(u), 'podcast-episode', u);
+  }
+  assert.ok(INGEST_REFUSED_URL_REASONS.has('podcast-episode'));
+  // Only the episode path: other podcast hosts and a real review are untouched.
+  assert.equal(classifyReviewUrl('https://pod.wave.co/podcast/some-show/episode-1').ok, true);
+  assert.equal(classifyReviewUrl('https://www.nytimes.com/2026/03/12/theater/giant-review.html').ok, true);
+});

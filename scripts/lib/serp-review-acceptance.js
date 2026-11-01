@@ -26,7 +26,9 @@
 const { classifyReviewUrl } = require('./non-review-url-patterns');
 const { foldDiacritics } = require('./title-match');
 
-// Podcast outlets we deliberately ingest; their URLs legitimately contain /podcast(s)/.
+// Podcast hosts whose URLs legitimately contain /podcast(s)/: this path rule does not
+// judge them. broadwaypodcastnetwork.com episode pages are refused earlier, in
+// classifyReviewUrl ('podcast-episode', BRO-6742).
 const PODCAST_OUTLET_HOSTS = new Set(['broadwaypodcastnetwork.com', 'zeno.fm', 'pod.wave.co']);
 
 // Shapes measured 2026-09-30 over 45,777 review files: /goings-on/ 3 hits

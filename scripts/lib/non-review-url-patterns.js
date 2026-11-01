@@ -819,6 +819,15 @@ function classifyReviewUrl(url) {
       }
     } catch { return { ok: false, reason: 'unparseable-url' }; }
   }
+  // BRO-6742: Broadway Podcast Network /podcasts/<show>/<episode> pages are audio
+  // episodes (interviews, post-show chats) with an auto transcript, not written
+  // reviews. Show Score lists them as critic tiles; none has ever scored live
+  // (0 of 8 stored files), so the gap audit kept citing them as "missing".
+  if (h === 'broadwaypodcastnetwork.com') {
+    try {
+      if (/^\/podcasts\//i.test(new URL(url).pathname)) return { ok: false, reason: 'podcast-episode' };
+    } catch { return { ok: false, reason: 'unparseable-url' }; }
+  }
   // Playbill/BWW internal navigation (we want outlet URLs, not aggregator nav).
   // Also require at least 2 path segments so bare section roots like
   // playbill.com/news or broadwayworld.com/theater are rejected too (they're
@@ -1015,7 +1024,7 @@ const INGEST_REFUSED_URL_REASONS = new Set([
   'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
   'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
   'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
-  'non-stage-review',
+  'non-stage-review', 'podcast-episode',
 ]);
 
 /** The refusal reason ingest-review-from-url.js would give this URL, or null. */
