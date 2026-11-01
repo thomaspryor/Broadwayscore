@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T02:25:23.982Z",
+  "timestamp": "2026-11-01T02:44:09.253Z",
   "stats": {
-    "totalReviews": 77219,
-    "alreadyFlagged": 21744,
+    "totalReviews": 77280,
+    "alreadyFlagged": 21745,
     "dateGuardCatches": 238,
-    "directorMismatch": 3280,
-    "tvFilmSignals": 2190,
+    "directorMismatch": 3283,
+    "tvFilmSignals": 2192,
     "londonSignals": 3522,
     "offBroadwaySignals": 724,
-    "yearMismatch": 326,
-    "noPublishDate": 8875
+    "yearMismatch": 327,
+    "noPublishDate": 8863
   },
   "findings": [
     {
@@ -9085,6 +9085,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "boulevard-of-bold-dreams-regional-2023",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2023-02-14",
+      "url": "https://www.chicagotheatrereview.com/2023/02/black-lives-matter-4/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -18314,6 +18327,34 @@
       ]
     },
     {
+      "showId": "dreamgirls-regional-2022",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "score": 89,
+      "publishDate": "2022-09-11",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-DREAMGIRLS-at-Paramount-Theatre-20220911",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        }
+      ]
+    },
+    {
+      "showId": "dreamgirls-regional-2022",
+      "file": "chicagostageandscreen--david-zak.json",
+      "score": 79,
+      "publishDate": "2022-09-15",
+      "url": "https://www.chicagostageandscreen.com/post/delicious-dreamgirls-explodes-at-paramount",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from dreamgirls-1987"
+        }
+      ]
+    },
+    {
       "showId": "dreamgirls-west-end-2016",
       "file": "british-theatre--philip-fisher.json",
       "score": 79,
@@ -19370,6 +19411,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
+      "showId": "english-regional-2024",
+      "file": "citypleasures--mitchell-oldham.json",
+      "publishDate": null,
+      "url": "https://rowgseat1.com/2024/05/23/on-the-question-of-immigration-english-lets-courage-and-sacrifice-lead/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (12x) more than 2024 (9x). 2022 matches production: english-off-broadway-2022"
         }
       ]
     },
@@ -62241,6 +62295,20 @@
       ]
     },
     {
+      "showId": "the-crucible-crucible-regional-2024",
+      "file": "curtainup--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.curtainup.com/crucible.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"richard eyre\" from the-crucible-2002"
+        }
+      ]
+    },
+    {
       "showId": "the-crucible-west-end-2022",
       "file": "london-theatre--marianka-swain.json",
       "score": 92,
@@ -75032,6 +75100,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "turret-regional-2024",
+      "file": "third-coast-review--row-light.json",
+      "publishDate": "2024-05-20",
+      "url": "https://thirdcoastreview.com/2024/05/20/stages-review-a-red-orchid-theatre-turret",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
