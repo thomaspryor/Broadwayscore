@@ -1,0 +1,32 @@
+{
+  "issueNumber": "bro-6744",
+  "planId": "1d2418ba-c2cd-4ce8-8dd8-a52d7072c16d",
+  "status": "pending",
+  "createdAt": "2026-11-01T04:59:26.685Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6744: file two combined multi-show reviews under each show they review (La Voce EBT + Becky Shaw; Vulture Night Side Songs + Bigfoot!)",
+    "steps": [
+      "Split the La Voce di New York column (Every Brilliant Thing + Becky Shaw) at the Becky Shaw listing header; Becky Shaw gets its own section, EBT keeps its own and is requeued for scoring",
+      "Re-ingest the Vulture Night Side Songs / Bigfoot! double review: the stored copy stops before the Bigfoot! review; the whole article now replaces it and the fan-out files the Bigfoot! section under bigfoot-off-broadway-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Split the La Voce di New York column (Every Brilliant Thing + Becky Shaw) at the Becky Shaw listing header; Becky Shaw gets its own section, EBT keeps its own and is requeued for scoring",
+        "script": "scripts/split-multi-show-roundups.js",
+        "args": "--show=every-brilliant-thing-2026 --file=la-voce-di-new-york--jk-clarke.json --scan-all --apply"
+      },
+      {
+        "type": "run-script",
+        "description": "Re-ingest the Vulture Night Side Songs / Bigfoot! double review: the stored copy stops before the Bigfoot! review; the whole article now replaces it and the fan-out files the Bigfoot! section under bigfoot-off-broadway-2026",
+        "script": "scripts/ingest-review-from-url.js",
+        "args": "--show=night-side-songs-off-broadway-2026 --url=https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html --outlet=vulture --critic=\"Jackson McHenry\""
+      }
+    ]
+  }
+}
