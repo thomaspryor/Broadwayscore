@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-01T04:17:38.134Z",
-  "processed": 3,
-  "failed": 18,
-  "successRate": "14.3%",
+  "updatedAt": "2026-11-01T06:28:23.060Z",
+  "processed": 23,
+  "failed": 58,
+  "successRate": "28.4%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 17,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 1
+    "archiveToday": 23,
+    "archive": 5
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-11-01T04:08:37.792Z",
@@ -35,6 +35,50 @@
     },
     {
       "t": "2026-11-01T04:10:21.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T06:08:20.672Z",
+      "event": "bb-session",
+      "session": "41cc40ba",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch901.html"
+    },
+    {
+      "t": "2026-11-01T06:08:21.016Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T06:10:35.643Z",
+      "event": "bb-session",
+      "session": "39e8be57",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch897.html"
+    },
+    {
+      "t": "2026-11-01T06:10:36.329Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T06:12:25.770Z",
+      "event": "bb-session",
+      "session": "faed93c5",
+      "url": "https://talkinbroadway.com/page/regional/chicago/ch895.html"
+    },
+    {
+      "t": "2026-11-01T06:12:26.046Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T06:15:56.563Z",
+      "event": "bb-session",
+      "session": "b11e2e02",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch894.html"
+    },
+    {
+      "t": "2026-11-01T06:15:56.910Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
