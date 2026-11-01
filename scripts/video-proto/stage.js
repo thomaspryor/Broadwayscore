@@ -229,13 +229,22 @@ function captions(root, words, top = 462) {
   const ph = []; let cur = [];
   words.forEach((w, i) => { const pv = words[i - 1]; if (cur.length && (cur.length >= 3 || pv.e || w.a - pv.b > 0.28)) { ph.push(cur); cur = []; } cur.push(w); });
   if (cur.length) ph.push(cur);
-  const el = $('abs', `left:16px;right:16px;top:${top}px;text-align:center;font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.01em;text-shadow:0 2px 10px rgba(0,0,0,.85);z-index:20`);
-  root.append(el);
+  // render.js puts captions in their own layer (#caps), bottom-anchored at the channel's safe line (safe-zones.js),
+  // so the app's own caption text and buttons never sit on them. `top` is only the old full-frame position.
+  const layer = document.getElementById('caps'), B = window.CAPBOX;
+  const pos = layer && B ? `left:${B.left}px;width:${B.right - B.left}px;bottom:${640 - B.bottom + 4}px` : `left:16px;right:16px;top:${top}px`;
+  const el = $('abs', `${pos};text-align:center;font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.01em;text-shadow:0 2px 10px rgba(0,0,0,.85);z-index:20`);
+  el.dataset.caption = '1';
+  (layer && B ? layer : root).append(el);
+  const maxH = B ? B.bottom - B.top - 4 : 1e9; // the box minus the lift off the safe line
   return t => {
     const p = ph.find((p, i) => t >= p[0].a - 0.05 && t < (ph[i + 1] ? ph[i + 1][0].a - 0.05 : p[p.length - 1].b + 0.5));
     if (!p) { el.innerHTML = ''; return; }
     el.innerHTML = p.map(w => { const on = t >= w.a && t < w.b + 0.08, seen = t >= w.a;
-      return `<span style="display:inline-block;margin:0 6px;color:${on ? '#e8c39e' : '#fff'};opacity:${seen ? 1 : 0};transform:scale(${on ? 1.04 : 1})">${esc(w.w)}</span>`; }).join('');
+      return `<span style="display:inline-block;margin:0 5px;color:${on ? '#e8c39e' : '#fff'};opacity:${seen ? 1 : 0};transform:scale(${on ? 1.04 : 1})">${esc(w.w)}</span>`; }).join('');
+    // a phrase that would take a third line shrinks instead of climbing into the scene (the render gate checks it)
+    let fs = 25; el.style.fontSize = fs + 'px';
+    while (el.offsetHeight > maxH + 0.5 && fs > 18) { fs -= 1; el.style.fontSize = fs + 'px'; }
   };
 }
 const quoteCard = (q, top, h) => $('abs card', `left:20px;right:20px;top:${top}px;padding:12px 14px;height:${h}px`,

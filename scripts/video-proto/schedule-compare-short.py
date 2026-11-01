@@ -15,7 +15,18 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CH = {'youtube': '6adebecc2f1f5ed648d28ccd', 'tiktok': '69ed4d52031bfa423c42d4fb', 'instagram': '69adf7f67be9f8b171375290',
       'facebook': '69adfb857be9f8b171375c63'}
 ORG = '69adf7b151aa2532be8bbaab'
-URL = 'https://cdn.jsdelivr.net/gh/thomaspryor/Broadwayscore@a90549383abd52f996df4fbfad17091bf1f0bcc8/shorts/compare-benjamin-button-puzzle.mp4'
+# One file per channel (owner, 2026-11-01): each app covers a different part of the screen, so render.js --channel=<x>
+# writes <comp>-<channel>.mp4 fitted to that app's safe area. Fill in a channel's URL once its render is committed.
+# The original full-frame file (shorts/compare-benjamin-button-puzzle.mp4) went to YouTube, TikTok and Instagram and
+# had its logo and captions under TikTok's chrome; it must not be posted again anywhere.
+URLS = {}
+
+
+def video_url(which):
+    url = URLS.get(which)
+    if not url or not url.endswith('-%s.mp4' % which):
+        die('no %s render of this video (render.js --channel=%s); a video made for another app hides text under its buttons' % (which, which))
+    return url
 
 
 def die(msg):
@@ -109,7 +120,7 @@ def main():
         'facebook': {'facebook': {'type': 'reel'}},
     }[which]
     inp = {'channelId': CH[which], 'text': cap, 'schedulingType': 'automatic', 'mode': 'customScheduled', 'dueAt': due,
-           'assets': [{'video': {'url': URL, 'metadata': {'thumbnailOffset': thumb}}}], 'metadata': meta}
+           'assets': [{'video': {'url': video_url(which), 'metadata': {'thumbnailOffset': thumb}}}], 'metadata': meta}
     if not live:
         print(json.dumps(inp, indent=1))
         sys.exit(0)

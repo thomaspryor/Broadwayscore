@@ -1,12 +1,12 @@
 // Prototype (BRO-6250): Playwright frames -> ffmpeg MP4, 1080x1920 @30fps. No posting, no network except art fetch.
-// usage: node render.js <reveal|every|top5> [outDir] [--stills 2,6,12]
+// usage: node render.js <comp> [outDir] --channel=<tiktok|instagram|facebook|youtube|all> [--stills=2,6,12] [--mask] [--probe-only]
 const fs = require('fs'), path = require('path'), { spawn } = require('child_process');
 let chromium; try { ({ chromium } = require('playwright')); } catch (e) { ({ chromium } = require(path.join(process.env.PW_GLOBAL || '/opt/node22/lib/node_modules', 'playwright'))); }
 const { getGoldThreshold, getScoreTierId, SCORE_TIER_LABELS } = require('../lib/score-tiers.js');
 const { TIER_WEIGHTS } = require('../lib/outlet-tiers.js');
 const { getAudienceGrade, totalAudienceReviews, MIN_AUDIENCE_REVIEWS } = require('../lib/audience-grade.js');
 const FPS = 30;
-const name = process.argv[2], outDir = process.argv[3] || __dirname;
+const name = process.argv[2], outDir = (process.argv[3] && !process.argv[3].startsWith('--')) ? process.argv[3] : __dirname;
 const stills = (process.argv.find(a => a.startsWith('--stills=')) || '').slice(9).split(',').filter(Boolean).map(Number);
 
 const { ROOT, slim, showInfo, topList, bucket, breakdown, audienceGradeOf, gapLine } = require('./showdata.js');
@@ -284,50 +284,103 @@ function mixMusic(wav, dur, track) {
   fs.renameSync(out, wav);
 }
 
-(async () => {
-  const d = data(name);
+// Channels (owner, 2026-11-01): every video is rendered per app, its scene fitted inside that app's safe area
+// (safe-zones.js). --channel=tiktok|instagram|facebook|youtube, a comma list, or all. Output: <comp>-<channel>.mp4.
+const SZ = require('./safe-zones.js');
+const chArg = (process.argv.find(a => a.startsWith('--channel=')) || '').slice(10);
+const CHS = chArg === 'all' ? SZ.CHANNELS : chArg.split(',').filter(Boolean);
+// --data=<file>: a hand-made data object, for layout previews only (stills or probe); never a real video
+const dataFile = (process.argv.find(a => a.startsWith('--data=')) || '').slice(7);
+const MASK = process.argv.includes('--mask'); // stills only: shade what the app covers, to eyeball the fit
+
+// Everything the scene shows at any moment, in stage units: text, images, cards, badges, bars, pills, clipped by
+// overflow:hidden boxes. Runs in the page with #fit untransformed.
+const INK = `(() => {
+  const fit = document.getElementById('fit'); let L = 1e9, T = 1e9, R = -1e9, B = -1e9; // #fit clips to the 360x640 frame, like the original stage
+  const vis = e => { let op = 1; for (let n = e; n && n !== fit; n = n.parentElement) { const c = getComputedStyle(n); if (c.display === 'none' || c.visibility === 'hidden') return 0; op *= +c.opacity; } return op; };
+  const add = (e, r) => { if (r.width <= 0 || r.height <= 0 || vis(e) < 0.02) return; let l = r.left, t = r.top, rr = r.right, b = r.bottom;
+    for (let n = e.parentElement; n; n = n === fit ? null : n.parentElement) if (getComputedStyle(n).overflow !== 'visible') { const c = n.getBoundingClientRect(); l = Math.max(l, c.left); t = Math.max(t, c.top); rr = Math.min(rr, c.right); b = Math.min(b, c.bottom); }
+    if (rr <= l || b <= t) return; L = Math.min(L, l); T = Math.min(T, t); R = Math.max(R, rr); B = Math.max(B, b); };
+  const w = document.createTreeWalker(fit, NodeFilter.SHOW_TEXT); let n;
+  while ((n = w.nextNode())) if (n.textContent.trim()) { const rg = document.createRange(); rg.selectNodeContents(n); add(n.parentElement, rg.getBoundingClientRect()); }
+  for (const e of fit.querySelectorAll('img,svg,.card,.score-badge,.bar,.pill,.rank')) add(e, e.getBoundingClientRect());
+  return { left: L, top: T, right: R, bottom: B };
+})()`;
+
+async function renderChannel(browser, d, ch) {
+  const hasCaps = Array.isArray(d.words) && d.words.length > 0;
   const fontDir = path.join(ROOT, 'public/fonts'), ff = fs.readdirSync(fontDir).find(f => /^Inter-latin-var\..*\.woff2$/.test(f));
   const font = `@font-face{font-family:'Inter';src:url(data:font/woff2;base64,${fs.readFileSync(path.join(fontDir, ff)).toString('base64')}) format('woff2');font-weight:100 900;font-display:block}`;
-  const html = `<!doctype html><html><head><meta charset="utf-8"><style>${font}${fs.readFileSync(path.join(__dirname, 'stage.css'), 'utf8')}</style></head><body><div id="stage"></div></body></html>`;
-  const browser = await chromium.launch();
+  const html = `<!doctype html><html><head><meta charset="utf-8"><style>${font}${fs.readFileSync(path.join(__dirname, 'stage.css'), 'utf8')}</style></head><body><div id="stage"><div id="fit" style="position:absolute;left:0;top:0;width:360px;height:640px;overflow:hidden;transform-origin:0 0"></div><div id="caps" class="abs" style="inset:0;z-index:20;pointer-events:none"></div></div></body></html>`;
   const page = await browser.newPage({ viewport: { width: 360, height: 640 }, deviceScaleFactor: 3 });
   await page.setContent(html);
   await page.evaluate(() => document.fonts.ready);
   const TIERS = { gold: getGoldThreshold(d.category), label: SCORE_TIER_LABELS, id: Array.from({ length: 101 }, (_, i) => getScoreTierId(i, d.category)) };
-  await page.addScriptTag({ content: `window.TIERS=${JSON.stringify(TIERS)};window.TIERS_BY=${JSON.stringify(d.tiersBy || {})};` + fs.readFileSync(path.join(__dirname, 'stage.js'), 'utf8') + `;window.__C=COMPS;` });
-  const info = await page.evaluate(([n, dd]) => { const c = window.__C[n]; window.C = c; c.build(document.getElementById('stage'), dd); return { dur: c.dur, events: c.events }; }, [name, d]);
-  if (process.argv.includes('--audio-only')) { // re-sound an already rendered video: node render.js <comp> <dir> --audio-only
-    const src = path.join(outDir, `${name}.mp4`), wav = path.join(outDir, `${name}-${AUDIO_STYLE}.wav`), dst = path.join(outDir, `${name}-${AUDIO_STYLE}.mp4`);
-    synth(info.events, info.dur, wav, AUDIO_STYLE);
-    finishAudio(wav, info.dur, d, outDir);
-    require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', src, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', dst]);
-    console.log('wrote ' + dst); await browser.close(); return;
-  }
-  const frame = async t => { await page.evaluate(t => { C.update(t); document.getAnimations().forEach(a => { a.pause(); a.currentTime = t * 1000; }); }, t); return page.screenshot({ type: 'jpeg', quality: 95 }); };
-  fs.mkdirSync(outDir, { recursive: true });
-  // overflow gate: sample the timeline; no visible text may spill past the viewport or past its own nowrap box
+  const capBox = SZ.fit({ left: 0, top: 0, right: 360, bottom: 640 }, ch, { withCaptions: hasCaps }).cap;
+  await page.addScriptTag({ content: `window.TIERS=${JSON.stringify(TIERS)};window.TIERS_BY=${JSON.stringify(d.tiersBy || {})};window.CAPBOX=${JSON.stringify(capBox)};` + fs.readFileSync(path.join(__dirname, 'stage.js'), 'utf8') + `;window.__C=COMPS;` });
+  const info = await page.evaluate(([n, dd]) => { const c = window.__C[n]; window.C = c; c.build(document.getElementById('fit'), dd); return { dur: c.dur, events: c.events }; }, [name, d]);
+  const seek = t => page.evaluate(t => { C.update(t); document.getAnimations().forEach(a => { a.pause(); a.currentTime = t * 1000; }); }, t);
+  // the scene's envelope over the whole timeline, so one placement holds for the whole video (nothing jumps)
+  let bb = null;
+  for (let t = 0; t < info.dur; t += 0.25) { await seek(t); const r = await page.evaluate(INK);
+    if (r.right > r.left) bb = bb ? { left: Math.min(bb.left, r.left), top: Math.min(bb.top, r.top), right: Math.max(bb.right, r.right), bottom: Math.max(bb.bottom, r.bottom) } : r; }
+  const F = SZ.fit(bb, ch, { withCaptions: hasCaps });
+  await page.evaluate(F => { document.getElementById('fit').style.transform = `translate(${F.x}px,${F.y}px) scale(${F.s})`; }, F);
+  console.log(`${ch}: scene ${Math.round(bb.left)},${Math.round(bb.top)} to ${Math.round(bb.right)},${Math.round(bb.bottom)} placed at ${Math.round(F.s * 100)}% inside the ${F.zone.label} safe area`);
+  if (MASK) await page.evaluate(z => { const m = document.createElement('div'); m.style.cssText = 'position:absolute;inset:0;z-index:99;pointer-events:none';
+    const box = (l, t, w, h) => `<div style="position:absolute;left:${l}px;top:${t}px;width:${w}px;height:${h}px;background:rgba(255,0,60,.35)"></div>`;
+    m.innerHTML = box(0, 0, 360, z.top) + box(0, z.bottom, 360, 640 - z.bottom) + box(0, z.top, z.left, z.bottom - z.top) + box(z.right, z.top, 360 - z.right, z.bottom - z.top)
+      + `<div style="position:absolute;left:0;right:0;top:${z.top / 2 - 7}px;text-align:center;font:700 11px Inter;color:#fff">${z.label}: covered by the app</div>`;
+    document.getElementById('stage').append(m); }, F.zone);
+  const frame = async t => { await seek(t); return page.screenshot({ type: 'jpeg', quality: 95 }); };
+  // gate: sample the timeline; every visible text sits inside the channel's safe area and inside its own box
   const bad = new Set();
   for (let t = 0.5; t < info.dur; t += 0.5) {
     await frame(t);
-    (await page.evaluate(() => [...document.querySelectorAll('#stage *')].flatMap(e => {
-      const cs = getComputedStyle(e), r = e.getBoundingClientRect(); let op = 1; for (let n = e; n && n.id !== 'stage'; n = n.parentElement) op *= +getComputedStyle(n).opacity;
+    (await page.evaluate(z => [...document.querySelectorAll('#fit *, #caps *')].flatMap(e => {
+      const cs = getComputedStyle(e); let op = 1; for (let n = e; n && n.id !== 'stage'; n = n.parentElement) op *= +getComputedStyle(n).opacity;
       if (op < 0.5 || cs.display === 'none' || !e.textContent.trim() || e.children.length) return [];
+      const rg = document.createRange(); rg.selectNodeContents(e); let r = rg.getBoundingClientRect(); // the text itself, not its (often full-width) box
+      if (cs.overflow !== 'visible') { const b = e.getBoundingClientRect(); r = { left: Math.max(r.left, b.left), top: Math.max(r.top, b.top), right: Math.min(r.right, b.right), bottom: Math.min(r.bottom, b.bottom) }; } // ellipsis: only what shows
       const out = [];
-      if (r.right > 360.5 || r.left < -0.5) out.push('outside viewport');
+      if (r.right > z.right + 0.5 || r.left < z.left - 0.5 || r.top < z.top - 0.5 || r.bottom > z.bottom + 0.5) out.push(`outside the ${z.label} safe area`);
       const cd = e.closest('.card'); if (cd) { const c = cd.getBoundingClientRect(); if (r.bottom > c.bottom + 0.5 || r.top < c.top - 0.5 || r.right > c.right + 0.5) out.push('spills out of its card'); }
       if (cs.whiteSpace === 'nowrap' && cs.textOverflow !== 'ellipsis' && e.scrollWidth > e.clientWidth + 1) out.push('text wider than its box');
       return out.map(m => m + ': ' + e.textContent.trim().slice(0, 40));
-    }))).forEach(m => bad.add(m));
+    }).concat([...document.querySelectorAll('[data-caption]')].filter(c => c.textContent.trim() && window.CAPBOX && c.getBoundingClientRect().top < window.CAPBOX.top - 1).map(c => 'caption taller than its two-line box: ' + c.textContent.trim().slice(0, 40))), F.zone)).forEach(m => bad.add(m));
   }
-  if (process.argv.includes('--probe-only')) { console.log(bad.size ? 'OVERFLOW:\n  ' + [...bad].join('\n  ') : 'overflow gate: clean'); await browser.close(); return; }
-  if (bad.size) { console.error('OVERFLOW:\n  ' + [...bad].join('\n  ')); if (!process.env.ALLOW_OVERFLOW) { await browser.close(); process.exit(3); } }
-  if (stills.length) { for (const t of stills) fs.writeFileSync(path.join(outDir, `${name}-still-${t}.jpg`), await frame(t)); await browser.close(); return; }
-  const wav = path.join(outDir, `${name}.wav`), mp4 = path.join(outDir, `${name}.mp4`);
-  synth(info.events, info.dur, wav, AUDIO_STYLE);
-  finishAudio(wav, info.dur, d, outDir);
-  const ff2 = spawn('ffmpeg', ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', wav, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '18', '-preset', 'medium', '-r', String(FPS), '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', '-shortest', mp4], { stdio: ['pipe', 'inherit', 'inherit'] });
-  const total = Math.round(info.dur * FPS);
-  for (let i = 0; i < total; i++) { const b = await frame(i / FPS); if (!ff2.stdin.write(b)) await new Promise(r => ff2.stdin.once('drain', r)); }
-  ff2.stdin.end(); await new Promise(r => ff2.on('close', r)); await browser.close();
-  console.log('wrote', mp4);
+  return { page, info, frame, bad, F };
+}
+
+(async () => {
+  if (!CHS.length) throw new Error(`pass --channel=<${SZ.CHANNELS.join('|')}|all>: each app covers a different part of the screen, so each gets its own render`);
+  const d = dataFile ? JSON.parse(fs.readFileSync(dataFile, 'utf8')) : data(name);
+  if (dataFile && !stills.length && !process.argv.includes('--probe-only')) throw new Error('--data is for layout previews (--stills or --probe-only), never a real video');
+  if (MASK && !stills.length) throw new Error('--mask only goes on stills');
+  const browser = await chromium.launch();
+  fs.mkdirSync(outDir, { recursive: true });
+  let wav = null, failed = false;
+  for (const ch of CHS) {
+    const { page, info, frame, bad } = await renderChannel(browser, d, ch);
+    const tag = `${name}-${ch}`;
+    if (process.argv.includes('--audio-only')) { // re-sound an already rendered video: node render.js <comp> <dir> --channel=<ch> --audio-only
+      const src = path.join(outDir, `${tag}.mp4`), w = path.join(outDir, `${name}-${AUDIO_STYLE}.wav`), dst = path.join(outDir, `${tag}-${AUDIO_STYLE}.mp4`);
+      if (!wav) { synth(info.events, info.dur, w, AUDIO_STYLE); finishAudio(w, info.dur, d, outDir); wav = w; }
+      require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', src, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', dst]);
+      console.log('wrote ' + dst); await page.close(); continue;
+    }
+    if (process.argv.includes('--probe-only')) { console.log(`${ch}: ` + (bad.size ? 'OVERFLOW:\n  ' + [...bad].join('\n  ') : 'safe-area gate: clean')); if (bad.size) failed = true; await page.close(); continue; }
+    if (bad.size) { console.error(`${ch} OVERFLOW:\n  ` + [...bad].join('\n  ')); if (!process.env.ALLOW_OVERFLOW) { await browser.close(); process.exit(3); } }
+    if (stills.length) { for (const t of stills) fs.writeFileSync(path.join(outDir, `${tag}-still-${t}.jpg`), await frame(t)); await page.close(); continue; }
+    // one soundtrack serves every channel: the timeline is the same, only the placement differs
+    if (!wav) { wav = path.join(outDir, `${name}.wav`); synth(info.events, info.dur, wav, AUDIO_STYLE); finishAudio(wav, info.dur, d, outDir); }
+    const mp4 = path.join(outDir, `${tag}.mp4`);
+    const ff2 = spawn('ffmpeg', ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', wav, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '18', '-preset', 'medium', '-r', String(FPS), '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', '-shortest', mp4], { stdio: ['pipe', 'inherit', 'inherit'] });
+    const total = Math.round(info.dur * FPS);
+    for (let i = 0; i < total; i++) { const b = await frame(i / FPS); if (!ff2.stdin.write(b)) await new Promise(r => ff2.stdin.once('drain', r)); }
+    ff2.stdin.end(); await new Promise(r => ff2.on('close', r)); await page.close();
+    console.log('wrote', mp4);
+  }
+  await browser.close();
+  if (failed) process.exit(3);
 })().catch(e => { console.error(e); process.exit(1); });
