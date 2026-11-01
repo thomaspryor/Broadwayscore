@@ -1320,11 +1320,13 @@ test('BRO-6742: a roundup recorded as another show\'s is dropped; its owner and 
 });
 
 // BRO-6761: while the never-audited backlog is large the catalogue lane doubles, then halves back.
-test('BRO-6761: catalogue lane doubles for a large never-audited backlog and stays on a valid slot', () => {
+test('BRO-6761: catalogue lane speeds up for a large never-audited backlog and stays on a valid slot', () => {
   const { catalogueEveryFor, CATALOGUE_RESERVE_EVERY: BASE, CATALOGUE_RESERVE_AT: AT, CATALOGUE_BACKLOG_THRESHOLD } = require('./lib/gap-audit-freshness.js');
   assert.equal(catalogueEveryFor(CATALOGUE_BACKLOG_THRESHOLD - 1), BASE);
   const every = catalogueEveryFor(CATALOGUE_BACKLOG_THRESHOLD);
-  assert.ok(every < BASE && every > AT, 'doubled lane still has catalogueAt < every');
+  assert.ok(every < BASE && every > AT, 'boosted lane still has catalogueAt < every');
+  assert.equal(every % 4, 0, 'every slot stays a stale-lane slot (n % 4 === 1), so tier-0 shows lose nothing');
+  assert.equal(AT % 4, 1);
   const opening = Array.from({ length: 30 }, (_, i) => ({ id: `opening-${i}` }));
   const never = Array.from({ length: 6 }, (_, i) => ({ id: `old-${i}` }));
   const catalogueIds = new Set(never.map(s => s.id));

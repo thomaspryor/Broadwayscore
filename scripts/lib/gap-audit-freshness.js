@@ -251,11 +251,13 @@ const CATALOGUE_RESERVE_EVERY = 12;
 const CATALOGUE_RESERVE_AT = 5;
 // BRO-6761: at 1 in 12 a run audits ~1.5 never-checked back-catalogue shows, so
 // 2,111 shows opened >1 year ago sat unaudited (654 of the 870 under 3 years old).
-// While the never-audited backlog is large the lane doubles (slots 5, 11, 17, ...;
-// 5 % 6 === 5 keeps catalogueAt valid). It halves back once the backlog drains, so
-// the extra spend is bounded by the backlog, not permanent.
+// While the never-audited backlog is large the lane runs 1 in 8 (slots 5, 13, 21, ...),
+// about 1.5x the base rate. 8 is a multiple of 4, so every slot stays a stale-lane
+// slot (n % 4 === 1) and opening-week shows lose nothing (1 in 6 would land on
+// tier-0 slots 11, 23). It reverts once the backlog drains, so the extra spend is
+// bounded by the backlog, not permanent.
 const CATALOGUE_BACKLOG_THRESHOLD = 100;
-const CATALOGUE_RESERVE_EVERY_BACKLOG = 6;
+const CATALOGUE_RESERVE_EVERY_BACKLOG = 8;
 function catalogueEveryFor(neverAuditedBacklog) {
   return neverAuditedBacklog >= CATALOGUE_BACKLOG_THRESHOLD ? CATALOGUE_RESERVE_EVERY_BACKLOG : CATALOGUE_RESERVE_EVERY;
 }
