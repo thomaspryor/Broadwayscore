@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "conditionKey": "priority-queue:overdue",
+    "title": "Overdue P0/P1 queue: 6 P0 older than 24h, 12 P1 older than 7d (still open — BRO-5613)",
+    "description": "Still firing after 29 notifications since it was filed. Tracked at BRO-5613.\n\n8 P0 open (6 older than 24h, oldest 6d); 50 P1 open (12 older than 7d); 403 open issues of any priority.\n\nOldest overdue P0s:\n- BRO-6290 (6d): iOS account deletion: revoke the Sign in with Apple token (App Review 5.1.1(v))\n- BRO-6302 (6d): BRO-6287 follow-through: land TR caption fix, CI re-extract, measure\n- BRO-6530 (3d): Renew The Stage login cookie on the Mac Studio (CI cookie expired 2026-10-29)\n- BRO-6532 (3d): Land runs starve for GitHub runners behind bulk LLM-ensemble/gather dispatches (2h+ queued before Checks start)\n- BRO-6652 (2d): Press-night probe stamps who published, manual fixes and text-scored times; morning grade line uses them\n- BRO-6687 (1d): Rebuild off-Broadway / West End / off-West End review discovery for completeness (owner chose A 2026-10-31)",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-5613",
+    "fields": [],
+    "queuedAt": "2026-11-01T09:17:56.391Z"
+  },
+  {
+    "conditionKey": "coverage-holes:billy-crystal-860-2026",
+    "title": "billy-crystal-860-2026: 2 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: billy-crystal-860-2026/nydailynews--chris-jones.json\n- rejected as not-a-review, verification says review: billy-crystal-860-2026/usatoday--patrick-ryan.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T09:18:39.536Z"
+  },
+  {
+    "conditionKey": "coverage-holes:a-few-good-men-2026",
+    "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: a-few-good-men-2026/cnn--david-mack.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T09:18:39.554Z"
+  },
+  {
+    "conditionKey": "coverage-holes:the-pianist-off-west-end-2026",
+    "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: the-pianist-off-west-end-2026/blogcritics--jon-sobel.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T09:18:39.600Z"
+  },
+  {
+    "conditionKey": "coverage-holes:the-moth-off-west-end-2026",
+    "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: the-moth-off-west-end-2026/letterboxd--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T09:18:39.623Z"
+  },
+  {
+    "conditionKey": "coverage-holes:harry-potter-and-the-cursed-child-one-part-west-end-2026",
+    "title": "harry-potter-and-the-cursed-child-one-part-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: harry-potter-and-the-cursed-child-one-part-west-end-2026/guardian--emma-john.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T09:18:39.731Z"
+  }
+]

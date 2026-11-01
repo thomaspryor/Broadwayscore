@@ -9947,13 +9947,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 4 P0 older than 24h, 13 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 6 P0 older than 24h, 12 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-31T08:29:45.990Z",
-      "lastNotifiedAt": "2026-10-31T08:29:45.990Z",
-      "lastSurfacedAt": "2026-10-25T07:38:50.953Z",
-      "notifyCount": 28,
+      "lastSeen": "2026-11-01T09:17:56.266Z",
+      "lastNotifiedAt": "2026-11-01T09:17:56.266Z",
+      "lastSurfacedAt": "2026-11-01T09:17:56.266Z",
+      "notifyCount": 29,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -17741,9 +17741,11 @@
       "lastSurfacedAt": "2026-10-28T08:30:26.472Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-6454",
+      "linearIdentifier": null,
       "resolvedAt": "2026-11-01T09:17:30.370Z",
-      "resolveReason": "health-check row passing"
+      "resolveReason": "health-check row passing",
+      "sweptTracker": "BRO-6454",
+      "notifyCountAtRelease": 3
     },
     "health-check:Data quality: cross-outlet attribution drift": {
       "status": "open",
@@ -17781,13 +17783,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-10-31T08:32:01.099Z",
+      "lastSeen": "2026-11-01T09:19:58.270Z",
       "lastNotifiedAt": "2026-10-28T08:32:12.361Z",
       "lastSurfacedAt": "2026-10-28T08:32:12.361Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -18747,13 +18749,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-11-01T09:13:33.180Z",
+      "lastSeen": "2026-11-01T09:19:58.924Z",
       "lastNotifiedAt": "2026-10-31T18:27:00.864Z",
       "lastSurfacedAt": "2026-10-31T18:27:00.864Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 96
+      "silentRefires": 97
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -23877,10 +23879,10 @@
       "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T07:38:11.543Z",
       "incidentOpenedAt": "2026-10-22T07:38:11.543Z",
-      "lastSeen": "2026-10-31T08:30:29.374Z",
-      "lastNotifiedAt": "2026-10-31T08:30:29.374Z",
-      "lastSurfacedAt": "2026-10-31T08:30:29.374Z",
-      "notifyCount": 10,
+      "lastSeen": "2026-11-01T09:18:39.600Z",
+      "lastNotifiedAt": "2026-11-01T09:18:39.600Z",
+      "lastSurfacedAt": "2026-11-01T09:18:39.600Z",
+      "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -24674,13 +24676,13 @@
     "coverage-holes:billy-crystal-860-2026": {
       "status": "open",
       "disposition": "digest",
-      "title": "billy-crystal-860-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "title": "billy-crystal-860-2026: 2 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.185Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.185Z",
-      "lastSeen": "2026-10-31T08:30:29.317Z",
-      "lastNotifiedAt": "2026-10-31T08:30:29.317Z",
-      "lastSurfacedAt": "2026-10-31T08:30:29.317Z",
-      "notifyCount": 9,
+      "lastSeen": "2026-11-01T09:18:39.535Z",
+      "lastNotifiedAt": "2026-11-01T09:18:39.535Z",
+      "lastSurfacedAt": "2026-11-01T09:18:39.535Z",
+      "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -26856,10 +26858,10 @@
       "title": "harry-potter-and-the-cursed-child-one-part-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-25T07:39:27.517Z",
       "incidentOpenedAt": "2026-10-25T07:39:27.517Z",
-      "lastSeen": "2026-10-31T08:30:29.507Z",
-      "lastNotifiedAt": "2026-10-31T08:30:29.507Z",
-      "lastSurfacedAt": "2026-10-31T08:30:29.507Z",
-      "notifyCount": 7,
+      "lastSeen": "2026-11-01T09:18:39.731Z",
+      "lastNotifiedAt": "2026-11-01T09:18:39.731Z",
+      "lastSurfacedAt": "2026-11-01T09:18:39.731Z",
+      "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -29741,7 +29743,7 @@
       "linearIdentifier": null
     },
     "coverage-holes:the-heart-off-broadway-2026": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "the-heart-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-29T09:06:41.546Z",
@@ -29751,7 +29753,9 @@
       "lastSurfacedAt": "2026-10-31T08:30:29.421Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-01T09:18:39.654Z",
+      "resolveReason": "no rejected-but-verified review and no unqueued out-of-band score"
     },
     "coverage-holes:dog-mom-off-west-end-2026": {
       "status": "open",
@@ -34366,6 +34370,32 @@
       "lastSeen": "2026-11-01T09:17:31.009Z",
       "lastNotifiedAt": "2026-11-01T09:17:31.009Z",
       "lastSurfacedAt": "2026-11-01T09:17:31.009Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:a-few-good-men-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-11-01T09:18:39.554Z",
+      "incidentOpenedAt": "2026-11-01T09:18:39.554Z",
+      "lastSeen": "2026-11-01T09:18:39.554Z",
+      "lastNotifiedAt": "2026-11-01T09:18:39.554Z",
+      "lastSurfacedAt": "2026-11-01T09:18:39.554Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:the-moth-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-11-01T09:18:39.622Z",
+      "incidentOpenedAt": "2026-11-01T09:18:39.622Z",
+      "lastSeen": "2026-11-01T09:18:39.622Z",
+      "lastNotifiedAt": "2026-11-01T09:18:39.622Z",
+      "lastSurfacedAt": "2026-11-01T09:18:39.622Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

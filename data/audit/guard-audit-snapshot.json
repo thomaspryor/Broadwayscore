@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-31T08:32:00.604Z",
+  "generatedAt": "2026-11-01T09:19:57.826Z",
   "window": {
-    "since": "2026-10-25",
-    "until": "2026-10-31"
+    "since": "2026-10-26",
+    "until": "2026-11-01"
   },
   "bannerText": "Spend guard audit (last 7 days): 0 defect(s), 1 cap drift(s).",
   "items": [
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 6 trip day(s); rerouted spend on trip days $0.16 (1123 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2377"
+      "detail": "ACCEPTED: 6 trip day(s); rerouted spend on trip days $0.18 (1313 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2316"
     },
     {
       "title": "sb-circuit-breaker",
@@ -51,7 +51,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 259,
+        "median14d": 260,
         "drift": false,
         "note": null
       }
@@ -64,17 +64,17 @@
       "verdict": "ACCEPTED",
       "days": 6,
       "dayList": [
-        "2026-10-25",
         "2026-10-26",
         "2026-10-27",
         "2026-10-28",
         "2026-10-29",
-        "2026-10-30"
+        "2026-10-30",
+        "2026-10-31"
       ],
       "lowerBound": false,
       "spend": {
-        "usd": 0.16,
-        "rows": 1123,
+        "usd": 0.18,
+        "rows": 1313,
         "unpriced": 0,
         "label": "bd-budget",
         "partialSince": null,
@@ -85,7 +85,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 2377,
+        "median14d": 2316,
         "drift": true,
         "note": null
       }
@@ -108,11 +108,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 73015,
+        "ceiling": 105754,
         "source": "plan+opening-window-reserve",
         "from": "state",
         "currentZero": false,
-        "median14d": 19564,
+        "median14d": 19743,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -135,27 +135,17 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 1005416,
+        "ceiling": 1442237,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 73728,
+        "median14d": 129750,
         "drift": false,
         "note": null
       }
     }
   ],
   "spendByDay": {
-    "2026-10-18": {
-      "partial": false,
-      "guards": {
-        "bd-circuit-breaker-web_unlocker2": {
-          "usd": 0.0192,
-          "rows": 190,
-          "unpriced": 0
-        }
-      }
-    },
     "2026-10-19": {
       "partial": false,
       "guards": {
@@ -271,26 +261,36 @@
       }
     },
     "2026-10-31": {
+      "partial": false,
+      "guards": {
+        "bd-circuit-breaker-web_unlocker2": {
+          "usd": 0.0352,
+          "rows": 280,
+          "unpriced": 0
+        }
+      }
+    },
+    "2026-11-01": {
       "partial": true,
       "guards": {}
     }
   },
   "dailyBreakerPattern": {
     "window": {
-      "sinceDay": "2026-10-25",
-      "untilDay": "2026-10-31",
+      "sinceDay": "2026-10-26",
+      "untilDay": "2026-11-01",
       "days": 7
     },
     "providers": {
       "web": {
         "days": 6,
         "dayList": [
-          "2026-10-25",
           "2026-10-26",
           "2026-10-27",
           "2026-10-28",
           "2026-10-29",
-          "2026-10-30"
+          "2026-10-30",
+          "2026-10-31"
         ],
         "lowerBound": false
       },
