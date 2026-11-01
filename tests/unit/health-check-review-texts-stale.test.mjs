@@ -32,3 +32,7 @@ test('stale copy (most reviewed shows missing): skip as stale', () => {
 test('fresh clone with a stray missing folder: usable', () => {
   assert.equal(reviewTextsSkipReason(dataDir(ids, ids.slice(1))), null);
 });
+
+test('empty reviews.json gives nothing to compare: usable', () => {
+  assert.equal(reviewTextsSkipReason(dataDir([], [])), null);
+});

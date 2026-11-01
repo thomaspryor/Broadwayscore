@@ -800,6 +800,16 @@ function checkOpeningNightHistoryFreshness() {
 function checkSync() {
   const results = [];
 
+  // BRO-6697: the review-texts rows below skip on a stale copy; this row keeps that
+  // from going quiet (in CI a full clone missing folders means lost data).
+  results.push(runCheck('Data: review-texts checkout coverage', () => {
+    const name = 'Data: review-texts checkout coverage';
+    const why = reviewTextsSkipReason();
+    if (why === 'review-texts not checked out') return { name, status: 'pass', message: 'Skipped (review-texts not checked out)' };
+    if (why) return { name, status: 'warn', message: `${why}; review-texts rows are skipped until it is re-synced`, hint: 'Local: ./scripts/setup-local-data.sh. CI: check checkout-review-texts and the broadway-review-texts repo for deleted show folders.' };
+    return { name, status: 'pass', message: 'review-texts covers the shows in reviews.json' };
+  }));
+
   // B1: review-texts count vs reviews.json count
   results.push(runCheck('Sync: review-texts vs reviews.json', () => {
     const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
@@ -813,10 +823,6 @@ function checkSync() {
       }
     }
     // review-texts live in a private repo — if not checked out, skip this check
-    const rtSkip = reviewTextsSkipReason();
-    if (rtSkip && fileCount > 0) {
-      return { name: 'Sync: review-texts vs reviews.json', status: 'pass', message: `Skipped (${rtSkip})` };
-    }
     if (fileCount === 0) {
       return { name: 'Sync: review-texts vs reviews.json', status: 'pass', message: 'Skipped — review-texts not checked out (private repo)' };
     }
