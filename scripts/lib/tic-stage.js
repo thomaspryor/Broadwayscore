@@ -68,14 +68,17 @@ function prefilter(page, city = getCity('chicago')) {
   // and rejecting it here saves the detail and publish-date fetches.
   if (city.since && page.closingDate && page.closingDate < city.since) return { ok: false, reason: 'before-since' };
   const outlets = new Set(linkedReviews(page).map((r) => r.outlet));
-  if (outlets.size < MIN_REVIEWS) return { ok: false, reason: 'under-3-outlets' };
+  const min = city.minOutlets || MIN_REVIEWS;
+  if (outlets.size < min) return { ok: false, reason: `under-${min}-outlets` };
   return { ok: true };
 }
 
 /** Second gate once the detail page is known. */
 function detailFilter(detail, page = null, city = getCity('chicago')) {
   if (!detail || detail.empty) return { ok: false, reason: 'no-detail' };
-  if (isExcludedType(detail.showType)) return { ok: false, reason: `type:${detail.showType}` };
+  // Theatre In DC files scripted comedies (Much Ado, The Play That Goes Wrong) under "Comedy"; Chicago's "Comedy" is stand-up/improv.
+  const allowed = (city.allowTypes || []).some((re) => re.test(detail.showType || ''));
+  if (!allowed && isExcludedType(detail.showType)) return { ok: false, reason: `type:${detail.showType}` };
   // theatreindc also lists Baltimore, Columbia, Annapolis and Frederick houses: keep only
   // venues the shared venue-metro table maps to this city's metro (BRO-6771).
   if (city.requireMetro) {

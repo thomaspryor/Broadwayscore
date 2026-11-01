@@ -63,6 +63,9 @@ const CITIES = {
       ['Kensington', 'MD'], ['Glen Echo', 'MD'], ['Bowie', 'MD'], ['Upper Marlboro', 'MD'], ['Largo', 'MD'], ['Brentwood', 'MD'],
     ],
     requireMetro: true,
+    // DC reviews are sparse: list a production from its first review; the hub scores it at 3+ eligible (BRO-6771).
+    minOutlets: 1,
+    allowTypes: [/^comedy$/i],
   },
 };
 
