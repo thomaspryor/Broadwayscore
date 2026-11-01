@@ -88,7 +88,7 @@ _copy_without_deleting() {
 
 MERGE_LIB="$SCRIPT_DIR/lib/cloud-memory-merge.js"
 if ! command -v node >/dev/null 2>&1 || [ ! -f "$MERGE_LIB" ]; then
-  echo "sync-memory-to-repo: node/merge lib unavailable — copying without deletions" >&2
+  echo "cloud-memory-merge: WARNING: node/merge lib unavailable; copying without deletions" >&2
   _copy_without_deleting
 # `if !` rather than a bare call: under `set -e` a THROWING merge (an fs error,
 # not just a missing node) would abort this script outright, and session-stop.sh
@@ -97,7 +97,7 @@ if ! command -v node >/dev/null 2>&1 || [ ! -f "$MERGE_LIB" ]; then
 # exempt from set -e, which turns a crash into a loud warning plus the
 # no-deletion fallback.
 elif ! node "$MERGE_LIB" "$SRC" "$DEST" --repo="$REPO" $VERBOSE $DRY_RUN; then
-  echo "sync-memory-to-repo: merge failed — falling back to a copy with NO deletions" >&2
+  echo "cloud-memory-merge: WARNING: merge failed; falling back to a copy with NO deletions" >&2
   _copy_without_deleting
 fi
 

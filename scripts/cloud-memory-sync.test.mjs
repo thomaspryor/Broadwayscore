@@ -559,6 +559,15 @@ describe('manifest plumbing', () => {
 });
 
 describe('sync-memory-to-repo.sh end-to-end', () => {
+  test('BRO-2557: both fallback warnings survive the routine-line filter', () => {
+    const script = fs.readFileSync(SYNC_SH, 'utf8');
+    const warnings = [...script.matchAll(/^\s*echo "([^"]*(?:node\/merge lib unavailable|merge failed)[^"]*)" >&2$/gm)];
+    assert.equal(warnings.length, 2, 'cover the unavailable-lib and crashing-merge fallbacks');
+    for (const [, warning] of warnings) {
+      assert.match(warning, /^cloud-memory-merge: WARNING:/);
+    }
+  });
+
   const runSync = (src, repo, args = []) =>
     execFileSync('bash', [SYNC_SH, ...args], {
       env: { ...process.env, MEMORY_SYNC_SRC: src, MEMORY_SYNC_REPO: repo },
@@ -642,7 +651,7 @@ describe('sync-memory-to-repo.sh end-to-end', () => {
     });
 
     assert.equal(run.status, 0, 'a merge crash must not abort the script');
-    assert.match(run.stderr, /merge failed — falling back to a copy with NO deletions/);
+    assert.match(run.stderr, /^cloud-memory-merge: WARNING: merge failed; falling back to a copy with NO deletions$/m);
     assert.ok(exists(dest, 'from_the_cloud.md'), 'the fallback must not delete anything');
     assert.ok(exists(dest, 'MEMORY.md'), 'the fallback must still copy new local memos forward');
   });
