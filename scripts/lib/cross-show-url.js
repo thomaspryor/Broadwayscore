@@ -102,23 +102,11 @@ function canonTitleSlug(slug) {
   return slug.replace(/(\d)-(?=\d)/g, '$1').replace(/-s(?=-|$)/g, '').replace(/-(?:and|the|or)(?=-)/g, '').replace(/^the-/, '');
 }
 
-// True when two title slugs name the same work: equal once canonicalised, or one is the
-// other plus at most MAX_CREDIT_WORDS extra words at the start or end (an author credit).
-// The shorter title needs two words so a one-word title never absorbs a longer one, and
-// the extras are only taken from the ends, so "mean-girls" inside the middle of
-// "school-girls-african-mean-girls-play" is still a different show (BRO-4267 keeps that).
-const MAX_CREDIT_WORDS = 2;
+// True when two title slugs are the same title once canonicalised. Author credits
+// ("Mike Birbiglia: ...") are deliberately NOT absorbed: "Danny and the Deep Blue Sea"
+// vs "The Deep Blue Sea" are different works, and only the vouching rule below can tell.
 function sameTitleModuloCredit(a, b) {
-  const x = canonTitleSlug(a);
-  const y = canonTitleSlug(b);
-  if (x === y) return true;
-  const [short, long] = x.length <= y.length ? [x, y] : [y, x];
-  const sw = short.split('-');
-  if (sw.length < 2) return false;
-  const lw = long.split('-');
-  const extra = lw.length - sw.length;
-  if (extra < 1 || extra > MAX_CREDIT_WORDS) return false;
-  return lw.slice(0, sw.length).join('-') === short || lw.slice(extra).join('-') === short;
+  return canonTitleSlug(a) === canonTitleSlug(b);
 }
 
 /**
@@ -241,9 +229,8 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
       if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
       // BRO-6599: the same title spelled differently ("The Old Man & the Pool" vs "...and
-      // the Pool", "4.48" vs "448", a leading "The") or with a short credit around it
-      // ("Mike Birbiglia: The Old Man & the Pool", "Stephen Sondheim's Old Friends") is the
-      // same play under another production id, so its slug in the URL is not a different show.
+      // the Pool", "4.48" vs "448", a leading "The") is the same play under
+      // another production id, so its slug in the URL is not a different show.
       if (sameTitleModuloCredit(thisShow.slug, other.slug)) continue;
       // Containment: the other show's title sits INSIDE this show's title ("Mean Girls" inside
       // "School Girls; Or, The African Mean Girls Play"), so a URL for this show naturally
