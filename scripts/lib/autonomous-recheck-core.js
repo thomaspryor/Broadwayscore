@@ -30,12 +30,8 @@ const { evaluateVerifiability, isSafeCheckCommand } = require('./verify-gate.js'
 // second "is this card real work" predicate — CLAUDE.md §15.
 const { autofixFiledIssueGuard } = require('./linear-dispatch.js');
 const { classifyHeadlessDispatchability } = require('./headless-dispatchability.js');
-// The single specificity ranking (node --test/npx tsx --test = 0, test -f =
-// 1, everything else = 2) and the single candidate-extraction regex glue —
-// exported from autonomous-verify-cmd.js so they're used here identically to
-// how extractVerifyCmd ranks a card's own candidates against each other
-// (BRO-3446; CLAUDE.md §15, never a second copy of either).
-const { rank, rawCandidates } = require('./autonomous-verify-cmd.js');
+// Dispatch extraction and comment corrections share one specificity policy.
+const { compareVerifyCommands, preservesVerifyCoverage, rawCandidates } = require('./autonomous-verify-cmd.js');
 // Stamp parsing lives in a zero-dependency leaf so stuck-work.js (daily
 // health digest) can share the exact predicate without dragging in this
 // module's verify-gate dependency chain. Re-exported below unchanged.
@@ -46,47 +42,34 @@ const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = requi
 const { cardHasOverflow } = require('./overflow-marker.js');
 
 /**
- * The best correction for `snapshotCmd` found in `comments` — used to fix a
- * dispatch-ledger snapshot after the fact (BRO-3446).
- *
- * Two things evaluateVerifiability(notes, comments)'s own newest-wins rule
- * gets wrong for THIS use case, both found by testing against the real
- * BRO-3382 comment thread this ticket exists for, not fixtures:
- *
- * 1. That rule stops at the first document (scanning newest-first) that
- *    arms AT ALL. An unrelated LATER comment that happens to also arm (a
- *    wrap-up note with its own `VERIFY: npx next lint` boilerplate, say)
- *    would shadow an earlier, genuinely specific correction, and the
- *    phantom-path snapshot would never get corrected (ship-check finding,
- *    Codex). Fixed by scanning comments newest-first and skipping any that
- *    arm but don't meet the specificity bar, rather than stopping at the
- *    first one that arms at all.
- * 2. Within ONE comment, extractVerifyCmd's own first-at-best-rank tie-break
- *    picks the WRONG candidate for a correction comment specifically: the
- *    real BRO-3382 correction reads "The acceptance comment says: VERIFY:
- *    <phantom> ... So the correct command is: VERIFY: <real>" — both rank 0,
- *    phantom first. A correction restates the wrong path for context before
- *    the right one, so this needs the LAST safe candidate at the best rank
- *    within a comment, not the first — hence rawCandidates() + its own
- *    scan here instead of delegating to extractVerifyCmd's policy.
- * @param {string[]|undefined} comments - oldest-first, same contract as evaluateVerifiability
+ * Corrections must postdate the winning dispatch and preserve its coverage.
+ * Prefer the best specificity, then the newest comment. Within a comment,
+ * the last equally specific candidate wins for legacy old-then-new wording
+ * (BRO-3382). Missing timestamps cannot prove a correction is fresh.
+ * @param {{body:string,createdAt:string}[]|undefined} comments
  * @param {string} snapshotCmd
+ * @param {string} launchTs
  * @returns {string|null}
  */
-function findCommentCorrection(comments, snapshotCmd) {
+function findCommentCorrection(comments, snapshotCmd, launchTs) {
+  const dispatchedAt = Date.parse(launchTs);
+  if (!Number.isFinite(dispatchedAt)) return null;
   const list = Array.isArray(comments) ? comments : [];
-  const snapshotRank = rank(snapshotCmd);
-  for (let i = list.length - 1; i >= 0; i--) {
-    let best = null;
-    for (const c of rawCandidates(String(list[i] || ''))) {
-      if (!isSafeCheckCommand(c)) continue;
-      const r = rank(c);
-      if (r > snapshotRank) continue;
-      if (!best || r <= rank(best)) best = c; // <=: among ties, the LAST one in the comment wins
+  let best = null;
+  let bestAt = -Infinity;
+  for (const comment of list) {
+    const createdAt = Date.parse(comment && comment.createdAt);
+    if (!Number.isFinite(createdAt) || createdAt <= dispatchedAt) continue;
+    for (const c of rawCandidates(comment.body)) {
+      if (!isSafeCheckCommand(c) || !preservesVerifyCoverage(c, snapshotCmd)) continue;
+      const comparison = best ? compareVerifyCommands(c, best) : -1;
+      if (comparison < 0 || (comparison === 0 && createdAt >= bestAt)) {
+        best = c;
+        bestAt = createdAt;
+      }
     }
-    if (best) return best;
   }
-  return null;
+  return best;
 }
 
 // A card only recently marked Done is worth re-checking; anything older was
@@ -342,19 +325,8 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
     // comment) are deliberately NOT compared this way here — see "the
     // fallback is additive only" below, still pinned.
     //
-    // KNOWN RESIDUAL (not fixed here, tracked in BRO-3461): rank() only
-    // measures command SHAPE, not what a specific command actually re-verifies
-    // — a single-file `node --test a.test.mjs` correction ties in rank with
-    // and can therefore displace a multi-file snapshot covering `a.test.mjs
-    // b.test.mjs`, and a bespoke `node scripts/audit-*.js` snapshot (rank 2,
-    // same bucket as everything not node --test/test -f) can be displaced by
-    // a bare `test -f` comment even though the audit script is the stronger
-    // check. Also no timestamp guard against a stale pre-redispatch comment
-    // tying with a freshly-corrected snapshot. Fixing either needs either a
-    // richer rank() (repo-wide, CLAUDE.md §15 — one canonical copy, so that
-    // change is not local to this file) or comment createdAt threaded through
-    // linear-recheck-source.js's card.comments (currently plain strings) —
-    // both bigger than this ticket's stated fix.
+    // BRO-3461: dated corrections must follow this winning launch and
+    // preserve multi-file coverage; safe audit scripts outrank test -f.
     // BRO-3157: an explicit retraction retires the captured snapshot and all
     // older corrections. Only the current card gate can restore a command
     // after that, including a less-specific replacement posted intentionally.
@@ -363,7 +335,7 @@ function selectRecheckTargets({ doneCards, launchEntries, windowHours = DEFAULT_
       .some((text) => evaluateVerifiability(text).kind === 'retracted');
     let verifyCmd = retiredSnapshot ? currentGate.cmd : (launch.verifyCmd || null);
     if (verifyCmd && !retiredSnapshot) {
-      const correction = findCommentCorrection(card.comments, verifyCmd);
+      const correction = findCommentCorrection(card.commentRecords, verifyCmd, launch.ts);
       if (correction) verifyCmd = correction;
     }
     const fallback = verifyCmd ? null : currentGate;

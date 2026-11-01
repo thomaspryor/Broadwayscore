@@ -418,7 +418,7 @@ function generateCorrelationId() {
 // that callers reading a payload with no timestamps see no behaviour change,
 // and reportedOutcomeGuard refuses to act on such a payload at all rather
 // than trusting it.
-// Oldest-first comment bodies for evaluateVerifiability's "newest correction
+// Oldest-first comments for evaluateVerifiability's "newest correction
 // wins" contract (verify-gate.js, BRO-2796) — sorted explicitly by
 // createdAt rather than trusted as returned, for the same reason
 // newestDispatchComment above does its own sort: this connection's default
@@ -428,7 +428,9 @@ function generateCorrelationId() {
 // business deciding which correction is newest.
 // BRO-3157: keep legacy ordering for undated comments, but warn once per
 // read rather than silently trusting API order for their timestamp ties.
-function sortedCommentBodies(issue) {
+// BRO-3461: retain creation times for snapshot corrections. The body-only
+// wrapper below keeps dispatch and stamp consumers on the same ordering.
+function sortedCommentRecords(issue) {
   const nodes = (issue && issue.comments && issue.comments.nodes) || [];
   const undatedCount = nodes.filter((c) => c && c.body && !c.createdAt).length;
   if (undatedCount) {
@@ -442,8 +444,12 @@ function sortedCommentBodies(issue) {
       const cb = String((b && b.createdAt) || '');
       return ca < cb ? -1 : ca > cb ? 1 : 0;
     })
-    .map((c) => c && c.body)
-    .filter(Boolean);
+    .filter(c => c && c.body)
+    .map(c => ({ body: c.body, createdAt: c.createdAt || null }));
+}
+
+function sortedCommentBodies(issue) {
+  return sortedCommentRecords(issue).map(c => c.body);
 }
 
 function newestDispatchComment(comments) {
@@ -1203,6 +1209,7 @@ module.exports = {
   unescapeMarkdown,
   buildCommentMutation,
   sortedCommentBodies,
+  sortedCommentRecords,
   priorityRank,
   priorityLabel,
   sortIssuesByPriority,

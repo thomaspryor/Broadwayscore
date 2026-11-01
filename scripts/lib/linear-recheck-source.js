@@ -34,7 +34,7 @@
 
 'use strict';
 
-const { sortedCommentBodies } = require('./linear-dispatch.js');
+const { sortedCommentRecords } = require('./linear-dispatch.js');
 // The one place that names Linear's terminal state TYPES (BRO-2466) — see
 // that file's header for why re-hardcoding this list is the drift trap it
 // exists to prevent (a past incident: a terminal type added there and missed
@@ -132,10 +132,11 @@ function buildRecheckCandidatesQuery(mode) {
  * @param {object} issue - a `nodes[]` entry from buildRecheckCandidatesQuery
  *   (identifier, title, description, updatedAt, completedAt, state{name,type},
  *   comments{nodes[{body,createdAt}]})
- * @returns {{id:string,name:string,status:string,notes:string,comments:string[],completedDate:string|null,lastEditedAt:string|null}|null}
+ * @returns {{id:string,name:string,status:string,notes:string,comments:string[],commentRecords:{body:string,createdAt:string|null}[],completedDate:string|null,lastEditedAt:string|null}|null}
  */
 function mapIssueToCard(issue) {
   if (!issue || !issue.identifier) return null;
+  const commentRecords = sortedCommentRecords(issue);
   const stateType = issue.state && issue.state.type;
   const stateName = (issue.state && issue.state.name) || 'Unknown';
   return {
@@ -157,11 +158,14 @@ function mapIssueToCard(issue) {
     // BRO-6240: the auto-close decision keys on the state TYPE, never the name.
     stateType: stateType || null,
     notes: issue.description || '',
-    // Oldest-first (sortedCommentBodies' own contract) — recheck-stamp.js
+    // Oldest-first (sortedCommentRecords' own contract). recheck-stamp.js
     // scans this newest-to-oldest for RECHECK-AFTER, and verify-gate.js's
     // evaluateVerifiability scans it newest-to-oldest for an acceptance
     // command, both via card.comments.
-    comments: sortedCommentBodies(issue),
+    comments: commentRecords.map(c => c.body),
+    // Snapshot corrections need creation times. Keep the existing body-only
+    // interface for stamp, retraction, and no-snapshot acceptance consumers.
+    commentRecords,
     // Sliced to the date component (BRO-3373 ship-check finding): Linear's
     // completedAt is a full ISO timestamp, but doneWithinWindow treats
     // completedDate as DATE-ONLY and pads +24h to reach end-of-day (matching

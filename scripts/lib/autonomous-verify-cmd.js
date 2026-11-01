@@ -11,8 +11,9 @@
  *
  * Card notes are UNTRUSTED (anyone, including an LLM, can write them) and this
  * string is later EXECUTED, so every candidate goes through the same
- * isSafeCheckCommand gate the triage queue uses — injected, so this module
- * stays dependency-free and testable. A card whose acceptance criteria is
+ * isSafeCheckCommand gate the triage queue uses. The extraction validator
+ * is injected; script ranking uses the canonical safe-form gate. A card
+ * whose acceptance criteria is
  * prose, or whose command fails validation, records verifyCmd: null with a
  * stated reason: "not machine-verifiable" is an honest answer and the recheck
  * lists it as such. Guessing a plausible command would be worse than nothing —
@@ -38,6 +39,8 @@
 
 'use strict';
 
+const { isSafeCheckCommand, extractCheckPaths } = require('./check-paths.js');
+
 // Specificity of a runnable command, lowest wins. A card that lists both
 // `node --test tests/unit/thing.test.mjs` and `npx tsc --noEmit` was having
 // the tsc line captured purely because it appeared first — and "tsc still
@@ -46,12 +49,43 @@
 // autonomous-recheck-core.js can rank a comment-posted correction against a
 // dispatch-ledger snapshot the same way (BRO-3446) — CLAUDE.md §15: this is
 // the one copy, never re-implement the ranking elsewhere.
-const rank = c => (/^node --test/.test(c) || /^npx tsx --test/.test(c) ? 0 : /^test -f/.test(c) ? 1 : 2);
+const isTestRun = c => /^(?:node|npx tsx) --test(?: |$)/.test(c);
+// Only scripts admitted by the canonical safe-form gate are behavioral
+// checks. A script name alone is not evidence that it is safe to execute.
+// Keep tests ahead of bespoke checks so the coverage tie-break stays a
+// consistent ordering even when both kinds appear in the same document.
+const rank = c => (isTestRun(c) ? 0
+  : /^node scripts\//.test(c) && isSafeCheckCommand(c) ? 0.5
+  : /^test -f/.test(c) ? 1 : 2);
 
-// Where a runnable command legitimately lives on a card. Both are conventions
-// this repo's cards already follow (see the plan-tasks skill output format).
+function testPaths(cmd) {
+  return new Set(isTestRun(cmd) ? extractCheckPaths(cmd) : []);
+}
+
+// One ordering for dispatch extraction and later corrections. File counts
+// only break ties between test runs; they say nothing about an audit's scope.
+function compareVerifyCommands(a, b) {
+  return rank(a) - rank(b) || (isTestRun(a) && isTestRun(b)
+    ? testPaths(b).size - testPaths(a).size : 0);
+}
+
+function preservesVerifyCoverage(candidate, snapshot) {
+  if (rank(candidate) > rank(snapshot)) return false;
+  const required = testPaths(snapshot);
+  // Single-file path replacements are the BRO-3382 phantom-path recovery.
+  // Multiple files express independent checks: retain every one, not just
+  // the count. A renamed member needs an explicit acceptance retraction.
+  if (required.size <= 1) return true;
+  const supplied = testPaths(candidate);
+  return [...required].every(p => supplied.has(p));
+}
+
+// Acceptance sections and VERIFY lines are existing card conventions.
+// VERIFY (correction): <command> explicitly excludes quoted context in the
+// same document. Unmarked comments keep the legacy positional heuristic.
 const SECTION_RE = /##\s*Acceptance criteria\s*\n([\s\S]*?)(?=\n##|$)/i;
-const VERIFY_LINE_RE = /^\s*(?:[-*]\s*)?(?:\*\*)?VERIFY(?:\*\*)?:\s*(.+)$/gim;
+const VERIFY_LINE_RE = /^\s*(?:[-*]\s*)?(?:\*\*)?VERIFY(?:\*\*)?(?:[\t ]*\(correction\))?:\s*(.+)$/gim;
+const CORRECTION_LINE_RE = /^\s*(?:[-*]\s*)?(?:\*\*)?VERIFY(?:\*\*)?[\t ]*\(correction\):\s*(.+)$/gim;
 
 // BRO-2621: trailing prose people write after a VERIFY command. Fixed list
 // on purpose: anything not matched here stays attached and fails closed.
@@ -118,7 +152,12 @@ function candidatesFrom(text) {
  * @returns {string[]}
  */
 function rawCandidates(text) {
-  const s = String(text || '');
+  let s = String(text || '');
+  // Explicit corrections avoid interpreting a quoted old VERIFY command as
+  // the intended check, regardless of where it appears. Unsafe marked
+  // commands still fail the normal gate; quoted context cannot rescue them.
+  const corrections = [...s.matchAll(CORRECTION_LINE_RE)];
+  if (corrections.length) s = corrections.map(m => `VERIFY: ${m[1]}`).join('\n');
   const scoped = [];
   const verifyLineRaw = [];
   const section = SECTION_RE.exec(s);
@@ -151,8 +190,7 @@ function rawCandidates(text) {
  *   shape" from "no command at all" instead of one opaque reason string
  *   (BRO-2570 — audit-card-verifiability.js reported one refusal reason
  *   board-wide; this is what lets it report WHY). Optional and separate from
- *   isSafeCheckCommand so this module stays dependency-free when a caller
- *   doesn't need the breakdown.
+ *   isSafeCheckCommand so callers need not request the breakdown.
  * @returns {{cmd: string|null, reason: string|null, kind?: string|null, hint?: string}}
  *   `hint` (BRO-5930) names the `npx tsx --test` rewrite when a candidate was a
  *   plain `node --test <x>.test.ts`.
@@ -176,10 +214,10 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
   if (!candidates.length) return { cmd: null, reason: 'acceptance criteria names no runnable command (prose only)', kind: 'no-command' };
 
   // Prefer the SPECIFIC command over the generic one, via the module-level
-  // rank() above. Ranked, not reordered: order within a rank is still card order.
+  // shared comparator above. Equal specificity and coverage retain card order.
   const safe = candidates.filter(c => isSafeCheckCommand(c));
   if (safe.length) {
-    const best = safe.slice().sort((a, b) => rank(a) - rank(b))[0];
+    const best = safe.slice().sort(compareVerifyCommands)[0];
     return { cmd: best, reason: null };
   }
   // BRO-5930: explain every candidate, not just the first, so a
@@ -199,4 +237,4 @@ function extractVerifyCmd(notes, isSafeCheckCommand, explainUnsafeCheckCommand) 
   };
 }
 
-module.exports = { VERIFY_LINE_RE, extractVerifyCmd, candidatesFrom, SECTION_RE, rank, rawCandidates, stripDecoration };
+module.exports = { VERIFY_LINE_RE, extractVerifyCmd, candidatesFrom, SECTION_RE, rank, compareVerifyCommands, preservesVerifyCoverage, rawCandidates, stripDecoration };

@@ -11,7 +11,11 @@ const launch = (over = {}) => ({
   event: 'launch', taskId: '1', notionId: 'card-1', subject: 'Fix the thing',
   verifyCmd: 'node --test tests/unit/a.test.mjs', verifyReason: null, ts: '2026-07-24T00:00:00Z', ...over,
 });
-const done = (over = {}) => ({ id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.5, ...over });
+const done = (over = {}) => ({
+  id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.5,
+  commentRecords: (over.comments || []).map(body => ({ body, createdAt: '2026-07-25T00:00:00Z' })),
+  ...over,
+});
 
 test('BRO-3157: retraction refuses a captured snapshot and its older corrections', () => {
   const out = selectRecheckTargets({
