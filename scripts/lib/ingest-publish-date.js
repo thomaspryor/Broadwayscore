@@ -37,31 +37,52 @@ function listingOpeningDate(html) {
 // Venue names vary ("Second Stage/Hayes Theater" for "Helen Hayes Theater"), so
 // compare the distinctive words. A match on THIS production's venue, and on no
 // other production's venue, dates the review to this production's opening.
-const GENERIC_VENUE_WORDS = new Set(['the', 'theatre', 'theater', 'theatres', 'theaters', 'stage', 'center', 'centre', 'at', 'of', 'and', 'company', 'playhouse', 'hall', 'house']);
+// Words that recur across many venue names (shows.json counts: royal 243,
+// square 156, new 147, york 116, ...) or are city/state suffixes. A match needs
+// a word outside this list, so "New World Stages" never matches "New York City Center".
+const GENERIC_VENUE_WORDS = new Set(['the', 'theatre', 'theater', 'theatres', 'theaters', 'stage', 'stages', 'center', 'centre',
+  'at', 'of', 'and', 'in', 'for', 'on', 'company', 'playhouse', 'hall', 'house', 'arts', 'performing', 'new', 'york', 'nyc',
+  'city', 'old', 'royal', 'square', 'park', 'american', 'national', 'north', 'south', 'east', 'west', 'st', 'street', 'tour',
+  'ny', 'il', 'ca', 'ma', 'dc', 'chicago', 'london', 'boston', 'studio', 'studios', 'second', 'first', 'space', 'room']);
 function venueWords(v) {
-  return String(v || '').toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, ' ').split(' ')
-    .filter((w) => w.length >= 2 && !GENERIC_VENUE_WORDS.has(w));
+  return String(v || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ').split(' ').filter((w) => w.length >= 2 && !GENERIC_VENUE_WORDS.has(w));
 }
-function headlineVenue(html) {
+const normTitle = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/&/g, 'and').replace(/[^a-z0-9]+/g, ' ').trim();
+// "Theatre in Review: <Show> (<Venue>)" -> { show, venue }. The venue is the
+// last parenthesis; everything before it is the show name.
+function parseLsaHeadline(html) {
   if (typeof html !== 'string') return null;
   const t = html.match(/<title>\s*Theatre in Review:([^<]*)<\/title>/i);
   if (!t) return null;
-  const head = t[1].replace(/&amp;/g, '&').replace(/\s+-\s+Lighting\s*&\s*Sound America.*$/i, '').trim();
-  const m = head.match(/\(([^()]*)\)\s*$/);
-  return m ? m[1].trim() : null;
+  const head = t[1].replace(/&amp;|&#0?38;/g, '&').replace(/&nbsp;|&#160;/g, ' ')
+    .replace(/\s+[-\u2013\u2014]\s+Lighting\s*&\s*Sound America.*$/i, '').trim();
+  const m = head.match(/^(.*\S)\s*\(([^()]*)\)\s*$/);
+  return m ? { show: m[1].trim(), venue: m[2].trim() } : null;
 }
-function headlineVenueDate(html, { showVenue = null, showOpeningDate = null, otherVenues = [] } = {}) {
-  if (!showVenue || !showOpeningDate) return null;
-  const v = headlineVenue(html);
-  if (!v) return null;
-  const words = new Set(venueWords(v));
+function headlineVenue(html) {
+  const p = parseLsaHeadline(html);
+  return p ? p.venue : null;
+}
+// The headline must name THIS show (or its main title before a subtitle), and
+// its theatre must share a distinctive word with this production's venue and
+// with no other production's venue.
+function headlineVenueDate(html, { showTitle = null, showVenue = null, showOpeningDate = null, otherVenues = [] } = {}) {
+  if (!showTitle || !showVenue || !showOpeningDate) return null;
+  const p = parseLsaHeadline(html);
+  if (!p) return null;
+  const hs = normTitle(p.show);
+  const st = normTitle(showTitle);
+  const stMain = normTitle(String(showTitle).replace(/\s*[(:].*$/, ''));
+  if (!hs || !(hs === st || hs === stMain || st.startsWith(hs + ' ') || hs.startsWith(st + ' '))) return null;
+  const words = new Set(venueWords(p.venue));
   const hits = (venue) => venueWords(venue).some((w) => words.has(w));
   if (!hits(showVenue)) return null;
   if ((otherVenues || []).some(hits)) return null;
   return String(showOpeningDate).slice(0, 10);
 }
 
-function resolveIngestPublishDate({ publishDateArg = null, html = null, url, text = null, stagePublishDate = null, showOpeningDate = null, showVenue = null, otherVenues = [] } = {}) {
+function resolveIngestPublishDate({ publishDateArg = null, html = null, url, text = null, stagePublishDate = null, showOpeningDate = null, showTitle = null, showVenue = null, otherVenues = [] } = {}) {
   if (publishDateArg) return { publishDate: publishDateArg, dateSource: null, from: 'arg' };
   const page = html ? extractPublishDate(html, url) : null;
   if (page) return { publishDate: page, dateSource: null, from: 'page' };
@@ -77,7 +98,7 @@ function resolveIngestPublishDate({ publishDateArg = null, html = null, url, tex
   if (listed && showOpeningDate && listed === String(showOpeningDate).slice(0, 10)) {
     return { publishDate: listed, dateSource: 'listing-opening-date', from: 'listing' };
   }
-  const byVenue = headlineVenueDate(html, { showVenue, showOpeningDate, otherVenues });
+  const byVenue = headlineVenueDate(html, { showTitle, showVenue, showOpeningDate, otherVenues });
   if (byVenue && fallback.reason !== 'body-url-conflict') {
     return { publishDate: byVenue, dateSource: 'headline-venue-opening-date', from: 'venue' };
   }

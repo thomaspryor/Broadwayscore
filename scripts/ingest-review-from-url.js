@@ -195,8 +195,17 @@ const show = showsData.shows.find((s) => s.id === showId);
 // whose headline names a theatre is dated only when no other run played there.
 function otherProductionVenues(sh) {
   if (!sh || !sh.title) return [];
-  const t = String(sh.title).toLowerCase().trim();
-  return showsData.shows.filter((o) => o.id !== sh.id && String(o.title || '').toLowerCase().trim() === t && o.venue).map((o) => o.venue);
+  // Main title, accent- and punctuation-folded; "Oedipus Rex" and "Giant The Play"
+  // count as other productions of "Oedipus" and "Giant".
+  const key = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s*[(:].*$/, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  const t = key(sh.title);
+  if (!t) return [];
+  return showsData.shows.filter((o) => {
+    if (o.id === sh.id || !o.venue) return false;
+    const k = key(o.title);
+    return k === t || k.startsWith(t + ' ') || t.startsWith(k + ' ');
+  }).map((o) => o.venue);
 }
 if (!show) {
   console.error(`Show not found: ${showId}`);
@@ -510,6 +519,7 @@ if (!show) {
   const resolvedDate = require('./lib/ingest-publish-date').resolveIngestPublishDate({
     publishDateArg, html, url, text: hasBody ? text : null, stagePublishDate: stageMeta && stageMeta.publishDate,
     showOpeningDate: show && show.openingDate,
+    showTitle: show && show.title,
     showVenue: show && show.venue,
     otherVenues: otherProductionVenues(show),
   });
@@ -611,7 +621,8 @@ if (!show) {
     !preExisting.data.allowEarlyDate &&
     isStalePublishDate({ existingPublishDate: preExisting.data.publishDate, show })
   ) {
-    const correctedValue = publishDate || null;
+    // BRO-6742: a venue-inferred date is not evidence; never let it replace a stored date.
+    const correctedValue = resolvedDate.from === 'venue' ? null : (publishDate || null);
     console.warn(`  ⚠️  Existing publishDate "${preExisting.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
     if (!dryRun) {
       const updated = {
