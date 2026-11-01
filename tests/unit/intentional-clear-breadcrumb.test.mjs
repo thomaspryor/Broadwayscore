@@ -750,6 +750,10 @@ const READ_FIELD_RE = /\bd\.([A-Za-z_$][A-Za-z0-9_$]*)\b/g;
 // down: those are protected-field KEYS that are unprotected on purpose; this is
 // authoriser READS that are unprotected on purpose).
 const READ_UNPROTECTED_ALLOWLIST = new Map([
+  ['url',
+    'BRO-6742: the mergedDuplicateUrls breadcrumb reads the record url to see whether the slot ' +
+    'adopted a tombstoned url. url is every record\'s identity and every write carries it, so a ' +
+    'restore never drops it; protecting it would freeze the url-change invariant (urls must move).'],
   ['fullTextTrimmed',
     'BRO-6302: the Theatre Record lift breadcrumb is stamped by mergeTheatreRecordIntoExisting in ' +
     'the same working tree the write and the push-restore read, and is compared by its own `at` ' +
