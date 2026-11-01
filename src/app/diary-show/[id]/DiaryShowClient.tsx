@@ -1,6 +1,7 @@
 'use client';
 
 import { Suspense, useState, useEffect, useCallback, useRef } from 'react';
+import { diaryDetailText } from '@/lib/review-showtime';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
@@ -107,6 +108,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         rating: data.rating,
         review_text: data.reviewText || null,
         date_seen: data.dateSeen || null,
+        ...data.showtimeSeat,
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
@@ -119,6 +121,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         rating: data.rating,
         review_text: data.reviewText || null,
         date_seen: data.dateSeen || null,
+        ...data.showtimeSeat,
       });
       if (error) throw new Error(error.message);
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
@@ -215,6 +218,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
                   Saw {new Date(latestReview.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               )}
+              {diaryDetailText(latestReview) && <p className="text-xs text-gray-400 mt-1 truncate">{diaryDetailText(latestReview)}</p>}
               {latestReview.review_text && <p className="text-xs text-fg-muted mt-1 italic truncate">{latestReview.review_text}</p>}
             </div>
             <button type="button" onClick={handleEditClick} className="text-xs text-gray-400 hover:text-white flex-shrink-0">Edit</button>
@@ -243,6 +247,10 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           initialRating={editingReview?.rating ?? pendingDraft?.rating ?? deepLinkStars ?? 0}
           initialReviewText={editingReview?.review_text ?? pendingDraft?.reviewText ?? null}
           initialDateSeen={editingReview?.date_seen ?? pendingDraft?.dateSeen ?? null}
+          showId={show.id}
+          initialTimeSlot={editingReview ? editingReview.time_slot ?? null : pendingDraft?.timeSlot ?? null}
+          initialCurtainTime={editingReview ? editingReview.curtain_time ?? null : pendingDraft?.curtainTime ?? null}
+          initialSeat={editingReview ? editingReview.seat ?? null : pendingDraft?.seat ?? null}
           presentation="modal"
           onSave={handleSaveReview}
           onSaved={handleRateSaved}

@@ -9,6 +9,7 @@ import { sanitizeRating } from '@/lib/rating';
 import DatePickerButton from './DatePickerButton';
 import { localToday } from '@/lib/date-utils';
 import { trackUgc } from '@/lib/ugc-analytics';
+import { buildShowtimeSeatPatch, normalizeSeat, SEAT_MAX_CHARS, type ShowtimeSeat } from '@/lib/review-showtime';
 
 export interface RatingEditorSaveData {
   rating: number;
@@ -16,6 +17,15 @@ export interface RatingEditorSaveData {
   dateSeen: string | null;
   /** Present → edit/replace this review; absent → append a new viewing. */
   reviewId?: string;
+  /** Which performance + seat as entered (drafts restore from these). */
+  timeSlot?: ShowtimeSeat['time_slot'];
+  curtainTime?: string | null;
+  seat?: string | null;
+  /**
+   * The reviews columns to send for time + seat (BRO-6783). Only keys that
+   * have, or had, a value: spread it into the insert/update payload.
+   */
+  showtimeSeat?: Partial<ShowtimeSeat>;
 }
 
 interface RatingEditorProps {
@@ -28,6 +38,14 @@ interface RatingEditorProps {
   initialDateSeen?: string | null;
   /** Pre-fill Date Seen for brand-new ratings (e.g. watchlist planned date). */
   suggestedDateSeen?: string | null;
+  /** Show id: drives the Matinee/Evening schedule defaults. Omit to hide the Time row. */
+  showId?: string;
+  /** Saved performance + seat when editing (or a restored draft's). */
+  initialTimeSlot?: ShowtimeSeat['time_slot'];
+  initialCurtainTime?: string | null;
+  initialSeat?: string | null;
+  /** The plan's showtime; prefills Time when Date Seen is the plan's date. */
+  suggestedShowtime?: Pick<ShowtimeSeat, 'time_slot' | 'curtain_time'> | null;
   /** 'new' first viewing, 'edit' amend latest, 'replace' overwrite the single rating, 'append' log another. */
   mode?: 'new' | 'edit' | 'replace' | 'append';
   /**
@@ -50,6 +68,9 @@ interface RatingEditorProps {
 
 const MAX_CHARS = 2000;
 
+// The schedule data (~170 KB) only loads once a date is set and the Time row shows.
+const ShowtimeSegmented = dynamic(() => import('./ShowtimeSegmented'), { ssr: false });
+
 // Diary photos for an existing entry (BRO-6170). Lazy: the field (upload
 // pipeline, photo list) only loads when an editor opens on a saved review.
 const ReviewPhotosField = dynamic(() => import('@/components/my-shows/feed/ReviewPhotosField'), { ssr: false });
@@ -68,6 +89,11 @@ export default function RatingEditor({
   initialReviewText,
   initialDateSeen,
   suggestedDateSeen,
+  showId,
+  initialTimeSlot = null,
+  initialCurtainTime = null,
+  initialSeat = null,
+  suggestedShowtime = null,
   mode = reviewId ? 'edit' : 'new',
   onSave,
   onSaved,
@@ -94,6 +120,16 @@ export default function RatingEditor({
     const fallback = initialDateSeen || (isIsoDateOnly(suggestedDateSeen) ? suggestedDateSeen : null) || today;
     return fallback > maxDate ? maxDate : fallback;
   });
+  // Which performance (BRO-6783). A new entry whose date is the plan's date
+  // starts from the plan's showtime.
+  const [showtime, setShowtime] = useState<Pick<ShowtimeSeat, 'time_slot' | 'curtain_time'>>(() => {
+    if (reviewId || initialTimeSlot) return { time_slot: initialTimeSlot ?? null, curtain_time: initialTimeSlot ? initialCurtainTime ?? null : null };
+    if (suggestedShowtime?.time_slot && isIsoDateOnly(suggestedDateSeen) && dateSeen === suggestedDateSeen) {
+      return { time_slot: suggestedShowtime.time_slot, curtain_time: suggestedShowtime.curtain_time ?? null };
+    }
+    return { time_slot: null, curtain_time: null };
+  });
+  const [seat, setSeat] = useState<string>(initialSeat ?? '');
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Delete now renders as a full-weight button (same size as Save) rather
@@ -114,8 +150,13 @@ export default function RatingEditor({
   // today's date (owner report, 2026-07-17).
   useEffect(() => {
     if (reviewId || initialDateSeen || dateTouched.current || !isIsoDateOnly(suggestedDateSeen)) return;
-    setDateSeen(suggestedDateSeen > maxDate ? maxDate : suggestedDateSeen);
-  }, [suggestedDateSeen, reviewId, initialDateSeen, maxDate]);
+    const next = suggestedDateSeen > maxDate ? maxDate : suggestedDateSeen;
+    setDateSeen(next);
+    // The plan's time arrives with its date; only carry it when the date is the plan's.
+    if (next === suggestedDateSeen && suggestedShowtime?.time_slot) {
+      setShowtime({ time_slot: suggestedShowtime.time_slot, curtain_time: suggestedShowtime.curtain_time ?? null });
+    }
+  }, [suggestedDateSeen, suggestedShowtime, reviewId, initialDateSeen, maxDate]);
   // Live hover value from the stars — previewed in the big number so half-star
   // targeting is legible before the click (owner report, 2026-07-13).
   const [hoverValue, setHoverValue] = useState<number | null>(null);
@@ -153,11 +194,24 @@ export default function RatingEditor({
     setSaving(true);
     setError(null);
     try {
+      const current: ShowtimeSeat = {
+        // A performance without a date means nothing: dropping the date drops it.
+        time_slot: dateSeen ? showtime.time_slot : null,
+        curtain_time: dateSeen && showtime.time_slot ? showtime.curtain_time : null,
+        seat: normalizeSeat(seat),
+      };
       const result = await onSave({
         rating: sanitizeRating(rating),
         reviewText: reviewText.trim() || null,
         dateSeen: dateSeen || null,
         reviewId,
+        timeSlot: current.time_slot,
+        curtainTime: current.curtain_time,
+        seat: current.seat,
+        showtimeSeat: buildShowtimeSeatPatch(
+          reviewId ? { time_slot: initialTimeSlot, curtain_time: initialCurtainTime, seat: initialSeat } : null,
+          current,
+        ),
       });
       if (result === 'auth-gated') {
         // Save deferred to sign-in: keep the editor (and the typed draft)
@@ -174,6 +228,8 @@ export default function RatingEditor({
           has_review_text: !!reviewText.trim(),
           review_length: reviewText.trim().length,
           has_date_seen: !!dateSeen,
+          has_showtime: !!(dateSeen && showtime.time_slot),
+          has_seat: !!normalizeSeat(seat),
           is_edit: !!reviewId,
         });
       }
@@ -192,7 +248,7 @@ export default function RatingEditor({
       setError(message);
       setSaving(false);
     }
-  }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, onSave, onSaved, analytics, mode]);
+  }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, onSave, onSaved, analytics, mode, showtime, seat, initialTimeSlot, initialCurtainTime, initialSeat]);
 
   const content = (
     <div data-testid="rating-editor" className="overflow-hidden">
@@ -243,6 +299,46 @@ export default function RatingEditor({
               : 'Add a date'}
           </span>
         </DatePickerButton>
+      </div>
+
+      {/* Time: which performance (BRO-6783). Only meaningful once a date is set. */}
+      {showId && dateSeen && (
+        <div className="mb-3">
+          <label className="block text-xs font-medium text-gray-400 mb-1">
+            Time <span className="text-fg-muted">(optional)</span>
+          </label>
+          <div className="w-full sm:w-72">
+            <ShowtimeSegmented
+              showId={showId}
+              date={dateSeen}
+              value={showtime}
+              onChange={setShowtime}
+              autoSelectOnMount={!reviewId && !showtime.time_slot}
+              disabled={saving}
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Seat: owner-only free text, never on public pages or shares. */}
+      <div className="mb-3">
+        <label htmlFor="rating-editor-seat" className="block text-xs font-medium text-gray-400 mb-1">
+          Seat <span className="text-fg-muted">(optional)</span>
+        </label>
+        <input
+          id="rating-editor-seat"
+          type="text"
+          value={seat}
+          onChange={(e) => setSeat(e.target.value.slice(0, SEAT_MAX_CHARS))}
+          maxLength={SEAT_MAX_CHARS}
+          placeholder="e.g. Balcony, A-25"
+          autoComplete="off"
+          data-1p-ignore
+          data-lpignore="true"
+          data-testid="seat-input"
+          // 16px on mobile: smaller makes iOS Safari zoom on focus (see notes below).
+          className="w-full sm:w-72 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
+        />
       </div>
 
       {/* Private notes */}
