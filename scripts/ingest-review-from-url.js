@@ -92,6 +92,9 @@ const criticArg = nameFromAuthorUrl(getArg('critic'));
 // the title (interestedbystander's "Toera" for Torera, BRO-4658).
 const sectionTitleArg = getArg('section-title');
 const publishDateArg = getArg('publish-date');
+// BRO-6762: weaker date sources tried before --require-publish-date skips a page.
+const fallbackPublishDateArg = getArg('fallback-publish-date');
+const fallbackDateSourceArg = getArg('fallback-date-source');
 // --date-window=YYYY-MM-DD,YYYY-MM-DD (BRO-4656): skip, before any write, a page
 // whose publish date is missing or outside the window. Tour-stop discovery
 // passes the engagement window so a review of an earlier visit, another
@@ -170,6 +173,7 @@ const htmlFileArg = getArg('html-file');
 // --archive-snapshot=YYYYMMDDHHMMSS (BRO-5874): read an EXISTING Wayback snapshot of --url through
 // fetchPage for a site that blocks CI runners; the row keeps the original url. Never requests a new capture.
 const archiveSnapshotArg = getArg('archive-snapshot');
+let viaArchiveSnapshot = null; // BRO-6762: set when the live fetch failed and an archive.org copy was read
 // Exit code for "the page could not be read" (fetch error, no HTML, empty
 // extraction). Refusals (blocked/non-review URL, blocklist, wrong show,
 // write-guard) keep exit 1, so the workflow retries only what a retry can fix.
@@ -282,8 +286,18 @@ if (!show) {
         fetchUrl = require('./lib/archive-snapshot-url').archiveSnapshotFetchUrl(url, archiveSnapshotArg);
         if (!fetchUrl) { console.error('--archive-snapshot needs a 14-digit YYYYMMDDHHMMSS timestamp and an http(s) --url'); process.exit(1); }
       }
-      const r = await fetchPage(fetchUrl, { source: 'process-review-submission' });
-      html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
+      if (archiveSnapshotArg) {
+        const r = await fetchPage(fetchUrl, { source: 'process-review-submission' });
+        html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
+      } else {
+        // BRO-6762: live fetch, then the newest existing archive.org copy, before giving up.
+        const got = await require('./lib/fetch-archive-fallback').fetchWithArchiveFallback(
+          fetchUrl, { fetchPageFn: (u) => fetchPage(u, { source: 'process-review-submission' }) });
+        html = got.html;
+        if (got.via === 'archive') viaArchiveSnapshot = got.snapshot || 'archive';
+        if (got.via === 'archive') console.log(`  → Live fetch failed; read the archive.org copy from ${got.snapshot}`);
+        if (!html) throw new Error(got.error || 'no usable HTML');
+      }
     }
   } catch (e) {
     console.error(`Fetch failed: ${e.message}`);
@@ -456,8 +470,14 @@ if (!show) {
   // is a score-only ingest, not a failure. Card 3b5637c5 (NYSM Live).
   // An archived page that yields only a meta description (< 1000 chars) is not the review: refuse
   // before any write so the 313-char stub is not re-stored as if recovered (BRO-5874).
-  if (archiveSnapshotArg && (!text || text.length < 1000)) {
-    console.error(`Archive snapshot ${archiveSnapshotArg} holds no review body (${text ? text.length : 0} chars extracted); refusing to write`);
+  const archiveDisposition = require('./lib/fetch-archive-fallback').archiveCopyDisposition({
+    viaArchive: !!viaArchiveSnapshot, explicitSnapshot: !!archiveSnapshotArg, stubOnFailure, textLength: text ? text.length : 0 });
+  if (archiveDisposition === 'stub') {
+    // A thin archive copy of a page that failed live is still a failed fetch: queue the retry stub.
+    writeRetryStubAndExit(`live fetch failed and the archive.org copy holds no review body (${text ? text.length : 0} chars)`);
+  }
+  if (archiveDisposition === 'refuse') {
+    console.error(`Archive snapshot ${archiveSnapshotArg || viaArchiveSnapshot} holds no review body (${text ? text.length : 0} chars extracted); refusing to write`);
     process.exit(EXIT_FETCH_FAILED);
   }
   let recoveredScore = null;
@@ -523,7 +543,23 @@ if (!show) {
     showVenue: show && show.venue,
     otherVenues: otherProductionVenues(show),
   });
-  const publishDate = resolvedDate.publishDate;
+  let publishDate = resolvedDate.publishDate;
+  let fallbackDateSource = null;
+  if (!publishDate && requirePublishDate && resolvedDate.reason !== 'body-url-conflict') {
+    // BRO-6762: aggregator listing date, then the archive.org first capture, each
+    // only inside the show's review window (scripts/lib/fallback-publish-date.js).
+    const fb = require('./lib/fallback-publish-date');
+    const archiveDate = await fb.archiveFirstCaptureDate(url);
+    const picked = fb.pickFallbackPublishDate({
+      listingDate: fallbackPublishDateArg, listingSource: fallbackDateSourceArg,
+      archiveDate, openingDate: show && show.openingDate,
+    });
+    if (picked) {
+      publishDate = picked.publishDate;
+      fallbackDateSource = picked.dateSource;
+      console.log(`  → No page date; using fallback ${picked.dateSource}: ${publishDate}`);
+    }
+  }
   if (resolvedDate.from === 'page' || resolvedDate.from === 'stage') {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
   } else if (resolvedDate.from === 'text') {
@@ -622,7 +658,7 @@ if (!show) {
     isStalePublishDate({ existingPublishDate: preExisting.data.publishDate, show })
   ) {
     // BRO-6742: a venue-inferred date is not evidence; never let it replace a stored date.
-    const correctedValue = resolvedDate.from === 'venue' ? null : (publishDate || null);
+    const correctedValue = (resolvedDate.from === 'venue' || fallbackDateSource) ? null : (publishDate || null);
     console.warn(`  ⚠️  Existing publishDate "${preExisting.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
     if (!dryRun) {
       const updated = {
@@ -652,7 +688,10 @@ if (!show) {
     publishDate: publishDate,
     operatorTrust: false,
   });
-  if (resolvedDate.dateSource) fields.dateSource = resolvedDate.dateSource;
+  if (viaArchiveSnapshot) fields.archiveSnapshot = viaArchiveSnapshot;
+  if (fallbackDateSource) fields.dateSource = fallbackDateSource;
+  else if (resolvedDate.dateSource) fields.dateSource = resolvedDate.dateSource;
+  else if (viaArchiveSnapshot && resolvedDate.from === 'page') fields.dateSource = 'html-archive'; // not trusted over a live page date
   // Which pipeline asked for this ingest (BRO-6588). The source stays
   // 'submit-review-form' because the writer's submission guards key on it.
   if (callerArg) fields.ingestSource = callerArg;

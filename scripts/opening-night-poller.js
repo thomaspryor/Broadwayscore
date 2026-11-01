@@ -90,6 +90,8 @@ const {
 const { routeAlert } = require('./lib/owner-alert-router');
 const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
+const { addClaimedOutletIds, buildStagedoorRow } = require('./lib/outlet-coverage-claim'); // BRO-6762: url-less stagedoor rows must not claim an outlet
+const { isPressWindowSerpSlot } = require('./lib/press-window-serp');
 const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses } = require('./lib/js-outlet-giveup');
 
 // Paths
@@ -398,7 +400,7 @@ function shouldRunSerpForMode(mode, show, now = new Date()) {
     ? (cronHour >= 4 && cronHour <= 9)
     : (cronHour >= 7 && cronHour <= 13);
 
-  if (mode === 'daily') return inMorningSlot;
+  if (mode === 'daily') return inMorningSlot || isPressWindowSerpSlot(show, now, process.env, (loadSerpSessionLedger(now).perShow || {})[show.id] || 0);
 
   if (!show.openingDate) return inMorningSlot;
   const daysSince = Math.floor(
@@ -1038,17 +1040,10 @@ async function runAggregators(show) {
         const sdReviews = sdData.criticReviews || [];
         console.log(`  Stagedoor: ${sdReviews.length} reviews from archive`);
         for (const r of sdReviews) {
-          results.push({
+          results.push(buildStagedoorRow(r, {
             showId: show.id,
             outletId: resolveArchiveRowOutletId({ outletLabel: r.outlet, sourceOutletId: 'stagedoor' }),
-            outlet: r.outlet || 'Unknown',
-            criticName: 'Unknown', // Stagedoor doesn't provide critic names
-            url: '',
-            excerpt: r.excerpt || '',
-            score: r.stars ? Math.round((r.stars / 5) * 100) : null,
-            scoreSource: r.stars ? 'stagedoor-star-rating' : undefined,
-            source: 'stagedoor',
-          });
+          }));
         }
       } else {
         console.log('  Stagedoor: no archive found');
@@ -1783,9 +1778,7 @@ async function pollShow(show) {
   let jsOutletMisses = { ...(backoff.jsOutletMisses || {}) };
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID, { show, market });
-    for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...omcResults, ...googleNewsResults]) {
-      if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
-    }
+    addClaimedOutletIds(foundAfterParallel, [...aggResults, ...rssResults, ...ssrSiteSearchResults, ...omcResults, ...googleNewsResults]);
     // A find via ANY channel clears stale misses — otherwise an outlet found
     // here, later rejected as wrongProduction/not-a-review and reopened by
     // getFoundOutletIds, would inherit a give-up count from before it was ever
@@ -1908,9 +1901,7 @@ async function pollShow(show) {
   let serpResults = [];
   if ((!SKIP_SERP && shouldRunSerp()) || serpBurstActive) {
     const foundOutletIds = getFoundOutletIds(SHOW_ID, { show, market });
-    for (const r of [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults]) {
-      if (r.outletId) foundOutletIds.add(r.outletId.toLowerCase());
-    }
+    addClaimedOutletIds(foundOutletIds, [...aggResults, ...rssResults, ...siteSearchResults, ...omcResults, ...googleNewsResults]);
     // Sort T1 before T2 so the 30-call SERP budget goes to highest-value outlets first
     let missingOutlets = getMissingT1T2Outlets(SHOW_ID, market, show)
       .filter(o => !foundOutletIds.has(o.id.toLowerCase()))

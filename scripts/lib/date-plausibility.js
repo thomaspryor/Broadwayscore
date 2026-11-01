@@ -11,6 +11,7 @@
  * this class: sylvia (#499), crocodile (#730, recurred #832), oscar (#738),
  * cyrano (#832).
  */
+const { isFallbackPublishDate } = require('./fallback-date-source');
 const { earliestShowDate } = require('./date-guard');
 const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
 const { parseDate: parsePlausibilityDate } = require('./date-utils');
@@ -79,7 +80,7 @@ function evaluateDatePlausibility({ review, show }) {
   // fills when publishDate is empty). Genuinely dated reviews from every other
   // source — url, text-regex, html-*, json-ld, text-llm (the purpose-built
   // extractor that reads the article) — are unaffected.
-  if (review.dateSource === 'llm-scoring') return empty;
+  if (review.dateSource === 'llm-scoring' || isFallbackPublishDate(review)) return empty;
 
   const pub = parsePlausibilityDate(review.publishDate);
   const earliestStr = earliestShowDate(show);
