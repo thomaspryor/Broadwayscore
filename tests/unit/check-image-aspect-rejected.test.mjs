@@ -85,10 +85,9 @@ async function dupSetup(idA, idB) {
   return { dir, heroes };
 }
 
-test('a hero byte-identical to an unrelated show hero fails the check', { skip: !sharp && 'sharp not installed' }, async () => {
+test('a hero byte-identical to an unrelated show hero is reported', { skip: !sharp && 'sharp not installed' }, async () => {
   const { dir, heroes } = await dupSetup('dry-powder-regional-2026', 'promises-promises-regional-2023');
   const r = runDup([heroes[1]], dir);
-  assert.equal(r.status, 1, r.stdout + r.stderr);
   assert.match(r.stderr, /byte-identical hero already serves unrelated show/);
 });
 
@@ -96,4 +95,12 @@ test('a hero byte-identical to a same-title-family show hero passes', { skip: !s
   const { dir, heroes } = await dupSetup('paranormal-activity-2026', 'paranormal-activity-boston-regional-2026');
   const r = runDup([heroes[1]], dir);
   assert.equal(r.status, 0, r.stdout + r.stderr);
+});
+
+test('outside plain --staged the duplicate-bytes check is advisory', { skip: !sharp && 'sharp not installed' }, async () => {
+  const { dir, heroes } = await dupSetup('dry-powder-regional-2026', 'promises-promises-regional-2023');
+  const r = runDup([heroes[1]], dir);
+  // --files mode is advisory (warn): exit 0 with a warning naming the other show
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stderr, /::warning::.*byte-identical hero already serves unrelated show/);
 });

@@ -95,6 +95,14 @@ try {
 // BRO-6748: venue logos / stock art keep landing as the "real" art of several unrelated
 // shows (BRO-6660, 6683, 6740, 6748), each time caught only after main went red. Refuse a
 // checked file whose bytes already serve as the same role's image for an unrelated show.
+// Files already committed with these exact bytes are grandfathered (pre-existing shared art).
+function unchangedSinceHead(absPath) {
+  try {
+    execSync(`git diff --quiet HEAD -- "${absPath}"`, { cwd: ROOT, stdio: 'ignore' });
+    execSync(`git ls-files --error-unmatch "${absPath}"`, { cwd: ROOT, stdio: 'ignore' });
+    return true;
+  } catch { return false; }
+}
 let DIGEST_INDEX = null; // role -> md5 -> [showId]
 function digestIndex() {
   if (DIGEST_INDEX) return DIGEST_INDEX;
@@ -130,8 +138,12 @@ async function checkFile(absPath, role = classify(absPath), opts = {}) {
   }
 
   if (digest && opts.checkDuplicates) {
-    const dups = unrelatedDuplicates(absPath, role, digest);
-    if (dups.length) {
+    const dups = unchangedSinceHead(absPath) ? [] : unrelatedDuplicates(absPath, role, digest);
+    if (dups.length && opts.checkDuplicates === 'warn') {
+      // Advisory (CLAUDE.md §19): title-family matching has false positives (double bills,
+      // glued-token ids), and quarantine/CI would delete or block legitimate shared art.
+      console.error(`::warning::${path.relative(ROOT, absPath)}: byte-identical ${role} already serves unrelated show(s): ${dups.slice(0, 4).join(', ')}; if it is a venue logo / stock art add its md5 to data/rejected-images.json`);
+    } else if (dups.length) {
       return { role, absPath, ok: false, reason: `byte-identical ${role} already serves unrelated show(s): ${dups.slice(0, 4).join(', ')}; likely venue logo / stock art (add its md5 to data/rejected-images.json if so)` };
     }
   }
@@ -286,7 +298,7 @@ async function main() {
   const violations = [];
   let checked = 0;
   for (const f of files) {
-    const r = await checkFile(f, undefined, { checkDuplicates: mode !== 'audit' });
+    const r = await checkFile(f, undefined, { checkDuplicates: mode === 'audit' ? false : (mode === 'staged' && !args.includes('--quarantine')) ? 'enforce' : 'warn' });
     if (!r) continue;
     checked++;
     if (!r.ok) violations.push(r);
