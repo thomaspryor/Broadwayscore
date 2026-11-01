@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6742-f",
   "planId": "a8d47fe2-e161-4e8b-b561-ada040148663",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T03:53:13.130Z",
   "submitter": {
     "name": null,
@@ -143,5 +143,84 @@
         "args": "--show=oedipus-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T04:02:34.138Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seagull-true-story-off-broadway-2026/culturesauce--thom-geier.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-monsters-off-broadway-2026/theatermania--pete-hempstead.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/culturesauce--thom-geier.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/culturesauce--thom-geier.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "data-off-broadway-2026/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rheology-off-broadway-2026/theater-scene--victor-gluck.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rheology-off-broadway-2026/theater-scene--victor-gluck.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "high-noon-west-end-2025/whatsonstage--sarah-crompton.json isNonReview: true -> false"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
