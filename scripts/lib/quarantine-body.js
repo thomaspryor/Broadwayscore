@@ -98,15 +98,19 @@ function releasedBodyRestoreVerdict(data, deps) {
   // A human "this is a review" clear (BRO-6742: public-charge culturesauce, a
   // 4-star review CV read as a preview) releases the not-a-review and
   // wrong-article quarantines; nothing else does.
-  const humanSaysReview = data.nonReviewManualClear === true || data.wrongArticleManualClear === true
-    || data.humanReviewedWrongArticle === false;
+  // A wrong-article clear alone is not enough: some keep an excerpt row live
+  // while the quarantined body is other content (an-american-in-paris Komisar
+  // awards piece), so the body is released only with an explicit not-a-non-review
+  // clear, plus a wrong-article clear when CV called it the wrong article.
+  const humanSaysReview = data.nonReviewManualClear === true;
+  const articleCleared = data.wrongArticleManualClear === true || data.humanReviewedWrongArticle === false;
   if ((data.incompleteReason === 'non_review' && !humanSaysReview) || data.suspectedLlmHallucination === true) {
     return { ok: false, reason: `quarantined as ${data.incompleteReason === 'non_review' ? 'not a review' : 'suspected hallucination'}` };
   }
   // flagged-recovery discardWrongPageFill sets no exclusion flag (BRO-5261 S11).
   if (data.incompleteReason === 'wrong_page_served') return { ok: false, reason: 'quarantined as a wrong page served' };
   if (data.wrongArticle === true) return { ok: false, reason: 'still excluded (wrongArticle)' };
-  if (data.contentVerification && data.contentVerification.wrongArticle === true && !humanSaysReview) return { ok: false, reason: 'contentVerification says wrong article' };
+  if (data.contentVerification && data.contentVerification.wrongArticle === true && !(humanSaysReview && articleCleared)) return { ok: false, reason: 'contentVerification says wrong article' };
   const released = data.wrongProductionManualClear === true || data.wrongProductionOverride === true
     || data.wrongShowManualClear === true || data.humanReviewedWrongProduction === false || humanSaysReview;
   if (!released) return { ok: false, reason: 'no explicit human/override release' };

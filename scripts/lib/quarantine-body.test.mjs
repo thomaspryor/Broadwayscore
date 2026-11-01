@@ -97,13 +97,18 @@ test('refuses: no explicit release (script auto-clear only), still flagged, garb
 test('BRO-6742: a human "this is a review" clear releases a not-a-review / wrong-article quarantine', () => {
   const nr = { wrongFullText: REVIEW, fullText: null, isNonReview: false, contentVerification: { wrongArticle: true, articleType: 'preview' } };
   assert.equal(releasedBodyRestoreVerdict(nr, deps).ok, false, 'no human clear: still refused');
-  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true }, deps).ok, true);
-  assert.equal(releasedBodyRestoreVerdict({ ...nr, wrongArticleManualClear: true }, deps).ok, true);
-  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, incompleteReason: 'non_review' }, deps).ok, true);
+  const both = { ...nr, nonReviewManualClear: true, wrongArticleManualClear: true };
+  assert.equal(releasedBodyRestoreVerdict(both, deps).ok, true);
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, humanReviewedWrongArticle: false }, deps).ok, true);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, incompleteReason: 'non_review' }, deps).ok, true);
+  // a wrong-article clear alone (an excerpt kept live over an awards-news body) does not release the body
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, wrongArticleManualClear: true }, deps).ok, false);
+  // a non-review clear alone does not override CV's wrong-article call
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true }, deps).ok, false);
   // the clear speaks for not-a-review only: a still-set exclusion flag or a hallucination still refuses
-  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, isNonReview: true }, deps).ok, false);
-  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, suspectedLlmHallucination: true }, deps).ok, false);
-  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, contentMismatchNote: 'x' }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, isNonReview: true }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, suspectedLlmHallucination: true }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, contentMismatchNote: 'x' }, deps).ok, false);
 });
 
 test('released with no live text: restore, and the tier is re-derived from the full body', () => {
