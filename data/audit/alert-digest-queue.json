@@ -778,5 +778,36 @@
       }
     ],
     "queuedAt": "2026-11-01T16:11:20.232Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6764-cost2",
+    "title": "Landing blocked: rebase red on land/bro-6764-cost2",
+    "description": "land.yml did not land land/bro-6764-cost2: the rebase gate went red at 98737eeb66. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41327885122",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6764-cost2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "98737eeb66e55834ceb44efb45a1e9ead4d3e420"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41327885122"
+      }
+    ],
+    "queuedAt": "2026-11-01T16:47:14.426Z"
   }
 ]
