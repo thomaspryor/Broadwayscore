@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-11-01T02:44:09.253Z",
+  "timestamp": "2026-11-01T02:57:58.591Z",
   "stats": {
-    "totalReviews": 77280,
-    "alreadyFlagged": 21745,
+    "totalReviews": 77317,
+    "alreadyFlagged": 21743,
     "dateGuardCatches": 238,
-    "directorMismatch": 3283,
-    "tvFilmSignals": 2192,
-    "londonSignals": 3522,
-    "offBroadwaySignals": 724,
+    "directorMismatch": 3282,
+    "tvFilmSignals": 2193,
+    "londonSignals": 3523,
+    "offBroadwaySignals": 726,
     "yearMismatch": 327,
     "noPublishDate": 8863
   },
@@ -6378,6 +6378,19 @@
       ]
     },
     {
+      "showId": "avenue-q-regional-2022",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/avenue-q-the-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "avenue-q-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 82,
@@ -9091,6 +9104,7 @@
     {
       "showId": "boulevard-of-bold-dreams-regional-2023",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": "2023-02-14",
       "url": "https://www.chicagotheatrereview.com/2023/02/black-lives-matter-4/",
       "findings": [
@@ -75239,20 +75253,6 @@
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 78,
-      "publishDate": null,
-      "url": "https://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"tim jackson\" from two-strangers-bway-2025"
-        }
-      ]
-    },
-    {
-      "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
       "file": "nysr--bob-verini.json",
       "score": 79,
       "publishDate": "2025-06-05",
@@ -80826,6 +80826,20 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 182d before show (March 14, 2008 vs 2008-09-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-man-of-no-importance-off-broadway-2022",
+      "file": "broadway-blog--billy-mcentee.json",
+      "score": 74,
+      "publishDate": "November 1st, 2022",
+      "url": "https://thebroadwayblog.com/a-charming-and-lovely-man-of-no-importance-now-at-classic-stage/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -92811,6 +92825,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "score": 78,
+      "publishDate": "2026-03-12",
+      "url": "https://www.theatrereviews.com/broadway-review-every-brilliant-thing-at-the-hudson-theatre-through-sunday-may-24-2026/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
         }
       ]
     },
@@ -129777,6 +129805,19 @@
       "score": 62,
       "publishDate": "2022-09-21",
       "url": "https://theaterpizzazz.com/this-beautiful-future/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "this-beautiful-future-off-broadway-2022",
+      "file": "theater-pizzazz--ron-fassler.json",
+      "publishDate": "September 21st, 2022",
+      "url": "https://www.theaterpizzazz.com/this-beautiful-future/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
