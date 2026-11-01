@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T05:34:01.509Z",
+  "timestamp": "2026-11-01T05:50:51.580Z",
   "stats": {
-    "totalReviews": 77909,
-    "alreadyFlagged": 21725,
+    "totalReviews": 77972,
+    "alreadyFlagged": 21726,
     "dateGuardCatches": 241,
-    "directorMismatch": 3296,
+    "directorMismatch": 3313,
     "tvFilmSignals": 2206,
     "londonSignals": 3535,
     "offBroadwaySignals": 727,
-    "yearMismatch": 326,
-    "noPublishDate": 9108
+    "yearMismatch": 327,
+    "noPublishDate": 9137
   },
   "findings": [
     {
@@ -1458,6 +1458,73 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "publishDate": "2023-02-03",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-A-CHORUS-LINE-at-Drury-Lane-Theatre-Oakbrook-Terrace-IL-20230203",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
+      "file": "chi-mt--barry-reszel.json",
+      "publishDate": "2023-02-14",
+      "url": "https://www.chi-mt.com/reviews/drury-lane-chorus-line-feb-23",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2023-02-10",
+      "url": "https://www.chicagotheatrereview.com/2023/02/please-god-i-need-this-job/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2023-02-04",
+      "url": "https://www.letsplaytheatricalreview.com/blog/a-chorus-line",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
         }
       ]
     },
@@ -8292,6 +8359,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "big-fish-regional-2023",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2023-02-03",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2023/1/3/picksinsix-review-big-fish-marriott-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from big-fish-2013"
+        }
+      ]
+    },
+    {
+      "showId": "big-fish-regional-2023",
+      "file": "splash-magazines--susan-lillis.json",
+      "publishDate": "2023-02-04",
+      "url": "https://chicago.splashmags.com/index.php/2023/02/04/marriott-lincolnshire-presents-big-fish-a-musical-of-mythical-status-february-1-march-19-2023/#gsc.tab=0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from big-fish-2013"
         }
       ]
     },
@@ -44699,6 +44792,20 @@
     },
     {
       "showId": "oh-mary-tour-2026",
+      "file": "theatrely--juan-a-ramirez.json",
+      "score": null,
+      "publishDate": "2026-09-18",
+      "url": "https://www.theatrely.com/post/review-roundup-pre-existing-condition-the-body-of-mary",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2026 (0x). 2024 matches production: oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
       "file": "timesofsandiego--drew-sitton-times-of-san-diego.json",
       "score": 93,
       "publishDate": "2026-10-01",
@@ -79915,6 +80022,110 @@
       ]
     },
     {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/wise-childrens-wuthering-heights/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "chi-mt--quinn-rigg.json",
+      "publishDate": "2023-02-03",
+      "url": "https://www.chi-mt.com/reviews/chicago-shakes-wuthering-heights-cot-albert-herring-feb-23",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2023-01-30",
+      "url": "https://chicago.suntimes.com/2023/1/30/23577989/wuthering-heights-review-chicago-shakespeare-theater-emily-bronte",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "chicagostageandscreen--angela-allyn.json",
+      "publishDate": "2023-01-31",
+      "url": "https://www.chicagostageandscreen.com/post/a-new-look-at-wuthering-heights",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "publishDate": "2023-01-30",
+      "url": "https://www.letsplaytheatricalreview.com/blog/wuthering-heights",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "new-city-stage--amanda-finn.json",
+      "publishDate": "2023-02-02",
+      "url": "https://www.newcitystage.com/2023/02/02/an-examination-of-trauma-a-review-of-wuthering-heights-at-chicago-shakespeare-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "picture-this-post--anthony-neri.json",
+      "publishDate": "2023-01-30",
+      "url": "https://www.picturethispost.com/chicago-shakespeare-hosts-wise-childrens-wuthering-heights-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "thefourthwalsh--katy-walsh.json",
+      "publishDate": "2023-02-03",
+      "url": "https://thefourthwalsh.com/2023/02/review-wuthering-heights-chicago-shakespeare-theater-storytelling-captivates/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
       "showId": "wyrd-regional-2025",
       "file": "around-the-town-chicago--alan-bresloff.json",
       "score": 75,
@@ -106373,6 +106584,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-now--emily-davison.json",
+      "score": 78,
       "publishDate": "2026-10-23",
       "url": "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/",
       "findings": [
