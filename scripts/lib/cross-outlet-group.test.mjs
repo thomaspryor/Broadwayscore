@@ -47,3 +47,15 @@ test('getBestText prefers fullText, falls back to excerpts, else none', () => {
   assert.equal(ex.text, 'one two');
   assert.equal(getBestText({}).source, 'none');
 });
+
+test('moved earlier copy that the new keeper would only review goes to review', () => {
+  const g = { id: 'g' }, x = { id: 'x' }, d = { id: 'd' };
+  const classify = (k, m) => {
+    if (k === g && m === d) return { action: 'hide', copy: 'a' };
+    if (k === d && m === x) return { action: 'review', reason: 'different-critics-unverified' };
+    return { action: 'hide', copy: 'b' };
+  };
+  const r = resolveFingerprintGroup([g, x, d], classify);
+  assert.deepEqual(r.pairs.map((p) => p.keep.id + '<' + p.copy.id), ['d<g']);
+  assert.deepEqual(r.review.map((p) => p.keep.id + '?' + p.copy.id), ['d?x']);
+});

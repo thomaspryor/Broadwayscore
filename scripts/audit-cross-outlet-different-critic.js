@@ -61,13 +61,16 @@ function audit(root) {
       if (sameCritic(d.criticName, p.criticName) && !isPlaceholderCritic(d.criticName) && !isPlaceholderCritic(p.criticName)) continue;
       const row = { showId, file: f, primary: d.crossOutletPrimaryFile, secondaryCritic: d.criticName, primaryCritic: p.criticName };
       // BRO-6774: judge the same text the detector compared (fullText, else excerpts).
-      const dText = getBestText(d).text;
-      const pText = getBestText(p).text;
+      const dBest = getBestText(d), pBest = getBestText(p);
+      const dText = dBest.text;
+      const pText = pBest.text;
+      // Excerpt-joined text makes grams no full review has, so only full-vs-full can prove a stamp stale.
+      const bothFull = dBest.source === 'fullText' && pBest.source === 'fullText';
       const shared = containment(dText, pText);
       if (d.crossOutletVerified === true) {
         // A person's stamp vouches for the pair as it was; if the primary no longer
         // shares the text the stamp is stale and the flag hides a review for nothing.
-        rows.push({ ...row, status: shared < 20 && dText && pText ? 'verified-stale' : 'verified-by-person', shared });
+        rows.push({ ...row, status: shared < 20 && bothFull ? 'verified-stale' : 'verified-by-person', shared });
         continue;
       }
       if (shared < 20) { rows.push({ ...row, status: 'stale', shared }); continue; }

@@ -41,7 +41,15 @@ function resolveFingerprintGroup(plain, classify) {
       // The current keeper declares the member as its source: the member keeps the text.
       const old = keeper;
       keeper = member;
-      for (const p of pairs) if (p.keep === old) p.keep = keeper;
+      // Earlier copies move to the new keeper only if the policy accepts that pair too
+      // (the fingerprint covers 500 chars, provenance reads more), else they go to review.
+      for (let k = pairs.length - 1; k >= 0; k--) {
+        const p = pairs[k];
+        if (p.keep !== old) continue;
+        const v = classify(keeper, p.copy);
+        if (v.action === 'review') { pairs.splice(k, 1); review.push({ keep: keeper, copy: p.copy, verdict: v }); } else p.keep = keeper;
+      }
+      for (const r of review) if (r.keep === old) r.keep = keeper;
       pairs.push({ keep: keeper, copy: old });
     } else {
       pairs.push({ keep: keeper, copy: member });
