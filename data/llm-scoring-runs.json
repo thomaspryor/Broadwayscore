@@ -2798623,21 +2798623,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T02:42:26.632Z",
-    "completedAt": "2026-11-01T02:42:34.858Z",
-    "totalReviews": 4,
-    "processed": 1,
-    "skipped": 3,
+    "startedAt": "2026-11-01T02:43:22.150Z",
+    "completedAt": "2026-11-01T02:43:35.451Z",
+    "totalReviews": 3,
+    "processed": 2,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 6827,
-      "output": 277,
-      "cacheRead": 3807,
+      "input": 12899,
+      "output": 636,
+      "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 16275
+      "total": 31544
     },
-    "costUsd": 0.0249169,
-    "runId": "41265770095",
+    "costUsd": 0.048159999999999994,
+    "runId": "41265834707",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2811286,6 +2811286,16 @@
           "flat": 7,
           "down": 3,
           "total": 17
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "ends-regional-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2829101,16 +2829111,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "routes-regional-2022",
-        "ourDistribution": {
-          "up": 0,
-          "flat": 1,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "routes-west-end-2013",
         "ourDistribution": {
           "up": 2,
@@ -2844922,8 +2844922,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T02:47:29.329Z",
-    "completedAt": "2026-11-01T02:47:29.331Z",
+    "startedAt": "2026-11-01T02:48:32.610Z",
+    "completedAt": "2026-11-01T02:48:32.612Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2844936,7 +2844936,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41265770095",
+    "runId": "41265834707",
     "source": "comparative-rescore",
     "errorDetails": []
   }
