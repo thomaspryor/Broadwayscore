@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-01T22:22:46.681Z",
+  "timestamp": "2026-11-01T22:47:30.072Z",
   "stats": {
-    "totalReviews": 79037,
+    "totalReviews": 79038,
     "alreadyFlagged": 21889,
     "dateGuardCatches": 245,
     "directorMismatch": 3400,
     "tvFilmSignals": 2247,
-    "londonSignals": 3568,
+    "londonSignals": 3572,
     "offBroadwaySignals": 742,
     "yearMismatch": 344,
     "noPublishDate": 8424
@@ -128003,6 +128003,19 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
+      "file": "londontheatredirect--jose-izcue-gana.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
       "score": 96,
       "publishDate": "2026-10-27",
@@ -133921,6 +133934,19 @@
     },
     {
       "showId": "top-hat-chichester-festival-regional-2025",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2025-07-31",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-14947167/Kathleen-Marshalls-enchanting-new-production-Irving-Berlins-Hat-perfect-summer-tonic-says-Patrick-Marmion.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "top-hat-chichester-festival-regional-2025",
       "file": "guardian--arifa-akbar.json",
       "score": 80,
       "publishDate": "2025-07-25",
@@ -133944,6 +133970,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "top-hat-chichester-festival-regional-2025",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2025-07-25",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/top-hat-review-chichester-festival-theatre-v355hmdpb",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "top-hat-chichester-festival-regional-2025",
+      "file": "whatsonstage--alex-wood.json",
+      "publishDate": "2025-07-25",
+      "url": "https://www.whatsonstage.com/news/top-hat-review-irving-berlin-classic-is-cheeky-and-charming_1688151/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
