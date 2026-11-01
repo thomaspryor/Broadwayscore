@@ -917,7 +917,7 @@
       ],
       "domain": "stageandcinema.com",
       "accessModel": "free",
-      "region": "us"
+      "region": "washington-dc"
     },
     "mashable": {
       "displayName": "Mashable",
@@ -1037,7 +1037,8 @@
         "dc-theatre-scene"
       ],
       "domain": "dctheatrescene.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "region": "washington-dc"
     },
     "ny1": {
       "displayName": "NY1",
@@ -1435,7 +1436,8 @@
         "dcmetrotheaterarts.com"
       ],
       "multiAuthor": true,
-      "multiAuthorNote": "BRO-6056: Richard Seff, Constance Beulah, Jennifer Georgia, Zoe Winsky and others write here besides Deb Miller, so a blank byline must stay Unknown rather than take the default critic."
+      "multiAuthorNote": "BRO-6056: Richard Seff, Constance Beulah, Jennifer Georgia, Zoe Winsky and others write here besides Deb Miller, so a blank byline must stay Unknown rather than take the default critic.",
+      "region": "washington-dc"
     },
     "the-interested-bystander": {
       "displayName": "The Interested Bystander",
@@ -2105,7 +2107,8 @@
       ],
       "domain": "metroweekly.com",
       "accessModel": "free",
-      "defaultCritic": "Ryan Leeds"
+      "defaultCritic": "Ryan Leeds",
+      "region": "washington-dc"
     },
     "next-magazine": {
       "displayName": "Next Magazine",
@@ -2514,7 +2517,8 @@
         "maryland-theatre-guide-charlotte-selton"
       ],
       "domain": "mdtheatreguide.com",
-      "accessModel": "free"
+      "accessModel": "free",
+      "region": "washington-dc"
     },
     "the-dc-line": {
       "displayName": "The DC Line",
@@ -4853,7 +4857,8 @@
       ],
       "domain": "washingtonian.com",
       "accessModel": "free",
-      "displayNameReviewed": true
+      "displayNameReviewed": true,
+      "region": "washington-dc"
     },
     "nerdist": {
       "displayName": "Nerdist",
@@ -14750,6 +14755,83 @@
       "defaultCritic": "Paul Lewis",
       "multiAuthor": false,
       "starScale": 5
+    },
+    "hillrag": {
+      "displayName": "Hill Rag",
+      "tier": 4,
+      "aliases": [
+        "hillrag",
+        "hill rag"
+      ],
+      "domain": "hillrag.com",
+      "region": "washington-dc",
+      "accessModel": "free"
+    },
+    "atheatregoersthoughts": {
+      "displayName": "A Theatre-Goer's Thoughts",
+      "tier": 4,
+      "aliases": [
+        "atheatregoersthoughts",
+        "a theatre-goer's thoughts"
+      ],
+      "domain": "theatregoerthoughts.blogspot.com",
+      "region": "washington-dc",
+      "accessModel": "free"
+    },
+    "thegeorgetowndish": {
+      "displayName": "The Georgetown Dish",
+      "tier": 4,
+      "aliases": [
+        "thegeorgetowndish",
+        "the georgetown dish"
+      ],
+      "domain": "thegeorgetowndish.com",
+      "region": "washington-dc",
+      "accessModel": "free"
+    },
+    "washingtonblade": {
+      "displayName": "Washington Blade",
+      "tier": 3,
+      "aliases": [
+        "washingtonblade",
+        "washington blade"
+      ],
+      "domain": "washingtonblade.com",
+      "region": "washington-dc",
+      "accessModel": "free"
+    },
+    "theatrebloom": {
+      "displayName": "Theatre Bloom",
+      "tier": 4,
+      "aliases": [
+        "theatrebloom",
+        "theatre bloom"
+      ],
+      "domain": "theatrebloom.com",
+      "region": "washington-dc",
+      "accessModel": "free"
+    },
+    "thebeacon": {
+      "displayName": "The Beacon",
+      "tier": 4,
+      "aliases": [
+        "thebeacon",
+        "the beacon"
+      ],
+      "domain": "thebeaconnewspapers.com",
+      "region": "washington-dc",
+      "accessModel": "free"
+    },
+    "kstreetmagazine": {
+      "displayName": "K Street Magazine",
+      "tier": 3,
+      "aliases": [
+        "kstreetmagazine",
+        "k street magazine"
+      ],
+      "domain": "kstreetmagazine.com",
+      "region": "washington-dc",
+      "accessModel": "free"
     }
   },
   "_aliasIndex": {
