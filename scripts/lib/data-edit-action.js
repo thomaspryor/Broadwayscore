@@ -140,6 +140,12 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       if (problem) return { ok: false, reason: problem };
     }
 
+    if (field === 'liveInHd') {
+      const { liveInHdValueProblem } = require('./feedback-pipeline-fields.js');
+      const problem = liveInHdValueProblem(newValue);
+      if (problem) return { ok: false, reason: problem };
+    }
+
     if (field === 'priorRuns') {
       const { priorRunsValueProblem } = require('./feedback-pipeline-fields.js');
       const problem = priorRunsValueProblem(newValue, prevValue, shows[idx]);

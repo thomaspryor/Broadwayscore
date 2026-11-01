@@ -60,6 +60,9 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // video-review date rule (lib/video-production-context.js) keeps reviews of
     // that run. firstRunStartValueProblem checks it.
     'firstRunStart',
+    // BRO-6769: Met Live in HD cinema broadcast, { date, encoreDate?, sourceUrl } or
+    // null. sourceUrl must be a metopera.org page; liveInHdValueProblem checks it.
+    'liveInHd',
   ],
   // recoupedDate/recoupedSource/sources: a recoupment correction needs all
   // three (validate-data.js requires recoupedDate when recouped=true). The
@@ -332,6 +335,22 @@ function firstRunStartValueProblem(newValue, show, today = new Date().toISOStrin
   return null;
 }
 
+function liveInHdValueProblem(newValue) {
+  if (newValue === null) return null;
+  if (!newValue || typeof newValue !== 'object' || Array.isArray(newValue)) return 'liveInHd: must be null or { date, encoreDate?, sourceUrl }';
+  const extra = Object.keys(newValue).filter(k => !['date', 'encoreDate', 'sourceUrl'].includes(k));
+  if (extra.length) return `liveInHd: unknown key(s) ${extra.join(', ')}`;
+  if (!isIsoDay(newValue.date)) return 'liveInHd.date: must be a real YYYY-MM-DD date';
+  if (newValue.encoreDate !== undefined && newValue.encoreDate !== null) {
+    if (!isIsoDay(newValue.encoreDate)) return 'liveInHd.encoreDate: must be a real YYYY-MM-DD date';
+    if (newValue.encoreDate <= newValue.date) return 'liveInHd.encoreDate: must be after the live date';
+  }
+  let host = '';
+  try { const u = new URL(newValue.sourceUrl); if (u.protocol === 'https:') host = u.hostname; } catch { /* fallthrough */ }
+  if (host !== 'metopera.org' && !host.endsWith('.metopera.org')) return 'liveInHd.sourceUrl: must be an https metopera.org URL (dates are verified there, never guessed)';
+  return null;
+}
+
 function isIsoDay(v) {
   if (typeof v !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
   const d = new Date(`${v}T00:00:00Z`);
@@ -350,5 +369,6 @@ module.exports = {
   appendedPriorRunProblem,
   officialUrlValueProblem,
   firstRunStartValueProblem,
+  liveInHdValueProblem,
   isIsoDay,
 };

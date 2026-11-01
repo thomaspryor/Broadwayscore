@@ -11,6 +11,7 @@
  *
  * Usage:
  *   node scripts/fetch-page-probe.js <url> [--expect=<regex>] [--render] [--browserbase]
+ *   --max-sample=N: print up to N distinct matches (default 5; BRO-6769 dumps page text nodes).
  *   --browserbase: skip fetchPage and load the page in one Browserbase session
  *   with proxies:true (residential IP), to test a site that blocks the chain (BRO-5886).
  * Exit: 0 content (and >=1 match when --expect is given), 1 otherwise.
@@ -46,7 +47,7 @@ async function fetchViaBrowserbase(url) {
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/fetch-page-probe.js <url> [--expect=<regex>] [--render] [--browserbase]');
+    console.log('Usage: node scripts/fetch-page-probe.js <url> [--expect=<regex>] [--render] [--browserbase] [--max-sample=N]');
     return 0;
   }
   const url = argv.find(a => !a.startsWith('--'));
@@ -56,6 +57,8 @@ async function main() {
   }
   const expectArg = argv.find(a => a.startsWith('--expect='));
   const expect = expectArg ? new RegExp(expectArg.slice('--expect='.length)) : null;
+  const maxArg = argv.find(a => a.startsWith('--max-sample='));
+  const maxSample = maxArg ? (Number.isInteger(parseInt(maxArg.slice('--max-sample='.length), 10)) ? Math.max(0, parseInt(maxArg.slice('--max-sample='.length), 10)) : 5) : 5;
   const options = argv.includes('--render') ? { renderJs: true } : {};
 
   const { fetchPage, cleanup } = require('./lib/scraper.js');
@@ -76,7 +79,7 @@ async function main() {
     format: summary.format,
     length: summary.length,
     matchCount: summary.matches.length,
-    sample: summary.matches.slice(0, 5),
+    sample: summary.matches.slice(0, maxSample),
   }));
   return summary.ok ? 0 : 1;
 }
