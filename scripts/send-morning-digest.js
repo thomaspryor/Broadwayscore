@@ -316,6 +316,7 @@ Usage:
   node scripts/send-morning-digest.js --send-to <address>   send (rule 17: one explicit recipient)
   node scripts/send-morning-digest.js --send-to-owner       send to OWNER_EMAIL (from .env)
   node scripts/send-morning-digest.js --dry-run             write HTML preview, no send
+  --autofix-only        run auto-fix + canary like a normal run but send nothing (Mac, after the digest moved to the Action)
   --force      bypass the send-once-per-ET-day guard (deliberate re-send only)
   --no-autofix          skip auto-fix planning, dispatch and the canary (no dispatch fleet here)
   --skip-mac-local      skip the readers of Mac-only state (cmux, dispatch ledgers, the shared
@@ -943,7 +944,11 @@ async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
 
   const args = parseArgs(process.argv.slice(2));
-  const dryRun = !!args['dry-run'];
+  // --autofix-only (BRO-6764): the Mac's post-cutover autofix + canary run. Builds the digest
+  // like a dry run, sends nothing, and leaves autofix live (the Action's send is report-only).
+  const autofixOnly = !!args['autofix-only'];
+  if (autofixOnly && (args['send-to'] || args['send-to-owner'])) { console.error('[digest] --autofix-only never sends; drop --send-to/--send-to-owner'); process.exit(1); }
+  const dryRun = !!args['dry-run'] || autofixOnly;
   if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
   const noAutofix = !!args['no-autofix'];
   const skipMacLocal = !!args['skip-mac-local'];
@@ -1134,7 +1139,7 @@ async function main() {
     sections.syncRefused = SYNC_REFUSED_READ_FAILED;
   }
 
-  const autofixDryRun = autofixShouldDryRun({ dryRun, syncRefused: sections.syncRefused });
+  const autofixDryRun = autofixShouldDryRun({ dryRun: dryRun && !autofixOnly, syncRefused: sections.syncRefused });
 
   // "Needs You" tab triage (card #870) — cmux tabs with a pending owner
   // decision (❓-prefixed by ~/.claude/hooks/lib/workspace-mark-done.js).
@@ -1635,6 +1640,12 @@ async function main() {
     console.log(`[digest] Resend sent-today guard: ${resendGuard.verdict} — ${resendGuard.reason}`);
   }
 
+  if (autofixOnly) {
+    console.log('[digest] --autofix-only: autofix + canary done, nothing sent');
+    if (invariantViolations.length) process.exitCode = 1;
+    return;
+  }
+
   if (dryRun) {
     const out = path.join(REPO, 'data', 'audit', 'morning-digest-preview.html');
     fs.mkdirSync(path.dirname(out), { recursive: true });
@@ -1681,7 +1692,8 @@ async function main() {
 
   if (resendGuard && !args.force && resendGuard.verdict !== 'send') {
     console.error(`[digest] refusing to send: Resend guard says ${resendGuard.verdict} (${resendGuard.reason}).`);
-    process.exit(resendGuard.verdict === 'already-sent' ? 1 : 2);
+    // Exit 3 = already sent today: the Action maps it to green (a retry cron must not page); 2 = could not tell stays red.
+    process.exit(resendGuard.verdict === 'already-sent' ? 3 : 2);
   }
 
   const apiKey = process.env.RESEND_API_KEY;

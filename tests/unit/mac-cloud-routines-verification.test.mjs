@@ -29,9 +29,14 @@ test('every retired entry names a replacement and watchers', () => {
 });
 
 test('Mac labels whose cloud replacement is unproven are not retired yet', () => {
-  for (const l of ['com.broadwayscore.morning-digest', 'com.broadwayscore.newsletter-sunday-review', 'com.bwsc.opening-night-backup-trigger']) {
+  for (const l of ['com.broadwayscore.newsletter-sunday-review', 'com.bwsc.opening-night-backup-trigger']) {
     assert.ok(!labels.includes(l), `${l} retired before its cloud routine was proven`);
   }
+});
+
+// BRO-6764: the digest now sends from .github/workflows/morning-digest-action.yml (proof: morning-digest-action.test.mjs).
+test('morning-digest is retired once the Action replaces it (BRO-6764)', () => {
+  assert.ok(labels.includes('com.broadwayscore.morning-digest'));
 });
 
 test('auth-health distinguishes plan usage cap from auth failure', () => {

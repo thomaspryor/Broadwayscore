@@ -1,36 +1,50 @@
-name: Morning Digest (Action dry-run)
+name: Morning Digest
 
-# BRO-6230 (Mac-to-cloud Phase 2a): builds the owner's morning digest on GitHub
-# instead of the Mac Studio, as a DRY RUN, and compares it with the digest the
-# Mac really sent today. It never sends: there is no send mode until cutover
-# (cutover checklist on BRO-6230; the Mac launchd job is still the only sender).
+# BRO-6764 (Mac-to-cloud Phase 2b): this Action is the owner's morning digest sender. It was a
+# dry run in BRO-6230; the Mac launchd job (com.broadwayscore.morning-digest) is retired in
+# config/mac-retired.json and booted out by the reconciler on 2026-11-04 (retiredAt 2026-11-01
+# + 3 days grace).
 #
-# Public repo, public logs: the digest's own output goes to a file on the runner,
-# the preview HTML (it can hold signed dispatch links) is never uploaded, and the
-# only public lines are counts and fixed section headings. Pass pubkey_b64 (a
-# one-time RSA public key, base64 PEM, see scripts/lib/sealed-output.js) to get
-# the line-level diff and the run output sealed between the run-script markers.
+# Sends: schedule, or workflow_dispatch with send=true. Both run send-morning-digest.js
+# --send-to-owner --no-autofix --skip-mac-local --resend-sent-guard: never a broadcast (rule 17),
+# one owner email a day (the guard refuses when Resend already shows today's digest; exit 3 =
+# already sent = green; any unreadable guard = red, never a send). Autofix and the canary are
+# NOT here: the Action rows are report-only, and the Mac runs them via
+# scripts/launchd/com.broadwayscore.digest-autofix.plist (--autofix-only).
 #
-# Snapshots (data/audit/*-snapshot.json, data/freshness-report.json) are pinned
-# to the main commit current when the Mac sent, so the diff shows code and
-# environment differences, not 5 hours of data drift. Live reads (Linear,
-# GitHub, Resend) are not pinned.
+# Scheduled runs go through scripts/lib/digest-enable-gate.js: nothing before ENABLE_FROM (the
+# first ET day the Mac job is certainly booted out) and nothing before 07:45 ET. The cron lines
+# cover both DST offsets (07:50 EDT = 11:50Z, 07:50 EST = 12:50Z, plus a retry), so no seasonal
+# edit is needed. ROLLBACK: delete the schedule block below, then un-retire the Mac label
+# (config/mac-retired.json _rollback).
 #
-# Flags: --no-autofix (no dispatch fleet on a runner), --skip-mac-local (Mac-only
-# ledgers and tabs, named in one line in the email), --resend-sent-guard (the
-# send-once guard a second machine can see; dry-run reports its verdict).
-# Schedule: off. The cron is UTC: 11:30 is 07:30 EDT but 06:30 EST (after
-# early November), so pick the cutover-season value. At cutover uncomment it AND set repo variable
-# MORNING_DIGEST_ACTION_ENABLED=true; the job refuses schedule events without it.
+# Dispatch without send=true is still the dry run + compare against the Mac's email (kept until
+# the first real scheduled send is verified, then scripts/morning-digest-compare.js goes).
+#
+# Public repo, public logs: the digest's own output goes to a file on the runner, the preview HTML
+# (it can hold signed dispatch links) is never uploaded, and the only public lines are counts and
+# fixed section headings. In dry-run mode pass pubkey_b64 (a one-time RSA public key, base64 PEM,
+# see scripts/lib/sealed-output.js) to get the line-level diff sealed between the run-script markers.
 on:
-  # schedule:
-  #   - cron: '30 11 * * *'
+  schedule:
+    - cron: '50 11 * * *'
+    - cron: '50 12 * * *'
+    - cron: '50 13 * * *'
   workflow_dispatch:
     inputs:
+      send:
+        description: 'Really send today''s digest to the owner (guarded: refuses if already sent today)'
+        required: false
+        type: boolean
+        default: false
       pubkey_b64:
-        description: 'One-time public key (base64 PEM) to seal the full diff + run output to'
+        description: 'Dry-run only: one-time public key (base64 PEM) to seal the full diff + run output to'
         required: false
         default: ''
+
+env:
+  # First ET day a scheduled run may send. Mac job boots out 2026-11-04T00:00Z+ (see above).
+  ENABLE_FROM: '2026-11-04'
 
 concurrency:
   group: morning-digest-action
@@ -43,7 +57,6 @@ permissions:
 
 jobs:
   digest:
-    if: github.event_name == 'workflow_dispatch' || vars.MORNING_DIGEST_ACTION_ENABLED == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -58,12 +71,14 @@ jobs:
           node-version: 22
 
       - name: Fetch today's Mac-sent digest from Resend
+        if: github.event_name == 'workflow_dispatch' && !inputs.send
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/morning-digest-compare.js --fetch-mac --out="$RUNNER_TEMP/mac"
 
       - name: Pin snapshots to when the Mac sent
+        if: github.event_name == 'workflow_dispatch' && !inputs.send
         run: |
           # BRO-6029: git_net caps each fetch/pull/push so a hung transfer fails that attempt instead of waiting for the job timeout.
           . "${GITHUB_WORKSPACE}/scripts/lib/git-net-timeout.sh" 2>/dev/null || git_net() { shift; git "$@"; }
@@ -77,6 +92,7 @@ jobs:
           echo "Snapshots pinned to $SHA (main as of $SENT)."
 
       - name: Build the digest (dry run, output kept off the public log)
+        if: github.event_name == 'workflow_dispatch' && !inputs.send
         # lint-allow-swallow: not swallowed; '|| status=$?' keeps the exit code and the step ends with exit "$status"
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -93,7 +109,7 @@ jobs:
           exit "$status"
 
       - name: Compare with the Mac digest
-        if: always()
+        if: always() && github.event_name == 'workflow_dispatch' && !inputs.send
         env:
           PUBKEY_B64: ${{ inputs.pubkey_b64 }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -103,11 +119,33 @@ jobs:
             --action=data/audit/morning-digest-preview.html --log="$RUNNER_TEMP/digest.log" \
             ${PUBKEY_B64:+--pubkey-b64="$PUBKEY_B64"}
 
+      - name: Scheduled-send gate (ENABLE_FROM and 07:45 ET)
+        id: gate
+        if: github.event_name == 'schedule'
+        run: node scripts/lib/digest-enable-gate.js "$ENABLE_FROM"
+
+      - name: Send the digest to the owner
+        if: (github.event_name == 'schedule' && steps.gate.outputs.go == 'true') || (github.event_name == 'workflow_dispatch' && inputs.send)
+        # lint-allow-swallow: not swallowed; '|| status=$?' keeps the exit code, exit 3 (already sent today) is mapped to green below, everything else exits with it
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          status=0
+          node scripts/send-morning-digest.js --send-to-owner --no-autofix --skip-mac-local --resend-sent-guard \
+            > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
+          echo "digest send exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, not published)"
+          grep -E '^\[digest\] (Resend sent-today guard|sent to|refusing)' "$RUNNER_TEMP/digest.log" | sed -E 's/\(subject: .*$/(subject withheld)/; s/sent to [^ ]+/sent to owner/' || true
+          if [ "$status" -eq 3 ]; then echo "Already sent today: nothing to do."; exit 0; fi
+          exit "$status"
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Morning Digest (Action dry-run) Failed'
-          # Manual dry-runs warn; a scheduled (post-cutover) run that fails means no
-          # digest, and with MAC_ALIVE_SIGNAL=heartbeat nothing else would notice.
+          title: 'Morning Digest (Action) Failed'
+          # Manual dry-runs warn; a scheduled run that fails can mean no digest today.
           severity: ${{ github.event_name == 'schedule' && 'critical' || 'warning' }}
