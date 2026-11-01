@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T13:05:47.266Z",
+  "timestamp": "2026-11-01T13:33:24.666Z",
   "stats": {
-    "totalReviews": 78326,
-    "alreadyFlagged": 21780,
+    "totalReviews": 78339,
+    "alreadyFlagged": 21775,
     "dateGuardCatches": 242,
-    "directorMismatch": 3345,
-    "tvFilmSignals": 2225,
-    "londonSignals": 3548,
+    "directorMismatch": 3351,
+    "tvFilmSignals": 2226,
+    "londonSignals": 3551,
     "offBroadwaySignals": 731,
     "yearMismatch": 330,
-    "noPublishDate": 8706
+    "noPublishDate": 8685
   },
   "findings": [
     {
@@ -28373,6 +28373,19 @@
     },
     {
       "showId": "harmony-off-broadway-2022",
+      "file": "queerty--matthew-wexler.json",
+      "publishDate": "2022-04-13",
+      "url": "https://www.queerty.com/barry-manilow-strikes-chord-harmony-premieres-off-broadway-20220413",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"warren carlyle\" from harmony-2023"
+        }
+      ]
+    },
+    {
+      "showId": "harmony-off-broadway-2022",
       "file": "stagebuddy--unknown.json",
       "score": 65,
       "publishDate": null,
@@ -29880,6 +29893,25 @@
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 82,
+      "publishDate": "February 12th, 2026",
+      "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"amy marie seidel\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
       "file": "the-jewish-chronicle--john-nathan.json",
       "score": 76,
       "publishDate": "2026-02-17",
@@ -29926,6 +29958,20 @@
       "score": 44,
       "publishDate": "February 12th, 2026",
       "url": "https://www.timeout.com/london/theatre/here-there-are-blueberries-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": 85,
+      "publishDate": "February 12th, 2026",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -30834,6 +30880,7 @@
     {
       "showId": "ideal-lowry-regional-2025",
       "file": "ilovemanchester--eric-riley.json",
+      "score": 87,
       "publishDate": "2025-09-10",
       "url": "https://ilovemanchester.com/review-ideal-lowry-johnny-vegas",
       "findings": [
@@ -35219,6 +35266,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "john-proctor-is-the-villain-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": 93,
+      "publishDate": "2026-03-27",
+      "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from john-proctor-is-the-villain-2025"
         }
       ]
     },
@@ -45113,7 +45174,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "theatrely--juan-a-ramirez.json",
-      "score": 68,
+      "score": 72,
       "publishDate": "2026-09-18",
       "url": "https://www.theatrely.com/post/review-roundup-pre-existing-condition-the-body-of-mary",
       "findings": [
@@ -48614,6 +48675,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "hollywood-reporter--david-rooney.json",
+      "publishDate": "2017-10-25",
+      "url": "http://www.hollywoodreporter.com/review/people-places-things-theater-1051947",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
         }
       ]
     },
@@ -67489,6 +67563,20 @@
       ]
     },
     {
+      "showId": "the-lieutenant-of-inishmore-liverpool-everyman-regional-2024",
+      "file": "guardian--mark-fisher.json",
+      "score": 71,
+      "publishDate": "2024-09-30",
+      "url": "https://www.theguardian.com/culture/2024/sep/30/the-lieutenant-of-inishmore-review-martin-mcdonagh-everyman-liverpool",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-lifespan-of-a-fact-2018",
       "file": "ew--leah-greenblatt.json",
       "score": 73,
@@ -69124,6 +69212,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-old-man-and-the-pool-regional-2022",
+      "file": "third-coast-review--lisa-trifone.json",
+      "publishDate": "2022-05-10",
+      "url": "https://thirdcoastreview.com/2022/05/10/stages-review-old-man-pool/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -71144,25 +71245,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mark bell\" from the-play-that-goes-wrong-2017"
-        }
-      ]
-    },
-    {
-      "showId": "the-playboy-of-the-western-world-west-end-2025",
-      "file": "standard--nick-curtis.json",
-      "score": 66,
-      "publishDate": "December 12th, 2025",
-      "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -90227,6 +90309,7 @@
     {
       "showId": "community-birmingham-rep-regional-2025",
       "file": "theatreandtonic--emily.json",
+      "score": 86,
       "publishDate": "2025-02-05",
       "url": "https://theatreandtonic.co.uk/blog/community-birmingham-rep-review",
       "findings": [
@@ -113242,6 +113325,32 @@
     },
     {
       "showId": "people-places-and-things-west-end-2016",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2016-04-01",
+      "url": "http://www.express.co.uk/entertainment/theatre/657117/Theatre-review-People-places-and-things",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "radio-times--tony-peters.json",
+      "publishDate": "2016-03-24",
+      "url": "http://www.radiotimes.com/offers/travel/news/2016-03-24/denise-gough-is-sensational-as-a-recovering-addict-in-people-places-and-things---theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2016",
       "file": "standard--fiona-mountford.json",
       "score": 89,
       "publishDate": "2016-03-24",
@@ -118189,6 +118298,7 @@
     {
       "showId": "starter-for-ten-birmingham-rep-regional-2025",
       "file": "theatreandtonic--emmie-newitt.json",
+      "score": 88,
       "publishDate": "2025-10-24",
       "url": "https://theatreandtonic.co.uk/blog/starter-for-ten-at-birmingham-rep-review",
       "findings": [
@@ -120627,6 +120737,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
+        }
+      ]
+    },
+    {
+      "showId": "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026",
+      "file": "theatreandtonic--roby.json",
+      "score": 87,
+      "publishDate": "2026-05-10",
+      "url": "https://theatreandtonic.co.uk/blog/the-assassination-of-margaret-thatcher-at-liverpool-everyman-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -124941,6 +125065,7 @@
     {
       "showId": "the-house-party-leeds-regional-2025",
       "file": "theatreandtonic--adam.json",
+      "score": 79,
       "publishDate": "2025-02-27",
       "url": "https://theatreandtonic.co.uk/blog/the-house-party-uk-tour-review-2025",
       "findings": [
@@ -127393,6 +127518,20 @@
       ]
     },
     {
+      "showId": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+      "file": "theatreandtonic--thomas.json",
+      "score": 81,
+      "publishDate": "2026-02-12",
+      "url": "https://theatreandtonic.co.uk/blog/the-night-larry-kramer-kissed-me-at-hope-mill-theatre-manchester-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-night-of-the-iguana-west-end-2019",
       "file": "independent--paul-taylor.json",
       "score": 90,
@@ -128353,6 +128492,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-playboy-of-the-western-world-west-end-2025",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2025-12-12",
+      "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -133069,19 +133221,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "twelfth-night-royal-shakespeare-regional-2025",
-      "file": "london-theatre--julia-rank.json",
-      "publishDate": "2025-12-17",
-      "url": "https://www.londontheatre.co.uk/reviews/twelfth-night-review-barbican",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
