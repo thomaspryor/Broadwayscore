@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6767",
   "planId": "4f3ea2fb-9470-4991-990e-9f68fc20504d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T14:37:56.816Z",
   "submitter": {
     "name": null,
@@ -196,5 +196,44 @@
         "crossLinkFrom": "parsifal-off-broadway-2027"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T14:58:23.991Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added tosca-off-broadway-2017 (priorRuns link on tosca-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added samson-et-dalila-off-broadway-2018 (priorRuns link on samson-et-dalila-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added medea-off-broadway-2022 (priorRuns link on medea-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added maria-stuarda-off-broadway-2012 (priorRuns link on maria-stuarda-off-broadway-2026)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added otello-off-broadway-2015 (priorRuns link on otello-off-broadway-2027)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added der-rosenkavalier-off-broadway-2017 (priorRuns link on der-rosenkavalier-off-broadway-2027)"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added parsifal-off-broadway-2013 (priorRuns link on parsifal-off-broadway-2027)"
+    }
+  ],
+  "executedIn": "ci"
 }
