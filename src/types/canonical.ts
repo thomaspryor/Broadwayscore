@@ -151,6 +151,7 @@ export interface Show {
   intermissions?: number;
   synopsis?: string;
   ageRecommendation?: string;     // e.g., "Ages 12+", "All ages"
+  liveInHd?: { date: string; encoreDate?: string | null; sourceUrl: string } | null; // Met Live in HD cinema broadcast (BRO-6769)
   limitedRun?: boolean;           // true for shows with announced closing dates
   priorRuns?: PriorRun[];         // Earlier runs of the same artistic production
   tourLegs?: TourLeg[];           // Venue stops of the CURRENT touring production (not a prior/distinct run)
