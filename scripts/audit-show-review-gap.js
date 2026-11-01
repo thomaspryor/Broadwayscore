@@ -3229,6 +3229,19 @@ async function main(argv = process.argv.slice(2)) {
       outlets: outletsToWrite,
     });
     console.log(`Wrote unknown-outlets: ${UNKNOWN_OUTLETS_PATH} (${outletsToWrite.length} hosts)`);
+    // BRO-6762: propose registry entries for the unregistered hosts instead of leaving them
+    // as a silent 'unregistered-host' block. Advisory output; never fails the audit.
+    try {
+      const { buildProposals } = require('./lib/outlet-registry-proposals');
+      const reg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
+      const { proposals, skipped } = buildProposals({ outlets: outletsToWrite }, reg.outlets || reg);
+      writeJsonAtomic(path.join(path.dirname(UNKNOWN_OUTLETS_PATH), 'outlet-registry-proposals.json'), {
+        generatedAt: toWrite.generatedAt, count: proposals.length, skippedCount: skipped.length, proposals,
+      });
+      console.log(`Wrote outlet-registry-proposals: ${proposals.length} proposed, ${skipped.length} skipped`);
+    } catch (e) {
+      console.warn(`outlet-registry-proposals skipped: ${e.message}`);
+    }
     return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: outletsToWrite };
   }
   return { audit, mergedResults, unknownOutlets, blast, lockHeld: held, riskyShowIds: riskyResults.map(r => r.showId), quarantined, outletsWritten: unknownOutlets };

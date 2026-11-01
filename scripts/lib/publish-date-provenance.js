@@ -24,7 +24,9 @@
  */
 
 /** dateSource values that mark a stored publishDate as a placeholder a real page date may replace. */
-const PROVISIONAL_DATE_SOURCES = new Set(['llm-scoring', 'roundup-article']);
+const PROVISIONAL_DATE_SOURCES = new Set(['llm-scoring', 'roundup-article', 'archive-first-capture']);
+// BRO-6762: 'aggregator-listing:<src>' (ingest fallback date) is provisional too.
+const PROVISIONAL_DATE_SOURCE_PREFIXES = ['aggregator-listing'];
 
 const YMD = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -126,7 +128,18 @@ function roundupEntryDateFields(roundupArticleDate) {
  * @returns {boolean}
  */
 function isProvisionalPublishDate(review) {
-  return !!(review && review.publishDate && PROVISIONAL_DATE_SOURCES.has(review.dateSource));
+  return !!(review && review.publishDate && (PROVISIONAL_DATE_SOURCES.has(review.dateSource)
+    || PROVISIONAL_DATE_SOURCE_PREFIXES.some((p) => String(review.dateSource || '').startsWith(p))));
+}
+
+/**
+ * BRO-6762: a date borrowed when the page had none (aggregator listing date, or the
+ * archive.org first capture, which is only an upper bound). Date-plausibility and
+ * flag-basis guards must not let it move a flag, same as an llm-scoring guess.
+ */
+function isFallbackPublishDate(review) {
+  const src = String((review && review.dateSource) || '');
+  return src === 'archive-first-capture' || src.startsWith('aggregator-listing');
 }
 
 /**
@@ -318,6 +331,7 @@ module.exports = {
   isPlausibleGuess,
   roundupEntryDateFields,
   isProvisionalPublishDate,
+  isFallbackPublishDate,
   isPageDateSource,
   htmlDateSourceFor,
   MAX_PAGE_DATE_DIVERGENCE_DAYS,

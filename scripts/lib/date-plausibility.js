@@ -79,7 +79,7 @@ function evaluateDatePlausibility({ review, show }) {
   // fills when publishDate is empty). Genuinely dated reviews from every other
   // source — url, text-regex, html-*, json-ld, text-llm (the purpose-built
   // extractor that reads the article) — are unaffected.
-  if (review.dateSource === 'llm-scoring') return empty;
+  if (review.dateSource === 'llm-scoring' || require('./publish-date-provenance').isFallbackPublishDate(review)) return empty;
 
   const pub = parsePlausibilityDate(review.publishDate);
   const earliestStr = earliestShowDate(show);

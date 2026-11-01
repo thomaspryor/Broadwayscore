@@ -32,7 +32,7 @@ function crossMarketDateGate(review, targetShow) {
   if (!review || !targetShow) return { ok: false, reason: 'no-review-or-target' };
   const pub = parseDate(review.publishDate);
   if (!pub) return { ok: false, reason: 'no-publish-date' };
-  if (review.dateSource === 'llm-scoring') return { ok: false, reason: 'publish-date-llm-guessed' };
+  if (review.dateSource === 'llm-scoring' || require('./publish-date-provenance').isFallbackPublishDate(review)) return { ok: false, reason: 'publish-date-llm-guessed' };
 
   const start = parseDate(earliestShowDate(targetShow));
   if (!start) return { ok: false, reason: 'target-has-no-start-date' };
