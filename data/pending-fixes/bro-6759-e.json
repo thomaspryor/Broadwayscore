@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6759-e",
   "planId": "d625b0a5-6f39-4f29-929b-cf5ecfa3356e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T13:28:27.569Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,29 @@
         "description": "BRO-6759 appropriate-2023"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T15:56:49.270Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wit-2012/usatoday--elysa-gardner.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary wit-2012/bloomberg--jeremy-gerard.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wit-2012/usatoday--elysa-gardner.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "appropriate-2023/deadline--greg-evans.json crossOutletClearReason: null -> \"BRO-6759: Deadline review by Greg Evans is the original; the Guardian row held Deadline text (the Guardian file quotes a Deadline editor note).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "appropriate-2023/deadline--greg-evans.json crossOutletDuplicate: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }
