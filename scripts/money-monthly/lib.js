@@ -1,0 +1,140 @@
+'use strict';
+// BRO-6773: pure logic for the monthly Profitability Scorecard email.
+// Preview-only: nothing here sends or creates a broadcast (CLAUDE.md §17).
+const { isFreshRecoupmentNews } = require('../lib/recoupment-news');
+
+const RECOUPED_DESIGNATIONS = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Recouped']);
+const LOSS_DESIGNATIONS = new Set(['Fizzle', 'Did Not Recoup', 'Flop']);
+const FINAL_DESIGNATIONS = new Set([...RECOUPED_DESIGNATIONS, ...LOSS_DESIGNATIONS, 'Squeaker']);
+
+// A firstAdded day with more than this many entries is a bulk backfill, not news.
+const BULK_DAY_THRESHOLD = 8;
+const ESTIMATE_MOVE_MIN_PTS = 15;
+const MAX_ITEMS = 5;
+const SITE = 'https://broadwayscorecard.com';
+
+const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+function fmtDay(d) {
+  const [y, m, day] = d.split('-').map(Number);
+  return `${MONTHS[m - 1]} ${day}, ${y}`;
+}
+
+// Window for the issue: the calendar month before `today` (NY date string), or [since, today].
+function resolveWindow({ today, month, since }) {
+  const t = new Date(`${today}T12:00:00Z`);
+  if (since) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(since)) throw new Error(`bad --since: ${since}`);
+    return { start: since, end: today, label: `since ${fmtDay(since)}`, monthKey: today.slice(0, 7), catchup: true };
+  }
+  let y; let m;
+  if (month) {
+    const mm = /^(\d{4})-(\d{2})$/.exec(month);
+    if (!mm) throw new Error(`bad --month: ${month}`);
+    y = Number(mm[1]); m = Number(mm[2]);
+  } else {
+    y = t.getUTCFullYear(); m = t.getUTCMonth(); // 0-based current month == 1-based previous month
+    if (m === 0) { y -= 1; m = 12; }
+  }
+  const last = new Date(Date.UTC(y, m, 0)).getUTCDate();
+  const pad = (n) => String(n).padStart(2, '0');
+  return { start: `${y}-${pad(m)}-01`, end: `${y}-${pad(m)}-${pad(last)}`, label: MONTHS[m - 1], monthKey: `${y}-${pad(m)}`, catchup: false };
+}
+
+function usd(n) {
+  if (!Number.isFinite(n)) return '';
+  if (n >= 1e6) return `$${(n / 1e6).toFixed(n % 1e6 === 0 ? 0 : 1)}M`;
+  return `$${Math.round(n / 1e3)}K`;
+}
+
+function bulkDays(commercial) {
+  const counts = {};
+  for (const e of Object.values(commercial)) {
+    if (e && e.firstAdded) { const d = String(e.firstAdded).slice(0, 10); counts[d] = (counts[d] || 0) + 1; }
+  }
+  return new Set(Object.keys(counts).filter((d) => counts[d] > BULK_DAY_THRESHOLD));
+}
+
+const midOf = (r) => (Array.isArray(r) && r.length >= 2 ? (r.length === 3 ? r[1] : (r[0] + r[1]) / 2) : null);
+
+function snapshotOf(commercial) {
+  const out = {};
+  for (const [slug, e] of Object.entries(commercial)) {
+    if (!e) continue;
+    out[slug] = { pct: midOf(e.modelRecoupmentPct), cap: Number.isFinite(e.capitalization) ? e.capitalization : null, designation: e.designation || null };
+  }
+  return out;
+}
+
+function buildIssue({ commercial, shows, snapshot, window: w }) {
+  const bySlug = new Map(shows.filter((s) => s.market === 'broadway').map((s) => [s.slug, s]));
+  const bulk = bulkDays(commercial);
+  const link = (slug) => `${SITE}/show/${slug}`;
+
+  const recoupments = [];
+  const closings = [];
+  const capitalization = [];
+  for (const [slug, e] of Object.entries(commercial)) {
+    const show = bySlug.get(slug);
+    if (!e || !show) continue;
+    if (isFreshRecoupmentNews(e, w.start, w.end) && !bulk.has(String(e.firstAdded || '').slice(0, 10))) {
+      recoupments.push({ slug, title: show.title, date: e.recoupedDate, designation: e.designation, url: link(slug) });
+    }
+    if (show.status === 'closed' && show.closingDate >= w.start && show.closingDate <= w.end && FINAL_DESIGNATIONS.has(e.designation) && !e.nonprofitOrg) {
+      closings.push({ slug, title: show.title, closed: show.closingDate, designation: e.designation, capitalization: e.capitalization || null, url: link(slug) });
+    }
+    const fa = e.firstAdded ? String(e.firstAdded).slice(0, 10) : null;
+    const prev = snapshot && snapshot[slug];
+    const newlyDisclosed = snapshot ? !!prev && prev.cap == null : !!fa && fa >= w.start && fa <= w.end && !bulk.has(fa);
+    const current = show.status !== 'closed' || (show.closingDate >= w.start && show.closingDate <= w.end); // an old closed show added late is backfill, not news
+    if (newlyDisclosed && current && Number.isFinite(e.capitalization) && e.capitalizationSource && !/^no verified/i.test(e.capitalizationSource) && !e.modelCapitalizationEstimate && !e.nonprofitOrg) {
+      capitalization.push({ slug, title: show.title, capitalization: e.capitalization, source: e.capitalizationSource, url: link(slug) });
+    }
+  }
+  const moves = [];
+  if (snapshot) {
+    for (const [slug, e] of Object.entries(commercial)) {
+      const show = bySlug.get(slug); const prev = snapshot[slug];
+      if (!e || !show || !prev || show.status !== 'open' || e.recouped) continue;
+      const now = midOf(e.modelRecoupmentPct);
+      if (now == null || prev.pct == null) continue;
+      const delta = Math.round(now - prev.pct);
+      if (Math.abs(delta) >= ESTIMATE_MOVE_MIN_PTS) moves.push({ slug, title: show.title, from: Math.round(prev.pct), to: Math.round(now), delta, url: link(slug) });
+    }
+    moves.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+  }
+  recoupments.sort((a, b) => a.title.localeCompare(b.title));
+  closings.sort((a, b) => a.closed.localeCompare(b.closed));
+  capitalization.sort((a, b) => b.capitalization - a.capitalization);
+
+  // Headline stat: how closed Broadway shows with a final label ended up.
+  let rec = 0; let loss = 0;
+  for (const [slug, e] of Object.entries(commercial)) {
+    const show = bySlug.get(slug);
+    if (!e || !show || show.status !== 'closed' || e.nonprofitOrg || show.type === 'tour') continue;
+    if (RECOUPED_DESIGNATIONS.has(e.designation)) rec++; else if (LOSS_DESIGNATIONS.has(e.designation)) loss++;
+  }
+  const stat = rec + loss >= 20 ? { recouped: rec, total: rec + loss, pct: Math.round((100 * rec) / (rec + loss)) } : null;
+
+  const sections = {
+    recoupments: recoupments.slice(0, MAX_ITEMS),
+    closings: closings.slice(0, MAX_ITEMS),
+    moves: moves.slice(0, MAX_ITEMS),
+    capitalization: capitalization.slice(0, MAX_ITEMS),
+  };
+  const newsCount = Object.values(sections).reduce((n, a) => n + a.length, 0);
+  return { window: w, sections, stat, newsCount, quiet: newsCount === 0, hasBaseline: !!snapshot };
+}
+
+function buildSubject(issue) {
+  const m = issue.window.catchup ? issue.window.label.replace('since ', 'Since ') : issue.window.label;
+  const { recoupments, closings } = issue.sections;
+  if (issue.quiet) return `Money Scorecard, ${m}: a quiet month, nothing new to report`;
+  const bits = [];
+  if (recoupments.length) bits.push(recoupments.length === 1 ? `${recoupments[0].title} recouped` : `${recoupments.length} recoupments`);
+  if (closings.length) bits.push(closings.length === 1 ? `${closings[0].title} closed as a ${closings[0].designation}` : `${closings.length} closings with final labels`);
+  if (!bits.length) bits.push('new money data');
+  return `Money Scorecard, ${m}: ${bits.join(' and ')}`;
+}
+
+module.exports = { resolveWindow, bulkDays, snapshotOf, buildIssue, buildSubject, usd, fmtDay, midOf, BULK_DAY_THRESHOLD, FINAL_DESIGNATIONS };

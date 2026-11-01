@@ -1,0 +1,96 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const L = require('./lib.js');
+const { renderHtml } = require('./render.js');
+const { planAudienceSync } = require('./audience.js');
+
+const show = (o) => ({ market: 'broadway', status: 'open', type: 'musical', ...o });
+const W = { start: '2026-10-01', end: '2026-10-31', label: 'October', monthKey: '2026-10', catchup: false };
+
+test('resolveWindow: previous calendar month, year rollover, since, bad input', () => {
+  assert.deepEqual(L.resolveWindow({ today: '2026-11-02' }).start, '2026-10-01');
+  assert.equal(L.resolveWindow({ today: '2026-11-02' }).end, '2026-10-31');
+  assert.equal(L.resolveWindow({ today: '2027-01-04' }).monthKey, '2026-12');
+  assert.equal(L.resolveWindow({ today: '2026-03-02' }).end, '2026-02-28');
+  assert.equal(L.resolveWindow({ today: '2026-11-01', since: '2026-09-01' }).catchup, true);
+  assert.throws(() => L.resolveWindow({ today: '2026-11-01', month: 'nope' }));
+});
+
+test('recoupments: fresh ones only, bulk-backfill days are skipped', () => {
+  const commercial = {
+    fresh: { recouped: true, recoupedDate: '2026-10', firstAdded: '2026-10-15T00:00:00Z', designation: 'Trickle' },
+    old: { recouped: true, recoupedDate: '2024-04', firstAdded: '2026-10-15T00:00:00Z' },
+  };
+  // 12 other entries stamped the same day make 2026-10-20 a bulk day
+  for (let i = 0; i < 12; i++) commercial[`bulk${i}`] = { recouped: true, recoupedDate: '2026-10', firstAdded: '2026-10-20T00:00:00Z' };
+  const shows = [show({ slug: 'fresh', title: 'Fresh' }), show({ slug: 'old', title: 'Old' }), ...Array.from({ length: 12 }, (_, i) => show({ slug: `bulk${i}`, title: `B${i}` }))];
+  const issue = L.buildIssue({ commercial, shows, snapshot: null, window: W });
+  assert.deepEqual(issue.sections.recoupments.map((r) => r.slug), ['fresh']);
+});
+
+test('closings: final label in window only; TBD, nonprofit, off-window and non-Broadway skipped', () => {
+  const commercial = {
+    a: { designation: 'Flop', capitalization: 9e6 }, b: { designation: 'TBD' }, c: { designation: 'Flop', nonprofitOrg: 'X' },
+    d: { designation: 'Flop' }, e: { designation: 'Fizzle' },
+  };
+  const shows = [
+    show({ slug: 'a', title: 'A', status: 'closed', closingDate: '2026-10-12' }),
+    show({ slug: 'b', title: 'B', status: 'closed', closingDate: '2026-10-12' }),
+    show({ slug: 'c', title: 'C', status: 'closed', closingDate: '2026-10-12' }),
+    show({ slug: 'd', title: 'D', status: 'closed', closingDate: '2026-09-12' }),
+    show({ slug: 'e', title: 'E', status: 'closed', closingDate: '2026-10-12', market: 'west-end' }),
+  ];
+  const issue = L.buildIssue({ commercial, shows, snapshot: null, window: W });
+  assert.deepEqual(issue.sections.closings.map((c) => c.slug), ['a']);
+});
+
+test('estimate moves need a baseline and ignore small or recouped shows', () => {
+  const commercial = { a: { modelRecoupmentPct: [10, 40, 70] }, b: { modelRecoupmentPct: [10, 45, 70] }, c: { modelRecoupmentPct: [0, 90, 100], recouped: true } };
+  const shows = ['a', 'b', 'c'].map((s) => show({ slug: s, title: s }));
+  assert.equal(L.buildIssue({ commercial, shows, snapshot: null, window: W }).sections.moves.length, 0);
+  const snapshot = { a: { pct: 20, cap: null }, b: { pct: 42, cap: null }, c: { pct: 10, cap: null } };
+  const moves = L.buildIssue({ commercial, shows, snapshot, window: W }).sections.moves;
+  assert.deepEqual(moves.map((m) => [m.slug, m.delta]), [['a', 20]]);
+});
+
+test('capitalization: skips estimates, unsourced, "no verified source" and old closed shows', () => {
+  const base = { firstAdded: '2026-10-05T00:00:00Z', capitalization: 5e6 };
+  const commercial = {
+    ok: { ...base, capitalizationSource: 'SEC Form D' },
+    nosrc: { ...base, capitalizationSource: 'No verified public source found' },
+    est: { ...base, capitalizationSource: 'x', modelCapitalizationEstimate: 5e6 },
+    oldclosed: { ...base, capitalizationSource: 'Playbill 2013' },
+  };
+  const shows = [show({ slug: 'ok', title: 'ok' }), show({ slug: 'nosrc', title: 'n' }), show({ slug: 'est', title: 'e' }), show({ slug: 'oldclosed', title: 'o', status: 'closed', closingDate: '2013-01-01' })];
+  assert.deepEqual(L.buildIssue({ commercial, shows, snapshot: null, window: W }).sections.capitalization.map((c) => c.slug), ['ok']);
+});
+
+test('quiet month: subject says so and the email says nothing crossed the bar', () => {
+  const issue = L.buildIssue({ commercial: {}, shows: [], snapshot: null, window: W });
+  assert.equal(issue.quiet, true);
+  assert.match(L.buildSubject(issue), /a quiet month/);
+  assert.match(renderHtml(issue), /Nothing crossed our bar/);
+});
+
+test('email copy: no em dashes, first-party links carry UTMs, unsubscribe link stays clean', () => {
+  const commercial = { a: { designation: 'Flop', capitalization: 9e6 } };
+  const issue = L.buildIssue({ commercial, shows: [show({ slug: 'a', title: 'A', status: 'closed', closingDate: '2026-10-12' })], snapshot: null, window: W });
+  const html = renderHtml(issue, { unsubscribeUrl: 'https://broadwayscorecard.com/unsubscribe?email=x%40y.com' });
+  assert.ok(!html.includes('—') && !L.buildSubject(issue).includes('—'));
+  assert.match(html, /show\/a\?utm_source=money-list/);
+  assert.match(html, /href="https:\/\/broadwayscorecard\.com\/unsubscribe\?email=x%40y\.com"/);
+  assert.match(L.buildSubject(issue), /A closed as a Flop/);
+});
+
+test('audience sync plan: dedupes against General, existing contacts, owner test and duplicates', () => {
+  const plan = planAudienceSync({
+    signups: [{ email: 'New@x.com' }, { email: 'new@x.com' }, { email: 'gen@x.com' }, { email: 'have@x.com' }, { email: 'bad' }, { email: '' }],
+    general: [{ email: 'GEN@x.com' }], existing: [{ email: 'have@x.com' }],
+  });
+  assert.deepEqual(plan.toAdd, ['new@x.com']);
+  assert.deepEqual(plan.inGeneral, ['gen@x.com']);
+  assert.deepEqual(plan.alreadyThere, ['have@x.com']);
+  assert.equal(plan.skipped, 3);
+});

@@ -1,0 +1,115 @@
+name: Money Monthly Draft
+
+# BRO-6773: builds the monthly Profitability Scorecard email and sends a [DRAFT]
+# preview to the OWNER ONLY (transactional, never a broadcast, CLAUDE.md §17).
+# The owner sends the real email from Resend. Nothing here creates or sends a
+# broadcast. The audience sync below runs as a DRY RUN only.
+#
+# Runs every Monday at 12 UTC; the schedule path only proceeds on the first
+# Monday of the month (cron cannot express "first Monday" on its own).
+
+on:
+  schedule:
+    - cron: '0 12 * * 1'
+  workflow_dispatch:
+    inputs:
+      since:
+        description: 'Optional catch-up start date YYYY-MM-DD (instead of last calendar month).'
+        required: false
+        default: ''
+      subjectPrefix:
+        description: 'Subject prefix.'
+        required: false
+        default: '[DRAFT]'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: money-monthly-draft
+  cancel-in-progress: false
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: First-Monday gate
+        id: gate
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(TZ=America/New_York date +%d | sed 's/^0//')" -gt 7 ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::not the first Monday of the month, skipping"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout repository
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        if: steps.gate.outputs.run == 'true'
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        if: steps.gate.outputs.run == 'true'
+
+      - name: Generate preview
+        shell: bash
+        if: steps.gate.outputs.run == 'true'
+        id: gen
+        env:
+          SINCE: ${{ github.event.inputs.since }}
+        run: |
+          ARGS=""
+          if [ -n "$SINCE" ]; then ARGS="--since=$SINCE"; fi
+          node scripts/money-monthly/generate.mjs $ARGS --out="$RUNNER_TEMP/money" | tee "$RUNNER_TEMP/gen.log"
+          echo "file=$(ls "$RUNNER_TEMP"/money/*.html | head -1)" >> "$GITHUB_OUTPUT"
+
+      - name: Send owner-only [DRAFT] preview (transactional)
+        if: steps.gate.outputs.run == 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          MONEY_SUBJECT_PREFIX: ${{ github.event.inputs.subjectPrefix || '[DRAFT]' }}
+        run: node scripts/money-monthly/send-preview.mjs --file="${{ steps.gen.outputs.file }}"
+
+      # Audience sync is read-only here (no --apply). The owner applies it once
+      # RESEND_MONEY_AUDIENCE_ID exists. Best effort: never fails the draft.
+      - name: Audience sync (DRY RUN)
+        shell: bash
+        if: steps.gate.outputs.run == 'true'
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+        run: node scripts/money-monthly/sync-audience.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+
+      # Persist this month's estimate baseline so next month can report moves.
+      - name: Commit estimate baseline
+        if: success() && steps.gate.outputs.run == 'true'
+        run: |
+          node scripts/money-monthly/generate.mjs --write-snapshot --out="$RUNNER_TEMP/money-snap" >/dev/null
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/money-monthly/snapshot.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m "chore(money-monthly): update estimate baseline [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::snapshot push failed"; exit 1; }
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Money Monthly Draft Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
