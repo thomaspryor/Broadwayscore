@@ -425,7 +425,7 @@ async function processShow(showId, deps = {}) {
     }
 
     // Pre-promotion filters: don't bother fetching wrong-production URLs.
-    if (NON_MET_OPERA_URL_MARKERS && hasNonMetOperaUrlMarker(url, operaHouseForVenue((loadShow(showId) || {}).venue))) {
+    if (NON_MET_OPERA_URL_MARKERS && hasNonMetOperaUrlMarker(url, operaHouseForVenue((loadShow(showId) || {}).venue)).rejected) {
       console.log(`  [${file}] REJECT: non-Met opera house URL — ${dry ? 'DRY, not deleting' : 'deleting'}`);
       if (!dry) fs.unlinkSync(filepath);
       rejected++;
