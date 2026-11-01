@@ -1,46 +1,6 @@
 {
   "entries": [
     {
-      "showId": "the-greatest-story-ever-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-29T17:29:56.780Z",
-      "dueAt": "2026-10-30T03:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-30T05:36:16.839Z"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-29T17:35:52.957Z",
-      "dueAt": "2026-10-30T03:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-30T05:36:16.839Z"
-    },
-    {
-      "showId": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-29T17:28:06.766Z",
-      "dueAt": "2026-10-30T09:28:06.766Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-30T13:07:07.325Z"
-    },
-    {
-      "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-29T17:25:33.579Z",
-      "dueAt": "2026-10-30T03:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-30T05:36:16.839Z"
-    },
-    {
-      "showId": "a-few-good-men-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-29T17:29:04.286Z",
-      "dueAt": "2026-10-30T03:15:00.000Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-30T05:36:16.839Z"
-    },
-    {
       "kind": "truncated-t1-refetch",
       "showId": "a-few-good-men-2026",
       "market": "broadway",
@@ -132,7 +92,8 @@
       "outletIds": [
         "guardian"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-01T18:50:18.632Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -144,7 +105,8 @@
       "outletIds": [
         "guardian"
       ],
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-01T18:50:18.632Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -155,6 +117,42 @@
       "offsetHours": 12,
       "outletIds": [
         "guardian"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "medea-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-01T18:50:18.632Z",
+      "dueAt": "2026-11-01T19:50:18.632Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "wsj"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "medea-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-01T18:50:18.632Z",
+      "dueAt": "2026-11-01T21:50:18.632Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "wsj"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "medea-off-broadway-2026",
+      "market": "broadway",
+      "queuedAt": "2026-11-01T18:50:18.632Z",
+      "dueAt": "2026-11-02T06:50:18.632Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "wsj"
       ],
       "attempted": false
     }
