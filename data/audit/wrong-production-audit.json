@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T16:05:43.860Z",
+  "timestamp": "2026-11-01T16:19:47.909Z",
   "stats": {
-    "totalReviews": 78426,
-    "alreadyFlagged": 21759,
+    "totalReviews": 78433,
+    "alreadyFlagged": 21762,
     "dateGuardCatches": 243,
-    "directorMismatch": 3365,
+    "directorMismatch": 3369,
     "tvFilmSignals": 2231,
-    "londonSignals": 3555,
-    "offBroadwaySignals": 727,
+    "londonSignals": 3554,
+    "offBroadwaySignals": 728,
     "yearMismatch": 333,
-    "noPublishDate": 8556
+    "noPublishDate": 8550
   },
   "findings": [
     {
@@ -1651,6 +1651,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2022-11-21",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7PRRZ7",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew warchus\" from a-christmas-carol-2019"
         }
       ]
     },
@@ -6081,20 +6094,6 @@
       "score": 93,
       "publishDate": null,
       "url": "https://frontmezzjunkies.com/2024/01/20/2st-broadway-appropriate/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
-        }
-      ]
-    },
-    {
-      "showId": "appropriate-2023",
-      "file": "guardian--adrian-horton.json",
-      "score": 88,
-      "publishDate": "December 19, 2023",
-      "url": "https://www.theguardian.com/stage/2023/dec/18/appropriate-broadway-review-sarah-paulson-branden-jacobs-jenkins",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -27935,6 +27934,20 @@
     },
     {
       "showId": "hangmen-off-broadway-2018",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "score": null,
+      "publishDate": "2018-03-03",
+      "url": "https://broadwayandme.blogspot.com/2018/03/yes-there-are-shows-i-like-edward.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 81,
       "publishDate": "2018-02-11",
@@ -28043,6 +28056,24 @@
     },
     {
       "showId": "hangmen-off-broadway-2018",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2018-02-06",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=IFB8RX",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
       "file": "newnownextcom--michael-musto.json",
       "score": 86,
       "publishDate": "2018-02-06",
@@ -28141,6 +28172,20 @@
       "score": 90,
       "publishDate": "2018-02-21",
       "url": "https://stagebuddy.com/theater/theater-review/review-hangmen",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
+      "file": "talkinbroadway--david-hurst.json",
+      "score": null,
+      "publishDate": "February 5th, 2018",
+      "url": "https://www.talkinbroadway.com/page/ob/02_05_18.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -85806,19 +85851,6 @@
       ]
     },
     {
-      "showId": "art-royal-bath-regional-2024",
-      "file": "artsdesk--unknown.json",
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/art-theatre-royal-bath-review-yasmina-rezas-smash-hit-back-tour-30-years-after-paris-premiere",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
       "showId": "art-west-end-2016",
       "file": "daily-mail--quentin-letts.json",
       "score": 78,
@@ -95471,6 +95503,20 @@
       "score": 66,
       "publishDate": "2018-02-02",
       "url": "http://thefrontrowcenter.com/2018/02/fire-and-air/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "fire-and-air-off-broadway-2018",
+      "file": "talkinbroadway--david-hurst.json",
+      "score": null,
+      "publishDate": "February 1st, 2018",
+      "url": "https://www.talkinbroadway.com/page/ob/02_01_18.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
