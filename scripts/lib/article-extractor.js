@@ -395,7 +395,9 @@ function extractLsaBody(html) {
 function extractCurtainUpBody(html) {
   const credit = /<table\b[^>]*class\s*=\s*["']?[^"'>]*\bcredit\b/i.exec(html);
   if (!credit) return null;
-  const region = html.slice(0, credit.index);
+  // Photo tables (class pic) can sit mid-review; drop them so the last </table>
+  // is the header/nav one and the whole review is kept.
+  const region = html.slice(0, credit.index).replace(/<table\b[^>]*class\s*=\s*["']?[^"'>]*\bpic\b[\s\S]*?<\/table>/gi, ' ');
   const start = region.toLowerCase().lastIndexOf('</table>');
   if (start < 0) return null;
   const body = stripHtml(region.slice(start + 8));
@@ -880,7 +882,7 @@ const PATTERNS = [
 const DEDICATED_EXTRACTOR_HOSTS = [
   'wsj.com', 'variety.com', 'lavocedinewyork.com', 'thestage.co.uk',
   'thetimes.co.uk', 'thetimes.com', 'lightingandsoundamerica.com',
-  'talkinbroadway.com', 'theatreweekly.com', 'curtainup.com',
+  'talkinbroadway.com', 'theatreweekly.com',
 ];
 
 const PROMO_BOILERPLATE_PATTERNS = [

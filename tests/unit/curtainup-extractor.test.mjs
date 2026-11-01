@@ -5,6 +5,7 @@ import { extractArticleText, extractCurtainUpBody } from '../../scripts/lib/arti
 
 const para = (n) => `Synthetic review paragraph ${n} about the staging, the performances and the design, long enough to count as prose.`;
 const PAGE = `<html><body><table><tr><td class=yellow><a href="index.html">HOME PAGE</a></td><td>
+<table><tr><td>Header nav cell</td></tr></table>
 <table class="pic" align="left"><tr><td><img src="x.jpg"><div>Caption text</div></td></tr></table>
 ${[1, 2, 3, 4].map(para).join('\n\n')}
 <table class = credit border="0"><tr><td bgcolor="#CCCCCC">Show Title<br>Directed by Someone<br>Reviewed by Critic Name based on press performance.</td></tr></table>
@@ -13,7 +14,7 @@ ${[1, 2, 3, 4].map(para).join('\n\n')}
 test('extracts the review between the photo table and the credit table', () => {
   const t = extractCurtainUpBody(PAGE);
   assert.ok(t.includes('Synthetic review paragraph 1') && t.includes('paragraph 4'));
-  assert.ok(!/HOME PAGE|Caption text|Directed by|Reviewed by/.test(t), t);
+  assert.ok(!/HOME PAGE|Header nav|Caption text|Directed by|Reviewed by/.test(t), t);
 });
 
 test('extractArticleText dispatches curtainup.com URLs to it', () => {
@@ -29,4 +30,16 @@ test('no credit table or a stub body fails loud (null)', () => {
 test('credit table with several class tokens still anchors', () => {
   const t = extractCurtainUpBody(PAGE.replace('class = credit', 'class="box credit"'));
   assert.ok(t && t.includes('paragraph 3'));
+});
+
+test('a photo table in the middle of the review does not cut the start off', () => {
+  const mid = PAGE.replace(para(3), `<table class="pic" align="right"><tr><td><img src="y.jpg"></td></tr></table>${para(3)}`);
+  const t = extractCurtainUpBody(mid);
+  assert.ok(t.includes('paragraph 1') && t.includes('paragraph 4'));
+});
+
+test('curtainup.com is not a dedicated host: pages without a credit table keep the generic fallback', () => {
+  const html = `<html><body>${[1, 2, 3, 4, 5].map((n) => `<p>${para(n)}</p>`).join('')}</body></html>`;
+  const t = extractArticleText(html, 'http://www.curtainup.com/old.html');
+  assert.ok(t && t.includes('paragraph 2'));
 });
