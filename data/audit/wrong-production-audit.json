@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T13:33:24.666Z",
+  "timestamp": "2026-11-01T14:07:26.393Z",
   "stats": {
-    "totalReviews": 78339,
-    "alreadyFlagged": 21775,
+    "totalReviews": 78352,
+    "alreadyFlagged": 21779,
     "dateGuardCatches": 242,
-    "directorMismatch": 3351,
-    "tvFilmSignals": 2226,
-    "londonSignals": 3551,
+    "directorMismatch": 3354,
+    "tvFilmSignals": 2229,
+    "londonSignals": 3553,
     "offBroadwaySignals": 731,
-    "yearMismatch": 330,
-    "noPublishDate": 8685
+    "yearMismatch": 332,
+    "noPublishDate": 8602
   },
   "findings": [
     {
@@ -4913,6 +4913,20 @@
       "score": 87,
       "publishDate": "2017-03-22",
       "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
+        }
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2017-03-21",
+      "url": "https://www.theguardian.com/stage/2017/mar/21/an-american-in-paris-five-star-review-minnelli-musical-dominion-london",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -17981,6 +17995,20 @@
     },
     {
       "showId": "dirty-dancing-tour-2026",
+      "file": "around-the-town-chicago--paul-lisnek.json",
+      "score": 63,
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
       "file": "broadwayworld--angela-lin.json",
       "score": 88,
       "publishDate": "2026-09-12",
@@ -25187,6 +25215,20 @@
       ]
     },
     {
+      "showId": "good-night-oscar-regional-2022",
+      "file": "chicagotribune--chris-jones.json",
+      "score": null,
+      "publishDate": "2022-03-22",
+      "url": "https://www.chicagotribune.com/2022/03/22/review-sean-hayes-is-a-revelation-in-good-night-oscar-at-goodman-theatre-broadway-is-surely-next/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lisa peterson\" from good-night-oscar-2023"
+        }
+      ]
+    },
+    {
       "showId": "good-people-2011",
       "file": "theater-life--eric-march.json",
       "score": 57,
@@ -25405,6 +25447,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-regional-2022",
+      "file": "stageandcinema--stephen-best.json",
+      "publishDate": "2022-02-06",
+      "url": "https://stageandcinema.com/2022/02/05/groundhog-day-musical-paramount/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2017 (2x) more than 2022 (1x). 2017 matches production: groundhog-day-2017"
         }
       ]
     },
@@ -31368,6 +31423,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "in-every-generation-regional-2022",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2022-04-13",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/the-big-meal/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -38882,6 +38950,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"joe mantello\" from little-bear-ridge-road-2025"
+        }
+      ]
+    },
+    {
+      "showId": "little-shop-of-horrors-crucible-regional-2025",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": 80,
+      "publishDate": "2024-12-13",
+      "url": "https://theatreandtonic.co.uk/blog/little-shop-of-horrors-crucible-theatre-sheffield-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (41x) more than 2024 (1x). 2026 matches production: little-shop-of-horrors-regional-2026"
         }
       ]
     },
@@ -52028,6 +52115,19 @@
       "score": 75,
       "publishDate": "2011-10-21",
       "url": "https://www.nytimes.com/2011/10/21/theater/reviews/relatively-speaking-at-brooks-atkinson-theater-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "relentless-regional-2022",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2022-02-02",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-relentless-timeline-theatre-review-20220202-bmog3s3mljeyjduwxkbugf355y-story.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -79881,6 +79981,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 614d before show (October 2nd, 2024 vs 2026-06-08)"
+        }
+      ]
+    },
+    {
+      "showId": "white-regional-2022",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2022-03-20",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-stand-up-kolvenbach-definition-review-20220320-puziyh3zpjc6pbfvc3td3roice-story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -130480,6 +130593,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 61,
+      "publishDate": "February 11th, 2026",
+      "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
