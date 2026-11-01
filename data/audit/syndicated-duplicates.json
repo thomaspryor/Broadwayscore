@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-01T16:12:14.837Z",
+  "generatedAt": "2026-11-01T16:25:35.286Z",
   "threshold": 50,
   "summary": {
     "totalSyndicatedPairs": 2,
-    "newlyFlagged": 2,
-    "alreadyFlagged": 0,
-    "criticsAffected": 1,
-    "showsAffected": 2,
-    "avgSimilarity": 70,
-    "avgScoreDiff": 6
+    "newlyFlagged": 0,
+    "alreadyFlagged": 2,
+    "criticsAffected": 0,
+    "showsAffected": 0,
+    "avgSimilarity": 0,
+    "avgScoreDiff": 0
   },
   "syndicationPairs": [
     {
@@ -153,32 +153,7 @@
       "count": 0
     }
   ],
-  "flagged": [
-    {
-      "critic": "Matt Windman",
-      "showId": "ann-2013",
-      "primaryOutlet": "newsday",
-      "secondaryOutlet": "amny",
-      "primaryFile": "newsday--matt-windman.json",
-      "secondaryFile": "amny--matt-windman.json",
-      "similarity": 73,
-      "primaryScore": 74,
-      "secondaryScore": 64,
-      "scoreDiff": 10
-    },
-    {
-      "critic": "Matt Windman",
-      "showId": "chaplin-2012",
-      "primaryOutlet": "newsday",
-      "secondaryOutlet": "amny",
-      "primaryFile": "newsday--matt-windman.json",
-      "secondaryFile": "amny--matt-windman.json",
-      "similarity": 67,
-      "primaryScore": 42,
-      "secondaryScore": 40,
-      "scoreDiff": 2
-    }
-  ],
+  "flagged": [],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",

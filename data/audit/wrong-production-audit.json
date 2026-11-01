@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T16:19:47.909Z",
+  "timestamp": "2026-11-01T16:35:51.511Z",
   "stats": {
-    "totalReviews": 78433,
-    "alreadyFlagged": 21762,
-    "dateGuardCatches": 243,
-    "directorMismatch": 3369,
-    "tvFilmSignals": 2231,
+    "totalReviews": 78450,
+    "alreadyFlagged": 21763,
+    "dateGuardCatches": 244,
+    "directorMismatch": 3375,
+    "tvFilmSignals": 2232,
     "londonSignals": 3554,
-    "offBroadwaySignals": 728,
+    "offBroadwaySignals": 729,
     "yearMismatch": 333,
-    "noPublishDate": 8550
+    "noPublishDate": 8519
   },
   "findings": [
     {
@@ -5620,7 +5620,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 90,
       "publishDate": "2021-07-18",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/anna-x-svelte-steely-emma-corrin-high-society-fraudster-century/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -13696,7 +13696,7 @@
       "file": "financialtimes--alice-saville.json",
       "score": 75,
       "publishDate": "2021-07-09",
-      "url": null,
+      "url": "https://www.ft.com/content/0b7dae2b-0b5f-4d9a-ad74-0647e795faf8",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -27948,6 +27948,19 @@
     },
     {
       "showId": "hangmen-off-broadway-2018",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "publishDate": "February 16th, 2018",
+      "url": "http://thebroadwayblog.com/hangmen-atlantic-theater-company/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-off-broadway-2018",
       "file": "broadwayworld--michael-dale.json",
       "score": 81,
       "publishDate": "2018-02-11",
@@ -31244,20 +31257,6 @@
       "score": 78,
       "publishDate": null,
       "url": "https://nystagereview.com/2024/03/07/illinoise-an-explosion-of-transporting-music-and-dance/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"justin peck\" from illinoise-2024"
-        }
-      ]
-    },
-    {
-      "showId": "illinoise-off-broadway-2024",
-      "file": "nytg--amelia-merrill.json",
-      "score": 76,
-      "publishDate": "March 7, 2024",
-      "url": "https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45542,6 +45541,19 @@
       ]
     },
     {
+      "showId": "on-the-shore-of-the-wide-world-off-broadway-2017",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2017-09-13",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=OW87CJ",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "on-the-town-1971",
       "file": "broadwayworld--unknown.json",
       "score": null,
@@ -48839,6 +48851,32 @@
     },
     {
       "showId": "people-places-and-things-off-broadway-2017",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "publishDate": "2017-11-11",
+      "url": "http://broadwayandme.blogspot.com/2017/11/people-places-things-is-good-thing.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "publishDate": "October 29th, 2017",
+      "url": "http://thebroadwayblog.com/people-places-and-things-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 93,
       "publishDate": "2017-10-25",
@@ -48861,6 +48899,45 @@
       "file": "hollywood-reporter--david-rooney.json",
       "publishDate": "2017-10-25",
       "url": "http://www.hollywoodreporter.com/review/people-places-things-theater-1051947",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "huffpost--david-finkle.json",
+      "publishDate": "November 3rd, 2017",
+      "url": "https://www.huffingtonpost.com/entry/must-sees-duncan-macmillans-people-places-things_us_59fcf29ee4b076eaaae26f88",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2017-10-26",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=HS2DX7",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "publishDate": "2017-10-25",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/denise-gough-burns-bright-people-places-article-1.3588370",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -50317,6 +50394,19 @@
       "score": null,
       "publishDate": "October 24th, 2016",
       "url": "http://www.broadwayworld.com/article/BWW-Review-Post-War-Is-Hell-For-Women-in-David-Hares-PLENTY-20161024",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from plenty-1983"
+        }
+      ]
+    },
+    {
+      "showId": "plenty-off-broadway-2016",
+      "file": "carey-purcell--carey-purcell.json",
+      "publishDate": "November 4th, 2016",
+      "url": "http://www.careypurcell.com/?p=10822",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -101771,6 +101861,19 @@
     },
     {
       "showId": "illinoise-2024",
+      "file": "nytg--unknown.json",
+      "publishDate": "March 7th, 2024",
+      "url": "https://www.newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 48d before show (March 7th, 2024 vs 2024-04-24)"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
       "file": "nytimes--jesse-green.json",
       "score": 86,
       "publishDate": "April 26, 2024",
@@ -130578,6 +130681,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
+        }
+      ]
+    },
+    {
+      "showId": "the-traveling-lady-off-broadway-2017",
+      "file": "off-off-online--charles-wright.json",
+      "score": null,
+      "publishDate": "2017-06-23",
+      "url": "https://www.offoffonline.com/offoffonline/2017/6/17/4lbe3apeb47dqkb90y6wiozdx6d9he",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"classic stage\""
         }
       ]
     },
