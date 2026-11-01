@@ -205,3 +205,15 @@ test('revivalVerifiedNot is an allowed data-edit field so workers can record a v
   assert.equal(r.ok, true);
   assert.equal(data.shows[0].revivalVerifiedNot, true);
 });
+
+test('liveInHd edit needs a metopera.org source and a real date (BRO-6769)', () => {
+  const good = { date: '2026-10-03', sourceUrl: 'https://www.metopera.org/season/in-cinemas/cosi-fan-tutte/' };
+  const act = v => ({ file: 'shows.json', showId: 'a-2026', field: 'liveInHd', oldValue: null, newValue: v });
+  const data = shows();
+  const r = applyDataEdit(data, act(good));
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(data.shows[0].liveInHd, good);
+  for (const bad of [{ ...good, sourceUrl: 'http://www.metopera.org/x' }, { ...good, sourceUrl: 'https://metopera.org.evil.com/x' }, { ...good, sourceUrl: 'https://metopera.org@evil.com/x' }, { date: '2026-10-03' }, { ...good, sourceUrl: 'javascript:alert(1)' }]) {
+    assert.equal(applyDataEdit(shows(), act(bad)).ok, false, JSON.stringify(bad));
+  }
+});

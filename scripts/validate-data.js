@@ -805,6 +805,17 @@ function validateDates(shows) {
       }
     }
 
+    // BRO-6769: Met Live in HD cinema dates are sourced from metopera.org; a hand edit
+    // must pass the same rules as a data-edit plan (sourceUrl is rendered as an href).
+    if (show.liveInHd !== undefined && show.liveInHd !== null) {
+      const { liveInHdValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const problem = liveInHdValueProblem(show.liveInHd);
+      if (problem) {
+        error(`Show "${show.title}" (${show.id}) ${problem}`);
+        issues++;
+      }
+    }
+
     // Logic checks
     if (show.status === 'closed' && show.closingDate && show.closingDate > today) {
       // Show id in parens (not just the title) so validation-setdiff.js's
