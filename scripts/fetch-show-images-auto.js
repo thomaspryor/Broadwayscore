@@ -312,7 +312,9 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   const sources = [];
   if (venueEntry && venueEntry.domain) {
     try {
-      const results = await serpQuery(`site:${venueEntry.domain} "${show.title}"`);
+      // Quoted first, then unquoted: Google returns nothing for some exact-title queries (BRO-6771).
+      let results = await serpQuery(`site:${venueEntry.domain} "${show.title}"`);
+      if (!(results || []).some(r => r.url && r.url.includes(venueEntry.domain))) results = await serpQuery(`site:${venueEntry.domain} ${show.title}`);
       const hit = (results || []).map(r => r.url).find(u => u && u.includes(venueEntry.domain));
       if (hit) sources.push({ url: hit, label: 'venue page' });
     } catch (e) {
