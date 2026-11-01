@@ -264,5 +264,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-01T14:12:54.022Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6737-video-clean",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6737-video-clean",
+    "description": "land.yml did not land land/bro-6737-video-clean: the unit-tests-node gate went red at 6e9085f88d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41314426596",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6737-video-clean"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "6e9085f88d9110f60d557cf618df8e040e9c4d76"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41314426596"
+      }
+    ],
+    "queuedAt": "2026-11-01T14:33:15.951Z"
   }
 ]
