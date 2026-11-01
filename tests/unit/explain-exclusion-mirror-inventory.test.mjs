@@ -44,6 +44,8 @@ const INVENTORY = {
   isRejectedByReasonExclusion: 'live',
   // BRO-6225: the rebuild reaches the head-of-article advisory through the CV-promoted nonReview demotion.
   isCvPartialWindowAdvisory: 'live-via:isNonReviewDemotedByFreshCV',
+  // BRO-6745: the rebuild reaches the stale-CV-verdict override through the CV-promoted nonReview demotion.
+  isStaleCvNonReviewVerdictOverruled: 'live-via:isNonReviewDemotedByFreshCV',
   isRoundupPageAsReview: 'live',
   isUnverifiableWebSearchRow: 'live',
   // BRO-5501: the rebuild decides duplicateOf inheritance through duplicateOfInheritedFlag, which runs this text test.
