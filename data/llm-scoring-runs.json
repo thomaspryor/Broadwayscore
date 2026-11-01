@@ -2518145,21 +2518145,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T01:29:21.739Z",
-    "completedAt": "2026-11-01T01:29:47.117Z",
-    "totalReviews": 8,
+    "startedAt": "2026-11-01T01:31:13.895Z",
+    "completedAt": "2026-11-01T01:31:38.867Z",
+    "totalReviews": 7,
     "processed": 5,
-    "skipped": 3,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 32290,
-      "output": 1440,
+      "input": 32101,
+      "output": 1482,
       "cacheRead": 19035,
       "cacheWrite": 0,
-      "total": 78758
+      "total": 78602
     },
-    "costUsd": 0.1188254,
-    "runId": "41260903768",
+    "costUsd": 0.11876339999999999,
+    "runId": "41260871036",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2534389,6 +2534389,16 @@
           "flat": 0,
           "down": 0,
           "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "hand-to-god-regional-2022",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -2551108,16 +2551118,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "sweat-regional-2022",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 0,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "sweat-royal-exchange-regional-2024",
         "ourDistribution": {
           "up": 1,
@@ -2563804,8 +2563804,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T01:34:44.071Z",
-    "completedAt": "2026-11-01T01:34:44.073Z",
+    "startedAt": "2026-11-01T01:36:35.723Z",
+    "completedAt": "2026-11-01T01:36:35.724Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2563818,7 +2563818,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41260903768",
+    "runId": "41260871036",
     "source": "comparative-rescore",
     "errorDetails": []
   },
