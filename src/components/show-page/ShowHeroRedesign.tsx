@@ -29,7 +29,7 @@
  */
 
 import { foldVenueName } from '@/lib/venue-fold';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { FULL_CONFIDENCE_AUDIENCE_REVIEWS } from '@/lib/audience-grade-utils';
@@ -219,6 +219,13 @@ function Inner({
   const onWatchlist = isAuthenticated ? isWatchlisted(show.id) : isSavedLocally(show.id);
   const watchlistEntry = watchlist.find(w => w.show_id === show.id);
   const watchlistDate = watchlistEntry?.planned_date || null;
+  // Stable object so a parent re-render never resets the editor's time pick.
+  const planSlot = watchlistEntry?.time_slot ?? null;
+  const planCurtain = watchlistEntry?.curtain_time ?? null;
+  const planShowtime = useMemo(
+    () => (planSlot ? { time_slot: planSlot, curtain_time: planCurtain } : null),
+    [planSlot, planCurtain],
+  );
   const plannedShowEvent = watchlistEntry ? buildPlannedShowEvent(show, watchlistEntry) : null;
 
   // Lists containing this show — caption only, no button on show page.
@@ -822,7 +829,7 @@ function Inner({
           initialTimeSlot={editingReview ? editingReview.time_slot ?? null : pendingDraft?.timeSlot ?? null}
           initialCurtainTime={editingReview ? editingReview.curtain_time ?? null : pendingDraft?.curtainTime ?? null}
           initialSeat={editingReview ? editingReview.seat ?? null : pendingDraft?.seat ?? null}
-          suggestedShowtime={editingReview || !watchlistEntry?.time_slot ? null : { time_slot: watchlistEntry.time_slot, curtain_time: watchlistEntry.curtain_time }}
+          suggestedShowtime={editingReview ? null : planShowtime}
           mode={editingReview || pendingDraft?.reviewId ? 'edit' : hasRating ? 'append' : 'new'}
           onSave={handleSaveReview}
           onSaved={handleRateSaved}
@@ -961,7 +968,7 @@ function YourRatingInline({
             <span className="text-sm font-bold text-amber-400 tabular-nums">{review.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
           </span>
           {diaryDetailText(review) && (
-            <span className="block mt-1 text-xs text-gray-400 truncate" data-testid="your-rating-detail">{diaryDetailText(review)}</span>
+            <span className="ph-mask block mt-1 text-xs text-gray-400 truncate" data-testid="your-rating-detail">{diaryDetailText(review)}</span>
           )}
           {review.review_text && (
             <span className="block mt-1">

@@ -1474,7 +1474,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
           </p>
         )}
         {diaryDetailText(review) && (
-          <p data-testid="diary-detail" className="text-xs text-fg-muted truncate">{diaryDetailText(review)}</p>
+          <p data-testid="diary-detail" className="ph-mask text-xs text-fg-muted truncate">{diaryDetailText(review)}</p>
         )}
         {/* Mobile: real five stars STACKED under the date, same pattern as the
             To-Be-Rated rows — right-aligned stars + icons crushed titles to

@@ -27,6 +27,12 @@ interface ShowtimeSegmentedProps {
   genericFallback?: boolean;
   /** Pick the slot when the schedule shows only one performance on the first render too. */
   autoSelectOnMount?: boolean;
+  /**
+   * Re-pick the only performance on a date change. Plans only: a diary entry
+   * never fills in a time the user did not tap (it would also send the new
+   * columns before the reviews migration is live).
+   */
+  autoPick?: boolean;
   disabled?: boolean;
 }
 
@@ -37,7 +43,7 @@ interface ShowtimeSegmentedProps {
  * text underneath so a schedule default is never a hidden guess.
  */
 export default function ShowtimeSegmented({
-  showId, date, value, onChange, genericFallback = false, autoSelectOnMount = false, disabled = false,
+  showId, date, value, onChange, genericFallback = false, autoSelectOnMount = false, autoPick = true, disabled = false,
 }: ShowtimeSegmentedProps) {
   const [moreOpen, setMoreOpen] = useState(value.time_slot === 'custom');
   const slot = value.time_slot;
@@ -60,7 +66,7 @@ export default function ShowtimeSegmented({
     valueAtLastDate.current = value;
     if (parentSetBoth) return;
     if (isMount && (!autoSelectOnMount || value.time_slot)) return;
-    const only = date ? onlyPerformanceSlot(showId, date) : null;
+    const only = autoPick && date ? onlyPerformanceSlot(showId, date) : null;
     const next: Value = only
       ? { time_slot: only, curtain_time: toDbTime(timeFor(only)) }
       : { time_slot: null, curtain_time: null };
@@ -89,7 +95,8 @@ export default function ShowtimeSegmented({
         disabled={disabled || dark}
         onClick={() => pick(s)}
         data-testid={`showtime-${s}`}
-        className={`flex-1 h-10 rounded-[10px] text-sm font-semibold transition-colors ${
+        title={dark ? `No ${s === 'matinee' ? 'matinee' : 'evening show'} that day` : undefined}
+        className={`flex-1 h-11 rounded-[10px] text-sm font-semibold transition-colors ${
           selected
             ? 'bg-white/[0.16] text-white shadow-sm'
             : dark

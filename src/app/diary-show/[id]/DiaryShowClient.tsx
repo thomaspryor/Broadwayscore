@@ -218,7 +218,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
                   Saw {new Date(latestReview.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                 </p>
               )}
-              {diaryDetailText(latestReview) && <p className="text-xs text-gray-400 mt-1 truncate">{diaryDetailText(latestReview)}</p>}
+              {diaryDetailText(latestReview) && <p className="ph-mask text-xs text-gray-400 mt-1 truncate">{diaryDetailText(latestReview)}</p>}
               {latestReview.review_text && <p className="text-xs text-fg-muted mt-1 italic truncate">{latestReview.review_text}</p>}
             </div>
             <button type="button" onClick={handleEditClick} className="text-xs text-gray-400 hover:text-white flex-shrink-0">Edit</button>
