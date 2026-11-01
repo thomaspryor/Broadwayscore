@@ -49,15 +49,33 @@ function enrichCastBilling(show, html, playbillUrl, { force = false } = {}) {
  * The scheduled cast scraper persists validated billing in cast-changes.json.
  * Rebuild enrichment copies it into shows.json through shows-write-guard.
  * Recheck status and source identity here because either can change between runs.
+ *
+ * Copied billing is stamped with `castBillingSource` (the Playbill URL it came
+ * from). A non-forced run refreshes billing it copied itself when the snapshot
+ * changes (a cast replacement), but never overwrites billing without that stamp
+ * (hand-entered) or stamped with another source. Billing copied before the
+ * stamp existed is adopted only when it still equals the current snapshot, so
+ * the next change after that refreshes it (BRO-6678).
  */
 function enrichCastBillingFromSnapshot(show, snapshot, playbillUrl, { force = false } = {}) {
   if (!['open', 'previews'].includes(show.status)) return false;
-  if (show.castBilling?.length && !force) return false;
   if (!playbillUrl || snapshot?.sourceUrl !== playbillUrl) return false;
   const names = snapshot.names;
   if (!Array.isArray(names) || !names.length || names.some(name => typeof name !== 'string' || !name.trim())) return false;
-  if (JSON.stringify(names) === JSON.stringify(show.castBilling)) return false;
+  const hasBilling = Array.isArray(show.castBilling) && show.castBilling.length > 0;
+  const same = JSON.stringify(names) === JSON.stringify(show.castBilling);
+  const fromThisSnapshot = show.castBillingSource === playbillUrl;
+  if (hasBilling && !force && !fromThisSnapshot) {
+    // Legacy unstamped copy that still matches: adopt it so later changes refresh.
+    if (same && show.castBillingSource === undefined) {
+      show.castBillingSource = playbillUrl;
+      return true;
+    }
+    return false;
+  }
+  if (same && fromThisSnapshot) return false;
   show.castBilling = [...names];
+  show.castBillingSource = playbillUrl;
   return true;
 }
 

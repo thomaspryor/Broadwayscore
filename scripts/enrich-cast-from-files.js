@@ -7,6 +7,8 @@
  * Also fills castBilling from validated Playbill snapshots in cast-changes.json,
  * collected by scrape-cast-changes.js using its existing production-page fetch.
  * Missing snapshots leave billing alone; source URLs must still match the registry.
+ * Billing copied from a snapshot (stamped castBillingSource) refreshes without
+ * --force when the snapshot changes, so cast replacements reach shows.json.
  *
  * Zero network requests — purely local file transformation.
  *
