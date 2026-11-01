@@ -2874,7 +2874,12 @@ function isStaleCvNonReviewVerdictOverruled(data) {
   if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy) return false;
   const cv = data.contentVerification;
   if (!cv || cv.wrongArticle !== true) return false;
-  return computeCvIsStale(data) && hasHighConfidenceLlmScore(data);
+  if (!computeCvIsStale(data) || !hasHighConfidenceLlmScore(data)) return false;
+  // The score must be of the body the file holds: one made before the last refetch read a different page.
+  const scored = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');
+  const fetched = Date.parse(data.textFetchedAt || '');
+  if (Number.isFinite(scored) && Number.isFinite(fetched) && scored < fetched) return false;
+  return true;
 }
 
 /**

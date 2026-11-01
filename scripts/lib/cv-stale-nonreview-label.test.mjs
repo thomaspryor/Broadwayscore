@@ -43,6 +43,14 @@ test('hash no longer matches the stored body (no refetch stamp): same result', (
   assert.equal(isNonReviewDemotedByFreshCV(d), true);
 });
 
+test('ensemble score older than the last refetch does not corroborate (it read a different body)', () => {
+  const d = labelled({ ...ensemble, textFetchedAt: '2026-10-01T00:00:00Z', llmMetadata: { scoredAt: '2026-09-15T00:00:00Z' } });
+  assert.equal(isNonReviewDemotedByFreshCV(d), false);
+  assert.equal(explainExclusion(d), 'nonReview');
+  const after = labelled({ ...ensemble, textFetchedAt: '2026-10-01T00:00:00Z', llmMetadata: { scoredAt: '2026-10-02T00:00:00Z' } });
+  assert.equal(explainExclusion(after), null);
+});
+
 test('stale label without an ensemble score stays excluded (needs a re-check, not a blind clear)', () => {
   const d = labelled({ textFetchedAt: '2026-10-01T00:00:00Z' });
   assert.equal(isNonReviewDemotedByFreshCV(d), false);
