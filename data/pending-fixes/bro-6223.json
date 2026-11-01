@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6223",
   "planId": "f7d3b3d2-112e-4442-833f-c064382b316d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T06:54:09.649Z",
   "submitter": {
     "name": null,
@@ -388,5 +388,14 @@
         "description": "cats-the-jellicle-ball: redate migrated trade anchor to reported-current 2026-08-11"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T19:08:50.125Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for cats-the-jellicle-ball"
+    }
+  ],
+  "executedIn": "ci"
 }
