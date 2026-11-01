@@ -428,3 +428,54 @@ test('a web address in ordinary prose never moves the cut into the next show\'s 
   const mid = [plan.ownSection, ...plan.otherSections].find((s) => s.showId === 'midnight');
   assert.ok(mid.sectionText.startsWith('Fans who found it via Broadway.com'), mid.sectionText.slice(0, 60));
 });
+
+// BRO-6744 La Voce shape: one flattened paragraph, each show opens with a
+// "<Title> . Through <date> at <venue>" listing header, and the second show's
+// header follows a photo caption block. Photo captions inside a section never cut.
+test('listing headers open each show; the caption before a header goes with it (La Voce)', () => {
+  const text = [
+    'Grief, and how people cope with it, runs through two shows this spring.',
+    `Midnight . Through Jan. 3 at the Daryl Roth Theater. ${filler('lantern', 5)}`,
+    '[caption id="attachment_1" align="alignnone" width="800"] A scene from Midnight. Photo: A. Photographer[/caption]',
+    `${filler('watchman', 5)} Midnight makes magic on the stage.`,
+    '[caption id="attachment_2" align="alignnone" width="800"] The cast of Two Girls. Photo: A. Photographer[/caption]',
+    `Two Girls . Open run at the Public Theater. ${filler('roommate', 6)} Two Girls is all but forgotten by the walk home.`,
+  ].join(' ');
+  const p = plan(ID.Midnight, text);
+  assert.ok(p, 'expected a plan');
+  assert.equal(p.strategy, 'intro');
+  assert.deepEqual(ids(p), [ID.Midnight, ID['Two Girls']].sort());
+  const m = section(p, ID.Midnight);
+  const g = section(p, ID['Two Girls']);
+  assert.match(m, /Midnight makes magic on the stage\.$/);
+  assert.doesNotMatch(m, /Two Girls/);
+  assert.match(g, /^\[caption id="attachment_2"/);
+  assert.match(g, /all but forgotten by the walk home\.$/);
+  // Without the listing header the second show is only named mid-paragraph: stays whole.
+  assert.equal(plan(ID.Midnight, text.replace('Two Girls . Open run at the Public Theater.', 'Elsewhere, Two Girls plays the Public.')), null);
+});
+
+// BRO-6744 Vulture shape: no lede naming both; the second review opens with a
+// sentence that names both ("Whereas X has it, Y does not"), and the closing
+// listings give each show its run. The join sentence opens the second section.
+test('two reviews joined by a sentence naming both, listings for each at the end (Vulture)', () => {
+  const text = [
+    `Before the performance begins at Midnight, the actors wander the aisles. ${filler('aisle', 6)} The patience of Midnight never flags. ${filler('lantern', 6)} By the curtain call, Midnight has earned every minute.`,
+    `Whereas patience is in abundance at Midnight, it is in short supply at Two Girls! ${filler('roommate', 6)} Two Girls would fit right in on TV.`,
+    'Midnight is at the Daryl Roth Theater through January 3.',
+    'Two Girls is at the Public Theater through December 6.',
+  ].join(' ');
+  const p = plan(ID.Midnight, text);
+  assert.ok(p, 'expected a plan');
+  assert.equal(p.strategy, 'joint');
+  const m = section(p, ID.Midnight);
+  const g = section(p, ID['Two Girls']);
+  assert.match(m, /^Before the performance begins at Midnight/);
+  assert.doesNotMatch(m, /Two Girls/);
+  assert.match(m, /Midnight is at the Daryl Roth Theater through January 3\.$/);
+  assert.match(g, /^Whereas patience is in abundance at Midnight/);
+  assert.match(g, /Two Girls is at the Public Theater through December 6\.$/);
+  // A short first stretch before the join sentence is a comparison, not a review: stays whole.
+  const short = text.replace(/ The aisle passage number[^]*?By the curtain call/, " By the curtain call");
+  assert.equal(plan(ID.Midnight, short), null);
+});
