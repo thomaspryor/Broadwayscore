@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T21:20:36.616Z",
+  "timestamp": "2026-11-01T21:35:53.750Z",
   "stats": {
-    "totalReviews": 78990,
+    "totalReviews": 79032,
     "alreadyFlagged": 21856,
     "dateGuardCatches": 245,
-    "directorMismatch": 3398,
+    "directorMismatch": 3400,
     "tvFilmSignals": 2243,
     "londonSignals": 3568,
     "offBroadwaySignals": 741,
     "yearMismatch": 343,
-    "noPublishDate": 8425
+    "noPublishDate": 8422
   },
   "findings": [
     {
@@ -59581,6 +59581,19 @@
     },
     {
       "showId": "sweat-off-broadway-2016",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2016-11-03",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=OG4NFP",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
       "file": "nbcny--robert-kahn.json",
       "score": null,
       "publishDate": "2016-10-31",
@@ -59625,6 +59638,19 @@
       "file": "reviewing-the-drama--unknown.json",
       "publishDate": "2016-11-03",
       "url": "http://www.reviewingthedrama.com/2016/11/sweat.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"kate whoriskey\" from sweat-2017"
+        }
+      ]
+    },
+    {
+      "showId": "sweat-off-broadway-2016",
+      "file": "talkinbroadway--unknown.json",
+      "publishDate": "2016-11-03",
+      "url": "http://www.talkinbroadway.com/page/ob/11_03_16.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -126027,7 +126053,7 @@
     },
     {
       "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "file": "theater-life--unknown.json",
+      "file": "theater-life--david-sheward.json",
       "score": 88,
       "publishDate": "2026-10-31",
       "url": "https://theaterlife.com/degenerates-the-hairy-ape/",
