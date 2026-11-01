@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T18:06:54.798Z",
+  "generatedAt": "2026-11-01T18:33:29.057Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,68 +11,68 @@
   },
   "shows": [
     {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "openingDate": "2026-10-19",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "openingDate": "2026-10-30",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 74.75 vs local 73.77 (Δ0.98)"
+          "detail": "deployed cs 55.06 vs local 56.03 (Δ0.97)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 14,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-11-01T18:06:46.854Z"
+      "localCount": 8,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-01T18:33:25.138Z"
     },
     {
-      "showId": "dirty-dancing-tour-2026",
-      "title": "Dirty Dancing",
-      "openingDate": "2026-08-12",
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "openingDate": "2026-10-28",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.62 vs local 77.88 (Δ0.26)"
+          "detail": "deployed cs 73.98 vs local 72.58 (Δ1.4)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 13,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-01T18:06:46.854Z"
+      "localCount": 4,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-01T18:33:25.138Z"
     },
     {
-      "showId": "hadestown-2019",
-      "title": "Hadestown",
-      "openingDate": "2019-04-17",
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "openingDate": "2026-10-27",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 83.01 vs local 83.28 (Δ0.27)"
+          "detail": "deployed cs 76.66 vs local 76.17 (Δ0.49)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 51,
-      "deployedCount": 51,
-      "firstDefectAt": "2026-11-01T18:06:46.854Z"
+      "localCount": 15,
+      "deployedCount": 16,
+      "firstDefectAt": "2026-11-01T18:33:25.138Z"
     },
     {
-      "showId": "hamilton-2015",
-      "title": "Hamilton",
-      "openingDate": "2015-08-06",
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "openingDate": "2026-10-22",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 91.22 vs local 91.33 (Δ0.11)"
+          "detail": "deployed cs 73.38 vs local 73.49 (Δ0.11)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 43,
-      "deployedCount": 43,
-      "firstDefectAt": "2026-11-01T18:06:46.854Z"
+      "localCount": 34,
+      "deployedCount": 35,
+      "firstDefectAt": "2026-11-01T18:33:25.138Z"
     }
   ],
   "persistentDefective": 0,

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T18:06:55.208Z",
+  "generatedAt": "2026-11-01T18:33:29.479Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,6 +127,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -151,8 +155,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 781,
-  "matchedGaps": 3,
+  "itemsScanned": 772,
+  "matchedGaps": 4,
   "possibleGaps": 11,
   "gaps": [
     {
@@ -181,6 +185,15 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "london-unattached",
+      "url": "https://www.london-unattached.com/tosca-english-national-opera/",
+      "headline": "Tosca, English National Opera",
+      "publishDate": "2026-11-01"
     },
     {
       "showId": "girls-off-west-end-2026",
