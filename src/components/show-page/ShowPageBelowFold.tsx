@@ -49,6 +49,7 @@ import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
 import ScrollRow from '@/components/ScrollRow';
+import { getOperaHouseSuffix } from '@/lib/show-market';
 
 // BRO-5007: unreleased. A separate chunk, fetched only when the card renders,
 // so the held feature's code and copy stay out of every show page's bundle.
@@ -444,7 +445,7 @@ export default function ShowPageBelowFold({
             ) : null;
           })()}
           {show.status === 'open' && (() => {
-            const durationSuffix = isOpera ? 'at the Met' : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in its regional run' : isTour ? 'on tour' : 'on Broadway';
+            const durationSuffix = isOpera ? getOperaHouseSuffix(show) : isOffWestEnd ? 'Off-West End' : isWestEnd ? 'in the West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'in its regional run' : isTour ? 'on tour' : 'on Broadway';
             const dur = getBroadwayDuration(show.openingDate, durationSuffix);
             return dur ? (
               <div>

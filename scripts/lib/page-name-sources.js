@@ -55,10 +55,10 @@ const HIDDEN_LONDON_IDS = new Set([
   'abba-voyage-off-west-end-2026',
 ]);
 
-/** getAllLondonShows(): West End + Off-West End minus HIDDEN_LONDON_IDS (the /west-end/theater venue index source). */
+/** getAllLondonShows(): West End + Off-West End minus opera (ROH lives on /opera) and HIDDEN_LONDON_IDS (the /west-end/theater venue index source). */
 function londonShows(shows) {
   return shows.filter(
-    (s) => s && !s._devOnly && (s.category === 'west-end' || s.category === 'off-west-end') && !HIDDEN_LONDON_IDS.has(s.id)
+    (s) => s && !s._devOnly && (s.category === 'west-end' || s.category === 'off-west-end') && s.type !== 'opera' && !HIDDEN_LONDON_IDS.has(s.id)
   );
 }
 

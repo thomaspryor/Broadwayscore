@@ -2,7 +2,7 @@
 
 import { ComputedShow } from './engine';
 import { isLondonMarket, getMarketCountry, getMarketCurrency, getMarketMinReviews, getMarketLabel, getUkRegionalVenueCity } from './venue-classification';
-import { isOperaShow } from './show-market';
+import { isOperaShow, getOperaHouseSuffix } from './show-market';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { getVisibleTicketLinks } from './ticket-utils';
 import { SOCIAL_ACCOUNTS, type SocialPlatform } from '@/config/branding';
@@ -570,7 +570,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
   const isOpera = isOperaShow(show);
   // A UK flagship show (RSC, Chichester, ...) is not a Broadway tryout (BRO-5103).
   const regionalLabel = getUkRegionalVenueCity(show.category, show.venue) ? 'in the UK' : 'in a regional production';
-  const marketLabel = isOpera ? 'at the Met' : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? regionalLabel : isTour ? 'on tour' : 'on Broadway';
+  const marketLabel = isOpera ? getOperaHouseSuffix(show) : isLondon ? 'in London' : isOffBroadway ? 'Off-Broadway' : isRegional ? regionalLabel : isTour ? 'on tour' : 'on Broadway';
 
   const faqs: { question: string; answer: string }[] = [];
 

@@ -60,3 +60,17 @@ test('constants are exported correctly', () => {
   assert.equal(OPERA_DURATION_SUFFIX, 'at the Met');
   assert.equal(OPERA_MARKET_LABEL, 'Met Opera');
 });
+
+test('Royal Opera House shows get house-aware labels (BRO-6766)', async () => {
+  const m = await import('../../src/lib/show-market');
+  const roh = { type: 'opera', venue: 'Royal Opera House', category: 'off-west-end' };
+  const met = { type: 'opera', venue: 'Metropolitan Opera House', category: 'off-broadway' };
+  assert.equal(m.getOperaMarketLabel(roh), 'Royal Opera House');
+  assert.equal(m.getOperaMarketLabel(met), 'Met Opera');
+  assert.equal(m.getOperaDurationSuffix(roh), 'at the Royal Opera House');
+  assert.equal(m.getOperaDurationSuffix(met), 'at the Met');
+  assert.equal(m.getOperaDurationSuffix({ type: 'musical', venue: 'Royal Opera House' }), null);
+  assert.equal(m.getEffectiveMarketLabel(roh), 'Royal Opera House');
+  assert.equal(m.isRoyalOperaVenue('Royal Ballet and Opera'), true);
+  assert.equal(m.isRoyalOperaVenue('Metropolitan Opera House'), false);
+});

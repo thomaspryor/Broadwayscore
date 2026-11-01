@@ -11,6 +11,14 @@
  * doesn't drift.
  */
 export const OPERA_SHOW_ID_PREFIXES: ReadonlySet<string> = new Set([
+  // Royal Opera House (BRO-6766)
+  'a-masked-ball-off-west-end',
+  'parsifal-off-west-end',
+  'gotterdammerung-off-west-end',
+  'cosi-fan-tutte-off-west-end',
+  'la-gioconda-off-west-end',
+  'hercules-off-west-end',
+  // Met
   'innocence-off-broadway',
   'el-ultimo-sueno-de-frida-y-diego-off-broadway',
   'la-traviata-off-broadway',

@@ -37,7 +37,7 @@ export function isNonTheatricalGenre(genre?: string | null): boolean {
 }
 
 /** Minimal shape the London-hub routing predicates need. */
-type LondonRoutable = { category?: string; genre?: string | null };
+type LondonRoutable = { category?: string; genre?: string | null; type?: string };
 
 /** True for any London-market category (west-end or off-west-end). */
 function isLondonCategory(category?: string): boolean {
@@ -60,10 +60,13 @@ function isLondonCategory(category?: string): boolean {
  *    genre-filtered.
  */
 export function belongsOnWestEndListing(show: LondonRoutable): boolean {
+  // Opera (Royal Opera House) has its own /opera hub, like Met opera is kept off /off-broadway.
+  if (show.type === 'opera') return false;
   return isLondonCategory(show.category) && !isNonTheatricalGenre(show.genre);
 }
 
 export function belongsOnOffWestEndHub(show: LondonRoutable): boolean {
+  if (show.type === 'opera') return false;
   return show.category === 'off-west-end' ||
     (isNonTheatricalGenre(show.genre) && isLondonCategory(show.category));
 }

@@ -132,6 +132,8 @@ jobs:
             "account-metrics.yml|15|Account Metrics"
             "audit-closing-dates.yml|36|Audit Closing Dates"
             "audit-opening-dates.yml|36|Audit Opening Dates"
+            # BRO-6766: weekly Mon 11:17 UTC opera discovery (dry run). 200h = 168h + cushion.
+            "discover-opera-shows.yml|200|Discover Opera Shows"
             "audit-we-closing-dates.yml|36|Audit WE Closing Dates"
             "recover-explicit-ratings.yml|200|Recover Explicit Ratings"
             # Weekly Sun 14 UTC. Catches dead-token failure streaks AND weekly

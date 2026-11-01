@@ -28,6 +28,21 @@ export const OPERA_DURATION_SUFFIX = 'at the Met';
 /** Market label shown in alt text and metadata. */
 export const OPERA_MARKET_LABEL = 'Met Opera';
 
+/** Royal Opera House (Covent Garden) labels, BRO-6766. */
+export const ROH_MARKET_LABEL = 'Royal Opera House';
+export const ROH_DURATION_SUFFIX = 'at the Royal Opera House';
+
+/** True when an opera venue is the Royal Opera House / Royal Ballet and Opera. */
+export function isRoyalOperaVenue(venue: string | null | undefined): boolean {
+  return !!venue && /royal (ballet and )?opera|covent garden/i.test(venue);
+}
+
+/** House-aware market label for an opera show ("Met Opera" or "Royal Opera House"). */
+export function getOperaMarketLabel(show: { venue?: string } | null | undefined): string {
+  return isRoyalOperaVenue(show?.venue) ? ROH_MARKET_LABEL : OPERA_MARKET_LABEL;
+}
+
+
 interface ShowLike {
   type?: string;
   category?: string;
@@ -65,7 +80,7 @@ export function getEffectiveMarket(show: ShowLike | null | undefined): Effective
 export function getEffectiveMarketLabel(show: ShowLike | null | undefined): string {
   switch (getEffectiveMarket(show)) {
     case 'opera':
-      return OPERA_MARKET_LABEL;
+      return getOperaMarketLabel(show);
     case 'west-end':
       return 'West End';
     case 'off-west-end':
@@ -86,9 +101,14 @@ export function getEffectiveMarketLabel(show: ShowLike | null | undefined): stri
 
 /**
  * Duration-suffix override for the "3 months {suffix}" subline composed in
- * `getBroadwayDuration`. Returns 'at the Met' for opera, otherwise null
+ * `getBroadwayDuration`. Returns 'at the Met' (or 'at the Royal Opera House' for ROH) for opera, otherwise null
  * (caller falls back to the existing `getDurationSuffix(category)`).
  */
 export function getOperaDurationSuffix(show: ShowLike | null | undefined): string | null {
-  return isOperaShow(show) ? OPERA_DURATION_SUFFIX : null;
+  return isOperaShow(show) ? getOperaHouseSuffix(show) : null;
+}
+
+/** Non-null house-aware suffix for callers that already know the show is an opera. */
+export function getOperaHouseSuffix(show: { venue?: string } | null | undefined): string {
+  return isRoyalOperaVenue(show?.venue) ? ROH_DURATION_SUFFIX : OPERA_DURATION_SUFFIX;
 }
