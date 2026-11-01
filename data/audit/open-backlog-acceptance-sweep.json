@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-11-01T09:27:01.188Z",
+  "generatedAt": "2026-11-01T14:42:35.688Z",
   "shadow": true,
-  "checkoutSha": "2e6dd88dd5b4d9f3b651b17b0f90f7145c10f04a",
-  "totalCandidates": 400,
-  "eligibleCandidates": 111,
-  "checked": 18,
+  "checkoutSha": "1eaf5aaa67c3b831206f35cb56db36e58fdb540c",
+  "totalCandidates": 403,
+  "eligibleCandidates": 115,
+  "checked": 14,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 11,
-    "fail": 2,
-    "unverifiable": 5
+    "pass": 7,
+    "fail": 1,
+    "unverifiable": 6
   },
   "alreadyDone": [
     {
@@ -26,6 +26,18 @@
       "detail": null
     },
     {
+      "id": "BRO-6743",
+      "name": "gather-reviews: a shard killed at its 75-min timeout drops its unfinished shows with no follow-up hop",
+      "verifyCmd": "node --test scripts/lib/gather-deferred.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6733",
+      "name": "Gap audit: transfer shows' non-roundup sources report the other production's reviews as current-run missing",
+      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-6711",
       "name": "Missing hero/poster images for bernarda-regional-2023 and happy-days-are-here-again-regional-2024 fail validate-data --strict",
       "verifyCmd": "node scripts/validate-data.js --strict",
@@ -38,45 +50,9 @@
       "detail": null
     },
     {
-      "id": "BRO-6684",
-      "name": "Opus spend: rule-based Opus grants + weekly-usage-aware daily cap",
-      "verifyCmd": "node --test tests/unit/opus-budget.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-6666",
       "name": "verify-schema failed 2 days (unapplied migration) with nobody acting: auto-file a fix card on failure",
       "verifyCmd": "node scripts/audit-workflow-hygiene.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6590",
-      "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
-      "verifyCmd": "test -f scripts/export-cookies.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6567",
-      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
-      "verifyCmd": "node --test tests/unit/text-contrast-guard.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6564",
-      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
-      "verifyCmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6538",
-      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
-      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     }
   ],
@@ -85,16 +61,16 @@
       "id": "BRO-6646",
       "name": "Scraping spend alert: alarm on prepaid-credit exhaustion pace, not daily credits",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cHJvdmlkZXItc3BlbmQ6b3ZlcnNwZW5k",
-      "detail": "[check-alert-condition-absent] FAIL: \"provider-spend:overspend\" still firing — open, last fired 2026-10-30T08:43:47.483Z (48.7h ago, within 168h)\n"
-    },
-    {
-      "id": "BRO-6586",
-      "name": "Re-extract truncated/stub BroadwayWorld review files with the new JSON-LD articleBody extractor",
-      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadwayworld --reviews=3",
-      "detail": "FAIL broadwayworld: show missing; scored reviews 0 < 3\n"
+      "detail": "[check-alert-condition-absent] FAIL: \"provider-spend:overspend\" still firing — open, last fired 2026-10-30T08:43:47.483Z (54.0h ago, within 168h)\n"
     }
   ],
   "unverifiable": [
+    {
+      "id": "BRO-6768",
+      "name": "iOS nightly E2E failures reach no one: auto-file one Linear card when the scheduled Maestro run fails",
+      "verifyCmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-failure-alert.test.mjs"
+    },
     {
       "id": "BRO-6739",
       "name": "Link-in-bio page: feature the show of the latest video so 'link in bio' lands on it",
@@ -108,6 +84,12 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/test-video-captions.test.mjs"
     },
     {
+      "id": "BRO-6724",
+      "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 143300ms (timeout — no verdict)"
+    },
+    {
       "id": "BRO-6681",
       "name": "iOS: share my diary link from the Watched tab (web already has it)",
       "verifyCmd": "node --test tests/unit/diary-share.test.mjs",
@@ -117,22 +99,16 @@
       "id": "BRO-6602",
       "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 112210ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-6548",
-      "name": "NYC facts audit: 8 rows with no readable authoritative source (BRO-6489 leftovers)",
-      "verifyCmd": "node --test scripts/nyc-facts-audit-verification.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/nyc-facts-audit-verification.test.mjs"
+      "detail": "check killed by SIGTERM after 44580ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6684",
-      "name": "Opus spend: rule-based Opus grants + weekly-usage-aware daily cap",
-      "branch": "land/bro-6684-cost-row",
-      "sha": "4fb16fbaf2cbcda3e5f5b250a61c83c3c2eee7df",
-      "landedAt": "2026-10-31T06:08:38.055Z"
+      "id": "BRO-6743",
+      "name": "gather-reviews: a shard killed at its 75-min timeout drops its unfinished shows with no follow-up hop",
+      "branch": "land/codex-bro-6743",
+      "sha": "25c6d521fd949d90c890defd1ed43ef811dbbe4e",
+      "landedAt": "2026-11-01T08:34:43.169Z"
     },
     {
       "id": "BRO-6666",
@@ -140,34 +116,6 @@
       "branch": "land/bro-6666-schema-drift-card",
       "sha": "6947845febf7a49fe03443fea3222768a67d4c6e",
       "landedAt": "2026-10-30T22:48:34.402Z"
-    },
-    {
-      "id": "BRO-6599",
-      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
-      "branch": "land/bro-6599-cross-show-canon",
-      "sha": "88819d77d5934cc5eebb2b9dbbd8f56d813e1fa3",
-      "landedAt": "2026-11-01T04:44:16.715Z"
-    },
-    {
-      "id": "BRO-6567",
-      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
-      "branch": "land/bro-6567-font-floor-b",
-      "sha": "d72a9f34f93cad7ec0cc7b048b0d030d437eb12c",
-      "landedAt": "2026-10-31T08:53:44.084Z"
-    },
-    {
-      "id": "BRO-6564",
-      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
-      "branch": "land/codex-bro-6564",
-      "sha": "0f2198a9a40edfe49e8f70ed5258012c8b44fa6b",
-      "landedAt": "2026-10-30T08:33:33.052Z"
-    },
-    {
-      "id": "BRO-6538",
-      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
-      "branch": "land/codex-bro-6538",
-      "sha": "f2acd8d4b066b481f93c7c18c6949ab3b037d563",
-      "landedAt": "2026-10-31T04:22:57.455Z"
     }
   ]
 }
