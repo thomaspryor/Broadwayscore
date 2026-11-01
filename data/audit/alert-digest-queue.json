@@ -1134,7 +1134,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 30 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41340323963",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41339954079",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -1143,7 +1143,7 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41340323963)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41339954079)"
       },
       {
         "name": "Previous failed run",
@@ -1158,7 +1158,7 @@
         "value": "E2E Tests"
       }
     ],
-    "queuedAt": "2026-11-01T19:38:16.867Z"
+    "queuedAt": "2026-11-01T19:39:21.252Z"
   },
   {
     "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
