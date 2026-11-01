@@ -2037,6 +2037,20 @@ function cvWrongArticleManuallyCleared(data) {
 }
 
 /**
+ * explainExclusion's cvWrongArticleHighConfidence rule, minus the lane check
+ * (BRO-6233). The rebuild deliberately has no such gate: it routes the verdict
+ * through cvWrongArticlePromotion instead, which leaves it advisory once the
+ * ensemble scored the text (Balusters CLASS 1). The mirror stays strict so the
+ * scorer does not spend on CV-flagged non-reviews. That gap is classified in
+ * tests/unit/explain-exclusion-mirror-inventory.test.mjs.
+ */
+function isCvWrongArticleHighConfidence(data, opts) {
+  const cv = data && data.contentVerification;
+  return !!cv && cv.wrongArticle === true && cv.confidence === 'high'
+    && !isCvPartialWindowAdvisory(data, opts) && !cvWrongArticleManuallyCleared(data);
+}
+
+/**
  * A human already said this file IS a review (BRO-4429), so a content-verifier
  * "not a review" verdict must not be promoted over it. The rebuild's CV
  * promotion sites checked only `isNonReview !== true`, so a human clear
@@ -2056,6 +2070,38 @@ function cvNonReviewHumanCleared(data) {
 function cvWrongArticleFamily(cv) {
   if (!cv || cv.wrongArticle !== true) return null;
   return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
+}
+
+/**
+ * BRO-6233: where the rebuild's CV pre-passes (the main one and the upcoming-
+ * show one) route a contentVerification wrongArticle verdict. One predicate
+ * for both pre-passes and for scoring-delta.js's replay, so an edit to the
+ * routing replays instead of reporting 0 flips.
+ *   'nonReview' — promote to isNonReview (a not-a-review verdict)
+ *   'wrongShow' — promote to wrongShow (a review of a different production)
+ *   'advisory'  — the ensemble scored the text as a review; nothing promoted
+ *   null        — nothing to do
+ * The caller still applies the long-biographical deferral
+ * (content-verifier.js shouldDeferCvWrongShow) and does the write.
+ *
+ * @param {object} data review file
+ * @param {object} cv the verdict (data.contentVerification)
+ * @param {object} [ctx]
+ * @param {boolean} [ctx.cvPartialWindow] verdict formed on the head of a longer article (BRO-4429)
+ * @param {boolean} [ctx.skipLondon] UK outlet on a London show, below high confidence
+ * @param {(guard: string) => boolean} [ctx.laneHolds] opening-night lane hold (BRO-4806)
+ */
+function cvWrongArticlePromotion(data, cv, ctx = {}) {
+  const family = cvWrongArticleFamily(cv);
+  if (!data || !family) return null;
+  const { cvPartialWindow = false, skipLondon = false, laneHolds = () => false } = ctx;
+  const ensembleSaysReview = hasHighConfidenceLlmScore(data);
+  const blocked = ensembleSaysReview || skipLondon || data.allowEarlyDate || data.allowCrossMarket;
+  if (family === 'nonReview' && !blocked && !cvPartialWindow && data.isNonReview !== true
+      && !cvNonReviewHumanCleared(data) && !laneHolds('nonReview')) return 'nonReview';
+  if (family === 'wrongShow' && !blocked && data.wrongShow !== true
+      && !wrongShowCleared(data) && !laneHolds('wrongProduction')) return 'wrongShow';
+  return ensembleSaysReview ? 'advisory' : null;
 }
 
 /**
@@ -5772,13 +5818,7 @@ function explainExclusion(data, show, filePath, opts) {
   // paragraphs). The same protected breadcrumb family that clears
   // wrongAttribution/wrongFullText (review-write-guard.js _wrongArticleCleared)
   // says a human read the article and it IS this show's review.
-  if (
-    data.contentVerification?.wrongArticle === true &&
-    data.contentVerification?.confidence === 'high' &&
-    !laneOk('nonReview') && !isCvPartialWindowAdvisory(data, opts) &&
-    !isStaleCvNonReviewVerdictOverruled(data) &&
-    !cvWrongArticleManuallyCleared(data)
-  ) return 'cvWrongArticleHighConfidence';
+  if (!laneOk('nonReview') && isCvWrongArticleHighConfidence(data, opts) && !isStaleCvNonReviewVerdictOverruled(data)) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
   // Exception: 'not_a_review' rejection fires on excerpt/promo text (ShowScore, LBO)
@@ -6745,8 +6785,10 @@ module.exports = {
   isCvPartialWindowAdvisory,
   ensembleScoredSinceCv,
   cvWrongArticleManuallyCleared,
+  isCvWrongArticleHighConfidence,
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
+  cvWrongArticlePromotion,
   wrongShowCleared,
   wrongShowExplicitlyCleared,
   invalidTierVerdict,
