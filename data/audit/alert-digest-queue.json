@@ -1518,21 +1518,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-01T22:26:46.385Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +11 more). Checked 2026-11-01.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T23:24:09.817Z"
+    "queuedAt": "2026-11-01T23:23:42.350Z"
   },
   {
     "conditionKey": "pending-unrecoverable:tosca-english-national-opera-west-end-2026",
