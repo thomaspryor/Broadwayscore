@@ -446,3 +446,17 @@ describe('verifyFetchedUrl percent-encoding (BRO-5514)', () => {
     assert.equal(r.reason, 'url_mismatch');
   });
 });
+
+describe('verifyFetchedUrl Newsquest London sister sites (BRO-6742)', () => {
+  const page = (c) => `<html><head><title>x</title><link rel="canonical" href="${c}"></head></html>`;
+  test('London Now review canonical on News Shopper → verified', () => {
+    const r = verifyFetchedUrl(page('https://www.newsshopper.co.uk/news/26665516.martin-guerre-old-vic-theatre-london/'),
+      'https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/');
+    assert.equal(r.verified, true);
+  });
+  test('London Now canonical on an unrelated host still rejected', () => {
+    const r = verifyFetchedUrl(page('https://www.example.com/news/26665516.martin-guerre/'),
+      'https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/');
+    assert.equal(r.reason, 'url_mismatch');
+  });
+});

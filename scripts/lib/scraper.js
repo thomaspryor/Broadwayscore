@@ -84,6 +84,9 @@ const DOMAIN_ALIAS_GROUPS = [
   ['ew.com', 'people.com'], // Dotdash Meredith
   ['usatoday.com', 'northjersey.com', 'azcentral.com', 'jsonline.com'], // Gannett/USA Today Network
   ['newyorktheatreguide.com', 'broadwayworld.com'], // NYTG merged into BWW
+  // Newsquest London titles share one article store: a London Now review's
+  // canonical is the same article id on News Shopper (BRO-6742, Martin Guerre).
+  ['london-now.co.uk', 'newsshopper.co.uk'],
 ];
 
 const DOMAIN_ALIASES = new Map();
