@@ -520,9 +520,10 @@ test('ground truth audit is scheduled (audit-aggregator-gap.yml) with ingest + a
 });
 
 test('session-authored pending-fix plans can ingest a URL, re-split an article and re-read TR', () => {
-  const exec = fs.readFileSync(new URL('../execute-approved-fix.js', import.meta.url), 'utf8');
+  // The executor's allowlist lives in run-script-allowlist.js (BRO-6742); ask the real function.
+  const { runScriptAllowProblem } = require('./run-script-allowlist.js');
   for (const s of ['ingest-review-from-url.js', 'split-multi-show-roundups.js', 'scrape-theatre-reviews.js']) {
-    assert.match(exec, new RegExp(`'${s.replace(/\./g, '\\.')}'`), s);
+    assert.equal(runScriptAllowProblem(s), null, s);
   }
   const wf = fs.readFileSync(new URL('../../.github/workflows/execute-approved-fix.yml', import.meta.url), 'utf8');
   assert.match(wf, /BRIGHTDATA_TOKEN: \$\{\{ secrets\.BRIGHTDATA_TOKEN \}\}/);
