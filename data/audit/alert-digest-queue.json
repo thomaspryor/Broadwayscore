@@ -252,6 +252,76 @@
     "queuedAt": "2026-11-01T14:39:58.967Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
+    "title": "Review gap — \"Medea\" missing 2 cited review(s)",
+    "description": "Medea (medea-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:05:12.614Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:middlemarch-rsc-regional-2026",
+    "title": "Review gap — \"Middlemarch\" missing 1 cited review(s)",
+    "description": "Middlemarch (middlemarch-rsc-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=middlemarch-rsc-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:05:12.641Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-bridge-off-west-end-2026",
+    "title": "Review gap — \"The Bridge\" missing 1 cited review(s)",
+    "description": "The Bridge (the-bridge-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bridge-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:05:12.741Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-unexpected-3rd-2026",
+    "title": "Review gap — \"The Unexpected 3rd\" missing 1 cited review(s)",
+    "description": "The Unexpected 3rd (the-unexpected-3rd-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-unexpected-3rd-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:05:12.851Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tristan-and-yseult-off-broadway-2026",
+    "title": "Review gap — \"Tristan & Yseult\" missing 1 cited review(s)",
+    "description": "Tristan & Yseult (tristan-and-yseult-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tristan-and-yseult-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:05:12.890Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -263,7 +333,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-01T14:40:20.104Z"
+    "queuedAt": "2026-11-01T15:05:39.660Z"
   },
   {
     "conditionKey": "coverage-holes:tosca-off-broadway-2026",
@@ -410,20 +480,6 @@
       }
     ],
     "queuedAt": "2026-11-01T13:50:34.524Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tristan-and-yseult-off-broadway-2026",
-    "title": "Review gap — \"Tristan & Yseult\" missing 5 cited review(s)",
-    "description": "Tristan & Yseult (tristan-and-yseult-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tristan-and-yseult-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T14:39:58.934Z"
   },
   {
     "conditionKey": "land:land/bro-6762-source-gaps",
