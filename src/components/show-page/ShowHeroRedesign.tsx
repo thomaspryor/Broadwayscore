@@ -28,6 +28,7 @@
  * resumed when the user lands back on this page authenticated.
  */
 
+import { liveInHdLine } from '@/lib/met-live-in-hd';
 import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -549,6 +550,12 @@ function Inner({
               {show.runtime ? <span className="whitespace-nowrap"> · {show.runtime}</span> : null}
             </p>
             <DateLine show={show} tourReviewYears={tourReviewYears ?? null} />
+            {isOperaShow(show) && liveInHdLine(show.liveInHd) ? (
+              <p className="text-xs text-fg-muted" data-testid="live-in-hd">
+                <a href={show.liveInHd!.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-brand transition-colors">{liveInHdLine(show.liveInHd)}</a>
+                {' '}<span className="text-fg-muted">(Met Live in HD)</span>
+              </p>
+            ) : null}
           </div>
           {trustLines ? <div className="pt-1" data-testid="hero-trust-lines">{trustLines}</div> : null}
 
