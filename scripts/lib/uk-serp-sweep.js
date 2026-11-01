@@ -28,9 +28,14 @@ function urlYears(url) {
   return [...p.matchAll(/(?:^|\/)(20\d\d)(?=\/|-|$)/g)].map((m) => Number(m[1]));
 }
 
-function leads(text, t) {
+// Words that can follow a title in a headline ("Lear review", "Lear at the Crucible"); same idea as uk-regional-census-match.
+const TITLE_END = new Set(['review', 'at', 'with', 'by', 'musical', 'theatre', 'starring', 'from', 'tour', 'in', 'live', 'is', 'a', 'an', 'the']);
+
+function leads(text, t, show) {
   const lead = ` ${norm(text).replace(/^(?:theatre |show )?review (?:of )?/, '').replace(/^the /, '')} `;
-  return lead.startsWith(` ${t} `);
+  if (!lead.startsWith(` ${t} `)) return false;
+  const next = lead.slice(t.length + 2).split(' ')[0];
+  return !next || TITLE_END.has(next) || housePhrases(show).some((p) => p.startsWith(next));
 }
 
 /** Does this SERP result review this show? */
@@ -39,9 +44,10 @@ function resultMatchesShow(show, r) {
   if (t.length < 3) return false;
   const slug = (() => { try { return new URL(r.url).pathname.split('/').filter(Boolean).pop() || ''; } catch { return ''; } })();
   const slugText = slug.replace(/\.[a-z]+$/, '').replace(/-/g, ' ');
-  const titleOk = leads(r.title, t) || leads(slugText, t);
+  const titleOk = leads(r.title, t, show) || leads(slugText, t, show);
   const hay = ` ${norm(`${r.title || ''} ${r.url} ${r.description || ''}`)} `;
-  if (!titleOk && !(hay.includes(` ${t} `) && /review/.test(hay))) return false;
+  if (!/review/.test(hay)) return false; // previews, news and interviews are not reviews
+  if (!titleOk) return false;
   if (!housePhrases(show).some((p) => hay.includes(` ${p} `))) return false;
   const open = Number(String(show.openingDate || '').slice(0, 4));
   const years = urlYears(r.url);
