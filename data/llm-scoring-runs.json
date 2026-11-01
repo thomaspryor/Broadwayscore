@@ -2848778,21 +2848778,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T03:06:17.606Z",
-    "completedAt": "2026-11-01T03:06:27.378Z",
-    "totalReviews": 4,
-    "processed": 2,
-    "skipped": 2,
+    "startedAt": "2026-11-01T03:06:35.456Z",
+    "completedAt": "2026-11-01T03:06:49.730Z",
+    "totalReviews": 6,
+    "processed": 3,
+    "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 12297,
-      "output": 619,
-      "cacheRead": 7614,
+      "input": 17304,
+      "output": 849,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 30619
+      "total": 44102
     },
-    "costUsd": 0.046188,
-    "runId": "41267359501",
+    "costUsd": 0.06514539999999999,
+    "runId": "41267301678",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2856098,16 +2856098,6 @@
           "flat": 0,
           "down": 0,
           "total": 8
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "bowie-in-warsaw-regional-2023",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 1,
-          "total": 2
         },
         "hasDisagreement": false
       },
@@ -2877752,6 +2877742,16 @@
         "disagreementDetails": "DTLI: Up thumbs differ by 53% (ours: 53%, theirs: 0%)"
       },
       {
+        "showId": "princess-ivona-regional-2023",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "priscilla-queen-of-the-desert-2011",
         "ourDistribution": {
           "up": 11,
@@ -2895146,8 +2895146,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T03:11:24.287Z",
-    "completedAt": "2026-11-01T03:11:24.289Z",
+    "startedAt": "2026-11-01T03:11:47.544Z",
+    "completedAt": "2026-11-01T03:11:47.546Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2895160,7 +2895160,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41267359501",
+    "runId": "41267301678",
     "source": "comparative-rescore",
     "errorDetails": []
   }
