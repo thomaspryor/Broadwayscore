@@ -1007,5 +1007,36 @@
       }
     ],
     "queuedAt": "2026-11-01T18:20:04.791Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6774-cross-outlet",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6774-cross-outlet",
+    "description": "land.yml did not land land/bro-6774-cross-outlet: the scripts-lib-tests gate went red at a97f355ffd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41334491887",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6774-cross-outlet"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "a97f355ffdbed272a1115a1a2c24d017490adac7"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41334491887"
+      }
+    ],
+    "queuedAt": "2026-11-01T18:25:08.616Z"
   }
 ]
