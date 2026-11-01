@@ -212,8 +212,8 @@ test('the tag the plist EXPORTS is the constant autofixShouldDryRun defaults to'
   // DIGEST_SYNC_TAG is a constant, and this test is what stops it drifting from
   // the tag the plist actually runs the gate under. The plist `export` is the
   // machine-readable declaration this assertion reads.
-  // BRO-6764: the digest-autofix job (--autofix-only) runs the same autofix gate, so it must export the same tag.
-  for (const plistName of ['com.broadwayscore.morning-digest.plist', 'com.broadwayscore.digest-autofix.plist']) {
+  // BRO-6764: after the handoff this same plist runs the autofix gate (--autofix-only path), so the tag matters more, not less.
+  for (const plistName of ['com.broadwayscore.morning-digest.plist']) {
   const raw = fs.readFileSync(path.join(LAUNCHD_DIR, plistName), 'utf8');
   const decoded = raw.replace(/&amp;/g, '&');
   const cmdMatch = decoded.match(/<string>-c<\/string>\s*<string>([^<]*)<\/string>/);

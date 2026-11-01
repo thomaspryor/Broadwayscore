@@ -35,8 +35,8 @@ test('Mac labels whose cloud replacement is unproven are not retired yet', () =>
 });
 
 // BRO-6764: the digest now sends from .github/workflows/morning-digest-action.yml (proof: morning-digest-action.test.mjs).
-test('morning-digest is retired once the Action replaces it (BRO-6764)', () => {
-  assert.ok(labels.includes('com.broadwayscore.morning-digest'));
+test('morning-digest is NOT retired: after the handoff it runs autofix only (BRO-6764 W2)', () => {
+  assert.ok(!labels.includes('com.broadwayscore.morning-digest'), 'retiring it boots out the only job that runs autofix + canary');
 });
 
 test('auth-health distinguishes plan usage cap from auth failure', () => {

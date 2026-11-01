@@ -35,18 +35,21 @@ test('digest workflow: committed schedule (both DST offsets), gated by the hando
   assert.match(WF, /if: \(github\.event_name == 'schedule' && steps\.gate\.outputs\.go == 'true'\) \|\| \(github\.event_name == 'workflow_dispatch' && inputs\.send\)/);
 });
 
-test('digest workflow: handoff date precedes the bootout and the Mac sender honours it', () => {
-  const { RETIRE_GRACE_DAYS } = require('../../scripts/lib/mac-retired-reconciler.js');
-  const entry = JSON.parse(read('config/mac-retired.json')).entries.find((e) => e.label === 'com.broadwayscore.morning-digest');
-  assert.ok(entry, 'morning-digest must be retired');
-  const bootout = new Date(Date.parse(`${entry.retiredAt}T00:00:00Z`) + RETIRE_GRACE_DAYS * 86400e3).toISOString().slice(0, 10);
-  // Handoff is deliberately BEFORE the bootout: the Mac sender no-ops from handoffDate (digest-handoff.js),
-  // so the bootout is housekeeping. Pin that the Mac side really honours the same date.
-  const from = handoff.handoffDate();
-  assert.ok(from < bootout, `handoff ${from} should precede the bootout ${bootout} (Mac no-op covers the gap)`);
-  assert.match(read('scripts/send-morning-digest.js'), /actionOwnsToday\(\)/);
-  assert.ok(entry.replacedBy.some((r) => r.includes('.github/workflows/morning-digest-action.yml')));
-  assert.deepEqual(entry.watchers.map((w) => w.conditionKey).sort(), ['mac:checkin-heartbeat-dead', 'mac:morning-digest-missing']);
+test('digest workflow: the Mac label is NOT retired; on the handoff day it runs autofix only (W2)', () => {
+  const retired = JSON.parse(read('config/mac-retired.json')).entries.map((e) => e.label);
+  assert.ok(!retired.includes('com.broadwayscore.morning-digest'), 'retiring it boots out the job that runs autofix + canary');
+  assert.ok(!fs.existsSync(path.join(ROOT, 'scripts/launchd/com.broadwayscore.digest-autofix.plist')), 'the uninstalled standalone plist would double-run autofix');
+  const src = read('scripts/send-morning-digest.js');
+  assert.match(src, /require\('\.\/lib\/digest-handoff\.js'\)\.actionOwnsToday\(\)/);
+  assert.match(src, /const autofixOnly = !!args\['autofix-only'\] \|\| macHandoff;/);
+  assert.match(src, /const dryRun = !!args\['dry-run'\] \|\| autofixOnly;/);
+  // macHandoff only covers a REAL owner send from the Mac: never dry runs, tests, --force or the Action itself.
+  const m = src.match(/const macHandoff = ([\s\S]*?)\n\s*if \(macHandoff\)/)[1];
+  for (const guard of ["!args['autofix-only']", "!args['dry-run']", "!args['test-send']", '!args.force', "GITHUB_ACTIONS !== 'true'"]) {
+    assert.ok(m.includes(guard), `macHandoff must be gated by ${guard}`);
+  }
+  // The handoff branch drops the recipient flags so nothing can send.
+  assert.match(src, /if \(macHandoff\) \{[\s\S]*?delete args\['send-to'\]; delete args\['send-to-owner'\];/);
 });
 
 test('digest workflow: the only send is owner-only, guarded, report-only; never a broadcast', () => {
@@ -115,18 +118,16 @@ test('gate: refuses before ENABLE_FROM, before 07:45 ET, and on a bad date; send
 });
 
 // ── --autofix-only ──────────────────────────────────────────────────────────
-test('autofix-only: never sends, keeps autofix live; plist runs it only from the handoff day', () => {
+test('autofix-only: never sends, keeps autofix live', () => {
   const src = read('scripts/send-morning-digest.js');
   assert.match(src, /autofixShouldDryRun\(\{ dryRun: !!args\['dry-run'\],/);
   assert.match(src, /--autofix-only never sends/);
   assert.match(src, /autofixFailed \|\| invariantViolations\.length/);
   assert.match(WF, /path: data\/audit\/board-report-snapshot\.json/);
-  const plist = read('scripts/launchd/com.broadwayscore.digest-autofix.plist');
-  assert.match(plist, /exec node scripts\/send-morning-digest\.js --autofix-only/);
-  assert.doesNotMatch(plist, /--send-to/);
-  const from = handoff.handoffDate();
-  const dayBefore = new Date(Date.parse(`${from}T00:00:00Z`) - 86400e3).toISOString().slice(0, 10);
-  assert.ok(plist.includes(`"${dayBefore}"`), `plist must refuse through ${dayBefore}`);
+  // The installed Mac job is the one that runs it after the handoff: same SYNC_TAG gate, still --send-to-owner on its command line.
+  const plist = read('scripts/launchd/com.broadwayscore.morning-digest.plist');
+  assert.match(plist, /export SYNC_TAG=digest/);
+  assert.match(plist, /node scripts\/send-morning-digest\.js --send-to-owner/);
 });
 
 // ── require graph: the workflow skips npm ci ────────────────────────────────
@@ -344,12 +345,12 @@ test('pager: heartbeat step runs even when the digest check went red', () => {
 });
 
 // ── handoff + test-send (BRO-6764) ──────────────────────────────────────────
-test('handoff: one date, Mac no-ops on and after it, before it the Mac sends', () => {
+test('handoff: one date; the Mac stops sending on and after it (autofix-only), before it the Mac sends', () => {
   const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'handoff-')), 'h.json');
   fs.writeFileSync(f, JSON.stringify({ handoffDate: '2026-11-02' }));
   assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T05:00:00Z'), f), true, '05:00Z = 00:00 EST of 11-02');
   assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T04:59:00Z'), f), false);
-  assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T12:33:00Z'), f), true, 'Mac 07:30 ET slot is a no-op');
+  assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T12:33:00Z'), f), true, 'Mac 07:30 ET slot runs autofix only');
   assert.equal(handoff.actionOwnsToday(new Date('2026-11-01T12:33:00Z'), f), false);
   fs.writeFileSync(f, JSON.stringify({ handoffDate: 'soon' }));
   assert.throws(() => handoff.handoffDate(f));
