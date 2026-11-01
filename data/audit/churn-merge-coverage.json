@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-01T00:45:15.169Z",
+    "generatedAt": "2026-11-01T03:59:50.791Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,69 +10,64 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 2,
-    "coveredCount": 10,
-    "highChurnTracked": 12
+    "coveredCount": 9,
+    "highChurnTracked": 11
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 112
+      "churn": 91
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 63
+      "churn": 59
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 140,
+      "churn": 108,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 90,
+      "churn": 86,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 63,
+      "churn": 60,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 35,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/needs-human-review.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/rebuild-score-drift.json",
-      "churn": 35,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 35,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 33,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 32,
+      "path": "data/audit/needs-human-review.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/rebuild-score-drift.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/skipped-alias-collisions.json",
+      "churn": 31,
       "mergeAttr": "ours"
     }
   ]

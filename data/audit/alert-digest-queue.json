@@ -1782,20 +1782,6 @@
     "queuedAt": "2026-10-31T23:35:22.967Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +11 more). Checked 2026-11-01.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T00:48:52.229Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:cirque-berserk-west-end-2026",
     "title": "Review gap — \"Cirque Berserk\" missing 2 cited review(s)",
     "description": "Cirque Berserk (cirque-berserk-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cirque-berserk-west-end-2026 --checkpoint --ingest-missing",
@@ -2079,5 +2065,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-01T03:54:21.570Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +11 more). Checked 2026-11-01.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T04:04:29.659Z"
   }
 ]
