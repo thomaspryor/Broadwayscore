@@ -23,7 +23,7 @@ const { classifyCrossOutletPair, isPlaceholderCritic, sameCritic } = require('./
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 
 function grams(text, n = 8) {
-  const w = String(text || '').toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+  const w = String(text || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
   const s = new Set();
   for (let i = 0; i <= w.length - n; i++) s.add(w.slice(i, i + n).join(' '));
   return s;
