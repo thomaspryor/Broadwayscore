@@ -41,6 +41,13 @@ describe('audience review bars', () => {
     const b = { combinedScore: 80, sources: { mezzanine: { score: 80, reviewCount: 8 }, showScore: { score: 80, reviewCount: 7 }, reddit: null } } as unknown as AudienceBuzzData;
     assert.strictEqual(hasFullConfidenceAudienceReviews(b), true);
   });
+
+  test('suppressed sources never count toward the gate (BRO-6738)', () => {
+    const only = { combinedScore: 81, sources: { reddit: { score: 81, reviewCount: 223, suppressed: true } } } as unknown as AudienceBuzzData;
+    assert.strictEqual(hasEnoughAudienceReviews(only), false);
+    const mixed = { combinedScore: 81, sources: { reddit: { score: 81, reviewCount: 223, suppressed: true }, showScore: { score: 80, reviewCount: 9 } } } as unknown as AudienceBuzzData;
+    assert.strictEqual(hasEnoughAudienceReviews(mixed), false);
+  });
 });
 
 describe('audience sort key', () => {

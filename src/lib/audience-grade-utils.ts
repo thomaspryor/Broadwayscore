@@ -21,12 +21,13 @@ export const MIN_AUDIENCE_REVIEWS: number = audienceGradeConfig.minReviews;
 export const FULL_CONFIDENCE_AUDIENCE_REVIEWS: number = audienceGradeConfig.fullConfidenceReviews;
 
 /**
- * Get total audience review count across all sources.
+ * Get total audience review count across visible sources (not suppressed, with a score; mirrors
+ * scripts/lib/audience-review-count.js, BRO-6738).
  */
 export function getTotalAudienceReviews(buzz: AudienceBuzzData): number {
   if (!buzz.sources) return 0;
   return Object.values(buzz.sources).reduce(
-    (sum, source) => sum + (source?.reviewCount ?? 0),
+    (sum, source) => (!source || source.suppressed || source.score == null ? sum : sum + (source.reviewCount ?? 0)),
     0
   );
 }

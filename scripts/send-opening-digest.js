@@ -293,10 +293,7 @@ function describeQualifyGaps(q) {
 function getAudience(audienceBuzz, showId) {
   const row = audienceBuzz?.shows?.[showId];
   if (!row) return null;
-  let totalReviews = 0;
-  for (const src of Object.values(row.sources || {})) {
-    if (src && typeof src.reviewCount === 'number') totalReviews += src.reviewCount;
-  }
+  const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(row.sources);
   // Parity with the live site: no audience letter grade below MIN_AUDIENCE_REVIEWS.
   const enoughForGrade = totalReviews >= MIN_AUDIENCE_REVIEWS;
   return {

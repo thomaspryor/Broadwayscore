@@ -73,4 +73,20 @@ if (fs.existsSync(buzzPath)) {
 } else {
   console.log('data/audience-buzz.json absent, skipped real-data check');
 }
+
+// 4. Suppressed / unscored sources never count toward the gate (BRO-6738). Requires the real helper.
+const { countVisibleAudienceReviews } = require('../../scripts/lib/audience-review-count.js');
+assert.strictEqual(countVisibleAudienceReviews({ reddit: { reviewCount: 223, score: 80, suppressed: true } }), 0);
+assert.strictEqual(countVisibleAudienceReviews({ reddit: { reviewCount: 223, score: 80, suppressed: true }, showScore: { reviewCount: 6, score: 90 }, mezzanine: { reviewCount: 5, score: null } }), 6);
+assert.strictEqual(countVisibleAudienceReviews(undefined), 0);
+// The TS gate and every CJS consumer use the same rule.
+const tsGate = fs.readFileSync(path.join(ROOT, 'src/lib/audience-grade-utils.ts'), 'utf8');
+assert.ok(/source\.suppressed/.test(tsGate), 'getTotalAudienceReviews must skip suppressed sources');
+for (const f of consumers.filter((c) => c.startsWith('scripts/') && !/reddit-opening-post|compute-gold-lists/.test(c))) {
+  assert.ok(/audience-review-count/.test(fs.readFileSync(path.join(ROOT, f), 'utf8')), `${f} must count reviews with audience-review-count.js`);
+}
+if (fs.existsSync(buzzPath)) {
+  const bad = Object.entries(require(buzzPath).shows).filter(([, b]) => b.combinedScore != null && countVisibleAudienceReviews(b.sources) < cfg.minReviews && Object.values(b.sources || {}).some((x) => x && x.suppressed));
+  console.log(`# graded in raw data but gated by visible count: ${bad.length}`);
+}
 console.log('audience-grade-min: PASS');

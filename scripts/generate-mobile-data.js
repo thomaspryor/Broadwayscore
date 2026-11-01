@@ -192,7 +192,7 @@ const mobileShows = visibleShows.map(show => {
   const buzz = audienceBuzz[show.id];
   let audienceGrade = null;
   if (buzz && buzz.combinedScore != null) {
-    const totalReviews = Object.values(buzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
+    const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(buzz.sources);
     if (totalReviews >= MIN_AUDIENCE_REVIEWS) {
       audienceGrade = getAudienceGrade(buzz.combinedScore);
     }

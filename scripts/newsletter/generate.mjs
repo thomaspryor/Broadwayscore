@@ -370,7 +370,7 @@ function getAudienceGrade(score) {
 function audienceChip(showId) {
   const buzz = audienceBuzz[showId];
   if (!buzz || buzz.combinedScore == null) return '';
-  const totalReviews = Object.values(buzz.sources || {}).reduce((a, s) => a + (s?.reviewCount ?? 0), 0);
+  const totalReviews = cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(buzz.sources);
   if (totalReviews < AUDIENCE_GRADE_CONFIG.minReviews) return ''; // shared with the site: src/config/audience-grade.json
   const g = getAudienceGrade(buzz.combinedScore);
   // 12% alpha bg + solid text color, 10px leading-none
