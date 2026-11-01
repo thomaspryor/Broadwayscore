@@ -132,7 +132,7 @@
           "note": "Pages at 14:30Z when today's digest is not in Resend. After the cutover that means the GitHub Action failed or did not run."
         }
       ],
-      "_rollback": "Delete this entry and land; on the Mac mv ~/Library/LaunchAgents/com.broadwayscore.morning-digest.plist.retired-<date> back and launchctl bootstrap it; remove the schedule block and ENABLE_FROM from .github/workflows/morning-digest-action.yml (or push ENABLE_FROM far out) so only one sender runs. The Action's sent-today guard and the Mac's soft guard keep a brief overlap to one email."
+      "_rollback": "Housekeeping only, the handoff is config/morning-digest-handoff.json. To roll the sender back: set handoffDate far in the future there and land (the Mac syncs to main and sends again). To also un-retire the job: delete this entry and land; on the Mac mv ~/Library/LaunchAgents/com.broadwayscore.morning-digest.plist.retired-<date> back and launchctl bootstrap it; and keep handoffDate in the future so only the Mac sends. The Action's sent-today guard and the Mac's soft guard keep a brief overlap to one email."
     }
   ]
 }

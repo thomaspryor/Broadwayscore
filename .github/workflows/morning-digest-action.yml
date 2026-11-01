@@ -4,7 +4,7 @@ name: Morning Digest
 # (BRO-6230, Phase 2a) it only ran as a dry run and compared itself with the Mac's email.
 #
 # Modes
-#   * schedule             always sends (after ENABLE_FROM, see below).
+#   * schedule             always sends (from the handoff date, see below).
 #   * workflow_dispatch    dry run by default (builds the digest, compares it with the Mac's, sends nothing);
 #                          send=true really sends. Both go through the same Resend sent-today guard.
 # One email a day: --resend-sent-guard asks Resend whether today's digest to the owner already exists and
@@ -12,13 +12,12 @@ name: Morning Digest
 # and the job goes red. Never a broadcast (CLAUDE.md rule 17): the send is one transactional message to
 # OWNER_EMAIL through send-morning-digest.js --send-to-owner.
 #
-# ENABLE_FROM (cutover date, committed because cloud sessions cannot set repo variables): scheduled runs
-# before it exit without sending. It must be on or after the day scripts/lib/mac-retired-reconciler.js
-# acts on the com.broadwayscore.morning-digest entry in config/mac-retired.json (retiredAt + 3 days), so
-# the Mac job is booted out before the Action's first scheduled send (tests/unit/morning-digest-action.test.mjs
-# pins this). Timeline: Mac sends 2026-11-01..03; Mac booted out about 00:30Z on 2026-11-04 (first checkout-sync
-# tick); first Action send 2026-11-04 12:30Z. Rollback: delete the mac-retired entry, restore the Mac plist
-# (config/mac-retired.json _rollback), and remove the schedule block below.
+# Handoff date (config/morning-digest-handoff.json, committed because cloud sessions cannot set repo
+# variables): scheduled runs before it do nothing, and from it the Mac's send-morning-digest.js no-ops
+# for the owner's email (it syncs to main before each run), so exactly one machine sends each day.
+# Rollback: push handoffDate far out (or revert the file) and land; the Mac sends again from its next run.
+# The Mac's launchd job is booted out three days after config/mac-retired.json's retiredAt; that is
+# housekeeping, not on the critical path.
 #
 # Cron times are UTC. 12:30 is 07:30 EST (winter, from 2026-11-01). US DST resumes 2027-03-14: the
 # winter times become 08:30 EDT until the block is changed to 11:30/12:15/13:00. GitHub drops and delays
@@ -51,9 +50,6 @@ on:
         required: false
         default: ''
 
-env:
-  ENABLE_FROM: '2026-11-04'
-
 concurrency:
   group: morning-digest-action
   cancel-in-progress: false
@@ -70,12 +66,17 @@ jobs:
     outputs:
       go: ${{ steps.gate.outputs.go }}
     steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          sparse-checkout: config/morning-digest-handoff.json
       - id: gate
         run: |
           today=$(date -u +%F)
-          if [ "${{ github.event_name }}" = "schedule" ] && [[ "$today" < "$ENABLE_FROM" ]]; then
+          handoff=$(jq -r .handoffDate config/morning-digest-handoff.json)
+          echo "$handoff" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "bad handoffDate"; exit 1; }
+          if [ "${{ github.event_name }}" = "schedule" ] && [[ "$today" < "$handoff" ]]; then
             echo "go=false" >> "$GITHUB_OUTPUT"
-            echo "Scheduled run on $today is before ENABLE_FROM $ENABLE_FROM: not sending (the Mac job still sends)."
+            echo "Scheduled run on $today is before the handoff date $handoff: not sending (the Mac job still sends)."
           else
             echo "go=true" >> "$GITHUB_OUTPUT"
           fi

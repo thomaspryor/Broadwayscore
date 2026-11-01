@@ -208,8 +208,8 @@ async function main() {
   const SENDER_HINTS = {
     'morning-digest': {
       title: (day) => `Morning digest did not arrive on ${day}`,
-      body: 'The owner\'s morning email (scripts/send-morning-digest.js) did not arrive. Since the BRO-6764 cutover it is sent by the Morning Digest GitHub Action (cron 12:30 UTC); before ENABLE_FROM it is the Mac launchd job com.broadwayscore.morning-digest at 07:30 ET.',
-      hint: 'Open the Morning Digest workflow runs (.github/workflows/morning-digest-action.yml). Re-run it with send=true; the sent-today guard keeps it to one email. Before the cutover date, check the Mac launchd job and /tmp/morning-digest-launchd.log instead.',
+      body: 'The owner\'s morning email (scripts/send-morning-digest.js) did not arrive. Since the BRO-6764 cutover it is sent by the Morning Digest GitHub Action (cron 12:30 UTC); before the handoff date in config/morning-digest-handoff.json it is the Mac launchd job com.broadwayscore.morning-digest at 07:30 ET.',
+      hint: 'Open the Morning Digest workflow runs (.github/workflows/morning-digest-action.yml). Re-run it with send=true; the sent-today guard keeps it to one email. Before the handoff date, check the Mac launchd job and /tmp/morning-digest-launchd.log instead.',
     },
     'opening-digest': {
       title: (day) => `Opening digest did not arrive on ${day}`,

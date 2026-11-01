@@ -966,6 +966,19 @@ async function main() {
     process.exit(1);
   }
 
+  // BRO-6764 handoff: from config/morning-digest-handoff.json's date the GitHub Action sends the owner's
+  // email and this machine must not (one email a day). Runs before any work. The Mac syncs to main
+  // before each run (sync-audit-checkout.sh), so it picks the date up. --force and non-owner test
+  // recipients are unaffected; --autofix-only never reaches here.
+  if (!dryRun && sendTo && !autofixOnly && !args.force && process.env.GITHUB_ACTIONS !== 'true'
+      && sendTo === process.env.OWNER_EMAIL) {
+    const { actionOwnsToday, handoffDate } = require('./lib/digest-handoff.js');
+    if (actionOwnsToday()) {
+      console.log(`[digest] handoff: the GitHub Action sends the owner's digest from ${handoffDate()}; this machine does not. Nothing sent.`);
+      return;
+    }
+  }
+
   const { sections, problems } = readAllSnapshots();
   sections.moneySignups = await collectMoneySignups();
 

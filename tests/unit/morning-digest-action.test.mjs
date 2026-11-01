@@ -27,22 +27,69 @@ const RETIRED = JSON.parse(read('config/mac-retired.json'));
 const MORNING = RETIRED.entries.find((e) => e.label === 'com.broadwayscore.morning-digest');
 const code = (t) => t.replace(/^\s*#.*$/gm, '');
 
-test('digest workflow: committed schedule behind a dated ENABLE_FROM gate, no repo variable (BRO-6764)', () => {
+const HANDOFF_FILE = path.join(ROOT, 'config/morning-digest-handoff.json');
+const handoff = require('../../scripts/lib/digest-handoff.js');
+
+test('digest workflow: committed schedule behind the committed handoff date, no repo variable (BRO-6764)', () => {
   assert.match(WF, /^ {2}schedule:\n {4}- cron: '30 12 \* \* \*'/m, '07:30 EST first, later crons are retries');
   assert.match(WF, /^ {2}workflow_dispatch:/m);
   assert.doesNotMatch(code(WF), /vars\./, 'cloud sessions cannot set repo variables: every switch is committed');
-  assert.match(WF, /^ {2}ENABLE_FROM: '\d{4}-\d{2}-\d{2}'$/m);
+  assert.match(WF, /handoff=\$\(jq -r \.handoffDate config\/morning-digest-handoff\.json\)/);
   assert.match(WF, /^ {2}digest:\n {4}needs: gate\n {4}if: needs\.gate\.outputs\.go == 'true'$/m);
-  assert.match(WF, /\[ "\$\{\{ github\.event_name \}\}" = "schedule" \] && \[\[ "\$today" < "\$ENABLE_FROM" \]\]/);
+  assert.match(WF, /\[ "\$\{\{ github\.event_name \}\}" = "schedule" \] && \[\[ "\$today" < "\$handoff" \]\]/);
 });
 
-test('digest workflow: ENABLE_FROM is not before the Mac job is booted out (retire grace), and not a day later than needed', () => {
+// Run the workflow's real gate script for a given event and UTC day.
+function gate(event, utcDay) {
+  const body = WF.match(/- id: gate\n {8}run: \|\n((?: {10}.*\n)+)/)[1].replace(/^ {10}/gm, '')
+    .replace('$(date -u +%F)', utcDay).replace('${{ github.event_name }}', event);
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gate-'));
+  fs.mkdirSync(path.join(dir, 'config'));
+  fs.copyFileSync(HANDOFF_FILE, path.join(dir, 'config/morning-digest-handoff.json'));
+  const out = path.join(dir, 'out');
+  fs.writeFileSync(out, '');
+  require('node:child_process').execFileSync('bash', ['-c', body], { cwd: dir, env: { ...process.env, GITHUB_OUTPUT: out } });
+  return fs.readFileSync(out, 'utf8').trim();
+}
+
+test('handoff day: on 2026-11-01 the Mac sends and the Action does not; on 2026-11-02 the Mac no-ops and the Action sends', () => {
+  assert.equal(handoff.handoffDate(), '2026-11-02');
+  const d1 = new Date('2026-11-01T12:33:00Z');   // 07:33 EST, the Mac's slot
+  const d2 = new Date('2026-11-02T12:33:00Z');
+  // Mac side (send-morning-digest.js gates on actionOwnsToday for real owner sends)
+  assert.equal(handoff.actionOwnsToday(d1), false, 'Mac still sends on 11-01');
+  assert.equal(handoff.actionOwnsToday(d2), true, 'Mac no-ops on 11-02');
+  // the ET day rolls at local midnight, not UTC midnight: 11-02 00:30 UTC is still 11-01 evening ET
+  assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T00:30:00Z')), false);
+  // Action side: the real gate script
+  assert.match(gate('schedule', '2026-11-01'), /go=false/);
+  assert.match(gate('schedule', '2026-11-02'), /go=true/);
+  assert.match(gate('workflow_dispatch', '2026-11-01'), /go=true/, 'a manual dispatch is never gated (the sent-today guard covers it)');
+});
+
+test('Mac sender: the real script no-ops for the owner from the handoff date and says why', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'handoff-'));
+  const f = path.join(dir, 'h.json');
+  fs.writeFileSync(f, JSON.stringify({ handoffDate: '2020-01-01' }));
+  const r = require('node:child_process').spawnSync('node', ['scripts/send-morning-digest.js', '--send-to-owner', '--no-autofix'], {
+    cwd: ROOT, encoding: 'utf8', timeout: 30000,
+    env: { ...process.env, OWNER_EMAIL: 'owner@example.com', DIGEST_HANDOFF_FILE: f, GITHUB_ACTIONS: '' },
+  });
+  assert.equal(r.status, 0, r.stderr);
+  assert.match(r.stdout, /handoff: the GitHub Action sends the owner's digest from 2020-01-01; this machine does not\. Nothing sent\./);
+});
+
+test('handoff date: a malformed or missing date fails loudly, never silently sends twice', () => {
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'handoff-')), 'bad.json');
+  fs.writeFileSync(f, JSON.stringify({ handoffDate: 'tomorrow' }));
+  assert.throws(() => handoff.handoffDate(f), /bad handoffDate/);
+});
+
+test('retire entry is housekeeping: it is acted on no earlier than the handoff date', () => {
   const { RETIRE_GRACE_DAYS } = require('../../scripts/lib/mac-retired-reconciler.js');
   assert.ok(MORNING, 'the morning-digest job must be on the retire list');
-  const enable = WF.match(/^ {2}ENABLE_FROM: '(\d{4}-\d{2}-\d{2})'$/m)[1];
   const bootout = new Date(Date.parse(`${MORNING.retiredAt}T00:00:00Z`) + RETIRE_GRACE_DAYS * 86400000).toISOString().slice(0, 10);
-  assert.ok(enable >= bootout, `ENABLE_FROM ${enable} is before the Mac is booted out (${bootout}): two senders`);
-  assert.ok(enable <= bootout, `ENABLE_FROM ${enable} is after the bootout day ${bootout}: a day with no digest`);
+  assert.ok(bootout >= handoff.handoffDate(), `the Mac job would be booted out (${bootout}) before the Action takes over (${handoff.handoffDate()}): a day with no email`);
   assert.equal(MORNING.replacedBy[0], '.github/workflows/morning-digest-action.yml');
 });
 
@@ -78,7 +125,7 @@ test('digest workflow: the public log never carries the recipient address or sub
   assert.match(out, /send failed \(details withheld/);
 });
 
-test('pager: starts a guarded send when the digest is overdue, only after ENABLE_FROM (cron is unreliable)', () => {
+test('pager: starts a guarded send when the digest is overdue, only after the handoff date (cron is unreliable)', () => {
   const pager = read('.github/workflows/check-morning-digest-sent.yml');
   assert.match(pager, /^ {2}actions: write/m);
   assert.match(pager, /gh workflow run morning-digest-action\.yml --ref main -f send=true/);
