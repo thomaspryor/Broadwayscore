@@ -1,12 +1,17 @@
 {
   "issueNumber": "bro-6771-img2",
   "planId": "7d1c2b9e-6771-4a0e-8b32-5c9e1f4a6d02",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T21:20:00.000Z",
-  "submitter": { "name": null, "email": null },
+  "submitter": {
+    "name": null,
+    "email": null
+  },
   "plan": {
     "summary": "Clear the stale noReliableArt marker on Pippin so the Signature Theatre image sourcing can run (BRO-6771)",
-    "steps": ["clear noReliableArt on pippin-regional-2026"],
+    "steps": [
+      "clear noReliableArt on pippin-regional-2026"
+    ],
     "riskLevel": "low",
     "actions": [
       {
@@ -14,10 +19,23 @@
         "file": "shows.json",
         "showId": "pippin-regional-2026",
         "field": "noReliableArt",
-        "oldValue": {"at":"2026-11-01","reason":"14 Google Images candidate(s) failed the work/production check","key":"pippin|signature theatre, arlington, va|2026-05-23"},
+        "oldValue": {
+          "at": "2026-11-01",
+          "reason": "14 Google Images candidate(s) failed the work/production check",
+          "key": "pippin|signature theatre, arlington, va|2026-05-23"
+        },
         "newValue": null,
         "description": "Clear noReliableArt on pippin-regional-2026 (set before Signature Theatre was an image source)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T21:46:48.142Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for pippin-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
