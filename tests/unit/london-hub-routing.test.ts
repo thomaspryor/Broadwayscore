@@ -95,3 +95,11 @@ test('INVARIANT: an unknown genre is treated as theatrical (not auto-hidden)', (
   const s = { category: 'west-end', genre: 'opera' };
   assert.equal(belongsOnWestEndListing(s), true);
 });
+
+test('INVARIANT: opera (Royal Opera House) never routes to a London hub', () => {
+  for (const category of ['west-end', 'off-west-end']) {
+    const s = { category, genre: null, type: 'opera' };
+    assert.equal(belongsOnWestEndListing(s), false);
+    assert.equal(belongsOnOffWestEndHub(s), false);
+  }
+});

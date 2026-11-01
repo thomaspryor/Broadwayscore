@@ -33,7 +33,7 @@ export function buildHomepageExtra(): HomepageExtra {
   const allShows = getBroadwayShows();
   const obShows = getOffBroadwayShows().filter(s =>
     (s.status === 'open' || s.status === 'previews') &&
-    s.type !== 'opera' && // opera gets its own "At the Met" shelf
+    s.type !== 'opera' && // opera gets its own opera shelf
     displaysCriticScore(s)
   );
   // Active West End shows only. These feed homepage search alone, and closed
@@ -231,7 +231,7 @@ export function buildHomepageExtra(): HomepageExtra {
     // Opera shelf \u2014 Met universe is small (3-4 productions running), so minCount 2.
     // Positioned right after Off-Broadway so opera coverage is visible without
     // scrolling past 3 sections (acceptance criterion on Notion 362637c5-416f-8183).
-    { title: 'At the Met', shows: bestOperaList, viewAllHref: '/opera', minCount: 2 },
+    { title: 'Opera: Met and Royal Opera House', shows: bestOperaList, viewAllHref: '/opera', minCount: 2 },
     ...(nytCriticsPicksList.length > 0 ? [{ title: "New York Times Critic\u2019s Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' }] : []),
     { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { ShowCardShow } from '@/components/show-cards/types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { isLondonMarket, getMarketLabel } from '@/lib/venue-classification';
-import { isOperaShow, OPERA_MARKET_LABEL } from '@/lib/show-market';
+import { isOperaShow, getOperaMarketLabel } from '@/lib/show-market';
 import ShowImage from '@/components/ShowImage';
 import { ScoreBadge } from '@/components/show-cards';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -30,7 +30,7 @@ export default function RelatedShows({ shows, title = 'You Might Also Like' }: {
                   show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,
                   show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'card') : null,
                 ]}
-                alt={`${show.title} ${isOperaShow(show) ? OPERA_MARKET_LABEL : getMarketLabel(show.category, show.venue)} ${show.type}`}
+                alt={`${show.title} ${isOperaShow(show) ? getOperaMarketLabel(show) : getMarketLabel(show.category, show.venue)} ${show.type}`}
                 loading="lazy"
                 sizes="(min-width: 640px) 128px, 112px"
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
