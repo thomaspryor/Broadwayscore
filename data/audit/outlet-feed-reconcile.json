@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-31T23:44:43.301Z",
+  "generatedAt": "2026-11-01T00:09:23.922Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -69,6 +69,11 @@
       "openingDate": "2026-10-26"
     },
     {
+      "id": "the-morbs-off-broadway-2026",
+      "title": "The Morbs",
+      "openingDate": "2026-11-02"
+    },
+    {
       "id": "specimen-off-broadway-2026",
       "title": "Specimen",
       "openingDate": "2026-10-30"
@@ -89,6 +94,11 @@
       "openingDate": "2026-10-29"
     },
     {
+      "id": "slanted-floors-off-broadway-2026",
+      "title": "Slanted Floors",
+      "openingDate": "2026-11-02"
+    },
+    {
       "id": "the-unexpected-3rd-2026",
       "title": "The Unexpected 3rd",
       "openingDate": "2026-10-26"
@@ -100,6 +110,10 @@
     }
   ],
   "skipped": [
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
     {
       "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
@@ -117,7 +131,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -126,6 +140,14 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "south-london",
+      "error": "Timeout fetching https://southlondon.co.uk/feed/"
+    },
+    {
+      "outletId": "theatre-vibe",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -138,9 +160,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 779,
+  "itemsScanned": 746,
   "matchedGaps": 6,
   "possibleGaps": 12,
   "gaps": [

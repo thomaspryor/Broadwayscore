@@ -1548,20 +1548,6 @@
     "queuedAt": "2026-10-31T17:55:14.864Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:a-strange-loop-regional-2026",
-    "title": "Review gap — \"A Strange Loop\" missing 3 cited review(s)",
-    "description": "A Strange Loop (a-strange-loop-regional-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-strange-loop-regional-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T19:05:43.698Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
     "title": "Review gap — \"Medea\" missing 1 cited review(s)",
     "description": "Medea (medea-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
@@ -1866,20 +1852,6 @@
     "queuedAt": "2026-10-31T23:09:19.829Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-10-31.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T23:44:21.484Z"
-  },
-  {
     "conditionKey": "corpus-drift:orphan-show-ids",
     "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
     "description": "check-corpus-drift.js audit \"orphan-show-ids\" (node scripts/audit-orphan-show-ids.js) has been drifting. Latest output:\n\nFound 2 orphan show ID(s):\n\nSlim show files (2) — not in shows.json:\n  public/data/shows/studio3-alright-sunshine-fleg-and-fruitcake-tron-regional-2025.json\n  public/data/shows/the-high-life-the-musical-dundee-rep-regional-2026.json\n\nRun with --fix to delete orphan slim files. audience-buzz/show-score require manual rename.",
@@ -1962,6 +1934,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T23:26:40.592Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:roleplay-off-west-end-2026",
+    "title": "Review gap — \"Roleplay\" missing 4 cited review(s)",
+    "description": "Roleplay (roleplay-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=roleplay-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T00:08:36.059Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T00:08:57.275Z"
   },
   {
     "conditionKey": "land:land/bro-6630-cost",
