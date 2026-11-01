@@ -1,26 +1,21 @@
 {
-  "generatedAt": "2026-11-01T09:27:24.096Z",
-  "bannerText": "77/250 Done(14d) verified on main · 3 FAILED · 2 vacuous · 5 stuck-but-done · 4 mis-armed, needs re-arming (BRO-6542, BRO-6502, BRO-6489, +1 more) — PARTIAL RUN: 146 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-01T14:43:04.606Z",
+  "bannerText": "147/158 Done(14d) verified on main · 1 FAILED · 1 vacuous · 9 stuck-but-done · 1 mis-armed, needs re-arming (BRO-6269)",
   "items": [
     {
-      "title": "FAILED BRO-6509 — BSC Daily: Data quality: revival-unverified lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: revival-unverified lifetime sweep\" still listed in the 2026-11-01T09:17:32.738Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6509/bsc-daily-data-quality-revival-unverified-lifetime-sweep"
-    },
-    {
-      "title": "FAILED BRO-6424 — BSC Daily: Data: early publish dates awaiting page-date recheck",
-      "detail": "[check-health-row-absent] FAIL: \"Data: early publish dates awaiting page-date recheck\" still listed in the 2026-11-01T09:17:32.738Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6424/bsc-daily-data-early-publish-dates-awaiting-page-date-recheck"
-    },
-    {
       "title": "FAILED BRO-6329 — 52 live show(s) carry art of another work",
-      "detail": "[check-alert-condition-absent] FAIL: \"live-show-art:wrong-work\" still firing — open, last fired 2026-10-26T13:17:13.050Z (140.3h ago, within 168h)",
+      "detail": "[check-alert-condition-absent] FAIL: \"live-show-art:wrong-work\" still firing — open, last fired 2026-10-26T13:17:13.050Z (145.5h ago, within 168h)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6329/52-live-shows-carry-art-of-another-work"
     },
     {
-      "title": "STUCK BRO-6520 — main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
+      "title": "STUCK BRO-6616 — Cutover 0: lane shadow commits its own scraper-spend ledger lines to main",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6520/main-testyml-red-lint-workflows-audit-no-submitter-pii-in-committed"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6616/cutover-0-lane-shadow-commits-its-own-scraper-spend-ledger-lines-to"
+    },
+    {
+      "title": "STUCK BRO-6608 — BSC Daily: Test Suite",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6608/bsc-daily-test-suite"
     },
     {
       "title": "STUCK BRO-6513 — Outlet census round 3: vet and ingest gaps on the newly enumerated outlets (timeout, frontmezzjunkies, off-off-online, pages-on-stages, thestage, theatrely, bystander, others)",
@@ -28,20 +23,25 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6513/outlet-census-round-3-vet-and-ingest-gaps-on-the-newly-enumerated"
     },
     {
-      "title": "STUCK BRO-6506 — NYC show builders default unknown type to 'play': ~15 Off-Broadway musicals stored as plays (BRO-6489 audit)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6506/nyc-show-builders-default-unknown-type-to-play-15-off-broadway"
-    },
-    {
-      "title": "STUCK BRO-6505 — main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6505/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-classify"
-    },
-    {
       "title": "STUCK BRO-5957 — Fill the Oct 22 shadow results (The Imaginary Invalid) into the hands-off plan, section 5",
       "detail": "its own evidence holds on main — looks finished",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5957/fill-the-oct-22-shadow-results-the-imaginary-invalid-into-the-hands"
+    },
+    {
+      "title": "STUCK BRO-6764 — Mac-to-cloud Phase 2b: cut the morning digest over to the GitHub Action (one email a day, dated, reversible)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6764/mac-to-cloud-phase-2b-cut-the-morning-digest-over-to-the-github-action"
+    },
+    {
+      "title": "STUCK BRO-6745 — CV 'not a review' label drops real reviews (397 files on 230 last-year shows)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6745/cv-not-a-review-label-drops-real-reviews-397-files-on-230-last-year"
+    },
+    {
+      "title": "STUCK BRO-6697 — BSC Daily: Quality: opening date vs review dates",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6697/bsc-daily-quality-opening-date-vs-review-dates"
     }
   ],
-  "moreCount": 2
+  "moreCount": 3
 }
