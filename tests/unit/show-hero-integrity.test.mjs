@@ -18,8 +18,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import crypto from 'node:crypto';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 
+const { related } = createRequire(import.meta.url)('../../scripts/lib/show-title-family.js');
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const PUBLIC = path.join(ROOT, 'public');
 const SHOWS_DIR = path.join(PUBLIC, 'data', 'shows');
@@ -30,33 +32,7 @@ const md5 = (file) => crypto.createHash('md5').update(fs.readFileSync(file)).dig
 // scripts/check-image-aspect.js can drop them before the auto-fetch commit.
 const REJECTED_IMAGE_MD5 = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'rejected-images.json'), 'utf8')).md5;
 
-// Different titles, same production lineage (a Broadway retitle).
-const RELATED_GROUPS = [
-  ['wanted-2022', 'gun-and-powder-regional-2020', 'gun-and-powder-signature-regional-2020', 'gun-and-powder-paper-mill-regional-2024'],
-];
-
-// Same title family = after dropping leading articles and the trailing year /
-// market suffix, one id's title tokens are a prefix of the other's, or they
-// share their first two tokens (harry-potter-2021 and
-// harry-potter-and-the-cursed-child-2021; paranormal-activity-boston-regional
-// and paranormal-activity-chicago-regional). A one-word match is not enough:
-// the-lion-king and the-lion-in-winter must not excuse each other.
-const ARTICLES = new Set(['the', 'a', 'an']);
-const SUFFIX_TOKENS = new Set(['west', 'end', 'off', 'broadway', 'regional', 'national', 'tour', 'return']);
-function titleTokens(id) {
-  const tokens = id.split('-').filter(Boolean);
-  while (tokens.length > 1 && (/^\d{4}$/.test(tokens[tokens.length - 1]) || SUFFIX_TOKENS.has(tokens[tokens.length - 1]))) tokens.pop();
-  while (tokens.length > 1 && ARTICLES.has(tokens[0])) tokens.shift();
-  return tokens;
-}
-function related(a, b) {
-  const ta = titleTokens(a);
-  const tb = titleTokens(b);
-  let common = 0;
-  while (common < ta.length && common < tb.length && ta[common] === tb[common]) common++;
-  if (common === Math.min(ta.length, tb.length) || common >= 2) return true;
-  return RELATED_GROUPS.some((g) => g.includes(a) && g.includes(b));
-}
+// related() lives in scripts/lib/show-title-family.js (shared with check-image-aspect.js, BRO-6748).
 
 // Public image refs carry a `?v=<hash>` cache-buster; strip it before touching disk
 // (BRO-6198: without this every hero looked missing and the guard hashed 0 files).

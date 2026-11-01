@@ -63,3 +63,37 @@ test('the committed rejected list is well formed md5 -> reason', () => {
     assert.ok(typeof v === 'string' && v.length > 0);
   }
 });
+
+// BRO-6748: venue logos served as the art of unrelated shows (BRO-6660/6683/6740/6748).
+// A new file whose bytes already serve as another unrelated show's same-role image fails;
+// same-title-family shows may share.
+function runDup(files, imagesDir) {
+  return spawnSync(process.execPath, [SCRIPT, '--files', ...files], {
+    cwd: ROOT, encoding: 'utf8',
+    env: { ...process.env, REJECTED_IMAGES_PATH: path.join(imagesDir, 'none.json'), IMAGE_ASPECT_IMAGES_DIR: imagesDir },
+  });
+}
+async function dupSetup(idA, idB) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'dup-img-'));
+  const heroes = [];
+  for (const id of [idA, idB]) {
+    fs.mkdirSync(path.join(dir, id));
+    const f = path.join(dir, id, 'hero.webp');
+    await sharp({ create: { width: 1920, height: 800, channels: 3, background: { r: 10, g: 90, b: 200 } } }).webp().toFile(f);
+    heroes.push(f);
+  }
+  return { dir, heroes };
+}
+
+test('a hero byte-identical to an unrelated show hero fails the check', { skip: !sharp && 'sharp not installed' }, async () => {
+  const { dir, heroes } = await dupSetup('dry-powder-regional-2026', 'promises-promises-regional-2023');
+  const r = runDup([heroes[1]], dir);
+  assert.equal(r.status, 1, r.stdout + r.stderr);
+  assert.match(r.stderr, /byte-identical hero already serves unrelated show/);
+});
+
+test('a hero byte-identical to a same-title-family show hero passes', { skip: !sharp && 'sharp not installed' }, async () => {
+  const { dir, heroes } = await dupSetup('paranormal-activity-2026', 'paranormal-activity-boston-regional-2026');
+  const r = runDup([heroes[1]], dir);
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+});

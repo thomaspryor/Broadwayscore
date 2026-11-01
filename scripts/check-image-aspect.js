@@ -63,6 +63,7 @@ try {
   sharp = null; // The daily digest runs without node_modules; inspect headers instead.
 }
 
+const { related } = require('./lib/show-title-family');
 const ROOT = path.resolve(__dirname, '..');
 const SHOWS_DIR = process.env.IMAGE_ASPECT_IMAGES_DIR || path.join(ROOT, 'public', 'images', 'shows');
 
@@ -91,7 +92,30 @@ try {
   console.error(`::warning::check-image-aspect: cannot read ${REJECTED_IMAGES_PATH} (${err.message}); rejected-bytes check skipped`);
 }
 
-async function checkFile(absPath, role = classify(absPath)) {
+// BRO-6748: venue logos / stock art keep landing as the "real" art of several unrelated
+// shows (BRO-6660, 6683, 6740, 6748), each time caught only after main went red. Refuse a
+// checked file whose bytes already serve as the same role's image for an unrelated show.
+let DIGEST_INDEX = null; // role -> md5 -> [showId]
+function digestIndex() {
+  if (DIGEST_INDEX) return DIGEST_INDEX;
+  DIGEST_INDEX = {};
+  for (const f of listAllArchiveImages()) {
+    const r = classify(f);
+    if (!r) continue;
+    let d;
+    try { d = crypto.createHash('md5').update(fs.readFileSync(f)).digest('hex'); } catch { continue; }
+    const byHash = (DIGEST_INDEX[r] = DIGEST_INDEX[r] || {});
+    (byHash[d] = byHash[d] || []).push(path.basename(path.dirname(f)));
+  }
+  return DIGEST_INDEX;
+}
+function unrelatedDuplicates(absPath, role, digest) {
+  const self = path.basename(path.dirname(absPath));
+  const ids = ((digestIndex()[role] || {})[digest] || []).filter(id => id !== self && !related(id, self));
+  return ids;
+}
+
+async function checkFile(absPath, role = classify(absPath), opts = {}) {
   if (!role) return null; // not a tracked image role
 
   const t = THRESHOLDS[role];
@@ -103,6 +127,13 @@ async function checkFile(absPath, role = classify(absPath)) {
   } catch { /* unreadable: sharp below reports it */ }
   if (digest && REJECTED_MD5[digest]) {
     return { role, absPath, ok: false, reason: `rejected by eye (data/rejected-images.json): ${REJECTED_MD5[digest]}` };
+  }
+
+  if (digest && opts.checkDuplicates) {
+    const dups = unrelatedDuplicates(absPath, role, digest);
+    if (dups.length) {
+      return { role, absPath, ok: false, reason: `byte-identical ${role} already serves unrelated show(s): ${dups.slice(0, 4).join(', ')}; likely venue logo / stock art (add its md5 to data/rejected-images.json if so)` };
+    }
   }
 
   let meta;
@@ -255,7 +286,7 @@ async function main() {
   const violations = [];
   let checked = 0;
   for (const f of files) {
-    const r = await checkFile(f);
+    const r = await checkFile(f, undefined, { checkDuplicates: mode !== 'audit' });
     if (!r) continue;
     checked++;
     if (!r.ok) violations.push(r);
