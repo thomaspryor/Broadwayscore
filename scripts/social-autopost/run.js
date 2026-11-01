@@ -33,7 +33,7 @@ const { findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosing
 const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
-const { CHANNEL_SETS, MARKETS, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON } = require('./config');
+const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON } = require('./config');
 const { targetSets, tagChannels, channelKey, homeSet } = require('./routing');
 const briefs = require('./briefs');
 
@@ -139,7 +139,7 @@ async function buildCard(desc, outDir, { requirePoster = true, label = null, nam
   }
   if (!poster.poster) console.log(`  [art] ${desc.show.id}: typographic poster (${poster.reason}); a live run would hold this post`);
   const card = {
-    market: desc.show.category, title: desc.show.title, venue: desc.show.venue,
+    market: marketOf(desc.show), title: desc.show.title, venue: desc.show.venue,
     score: desc.score, tierId: desc.tierId, tierLabel: desc.tierLabel, breakdown: desc.breakdown,
     poster: poster.poster ? poster : null, label,
   };
@@ -861,6 +861,7 @@ async function main() {
         const route = targetSets(ev.show, ctx.reviewsByShow[ev.show.id], CHANNEL_SETS, ctx.shows);
         console.log(`  routing: ${ev.show.category} -> ${route.join(' + ')} channels${route.length > 1 ? ' (high profile, cross-posted)' : ''}`);
         if (!live) continue;
+        if (!route.length) { console.log(`  [autopost] ${ev.show.id}: no channel set is configured for it, nothing posted`); continue; }
         const targets = channels.filter(c => route.includes(c.set));
         if (!targets.length) throw new Error(`no usable channel in set(s) ${route.join(', ')}`);
 

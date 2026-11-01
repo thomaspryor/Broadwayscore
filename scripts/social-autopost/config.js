@@ -12,6 +12,9 @@ const MARKETS = {
   broadway: { label: 'Broadway', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#d4a574', logo: 'broadway-wordmark-transparent.png', hashtags: ['Broadway', 'BroadwayReviews'] },
   'off-broadway': { label: 'Off-Broadway', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#d4a574', logo: 'broadway-wordmark-transparent.png', hashtags: ['OffBroadway', 'NYCTheatre'] },
   'west-end': { label: 'West End', tz: 'Europe/London', domain: 'westendscorecard.com', brand: '#f472b6', logo: 'west-end-wordmark-transparent.png', hashtags: ['WestEnd', 'LondonTheatre'] },
+  // Opera Scorecard (BRO-6770): a show's market is 'opera' when its type is opera (marketOf), whatever its category.
+  // Opera shows live under /opera/<title slug> on broadwayscorecard.com (operascorecard.com redirects there).
+  opera: { label: 'Opera', tz: 'America/New_York', domain: 'broadwayscorecard.com', brand: '#e0485f', logo: 'opera-wordmark-transparent.png', hashtags: ['Opera', 'MetOpera'] },
   'off-west-end': { label: 'Off-West End', tz: 'Europe/London', domain: 'westendscorecard.com', brand: '#f472b6', logo: 'west-end-wordmark-transparent.png', hashtags: ['OffWestEnd', 'LondonTheatre'] },
 };
 
@@ -34,6 +37,13 @@ const CHANNEL_SETS = {
   'west-end': {
     // instagram: '', facebook: '', twitter: '', threads: '', bluesky: '',
   },
+};
+// Opera Scorecard accounts (BRO-6770). Fill in the Buffer channel ids from
+// `node scripts/social-autopost/run.js --list-channels` once the owner has connected them.
+// Opera posts ONLY here: while this is empty opera posts nothing (no fallback to the
+// Broadway or West End accounts, unlike West End), and nothing else ever posts here.
+CHANNEL_SETS.opera = {
+  // instagram: '', facebook: '', twitter: '', threads: '', bluesky: '',
 };
 const CHANNELS = CHANNEL_SETS.broadway; // the original set; kept for callers that predate per-market routing
 
@@ -71,7 +81,12 @@ const SCORE_FLOORS = {
   'off-west-end': { total: 10, t1: 5, t2: 2, highConfidence: 6 },
 };
 
-const ELIGIBLE_CATEGORIES = Object.keys(MARKETS);
+const ELIGIBLE_CATEGORIES = Object.keys(MARKETS).filter(k => k !== 'opera'); // categories; opera is a market by type (marketOf)
+/** A show's market key: 'opera' for an opera (any category), else its category. */
+const marketOf = show => (String(show && show.type || '').toLowerCase() === 'opera' ? 'opera' : show.category);
+
+// Opera is skipped for the Broadway and West End sets; select.js lets it through the score lane only
+// once the opera channel set is fully configured.
 const SKIP_TYPES = new Set(['opera', 'dance', 'concert']);
 
 const SCORE_POST_LOCAL_HOUR = 10; // the morning after opening night
@@ -109,7 +124,7 @@ const CLOSING_SOON = {
 
 module.exports = {
   WEEKLY_ROUNDUP, CLOSING_SOON,
-  MARKETS, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
+  MARKETS, marketOf, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,
 };

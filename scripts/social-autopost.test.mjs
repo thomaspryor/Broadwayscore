@@ -1207,3 +1207,41 @@ test('closing captions: X keeps the question with a long real show link (the lin
   assert.ok(caps.twitter.includes(s.title), 'full title kept on X');
   assert.ok(xLength('twitter', caps.twitter) <= LIMITS.twitter);
 });
+
+// Opera Scorecard routing (BRO-6770)
+const cfg = require('./social-autopost/config.js');
+const operaShow = over => show({ id: 'tosca-off-broadway-2026', slug: 'tosca-off-broadway', title: 'Tosca', category: 'off-broadway', type: 'opera', venue: 'Metropolitan Opera House', ...over });
+const full = { instagram: 'i', facebook: 'f', twitter: 't', threads: 'th', bluesky: 'b' };
+
+test('opera: empty opera set posts nothing and never falls back to Broadway or West End', () => {
+  const o = operaShow();
+  assert.equal(routing.homeSet(o), 'opera');
+  assert.deepEqual(routing.targetSets(o, [], cfg.CHANNEL_SETS), []);
+  assert.deepEqual(routing.targetSets(operaShow({ category: 'off-west-end' }), [], cfg.CHANNEL_SETS), []);
+  assert.equal(sel.findScoreEvents({ ...base(o, { reviewsByShow: { [o.id]: reviews(3, 3, 8) } }), now: Date.parse('2026-11-06T15:00:00Z') }).length, 0);
+});
+
+test('opera: a configured opera set gets opera shows only, and opera is never cross-posted', () => {
+  const other = Object.fromEntries(Object.entries(full).map(([k, v]) => [k, `w-${v}`]));
+  const sets = { ...cfg.CHANNEL_SETS, opera: full, 'west-end': other };
+  assert.throws(() => routing.tagChannels([], { ...sets, 'west-end': full }), /both/);
+  assert.deepEqual(routing.targetSets(operaShow(), [{ outletId: 'nytimes' }], sets), ['opera']);
+  assert.deepEqual(routing.targetSets(show(), [], sets), ['broadway']); // a musical never goes to opera
+  const rev = routing.tagChannels([{ id: 'i', service: 'instagram' }], sets);
+  assert.equal(rev[0].key, 'instagram@opera');
+  const prev = cfg.CHANNEL_SETS.opera; cfg.CHANNEL_SETS.opera = full;
+  try {
+    const o = operaShow();
+    const ev = sel.findScoreEvents({ ...base(o), now: Date.parse('2026-11-06T15:00:00Z') });
+    assert.equal(ev.length, 1);
+    // other lanes stay opera-free
+    assert.equal(sel.isEligibleShow(o), false);
+  } finally { cfg.CHANNEL_SETS.opera = prev; }
+});
+
+test('opera captions link the opera page and carry opera hashtags', () => {
+  const c = buildCaptions({ show: operaShow(), score: 84, tierId: 'critical-gold', tierLabel: 'Critical Gold', reviewCount: 9, breakdown: { rave: 5, positive: 3, mixed: 1, negative: 0 } });
+  assert.match(c.instagram, /broadwayscorecard\.com\/opera\/tosca /);
+  assert.match(c.instagram, /#MetOpera/);
+  assert.doesNotMatch(c.twitter, /#Broadway/);
+});
