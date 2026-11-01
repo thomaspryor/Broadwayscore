@@ -302,7 +302,7 @@ jobs:
       - name: Pick up new Washington DC productions (theatreindc)
         if: always()
         continue-on-error: true
-        timeout-minutes: 10
+        timeout-minutes: 15
         env:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
@@ -312,7 +312,8 @@ jobs:
           F="data/shows.json data/audit/tic-daily-seen-dc.json data/audit/tic-daily-added-dc.json data/audit/last-promotion-ids.json"
           rm -rf /tmp/tic-pre-dc; mkdir -p /tmp/tic-pre-dc data/audit
           for f in $F; do if [ -f "$f" ]; then cp "$f" "/tmp/tic-pre-dc/$(basename $f)"; else touch "/tmp/tic-pre-dc/$(basename $f).absent"; fi; done
-          node scripts/tic-daily.js --city=dc || true
+          # timeout 600 < the step's 15 min, so a hang still reaches the validate/rollback below
+          timeout 600 node scripts/tic-daily.js --city=dc || true
           if node scripts/validate-data.js; then
             bash scripts/lib/git-add-existing.sh data/audit/tic-daily-seen-dc.json data/audit/tic-daily-added-dc.json
           else

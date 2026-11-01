@@ -38,6 +38,14 @@ test('DC venueLine reads the city off a bare address and names DC properly', () 
   assert.equal(stage.venueLine(detailFor('315 W Fayette St Baltimore', 'Everyman Theatre'), {}, dc), null);
 });
 
+test('DC venueLine: a street named for a metro city does not make the venue local (BRO-6771)', () => {
+  for (const a of ['1700 Washington Blvd Baltimore', '100 W Washington St Hagerstown', '10 Laurel St Frederick', 'Gaithersburg Rd Ellicott City']) {
+    assert.equal(stage.venueLine(detailFor(a), {}, dc), null, a);
+  }
+  assert.equal(stage.venueLine(detailFor('1101 6th St SW Washington, DC 20024', 'Arena Stage'), {}, dc), 'Arena Stage, Washington, DC');
+  assert.equal(stage.venueLine(detailFor('4101 Wilson Blvd Arlington VA 22203'), {}, dc), 'Signature Theatre, Arlington, VA');
+});
+
 test('DC detailFilter: Baltimore and Columbia are outside the metro, Olney is inside', () => {
   assert.equal(stage.detailFilter(detailFor('315 W Fayette St Baltimore', 'Everyman Theatre'), mkPage(), dc).reason, 'outside-metro');
   assert.equal(stage.detailFilter(detailFor('10901 Little Patuxent Pkwy Columbia', 'Toby'), mkPage(), dc).reason, 'outside-metro');
@@ -103,4 +111,17 @@ test('DC keeps Comedy-typed plays; Chicago drops them', () => {
   assert.equal(stage.detailFilter(det, pg, getCity('dc')).ok, true);
   assert.equal(stage.detailFilter({ ...det, showType: 'Childrens' }, pg, getCity('dc')).reason, 'type:Childrens');
   assert.equal(stage.detailFilter({ ...det, address: '10 Wacker Dr Chicago, IL' }, pg, getCity('chicago')).reason, 'type:Comedy');
+});
+
+test('DC top-up: a show added on 1 review is re-linked when the listing credits more (BRO-6771)', async () => {
+  const { runDaily, pickTopups } = require('./tic-daily.js');
+  const shows = [{ id: 'x-regional-2026', evidenceUrls: ['https://www.theatreindc.com/x/501/'] }];
+  const page = { id: 501, reviews: [1, 2].map((i) => ({ outlet: `O${i}`, critic: 'C', url: `https://e.com/${i}` })) };
+  const listing = [{ id: 501, reviewCount: 2 }];
+  assert.equal(pickTopups(listing, shows, { 501: { reason: 'added', reviews: 2 } }, dc).length, 0);
+  const out = await runDaily({ listing, shows, seen: { 501: { reason: 'added', reviews: 1 } }, today: '2026-11-02', io: { page: async () => page }, city: dc });
+  assert.equal(out.topups.length, 1);
+  assert.equal(out.topups[0].urls.length, 2);
+  assert.equal(out.seen[501].reviews, 2);
+  assert.equal(pickTopups(listing, shows, { 501: { reason: 'added', reviews: 1 } }, getCity('chicago')).length, 0);
 });
