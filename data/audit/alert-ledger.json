@@ -247,7 +247,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-11-01T16:36:27.545Z",
-      "lastSeen": "2026-11-01T19:02:02.889Z",
+      "lastSeen": "2026-11-01T19:07:24.774Z",
       "lastNotifiedAt": "2026-11-01T16:36:27.545Z",
       "lastSurfacedAt": "2026-11-01T16:36:27.545Z",
       "notifyCount": 196,
@@ -6790,7 +6790,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-11-01T14:42:51.732Z",
-      "lastSeen": "2026-11-01T19:02:02.873Z",
+      "lastSeen": "2026-11-01T19:07:24.764Z",
       "lastNotifiedAt": "2026-11-01T14:42:51.732Z",
       "lastSurfacedAt": null,
       "notifyCount": 18,
@@ -34623,11 +34623,12 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41327707657"
       },
       "absentRunIds": [
-        "41331569683"
+        "41331569683",
+        "41337153546"
       ]
     },
     "test-yml:red:Unit Tests:da830c83": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"copy: example score matches Hamilton's live canonical CriticScore (catches drift on rescore)\"",
       "firstSeen": "2026-11-01T16:46:04.952Z",
@@ -34640,8 +34641,11 @@
       "linearIdentifier": "BRO-6776",
       "absentRunIds": [
         "41327707657",
-        "41331569683"
-      ]
+        "41331569683",
+        "41337153546"
+      ],
+      "resolvedAt": "2026-11-01T19:07:24.730Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-6764-cost2": {
       "status": "open",
@@ -34675,7 +34679,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real app feed: every score, count and grade survives the projection\"",
       "firstSeen": "2026-11-01T18:03:28.290Z",
       "incidentOpenedAt": "2026-11-01T18:03:28.290Z",
-      "lastSeen": "2026-11-01T19:02:02.853Z",
+      "lastSeen": "2026-11-01T19:07:24.752Z",
       "lastNotifiedAt": "2026-11-01T18:03:28.290Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
