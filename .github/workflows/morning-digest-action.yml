@@ -100,6 +100,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           status=0
           node scripts/send-morning-digest.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \
@@ -119,6 +120,7 @@ jobs:
             --action=data/audit/morning-digest-preview.html --log="$RUNNER_TEMP/digest.log" \
             ${PUBKEY_B64:+--pubkey-b64="$PUBKEY_B64"}
 
+      # hygiene-cache-runid-ok: a rolling one-file snapshot (<1 KB) restored from the newest earlier entry; the key must be new each run because caches cannot be overwritten.
       # "+N since yesterday" board deltas read data/audit/board-report-snapshot.json, which is gitignored
       # and saved after a send; a fresh runner has none, so carry it between runs in the Actions cache.
       - name: Restore yesterday's board snapshot
@@ -143,6 +145,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
           GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: |
           status=0
           node scripts/send-morning-digest.js --send-to-owner --no-autofix --skip-mac-local --resend-sent-guard \
