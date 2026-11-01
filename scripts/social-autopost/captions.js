@@ -7,7 +7,7 @@
  * as 23 characters; other networks use the full URL length.
  */
 
-const { MARKETS, marketOf, OPERA_HOUSE_TAGS } = require('./config');
+const { MARKETS, marketOf, operaHouseTag } = require('./config');
 
 const LIMITS = { twitter: 280, bluesky: 300, threads: 500, instagram: 2196, facebook: 5000 };
 const SHORT_BUDGET = 270; // fits X and Bluesky with margin
@@ -54,7 +54,7 @@ const TIER_LEAD = {
 };
 
 function hashtagLine(show) {
-  const house = marketOf(show) === 'opera' ? [OPERA_HOUSE_TAGS[show.category]].filter(Boolean) : [];
+  const house = marketOf(show) === 'opera' ? [operaHouseTag(show)].filter(Boolean) : [];
   return [...MARKETS[marketOf(show)].hashtags, ...house, 'Theatre'].map(t => `#${t}`).join(' ');
 }
 

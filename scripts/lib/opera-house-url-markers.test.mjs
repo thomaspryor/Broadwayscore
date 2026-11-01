@@ -36,3 +36,11 @@ test('filterOperaUrls passes a house show its own URLs when venue is given', () 
   assert.deepEqual(filterOperaUrls([eno, met], 'bachtrack', 'x', null, 'London Coliseum'), [eno]);
   assert.deepEqual(filterOperaUrls([eno, met], 'bachtrack', 'x', null, 'Metropolitan Opera House'), [met]);
 });
+
+test('social autopost house tag follows the venue for SFO/ENO, category otherwise (BRO-6782)', async () => {
+  const { createRequire } = await import('node:module');
+  const { operaHouseTag } = createRequire(import.meta.url)('../social-autopost/config.js');
+  assert.equal(operaHouseTag({ venue: 'War Memorial Opera House', category: 'off-broadway' }), 'SFOpera');
+  assert.equal(operaHouseTag({ venue: 'London Coliseum', category: 'west-end' }), 'ENO');
+  assert.equal(operaHouseTag({ venue: 'Metropolitan Opera House', category: 'off-broadway' }), 'MetOpera');
+});
