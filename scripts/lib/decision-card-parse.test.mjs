@@ -94,7 +94,12 @@ test('a context URL in the question is not the button target; a signed owner lin
     description: `DECISION NEEDED: Do you still use Cyrus? The relay https://cyrus-relay.vercel.app now returns 404 so the drain job logs fetch failed every tick and has done for weeks now.\nOption A - Retire: x / y\nOption B - Keep: x / y` };
   const signed = { identifier: 'BRO-7', title: 'DECISION NEEDED: Renew Gmail login', url: 'https://linear.app/x/issue/BRO-7', createdAt: '2026-10-24T00:00:00Z',
     description: 'DECISION NEEDED: Tap https://broadwayscorecard.com/api/admin/gmail-reauth?e=1793000000&s=0123456789abcdef0123456789abcdef and press Allow' };
-  const section = buildDecisionsSection([quoted, signed], { now: new Date('2026-10-24T12:00:00Z') });
+  const now = new Date('2026-10-24T12:00:00Z');
+  // No signing secret (CI has no .env): the signed owner link itself is the button.
+  const bare = buildDecisionsSection([quoted, signed], { now, secret: '' });
+  assert.match(renderNamedDigestBlock('Decisions', bare, { actionCards: true }), />Tap to do this \u2192<\/a>/);
+  // Pinned secret (not process.env, which send-morning-digest.js fills from .env): signed answer buttons.
+  const section = buildDecisionsSection([quoted, signed], { now, secret: 'test-secret' });
   const byId = Object.fromEntries(section.items.map((i) => [i.identifier, i]));
   assert.equal(byId['BRO-6110'].url, 'https://linear.app/x/issue/BRO-6110');
   assert.equal(byId['BRO-6110'].actionLabel, undefined);
