@@ -97,6 +97,58 @@ function isStaleNonReviewSlot(existing, incomingUrl) {
   return incomingVerdict.ok === true && !isAggregatorPageUrl(incomingUrl);
 }
 
+// BRO-6742: an outlet's interview slug ("interview-noga-flaishon-discusses-
+// memoriam", "/interviews/...") and its review slug ("review-memoriam-...").
+// "qa" alone is left out: too short to tell from other slug words.
+const INTERVIEW_SLUG = /(?:^|[/_-])(?:interview|interviews|in-conversation|q-and-a)(?=[/_.-]|$)/i;
+const REVIEW_SLUG = /review|critic|critique/i;
+
+function _pathOf(url) {
+  try {
+    const u = new URL(url);
+    let p = u.pathname + u.search;
+    try { p = decodeURIComponent(p); } catch { /* malformed escape: test it raw */ }
+    return p;
+  } catch { return null; }
+}
+
+/**
+ * True when `existing` holds an outlet+critic slot with an INTERVIEW page of
+ * this show and `incomingUrl` is that same outlet's REVIEW of it (BRO-6742).
+ *
+ * The slot is <outlet>--<critic>.json, so a critic who interviews the writer
+ * before opening and reviews the show after fills the slot with the
+ * interview first. The interview reads as complete text, so the url upgrade
+ * (maybeUpgradeUrl, which only replaces bad content) kept it and every later
+ * ingest of the review failed with "Stale merge" (Read About Stuff on
+ * Memoriam and The Moth, 2026-10: the interview was even scored as a review).
+ *
+ * Both urls must say so: the existing path names an interview and never says
+ * review/critic/critique, the incoming path says review, both are the same
+ * publication, and the incoming url is a review candidate. Measured on
+ * reviews.json 2026-11-01: 7 of 44,539 live rows have an interview slug; 5 of
+ * them also say review, so this can only move the other 2, and only when the
+ * same critic's review url arrives for the same show. Human url pins win.
+ * @param {object} existing  review-text record already on disk
+ * @param {string} incomingUrl
+ * @returns {boolean}
+ */
+function isInterviewSlotSupersededBy(existing, incomingUrl) {
+  if (!existing || typeof existing !== 'object' || !existing.url || !incomingUrl) return false;
+  if (existing._locked === true || existing.urlManualOverride === true || existing.urlVerified === true) return false;
+  if (existing.duplicateOf) return false;
+  if (_sameUrl(existing.url, incomingUrl)) return false;
+  const oldPath = _pathOf(existing.url);
+  const newPath = _pathOf(incomingUrl);
+  if (!oldPath || !newPath) return false;
+  if (!INTERVIEW_SLUG.test(oldPath) || REVIEW_SLUG.test(oldPath)) return false;
+  if (!REVIEW_SLUG.test(newPath)) return false;
+  const { publicationHostOf } = require('./non-review-url-patterns');
+  const oldHost = publicationHostOf(existing.url);
+  if (!oldHost || oldHost !== publicationHostOf(incomingUrl)) return false;
+  return _classify(incomingUrl).ok === true && !isAggregatorPageUrl(incomingUrl);
+}
+
 function _namedCritic(name) {
   if (!name || typeof name !== 'string') return null;
   const t = name.trim();
@@ -358,6 +410,7 @@ function flaggedSlotSupersededBy(existing, incoming, show) {
 module.exports = {
   isAggregatorPageUrl,
   isStaleNonReviewSlot,
+  isInterviewSlotSupersededBy,
   flaggedSlotSupersededBy,
   urlOwnedByOtherCritic,
   urlHeldBySibling,
