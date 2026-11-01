@@ -31,7 +31,10 @@ function recordDeferredShows(ids, file = process.env.GATHER_DEFERRED_FILE) {
   if (!file) return false;
   const list = (Array.isArray(ids) ? ids : []).map((s) => String(s).trim()).filter(Boolean);
   try {
-    fs.writeFileSync(file, list.length ? list.join('\n') + '\n' : '');
+    // An empty list is written as a comment line, never a zero-byte file, so the
+    // artifact upload always has a file and a clean shard is told apart from a
+    // killed one (BRO-6743). collectDeferredShows ignores it.
+    fs.writeFileSync(file, list.length ? list.join('\n') + '\n' : '# done\n');
   } catch (e) {
     // Best effort: a failed write must not stop the gather itself.
     console.warn(`⚠️  could not record deferred shows to ${file}: ${e.message}`);

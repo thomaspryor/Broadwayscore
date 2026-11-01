@@ -1088,7 +1088,9 @@ jobs:
           DEFERRED_DIR: ${{ runner.temp }}/gather-deferred
           RUN_SHOWS: ${{ inputs.shows }}
           # BRO-6743: shards that never uploaded a list (killed at the job timeout) re-dispatch whole.
-          PREPARE_MATRIX: ${{ needs.prepare.outputs.matrix }}
+          # Attempt 1 only: a "Re-run failed jobs" attempt does not re-run the shards that
+          # succeeded, so their lists are not in its (this-attempt) download.
+          PREPARE_MATRIX: ${{ github.run_attempt == 1 && needs.prepare.outputs.matrix || '' }}
           IN_PARALLEL_JOBS: ${{ inputs.parallel_jobs }}
           IN_MAX_TIER: ${{ inputs.max_tier }}
           IN_AGG_ONLY: ${{ inputs.aggregators_only }}
@@ -1113,7 +1115,7 @@ jobs:
             } } catch {} };
             walk(process.env.DEFERRED_DIR);
             let matrix = [];
-            try { matrix = JSON.parse(process.env.PREPARE_MATRIX || "{}").include || []; } catch {}
+            try { matrix = JSON.parse(process.env.PREPARE_MATRIX || "{}").include || []; } catch { console.error("::warning::could not parse the prepare matrix; unreported shards are not re-dispatched"); }
             texts.push(unreportedShardShows(matrix, reported).join("\n"));
             const plan = redispatchPlan(collectDeferredShows(texts), process.env.RUN_SHOWS);
             // Fail the step so Notify on failure alerts: these shows still need a gather.
