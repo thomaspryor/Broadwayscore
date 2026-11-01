@@ -4648,18 +4648,24 @@ function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
   // pages, festivals) that kept this row permanently warning (BRO-4689). They
   // stay in the candidates JSON. Candidates already catalogued (stale report)
   // are dropped too, so the count is real.
-  const { EVIDENCE_SOURCES } = require('./lib/reverse-discovery-backlog');
+  const { EVIDENCE_SOURCES, isAwaitingFirstPromotion } = require('./lib/reverse-discovery-backlog');
   const isStillMissing = buildStillMissingPredicate();
-  const reviewed = ((report && report.candidates) || []).filter(
+  const nowMs = now.getTime();
+  const missing = ((report && report.candidates) || []).filter(
     (c) => c && EVIDENCE_SOURCES.has(c.source) && (!isStillMissing || isStillMissing(c)) &&
       // Candidates written before extractGuardianReview learned to drop
       // cross-tagged film/TV reviews stay in the report until the next audit run.
       !(c.source === 'guardian-review' && c.url && !/^https?:\/\/[^/]*theguardian\.com\/stage\//.test(c.url))
   );
+  // Guardian reviews a daily promoter stages itself get one promotion cycle
+  // before they count (BRO-6611: Middlemarch, flagged "missing 0d", was
+  // promoted by the pipeline the same day).
+  const reviewed = missing.filter((c) => !isAwaitingFirstPromotion(c, state, nowMs));
+  const awaiting = missing.length - reviewed.length;
   const ranked = rankReverseDiscoveryBacklog({
     candidates: reviewed,
     state,
-    nowMs: now.getTime(),
+    nowMs,
     isStillMissing,
   });
   if (!ranked) {
@@ -4670,7 +4676,12 @@ function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
     if (!report || !Array.isArray(report.candidates) || !Number.isFinite(Date.parse(report.generatedAt))) return [];
     const { checkReverseDiscoveryFreshness } = require('./lib/reverse-discovery-freshness');
     if (checkReverseDiscoveryFreshness(report, now.getTime())) return [];
-    return [{ name: 'Data: reviewed shows missing from shows.json', status: 'pass', message: 'No aggregator-reviewed show is missing from the catalogue' }];
+    return [{
+      name: 'Data: reviewed shows missing from shows.json',
+      status: 'pass',
+      message: 'No aggregator-reviewed show is missing from the catalogue' +
+        (awaiting ? ` (${awaiting} new Guardian-reviewed show(s) awaiting the daily promotion run)` : ''),
+    }];
   }
 
   // Named-first-in-array is not named-most-urgent — the same lesson

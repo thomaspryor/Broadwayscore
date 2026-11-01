@@ -123,6 +123,49 @@ function rankReverseDiscoveryBacklog({ candidates, state, nowMs, isStillMissing 
   };
 }
 
+/**
+ * Hours a candidate an automated promoter handles may sit before the digest
+ * names it at all (BRO-6611). Guardian reviews of flagship UK houses
+ * (promote-ob-venue-candidates.js --regional-only) and of curated Off-West
+ * End houses (promote-owe-venue-candidates.js) are staged and promoted by the
+ * daily 14:00 UTC scrape-new-aggregators.yml run. The health digest runs at
+ * ~08:30 UTC, so every such review first seen after the previous promotion
+ * run was flagged "missing 0d" before the promoter had had a single chance:
+ * "Middlemarch" (RSC, first seen 2026-10-29 21:15, promoted 2026-10-30 19:05)
+ * filed a card the pipeline closed by itself that same day. One day covers
+ * one promotion run plus cron delay; a candidate still missing after it is a
+ * real gap and is reported as before.
+ */
+const RD_PROMOTION_GRACE_HOURS = 24;
+
+/** True when a daily promoter stages this candidate on its own. */
+function isAutoPromotable(c) {
+  if (!c || c.source !== 'guardian-review' || !c.title || !c.url) return false;
+  if (c.market === 'uk-regional') {
+    return require('./uk-regional-guardian').stageUkRegionalCandidates([c]).length > 0;
+  }
+  if (c.market === 'west-end') {
+    return !!require('./owe-guardian-staging').oweHouseFromGuardianUrl(c.url, c.title);
+  }
+  return false;
+}
+
+/**
+ * True when the candidate is auto-promotable and was first seen less than
+ * RD_PROMOTION_GRACE_HOURS ago (reverse-discovery-state.json firstSeen). No
+ * known firstSeen means no grace: an unaged candidate is reported, never hidden.
+ */
+function isAwaitingFirstPromotion(c, state, nowMs) {
+  if (!isAutoPromotable(c)) return false;
+  let seen = NaN;
+  try {
+    const entry = state && state[candidateKey(c)];
+    seen = entry && entry.firstSeen ? Date.parse(entry.firstSeen) : NaN;
+  } catch { return false; }
+  if (!Number.isFinite(seen) || seen > nowMs) return false;
+  return nowMs - seen < RD_PROMOTION_GRACE_HOURS * 3600000;
+}
+
 /** Human label for a candidate, including its age when known. */
 function describeCandidate(c) {
   if (!c) return '(none)';
@@ -133,6 +176,9 @@ function describeCandidate(c) {
 module.exports = {
   EVIDENCE_SOURCES,
   RD_AGED_DAYS_ERROR,
+  RD_PROMOTION_GRACE_HOURS,
+  isAutoPromotable,
+  isAwaitingFirstPromotion,
   rankReverseDiscoveryBacklog,
   describeCandidate,
 };
