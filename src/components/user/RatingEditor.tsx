@@ -288,7 +288,7 @@ export default function RatingEditor({
           ariaLabel="Date seen"
           wrapClassName="relative w-full sm:w-48"
           className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white pr-9' : 'text-fg-muted'}`}
-          onClear={() => { dateTouched.current = true; setDateSeen(''); }}
+          onClear={() => { dateTouched.current = true; setDateSeen(''); setShowtime({ time_slot: null, curtain_time: null }); }}
         >
           <svg className="w-4 h-4 shrink-0 text-fg-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -313,7 +313,7 @@ export default function RatingEditor({
               date={dateSeen}
               value={showtime}
               onChange={setShowtime}
-              autoSelectOnMount={!reviewId && !showtime.time_slot}
+              autoPick={false}
               disabled={saving}
             />
           </div>
@@ -337,7 +337,7 @@ export default function RatingEditor({
           data-lpignore="true"
           data-testid="seat-input"
           // 16px on mobile: smaller makes iOS Safari zoom on focus (see notes below).
-          className="w-full sm:w-96 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
+          className="ph-mask w-full sm:w-96 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
         />
       </div>
 

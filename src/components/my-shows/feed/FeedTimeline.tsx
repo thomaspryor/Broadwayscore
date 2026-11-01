@@ -82,7 +82,7 @@ function EntryCard({ entry, show, onOpenPhoto, uploads }: {
             <Link href={href} className="hover:text-brand transition-colors">{title}</Link>
           </h3>
           {show?.venue && <p className="text-xs text-fg-muted truncate">{show.venue}</p>}
-          {diaryDetailText(review) && <p className="text-xs text-fg-muted truncate" data-testid="feed-diary-detail">{diaryDetailText(review)}</p>}
+          {diaryDetailText(review) && <p className="ph-mask text-xs text-fg-muted truncate" data-testid="feed-diary-detail">{diaryDetailText(review)}</p>}
           {review.rating > 0 && (
             <div className="sm:hidden mt-1 flex items-center gap-px" role="img" aria-label={`${review.rating} out of 5 stars`}>
               <MiniStars rating={review.rating} />
