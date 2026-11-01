@@ -99,6 +99,32 @@ const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t)
   || (KNOWN_OUTLET_KEYS.has(outletKey(t))
     && (!AMBIGUOUS_BARE_KEYS.has(outletKey(t)) || /^THE\s|\([^)]*\)\s*$/.test(t)));
 
+// Pre-2019 issues use VENUE / run dates / TITLE instead of Reviews / TITLE.
+// OCR can glue the dash to a month and put a stray dot before a numeric title.
+// Anchors require the whole header. Run/title blocks without an adjacent venue
+// still end a section: column ordering can separate the venue from its dates.
+function historicalSections(lines) {
+  const sections = [];
+  for (let i = 1; i < lines.length; i++) {
+    const run = lines[i].trim().match(/^\d{1,2}(?:\s*[A-Za-z]+)?(?:\s+\d{4})?\s*[\u2013-]\s*\d{1,2}\s+[A-Za-z]+\s+(\d{4})$/);
+    if (!run || +run[1] < 1981 || +run[1] >= 2019) continue;
+    let headerStart = i - 1;
+    while (headerStart > 0 && !lines[headerStart].trim()) headerStart--;
+    const hasVenue = isCapsTitle(lines[headerStart].trim());
+    const parts = [];
+    let end = i;
+    for (let k = i + 1; k < Math.min(i + 7, lines.length); k++) {
+      const t = normTitleLine(lines[k]).replace(/^[.\u00b7]\s*/, '');
+      if (!t || /^[.\u00b7]+$/.test(t)) continue;
+      if (!(isCapsTitle(t) || /^\d{2,}$/.test(t)) || parts.length === 3) break;
+      parts.push(t);
+      end = k;
+    }
+    if (parts.length) sections.push({ start: hasVenue ? headerStart : i, end, title: joinWrapped(parts), hasVenue });
+  }
+  return sections;
+}
+
 // `stats` (optional) is filled for the BRO-6097 coverage probe: whether the
 // production's Reviews section was found, how many outlet+date headers it
 // holds, and how many headers produced no review (text under 50 chars).
@@ -113,6 +139,7 @@ function parsePdfReviews(text, showTitle, stats) {
   // Pattern: "Reviews" right-aligned, then show title, then first outlet+date
   let reviewsStart = -1;
   let reviewsEnd = lines.length;
+  let historical = false;
 
   const isOurTitle = (t) => t === titleUpper || t === 'THE ' + titleUpper;
   for (let j = 0; j < lines.length; j++) {
@@ -134,6 +161,16 @@ function parsePdfReviews(text, showTitle, stats) {
         }
       }
       if (reviewsStart > -1) break;
+    }
+  }
+
+  if (reviewsStart === -1) {
+    const sections = historicalSections(lines);
+    const idx = sections.findIndex(s => s.hasVenue && isOurTitle(s.title));
+    if (idx !== -1) {
+      reviewsStart = sections[idx].end + 1;
+      reviewsEnd = sections[idx + 1]?.start ?? lines.length;
+      historical = true;
     }
   }
 
@@ -159,13 +196,14 @@ function parsePdfReviews(text, showTitle, stats) {
   }
 
   if (stats) { stats.sectionFound = reviewsStart !== -1; stats.productionCount = productionCount; stats.headers = 0; stats.shortDropped = 0; }
+  if (stats && historical) stats.historicalSection = true;
   if (reviewsStart === -1) {
     if (productionCount > 1) console.log(`  -layout: "${showTitle}" heading not found in a ${productionCount}-production issue; relying on -raw title matching`);
     return [];
   }
 
   // Step 2: Find end boundary — next production
-  for (let j = reviewsStart; j < lines.length; j++) {
+  for (let j = reviewsStart; j < reviewsEnd; j++) {
     const raw = lines[j];
     const trimmed = raw.trim();
 
@@ -248,6 +286,14 @@ function parsePdfReviews(text, showTitle, stats) {
         if (foreignCaption) {
           if (stats) stats.captionDropped = (stats.captionDropped || 0) + 1;
         } else if (fullText.length > 50) {
+          // Old multi-column pages can interleave a neighbour's review even
+          // inside our run. Require our title in the body, away from its tail.
+          // A single mention is enough only with this exact production anchor.
+          if (historical) {
+            const body = ` ${titleKey(fullText)} `;
+            const at = body.indexOf(` ${titleKey(showTitle)} `);
+            if (at < 0 || at > body.length * 0.7) continue;
+          }
           // Convert outlet name to Title Case
           const outletTitle = outlet.split(/[\s.]+/)
             .map(w => w.charAt(0) + w.slice(1).toLowerCase())
@@ -276,6 +322,7 @@ function parseRawPdfReviews(text, showTitle, venue) {
   const lines = splitPdfLines(text);
   const allReviews = [];
   const runs = productionRuns(lines);
+  const historicalRuns = historicalSections(lines).map(s => ({ line: s.start, title: s.title }));
 
   let i = 0;
   while (i < lines.length) {
@@ -289,7 +336,8 @@ function parseRawPdfReviews(text, showTitle, venue) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
-        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionForeign(lines, i, showTitle, sectionOwnedBy(runs, i, showTitle, lines), venueOwnedBy(lines, i, venue, showTitle)) ? false : null;
+        const historicalOwner = sectionOwnedBy(historicalRuns, i, showTitle, lines);
+        const owned = historicalOwner === false || sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionForeign(lines, i, showTitle, sectionOwnedBy(runs, i, showTitle, lines), venueOwnedBy(lines, i, venue, showTitle)) ? false : null;
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -315,7 +363,16 @@ function parseRawPdfReviews(text, showTitle, venue) {
     i++;
   }
 
-  return finishPdfReviews(filterByTitle(allReviews, showTitle));
+  const matched = finishPdfReviews(filterByTitle(allReviews, showTitle));
+  if (matched.length || !/^\d+$/.test(showTitle)) return matched;
+  // Numeric titles such as 1984 may occur only once, below the opening 300
+  // characters. Recover those only from a bounded, explicitly named old run.
+  const stats = {};
+  const historical = parsePdfReviews(text, showTitle, stats);
+  // Preserve the raw parser's ownership and size guards on recovered blocks.
+  const eligible = finishPdfReviews(allReviews);
+  return stats.historicalSection ? historical.filter(r => eligible.some(e =>
+    e.outlet === r.outlet && e.date === r.date && e.critic === r.critic)) : matched;
 }
 
 // Keep only reviews ABOUT the show: raw and default modes extract every

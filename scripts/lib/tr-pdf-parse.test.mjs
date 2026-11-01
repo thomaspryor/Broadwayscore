@@ -17,6 +17,67 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { parsePdfReviews, parseRawPdfReviews, cutAtProductionHeader, maskPdfText, parseDefaultPdfReviews, mentionsTitle, mergeDefaultReviews, dateKey, parseShortDate, isDateLine } = require('./tr-pdf-parse.js');
 
+// BRO-6427: these are the committed pdftotext skeletons, with prose masked.
+// The 2015 issue has a venue/run/title header, without a Reviews marker.
+test('BRO-6427: the real 1984 run anchors a bounded historical section', async () => {
+  const { readFileSync } = await import('node:fs');
+  const text = readFileSync(new URL('../../data/audit/we-historical-tr-skeletons/1984-west-end-2015.raw.txt', import.meta.url), 'utf8');
+  const stats = {};
+  const reviews = parsePdfReviews(text, '1984', stats);
+  assert.equal(stats.sectionFound, true);
+  assert.deepEqual(reviews.map(r => [r.outlet, r.date]), [['The Times', '19.06.15']]);
+  assert.match(reviews[0].fullText, /1984/);
+  // The neighbouring Telegraph review is about Whose Line Is It Anyway.
+  // The Standard block in this cropped skeleton also contains Krapp's prose.
+  assert.deepEqual(parseRawPdfReviews(text, '1984', 'Playhouse Theatre'), reviews);
+});
+
+// Invented prose exercises the same header shape for all three card titles.
+// This does not substitute for the missing End of Longing source skeletons.
+test('BRO-6427: historical anchors require the right title, run and review evidence', () => {
+  for (const title of ['The End of Longing', 'Di and Viv and Rose', '1984']) {
+    const body = `${title} is a play performed by a memorable cast in this production. `.repeat(4);
+    const section = [
+      'PLAYHOUSE', '18 June- 05 September 2015', '.', title.toUpperCase(),
+      'Revival of a play', 'THE TIMES', '19.06.15', 'Critic Name', body,
+      'BARBICAN', '19- 21 June 2015', "KRAPP'S LAST TAPE", 'Revival of a play',
+      'DAILY TELEGRAPH', '20.06.15', 'Other Critic', body,
+    ].join('\n');
+    const stats = {};
+    assert.deepEqual(parsePdfReviews(section, title, stats).map(r => r.outlet), ['The Times']);
+    assert.equal(stats.sectionFound, true);
+    assert.deepEqual(parseRawPdfReviews(section, title).map(r => r.outlet), ['The Times']);
+    assert.deepEqual(parsePdfReviews(section, 'Absent Production'), []);
+    assert.deepEqual(parsePdfReviews(section.replace('18 June- 05 September 2015', 'contents 117'), title), []);
+    assert.deepEqual(parsePdfReviews(section.replace('18 June- 05 September 2015', '18 June- 05 September 2021'), title), []);
+    assert.deepEqual(parsePdfReviews(section.replace('PLAYHOUSE\n', ''), title), []);
+    assert.deepEqual(parsePdfReviews(section.replace(body, 'Unrelated production on stage. '.repeat(8)), title), []);
+  }
+});
+
+test('BRO-6427: the real Di and Viv and Rose crop retains its own default-mode reviews', async () => {
+  const { readFileSync } = await import('node:fs');
+  // The skeleton masker keeps title words of >=3 letters, so Di became Dx.
+  // Restore just that known title token; no review prose is reconstructed.
+  const text = readFileSync(new URL('../../data/audit/we-historical-tr-skeletons/di-and-viv-and-rose-west-end-2015.default.txt', import.meta.url), 'utf8').replace(/\bDx\b/g, 'Di');
+  const reviews = parseDefaultPdfReviews(text, 'Di and Viv and Rose', 'Vaudeville Theatre');
+  assert.equal(reviews.length, 6);
+  assert.deepEqual(reviews.slice(0, 2).map(r => [r.outlet, r.critic]), [
+    ['Guardian', 'Mxxxxxx Bxxxxxxxxx'],
+    ['Financial Times', 'Ixx Sxxxxxxxxxxx'],
+  ]);
+});
+
+test('BRO-6427: numeric-title recovery preserves raw review size guards', () => {
+  for (const size of [100, 16000]) {
+    const text = [
+      'PLAYHOUSE', '18 June- 05 September 2015', '1984',
+      'THE TIMES', '19.06.15', 'Critic Name', `1984 ${'x'.repeat(size)}`,
+    ].join('\n');
+    assert.deepEqual(parseRawPdfReviews(text, '1984'), []);
+  }
+});
+
 const JOSEPH = 'Joseph and the Amazing Technicolor Dreamcoat';
 const PAD = ' '.repeat(52);
 
