@@ -47,6 +47,8 @@ function RatingEditorFixtureInner() {
   const planSlot = sp.get('planSlot') as 'matinee' | 'evening' | 'custom' | null;
   const planTime = sp.get('planTime');
   const withTime = sp.get('withTime') === '1';
+  // ?extras=inline|link|bottom|chips previews the Time + Seat placement options.
+  const extras = (sp.get('extras') || 'inline') as 'inline' | 'link' | 'bottom' | 'chips';
 
   const [open, setOpen] = useState(true);
   const [stackOpen, setStackOpen] = useState(stack);
@@ -92,6 +94,7 @@ function RatingEditorFixtureInner() {
               initialCurtainTime={isEdit && withTime ? '19:00:00' : null}
               initialSeat={isEdit && withTime ? 'Mezzanine C-14' : null}
               suggestedShowtime={planSlot ? { time_slot: planSlot, curtain_time: planTime ? `${planTime}:00` : null } : null}
+              extrasVariant={extras}
               mode={isEdit ? 'edit' : 'new'}
               onSave={handleSave}
               onSaved={() => setOpen(false)}

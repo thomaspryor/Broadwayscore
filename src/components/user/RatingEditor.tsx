@@ -64,6 +64,14 @@ interface RatingEditorProps {
   presentation?: 'auto' | 'inline' | 'modal';
   /** Where the editor was opened from + which show; drives rating_* analytics events. */
   analytics?: { source: string; showId: string };
+  /**
+   * How Time + Seat are offered (BRO-6783 design options, owner review 2026-11-01):
+   * 'inline' always shown under Date; 'link' a "+ Add showtime & seat" link under
+   * Date; 'bottom' a "More details" disclosure under Notes; 'chips' "+ Showtime"
+   * / "+ Seat" pills under Notes. Collapsed variants open themselves when the
+   * entry already has a time or seat.
+   */
+  extrasVariant?: 'inline' | 'link' | 'bottom' | 'chips';
 }
 
 const MAX_CHARS = 2000;
@@ -101,6 +109,7 @@ export default function RatingEditor({
   onDelete,
   presentation = 'auto',
   analytics,
+  extrasVariant = 'inline',
 }: RatingEditorProps) {
   const today = localToday();
   // Cap only at today. Do NOT cap at the show's closing date: users log return
@@ -130,6 +139,10 @@ export default function RatingEditor({
     return { time_slot: null, curtain_time: null };
   });
   const [seat, setSeat] = useState<string>(initialSeat ?? '');
+  // Collapsed variants start open when there is already something to show.
+  const [timeOpen, setTimeOpen] = useState(() => !!showtime.time_slot);
+  const [seatOpen, setSeatOpen] = useState(() => !!initialSeat);
+  const [extrasOpen, setExtrasOpen] = useState(() => !!showtime.time_slot || !!initialSeat);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   // Delete now renders as a full-weight button (same size as Save) rather
@@ -250,6 +263,83 @@ export default function RatingEditor({
     }
   }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, onSave, onSaved, analytics, mode, showtime, seat, initialTimeSlot, initialCurtainTime, initialSeat]);
 
+  // Time: which performance (BRO-6783). Only meaningful once a date is set.
+  const timeRow = showId && dateSeen && (
+        <div className="mb-3">
+          <label className="block text-xs font-medium text-gray-400 mb-1">
+            Time <span className="text-fg-muted">(optional)</span>
+          </label>
+          <div className="w-full sm:w-96">
+            <ShowtimeSegmented
+              showId={showId}
+              date={dateSeen}
+              value={showtime}
+              onChange={setShowtime}
+              autoPick={false}
+              disabled={saving}
+            />
+          </div>
+        </div>
+  );
+  // Seat: owner-only free text, never on public pages or shares.
+  const seatRow = (
+    <div className="mb-3">
+        <label htmlFor="rating-editor-seat" className="block text-xs font-medium text-gray-400 mb-1">
+          Seat <span className="text-fg-muted">(optional)</span>
+        </label>
+        <input
+          id="rating-editor-seat"
+          type="text"
+          value={seat}
+          onChange={(e) => setSeat(e.target.value.slice(0, SEAT_MAX_CHARS))}
+          maxLength={SEAT_MAX_CHARS}
+          placeholder="e.g. Balcony, A-25"
+          autoComplete="off"
+          data-1p-ignore
+          data-lpignore="true"
+          data-testid="seat-input"
+          // 16px on mobile: smaller makes iOS Safari zoom on focus (see notes below).
+          className="ph-mask w-full sm:w-96 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
+        />
+      </div>
+  );
+  const timeAndSeat = <>{timeRow}{seatRow}</>;
+  const extrasLink = (label: string, cls: string) => (
+    <button type="button" onClick={() => setExtrasOpen(true)} data-testid="extras-link"
+      className={`${cls} block text-xs font-semibold text-brand hover:underline py-1`}>
+      {label}
+    </button>
+  );
+  const notesBlock = (
+    <div className="mb-3">
+        <label className="block text-xs font-medium text-gray-400 mb-1">
+          Private Notes <span className="text-fg-muted">(optional)</span>
+        </label>
+        <textarea
+          value={reviewText}
+          onChange={e => setReviewText(e.target.value)}
+          placeholder="What did you think?"
+          rows={3}
+          maxLength={MAX_CHARS + 100}
+          // text-base on mobile is load-bearing: a sub-16px font makes iOS
+          // Safari zoom the whole page on focus and stay zoomed after save
+          // (owner report, 2026-07-17). Never drop below 16px here.
+          className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
+        />
+        <div className="flex items-center justify-between mt-0.5">
+          <div className="flex items-center gap-1.5 text-xs text-fg-muted">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span>Only visible to you</span>
+          </div>
+          <span className={`text-xs ${isOverLimit ? 'text-red-400' : charsRemaining < 200 ? 'text-amber-400' : 'text-fg-muted'}`}>
+            {charsRemaining.toLocaleString()} left
+          </span>
+        </div>
+      </div>
+  );
+
   const content = (
     <div data-testid="rating-editor" className="overflow-hidden">
       {/* Title */}
@@ -301,74 +391,51 @@ export default function RatingEditor({
         </DatePickerButton>
       </div>
 
-      {/* Time: which performance (BRO-6783). Only meaningful once a date is set. */}
-      {showId && dateSeen && (
-        <div className="mb-3">
-          <label className="block text-xs font-medium text-gray-400 mb-1">
-            Time <span className="text-fg-muted">(optional)</span>
-          </label>
-          <div className="w-full sm:w-96">
-            <ShowtimeSegmented
-              showId={showId}
-              date={dateSeen}
-              value={showtime}
-              onChange={setShowtime}
-              autoPick={false}
-              disabled={saving}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* Seat: owner-only free text, never on public pages or shares. */}
-      <div className="mb-3">
-        <label htmlFor="rating-editor-seat" className="block text-xs font-medium text-gray-400 mb-1">
-          Seat <span className="text-fg-muted">(optional)</span>
-        </label>
-        <input
-          id="rating-editor-seat"
-          type="text"
-          value={seat}
-          onChange={(e) => setSeat(e.target.value.slice(0, SEAT_MAX_CHARS))}
-          maxLength={SEAT_MAX_CHARS}
-          placeholder="e.g. Balcony, A-25"
-          autoComplete="off"
-          data-1p-ignore
-          data-lpignore="true"
-          data-testid="seat-input"
-          // 16px on mobile: smaller makes iOS Safari zoom on focus (see notes below).
-          className="ph-mask w-full sm:w-96 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
-        />
-      </div>
+      {extrasVariant === 'inline' && timeAndSeat}
+      {extrasVariant === 'link' && (extrasOpen ? timeAndSeat : extrasLink('+ Add showtime & seat', 'mb-3 -mt-1'))}
 
       {/* Private notes */}
-      <div className="mb-3">
-        <label className="block text-xs font-medium text-gray-400 mb-1">
-          Private Notes <span className="text-fg-muted">(optional)</span>
-        </label>
-        <textarea
-          value={reviewText}
-          onChange={e => setReviewText(e.target.value)}
-          placeholder="What did you think?"
-          rows={3}
-          maxLength={MAX_CHARS + 100}
-          // text-base on mobile is load-bearing: a sub-16px font makes iOS
-          // Safari zoom the whole page on focus and stay zoomed after save
-          // (owner report, 2026-07-17). Never drop below 16px here.
-          className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
-        />
-        <div className="flex items-center justify-between mt-0.5">
-          <div className="flex items-center gap-1.5 text-xs text-fg-muted">
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      {notesBlock}
+
+      {extrasVariant === 'bottom' && (
+        <div className="mb-3 border-t border-white/10 pt-2">
+          <button
+            type="button"
+            onClick={() => setExtrasOpen(o => !o)}
+            aria-expanded={extrasOpen}
+            className="w-full flex items-center justify-between py-2 text-xs font-medium text-gray-400 hover:text-white"
+            data-testid="extras-toggle"
+          >
+            <span>More details <span className="text-fg-muted font-normal">(showtime, seat)</span></span>
+            <svg className={`w-4 h-4 transition-transform ${extrasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
-            <span>Only visible to you</span>
-          </div>
-          <span className={`text-xs ${isOverLimit ? 'text-red-400' : charsRemaining < 200 ? 'text-amber-400' : 'text-fg-muted'}`}>
-            {charsRemaining.toLocaleString()} left
-          </span>
+          </button>
+          {extrasOpen && <div className="pt-1">{timeAndSeat}</div>}
         </div>
-      </div>
+      )}
+      {extrasVariant === 'chips' && (
+        <>
+          {timeOpen && timeRow}
+          {seatOpen && seatRow}
+          {(!timeOpen || !seatOpen) && (
+            <div className="flex flex-wrap gap-2 mb-3">
+              {!timeOpen && showId && (
+                <button type="button" onClick={() => setTimeOpen(true)} data-testid="chip-time"
+                  className="h-9 px-3 rounded-full text-xs font-medium text-gray-300 bg-white/[0.05] ring-1 ring-inset ring-white/10 hover:text-white">
+                  + Showtime
+                </button>
+              )}
+              {!seatOpen && (
+                <button type="button" onClick={() => setSeatOpen(true)} data-testid="chip-seat"
+                  className="h-9 px-3 rounded-full text-xs font-medium text-gray-300 bg-white/[0.05] ring-1 ring-inset ring-white/10 hover:text-white">
+                  + Seat
+                </button>
+              )}
+            </div>
+          )}
+        </>
+      )}
 
       {/* Photos attach to a saved review (user_review_photos.review_id is a
           FK), so a brand-new rating gets them after its first save, from
