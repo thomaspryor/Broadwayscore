@@ -673,7 +673,7 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
 // A section's lede (caption + first sentence) may hand over from the previous
 // show with a contrast word: "Whereas sentiment abounds at A, it's scarce at B".
 const HANDOVER_LEAD_CHARS = 330;
-const HANDOVER_WORD_RE = /\b(?:Whereas|While|Unlike|By contrast|In contrast|Where)\b/;
+const HANDOVER_WORD_RE = /\b(?:Whereas|Unlike|By contrast|In contrast)\b/;
 
 // "How Shakespeare Saved My Life is at the Public Theater through October 25."
 const RUN_LISTING_RE = /[^.!?\n]{0,160}\bis (?:at|playing at|running at|now at|in performance at)\b[^.!?\n]{0,120}\b(?:through|until|to)\b[^.!?\n]{0,60}\.?/gi;
@@ -771,7 +771,12 @@ function headerSections(text, shows, ownShowId, publishDate) {
   });
   // Tracked productions near the article's date, one per normalized title.
   const dates = require('./date-utils');
-  const ref = dates.toDateMs(publishDate) || Date.parse(ownShow.openingDate || ownShow.previewsStartDate || '');
+  const pubMs = dates.toDateMs(publishDate);
+  const ownOpen = Date.parse(ownShow.openingDate || ownShow.previewsStartDate || '');
+  // An old article misfiled under a revival must not "introduce" the own show
+  // (same guard as introSections); without a publish date the own opening is the reference.
+  if (pubMs && ownOpen && (ownOpen < pubMs - WINDOW_BEFORE_DAYS * DAY_MS || ownOpen > pubMs + WINDOW_AFTER_DAYS * DAY_MS)) return none;
+  const ref = pubMs || ownOpen;
   if (!ref) return none;
   const market = marketOf(ownShow.category);
   const cands = shows.filter((s) => {
@@ -834,7 +839,8 @@ function planMultiShowFanout(data, shows, opts = {}) {
   }
   // A critic's own verdict (hand clear or reject) is never overridden here.
   const humanJudged = !!(data.wrongShowManualClear || data.wrongShowOverride || data.wrongProductionManualClear
-    || data.wrongProductionOverride || data.manualContentTier
+    || data.wrongProductionOverride || data.manualContentTier || data.humanReviewedWrongProduction === true
+    || data.humanReviewScore != null || /manual|human|owner|admin/i.test(String(data.roundupFlagNote || data.roundupNote || ''))
     || /manual|human|owner|admin/i.test(`${data.rejectedBy || ''} ${data.wrongShowSource || ''}`));
   // Aggregator round-ups quote many critics; they are not one critic's review.
   // An automated roundup / wrong-production flag on a column that reviews each
@@ -936,18 +942,21 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   // verdict is rewritten too, or the rebuild would promote it straight back.
   if (ownSection.anchorKind === 'header') {
     const hadFlag = out.isRoundupArticle === true || out.wrongProduction === true || out.wrongShow === true;
-    delete out.isRoundupArticle;
+    if (out.isRoundupArticle === true) {
+      out.isRoundupArticle = false;
+      out.roundupArticleClearedNote = `[${now.slice(0, 10)} multi-show-splitter: flag was set on the whole multi-show post, text is now one show's section (BRO-6744)]`;
+    }
     delete out.roundupNote;
+    delete out.roundupArticleReason;
     delete out.wrongProduction;
     delete out.wrongProductionReason;
-    delete out.wrongShow;
-    delete out.wrongShowReason;
+    if (!humanVerdict && !out.wrongShowManualClear && !out.wrongShowOverride) { delete out.wrongShow; delete out.wrongShowReason; }
     delete out.wrongFullText;
     delete out.incompleteReason;
     delete out.incompleteDetail;
     delete out.tierReason;
     if (out.contentVerification && typeof out.contentVerification === 'object') {
-      out.contentVerification = { ...out.contentVerification, isValid: true, wrongProduction: false, wrongArticle: false, issues: [], multiShowSplitCleared: now };
+      out.contentVerification = { ...out.contentVerification, wrongProduction: false, wrongArticle: false, staleWholePostVerdict: true, staleWholePostVerdictAt: now };
     }
     delete out.contentVerificationPromoted;
     if (out.rejectionReason && !humanVerdict && /^(?:ensemble|collector|llm|cv|content-verif|auto)/i.test(String(out.rejectedBy || ''))) {
@@ -957,8 +966,10 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
       out.wrongShowClearedBy = 'multi-show-splitter';
       out.wrongShowClearedAt = now;
     }
-    out.contentTier = 'complete';
-    out.contentTierReason = 'multi-show-split: trimmed to own show section';
+    if (!out.manualContentTier) {
+      out.contentTier = 'complete';
+      out.contentTierReason = 'multi-show-split: trimmed to own show section';
+    }
     out.isFullReview = true;
     out.textStatus = 'complete';
     out.textQuality = 'full';

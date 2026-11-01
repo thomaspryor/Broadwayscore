@@ -150,24 +150,16 @@ function planStaleWholePostRejection(data, at) {
   const cutAt = Date.parse(data.multiShowSectionIsolatedAt || data.multiShowSplitProcessed || '');
   if (!cutAt) return null;
   const rejected = !!(data.rejectionReason || data.rejectedAt);
-  const roundup = data.isRoundupArticle === true;
-  if (!rejected && !roundup) return null;
-  if (data.humanReviewScore != null || data.manualContentTier || data.wrongShowManualClear || data.wrongShowOverride) return null;
+  if (!rejected) return null;
+  if (data.humanReviewScore != null || data.manualContentTier || data.wrongShowManualClear || data.wrongShowOverride || data.humanReviewedWrongProduction === true) return null;
   const rejectedAt = Date.parse(data.rejectedAt || '');
-  if (rejected) {
-    if (!AUTOMATED_REJECTER_RE.test(String(data.rejectedBy || ''))) return null;
-    if (!rejectedAt || rejectedAt >= cutAt) return null;
-    if (!WHOLE_POST_REASONING_RE.test(String(data.rejectionReasoning || ''))) return null;
-  } else if (!WHOLE_POST_REASONING_RE.test(String(data.roundupNote || data.multiShowReason || ''))) {
-    return null;
-  }
+  if (!AUTOMATED_REJECTER_RE.test(String(data.rejectedBy || ''))) return null;
+  if (!rejectedAt || rejectedAt >= cutAt) return null;
+  if (!WHOLE_POST_REASONING_RE.test(String(data.rejectionReasoning || ''))) return null;
   const out = { ...data };
   const clearedFlags = [];
-  if (rejected) {
-    for (const k of ['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning']) delete out[k];
-    clearedFlags.push('rejection');
-  }
-  if (roundup) { delete out.isRoundupArticle; delete out.roundupNote; clearedFlags.push('isRoundupArticle'); }
+  for (const k of ['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning']) delete out[k];
+  clearedFlags.push('rejection');
   out.wholePostVerdictClearedAt = at;
   markRescoreNeeded(out, 'multi-show post: verdict made on the whole post cleared; re-judge this show\'s section', at);
   const len = String(data.fullText).length;

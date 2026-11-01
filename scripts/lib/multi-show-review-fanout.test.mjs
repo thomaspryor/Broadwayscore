@@ -815,7 +815,9 @@ test('header: Bystander post flagged roundup/wrongProduction splits per show and
   assert.ok(plan.ownSection.sectionText.startsWith('Dog Day Afternoon (c)'));
   assert.ok(!/initiative sequence|chess sequence|runway sequence/.test(plan.ownSection.sectionText));
   const out = rewriteParent({ ...data, fullText: plan.text }, plan.ownSection, plan.otherSections.map((s) => s.showId));
-  for (const k of ['isRoundupArticle', 'wrongProduction', 'wrongShow', 'wrongFullText', 'rejectionReason', 'incompleteReason']) {
+  assert.equal(out.isRoundupArticle, false);
+  assert.ok(out.roundupArticleClearedNote, 'cleared note stops the rebuild re-flagging it');
+  for (const k of ['wrongProduction', 'wrongShow', 'wrongFullText', 'rejectionReason', 'incompleteReason']) {
     assert.equal(out[k], undefined, k);
   }
   assert.equal(out.contentTier, 'complete');
@@ -837,6 +839,10 @@ test('header: a hand verdict, or a roundup with no per-show headers, is never sp
   const base = { showId: 'chess-2025', fullText: null, wrongFullText: FULL, isRoundupArticle: true, wrongProduction: true, contentTier: 'invalid' };
   assert.equal(planMultiShowFanout({ ...base, wrongProductionManualClear: true }, HSHOWS), null);
   assert.equal(planMultiShowFanout({ ...base, rejectedBy: 'human-admin' }, HSHOWS), null);
+  assert.equal(planMultiShowFanout({ ...base, humanReviewScore: 70 }, HSHOWS), null);
+  assert.equal(planMultiShowFanout({ ...base, humanReviewedWrongProduction: true }, HSHOWS), null);
+  // An article published long before the own production opened is a misfiled old piece.
+  assert.equal(planMultiShowFanout({ ...base, publishDate: '2019-01-05' }, HSHOWS), null);
   const digest = 'Critics weigh in on Chess and Dog Day Afternoon this week. '.repeat(40);
   assert.equal(planMultiShowFanout({ ...base, wrongFullText: digest }, HSHOWS), null);
   assert.equal(headerSections(digest, HSHOWS, 'chess-2025', null).sections.length, 0);
