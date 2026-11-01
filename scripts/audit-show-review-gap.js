@@ -1067,6 +1067,13 @@ async function auditShow(show, opts = {}) {
   result.aggregatorArticles = articles;
 
   const aggUrls = new Set();
+  const urlSources = new Map();
+  const addSourceUrl = (url, source, sourceUrl = null) => {
+    aggUrls.add(url);
+    if (!urlSources.has(url)) urlSources.set(url, []);
+    const sources = urlSources.get(url);
+    if (!sources.some(s => s.source === source && s.sourceUrl === sourceUrl)) sources.push({ source, sourceUrl });
+  };
   // Broadway-path production identity: URLs cited ONLY by out-of-window
   // (prior-production) articles are priorRun → ingest-blocked. A URL also cited
   // by a current-run article stays ingestable (the current citation vouches).
@@ -1080,7 +1087,7 @@ async function auditShow(show, opts = {}) {
     const extracted = await extractAggregatorReviewUrls(art, show);
     if (!extracted) continue;
     for (const u of extracted.urls) {
-      aggUrls.add(u);
+      addSourceUrl(u, 'aggregator-article', art);
       if (extracted.priorRun) bwPriorCandidateUrls.add(u);
       else if (!extracted.publishDate) bwDatelessCandidateUrls.add(u);
       else bwCurrentUrls.add(u);
@@ -1124,21 +1131,25 @@ async function auditShow(show, opts = {}) {
   try {
     const { showScoreUrlForShow, fetchAllShowScoreCriticTiles } = require('./lib/show-score-discover');
     const { isShowScoreTileDateOutOfRun } = require('./lib/gap-ingest-policy');
+    const { showScoreSiblingPriorRunSources } = require('./lib/show-score-gap-identity');
     const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap(), opts.allShows || getAllShowsForShowScore());
     if (ssUrl) {
       const fetchHtml = async (u) => {
         const r = await fetchPage(u, { timeout: 45000 });
         return (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
       };
-      for (const tile of await fetchAllShowScoreCriticTiles(ssUrl, fetchHtml)) {
+      const tiles = await fetchAllShowScoreCriticTiles(ssUrl, fetchHtml);
+      const siblingSources = showScoreSiblingPriorRunSources(tiles, show, opts.allShows || getAllShowsForShowScore());
+      for (const tile of tiles) {
         const u = tile.url;
         if (!isReviewUrl(u)) continue;
         const norm = normalizeReviewUrl(u);
-        aggUrls.add(norm);
+        addSourceUrl(norm, 'show-score', ssUrl);
         if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.set(norm, 'show-score-url-year');
         // BRO-6629: the tile's own review date. Show Score keeps one page per
         // title, and a prior run's year-less URLs passed the URL-year check.
         else if (isShowScoreTileDateOutOfRun(tile.date, show)) ssPriorRunUrls.set(norm, 'show-score-tile-date');
+        else if (siblingSources.has(u)) ssPriorRunUrls.set(norm, siblingSources.get(u));
         else {
           const sig = otherProductionUrlSignal(norm, show);
           if (sig) ssPriorRunUrls.set(norm, `show-score-${sig.signal}`);
@@ -1259,7 +1270,7 @@ async function auditShow(show, opts = {}) {
   // an aggregator-cited gap; tagging it serpCensus would report-only it and (via
   // currentRunUncollected) hide it from the opening-window alert.
   const serpCensusOnlyUrls = new Set([...serpCensusUrls].filter(u => !aggUrls.has(u)));
-  for (const u of serpCensusUrls) aggUrls.add(u);
+  for (const u of serpCensusUrls) addSourceUrl(u, 'serp-census');
 
   // ---- West End reference (completeness gate, 2026-07-10) ----
   // Playbill/BWW above are Broadway aggregators; for WE shows they find ~nothing,
@@ -1311,7 +1322,7 @@ async function auditShow(show, opts = {}) {
         if (row.url) {
           if (!isReviewUrl(row.url)) continue;
           const u = normalizeReviewUrl(row.url);
-          aggUrls.add(u);
+          addSourceUrl(u, row.source, row.sourceArticleUrl);
           weRefUrls.add(u);
           // Source attribution is CURRENT-RUN only (QA review 2026-07-11): a
           // source's prior-run citation must not earn corroboration credit for
@@ -1593,6 +1604,7 @@ async function auditShow(show, opts = {}) {
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
   // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
+  for (const m of [...result.missing, ...result.flaggedMisses]) m.sources = urlSources.get(m.url) || [];
   if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || bwDatelessOnlyUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0) {
     for (const m of [...result.missing, ...result.flaggedMisses]) {
       // BRO-5627: no dated aggregator article vouches for this URL's run.
@@ -3581,4 +3593,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
