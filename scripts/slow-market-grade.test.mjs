@@ -82,3 +82,8 @@ test('isOverdue: no checkpoint entry is overdue; unknown show is null', () => {
   assert.equal(isOverdue({ id: 'z', category: 'broadway', status: 'open', openingDate: '2026-01-01' }, undefined, N6751, F6751), true);
   assert.equal(isOverdue(undefined, { at: daysAgo(1) }, N6751, F6751), null);
 });
+
+test('isOverdue: never-audited show outside the grind window was promised nothing (null)', () => {
+  assert.equal(isOverdue({ id: 'old', category: 'broadway', status: 'closed', openingDate: '2019-01-01' }, undefined, N6751, F6751), null);
+  assert.equal(isOverdue({ id: 'nodate', category: 'broadway', status: 'closed' }, undefined, N6751, F6751), null);
+});

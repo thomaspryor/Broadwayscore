@@ -37,8 +37,10 @@ on:
         default: ''
       redispatched:
         # redispatch-after-hours: 1  (BRO-6751: at 3h the grind got ~8 runs/day x ~19 shows = ~152 audits/day, below the
-        #   ~340/day the scheduler's own freshness rules need for the 1,021 last-year shows. 1h ~= max run time, so a
-        #   re-dispatch never queues behind a live grind and evicts a pending targeted run. Paging band stays 12h.)
+        #   ~340/day the scheduler's own freshness rules need for the 1,021 last-year shows. A pending targeted run is
+        #   itself the newest created run, so it resets this clock: a re-dispatch can only evict one pending >1h,
+        #   which the 60-min job timeout makes near-impossible. Cost: up to ~2-3x this workflow's SERP/fetch spend;
+        #   kill switches AGGREGATOR_GAP_AUDIT_DISABLED / SERP_GAP_CENSUS_DISABLED. Paging band stays 12h.)
         # BRO-4282: set by scripts/cron-redispatch.js when GitHub dropped the
         # hourly schedule. The run then uses the schedule's settings (3y window,
         # 6h ground-truth interval), never the manual-dispatch defaults.

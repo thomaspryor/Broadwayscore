@@ -17,7 +17,8 @@
  * the show's last gap-audit checkpoint is older than the scheduler's own
  * freshness promise for it (freshnessMsFor) plus OVERDUE_GRACE_HOURS. STALE
  * asks "does this PASS still prove anything?"; OVERDUE asks "is the scheduler
- * keeping up?". A closed last-year show is promised a 30-day recheck, so it
+ * keeping up?". Meant for the slow tiers: the 12h grace hides lag in the
+ * opening-week tiers (55-min / 3h promises). A closed last-year show is promised a 30-day recheck, so it
  * can be STALE (>24h) without being OVERDUE; a rising OVERDUE count means the
  * audit workflow is getting too few runs.
  *
@@ -42,6 +43,8 @@ const FREQUENT_OUTLET_RATE = 0.6;
 const DEFAULT_MAX_AGE_HOURS = 24;
 // One measured max gap between real audit runs (12.1h, BRO-3867) on top of the promise.
 const OVERDUE_GRACE_HOURS = 12;
+// The scheduled grind's --window (audit-aggregator-gap.yml INPUT_WINDOW_DAYS default).
+const GRIND_WINDOW_DAYS = 1095;
 
 const ROOT = path.join(__dirname, '..');
 
@@ -110,9 +113,13 @@ function displayGrade(g, nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS) {
  * schedulingCheckpoint() (the same view the scheduler sorts by); no entry =
  * never audited = overdue. Same freshness call and default the audit uses.
  */
-function isOverdue(show, entry, nowMs, { freshnessMsFor, checkpointTs }, graceHours = OVERDUE_GRACE_HOURS) {
+function isOverdue(show, entry, nowMs, { freshnessMsFor, checkpointTs }, graceHours = OVERDUE_GRACE_HOURS, scopeDays = GRIND_WINDOW_DAYS) {
   if (!show) return null;
-  if (!entry) return true;
+  if (!entry) {
+    // Never audited: overdue only if the grind's window covers it; otherwise nothing was promised.
+    const opened = Date.parse(show.openingDate || show.previewsStartDate || '');
+    return Number.isFinite(opened) && nowMs - opened <= scopeDays * 86400000 ? true : null;
+  }
   const age = nowMs - checkpointTs(entry);
   return age > freshnessMsFor(show, entry, { freshnessHours: 12, now: nowMs }) + graceHours * 3600000;
 }
@@ -151,11 +158,11 @@ function main(argv = process.argv.slice(2)) {
   // BRO-6751: scheduler view for OVERDUE. Missing checkpoint file -> overdue unknown (null).
   let sched = null;
   let freshness = null;
-  try {
+  const cpPath = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
+  if (fs.existsSync(cpPath)) {
     freshness = require('./lib/gap-audit-freshness');
-    const cp = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json'), 'utf8'));
-    sched = freshness.schedulingCheckpoint(cp, freshness.gapRowShowIds(audit), nowMs);
-  } catch { sched = null; }
+    sched = freshness.schedulingCheckpoint(JSON.parse(fs.readFileSync(cpPath, 'utf8')), freshness.gapRowShowIds(audit), nowMs);
+  }
   const frequentByCategory = new Map();
   const byId = new Map((audit.results || []).map((r) => [r.showId, r]));
   const out = ids.map((id) => {
@@ -190,4 +197,4 @@ function main(argv = process.argv.slice(2)) {
 }
 
 if (require.main === module) process.exitCode = main();
-module.exports = { gradeShow, main, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };
+module.exports = { gradeShow, main, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, GRIND_WINDOW_DAYS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };

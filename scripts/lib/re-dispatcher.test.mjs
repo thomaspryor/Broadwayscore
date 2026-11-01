@@ -30,7 +30,7 @@ test('parses the live CRITICAL_CRONS registry, including the two BRO-4282 crons'
   }
 });
 
-test('BRO-3867: widened opening-night bands keep the old re-dispatch window', () => {
+test('BRO-3867/BRO-6751: workflows with a tighter re-dispatch band declare it', () => {
   const yaml = fs.readFileSync(path.join(ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
   const byWf = Object.fromEntries(parseCriticalCronEntries(yaml).map((e) => [e.workflow, e]));
   const want = { 'audit-aggregator-gap.yml': 1, // BRO-6751: throughput band, see the yml
