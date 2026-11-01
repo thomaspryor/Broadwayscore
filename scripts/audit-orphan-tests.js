@@ -74,6 +74,8 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-6518 RECHECK-AFTER probe: live core data, skipped until batch scoring catches up (2026-11-03).
+  'scripts/verify-bro-6518-recheck.test.mjs': 'BRO-6518',
   // BRO-5992 RECHECK-AFTER probe: live GSC/PostHog snapshots, skipped until the cohort hold ends (2026-11-16).
   'scripts/verify-bro-5992-recheck.test.mjs': 'BRO-5992',
   // BRO-4763: runs indirectly, imported by tour-runtime-coverage.test.mjs in
