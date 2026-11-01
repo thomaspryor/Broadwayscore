@@ -240,6 +240,7 @@ on:
       # either triggered ZERO CI. scripts/check-rebuild-staleness.js is already
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
+      - 'scripts/check-morning-digest-sent.js'
       - 'scripts/check-corpus-drift.js'
       # BRO-6241: cron lander, required by scripts/lib/visual-approval.test.mjs
       - 'scripts/visual-approval-land.js'

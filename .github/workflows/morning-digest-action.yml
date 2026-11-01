@@ -51,6 +51,7 @@ on:
         default: ''
 
 concurrency:
+  # concurrency-queue-ok: every run is idempotent (the Resend sent-today guard), so dropping all but the newest pending run loses nothing and an in-progress send is never cancelled
   group: morning-digest-action
   cancel-in-progress: false
 
