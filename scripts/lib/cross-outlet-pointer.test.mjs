@@ -40,3 +40,14 @@ test('detect-cross-outlet-duplicates: a pointer row never becomes the Layer 1 pr
   // The primary is picked from rows without a cross-outlet pointer.
   assert.match(src, /const plain = group\.filter\(r => !r\.pointerAcross\);\s*const primary = plain\[0\];/);
 });
+
+test('BRO-6742: a review-roundup row is never compared as a cross-outlet copy', async () => {
+  const { excludeFromCrossOutletCompare } = require('./cross-outlet-pointer');
+  assert.equal(excludeFromCrossOutletCompare({ isRoundupArticle: true }), true);
+  assert.equal(excludeFromCrossOutletCompare({ isRoundupArticle: false }), false);
+  assert.equal(excludeFromCrossOutletCompare({}), false);
+  assert.equal(excludeFromCrossOutletCompare(null), false);
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../detect-cross-outlet-duplicates.js', import.meta.url), 'utf8');
+  assert.match(src, /if \(excludeFromCrossOutletCompare\(data\)\) continue;/);
+});

@@ -46,4 +46,15 @@ function skipAsAlreadyFlagged(data, file, readSibling) {
   return !crossOutletPointer(data, file, readSibling);
 }
 
-module.exports = { crossOutletPointer, skipAsAlreadyFlagged, outletOfFile };
+/**
+ * A row that can never be one side of a cross-outlet copy pair (BRO-6742).
+ * A review-roundup page quotes many outlets, so it reads as a "copy" of each
+ * review it excerpts; picked as the primary, it hid the real review it quoted
+ * while being excluded itself (giulia-the-poison-queen-of-palermo culturesauce
+ * vs the BroadwayWorld roundup).
+ */
+function excludeFromCrossOutletCompare(data) {
+  return !!data && data.isRoundupArticle === true;
+}
+
+module.exports = { crossOutletPointer, skipAsAlreadyFlagged, excludeFromCrossOutletCompare, outletOfFile };

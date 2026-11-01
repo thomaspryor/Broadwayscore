@@ -49,7 +49,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 // Outlet tier lookup — reads from outlet-registry.json (source of truth)
 const { getTier } = require('./lib/outlet-tiers');
 const { GEMINI_FLASH } = require('./lib/models');
-const { crossOutletPointer, skipAsAlreadyFlagged } = require('./lib/cross-outlet-pointer');
+const { crossOutletPointer, skipAsAlreadyFlagged, excludeFromCrossOutletCompare } = require('./lib/cross-outlet-pointer');
 const { wouldCloseCrossOutletCycle } = require('./lib/cross-outlet-cycle');
 
 // ============================================================
@@ -216,6 +216,8 @@ async function main() {
         const data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
         // Skip already-rejected reviews
         if (data.rejectionReason) continue;
+        // A roundup quotes many outlets; never pair it (BRO-6742).
+        if (excludeFromCrossOutletCompare(data)) continue;
         // Skip reviews without any text
         const { text, source } = getBestText(data);
         if (!text || text.length < 50) continue;
