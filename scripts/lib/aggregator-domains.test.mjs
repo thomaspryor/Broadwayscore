@@ -35,3 +35,10 @@ test('validator-side hasAggregatorUrlMismatch agrees on the own-review path', ()
   assert.equal(hasAggregatorUrlMismatch({ url: own, outletId: 'theatre-reviews-paul-seven' }), false);
   assert.equal(hasAggregatorUrlMismatch({ url: own, outletId: 'guardian' }), true);
 });
+
+test('own-review exemption: www/upper-case host and the outlet\'s display-name alias', () => {
+  const { isAggregatorOwnReviewUrl } = require('./aggregator-domains.js');
+  const own = 'https://WWW.Theatre.Reviews/review/cherry-orchard-kristin-scott-thomas-review/';
+  assert.equal(isAggregatorOwnReviewUrl(own, 'theatre-reviews-paul-seven'), true);
+  assert.equal(isAggregatorUrlMismatch(own, 'Theatre.Reviews with Paul Seven'), false);
+});
