@@ -102,8 +102,18 @@ function releasedBodyRestoreVerdict(data, deps) {
   // while the quarantined body is other content (an-american-in-paris Komisar
   // awards piece), so the body is released only with an explicit not-a-non-review
   // clear, plus a wrong-article clear when CV called it the wrong article.
-  const humanSaysReview = data.nonReviewManualClear === true;
-  const articleCleared = data.wrongArticleManualClear === true || data.humanReviewedWrongArticle === false;
+  // The clear speaks only for a NOT-A-REVIEW quarantine: a body parked for a
+  // URL/content mismatch or a wrong-production CV is another article, whatever
+  // the human said about the URL (first-date-2013 bloomberg, url_content_mismatch).
+  // Lazy require: review-guards is large and this module must stay cheap to load.
+  const guards = require('./review-guards');
+  const cv = data.contentVerification || null;
+  const nonReviewQuarantine = data.incompleteReason === 'non_review' || data.rejectionReason === 'not_a_review'
+    || guards.cvWrongArticleFamily(cv) === 'nonReview';
+  const humanSaysReview = data.nonReviewManualClear === true && nonReviewQuarantine
+    && !(cv && cv.wrongProduction === true)
+    && !['url_content_mismatch', 'wrong_content'].includes(data.incompleteReason);
+  const articleCleared = guards.cvWrongArticleManuallyCleared(data);
   if ((data.incompleteReason === 'non_review' && !humanSaysReview) || data.suspectedLlmHallucination === true) {
     return { ok: false, reason: `quarantined as ${data.incompleteReason === 'non_review' ? 'not a review' : 'suspected hallucination'}` };
   }

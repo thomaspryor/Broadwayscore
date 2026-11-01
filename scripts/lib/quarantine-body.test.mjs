@@ -105,6 +105,14 @@ test('BRO-6742: a human "this is a review" clear releases a not-a-review / wrong
   assert.equal(releasedBodyRestoreVerdict({ ...nr, wrongArticleManualClear: true }, deps).ok, false);
   // a non-review clear alone does not override CV's wrong-article call
   assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true }, deps).ok, false);
+  // review fixes: the clear releases only a not-a-review quarantine
+  assert.equal(releasedBodyRestoreVerdict({ ...both, incompleteReason: 'url_content_mismatch' }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, incompleteReason: 'wrong_content' }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, incompleteReason: 'wrong_page_served' }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, wrongArticle: true }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...both, contentVerification: { wrongArticle: true, wrongProduction: true } }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ wrongFullText: REVIEW, fullText: null, nonReviewManualClear: true, incompleteReason: 'url_content_mismatch' }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ wrongFullText: REVIEW, fullText: null, nonReviewManualClear: true, rejectionReason: 'not_a_review' }, deps).ok, true);
   // the clear speaks for not-a-review only: a still-set exclusion flag or a hallucination still refuses
   assert.equal(releasedBodyRestoreVerdict({ ...both, isNonReview: true }, deps).ok, false);
   assert.equal(releasedBodyRestoreVerdict({ ...both, suspectedLlmHallucination: true }, deps).ok, false);
