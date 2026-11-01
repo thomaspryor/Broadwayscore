@@ -221,7 +221,11 @@ test('BRO-5805 wiring: wrong-production and film/TV CV promotions are gated on p
   assert.ok(/const ppOwnShowEvidence = !cvLowButStrong && ownShowTextEvidence\(d\.fullText, showById\[sid\]\)\.strong;/.test(src));
   assert.ok(/!ppVenueCarveout && !ppOwnShowEvidence\) \{/.test(src), 'wrongProduction promotion');
   // Cast overlap shows which show a text is about, not that it is a review: the not-a-review branch stays ungated.
-  assert.ok(/cv\.wrongArticle === true && cv\.wrongProduction === true && !ensembleSaysReview && d\.wrongShow !== true/.test(src), 'not-a-review promotion ungated');
+  // BRO-6233: the routing moved into cvWrongArticlePromotion (review-guards.js); the nonReview branch there must carry no ppOwnShowEvidence term.
+  const guardsSrc = fs.readFileSync(new URL('./lib/review-guards.js', import.meta.url), 'utf8');
+  const promo = guardsSrc.slice(guardsSrc.indexOf('function cvWrongArticlePromotion'), guardsSrc.indexOf('function invalidTierVerdict'));
+  assert.ok(/family === 'nonReview' && !blocked/.test(promo) && !/ppOwnShowEvidence|ownShowTextEvidence/.test(promo), 'not-a-review promotion ungated');
+  assert.ok(/cvWrongArticlePromotion\(d, cv,/.test(src), 'main pre-pass routes through cvWrongArticlePromotion');
   assert.ok(/cv\.isFilmTv === true && !ensembleSaysReview && !ppOwnShowEvidence && d\.wrongShow !== true/.test(src), 'film/TV promotion');
 });
 
