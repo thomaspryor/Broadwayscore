@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (317 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (319 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -371,7 +371,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
 | `NEW_YORKER_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
-| `NEXT_PUBLIC_SUPABASE_URL` | 1 cross-repo writers (of 11 workflows using it): `update-mezzanine.yml` |
+| `NEXT_PUBLIC_SUPABASE_URL` | 1 cross-repo writers (of 12 workflows using it): `update-mezzanine.yml` |
 | `NORTHJERSEY_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NORTHJERSEY_PASSWORD` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
 | `NYDAILYNEWS_EMAIL` | 3 cross-repo writers (of 3 workflows using it): `bulk-collect-review-texts.yml`, `collect-hard-paywall.yml`, `collect-review-texts.yml` |
@@ -383,15 +383,15 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
 | `OPENAI_API_KEY` | 33 cross-repo writers (of 49 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 15 workflows using it) |
-| `OWNER_EMAIL` | 68 cross-repo writers (of 144 workflows using it) |
+| `OWNER_EMAIL` | 68 cross-repo writers (of 145 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
 | `REDDIT_CLIENT_SECRET` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
-| `RESEND_API_KEY` | 72 cross-repo writers (of 152 workflows using it) |
+| `RESEND_API_KEY` | 72 cross-repo writers (of 153 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
 | `REVIEW_TEXTS_TOKEN` | 140 cross-repo writers (of 253 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 79 cross-repo writers (of 107 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 82 cross-repo writers (of 109 workflows using it) |
-| `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 9 workflows using it): `update-mezzanine.yml` |
+| `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 10 workflows using it): `update-mezzanine.yml` |
 | `THEATR_REFRESH_TOKEN` | 1 cross-repo writers (of 1 workflows using it): `update-theatr.yml` |
 | `TR_EMAIL` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |
 | `TR_PASSWORD` | 1 cross-repo writers (of 6 workflows using it): `review-refresh.yml` |

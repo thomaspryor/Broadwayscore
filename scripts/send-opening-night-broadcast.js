@@ -35,7 +35,7 @@ const { getReviewBreakdownTierId } = require('./lib/score-tiers');
 function buildBroadcastOpeningNightHtml(shows, sendTo, market) {
   const html = buildBroadcastOpeningNightHtmlRaw(shows, sendTo, market);
   const campaign = `opening-${(shows || []).map(s => s.showId).filter(Boolean).join('-') || market}`;
-  return applyUtm(html, { source: 'opening-night', campaign });
+  return applyUtm(html, { source: 'opening-night', campaign, listLink: true });
 }
 const { checkPreviewDedup } = require('./lib/preview-dedup');
 const { numbersFromEmailRows, isUnsentDraft, unsentDraftUpdatePlan, stampDraftUpdate } = require('./lib/broadcast-refresh');

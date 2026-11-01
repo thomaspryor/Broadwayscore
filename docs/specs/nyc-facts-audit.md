@@ -116,6 +116,40 @@ The verdicts judged wrong only from non-Playbill pages (pages-auto) and the six 
 
 A rerun found that a data-edit whose value another fix had already written was refused and turned the run red. `applyDataEdit` now treats it as a no-op success (`noop: true`): shows.json edits still run their validators against the stored value and still apply the human pins and revival tags, and `execute-approved-fix.js` leaves no-ops out of the applied count, so no repeat reader email goes out.
 
+### Remaining source checks (BRO-6548, 2026-11-01)
+
+All eight leftovers have a source-check disposition in [nyc-facts-source-checks.json](nyc-facts-source-checks.json). These dispositions distinguish a supported correction from a source that cannot settle the field. They do not certify disputed stored values as correct.
+
+| Row and field | Disposition | Authoritative source checked and result |
+|---|---|---|
+| Peter Panto, type | Already retired, no edit | [Producer](https://www.nycpanto.com/) fetched successfully. Its general cabaret/panto description does not explicitly classify this production. BRO-6531 already retired the Parkside Lounge row on October 31; the People's Light musical is a different production. |
+| Pizza (Nature Theater), type | Correction planned: special to opera | [NYU Skirball](https://nyuskirball.org/performance/pizza/) fetched successfully and explicitly labels the production Chamber Opera. One action in `data/pending-fixes/bro-6548.json`, pending runner application. |
+| The Unsinkable, type | Source unreadable, no edit | [PAC NYC](https://pacnyc.org/whats-on/the-unsinkable/) returned HTTP 403. Provider-restricted and browser-restricted `fetchPage` retries failed. Secondary classifications do not settle this card's authoritative-source requirement. |
+| Isla, opening | Source silent on opening night, no edit | [Producer](https://www.hitthelights.org/isla) fetched successfully and gives the August 8-29 run at WP Theater, without a separate opening-night date. August 13 review publication is not proof of opening. |
+| The Gin Game, opening | Source silent on opening night, no edit | [Producer](https://www.thegingameplay.com/) fetched successfully and gives July 18-August 14 at Housing Works, without a separate opening-night date. The [Playbill announcement](https://playbill.com/article/debra-winger-arliss-howard-to-star-in-nyc-the-gin-game) returned 403 via web.open. The secondary July 20 claim is retained as disputed evidence. |
+| El Quijote, closing | Field not exposed, no edit | [Repertorio Español](https://repertorio.nyc/show/293/el-quijote) returned a JavaScript application shell with no dates; provider-restricted and browser-restricted retries failed. A last listed performance is not necessarily a closing. |
+| That Math Show, opening | Field not exposed in fetched text, no edit | [Official site](https://www.thatmathshow.com/) fetched successfully but exposes no dates in text. Its dates image could not be verified. [TDF](https://www.tdf.org/shows/23294/that-math-show/) says June 21; a MoMath program lists a June 21 performance without naming it opening night. Neither settles the June 21 versus stored June 30 discrepancy under this card's source rule. |
+| What's Eating Gilbert Grape, id year | Rename decision recorded, application deferred | [MCC](https://mcctheater.org/tix/wegg/) fetched successfully and explicitly says performances begin June 2027. Use the existing show-id rename path described below, never an id data-edit. |
+
+The report records fetch times, byte counts and SHA-256 hashes of readable HTML, together with field-specific observations. No complete page copies or private review text are retained. This environment has neither Bright Data nor ScrapingBee credentials; retry attempts made zero paid requests. These were one-time checks, with no added cron, API or LLM calls.
+
+Gilbert Grape decision: change `whats-eating-gilbert-grape-off-broadway-2026` to `whats-eating-gilbert-grape-off-broadway-2027` through `scripts/rename-show-id.js`, retaining the old id as an alias and leaving the yearless slug stable. The following existing command ran successfully in dry-run mode, with no refusals:
+
+```sh
+node scripts/rename-show-id.js whats-eating-gilbert-grape-off-broadway-2026 whats-eating-gilbert-grape-off-broadway-2027 --json
+```
+
+It found seven JSON files to rewrite, one directory and one file to move, nine residual files and one code reference (`scripts/audit-type-todaytix-category-drift.test.mjs`). The applying operator must inspect those references and the tool's Supabase migration output. No rename was applied: this worker cannot write the private repositories or move their files. The plan contains only the Pizza type correction, and its application is also left to the runner.
+
+Writer trace: `scripts/discover-new-shows.js` maps TodayTix's Opera category to special and trusts its Musicals label; `scripts/lib/opening-signal.js` can supply review-derived press dates. The audit reads these persisted fields through `scripts/lib/nyc-facts-audit.js`. This card supplies a sourced field correction through the existing `applyDataEdit` executor instead of changing discovery heuristics for unrelated productions. The broader unknown-type discovery issue was handled under BRO-6506.
+
+Verification (including on a checkout without private core data):
+
+```sh
+test -f docs/specs/nyc-facts-audit.md
+node --test scripts/nyc-facts-audit-verification.test.mjs
+```
+
 ## Cost
 
 Pilot: $0.67 model fees plus $2.57 search fees at list price = $3.24 for 40 shows, about $0.081 a show. A full run over 1,085 rows would cost about $88; it was run after the owner raised the cap (see Full run). A field-targeted rerun is cheaper. Re-checking only the three date fields on the 586 closed OB rows would cost about $25-30, but the free consistency checks plus the closed-row enrich mode already reach most of class 1.

@@ -116,3 +116,13 @@ test('throws when source or campaign missing', () => {
   assert.throws(() => applyUtm('<a href="x">y</a>', { source: 'newsletter' }));
   assert.throws(() => applyUtm('<a href="x">y</a>', { campaign: 'c' }));
 });
+
+test('listLink:true adds subscriber=1 to tagged links only; default and skipped links do not (BRO-6772)', () => {
+  const html = '<a href="https://broadwayscorecard.com/biz">a</a><a href="https://broadwayscorecard.com/unsubscribe?e=x">u</a><a href="https://example.com/">e</a><a href="https://broadwayscorecard.com/x?subscriber=0">k</a>';
+  const out = applyUtm(html, { source: 'newsletter', campaign: 'c', listLink: true });
+  assert.match(out, /\/biz\?utm_source=newsletter&amp;utm_medium=email&amp;utm_campaign=c&amp;subscriber=1"/);
+  assert.doesNotMatch(out, /unsubscribe[^"]*subscriber=1/);
+  assert.doesNotMatch(out, /example\.com[^"]*subscriber=1/);
+  assert.match(out, /\/x\?subscriber=0&amp;utm_source/, 'an existing value is never overwritten');
+  assert.doesNotMatch(applyUtm(html, { source: 'btc', campaign: 'c' }), /subscriber=1/, 'off by default');
+});

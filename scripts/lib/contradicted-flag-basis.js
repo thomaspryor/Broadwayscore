@@ -51,6 +51,7 @@
 
 'use strict';
 
+const { isFallbackPublishDate } = require('./fallback-date-source');
 const { normalizeDate } = require('./date-utils');
 const { earliestShowDate, DAYS_AFTER_CLOSE } = require('./date-guard');
 
@@ -169,7 +170,7 @@ function detectContradictedFlagBasis({ review, show } = {}) {
   // An LLM-guessed date is not evidence of anything — same carve-out as
   // scripts/lib/date-plausibility.js, for the same reason (a hallucinated year
   // must never move a flag in either direction).
-  if (review.dateSource === 'llm-scoring') return none;
+  if (review.dateSource === 'llm-scoring' || isFallbackPublishDate(review)) return none;
 
   const currentDate = normalizeDate(review.publishDate);
   if (!currentDate) return none;

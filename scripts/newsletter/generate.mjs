@@ -3328,7 +3328,7 @@ const slug = `A-${argDate}`;
 // writing the draft (idempotent — see scripts/lib/email-utm.js). Resend
 // click-tracking preserves the query string, so these survive the redirect.
 const { applyUtm } = cjsRequire('../lib/email-utm.js');
-fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter', campaign: `${BRAND.utm}-${weekEndStr}` }));
+fs.writeFileSync(`${outDir}/${slug}.html`, applyUtm(html, { source: 'newsletter', campaign: `${BRAND.utm}-${weekEndStr}`, listLink: true }));
 // Reclassify credential-backed skips (e.g. most-read-pages when GA4 creds
 // are absent) from 'no-data' to 'no-access: <var> missing' BEFORE the report
 // is printed/written — see scripts/newsletter/section-credential-guard.mjs.

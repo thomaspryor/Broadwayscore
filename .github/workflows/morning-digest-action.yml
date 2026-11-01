@@ -2,18 +2,23 @@ name: Morning Digest
 
 # BRO-6764 (Mac-to-cloud Phase 2b): this Action is the owner's morning digest sender. It was a
 # dry run in BRO-6230; the Mac launchd job (com.broadwayscore.morning-digest) is retired in
-# config/mac-retired.json and booted out by the reconciler on 2026-11-04 (retiredAt 2026-11-01
-# + 3 days grace).
+# config/mac-retired.json (housekeeping: the reconciler boots the Mac job out about 2026-11-04).
+#
+# ONE handoff date, config/morning-digest-handoff.json (handoffDate 2026-11-02), read by both
+# sides: the Mac sender no-ops for real owner sends from that ET day (scripts/lib/digest-handoff.js)
+# and this workflow's scheduled sends run only on or after it (the gate step below). So exactly one
+# owner email a day with no gap and no wait for the bootout. ROLLBACK: push handoffDate far out (the
+# Mac sends again, the Action stays quiet) or revert the commit.
 #
 # Sends: schedule, or workflow_dispatch with send=true. Both run send-morning-digest.js
-# --send-to-owner --no-autofix --skip-mac-local --resend-sent-guard: never a broadcast (rule 17),
+# --send-to-owner --no-autofix --skip-mac-local (--resend-sent-guard, or --test-send for a test dispatch): never a broadcast (rule 17),
 # one owner email a day (the guard refuses when Resend already shows today's digest; exit 3 =
 # already sent = green; any unreadable guard = red, never a send). Autofix and the canary are
 # NOT here: the Action rows are report-only, and the Mac runs them via
 # scripts/launchd/com.broadwayscore.digest-autofix.plist (--autofix-only).
 #
-# Scheduled runs go through scripts/lib/digest-enable-gate.js: nothing before ENABLE_FROM (the
-# first ET day the Mac job is certainly booted out) and nothing before 07:45 ET. The cron lines
+# Scheduled runs go through scripts/lib/digest-enable-gate.js: nothing before handoffDate and
+# nothing before 07:45 ET. The cron lines
 # cover both DST offsets (07:50 EDT = 11:50Z, 07:50 EST = 12:50Z, plus a retry), so no seasonal
 # edit is needed. ROLLBACK: delete the schedule block below, then un-retire the Mac label
 # (config/mac-retired.json _rollback).
@@ -37,14 +42,15 @@ on:
         required: false
         type: boolean
         default: false
+      test:
+        description: 'With send=true: a one-off "TEST: " email to the owner that skips the sent-today guards and writes no sent-state (for checking the Action by hand)'
+        required: false
+        type: boolean
+        default: false
       pubkey_b64:
         description: 'Dry-run only: one-time public key (base64 PEM) to seal the full diff + run output to'
         required: false
         default: ''
-
-env:
-  # First ET day a scheduled run may send. Mac job boots out 2026-11-04T00:00Z+ (see above).
-  ENABLE_FROM: '2026-11-04'
 
 concurrency:
   group: morning-digest-action
@@ -131,10 +137,13 @@ jobs:
           key: digest-board-snapshot-${{ github.run_id }}
           restore-keys: digest-board-snapshot-
 
-      - name: Scheduled-send gate (ENABLE_FROM and 07:45 ET)
+      - name: Scheduled-send gate (handoff date and 07:45 ET)
         id: gate
         if: github.event_name == 'schedule'
-        run: node scripts/lib/digest-enable-gate.js "$ENABLE_FROM"
+        run: |
+          # Own line so a bad handoff file turns the step red (a failure inside "$(...)" in an argument is swallowed).
+          d=$(node -p "require('./scripts/lib/digest-handoff.js').handoffDate()")
+          node scripts/lib/digest-enable-gate.js "$d"
 
       - name: Send the digest to the owner
         if: (github.event_name == 'schedule' && steps.gate.outputs.go == 'true') || (github.event_name == 'workflow_dispatch' && inputs.send)
@@ -146,9 +155,11 @@ jobs:
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
           GH_TOKEN: ${{ github.token }}
           GITHUB_TOKEN: ${{ github.token }}
+          IS_TEST: ${{ github.event_name == 'workflow_dispatch' && inputs.test && 'true' || 'false' }}
         run: |
           status=0
-          node scripts/send-morning-digest.js --send-to-owner --no-autofix --skip-mac-local --resend-sent-guard \
+          if [ "$IS_TEST" = "true" ]; then MODE="--test-send"; else MODE="--resend-sent-guard"; fi
+          node scripts/send-morning-digest.js --send-to-owner --no-autofix --skip-mac-local $MODE \
             > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
           echo "digest send exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, not published)"
           grep -E '^\[digest\] (Resend sent-today guard|sent to|refusing)' "$RUNNER_TEMP/digest.log" | sed -E 's/\(subject: .*$/(subject withheld)/; s/sent to [^ ]+/sent to owner/' || true

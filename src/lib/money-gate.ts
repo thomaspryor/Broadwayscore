@@ -39,6 +39,28 @@ export const MONEY_EMAIL_USE =
  * flags (useFormspreeSubscribed.ts) and the stored Supabase session.
  * Subscribed flags count only as 'true'; the session counts when present.
  */
+/**
+ * Links in emails to the owner's own list carry `?subscriber=1` (added by
+ * scripts/lib/email-utm.js with `listLink: true`). MONEY_LIST_LINK_CAPTURE_SCRIPT
+ * runs on every page (root layout) and stores this flag, so the reader stays
+ * unlocked whichever page the email linked to. It is its own bypass reason
+ * ('list_link') and is never written to the money list or the unlock key
+ * (owner, 2026-11-01: "They don't need to sign up again"). A forwarded link
+ * unlocks too, which the owner accepted.
+ */
+export const MONEY_LIST_LINK_PARAM = 'subscriber';
+export const MONEY_LIST_LINK_KEY = 'bsc_money_list_link';
+const LIST_LINK_RE_SRC = `[?&]${MONEY_LIST_LINK_PARAM}=1(?:&|#|$)`;
+
+/** True when the URL is an email link to the owner's list (`?list=1`). */
+export function isListLink(search: string): boolean {
+  return new RegExp(LIST_LINK_RE_SRC).test(search || '');
+}
+
+/** Site-wide inline script (root layout): remembers an email list link. Never throws. */
+export const MONEY_LIST_LINK_CAPTURE_SCRIPT =
+  `try{if(/${LIST_LINK_RE_SRC}/.test(location.search))localStorage.setItem('${MONEY_LIST_LINK_KEY}','true')}catch(e){}`;
+
 export const EXISTING_SUBSCRIBER_KEYS = [
   SUBSCRIBED_KEY,
   `${SUBSCRIBED_KEY_PREFIX}broadway`,
@@ -47,13 +69,14 @@ export const EXISTING_SUBSCRIBER_KEYS = [
 export const EXISTING_SESSION_KEY = SUPABASE_STORAGE_KEY;
 
 /** Why a reader sees the money data without the gate (money_gate_bypassed). */
-export type MoneyBypassReason = 'account' | 'subscriber' | 'unlocked';
+export type MoneyBypassReason = 'account' | 'subscriber' | 'list_link' | 'unlocked';
 
-/** 'account' or 'subscriber' when this browser belongs to an existing reader. */
+/** 'account', 'subscriber' or 'list_link' when this browser belongs to an existing reader. */
 export function existingAccessReason(getItem: (key: string) => string | null): MoneyBypassReason | null {
   try {
     if (getItem(EXISTING_SESSION_KEY) !== null) return 'account';
-    return EXISTING_SUBSCRIBER_KEYS.some((k) => getItem(k) === 'true') ? 'subscriber' : null;
+    if (EXISTING_SUBSCRIBER_KEYS.some((k) => getItem(k) === 'true')) return 'subscriber';
+    return getItem(MONEY_LIST_LINK_KEY) === 'true' ? 'list_link' : null;
   } catch {
     return null;
   }
@@ -77,8 +100,9 @@ export type MoneyRole = (typeof MONEY_ROLES)[number]['value'];
 /** Inline, runs during HTML parse. Must stay dependency-free and never throw. */
 export const MONEY_GATE_BOOT_SCRIPT =
   `try{var d=document.documentElement;if(!d.hasAttribute('${MONEY_UNLOCK_ATTR}')){var u=false;` +
-  `try{var g=function(k){return localStorage.getItem(k)};u=g('${MONEY_UNLOCK_KEY}')==='1'||g('${SUPABASE_STORAGE_KEY}')!==null` +
-  EXISTING_SUBSCRIBER_KEYS.map((k) => `||g('${k}')==='true'`).join('') +
+  `var l=false;try{l=/${LIST_LINK_RE_SRC}/.test(location.search)}catch(e){}if(l){u=true;try{localStorage.setItem('${MONEY_LIST_LINK_KEY}','true')}catch(e){}}` +
+  `try{var g=function(k){return localStorage.getItem(k)};u=u||g('${MONEY_UNLOCK_KEY}')==='1'||g('${SUPABASE_STORAGE_KEY}')!==null` +
+  [...EXISTING_SUBSCRIBER_KEYS, MONEY_LIST_LINK_KEY].map((k) => `||g('${k}')==='true'`).join('') +
   `}catch(e){}` +
   `if(!u){u=/(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)/.test(document.cookie)}` +
   `if(u)d.setAttribute('${MONEY_UNLOCK_ATTR}','')}}catch(e){}`;
@@ -99,6 +123,9 @@ export function moneyUnlockReason(): MoneyBypassReason | null {
     if (localStorage.getItem(MONEY_UNLOCK_KEY) === '1') return 'unlocked';
     existing = existingAccessReason((k) => localStorage.getItem(k));
   } catch { /* storage blocked: fall through to the cookie */ }
+  try {
+    if (!existing && isListLink(window.location.search)) existing = 'list_link';
+  } catch { /* noop */ }
   try {
     if (new RegExp(`(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)`).test(document.cookie)) return 'unlocked';
   } catch { /* noop */ }

@@ -116,20 +116,25 @@ function decideEmailGateFunnelAlerts(summary = {}, state = {}, nowMs = 0) {
   if (num(summary.signIns) >= MIN_SIGN_INS_FOR_AUTH_ALERT) {
     const authJoins = num(summary.formspreeAuthJoins);
     const unknown = authJoins === null || authJoins < 0;
-    if (unknown || authJoins === 0) {
-      const stampKey = unknown ? 'lastAuthJoinsUnknownAlertAt' : 'lastAuthJoinsAlertAt';
+    if (unknown) {
+      // Card BRO-6372: an unconfigured or failed Formspree fetch degrades to a
+      // log line, never an email (it is not evidence the posts are failing).
+      alerts.push({
+        kind: 'auth-joins-unknown', severity: 'warning', email: false, logOnly: true,
+        title: 'Email list: Formspree sign-in joins could not be verified (log only)',
+        description: `${summary.signIns} account sign-ins this window, but Formspree auth-auto submissions are unknown ` +
+          `(${summary.formspreeAuthJoinsStatus ?? 'missing'}). Check FORMSPREE_TOKEN (or FORMSPREE_SUBSCRIBER_API_KEY), ` +
+          `FORMSPREE_SUBSCRIBER_FORM_ID and the Formspree submissions API.`,
+      });
+    } else if (authJoins === 0) {
+      const stampKey = 'lastAuthJoinsAlertAt';
       if (!next[stampKey] || nowMs - next[stampKey] >= COLLAPSE_COOLDOWN_MS) {
         next[stampKey] = nowMs;
         alerts.push({
-          kind: unknown ? 'auth-joins-unknown' : 'auth-joins-stalled',
+          kind: 'auth-joins-stalled',
           severity: 'error', email: true, stampKey,
-          title: unknown ? 'Email list: Formspree sign-in joins could not be verified'
-            : 'Email list: sign-ins are not reaching Formspree',
-          description: unknown
-            ? `${summary.signIns} account sign-ins this window, but Formspree auth-auto submissions are unknown ` +
-              `(${summary.formspreeAuthJoinsStatus ?? 'missing'}). Check FORMSPREE_TOKEN (or FORMSPREE_SUBSCRIBER_API_KEY), ` +
-              `FORMSPREE_SUBSCRIBER_FORM_ID and the Formspree submissions API. Sign-in events alone do not confirm list joins.`
-            : `${summary.signIns} account sign-ins this window, but zero accepted Formspree auth-auto submissions. ` +
+          title: 'Email list: sign-ins are not reaching Formspree',
+          description: `${summary.signIns} account sign-ins this window, but zero accepted Formspree auth-auto submissions. ` +
               `Check NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID in the site build and the POST in src/lib/auto-subscribe.ts; ` +
               `Formspree may be rejecting posts. sign_in_completed fires even when that POST fails or is skipped.`,
         });
@@ -218,6 +223,7 @@ module.exports = {
   BASELINE_JOINS_PER_WEEK,
   ALERT_JOINS_PER_WEEK,
   MIN_IMPRESSIONS_FOR_ALERT,
+  MIN_SIGN_INS_FOR_AUTH_ALERT,
   SUSTAINED_DECLINE_WEEKS,
   SUSTAINED_DECLINE_THRESHOLD,
 };

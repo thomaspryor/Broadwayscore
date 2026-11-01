@@ -49,6 +49,7 @@ on:
       - '.github/actions/read-lane-only-vars/**'
       # BRO-6622: tests/unit/lane-rollback.test.mjs runs the CLI refusals and pins the switch workflow.
       - 'scripts/lane-switch.js'
+      - 'scripts/email/profitability-launch.mjs' # BRO-6772 launch email, tested by tests/unit/profitability-launch-email.test.mjs
       - '.github/workflows/opening-night-lane-switch.yml'
       # scripts/tests/** — same glob fix for scripts/tests/ (BRO-5309). A new
       # scripts/tests/*.test.mjs with no literal entry below failed

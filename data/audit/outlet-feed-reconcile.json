@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T15:29:29.688Z",
+  "generatedAt": "2026-11-01T16:18:22.410Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,7 +127,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -136,10 +136,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -152,14 +148,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 766,
-  "matchedGaps": 8,
+  "itemsScanned": 744,
+  "matchedGaps": 10,
   "possibleGaps": 12,
   "gaps": [
     {
@@ -187,6 +179,24 @@
       "outletId": "south-london",
       "url": "https://southlondon.co.uk/area/southwark/review-girls-young-vic/",
       "headline": "Review: Girls – Young Vic",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "level": "matched",
+      "outletId": "nytimes",
+      "url": "https://www.nytimes.com/2026/11/01/theater/in-the-heights-review-lin-manuel-miranda.html",
+      "headline": "‘In the Heights’ Review: An Exuberant Revival of Lin-Manuel Miranda’s Musical",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/metropolitan-opera-2026-27-review-medea/",
+      "headline": "Metropolitan Opera 2026-27 Review: Medea",
       "publishDate": "2026-11-01"
     },
     {

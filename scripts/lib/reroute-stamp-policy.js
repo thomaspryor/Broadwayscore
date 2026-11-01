@@ -16,6 +16,7 @@
  *      guards, so stamping them is what made the wrong move permanent.
  */
 
+const { isFallbackPublishDate } = require('./fallback-date-source');
 const { earliestShowDate } = require('./date-guard');
 const { parseDate } = require('./date-utils');
 
@@ -32,7 +33,7 @@ function crossMarketDateGate(review, targetShow) {
   if (!review || !targetShow) return { ok: false, reason: 'no-review-or-target' };
   const pub = parseDate(review.publishDate);
   if (!pub) return { ok: false, reason: 'no-publish-date' };
-  if (review.dateSource === 'llm-scoring') return { ok: false, reason: 'publish-date-llm-guessed' };
+  if (review.dateSource === 'llm-scoring' || isFallbackPublishDate(review)) return { ok: false, reason: 'publish-date-llm-guessed' };
 
   const start = parseDate(earliestShowDate(targetShow));
   if (!start) return { ok: false, reason: 'target-has-no-start-date' };

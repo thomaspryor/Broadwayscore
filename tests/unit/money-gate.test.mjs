@@ -18,7 +18,7 @@ const hooks = tsxRequire('../../src/hooks/useFormspreeSubscribed.ts', import.met
 const supa = tsxRequire('../../src/lib/supabase.ts', import.meta.url);
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 
-function runBoot({ stored = null, items = {}, cookie = '', storageThrows = false } = {}) {
+function runBoot({ stored = null, items = {}, cookie = '', storageThrows = false, search = '', written = {} } = {}) {
   const attrs = new Set();
   const documentElement = {
     hasAttribute: (a) => attrs.has(a),
@@ -30,8 +30,12 @@ function runBoot({ stored = null, items = {}, cookie = '', storageThrows = false
       if (k === gate.MONEY_UNLOCK_KEY) return stored;
       return Object.hasOwn(items, k) ? items[k] : null;
     },
+    setItem: (k, v) => {
+      if (storageThrows) throw new Error('blocked');
+      written[k] = v;
+    },
   };
-  vm.runInNewContext(gate.MONEY_GATE_BOOT_SCRIPT, { document: { documentElement, cookie }, localStorage });
+  vm.runInNewContext(gate.MONEY_GATE_BOOT_SCRIPT, { document: { documentElement, cookie }, localStorage, location: { search } });
   return attrs.has(gate.MONEY_UNLOCK_ATTR);
 }
 
@@ -65,6 +69,55 @@ test('existing subscribers and signed-in readers bypass the gate (BRO-6248)', ()
   // The bypass never persists the money unlock or joins the money list.
   const fn = read('src/lib/money-gate.ts').match(/export function unlockForExistingReader[\s\S]*?\n}/)[0];
   assert.doesNotMatch(fn, /localStorage|cookie|submitMoneySignup/);
+});
+
+test('email links to the owner\'s list (?subscriber=1) unlock on any page and are remembered, without joining the money list (BRO-6772)', () => {
+  const P = gate.MONEY_LIST_LINK_PARAM;
+  assert.equal(P, 'subscriber');
+  const written = {};
+  assert.equal(runBoot({ search: `?${P}=1`, written }), true, 'list link unlocks the landing page');
+  assert.deepEqual(written, { [gate.MONEY_LIST_LINK_KEY]: 'true' }, 'only the list-link flag is stored');
+  assert.equal(runBoot({ items: { [gate.MONEY_LIST_LINK_KEY]: 'true' } }), true, 'a later visit stays unlocked');
+  assert.equal(runBoot({ search: `?a=b&${P}=1` }), true);
+  assert.equal(runBoot({ search: `?${P}=1`, storageThrows: true }), true, 'blocked storage still unlocks the page');
+  for (const search of ['', `?${P}=0`, `?${P}=10`, `?x${P}=1`, `?a=${P}=1`, '?list=1']) {
+    assert.equal(runBoot({ search }), false, `stays locked: ${search}`);
+    assert.equal(gate.isListLink(search), false, `isListLink: ${search}`);
+  }
+  assert.equal(gate.isListLink(`?utm=x&${P}=1&y=2`), true);
+
+  // The site-wide capture (root layout) stores the flag on pages with no money gate.
+  const store = {};
+  const ls = { setItem: (k, v) => { store[k] = v; } };
+  vm.runInNewContext(gate.MONEY_LIST_LINK_CAPTURE_SCRIPT, { localStorage: ls, location: { search: `?utm_source=n&${P}=1` } });
+  assert.deepEqual(store, { [gate.MONEY_LIST_LINK_KEY]: 'true' });
+  const none = {};
+  vm.runInNewContext(gate.MONEY_LIST_LINK_CAPTURE_SCRIPT, { localStorage: { setItem: (k, v) => { none[k] = v; } }, location: { search: '?list=1' } });
+  assert.deepEqual(none, {});
+  vm.runInNewContext(gate.MONEY_LIST_LINK_CAPTURE_SCRIPT, { localStorage: { setItem: () => { throw new Error('blocked'); } }, location: { search: `?${P}=1` } });
+  assert.match(read('src/app/layout.tsx'), /__html: MONEY_LIST_LINK_CAPTURE_SCRIPT/, 'capture runs on every page');
+
+  // Its own bypass reason, checked after an account and a real subscription.
+  const only = (k) => (x) => (x === k ? 'true' : null);
+  assert.equal(gate.existingAccessReason(only(gate.MONEY_LIST_LINK_KEY)), 'list_link');
+  assert.equal(gate.existingAccessReason((x) => (x === gate.MONEY_LIST_LINK_KEY || x === hooks.SUBSCRIBED_KEY ? 'true' : null)), 'subscriber');
+  assert.equal(gate.existingAccessReason((x) => (x === gate.MONEY_LIST_LINK_KEY ? 'true' : x === supa.SUPABASE_STORAGE_KEY ? '{}' : null)), 'account');
+  assert.equal(gate.EXISTING_SUBSCRIBER_KEYS.includes(gate.MONEY_LIST_LINK_KEY), false);
+  assert.notEqual(gate.MONEY_LIST_LINK_KEY, gate.MONEY_UNLOCK_KEY, 'never written as a money-list sign-up');
+
+  // Subscriber emails add the param through the shared link tagger; the two names must match.
+  const { createRequire } = tsxRequire('node:module', import.meta.url);
+  const utm = createRequire(import.meta.url)('../../scripts/lib/email-utm.js');
+  assert.equal(utm.LIST_LINK_PARAM, P, 'email-utm.js and money-gate.ts agree on the param');
+  const tagged = utm.applyUtm('<a href="https://broadwayscorecard.com/biz">x</a>', { source: 'newsletter', campaign: 'c', listLink: true });
+  const search = new URL(tagged.match(/href="([^"]+)"/)[1].replace(/&amp;/g, '&')).search;
+  assert.equal(gate.isListLink(search), true, 'a tagged list email link unlocks');
+  // Only emails to the owner's list opt in.
+  assert.match(read('scripts/newsletter/generate.mjs'), /applyUtm\(html, \{.*listLink: true/);
+  assert.match(read('scripts/send-opening-night-broadcast.js'), /applyUtm\(html, \{.*listLink: true/);
+  for (const f of ['scripts/send-btc-results.js', 'scripts/send-btc-confirmation-emails.js', 'scripts/fantasy-weekly-email.js']) {
+    assert.doesNotMatch(read(f), /listLink/, `${f} goes to people not on the list`);
+  }
 });
 
 test('money_gate_bypassed reports why the gate was skipped, once per page view', () => {

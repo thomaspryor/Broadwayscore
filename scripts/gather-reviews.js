@@ -171,6 +171,7 @@ const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups')
 const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate, parseHistoricalDate, maxPlausibleYear } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
+const { claimsOutletCoverage, buildStagedoorRow } = require('./lib/outlet-coverage-claim'); // BRO-6762
 const { logExclusion } = require('./lib/exclusion-logger');
 const { shouldLogRejection, shouldStampPreviewPlaceholder } = require('./lib/gather-review-stats');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
@@ -4899,12 +4900,8 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           console.log(`    ✓ SD:  ${sdReviews.length} reviews from archive`);
           for (const r of sdReviews) {
             foundReviews.push({
-              outlet: r.outlet, outletId: resolveArchiveRowOutletId({ outletLabel: r.outlet, sourceOutletId: 'stagedoor' }),
-              criticName: 'Unknown', url: '',
-              excerpt: r.excerpt || '',
-              score: r.stars ? Math.round((r.stars / 5) * 100) : null,
-              scoreSource: r.stars ? 'stagedoor-star-rating' : undefined,
-              source: 'stagedoor', publishDate: null,
+              ...buildStagedoorRow(r, { outletId: resolveArchiveRowOutletId({ outletLabel: r.outlet, sourceOutletId: 'stagedoor' }) }),
+              publishDate: null,
             });
           }
         }
@@ -5380,7 +5377,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     const market = isWestEnd ? 'west-end' : 'broadway';
     const alreadyFoundIds = new Set([
       ...diskFoundOutletIds,
-      ...foundReviews.map(r => (r.outletId || '').toLowerCase()),
+      ...foundReviews.filter(claimsOutletCoverage).map(r => (r.outletId || '').toLowerCase()),
     ]);
     const knownUrlsSoFar = new Set(foundReviews.map(r => r.url).filter(Boolean));
     const scrapingBeeKey = process.env.SCRAPINGBEE_API_KEY || '';
@@ -5534,6 +5531,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         // vetted (wrongProduction/wrongShow/not_a_review excluded) by getFoundOutletIds.
         ...diskFoundOutletIds,
         ...foundReviews
+          .filter(claimsOutletCoverage)
           .filter(r => {
             const oid = (r.outletId || '').toLowerCase();
             const expectedDomain = outletDomainMap.get(oid);
@@ -5605,7 +5603,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           // Aggregators may have already found 1 critic; compute which critics are
           // still uncovered and only query those (blanket-skip on foundOutletIds
           // would defeat the purpose of per-critic routing).
-          const foundForOutlet = foundReviews.filter(r => (r.outletId || '').toLowerCase() === outletIdLower);
+          const foundForOutlet = foundReviews.filter(claimsOutletCoverage).filter(r => (r.outletId || '').toLowerCase() === outletIdLower);
           const criticsToQuery = _remainingCritics(criticList, foundForOutlet);
           const aggregatorCovered = foundForOutlet.length > 0;
 

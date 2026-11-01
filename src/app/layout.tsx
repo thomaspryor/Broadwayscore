@@ -24,6 +24,7 @@ import HeaderHamburger from '@/components/HeaderHamburger';
 import HeaderUserIcon from '@/components/HeaderUserIcon';
 import HeaderSecondaryMarketLink from '@/components/HeaderSecondaryMarketLink';
 import { ADSENSE_CLIENT } from '@/lib/ads';
+import { MONEY_LIST_LINK_CAPTURE_SCRIPT } from '@/lib/money-gate';
 
 // Inter is self-hosted (see the @font-face block at the top of globals.css for
 // why next/font/google was removed). This is the one file the browser needs for
@@ -87,6 +88,9 @@ export default function RootLayout({
     // src/lib/money-gate.ts). One level deep: children still warn.
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Remembers an email link to the owner's list on any page, so the
+            Profitability Scorecard opens without sign-up later (BRO-6772). */}
+        <script dangerouslySetInnerHTML={{ __html: MONEY_LIST_LINK_CAPTURE_SCRIPT }} />
         <link
           rel="preload"
           href={INTER_LATIN_WOFF2}

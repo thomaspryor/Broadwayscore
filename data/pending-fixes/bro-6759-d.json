@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6759-d",
   "planId": "09b4359d-f302-4c1a-83e6-1b210f515cb3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T13:28:27.569Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "BRO-6759 clear stale different-critic flag"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T15:51:47.903Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-evan-hansen-2016/huffpost--christian-lewis.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary dear-evan-hansen-2016/exeunt-magazine--nicole-serratore.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "dear-evan-hansen-2016/huffpost--christian-lewis.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gore-vidals-the-best-man-2000/philadelphia-inquirer--howard-shapiro.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary gore-vidals-the-best-man-2000/backstage--erik-haagensen.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gore-vidals-the-best-man-2000/philadelphia-inquirer--howard-shapiro.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-2019/vulture--sara-holdren.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary hadestown-2019/variety--marilyn-stasio.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hadestown-2019/vulture--sara-holdren.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary hamilton-2015/amny--matt-windman.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/nyt-theater--jonathan-mandell.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hughie-2016/northjerseycom--robert-feldberg.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary hughie-2016/amny--matt-windman.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hughie-2016/northjerseycom--robert-feldberg.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/washpost--peter-marks.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary network-2018/vulture--jesse-green.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/washpost--peter-marks.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-fall-2010/broadwayworld--stephanie-zacharek.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary next-fall-2010/backstage--david-sheward.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-fall-2010/broadwayworld--stephanie-zacharek.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-your-feet-2015/nbcny--robert-kahn.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary on-your-feet-2015/huffpost--david-finkle.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "on-your-feet-2015/nbcny--robert-kahn.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stick-fly-2011/amny--matt-windman.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary stick-fly-2011/newsday--linda-winer.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stick-fly-2011/amny--matt-windman.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary stranger-things-the-first-shadow-west-end-2023/latimes--unknown.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/broadwayworld--alexander-cohen.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-misanthrope-west-end-2026/thestage--dave-fargnoli.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary the-misanthrope-west-end-2026/times-uk--clive-davis.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-misanthrope-west-end-2026/thestage--dave-fargnoli.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/bloomberg--mark-kennedy.json crossOutletClearReason: null -> \"BRO-6759: stale flag. Primary trouble-in-mind-2021/washpost--soyica-diggs-colbert.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "trouble-in-mind-2021/bloomberg--mark-kennedy.json crossOutletDuplicate: true -> false"
+    }
+  ],
+  "executedIn": "ci"
 }

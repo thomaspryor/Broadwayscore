@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T15:29:05.864Z",
+  "generatedAt": "2026-11-01T16:17:59.091Z",
   "windowDays": 45,
   "showsScanned": 212,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 165.60664888888888,
+      "fileAgeHours": 166.42262666666667,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 151.06374916666667,
+      "nonTerminalAgeHours": 151.87853416666667,
       "needsManualRecovery": false
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 194.12633861111112,
+      "fileAgeHours": 194.94231833333333,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 180.17564055555556,
+      "nonTerminalAgeHours": 180.99042555555556,
       "needsManualRecovery": true
     },
     {
@@ -53,20 +53,16 @@
       "outletId": "exeunt-magazine",
       "tier": 2,
       "type": "empty-body",
-      "recoverable": true,
+      "recoverable": false,
       "url": "https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 1,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=manual-cinema-the-4th-witch-off-broadway-2026 --url=https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/ --outlet=exeunt-magazine   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-01T14:49:05.153Z",
-      "fileAgeHours": 0.6664405555555556,
+      "fileAgeHours": 1.4812230555555554,
       "gapSeenAt": "2026-11-01T15:29:05.864Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 0.814785,
       "needsManualRecovery": false
     }
   ],
