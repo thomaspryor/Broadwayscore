@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T05:36:39.497Z",
+  "generatedAt": "2026-11-01T05:46:29.224Z",
   "windowDays": 45,
   "showsScanned": 212,
   "gaps": [
@@ -18,9 +18,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=lincoln-in-the-bardo-off-broadway-2026 --url=https://www.hollywoodreporter.com/lifestyle/arts/dua-lipa-amy-poehler-bowen-yang-lincoln-in-the-bardo-opera-1236736336/ --outlet=hollywood-reporter --critic=\"Caitlin Huston\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-21T07:33:46.472Z",
-      "fileAgeHours": 262.0469913888889,
+      "fileAgeHours": 262.2107925,
       "gapSeenAt": "2026-11-01T04:55:58.847Z",
-      "nonTerminalAgeHours": 0.6779583333333333,
+      "nonTerminalAgeHours": 0.8417711111111111,
       "needsManualRecovery": false
     },
     {
@@ -39,9 +39,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 155.73385083333332,
+      "fileAgeHours": 155.89765305555557,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 141.18975833333334,
+      "nonTerminalAgeHours": 141.3535711111111,
       "needsManualRecovery": false
     },
     {
@@ -60,9 +60,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 184.25354055555556,
+      "fileAgeHours": 184.41734472222223,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 170.3016497222222,
+      "nonTerminalAgeHours": 170.4654625,
       "needsManualRecovery": true
     }
   ],

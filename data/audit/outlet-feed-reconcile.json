@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T05:37:01.281Z",
+  "generatedAt": "2026-11-01T05:46:51.036Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -139,6 +139,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "west-end-wilma",
+      "error": "HTTP 429 for https://westendwilma.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -151,7 +155,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 789,
+  "itemsScanned": 779,
   "matchedGaps": 6,
   "possibleGaps": 13,
   "gaps": [
