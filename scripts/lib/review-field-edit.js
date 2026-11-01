@@ -49,7 +49,9 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   'allowCrossMarket',
   // _auditAllowCrossMarket (BRO-6323): TRUE ONLY. audit-review-contamination class A / A2 skip the file. For a
   // review whose date lands near a cross-market sibling's opening but whose URL and text name the folder's own
-  // production (a long-running show's later review). Read the page first; a plan cannot clear it.
+  // production. Also switches off the write guard's class-A quarantine and lets fix-circular-duplicate-pairs treat
+  // the file as a valid main copy, so a wrong entry has effects beyond the audit.
+  // Read the page first; a plan cannot clear it.
   '_auditAllowCrossMarket',
   'wrongShow', 'wrongShowManualClear',
   // showId (BRO-4317): only to repair a stale id left by a move, and only to the

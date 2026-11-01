@@ -261,7 +261,7 @@ const PROTECTED_FIELDS = [
   // gets re-flagged on the next rebuild. See Beaches 2026-04-22 postmortem.
   'allowEarlyDate',
   'allowLateDate',
-  'allowCrossMarket',
+  'allowCrossMarket', '_auditAllowCrossMarket',
   'allowTourSignal',
   'allowTourSignalReason',
   'allowFilmSignal',

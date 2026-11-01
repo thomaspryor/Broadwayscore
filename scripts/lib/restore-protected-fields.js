@@ -96,7 +96,7 @@ const MANUAL_FIELDS = [
   // Opening-night manual-ingest overrides (Beaches 2026-04-22 postmortem #6)
   'allowEarlyDate',
   'allowLateDate',
-  'allowCrossMarket',
+  'allowCrossMarket', '_auditAllowCrossMarket',
   'mergedDuplicateUrls', // BRO-4414 merged-away duplicate URL tombstone
   'allowTourSignal',
   'allowTourSignalReason',
