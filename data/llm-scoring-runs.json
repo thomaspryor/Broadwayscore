@@ -2332236,21 +2332236,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T00:51:25.618Z",
-    "completedAt": "2026-11-01T00:52:13.851Z",
-    "totalReviews": 14,
-    "processed": 9,
-    "skipped": 5,
+    "startedAt": "2026-11-01T00:50:30.404Z",
+    "completedAt": "2026-11-01T00:50:55.939Z",
+    "totalReviews": 7,
+    "processed": 5,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 55928,
-      "output": 2776,
-      "cacheRead": 34263,
+      "input": 29640,
+      "output": 1457,
+      "cacheRead": 19035,
       "cacheWrite": 0,
-      "total": 138781
+      "total": 74914
     },
-    "costUsd": 0.2102217,
-    "runId": "41258014308",
+    "costUsd": 0.1117731,
+    "runId": "41257993147",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2337367,6 +2337367,16 @@
           "flat": 0,
           "down": 0,
           "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "athena-regional-2022",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 2,
+          "down": 0,
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -2377765,8 +2377775,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T00:57:11.330Z",
-    "completedAt": "2026-11-01T00:57:11.332Z",
+    "startedAt": "2026-11-01T00:55:52.503Z",
+    "completedAt": "2026-11-01T00:55:52.507Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2377779,7 +2377789,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41258014308",
+    "runId": "41257993147",
     "source": "comparative-rescore",
     "errorDetails": []
   }
