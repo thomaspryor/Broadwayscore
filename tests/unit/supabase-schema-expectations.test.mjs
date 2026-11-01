@@ -213,17 +213,19 @@ ${fnSql('SELECT 9', 'real_fn')}`;
   assert.deepEqual(extractFunctionBodies(sql).map((f) => f.name), ['real_fn']);
 });
 
-test('real migrations: get_shared_plans expects the refuse-GET body from 20261002', () => {
+test('real migrations: get_shared_plans expects the newest body (20261101 curtain_time, after 20261002 refuse-GET)', () => {
   const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../supabase/migrations');
   const files = fs.readdirSync(dir).filter((f) => f.endsWith('.sql')).sort()
     .map((name) => ({ name, sql: fs.readFileSync(path.join(dir, name), 'utf8') }));
   const entry = deriveExpectations(files).expected.get('function:get_shared_plans');
   assert.ok(entry, 'get_shared_plans should be expected');
-  assert.match(entry.file, /^20261002_plan_shares_refuse_get/);
+  assert.match(entry.file, /^20261101_plan_shares_curtain_time/);
   assert.ok(entry.bodyHash, 'body hash should be captured');
-  const old = files.find((f) => f.name.startsWith('20261001_plan_shares'));
-  const oldHash = extractFunctionBodies(old.sql).find((f) => f.name === 'get_shared_plans').hash;
-  assert.notEqual(entry.bodyHash, oldHash);
+  for (const prefix of ['20261001_plan_shares', '20261002_plan_shares_refuse_get']) {
+    const old = files.find((f) => f.name.startsWith(prefix));
+    const oldHash = extractFunctionBodies(old.sql).find((f) => f.name === 'get_shared_plans').hash;
+    assert.notEqual(entry.bodyHash, oldHash, prefix);
+  }
 });
 
 // ── BRO-4538: settings an unapplied migration can change while objects still exist ──
