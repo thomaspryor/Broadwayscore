@@ -119,12 +119,16 @@ test('copy: example score matches Hamilton\'s live canonical CriticScore (catche
   const TOLERANCE = 1;
   const bwayCs = JSON.parse(readFileSync(join(REPO_ROOT, 'public/data/shows/hamilton-2015.json'), 'utf8')).cs;
   const weCs = JSON.parse(readFileSync(join(REPO_ROOT, 'public/data/shows/hamilton-west-end-2021.json'), 'utf8')).cs;
-  const shown = (copy) => Number(copy.example.match(/— (\d+) /)[1]);
+  const shown = (copy) => {
+    const m = copy.example.match(/— (\d+) /);
+    assert.ok(m, `example must contain "— <score> ": ${copy.example}`);
+    return Number(m[1]);
+  };
 
   const bwayShown = shown(getTriggerCopy('exit_intent', false));
   const weShown = shown(getTriggerCopy('exit_intent', true));
-  assert.ok(Math.abs(bwayShown - bwayCs) <= TOLERANCE, `Broadway example score ${bwayShown} is stale — hamilton-2015.json cs is ${bwayCs}`);
-  assert.ok(Math.abs(weShown - weCs) <= TOLERANCE, `West End example score ${weShown} is stale — hamilton-west-end-2021.json cs is ${weCs}`);
+  assert.ok(Math.abs(bwayShown - Math.round(bwayCs)) <= TOLERANCE, `Broadway example score ${bwayShown} is stale — hamilton-2015.json cs is ${bwayCs}`);
+  assert.ok(Math.abs(weShown - Math.round(weCs)) <= TOLERANCE, `West End example score ${weShown} is stale — hamilton-west-end-2021.json cs is ${weCs}`);
 });
 
 test('copy: other triggers do not carry an example line (scope stays limited to exit_intent/scroll_depth)', () => {

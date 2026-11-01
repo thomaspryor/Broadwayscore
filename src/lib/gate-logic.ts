@@ -194,7 +194,7 @@ export interface TriggerCopy {
  * says plainly that downloads are not available yet and that the form is a
  * waitlist.
  */
-const EXAMPLE_SCORE = { broadway: 91, westEnd: 90 }; // hamilton-2015 cs:91.33, hamilton-west-end-2021 cs:90.08 — test above fails if live score drifts >1pt
+const EXAMPLE_SCORE = { broadway: 91, westEnd: 90 }; // hamilton-2015 cs:91.33, hamilton-west-end-2021 cs:90.08 — tests/unit/email-gate-conversion.test.mjs fails if live score drifts >1pt
 
 const DOWNLOAD_WAITLIST_COPY: TriggerCopy = {
   heading: 'Data downloads are coming soon',
