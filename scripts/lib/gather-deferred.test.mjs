@@ -10,7 +10,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { recordDeferredShows, collectDeferredShows, redispatchPlan } = require('./gather-deferred.js');
+const { recordDeferredShows, collectDeferredShows, redispatchPlan, unreportedShardShows } = require('./gather-deferred.js');
 const helperPath = require.resolve('./gather-deferred.js');
 const assigned = [
   'building-the-wall-off-broadway-2017',
@@ -90,4 +90,22 @@ test('no-progress guard compares IDs across shards regardless of order', () => {
     'the-lost-boys-2026\nbuilding-the-wall-off-broadway-2017\n',
   ]);
   assert.deepEqual(redispatchPlan(deferred, assigned.join(',')), { shows: [], stalled: true });
+});
+
+test('BRO-6743: a shard with no uploaded list contributes its whole assignment', () => {
+  const matrix = [
+    { batch_id: 0, shows: 'building-the-wall-off-broadway-2017,the-lost-boys-2026', delay: 0 },
+    { batch_id: 1, shows: 'hadestown-west-end-2024', delay: 30 },
+    { batch_id: 2, shows: 'bad id,still-ok-2026', delay: 60 },
+  ];
+  assert.deepEqual(unreportedShardShows(matrix, [1]), ['building-the-wall-off-broadway-2017', 'the-lost-boys-2026', 'still-ok-2026']);
+  assert.deepEqual(unreportedShardShows(matrix, ['0', '1', '2']), []);
+  assert.equal(unreportedShardShows(matrix, []).length, 4);
+  assert.deepEqual(unreportedShardShows(null, null), []);
+});
+
+test('BRO-6743: unreported shard shows keep the no-progress guard', () => {
+  const matrix = [{ batch_id: 0, shows: assigned.join(',') }];
+  const merged = collectDeferredShows(['', unreportedShardShows(matrix, []).join('\n')]);
+  assert.deepEqual(redispatchPlan(merged, assigned.join(',')), { shows: [], stalled: true });
 });
