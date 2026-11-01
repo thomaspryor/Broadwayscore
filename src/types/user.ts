@@ -19,6 +19,12 @@ export interface UserReview {
   rating: number; // 0.5 to 5.0, half-star precision
   review_text: string | null;
   date_seen: string | null; // ISO date string (YYYY-MM-DD)
+  /** Which performance (BRO-6783). Optional: absent on databases before 20261101_review_showtime_seat. */
+  time_slot?: 'matinee' | 'evening' | 'custom' | null;
+  /** Local wall-clock "HH:MM:SS"; null = unknown even when a slot is set. */
+  curtain_time?: string | null;
+  /** Owner-only free-text seat. Never shown on public pages or shares. */
+  seat?: string | null;
   visibility: 'public' | 'private';
   created_at: string;
   updated_at: string;
@@ -98,6 +104,9 @@ export interface PendingAction {
   rating?: number;
   reviewText?: string;
   dateSeen?: string;
+  timeSlot?: 'matinee' | 'evening' | 'custom';
+  curtainTime?: string;
+  seat?: string;
   /** When set, the resumed rating edits/replaces this review; when absent, it appends a new viewing. */
   reviewId?: string;
   listId?: string;
