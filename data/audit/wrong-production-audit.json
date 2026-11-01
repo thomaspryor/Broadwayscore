@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T09:30:04.873Z",
+  "timestamp": "2026-11-01T09:45:57.098Z",
   "stats": {
     "totalReviews": 78245,
-    "alreadyFlagged": 21740,
+    "alreadyFlagged": 21743,
     "dateGuardCatches": 242,
-    "directorMismatch": 3318,
+    "directorMismatch": 3320,
     "tvFilmSignals": 2214,
-    "londonSignals": 3539,
+    "londonSignals": 3540,
     "offBroadwaySignals": 729,
     "yearMismatch": 328,
-    "noPublishDate": 9132
+    "noPublishDate": 9103
   },
   "findings": [
     {
@@ -1512,9 +1512,35 @@
     },
     {
       "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
+      "file": "chicago-reader--catey-sullivan.json",
+      "publishDate": "2023-02-09",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/the-beautiful-business-of-show/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
       "file": "chicago-theatre-review--colin-douglas.json",
       "publishDate": "2023-02-10",
       "url": "https://www.chicagotheatrereview.com/2023/02/please-god-i-need-this-job/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-02-07",
+      "url": "https://www.chicagotribune.com/2023/02/07/review-a-chorus-line-at-drury-lane-theatre-embraces-1970s-broadway-and-why-we-love-musicals/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -98479,6 +98505,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2012",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/hay-fever-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
