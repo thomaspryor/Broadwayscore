@@ -1228,6 +1228,9 @@ function _createOrMergeReviewFile(showId, input, options = {}) {
       try { data = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { continue; }
       if (!data || !data.url || String(data.outletId || '') === String(outletId)) continue;
       if (data._locked === true || data.manualContentTier || data.multiShowSplitParent === true) continue;
+      if (data.humanReviewScore != null || data.wrongProduction || data.wrongShow || data.duplicateOf
+          || /^(manual|human|audit)[-_]/i.test(String(data.rejectedBy || ''))) continue;
+      if (String(data.criticName || '').trim().toLowerCase() !== String(criticName || '').trim().toLowerCase()) continue;
       if (!sameArticleUrl(data.url, input.url) || !junk.isCleanReplacementForJunk(data.fullText, fields.fullText)) continue;
       if (dryRun) { existing = { path: path.join(showDir, f), data }; break; }
       const moved = { ...data, outletId };

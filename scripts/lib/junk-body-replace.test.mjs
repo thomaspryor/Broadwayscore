@@ -113,3 +113,34 @@ test('raw-HTML body filed under the wrong outlet moves to the right slot with th
   assert.equal(d.fullText, ARTICLE);
   assert.equal(d.rejectionReason, null);
 });
+
+test('a teaser never replaces a banner-prefixed body that holds the full article', () => {
+  const teaser = ARTICLE.slice(0, 340);
+  assert.equal(isCleanReplacementForJunk(BANNER + ' ' + ARTICLE, teaser), false);
+  assert.equal(isCleanReplacementForJunk(BANNER + ' ' + ARTICLE, ARTICLE), true);
+});
+
+test('an unrejected junk body still has its old score parked and a rescore requested', () => {
+  const name = 'whatsonstage--jane-doe.json';
+  const dir = setup({ [name]: {
+    outletId: 'whatsonstage', outlet: 'WhatsOnStage', criticName: 'Jane Doe', url: URL1, publishDate: '2026-03-11',
+    fullText: BANNER + ' ' + ARTICLE, contentTier: 'complete', textFetchedAt: '2026-04-19T18:27:07.386Z',
+    llmScore: { score: 40 }, ensembleData: { claudeScore: 40 }, assignedScore: 40, scoreSource: 'llm-ensemble',
+  } });
+  createOrMergeReviewFile(SHOW, { outletId: 'whatsonstage', outlet: 'WhatsOnStage', criticName: 'Jane Doe', url: URL1, replaceBadBody: true, fields: { fullText: ARTICLE } }, { reviewTextsDir: dir });
+  const d = read(dir, name);
+  assert.equal(d.fullText, ARTICLE);
+  assert.equal(d.llmScore, null);
+  assert.equal(d.needsRescore, true);
+});
+
+test('relocation skips a different critic or a human-flagged sibling', () => {
+  const url = 'https://1minutecritic.com/synthetic-review-two/';
+  const dir = setup({
+    'broadway-blog--other-person.json': { outletId: 'broadway-blog', criticName: 'Other Person', url, fullText: HTML, contentTier: 'invalid' },
+    'broadway-blog--jane-doe.json': { outletId: 'broadway-blog', criticName: 'Jane Doe', url, fullText: HTML, contentTier: 'invalid', humanReviewScore: 50 },
+  });
+  createOrMergeReviewFile(SHOW, { outletId: 'one-minute-critic', outlet: '1 Minute Critic', criticName: 'Jane Doe', url, source: 'ingest-urls', replaceBadBody: true, fields: { fullText: ARTICLE } }, { reviewTextsDir: dir });
+  assert.equal(read(dir, 'broadway-blog--other-person.json').fullText, HTML);
+  assert.equal(read(dir, 'broadway-blog--jane-doe.json').fullText, HTML);
+});

@@ -338,17 +338,24 @@ function clearAutomatedTextRejectionOnRefetch(d, now) {
  */
 function voidRejectionOnBodyReplacement(d, now) {
   if (!d || typeof d !== 'object' || hasHumanVerdict(d)) return false;
-  if (!isAutomatedRejecter(d.rejectedBy)) return false;
-  if (d.rejectionReason != null && !TEXT_QUALITY_REASONS.has(d.rejectionReason)) return false;
   const at = now || new Date().toISOString();
   const prior = { clearedAt: at, clearedBy: 'junk-body-replacement' };
-  _clearInto(d, REJECTION_FIELDS, prior);
-  if (d.rejectedTextHash != null) { prior.rejectedTextHash = d.rejectedTextHash; d.rejectedTextHash = null; }
-  if (d.promptVersion != null) { prior.promptVersion = d.promptVersion; d.promptVersion = null; }
+  let touched = false;
+  const rejectionVoid = isAutomatedRejecter(d.rejectedBy)
+    && (d.rejectionReason == null || TEXT_QUALITY_REASONS.has(d.rejectionReason));
+  if (rejectionVoid) {
+    _clearInto(d, REJECTION_FIELDS, prior);
+    if (d.rejectedTextHash != null) { prior.rejectedTextHash = d.rejectedTextHash; d.rejectedTextHash = null; }
+    if (d.promptVersion != null) { prior.promptVersion = d.promptVersion; d.promptVersion = null; }
+    touched = true;
+  }
+  // A score computed from the junk body is stale even when nobody rejected it.
   const parked = parkTextDerivedScore(d, at);
-  if (parked) prior.parkedScore = parked;
+  if (parked) { prior.parkedScore = parked; touched = true; }
+  if (!touched) return false;
   _pushBreadcrumb(d, prior);
-  _markRescore(d, at);
+  // Only a scoreable file may carry the flag (rescore-flagging invariant).
+  if (require('./is-scoreable').isScoreable(d)) _markRescore(d, at);
   return true;
 }
 
