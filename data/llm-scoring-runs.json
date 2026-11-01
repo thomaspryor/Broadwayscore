@@ -3327725,21 +3327725,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T06:33:29.072Z",
-    "completedAt": "2026-11-01T06:33:49.909Z",
-    "totalReviews": 6,
-    "processed": 4,
-    "skipped": 2,
+    "startedAt": "2026-11-01T06:32:23.408Z",
+    "completedAt": "2026-11-01T06:32:37.319Z",
+    "totalReviews": 3,
+    "processed": 3,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 25085,
-      "output": 1148,
-      "cacheRead": 15228,
+      "input": 17926,
+      "output": 884,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 61767
+      "total": 45122
     },
-    "costUsd": 0.0926114,
-    "runId": "41280917208",
+    "costUsd": 0.06719,
+    "runId": "41280739385",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3356112,6 +3356112,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "personality-the-lloyd-price-musical-regional-2023",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "peter-and-alice-west-end-2013",
         "ourDistribution": {
           "up": 0,
@@ -3361992,16 +3362002,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "BWW: Down thumbs differ by 45% (ours: 47%, theirs: 92%)"
-      },
-      {
-        "showId": "tango-regional-2023",
-        "ourDistribution": {
-          "up": 3,
-          "flat": 1,
-          "down": 0,
-          "total": 4
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "tartuffe-2003",
@@ -3374643,8 +3374643,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T06:38:46.461Z",
-    "completedAt": "2026-11-01T06:38:46.462Z",
+    "startedAt": "2026-11-01T06:37:35.296Z",
+    "completedAt": "2026-11-01T06:37:35.298Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3374657,7 +3374657,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41280917208",
+    "runId": "41280739385",
     "source": "comparative-rescore",
     "errorDetails": []
   }
