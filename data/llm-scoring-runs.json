@@ -3140197,21 +3140197,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T05:42:18.981Z",
-    "completedAt": "2026-11-01T05:42:35.320Z",
-    "totalReviews": 6,
+    "startedAt": "2026-11-01T05:42:07.753Z",
+    "completedAt": "2026-11-01T05:42:22.691Z",
+    "totalReviews": 7,
     "processed": 3,
-    "skipped": 3,
+    "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 18993,
-      "output": 826,
+      "input": 18313,
+      "output": 917,
       "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 46715
+      "total": 45722
     },
-    "costUsd": 0.0703364,
-    "runId": "41277588786",
+    "costUsd": 0.0687579,
+    "runId": "41277499863",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3157441,16 +3157441,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Up thumbs differ by 30% (ours: 70%, theirs: 100%)"
-      },
-      {
-        "showId": "heisenberg-the-uncertainty-principle-regional-2023",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 2,
-          "total": 3
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "helena-and-hermia-in-the-enamored-odyssey-regional-2025",
@@ -3178386,6 +3178376,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-kelly-girls-regional-2023",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-kick-inside-off-broadway-2026",
         "ourDistribution": {
           "up": 3,
@@ -3186965,8 +3186965,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T05:47:31.411Z",
-    "completedAt": "2026-11-01T05:47:31.412Z",
+    "startedAt": "2026-11-01T05:47:20.143Z",
+    "completedAt": "2026-11-01T05:47:20.144Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3186979,7 +3186979,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41277588786",
+    "runId": "41277499863",
     "source": "comparative-rescore",
     "errorDetails": []
   }
