@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T15:29:05.864Z",
+  "generatedAt": "2026-11-01T15:56:09.017Z",
   "windowDays": 45,
   "showsScanned": 212,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 165.60664888888888,
+      "fileAgeHours": 166.05779611111112,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 151.06374916666667,
+      "nonTerminalAgeHours": 151.514625,
       "needsManualRecovery": false
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 194.12633861111112,
+      "fileAgeHours": 194.57750027777777,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 180.17564055555556,
+      "nonTerminalAgeHours": 180.6265163888889,
       "needsManualRecovery": true
     },
     {
@@ -60,13 +60,13 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=manual-cinema-the-4th-witch-off-broadway-2026 --url=https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/ --outlet=exeunt-magazine   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-01T14:49:05.153Z",
-      "fileAgeHours": 0.6664405555555556,
-      "gapSeenAt": "2026-11-01T15:29:05.864Z",
-      "nonTerminalAgeHours": 0,
+      "fileAgeHours": 1.1172302777777778,
+      "gapSeenAt": "2026-11-01T15:05:39.659Z",
+      "nonTerminalAgeHours": 0.8414883333333333,
       "needsManualRecovery": false
     }
   ],
