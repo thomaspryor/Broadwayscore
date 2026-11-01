@@ -53,8 +53,8 @@ function buildWelcomeEmail(row) {
   const lines = [
     'Hi,',
     'Thanks for signing up. You now have full access to the Broadway Profitability Scorecard.',
-    "I made it because there's no public record of which Broadway shows pay back their investors. This is a small list, and I'd like to know who's on it. What's your connection to Broadway, and what would make the scorecard more useful to you?",
-    'Just hit reply. It comes straight to me.',
+    "I built it because there's no public record of which Broadway shows pay back their investors, and I wanted one place to see it.",
+    'If you have a minute, tell me what you were hoping to find and what would make it more useful. Just hit reply. It comes straight to me.',
     'Tom',
   ];
   const footer = 'You are getting this because you signed up at broadwayscorecard.com/biz.';

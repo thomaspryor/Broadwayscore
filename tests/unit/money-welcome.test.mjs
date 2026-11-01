@@ -173,3 +173,9 @@ test('resolveEnabled: variable false wins, file turns it on, default off', () =>
   assert.equal(w.resolveEnabled({ envValue: 'true', fileEnabled: false }), 'true');
   assert.equal(w.resolveEnabled({ envValue: 'garbage', fileEnabled: false }), 'false');
 });
+
+test('welcome copy asks what the reader wants, never who they are', () => {
+  const m = w.buildWelcomeEmail({ email: 'a@example.com' });
+  assert.ok(!/who'?s on it|who is on it|your connection/i.test(m.text));
+  assert.ok(/what you were hoping to find/.test(m.text));
+});
