@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6716-c",
   "planId": "9651cfb1-e124-4b02-9725-6bf4946e0d27",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T12:18:13.434Z",
   "submitter": {
     "name": null,
@@ -120,5 +120,79 @@
         "args": "--show=dirty-dancing-tour-2026 --url=https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/ --outlet=the-oakland-press --critic=\"Gary Graff\""
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T13:16:09.147Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectedAt: \"2026-07-26T20:40:11.447Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "titanique-2026/theater-scene--deirdre-donovan.json rejectionReasoning: \"claude: The text is a plot summary/promotional description with no evaluative content whatsoever. It describes the premise of the show but contains no critical assessment, recommendation, or opinion about the production.; openai: The text provided is a brief plot description without any evaluative content or critical opinion.; gemini: The provided text is a plot summary or setup, not an evaluation of the show. It describes what happens in the show but offers no critical opinion or recommendation.\" -> null"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-playboy-of-the-western-world-west-end-2025/standard--nick-curtis.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted avenue-q-west-end-2026/thestage--tom-wicker.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dirty-dancing-tour-2026/the-oakland-press--gary-graff.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
