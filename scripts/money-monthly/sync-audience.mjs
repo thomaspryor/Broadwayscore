@@ -28,7 +28,7 @@ async function readSignups() {
   const rows = [];
   for (let page = 0; page < 100; page++) {
     const u = new URL('/rest/v1/money_scorecard_signups', url);
-    u.search = new URLSearchParams({ select: 'email,created_at', order: 'created_at.asc,email.asc', limit: '1000', offset: String(rows.length) }).toString();
+    u.search = new URLSearchParams({ select: 'email,created_at,unsubscribed_at', order: 'created_at.asc,email.asc', limit: '1000', offset: String(rows.length) }).toString();
     const res = await fetch(u, { cache: 'no-store', signal: AbortSignal.timeout(15000), headers: { apikey: key, Authorization: `Bearer ${key}` } });
     if (!res.ok) throw new Error(`Supabase read failed: ${res.status}`);
     const batch = await res.json();
@@ -45,7 +45,8 @@ async function readAudience(id) {
   return j.data || [];
 }
 
-const signups = await readSignups();
+// BRO-6309: anyone who unsubscribed from the welcome email must not be re-added to the monthly audience.
+const signups = (await readSignups()).filter((r) => !r.unsubscribed_at);
 const general = await readAudience(GENERAL_ID);
 const existing = MONEY_ID ? await readAudience(MONEY_ID) : [];
 const plan = planAudienceSync({ signups, general, existing });

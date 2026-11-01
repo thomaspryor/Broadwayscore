@@ -86,8 +86,11 @@ async function main() {
   }
   if (!apiKey) throw new Error('RESEND_API_KEY not set');
   const out = await w.sendWelcomes(rows, { claim, release, send: (row) => resendSend(row, apiKey) });
-  console.log(`Done: sent=${out.sent} rejected=${out.rejected} lost_claim=${out.lost_claim} halted=${out.halted} skipped=${JSON.stringify(out.skipped)}`);
-  if (out.halted) { console.error('Stopped early: Resend refused a send for a reason that is not about the recipient (claim released, next run retries).'); process.exit(1); }
+  console.log(`Done: sent=${out.sent} rejected=${out.rejected} stamped=${out.stamped} lost_claim=${out.lost_claim} halted=${out.halted} skipped=${JSON.stringify(out.skipped)}`);
+  if (out.halted || out.rejected > 0) {
+    console.error('Resend refused one or more welcome sends (halted=' + out.halted + ', rejected=' + out.rejected + '). Check the payload; rejected rows are not retried.');
+    process.exit(1);
+  }
 }
 
 main().catch((e) => { console.error(`send-money-welcome failed: ${e.message}`); process.exit(1); });

@@ -14,6 +14,8 @@ const crypto = require('crypto');
 const { isOwnerTestEmail } = require('./admin-money-signups');
 
 const PER_RUN_CAP = 50;
+const MAX_AGE_DAYS = 14; // a late switch-on never mails a stale backlog
+const MAX_CONSECUTIVE_REJECTS = 2; // 2 in a row is our payload, not the recipients
 const SITE = 'https://broadwayscorecard.com';
 const REPLY_TO = 'hi@broadwayscorecard.com';
 const FROM = 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>';
@@ -24,17 +26,20 @@ function isProbeEmail(email) {
 }
 
 /** Pick who gets a welcome this run. rows are expected oldest first. */
-function planWelcomes(rows, { cap = PER_RUN_CAP } = {}) {
+function planWelcomes(rows, { cap = PER_RUN_CAP, now = Date.now(), maxAgeDays = MAX_AGE_DAYS } = {}) {
   const send = [];
-  const skipped = { welcomed: 0, unsubscribed: 0, probe: 0, over_cap: 0 };
+  const stamp = []; // probe/stale rows: marked welcomed without mail so they never clog the queue
+  const skipped = { welcomed: 0, unsubscribed: 0, probe: 0, stale: 0, over_cap: 0 };
   for (const row of rows) {
     if (row.welcomed_at) { skipped.welcomed++; continue; }
     if (row.unsubscribed_at) { skipped.unsubscribed++; continue; }
-    if (isProbeEmail(row.email) || isOwnerTestEmail(row.email)) { skipped.probe++; continue; }
+    if (isProbeEmail(row.email) || isOwnerTestEmail(row.email)) { skipped.probe++; stamp.push(row); continue; }
+    const age = row.created_at ? now - Date.parse(row.created_at) : 0;
+    if (age > maxAgeDays * 86400000) { skipped.stale++; stamp.push(row); continue; }
     if (send.length >= cap) { skipped.over_cap++; continue; }
     send.push(row);
   }
-  return { send, skipped };
+  return { send, stamp, skipped };
 }
 
 function unsubscribeUrl(email) {
@@ -80,26 +85,38 @@ function runAllowed({ enabled, preview }) {
   return preview === true || String(enabled).trim() === 'true';
 }
 
+const defaultSleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 /**
  * claim(email) -> true when this run now owns the row; release(email) undoes a claim;
- * send(row) -> { statusCode }. Stops at the first 'retry' outcome (likely our setup).
+ * send(row) -> { statusCode }. Stops at the first 'retry' outcome (likely our setup)
+ * and after MAX_CONSECUTIVE_REJECTS rejections in a row (likely our payload).
+ * Callers must fail the run when halted or rejected is non-zero.
  */
-async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP }) {
-  const plan = planWelcomes(rows, { cap });
-  const out = { sent: 0, rejected: 0, lost_claim: 0, halted: false, skipped: plan.skipped };
+async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now, sleep = defaultSleep, gapMs = 250 }) {
+  const plan = planWelcomes(rows, { cap, now });
+  const out = { sent: 0, rejected: 0, lost_claim: 0, stamped: 0, halted: false, skipped: plan.skipped };
+  for (const row of plan.stamp) { if (await claim(row.email)) out.stamped++; }
+  let streak = 0;
   for (const row of plan.send) {
     if (!(await claim(row.email))) { out.lost_claim++; continue; }
     let res;
     try { res = await send(row); } catch (e) { res = { statusCode: 0 }; }
     const o = resendOutcome(res.statusCode);
-    if (o === 'sent') out.sent++;
-    else if (o === 'rejected') out.rejected++;
-    else { await release(row.email); out.halted = true; break; }
+    if (o === 'sent') { out.sent++; streak = 0; }
+    else if (o === 'rejected') {
+      out.rejected++; streak++;
+      if (streak >= MAX_CONSECUTIVE_REJECTS) { out.halted = true; break; }
+    } else {
+      try { await release(row.email); } catch (e) { /* run fails below; claim stays, no double send */ }
+      out.halted = true; break;
+    }
+    await sleep(gapMs);
   }
   return out;
 }
 
 module.exports = {
-  PER_RUN_CAP, FROM, REPLY_TO, isProbeEmail, planWelcomes, buildWelcomeEmail, unsubscribeUrl,
+  PER_RUN_CAP, MAX_AGE_DAYS, MAX_CONSECUTIVE_REJECTS, FROM, REPLY_TO, isProbeEmail, planWelcomes, buildWelcomeEmail, unsubscribeUrl,
   idempotencyKey, resendOutcome, runAllowed, sendWelcomes,
 };

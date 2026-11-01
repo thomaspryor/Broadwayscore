@@ -79,3 +79,58 @@ test('sendWelcomes skips rows whose claim was lost', async () => {
   assert.equal(out.lost_claim, 1);
   assert.equal(out.sent, 0);
 });
+
+const noSleep = async () => {};
+const mk = (codes) => ({
+  claim: async () => true, release: async () => {}, sleep: noSleep,
+  send: async (r) => ({ statusCode: codes[r.email] ?? 200 }),
+});
+
+test('two rejects in a row halt the run (our payload, not the recipients)', async () => {
+  const rows = ['a', 'b', 'c'].map((n) => row(`${n}@real.org`));
+  const out = await w.sendWelcomes(rows, mk({ 'a@real.org': 422, 'b@real.org': 422 }));
+  assert.equal(out.rejected, 2);
+  assert.equal(out.halted, true);
+});
+
+test('a success between rejects resets the streak but rejected stays non-zero', async () => {
+  const rows = ['a', 'b', 'c'].map((n) => row(`${n}@real.org`));
+  const out = await w.sendWelcomes(rows, mk({ 'a@real.org': 422, 'c@real.org': 400 }));
+  assert.equal(out.halted, false);
+  assert.equal(out.rejected, 2);
+  assert.equal(out.sent, 1);
+});
+
+test('a release that throws still halts and does not escape', async () => {
+  const m = mk({ 'a@real.org': 503 });
+  m.release = async () => { throw new Error('db down'); };
+  const out = await w.sendWelcomes([row('a@real.org')], m);
+  assert.equal(out.halted, true);
+});
+
+test('stale and probe rows are stamped, never sent', async () => {
+  const now = Date.parse('2026-11-20T00:00:00Z');
+  const claimed = [], sent = [];
+  const rows = [
+    row('old@real.org', { created_at: '2026-10-01T00:00:00Z' }),
+    row('probe@example.com', { created_at: '2026-11-19T00:00:00Z' }),
+    row('new@real.org', { created_at: '2026-11-19T00:00:00Z' }),
+  ];
+  const out = await w.sendWelcomes(rows, {
+    now, sleep: noSleep,
+    claim: async (e) => { claimed.push(e); return true; },
+    release: async () => {},
+    send: async (r) => { sent.push(r.email); return { statusCode: 200 }; },
+  });
+  assert.deepEqual(sent, ['new@real.org']);
+  assert.equal(out.stamped, 2);
+  assert.equal(out.skipped.stale, 1);
+  assert.equal(out.skipped.probe, 1);
+});
+
+test('isProbeEmail boundaries', () => {
+  assert.equal(w.isProbeEmail('x@example.com'), true);
+  assert.equal(w.isProbeEmail('x@resend.dev'), true);
+  assert.equal(w.isProbeEmail('x@examples.com'), false);
+  assert.equal(w.isProbeEmail('person@gmail.com'), false);
+});
