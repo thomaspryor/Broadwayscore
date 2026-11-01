@@ -2706038,21 +2706038,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T02:15:20.859Z",
-    "completedAt": "2026-11-01T02:16:29.952Z",
-    "totalReviews": 18,
-    "processed": 14,
-    "skipped": 4,
+    "startedAt": "2026-11-01T02:17:06.896Z",
+    "completedAt": "2026-11-01T02:17:28.927Z",
+    "totalReviews": 7,
+    "processed": 5,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 85782,
-      "output": 4426,
-      "cacheRead": 49491,
-      "cacheWrite": 3807,
-      "total": 213775
+      "input": 28566,
+      "output": 1569,
+      "cacheRead": 19035,
+      "cacheWrite": 0,
+      "total": 73333
     },
-    "costUsd": 0.33752265,
-    "runId": "41263955157",
+    "costUsd": 0.10925430000000001,
+    "runId": "41264022875",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2710740,6 +2710740,16 @@
       },
       {
         "showId": "antigone-tron-regional-2026",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "antonios-song-i-was-dreaming-of-a-son-regional-2023",
         "ourDistribution": {
           "up": 5,
           "flat": 0,
@@ -2741082,16 +2741092,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-cherry-orchard-regional-2023",
-        "ourDistribution": {
-          "up": 14,
-          "flat": 0,
-          "down": 0,
-          "total": 14
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
         "ourDistribution": {
           "up": 1,
@@ -2752257,8 +2752257,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T02:21:26.117Z",
-    "completedAt": "2026-11-01T02:21:26.119Z",
+    "startedAt": "2026-11-01T02:22:26.696Z",
+    "completedAt": "2026-11-01T02:22:26.697Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2752271,7 +2752271,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41263955157",
+    "runId": "41264022875",
     "source": "comparative-rescore",
     "errorDetails": []
   }
