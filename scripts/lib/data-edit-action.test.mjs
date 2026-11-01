@@ -197,3 +197,11 @@ test('city is an editable shows.json field', async () => {
   const { dataEditAllowProblem } = (await import('node:module')).createRequire(import.meta.url)('./data-edit-action.js');
   assert.equal(dataEditAllowProblem({ file: 'shows.json', field: 'city' }), null);
 });
+
+test('revivalVerifiedNot is an allowed data-edit field so workers can record a verified original (BRO-6706)', () => {
+  assert.equal(dataEditAllowProblem({ file: 'shows.json', showId: 'a-2026', field: 'revivalVerifiedNot', oldValue: null, newValue: true }), null);
+  const data = { shows: [{ id: 'a-2026' }] };
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'revivalVerifiedNot', oldValue: null, newValue: true });
+  assert.equal(r.ok, true);
+  assert.equal(data.shows[0].revivalVerifiedNot, true);
+});

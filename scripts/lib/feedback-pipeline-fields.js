@@ -18,6 +18,10 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'venue', 'theaterAddress', 'synopsis', 'runtime', 'intermissions', 'ageRecommendation',
     'type', 'isRevival', 'status', 'closingDate', 'openingDate',
     'previewsStartDate', 'creativeTeam',
+    // BRO-6706: human-verified "not a revival" opt-out read by
+    // revival-unverified.check.js (BRO-5439). Without it here, cloud workers
+    // could not record the verdict and the daily sweep re-flagged originals.
+    'revivalVerifiedNot',
     // BRO-5080: a date repair re-stamps where the date came from, so an
     // unconfirmed source can still be corrected by the daily date pass.
     'openingDateSource',

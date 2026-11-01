@@ -49,8 +49,13 @@ test('every cross-market enumerator applies the local-only rule', () => {
   assert.match(dc, /category === 'regional' && !isUkRegionalShow\(show\) && !isLocalOnlyShow\(show\)/, 'getRegionalShows');
   assert.match(dc, /category === 'regional' && isUkRegionalShow\(show\) && !isLocalOnlyShow\(show\)/, 'getUkRegionalShows');
   assert.match(dc, /if \(isLocalOnlyShow\(show\)\) return 'local'/, 'related-shows bucket');
-  assert.match(read('scripts/generate-mobile-data.js'), /!isLocalOnlyShow\(show\)/, 'iOS feed');
-  assert.match(read('scripts/generate-mobile-show-details.js'), /isLocalOnlyShow\(showById\.get\(id\)\)/, 'iOS detail index');
+  // BRO-6760: the iOS feed now carries local shows for the app's Chicago market. Its
+  // NYC/London filters take broadway/off-broadway/west-end/off-west-end only, so a
+  // 'regional' local show cannot reach them (BroadwayScorecard-app lib/market-filter.ts).
+  const feed = read('scripts/generate-mobile-data.js');
+  assert.doesNotMatch(feed, /!isLocalOnlyShow\(show\)/, 'iOS feed carries local shows');
+  assert.match(feed, /if \(isLocalOnlyShow\(show\)\) entry\.lo = 1/, 'iOS feed tags local shows so the app can scope them');
+  assert.match(read('scripts/send-daily-digest.js'), /if \(show\.lo\) continue/, 'owner digest skips local shows');
   const search = read('scripts/generate-search-shows.js');
   assert.equal((search.match(/isLocalOnlyShow\(show\)/g) || []).length, 2, 'search (live + archive)');
   assert.match(read('src/app/welcome-shows.json/route.ts'), /!isLocalOnlyShow\(s\)/, 'welcome grid');

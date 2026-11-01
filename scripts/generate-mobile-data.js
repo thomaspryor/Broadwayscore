@@ -161,7 +161,9 @@ for (const review of reviews) {
 // their feature flag is on (src/config/markets.json, BRO-4211).
 const visibleShows = shows.filter(show =>
   !isHiddenFromAppFeed(show.category) &&
-  !isLocalOnlyShow(show) && // BRO-6518: local shows stay out of the iOS NYC/London feeds
+  // Local-only shows (Chicago, BRO-6518) ride the feed for the app's Chicago market
+  // (BRO-6760). They are category 'regional', which the app's NYC and London
+  // filters never include, so they cannot surface there.
   (showsWithScores.has(show.id) || show.status !== 'closed')
 );
 
@@ -209,6 +211,9 @@ const mobileShows = visibleShows.map(show => {
   };
 
   if (show.category && show.category !== 'broadway') entry.cat = show.category;
+  // Local-only (Chicago, BRO-6760): the app keeps these out of search, related shows
+  // and title matching unless the Chicago market is picked.
+  if (isLocalOnlyShow(show)) entry.lo = 1;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.closingDate) entry.cd = show.closingDate;
   // First preview date (YYYY-MM-DD) when shows.json has one; omitted otherwise.
