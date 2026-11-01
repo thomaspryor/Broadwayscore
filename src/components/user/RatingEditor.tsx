@@ -307,7 +307,7 @@ export default function RatingEditor({
           <label className="block text-xs font-medium text-gray-400 mb-1">
             Time <span className="text-fg-muted">(optional)</span>
           </label>
-          <div className="w-full sm:w-72">
+          <div className="w-full sm:w-96">
             <ShowtimeSegmented
               showId={showId}
               date={dateSeen}
@@ -337,7 +337,7 @@ export default function RatingEditor({
           data-lpignore="true"
           data-testid="seat-input"
           // 16px on mobile: smaller makes iOS Safari zoom on focus (see notes below).
-          className="w-full sm:w-72 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
+          className="w-full sm:w-96 px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-fg-placeholder focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30"
         />
       </div>
 
