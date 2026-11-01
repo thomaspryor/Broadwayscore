@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-01T00:22:16.175Z",
-  "count": 309,
+  "generatedAt": "2026-11-01T00:55:24.723Z",
+  "count": 311,
   "outlets": [
     {
       "host": "rateyourmusic.com",
@@ -16,39 +16,37 @@
       ]
     },
     {
-      "host": "aol.co.uk",
-      "provisionalOutletId": "aol",
-      "occurrences": 6,
+      "host": "open.substack.com",
+      "provisionalOutletId": "open",
+      "occurrences": 5,
       "sampleUrls": [
-        "https://www.aol.co.uk/articles/few-good-men-review-aaron-030042000.html",
-        "https://www.aol.co.uk/articles/dance-not-us-review-desire-174556000.html",
-        "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html"
+        "https://open.substack.com/pub/newyorknotebook/p/call-me-izzy",
+        "https://open.substack.com/pub/newyorknotebook/p/celebrity-autobiography",
+        "https://open.substack.com/pub/newyorknotebook/p/lets-love"
       ],
       "shows": [
-        "a-few-good-men-2026",
+        "call-me-izzy-2025",
+        "celebrity-autobiography-2026",
+        "love-off-broadway-2023",
+        "messy-white-gays-off-broadway-2025",
+        "ragtime-2025"
+      ]
+    },
+    {
+      "host": "aol.co.uk",
+      "provisionalOutletId": "aol",
+      "occurrences": 5,
+      "sampleUrls": [
+        "https://www.aol.co.uk/articles/dance-not-us-review-desire-174556000.html",
+        "https://www.aol.co.uk/articles/end-world-hard-boiled-wonderland-135335000.html",
+        "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html"
+      ],
+      "shows": [
         "dance-is-not-for-us-off-west-end-2026",
         "end-of-the-world-and-hard-boiled-wonderland-off-west-end-2026",
         "murder-cathedral-off-west-end-2026",
         "the-master-builder-off-west-end-2026",
         "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
-      ]
-    },
-    {
-      "host": "open.substack.com",
-      "provisionalOutletId": "open",
-      "occurrences": 6,
-      "sampleUrls": [
-        "https://open.substack.com/pub/newyorknotebook/p/call-me-izzy",
-        "https://open.substack.com/pub/newyorknotebook/p/celebrity-autobiography",
-        "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing"
-      ],
-      "shows": [
-        "call-me-izzy-2025",
-        "celebrity-autobiography-2026",
-        "every-brilliant-thing-2026",
-        "love-off-broadway-2023",
-        "messy-white-gays-off-broadway-2025",
-        "ragtime-2025"
       ]
     },
     {
@@ -83,6 +81,22 @@
         "vanya-off-broadway-2025",
         "waiting-for-godot-2025",
         "waiting-for-godot-off-broadway-2023"
+      ]
+    },
+    {
+      "host": "frombroadway.com",
+      "provisionalOutletId": "frombroadway",
+      "occurrences": 4,
+      "sampleUrls": [
+        "https://news.frombroadway.com/post/review-roundup-a-few-good-men-vivian-beaumont-theater",
+        "https://news.frombroadway.com/post/fish-wp-theater-extended-november-1",
+        "https://news.frombroadway.com/post/review-roundup-memoirs-of-amorous-gentlemen-night-egg-culture-club"
+      ],
+      "shows": [
+        "a-few-good-men-2026",
+        "fish-off-broadway-2026",
+        "memoirs-of-amorous-gentlemen-off-broadway-2026",
+        "the-ask-off-broadway-2026"
       ]
     },
     {
@@ -244,20 +258,6 @@
       ]
     },
     {
-      "host": "theatreinchicago.com",
-      "provisionalOutletId": "theatreinchicago",
-      "occurrences": 3,
-      "sampleUrls": [
-        "https://www.theatreinchicago.com/a-strange-loop/reviews/13444/",
-        "https://www.theatreinchicago.com/hayward/13552/",
-        "https://www.theatreinchicago.com/hayward/reviews/13552/"
-      ],
-      "shows": [
-        "a-strange-loop-regional-2026",
-        "hayward-regional-2026"
-      ]
-    },
-    {
       "host": "outandaboutnashville.com",
       "provisionalOutletId": "outandaboutnashville",
       "occurrences": 3,
@@ -360,21 +360,6 @@
         "fire-and-air-off-broadway-2018",
         "long-lost-off-broadway-2019",
         "on-the-shore-of-the-wide-world-off-broadway-2017"
-      ]
-    },
-    {
-      "host": "frombroadway.com",
-      "provisionalOutletId": "frombroadway",
-      "occurrences": 3,
-      "sampleUrls": [
-        "https://news.frombroadway.com/post/fish-wp-theater-extended-november-1",
-        "https://news.frombroadway.com/post/review-roundup-memoirs-of-amorous-gentlemen-night-egg-culture-club",
-        "https://news.frombroadway.com/post/review-roundup-the-ask-theater-555"
-      ],
-      "shows": [
-        "fish-off-broadway-2026",
-        "memoirs-of-amorous-gentlemen-off-broadway-2026",
-        "the-ask-off-broadway-2026"
       ]
     },
     {
@@ -922,6 +907,18 @@
       ]
     },
     {
+      "host": "theatreinchicago.com",
+      "provisionalOutletId": "theatreinchicago",
+      "occurrences": 2,
+      "sampleUrls": [
+        "https://www.theatreinchicago.com/hayward/13552/",
+        "https://www.theatreinchicago.com/hayward/reviews/13552/"
+      ],
+      "shows": [
+        "hayward-regional-2026"
+      ]
+    },
+    {
       "host": "nbc-2.com",
       "provisionalOutletId": "nbc-2",
       "occurrences": 2,
@@ -1158,6 +1155,28 @@
       ],
       "shows": [
         "a-dark-wood-regional-2026"
+      ]
+    },
+    {
+      "host": "arielpa.nyc",
+      "provisionalOutletId": "arielpa",
+      "occurrences": 1,
+      "sampleUrls": [
+        "https://dev.arielpa.nyc/post/a-few-good-men-broadway-review-competent-but-unnecessary/"
+      ],
+      "shows": [
+        "a-few-good-men-2026"
+      ]
+    },
+    {
+      "host": "com.my",
+      "provisionalOutletId": "com",
+      "occurrences": 1,
+      "sampleUrls": [
+        "https://movies.rockstarmedia.com.my/news/few-good-men-broadway-review/"
+      ],
+      "shows": [
+        "a-few-good-men-2026"
       ]
     },
     {
@@ -2063,11 +2082,11 @@
       ]
     },
     {
-      "host": "rixx.de",
-      "provisionalOutletId": "rixx",
+      "host": "com.hk",
+      "provisionalOutletId": "com",
       "occurrences": 1,
       "sampleUrls": [
-        "https://books.rixx.de/john-tiffany/harry-potter-and-the-cursed-child/"
+        "https://en.tripadvisor.com.hk/ShowUserReviews-g186338-d10802162-r968251904-Harry_Potter_and_the_Cursed_Child-London_England.html"
       ],
       "shows": [
         "harry-potter-and-the-cursed-child-one-part-west-end-2026"
@@ -2085,11 +2104,11 @@
       ]
     },
     {
-      "host": "jigsaw-arts.co.uk",
-      "provisionalOutletId": "jigsaw-arts",
+      "host": "londonforkidz.com",
+      "provisionalOutletId": "londonforkidz",
       "occurrences": 1,
       "sampleUrls": [
-        "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review"
+        "https://www.londonforkidz.com/post/review-harry-potter-and-the-cursed-child-london"
       ],
       "shows": [
         "harry-potter-and-the-cursed-child-one-part-west-end-2026"
