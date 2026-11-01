@@ -297,6 +297,33 @@ jobs:
           fi
           exit 0
 
+      # BRO-6771: Washington DC local productions from theatreindc.com (same engine as
+      # Chicago, own audit files and snapshot dir so a DC rollback cannot touch Chicago's).
+      - name: Pick up new Washington DC productions (theatreindc)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # lint-allow-swallow: advisory by design (BRO-6771). A crash restores the four files it touched and exits 0; the audit files are re-derived from the live list next run.
+          F="data/shows.json data/audit/tic-daily-seen-dc.json data/audit/tic-daily-added-dc.json data/audit/last-promotion-ids.json"
+          rm -rf /tmp/tic-pre-dc; mkdir -p /tmp/tic-pre-dc data/audit
+          for f in $F; do if [ -f "$f" ]; then cp "$f" "/tmp/tic-pre-dc/$(basename $f)"; else touch "/tmp/tic-pre-dc/$(basename $f).absent"; fi; done
+          node scripts/tic-daily.js --city=dc || true
+          if node scripts/validate-data.js; then
+            bash scripts/lib/git-add-existing.sh data/audit/tic-daily-seen-dc.json data/audit/tic-daily-added-dc.json
+          else
+            echo "::warning::validate-data failed after DC pickup, rolling back"
+            for f in $F; do
+              if [ -f "/tmp/tic-pre-dc/$(basename $f).absent" ]; then rm -f "$f"; else cp "/tmp/tic-pre-dc/$(basename $f)" "$f"; fi
+            done
+            node scripts/validate-data.js || echo "::warning::validate-data still failing after rollback"
+          fi
+          exit 0
+
       - name: Push core data (regional auto-promotion)
         id: push_core_regional
         if: always()
@@ -319,6 +346,20 @@ jobs:
           node scripts/tic-daily.js --dispatch-ingest
           # Deferred shows ride in the audit file to the next run.
           bash scripts/lib/git-add-existing.sh data/audit/tic-daily-added.json
+
+      # BRO-6771: ingest + score the DC shows the pickup step added (same guards as Chicago).
+      - name: Ingest + score new Washington DC productions
+        if: always() && steps.push_core_regional.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # lint-allow-swallow: advisory by design (BRO-6771). Shows whose dispatch fails or is capped stay in the pending list and retry on the next run.
+          if [ -f "${RUNNER_TEMP}/.skip-push-core-data" ]; then echo "core-data push skipped, not dispatching ingest"; exit 0; fi
+          node scripts/tic-daily.js --city=dc --dispatch-ingest
+          bash scripts/lib/git-add-existing.sh data/audit/tic-daily-added-dc.json
 
       # Images — card #1456: this promotion path is a go-live event like
       # previews->open in update-show-status.yml, but it never dispatched
