@@ -13,7 +13,7 @@ const { hasEnoughReviews } = require('../lib/min-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
-const { homeSet, targetSets } = require('./routing');
+const { homeSet, targetSets, operaConfigured } = require('./routing');
 
 const DAY_MS = 864e5;
 const MIN_MS = 60e3;
@@ -43,10 +43,11 @@ function addDaysYmd(ymd, n) {
   return d.toISOString().slice(0, 10);
 }
 
-function isEligibleShow(show) {
+function isEligibleShow(show, { allowOpera = false } = {}) {
   if (!show || !show.id || !show.openingDate) return false;
   if (!C.ELIGIBLE_CATEGORIES.includes(show.category)) return false;
-  if (show.type && C.SKIP_TYPES.has(String(show.type).toLowerCase())) return false;
+  const operaOk = allowOpera && C.marketOf(show) === 'opera' && operaConfigured();
+  if (show.type && C.SKIP_TYPES.has(String(show.type).toLowerCase()) && !operaOk) return false;
   if (show.provisional) return false;
   if (['cancelled', 'canceled', 'postponed'].includes(show.status)) return false;
   return true;
@@ -117,7 +118,7 @@ function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows }) {
  */
 function scoreDecision(show, ctx, { ignoreAge = false } = {}) {
   const { done, now } = ctx;
-  if (!isEligibleShow(show)) return { due: false, why: 'ineligible' };
+  if (!isEligibleShow(show, { allowOpera: true })) return { due: false, why: 'ineligible' };
   if (done.has(`score:${show.id}`)) return { due: false, why: 'done' };
   const slot = morningAfter(show);
   if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', slot };

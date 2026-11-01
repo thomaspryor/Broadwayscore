@@ -275,10 +275,10 @@ function localTime(ms, tz = 'America/New_York') {
 }
 
 const showName = (show) => {
-  const m = C.MARKETS[show.category];
+  const m = C.MARKETS[C.marketOf(show)];
   return m && show.category !== 'broadway' ? `${show.title} (${m.label})` : show.title;
 };
-const showLink = (show) => `https://${(C.MARKETS[show.category] || C.MARKETS.broadway).domain}/show/${show.slug || show.id}`;
+const showLink = (show) => C.marketOf(show) === 'opera' ? `https://${C.MARKETS.opera.domain}/opera/${String(show.slug || show.id).replace(/-off-broadway/, '')}` : `https://${(C.MARKETS[show.category] || C.MARKETS.broadway).domain}/show/${show.slug || show.id}`;
 
 /** "T1:1/2" style confidence-gate reasons → what the show still lacks, in words. */
 function gateWords(gate) {
@@ -334,7 +334,7 @@ function skippedShows({ ctx, ledger, now }) {
   const gaveUp = gaveUpIds(ledger);
   const out = [];
   for (const show of ctx.shows) {
-    if (!isEligibleShow(show)) continue;
+    if (!isEligibleShow(show, { allowOpera: true })) continue;
     const slot = morningAfter(show);
     if (slot > now || now - slot > lookbackMs + 7 * DAY_MS || slot + lookbackMs < goLive) continue;
     const d = scoreDecision(show, dctx);
@@ -401,7 +401,7 @@ function upcomingPosts({ scheduled = [], ctx, ledger, now }) {
     const done = doneKeys(ledger);
     const gaveUp = gaveUpIds(ledger);
     for (const show of ctx.shows) {
-      if (!isEligibleShow(show) || done.has(`score:${show.id}`) || gaveUp.has(show.id) || inBuffer.has(show.slug || show.id)) continue;
+      if (!isEligibleShow(show, { allowOpera: true }) || done.has(`score:${show.id}`) || gaveUp.has(show.id) || inBuffer.has(show.slug || show.id)) continue;
       const slot = morningAfter(show);
       if (slot <= now || slot > end) continue;
       out.push({ title: showName(show), due: slot, line: `${localTime(slot, C.MARKETS[show.category].tz)}, score post on every network if the score is ready by then` });
