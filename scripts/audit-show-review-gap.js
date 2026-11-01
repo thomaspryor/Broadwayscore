@@ -533,7 +533,38 @@ async function findAggregatorArticles(show) {
   } catch (e) {
     if (verbose) console.error(`  BWW section discovery error for ${id}: ${e.message}`);
   }
-  return [...urls];
+  return dropRoundupsOwnedByOtherShows([...urls], id, roundupOwnerMap());
+}
+
+// BRO-6742: a roundup already recorded as another show's (shows.json bwwRoundupUrl or
+// data/bww-roundup-urls.json) is that show's, never this one's. The SERP query
+// "From The Heart" (West End) returned the BWW roundup for "THE HEART"
+// (off-Broadway, Laura Pels): one title token "heart" matched its slug, and six
+// NYC reviews were cited as missing for the London show.
+let _roundupOwners = null;
+function roundupOwnerMap(shows = null) {
+  if (_roundupOwners && !shows) return _roundupOwners;
+  const map = new Map();
+  const add = (u, owner) => {
+    if (typeof u !== 'string' || !u || !owner) return;
+    const k = u.split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase();
+    if (!map.has(k)) map.set(k, new Set());
+    map.get(k).add(owner);
+  };
+  let list = shows;
+  if (!list) { try { list = loadShows(); } catch { list = []; } }
+  for (const s of list) add(s && s.bwwRoundupUrl, s && s.id);
+  for (const [owner, u] of Object.entries(getBwwRoundupUrlMap())) if (!owner.startsWith('_')) add(u, owner);
+  if (!shows) _roundupOwners = map;
+  return map;
+}
+
+/** Pure: urls minus those owned only by other shows. */
+function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
+  return urls.filter((u) => {
+    const set = owners.get(String(u).split('?')[0].split('#')[0].replace(/\/+$/, '').toLowerCase());
+    return !set || set.has(showId);
+  });
 }
 
 function titleTokens(title) {
@@ -3500,4 +3531,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };

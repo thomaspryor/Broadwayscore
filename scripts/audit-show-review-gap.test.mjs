@@ -1292,3 +1292,20 @@ test('makeHeldFileResolver: pointers resolve against the owning show; target mus
   assert.equal(isHeld('not-json', host), false);
   assert.equal(isHeld(undefined, host), false);
 });
+
+// BRO-6742: the SERP for "From The Heart" (West End) returned the BWW roundup of
+// "THE HEART" (off-Broadway): title token "heart" matched the slug and six NYC
+// reviews were cited as missing for the London show.
+test('BRO-6742: a roundup recorded as another show\'s is dropped; its owner and unowned urls keep it', () => {
+  const { dropRoundupsOwnedByOtherShows, roundupOwnerMap } = require('./audit-show-review-gap.js');
+  const rr = 'https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-Opens-Off-Broadway-20261029';
+  const owners = roundupOwnerMap([
+    { id: 'the-heart-off-broadway-2026', bwwRoundupUrl: rr },
+    { id: 'from-the-heart-west-end-2026' },
+  ]);
+  assert.deepEqual(dropRoundupsOwnedByOtherShows([rr], 'from-the-heart-west-end-2026', owners), []);
+  assert.deepEqual(dropRoundupsOwnedByOtherShows([rr + '?x=1'], 'from-the-heart-west-end-2026', owners), []);
+  assert.deepEqual(dropRoundupsOwnedByOtherShows([rr], 'the-heart-off-broadway-2026', owners), [rr]);
+  const other = 'https://www.broadwayworld.com/article/Review-Roundup-FROM-THE-HEART-London-20261009';
+  assert.deepEqual(dropRoundupsOwnedByOtherShows([other], 'from-the-heart-west-end-2026', owners), [other]);
+});
