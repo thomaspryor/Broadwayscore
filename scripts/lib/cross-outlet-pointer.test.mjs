@@ -47,6 +47,11 @@ test('BRO-6742: a review-roundup row is never compared as a cross-outlet copy', 
   assert.equal(excludeFromCrossOutletCompare({ isRoundupArticle: false }), false);
   assert.equal(excludeFromCrossOutletCompare({}), false);
   assert.equal(excludeFromCrossOutletCompare(null), false);
+  // A stale roundup flag (scoring keeps the row) must still be compared.
+  const stale = { isRoundupArticle: true, isFullReview: true, fullText: 'x'.repeat(900),
+    url: 'https://www.interestedbystander.com/2026/09/some-single-review.html' };
+  assert.equal(require('./review-guards').isLikelyStaleRoundupFlag(stale), true);
+  assert.equal(excludeFromCrossOutletCompare(stale), false);
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('../detect-cross-outlet-duplicates.js', import.meta.url), 'utf8');
   assert.match(src, /if \(excludeFromCrossOutletCompare\(data\)\) continue;/);

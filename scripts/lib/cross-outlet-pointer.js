@@ -54,7 +54,11 @@ function skipAsAlreadyFlagged(data, file, readSibling) {
  * vs the BroadwayWorld roundup).
  */
 function excludeFromCrossOutletCompare(data) {
-  return !!data && data.isRoundupArticle === true;
+  if (!data || data.isRoundupArticle !== true) return false;
+  // Same rule as scoring's isRoundupArticle exclusion: a stale roundup flag
+  // leaves the row scored, so it must still be compared (lazy require: the
+  // guards module is large and this file is loaded by light tools).
+  return !require('./review-guards').isLikelyStaleRoundupFlag(data);
 }
 
 module.exports = { crossOutletPointer, skipAsAlreadyFlagged, excludeFromCrossOutletCompare, outletOfFile };
