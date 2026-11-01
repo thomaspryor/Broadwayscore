@@ -387,6 +387,33 @@ test('isStaleCvPromotedWrongShow: girl-interrupted TB stub (task #1021 real case
   assert.equal(isStaleCvPromotedWrongShow(GIRL_INTERRUPTED_TB_STUB, false), true);
 });
 
+test('isStaleCvPromotedWrongShow: BRO-6474 approved wrongShow survives a stale clean CV verdict', () => {
+  const { applyReviewFieldEdit } = require('./review-field-edit.js');
+  for (const verifiedBy of ['heuristic', 'llm:openai']) {
+    const record = {
+      ...GIRL_INTERRUPTED_TB_STUB,
+      wrongShow: false,
+      contentVerification: { ...GIRL_INTERRUPTED_TB_STUB.contentVerification, verifiedBy },
+    };
+    const applied = applyReviewFieldEdit(record,
+      { field: 'wrongShow', oldValue: false, newValue: true },
+      { fixId: 'bro-6474-2', at: '2026-11-01T00:00:00.000Z' });
+    assert.equal(applied.ok, true);
+    assert.equal(isStaleCvPromotedWrongShow(applied.record, false), false, verifiedBy);
+  }
+});
+
+test('isStaleCvPromotedWrongShow: an approval for replaced content does not prevent recovery', () => {
+  const { approvedFixBinding } = require('./approved-fix-flag.js');
+  const old = { ...GIRL_INTERRUPTED_TB_STUB, fullText: 'Original article.' };
+  const record = {
+    ...old,
+    fullText: 'Replacement review.',
+    approvedFixes: [{ field: 'wrongShow', newValue: true, boundTo: approvedFixBinding(old) }],
+  };
+  assert.equal(isStaleCvPromotedWrongShow(record, false), true);
+});
+
 test('isStaleCvPromotedWrongShow: does not fire without wrongShow=true', () => {
   const f = { ...GIRL_INTERRUPTED_TB_STUB, wrongShow: false };
   assert.equal(isStaleCvPromotedWrongShow(f, false), false);

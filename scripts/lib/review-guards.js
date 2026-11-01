@@ -2689,6 +2689,9 @@ function computeCvIsStale(data) {
 function isStaleCvPromotedWrongShow(data, cvIsStale) {
   if (!data || data.wrongShow !== true) return false;
   if (cvIsStale) return false;
+  // BRO-6474: an older clean CV verdict must not undo an approved wrong-show
+  // correction. Bound approvals expire when the article content changes.
+  if (require('./approved-fix-flag').hasApprovedFlag(data, 'wrongShow')) return false;
 
   // Provenance gate, part 1: contentVerificationPromoted must be present.
   if (!data.contentVerificationPromoted) return false;
