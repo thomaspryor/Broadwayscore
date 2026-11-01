@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T14:29:05.080Z",
+  "timestamp": "2026-11-01T14:48:06.631Z",
   "stats": {
-    "totalReviews": 78364,
-    "alreadyFlagged": 21769,
+    "totalReviews": 78368,
+    "alreadyFlagged": 21766,
     "dateGuardCatches": 242,
-    "directorMismatch": 3355,
+    "directorMismatch": 3356,
     "tvFilmSignals": 2231,
     "londonSignals": 3553,
     "offBroadwaySignals": 731,
     "yearMismatch": 332,
-    "noPublishDate": 8564
+    "noPublishDate": 8555
   },
   "findings": [
     {
@@ -41719,6 +41719,20 @@
       "score": 65,
       "publishDate": "2024-03-27",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/mj-the-musical-prince-edward-theatre-review-wheeldon/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "mj-the-musical-west-end-2024",
+      "file": "theatre-weekly--greg-stewart.json",
+      "score": 93,
+      "publishDate": "2024-03-27",
+      "url": "https://theatreweekly.com/review-mj-the-musical-at-the-prince-edward-theatre-london/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
