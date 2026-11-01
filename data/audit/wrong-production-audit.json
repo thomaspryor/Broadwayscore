@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T18:57:29.718Z",
+  "timestamp": "2026-11-01T19:19:44.701Z",
   "stats": {
-    "totalReviews": 78810,
-    "alreadyFlagged": 21833,
+    "totalReviews": 78839,
+    "alreadyFlagged": 21834,
     "dateGuardCatches": 245,
-    "directorMismatch": 3389,
-    "tvFilmSignals": 2240,
-    "londonSignals": 3556,
+    "directorMismatch": 3392,
+    "tvFilmSignals": 2241,
+    "londonSignals": 3557,
     "offBroadwaySignals": 738,
     "yearMismatch": 342,
-    "noPublishDate": 8527
+    "noPublishDate": 8524
   },
   "findings": [
     {
@@ -41239,6 +41239,42 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-regional-2026",
+      "file": "broadwayworld--aidan-oconnor.json",
+      "publishDate": "2026-09-03",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-MERRILY-WE-ROLL-ALONG-at-Signature-Theatre-20260903",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-regional-2026",
+      "file": "washingtoncitypaper--dr-lewis.json",
+      "publishDate": "2026-09-08",
+      "url": "https://washingtoncitypaper.com/article/791121/signatures-merrily-we-roll-along-does-roll-on-in-spite-of-itself/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from merrily-we-roll-along-1981"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -131604,6 +131640,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "the-waverly-gallery-2018",
+      "file": "broadway-and-me--unknown.json",
+      "publishDate": "2018-11-24",
+      "url": "https://broadwayandme.blogspot.com/2018/11/do-ferryman-and-the-waverly-gallery.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
