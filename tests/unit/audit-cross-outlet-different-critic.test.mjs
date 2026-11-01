@@ -51,3 +51,14 @@ test('containment is a share of the smaller text', () => {
   assert.equal(containment(body(4), body(4)), 100);
   assert.equal(containment(body(4), body(5)), 0);
 });
+
+test('BRO-6774: a person-verified flag whose primary no longer shares the text is verified-stale; excerpts count as text', () => {
+  const root = tree({
+    'show/prim--a.json': { outletId: 'guardian', criticName: 'Adrian Horton', fullText: body(6) },
+    'show/vs--b.json': { outletId: 'deadline', criticName: 'Greg Evans', fullText: body(7), crossOutletDuplicate: true, crossOutletPrimaryFile: 'show/prim--a.json', crossOutletVerified: true },
+    'show/ex--c.json': { outletId: 'nypost', criticName: 'Johnny Oleksinski', fullText: '', dtliExcerpt: body(6), crossOutletDuplicate: true, crossOutletPrimaryFile: 'show/prim--a.json' },
+  });
+  const status = Object.fromEntries(audit(root).map((r) => [r.file, r.status]));
+  assert.equal(status['vs--b.json'], 'verified-stale');
+  assert.notEqual(status['ex--c.json'], 'stale', 'excerpt text is compared, not skipped as empty');
+});

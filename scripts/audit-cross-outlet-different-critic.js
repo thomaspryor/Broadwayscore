@@ -21,6 +21,7 @@ const fs = require('fs');
 const path = require('path');
 const { classifyCrossOutletPair, isPlaceholderCritic, sameCritic } = require('./lib/cross-outlet-pair-policy');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { getBestText } = require('./lib/cross-outlet-group');
 
 function grams(text, n = 8) {
   const w = String(text || '').toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
@@ -59,11 +60,19 @@ function audit(root) {
       }
       if (sameCritic(d.criticName, p.criticName) && !isPlaceholderCritic(d.criticName) && !isPlaceholderCritic(p.criticName)) continue;
       const row = { showId, file: f, primary: d.crossOutletPrimaryFile, secondaryCritic: d.criticName, primaryCritic: p.criticName };
-      if (d.crossOutletVerified === true) { rows.push({ ...row, status: 'verified-by-person' }); continue; }
-      const shared = containment(d.fullText, p.fullText);
+      // BRO-6774: judge the same text the detector compared (fullText, else excerpts).
+      const dText = getBestText(d).text;
+      const pText = getBestText(p).text;
+      const shared = containment(dText, pText);
+      if (d.crossOutletVerified === true) {
+        // A person's stamp vouches for the pair as it was; if the primary no longer
+        // shares the text the stamp is stale and the flag hides a review for nothing.
+        rows.push({ ...row, status: shared < 20 && dText && pText ? 'verified-stale' : 'verified-by-person', shared });
+        continue;
+      }
       if (shared < 20) { rows.push({ ...row, status: 'stale', shared }); continue; }
-      const A = { outletId: p.outletId, outlet: p.outlet, criticName: p.criticName, text: p.fullText || '' };
-      const B = { outletId: d.outletId, outlet: d.outlet, criticName: d.criticName, text: d.fullText || '' };
+      const A = { outletId: p.outletId, outlet: p.outlet, criticName: p.criticName, text: pText };
+      const B = { outletId: d.outletId, outlet: d.outlet, criticName: d.criticName, text: dText };
       const v = classifyCrossOutletPair(A, B, { similarity: d.crossOutletSimilarity || shared });
       if (v.action === 'review') rows.push({ ...row, status: 'unverified', shared });
       else if (v.copy === 'a') rows.push({ ...row, status: 'primary-is-the-copy', shared });
@@ -82,7 +91,7 @@ if (require.main === module) {
   const rows = audit(root);
   const by = {};
   rows.forEach((r) => { by[r.status] = (by[r.status] || 0) + 1; });
-  const bad = rows.filter((r) => ['unverified', 'stale', 'primary-is-the-copy', 'primary-missing'].includes(r.status));
+  const bad = rows.filter((r) => ['unverified', 'stale', 'verified-stale', 'primary-is-the-copy', 'primary-missing'].includes(r.status));
   if (args.includes('--json')) console.log(JSON.stringify({ counts: by, bad }, null, 2));
   else {
     console.log('Different-critic cross-outlet flags:', JSON.stringify(by));

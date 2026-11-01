@@ -1,0 +1,234 @@
+{
+  "issueNumber": "bro-6774",
+  "planId": "4d12524c-8a76-450e-be43-29fdca7abcce",
+  "status": "pending",
+  "createdAt": "2026-11-01T17:58:37.088Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6774: finish BRO-6759 cross-outlet duplicate repair (stamp reprints/copies with page evidence, clear stale or wrongly hidden flags) (part 1 of 2)",
+    "steps": [
+      "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json: crossOutletVerifiedNote",
+      "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json: crossOutletVerified",
+      "bandstand-2017/stagezine--david-nounou.json: crossOutletVerifiedNote",
+      "bandstand-2017/stagezine--david-nounou.json: crossOutletVerified",
+      "betrayal-2019/broadwayworld--michael-dale.json: crossOutletClearReason",
+      "betrayal-2019/broadwayworld--michael-dale.json: crossOutletDuplicate",
+      "china-doll-2015/lighting-and-sound-america--david-barbour.json: crossOutletVerifiedNote",
+      "china-doll-2015/lighting-and-sound-america--david-barbour.json: crossOutletVerified",
+      "cock-west-end-2022/sierz-co-uk--unknown.json: crossOutletClearReason",
+      "cock-west-end-2022/sierz-co-uk--unknown.json: crossOutletDuplicate",
+      "head-over-heels-2018/stage-left--robert-russo.json: crossOutletVerifiedNote",
+      "head-over-heels-2018/stage-left--robert-russo.json: crossOutletVerified",
+      "hells-kitchen-2024/rollingstone--brittani-samuel.json: crossOutletClearReason",
+      "hells-kitchen-2024/rollingstone--brittani-samuel.json: crossOutletDuplicate",
+      "in-transit-2016/labor-press--leonard-golubchick.json: crossOutletVerifiedNote",
+      "in-transit-2016/labor-press--leonard-golubchick.json: crossOutletVerified",
+      "inter-alia-west-end-2026/mail-on-sunday--robert-gore-langton.json: crossOutletVerifiedNote",
+      "inter-alia-west-end-2026/mail-on-sunday--robert-gore-langton.json: crossOutletVerified",
+      "it-shoulda-been-you-2015/simon-parris-man-in-chair--simon-parris.json: crossOutletVerifiedNote",
+      "it-shoulda-been-you-2015/simon-parris-man-in-chair--simon-parris.json: crossOutletVerified",
+      "la-bete-2010/ny1--roma-torre.json: crossOutletClearReason",
+      "la-bete-2010/ny1--roma-torre.json: crossOutletDuplicate",
+      "la-bete-2010/nytimes--ben-brantley.json: crossOutletVerifiedNote",
+      "la-bete-2010/nytimes--ben-brantley.json: crossOutletVerified"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: https://jkstheatrescene.blogspot.com/2015/07/review-amazing-grace.html carries 100% of this file's text and 100% of the primary amazing-grace-2015/huffpost--steven-suskin.json's text (100% shared in storage), so it is a genuine reprint of the same article under another byline.",
+        "description": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "amazing-grace-2015/jks-theatre-scene--jeff-kyler.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/stagezine--david-nounou.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: https://www.stagezine.com/bandstand-bopping-swinging-delight/ carries 92% of this file's text and 92% of the primary bandstand-2017/huffpost--michael-giltz.json's text (100% shared in storage), so it is a genuine reprint of the same article under another byline.",
+        "description": "bandstand-2017/stagezine--david-nounou.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bandstand-2017/stagezine--david-nounou.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "bandstand-2017/stagezine--david-nounou.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/broadwayworld--michael-dale.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6774: this file's text is 97% present on its own URL (https://www.broadwayworld.com/article/BWW-Review-Director-Jamie-Lloyds-Subtle-Way-With-Harold-Pinters-BETRAYAL-Makes-For-Riveting-Storytelling-20190906) and the primary betrayal-2019/standard--henry-hitchings.json text only 64% there; real review, must not be hidden.",
+        "description": "betrayal-2019/broadwayworld--michael-dale.json: crossOutletClearReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/broadwayworld--michael-dale.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "betrayal-2019/broadwayworld--michael-dale.json: crossOutletDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "china-doll-2015/lighting-and-sound-america--david-barbour.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: https://variety.com/2015/legit/reviews/china-doll-review-al-pacino-1201653205/ carries 99% of this file's text and 99% of the primary china-doll-2015/variety--marilyn-stasio.json's text (100% shared in storage), so it is a genuine reprint of the same article under another byline.",
+        "description": "china-doll-2015/lighting-and-sound-america--david-barbour.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "china-doll-2015/lighting-and-sound-america--david-barbour.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "china-doll-2015/lighting-and-sound-america--david-barbour.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cock-west-end-2022/sierz-co-uk--unknown.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6774: this file's text is 98% present on its own URL (https://sierz.co.uk/reviews/cock-ambassadors-theatre/) and the primary cock-west-end-2022/artsdesk--aleks-sierz.json text only 73% there; real review, must not be hidden.",
+        "description": "cock-west-end-2022/sierz-co-uk--unknown.json: crossOutletClearReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cock-west-end-2022/sierz-co-uk--unknown.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "cock-west-end-2022/sierz-co-uk--unknown.json: crossOutletDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "head-over-heels-2018/stage-left--robert-russo.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: https://www.stageleft.nyc/blog/2018/7/26/review-a-refreshingly-queer-head-over-heels-brings-the-beat carries 98% of this file's text and 98% of the primary head-over-heels-2018/philadelphia-inquirer--toby-zinman.json's text (100% shared in storage), so it is a genuine reprint of the same article under another byline.",
+        "description": "head-over-heels-2018/stage-left--robert-russo.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "head-over-heels-2018/stage-left--robert-russo.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "head-over-heels-2018/stage-left--robert-russo.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6774: the earlier verified stamp is stale; audit finds 0% shared text with hells-kitchen-2024/ap--mark-kennedy.json, so the pair no longer overlaps and the flag hides a review for nothing.",
+        "description": "hells-kitchen-2024/rollingstone--brittani-samuel.json: crossOutletClearReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hells-kitchen-2024/rollingstone--brittani-samuel.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "hells-kitchen-2024/rollingstone--brittani-samuel.json: crossOutletDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/labor-press--leonard-golubchick.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's text is 0% on its own URL (https://laborpress.org/22-entertainment/9130-review-of-in-transit-circle-in-the-square-theater) but 98% on the primary in-transit-2016/nbcny--robert-kahn.json's URL, so it is a confirmed copy of the primary and stays excluded.",
+        "description": "in-transit-2016/labor-press--leonard-golubchick.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "in-transit-2016/labor-press--leonard-golubchick.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "in-transit-2016/labor-press--leonard-golubchick.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2026/mail-on-sunday--robert-gore-langton.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: https://www.dailymail.co.uk/tvshowbiz/article-15713891/PATRICK-MARMION-reviews-Inter-Alia.html carries 80% of this file's text and 66% of the primary inter-alia-west-end-2026/daily-mail--patrick-marmion.json's text (73% shared in storage), so it is a genuine reprint of the same article under another byline.",
+        "description": "inter-alia-west-end-2026/mail-on-sunday--robert-gore-langton.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "inter-alia-west-end-2026/mail-on-sunday--robert-gore-langton.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "inter-alia-west-end-2026/mail-on-sunday--robert-gore-langton.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "it-shoulda-been-you-2015/simon-parris-man-in-chair--simon-parris.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: this file's text is 0% on its own URL (https://simonparrismaninchair.com/2015/04/08/it-shoulda-been-you-review-broadway/) but 100% on the primary it-shoulda-been-you-2015/jta--uriel-heilman.json's URL, so it is a confirmed copy of the primary and stays excluded.",
+        "description": "it-shoulda-been-you-2015/simon-parris-man-in-chair--simon-parris.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "it-shoulda-been-you-2015/simon-parris-man-in-chair--simon-parris.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "it-shoulda-been-you-2015/simon-parris-man-in-chair--simon-parris.json: crossOutletVerified"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-bete-2010/ny1--roma-torre.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6774: audit finds 0% shared text between this file and la-bete-2010/northjerseycom--robert-feldberg.json; the flag is stale.",
+        "description": "la-bete-2010/ny1--roma-torre.json: crossOutletClearReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-bete-2010/ny1--roma-torre.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "la-bete-2010/ny1--roma-torre.json: crossOutletDuplicate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-bete-2010/nytimes--ben-brantley.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "Re-fetched BRO-6774: http://theater.nytimes.com/2010/10/15/theater/reviews/15bete.html?ref=theater carries 96% of this file's text and 97% of the primary la-bete-2010/nytimes--charles-isherwood.json's text (98% shared in storage), so it is a genuine reprint of the same article under another byline.",
+        "description": "la-bete-2010/nytimes--ben-brantley.json: crossOutletVerifiedNote"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "la-bete-2010/nytimes--ben-brantley.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "la-bete-2010/nytimes--ben-brantley.json: crossOutletVerified"
+      }
+    ]
+  }
+}

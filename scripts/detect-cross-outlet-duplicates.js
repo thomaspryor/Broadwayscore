@@ -36,6 +36,13 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 
 // --- CLI args ---
 const args = process.argv.slice(2);
+if (args.includes('--help') || args.includes('-h')) {
+  // BRO-6774: --help used to fall through into a REAL (writing) pass.
+  const src = require('fs').readFileSync(__filename, 'utf8');
+  const m = src.match(/\/\*\*[\s\S]*?\*\//);
+  console.log(m ? m[0] : 'Usage: node scripts/detect-cross-outlet-duplicates.js [--dry-run] [--show=SLUG]');
+  process.exit(0);
+}
 const DRY_RUN = args.includes('--dry-run') || args.includes('--report');
 const REPORT = args.includes('--report');
 const VERBOSE = args.includes('--verbose');
@@ -93,24 +100,7 @@ function trigramSimilarity(text1, text2) {
   return union === 0 ? 0 : Math.round(100 * intersection / union);
 }
 
-/**
- * Get the best available text from a review file.
- * Prefers fullText, falls back to concatenated excerpts.
- */
-function getBestText(data) {
-  if (data.fullText && data.fullText.length > 50) return { text: data.fullText, source: 'fullText' };
-  // Concatenate all available excerpts
-  const excerpts = [
-    data.dtliExcerpt,
-    data.bwwExcerpt,
-    data.showScoreExcerpt,
-    data.nycTheatreExcerpt,
-  ].filter(Boolean);
-  if (excerpts.length > 0) {
-    return { text: excerpts.join(' '), source: 'excerpts' };
-  }
-  return { text: '', source: 'none' };
-}
+const { getBestText, resolveFingerprintGroup } = require('./lib/cross-outlet-group');
 
 // ============================================================
 // LLM Confirmation (Layer 3)
@@ -277,18 +267,11 @@ async function main() {
         pointerPairs.push({ showId, method: 'fingerprint', files: [p.file, other.file], outlets: [p.outlet, other.outlet], critics: [p.criticName, other.criticName] });
       }
       const plain = group.filter(r => !r.pointerAcross);
-      const primary = plain[0];
-
-      for (let i = 1; i < plain.length; i++) {
-        let keep = primary;
-        let copy = plain[i];
-        const verdict = classifyCrossOutletPair(keep, copy, { similarity: 100 });
-        if (verdict.action === 'review') {
-          wrongTextCandidates.push({ showId, method: 'fingerprint', similarity: 100, reason: verdict.reason, files: [keep.file, copy.file], outlets: [keep.outlet, copy.outlet], critics: [keep.criticName, copy.criticName] });
-          continue;
-        }
-        // The file whose own text names the other outlet is the copy, whatever the tier.
-        if (verdict.copy === 'a') { keep = plain[i]; copy = primary; }
+      const resolved = resolveFingerprintGroup(plain, (a, b) => classifyCrossOutletPair(a, b, { similarity: 100 }));
+      for (const { keep, copy, verdict } of resolved.review) {
+        wrongTextCandidates.push({ showId, method: 'fingerprint', similarity: 100, reason: verdict.reason, files: [keep.file, copy.file], outlets: [keep.outlet, copy.outlet], critics: [keep.criticName, copy.criticName] });
+      }
+      for (const { keep, copy } of resolved.pairs) {
         duplicates.push({
           showId,
           method: 'fingerprint',
