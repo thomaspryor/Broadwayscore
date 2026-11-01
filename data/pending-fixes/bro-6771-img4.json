@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6771-img4",
   "planId": "3e8a5c10-6771-4b7d-9f21-0a6d4c8e9b44",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T21:20:00.000Z",
   "submitter": {
     "name": null,
@@ -29,5 +29,13 @@
       }
     ]
   },
-  "executedIn": "ci"
+  "executedIn": "ci",
+  "executedAt": "2026-11-01T22:43:41.144Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for pippin-regional-2026"
+    }
+  ]
 }
