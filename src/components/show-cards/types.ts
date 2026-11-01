@@ -17,6 +17,8 @@ export interface ShowCardShow {
   slug: string;
   title: string;
   venue: string;
+  /** A city hub's own production (src/lib/local-market.ts). */
+  localOnly?: boolean;
   openingDate: string;
   closingDate?: string;
   previewsStartDate?: string;

@@ -199,18 +199,28 @@ export function formatShowDate(
   return date.toLocaleDateString('en-US', { ...options, timeZone: 'UTC' });
 }
 
+/** "Arena Stage, Washington, DC" -> "Washington": the town before a US state code. */
+export function getUsVenueCity(venue?: string): string | undefined {
+  const m = /,\s*([^,]+?),\s*[A-Z]{2}\s*$/.exec(venue || '');
+  return m ? m[1].trim() : undefined;
+}
+
 /**
  * Get the duration suffix for a market category. `venue` lets a UK regional
  * show (RSC, Chichester, ...) say where it plays instead of "in tryout": it is
  * not a Broadway tryout (BRO-5103).
  */
-export function getDurationSuffix(category?: string, venue?: string): string {
+export function getDurationSuffix(category?: string, venue?: string, localOnly = false): string {
   if (category === 'west-end' || category === 'off-west-end') return 'in London';
   if (category === 'off-broadway') return 'Off-Broadway';
   // Regional tryouts are emphatically NOT "on Broadway" — that's the point.
   if (category === 'regional') {
     const ukCity = getUkRegionalVenueCity(category, venue);
-    return ukCity ? `in ${ukCity}` : 'in tryout';
+    if (ukCity) return `in ${ukCity}`;
+    // A city hub's own production (Steppenwolf, Arena Stage) is not a Broadway
+    // tryout: say the town it plays in (BRO-6796).
+    const usCity = localOnly ? getUsVenueCity(venue) : undefined;
+    return usCity ? `in ${usCity}` : 'in tryout';
   }
   if (category === 'tour') return 'on tour';
   return 'on Broadway';

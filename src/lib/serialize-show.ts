@@ -1,4 +1,5 @@
 import { getAudienceBuzz, hasEnoughAudienceReviews, hasFullConfidenceAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
+import { isLocalOnlyShow } from './local-market';
 import type { ShowCardShow } from '@/components/show-cards/types';
 import { getTourNowNextForShow, getTourTicketLinks } from '@/lib/data-tour-schedule';
 
@@ -60,6 +61,8 @@ export function serializeShowForClient(
     slug: show.slug,
     title: show.title,
     venue: show.venue,
+    // Run-age label reads 'in <city>' for a city hub's own production (BRO-6796).
+    localOnly: isLocalOnlyShow(show) || undefined,
     openingDate: show.openingDate,
     closingDate: show.closingDate ?? undefined,
     previewsStartDate: show.previewsStartDate ?? undefined,

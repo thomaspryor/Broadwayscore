@@ -91,3 +91,11 @@ test('describeTourScores agrees in number with the tours the line links', () => 
   assert.equal(describeTourScores(1, 2), 'one of the national tours has its own critic score');
   assert.equal(describeTourScores(2, 3), '2 of the national tours have their own critic scores');
 });
+
+test('BRO-6796: a city hub own production says its town, a tryout still says tryout', () => {
+  assert.equal(getDurationSuffix('regional', 'Arena Stage, Washington, DC', true), 'in Washington');
+  assert.equal(getDurationSuffix('regional', 'Steppenwolf Theatre, Chicago, IL', true), 'in Chicago');
+  assert.equal(getDurationSuffix('regional', 'Olney Theatre Center, Olney, MD', true), 'in Olney');
+  assert.equal(getDurationSuffix('regional', 'American Repertory Theater, Cambridge, MA'), 'in tryout');
+  assert.equal(getDurationSuffix('regional', 'Some Venue', true), 'in tryout');
+});
