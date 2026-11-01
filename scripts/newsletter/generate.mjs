@@ -1119,7 +1119,7 @@ function biggestMoverSection() {
     let before;
     try { before = JSON.parse(fs.readFileSync(path.join(snapDir, snapFile), 'utf8')); }
     catch { return []; }
-    const totalReviewsFor = d => Object.values(d.sources || {}).reduce((a, s) => a + (s?.reviewCount ?? 0), 0);
+    const totalReviewsFor = d => cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(d.sources);
     const GRADE_ORDER = ['A+','A','A-','B+','B','B-','C+','C','C-','D','F'];
     const grade = (s) => {
       if (s == null) return null;

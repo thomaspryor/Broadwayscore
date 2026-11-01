@@ -82,7 +82,7 @@ assert.strictEqual(countVisibleAudienceReviews(undefined), 0);
 // The TS gate and every CJS consumer use the same rule.
 const tsGate = fs.readFileSync(path.join(ROOT, 'src/lib/audience-grade-utils.ts'), 'utf8');
 assert.ok(/source\.suppressed/.test(tsGate), 'getTotalAudienceReviews must skip suppressed sources');
-for (const f of consumers.filter((c) => c.startsWith('scripts/') && !/reddit-opening-post|compute-gold-lists/.test(c))) {
+for (const f of consumers.filter((c) => c.startsWith('scripts/') && !/reddit-opening-post/.test(c))) {
   assert.ok(/audience-review-count/.test(fs.readFileSync(path.join(ROOT, f), 'utf8')), `${f} must count reviews with audience-review-count.js`);
 }
 if (fs.existsSync(buzzPath)) {
