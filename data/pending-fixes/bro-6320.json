@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6320",
   "planId": "b052ca79-93ca-4340-aba3-e579971551a5",
-  "status": "applied",
+  "status": "partial",
   "createdAt": "2026-11-01T15:05:22.507Z",
   "submitter": {
     "name": null,
@@ -22,12 +22,12 @@
       }
     ]
   },
-  "executedAt": "2026-11-01T15:17:02.096Z",
+  "executedAt": "2026-11-01T15:22:02.117Z",
   "results": [
     {
       "action": "review-file-op",
-      "ok": true,
-      "msg": "Deleted _pending/dirty-dancing-the-classic-story-on-stage-west-end-2026/thestage--unknown.json"
+      "ok": false,
+      "reason": "Source not found: _pending/dirty-dancing-the-classic-story-on-stage-west-end-2026/thestage--unknown.json"
     }
   ],
   "executedIn": "ci"
