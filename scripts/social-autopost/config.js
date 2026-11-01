@@ -84,6 +84,12 @@ const SCORE_FLOORS = {
 const ELIGIBLE_CATEGORIES = Object.keys(MARKETS).filter(k => k !== 'opera'); // categories; opera is a market by type (marketOf)
 // House tag added to an opera post by the show's category (Met = off-broadway, Royal Opera House = off-west-end).
 const OPERA_HOUSE_TAGS = { 'off-broadway': 'MetOpera', 'off-west-end': 'RoyalOpera' };
+const OPERA_VENUE_TAGS = [[/war memorial opera house|san francisco opera/i, 'SFOpera'], [/london coliseum|english national opera/i, 'ENO']];
+/** House hashtag for an opera: by venue for SFO/ENO, else by category (Met / Royal Opera House). */
+const operaHouseTag = show => {
+  const hit = OPERA_VENUE_TAGS.find(([re]) => re.test(String(show && show.venue || '')));
+  return hit ? hit[1] : OPERA_HOUSE_TAGS[show && show.category];
+};
 
 /** A show's market key: 'opera' for an opera (any category), else its category. */
 const marketOf = show => (String(show && show.type || '').toLowerCase() === 'opera' ? 'opera' : show.category);
@@ -127,7 +133,7 @@ const CLOSING_SOON = {
 
 module.exports = {
   WEEKLY_ROUNDUP, CLOSING_SOON,
-  MARKETS, marketOf, OPERA_HOUSE_TAGS, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
+  MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,
 };

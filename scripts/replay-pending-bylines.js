@@ -237,7 +237,7 @@ function loadShow(showId) {
   return (data.shows || data).find(s => s.id === showId);
 }
 
-const NON_MET_OPERA_URL_MARKERS = require('./lib/content-filters').NON_MET_OPERA_URL_MARKERS;
+const { NON_MET_OPERA_URL_MARKERS, hasNonMetOperaUrlMarker, operaHouseForVenue } = require('./lib/content-filters');
 
 // The byline extractor is non-deterministic on outlets whose article pages carry
 // a rotating "more from our critics" recirc widget (Times UK, WhatsOnStage) —
@@ -425,7 +425,7 @@ async function processShow(showId, deps = {}) {
     }
 
     // Pre-promotion filters: don't bother fetching wrong-production URLs.
-    if (NON_MET_OPERA_URL_MARKERS && NON_MET_OPERA_URL_MARKERS.some(m => url.toLowerCase().includes(m))) {
+    if (NON_MET_OPERA_URL_MARKERS && hasNonMetOperaUrlMarker(url, operaHouseForVenue((loadShow(showId) || {}).venue))) {
       console.log(`  [${file}] REJECT: non-Met opera house URL — ${dry ? 'DRY, not deleting' : 'deleting'}`);
       if (!dry) fs.unlinkSync(filepath);
       rejected++;
