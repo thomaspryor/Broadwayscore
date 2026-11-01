@@ -19,7 +19,7 @@ name: Morning Digest
 # The Mac's launchd job is booted out three days after config/mac-retired.json's retiredAt; that is
 # housekeeping, not on the critical path.
 #
-# Cron times are UTC. 12:30 is 07:30 EST (winter, from 2026-11-01). US DST resumes 2027-03-14: the
+# Cron times are UTC. 12:45 is 07:45 EST (15 min after the Mac's 07:30 slot, so a stale Mac's email is seen by the sent-today guard) (winter, from 2026-11-01). US DST resumes 2027-03-14: the
 # winter times become 08:30 EDT until the block is changed to 11:30/12:15/13:00. GitHub drops and delays
 # scheduled runs (cron-redispatch.yml), so there are three; the sent-today guard makes the later two
 # no-ops when the first worked. The 14:30Z check-morning-digest-sent.yml pages if none of them delivered.
@@ -35,7 +35,7 @@ name: Morning Digest
 # a second machine can see).
 on:
   schedule:
-    - cron: '30 12 * * *'
+    - cron: '45 12 * * *'
     - cron: '15 13 * * *'
     - cron: '0 14 * * *'
   workflow_dispatch:

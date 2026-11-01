@@ -31,7 +31,7 @@ const HANDOFF_FILE = path.join(ROOT, 'config/morning-digest-handoff.json');
 const handoff = require('../../scripts/lib/digest-handoff.js');
 
 test('digest workflow: committed schedule behind the committed handoff date, no repo variable (BRO-6764)', () => {
-  assert.match(WF, /^ {2}schedule:\n {4}- cron: '30 12 \* \* \*'/m, '07:30 EST first, later crons are retries');
+  assert.match(WF, /^ {2}schedule:\n {4}- cron: '45 12 \* \* \*'/m, '07:45 EST first (after the Mac slot), later crons are retries');
   assert.match(WF, /^ {2}workflow_dispatch:/m);
   assert.doesNotMatch(code(WF), /vars\./, 'cloud sessions cannot set repo variables: every switch is committed');
   assert.match(WF, /handoff=\$\(jq -r \.handoffDate config\/morning-digest-handoff\.json\)/);
@@ -73,7 +73,7 @@ test('Mac sender: the real script no-ops for the owner from the handoff date and
   fs.writeFileSync(f, JSON.stringify({ handoffDate: '2020-01-01' }));
   const r = require('node:child_process').spawnSync('node', ['scripts/send-morning-digest.js', '--send-to-owner', '--no-autofix'], {
     cwd: ROOT, encoding: 'utf8', timeout: 30000,
-    env: { ...process.env, OWNER_EMAIL: 'owner@example.com', DIGEST_HANDOFF_FILE: f, GITHUB_ACTIONS: '' },
+    env: { ...process.env, OWNER_EMAIL: 'owner@example.com', DIGEST_HANDOFF_FILE: f, GITHUB_ACTIONS: '', RESEND_API_KEY: '', HOME: dir },
   });
   assert.equal(r.status, 0, r.stderr);
   assert.match(r.stdout, /handoff: the GitHub Action sends the owner's digest from 2020-01-01; this machine does not\. Nothing sent\./);
