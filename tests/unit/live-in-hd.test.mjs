@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 
-const run = code => execFileSync(process.execPath, ['--import', 'tsx', '-e', code], { encoding: 'utf8', cwd: new URL('..', import.meta.url).pathname }).trim();
+const run = code => execFileSync(process.execPath, ['--import', 'tsx', '-e', code], { encoding: 'utf8', cwd: new URL('../..', import.meta.url).pathname }).trim();
 
 test('liveInHd line, description and expiry', () => {
   const out = JSON.parse(run(`
