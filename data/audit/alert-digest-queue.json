@@ -542,5 +542,33 @@
       }
     ],
     "queuedAt": "2026-11-01T15:13:19.164Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-tosca-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on Tosca",
+    "description": "guardian/Flora Willson (guardian--flora-willson.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate theater review of Tosca with str — https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:17:15.831Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:tosca-off-broadway-2026",
+    "title": "Shipped review missing publishDate on Tosca",
+    "description": "zeal-nyc/Herman Spencer SHIPPED with no publishDate — cannot confirm post-opening: http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:17:15.866Z"
   }
 ]

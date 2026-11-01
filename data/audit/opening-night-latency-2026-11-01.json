@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-01T13:06:34.381Z",
+  "generatedAt": "2026-11-01T15:17:16.498Z",
   "date": "2026-11-01",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 167070,
+  "entryCount": 184374,
   "shows": [
     {
       "showId": "the-woodsman-off-broadway-2016",
@@ -139,13 +139,13 @@
     },
     {
       "showId": "11-to-midnight-off-broadway-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": 64825126,
       "p90_e2e_ms": 64825126,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151332,
         "rebuilt-to-deployed": 63018076
       },
       "reviews_over_15min": 1,
@@ -523,7 +523,7 @@
     {
       "showId": "the-robber-bridegroom-off-broadway-2016",
       "reviewCount": 3,
-      "median_e2e_ms": 64709690,
+      "median_e2e_ms": 64709700,
       "p90_e2e_ms": 64709816,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
@@ -531,8 +531,8 @@
         "scored-to-rebuilt": null,
         "rebuilt-to-deployed": 63018060
       },
-      "reviews_over_15min": 11,
-      "reviews_over_60min": 11,
+      "reviews_over_15min": 10,
+      "reviews_over_60min": 10,
       "slowest_reviews": [
         {
           "reviewKey": "vulture:jesse-green:http://www.vulture.com/2016/03/theater-southern-comfort.html",
@@ -679,7 +679,7 @@
     },
     {
       "showId": "hadestown-tour-2024",
-      "reviewCount": 26,
+      "reviewCount": 27,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -694,13 +694,13 @@
     },
     {
       "showId": "and-juliet-tour-2024",
-      "reviewCount": 52,
+      "reviewCount": 54,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 558440,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -715,7 +715,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 75047768,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 547501,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -730,7 +730,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 52228212,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 538859,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -760,7 +760,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2958775,
+        "scored-to-rebuilt": 678105,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -784,13 +784,13 @@
     },
     {
       "showId": "abba-voyage-off-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 516815,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -814,7 +814,7 @@
     },
     {
       "showId": "hadestown-2019",
-      "reviewCount": 52,
+      "reviewCount": 51,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -835,7 +835,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 476445,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -2080,13 +2080,13 @@
     },
     {
       "showId": "crime-and-punishment-regional-2026",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 913113,
+        "scored-to-rebuilt": 913114,
         "rebuilt-to-deployed": 60029235
       },
       "reviews_over_15min": 0,
@@ -2680,13 +2680,13 @@
     },
     {
       "showId": "a-toast-fae-the-lassies-pitlochry-festival-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 913027,
+        "scored-to-rebuilt": 1165418,
         "rebuilt-to-deployed": 60029237
       },
       "reviews_over_15min": 0,
@@ -2815,13 +2815,13 @@
     },
     {
       "showId": "mans-best-friend-tron-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 913029,
+        "scored-to-rebuilt": 1124305,
         "rebuilt-to-deployed": 60029230
       },
       "reviews_over_15min": 0,
@@ -2950,13 +2950,13 @@
     },
     {
       "showId": "little-shop-of-horrors-crucible-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 913022,
+        "scored-to-rebuilt": 913023,
         "rebuilt-to-deployed": 60029230
       },
       "reviews_over_15min": 0,
@@ -3340,7 +3340,7 @@
     },
     {
       "showId": "this-aint-no-disco-off-broadway-2018",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -3736,7 +3736,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 671698,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3745,13 +3745,13 @@
     },
     {
       "showId": "matilda-the-musical-west-end-2021",
-      "reviewCount": 19,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 456454,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3781,7 +3781,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 451652,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3790,13 +3790,13 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 661680,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -3826,7 +3826,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 427374,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -4045,7 +4045,7 @@
     },
     {
       "showId": "flamenc-oh-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -4465,7 +4465,7 @@
     },
     {
       "showId": "the-cook-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5245,7 +5245,7 @@
     },
     {
       "showId": "betty-blue-eyes-west-end-2011",
-      "reviewCount": 4,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5641,7 +5641,7 @@
     },
     {
       "showId": "time-is-a-color-and-the-color-is-blue-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5671,7 +5671,7 @@
     },
     {
       "showId": "henry-johnson-regional-2025",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -5716,7 +5716,7 @@
     },
     {
       "showId": "the-distrikt-of-lake-michigun-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6151,7 +6151,7 @@
     },
     {
       "showId": "admissions-regional-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6766,7 +6766,7 @@
     },
     {
       "showId": "a-case-for-the-existence-of-god-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -6991,7 +6991,7 @@
     },
     {
       "showId": "fences-off-west-end-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7192,7 +7192,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 630234,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7426,7 +7426,7 @@
     },
     {
       "showId": "a-little-night-music-regional-2024",
-      "reviewCount": 8,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7441,7 +7441,7 @@
     },
     {
       "showId": "the-mad-ones-regional-2024",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7471,7 +7471,7 @@
     },
     {
       "showId": "leopoldstadt-regional-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7591,7 +7591,7 @@
     },
     {
       "showId": "maybe-happy-ending-tour-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7756,7 +7756,7 @@
     },
     {
       "showId": "dirty-dancing-tour-2026",
-      "reviewCount": 12,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7801,7 +7801,7 @@
     },
     {
       "showId": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7831,7 +7831,7 @@
     },
     {
       "showId": "avenue-q-west-end-2026",
-      "reviewCount": 38,
+      "reviewCount": 39,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -7927,7 +7927,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 604562,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7981,13 +7981,13 @@
     },
     {
       "showId": "heathers-the-musical-off-broadway-2025",
-      "reviewCount": 28,
+      "reviewCount": 29,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 589091,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8377,7 +8377,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 565580,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8437,7 +8437,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 444981,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -8521,7 +8521,7 @@
     },
     {
       "showId": "falls-for-jodie-off-broadway-2026",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8701,7 +8701,7 @@
     },
     {
       "showId": "in-honor-of-jean-michel-basquiat-off-broadway-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -8746,7 +8746,7 @@
     },
     {
       "showId": "garry-starr-classic-penguins-off-broadway-2026",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9001,7 +9001,7 @@
     },
     {
       "showId": "stokely-the-unfinished-revolution-regional-2024",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9106,7 +9106,7 @@
     },
     {
       "showId": "next-to-normal-regional-2023",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9136,7 +9136,7 @@
     },
     {
       "showId": "highway-patrol-regional-2024",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9166,7 +9166,7 @@
     },
     {
       "showId": "gypsy-regional-2023",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9301,7 +9301,7 @@
     },
     {
       "showId": "manual-cinemas-christmas-carol-regional-2023",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9586,7 +9586,7 @@
     },
     {
       "showId": "the-old-man-and-the-pool-regional-2022",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9886,7 +9886,7 @@
     },
     {
       "showId": "the-singularity-play-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -9961,7 +9961,7 @@
     },
     {
       "showId": "the-time-machine-a-tribute-to-the-80s-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10006,13 +10006,13 @@
     },
     {
       "showId": "art-royal-bath-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 588842,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -10066,7 +10066,7 @@
     },
     {
       "showId": "carousel-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10081,7 +10081,7 @@
     },
     {
       "showId": "jane-abortion-and-the-underground-regional-2023",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10111,7 +10111,7 @@
     },
     {
       "showId": "a-streetcar-named-desire-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -10681,13 +10681,13 @@
     },
     {
       "showId": "the-assassination-of-margaret-thatcher-liverpool-everyman-regional-2026",
-      "reviewCount": 1,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1763440,
+        "scored-to-rebuilt": 819232,
         "rebuilt-to-deployed": 25158940
       },
       "reviews_over_15min": 0,
@@ -10801,7 +10801,7 @@
     },
     {
       "showId": "burnout-paradise-off-broadway-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11041,7 +11041,7 @@
     },
     {
       "showId": "passion-regional-2025",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11221,7 +11221,7 @@
     },
     {
       "showId": "kairos-regional-2025",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11236,7 +11236,7 @@
     },
     {
       "showId": "at-the-wake-of-a-dead-drag-queen-regional-2025",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11356,7 +11356,7 @@
     },
     {
       "showId": "titus-andronicus-regional-2025",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11386,7 +11386,7 @@
     },
     {
       "showId": "mercy-killing-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -11521,7 +11521,7 @@
     },
     {
       "showId": "cullud-wattah-regional-2022",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12376,13 +12376,13 @@
     },
     {
       "showId": "tosca-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 94129,
+        "scored-to-rebuilt": 386032,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -12571,7 +12571,7 @@
     },
     {
       "showId": "a-distinct-society-regional-2023",
-      "reviewCount": 7,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12631,7 +12631,7 @@
     },
     {
       "showId": "public-charge-off-broadway-2026",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13081,7 +13081,7 @@
     },
     {
       "showId": "small-off-broadway-2026",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13096,7 +13096,7 @@
     },
     {
       "showId": "high-noon-west-end-2025",
-      "reviewCount": 21,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13321,7 +13321,7 @@
     },
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
-      "reviewCount": 17,
+      "reviewCount": 18,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13516,7 +13516,7 @@
     },
     {
       "showId": "archduke-off-broadway-2025",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13696,7 +13696,7 @@
     },
     {
       "showId": "the-producers-regional-2023",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13951,7 +13951,7 @@
     },
     {
       "showId": "rock-of-ages-regional-2023",
-      "reviewCount": 7,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14071,7 +14071,7 @@
     },
     {
       "showId": "the-last-living-gun-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14116,7 +14116,7 @@
     },
     {
       "showId": "the-reclamation-of-madison-hemings-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14146,7 +14146,7 @@
     },
     {
       "showId": "anything-goes-regional-2024",
-      "reviewCount": 14,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14161,7 +14161,7 @@
     },
     {
       "showId": "shakespeares-r-and-j-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14176,7 +14176,7 @@
     },
     {
       "showId": "fiddler-on-the-roof-regional-2024",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14281,7 +14281,7 @@
     },
     {
       "showId": "promises-promises-regional-2023",
-      "reviewCount": 4,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14551,7 +14551,7 @@
     },
     {
       "showId": "birthday-candles-regional-2023",
-      "reviewCount": 8,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14566,7 +14566,7 @@
     },
     {
       "showId": "night-watch-regional-2023",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14581,7 +14581,7 @@
     },
     {
       "showId": "dial-m-for-murder-regional-2023",
-      "reviewCount": 9,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14596,7 +14596,7 @@
     },
     {
       "showId": "selling-kabul-regional-2024",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14641,7 +14641,7 @@
     },
     {
       "showId": "american-psycho-the-musical-regional-2023",
-      "reviewCount": 4,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14656,7 +14656,7 @@
     },
     {
       "showId": "buddy-the-buddy-holly-story-regional-2023",
-      "reviewCount": 8,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14671,7 +14671,7 @@
     },
     {
       "showId": "the-39-steps-regional-2023",
-      "reviewCount": 4,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14746,13 +14746,13 @@
     },
     {
       "showId": "takeaway-liverpool-everyman-regional-2025",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 15132573,
-        "scored-to-rebuilt": 2958728,
+        "scored-to-rebuilt": 683396,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14821,13 +14821,13 @@
     },
     {
       "showId": "the-kelton-hill-fair-tron-regional-2025",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 14932512,
-        "scored-to-rebuilt": 2958724,
+        "scored-to-rebuilt": 1816889,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -14881,7 +14881,7 @@
     },
     {
       "showId": "fat-ham-regional-2025",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14896,7 +14896,7 @@
     },
     {
       "showId": "fun-home-regional-2025",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -14911,7 +14911,7 @@
     },
     {
       "showId": "glassheart-regional-2025",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15016,7 +15016,7 @@
     },
     {
       "showId": "dames-at-sea-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15031,7 +15031,7 @@
     },
     {
       "showId": "every-brilliant-thing-regional-2024",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15046,7 +15046,7 @@
     },
     {
       "showId": "leroy-and-lucy-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15076,7 +15076,7 @@
     },
     {
       "showId": "sofa-king-queer-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15091,7 +15091,7 @@
     },
     {
       "showId": "boy-gets-girl-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15106,7 +15106,7 @@
     },
     {
       "showId": "dogs-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15121,7 +15121,7 @@
     },
     {
       "showId": "teeth-off-broadway-2024",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15136,7 +15136,7 @@
     },
     {
       "showId": "into-the-woods-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15151,7 +15151,7 @@
     },
     {
       "showId": "pericles-regional-2024",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15166,7 +15166,7 @@
     },
     {
       "showId": "until-the-flood-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15181,7 +15181,7 @@
     },
     {
       "showId": "little-shop-of-horrors-regional-2024",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15196,7 +15196,7 @@
     },
     {
       "showId": "evil-perfect-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15211,7 +15211,7 @@
     },
     {
       "showId": "coronation-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15226,7 +15226,7 @@
     },
     {
       "showId": "dear-elizabeth-regional-2024",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15241,7 +15241,7 @@
     },
     {
       "showId": "by-the-way-meet-vera-stark-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15256,7 +15256,7 @@
     },
     {
       "showId": "inheritance-or-brothers-from-the-deep-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15271,7 +15271,7 @@
     },
     {
       "showId": "the-love-object-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15301,7 +15301,7 @@
     },
     {
       "showId": "becky-nurse-of-salem-regional-2024",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15331,7 +15331,7 @@
     },
     {
       "showId": "the-counter-off-broadway-2024",
-      "reviewCount": 18,
+      "reviewCount": 19,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15391,7 +15391,7 @@
     },
     {
       "showId": "fatherland-off-broadway-2024",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15406,7 +15406,7 @@
     },
     {
       "showId": "happy-days-are-here-again-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15421,13 +15421,13 @@
     },
     {
       "showId": "the-lieutenant-of-inishmore-liverpool-everyman-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 13327433,
-        "scored-to-rebuilt": 2958682,
+        "scored-to-rebuilt": 1776557,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -15436,7 +15436,7 @@
     },
     {
       "showId": "light-switch-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15466,7 +15466,7 @@
     },
     {
       "showId": "ghost-of-john-mccain-off-broadway-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15481,7 +15481,7 @@
     },
     {
       "showId": "the-beacon-off-broadway-2024",
-      "reviewCount": 13,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15496,7 +15496,7 @@
     },
     {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-regional-2024",
-      "reviewCount": 14,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15511,7 +15511,7 @@
     },
     {
       "showId": "never-better-regional-2024",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15526,7 +15526,7 @@
     },
     {
       "showId": "henry-v-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15541,7 +15541,7 @@
     },
     {
       "showId": "east-texas-hot-links-regional-2024",
-      "reviewCount": 7,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15556,13 +15556,13 @@
     },
     {
       "showId": "the-last-cabaret-on-earth-oran-mor-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 12796796,
-        "scored-to-rebuilt": 2958672,
+        "scored-to-rebuilt": 1957241,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -15571,7 +15571,7 @@
     },
     {
       "showId": "first-date-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15586,7 +15586,7 @@
     },
     {
       "showId": "beneath-the-willow-tree-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15601,7 +15601,7 @@
     },
     {
       "showId": "this-is-our-youth-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15616,7 +15616,7 @@
     },
     {
       "showId": "table-17-off-broadway-2024",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15631,7 +15631,7 @@
     },
     {
       "showId": "the-house-of-ideas-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15646,7 +15646,7 @@
     },
     {
       "showId": "7-minutes-to-live-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15661,7 +15661,7 @@
     },
     {
       "showId": "the-full-monty-regional-2024",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15706,7 +15706,7 @@
     },
     {
       "showId": "title-of-show-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15721,7 +15721,7 @@
     },
     {
       "showId": "a-shadow-bright-and-burning-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15736,7 +15736,7 @@
     },
     {
       "showId": "the-normal-heart-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15751,7 +15751,7 @@
     },
     {
       "showId": "the-lord-of-the-rings-a-musical-tale-regional-2024",
-      "reviewCount": 12,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15766,7 +15766,7 @@
     },
     {
       "showId": "six-characters-off-broadway-2024",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15781,7 +15781,7 @@
     },
     {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15796,7 +15796,7 @@
     },
     {
       "showId": "wells-and-welles-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15811,7 +15811,7 @@
     },
     {
       "showId": "dontrell-who-kissed-the-sea-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15826,7 +15826,7 @@
     },
     {
       "showId": "hedwig-and-the-angry-inch-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15841,7 +15841,7 @@
     },
     {
       "showId": "the-swan-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15856,7 +15856,7 @@
     },
     {
       "showId": "on-beckett-off-broadway-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15871,7 +15871,7 @@
     },
     {
       "showId": "midnight-in-the-garden-of-good-and-evil-regional-2024",
-      "reviewCount": 16,
+      "reviewCount": 17,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15886,7 +15886,7 @@
     },
     {
       "showId": "aint-misbehavin-regional-2024",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15937,7 +15937,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 11367998,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151233,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -15961,7 +15961,7 @@
     },
     {
       "showId": "the-salon-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -15976,13 +15976,13 @@
     },
     {
       "showId": "tell-me-how-it-ends-liverpool-everyman-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 11181383,
-        "scored-to-rebuilt": 2958632,
+        "scored-to-rebuilt": 1728298,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -16021,7 +16021,7 @@
     },
     {
       "showId": "three-sisters-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16036,7 +16036,7 @@
     },
     {
       "showId": "attempts-on-her-life-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16081,7 +16081,7 @@
     },
     {
       "showId": "pro-am-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16096,7 +16096,7 @@
     },
     {
       "showId": "english-regional-2024",
-      "reviewCount": 11,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16111,7 +16111,7 @@
     },
     {
       "showId": "viva-la-mort-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16141,7 +16141,7 @@
     },
     {
       "showId": "on-the-twentieth-century-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16156,7 +16156,7 @@
     },
     {
       "showId": "turret-regional-2024",
-      "reviewCount": 9,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16171,7 +16171,7 @@
     },
     {
       "showId": "murder-in-the-cathedral-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16186,7 +16186,7 @@
     },
     {
       "showId": "poor-people-the-parody-musical-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16201,7 +16201,7 @@
     },
     {
       "showId": "an-educated-guess-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16276,7 +16276,7 @@
     },
     {
       "showId": "beyond-the-garden-gate-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16291,7 +16291,7 @@
     },
     {
       "showId": "the-music-man-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16306,7 +16306,7 @@
     },
     {
       "showId": "cock-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16321,7 +16321,7 @@
     },
     {
       "showId": "rosencrantz-and-guildenstern-are-dead-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16366,7 +16366,7 @@
     },
     {
       "showId": "a-view-from-the-bridge-regional-2023",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16396,7 +16396,7 @@
     },
     {
       "showId": "25th-annual-putnam-county-spelling-bee-regional-2024",
-      "reviewCount": 8,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16441,7 +16441,7 @@
     },
     {
       "showId": "all-my-sons-2019",
-      "reviewCount": 34,
+      "reviewCount": 35,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16486,7 +16486,7 @@
     },
     {
       "showId": "sunsets-two-acts-on-a-beach-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16501,7 +16501,7 @@
     },
     {
       "showId": "a-taste-of-soul-regional-2023",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16516,7 +16516,7 @@
     },
     {
       "showId": "topdog-underdog-regional-2024-windy-city-playhouse",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16546,7 +16546,7 @@
     },
     {
       "showId": "the-penelopiad-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16576,7 +16576,7 @@
     },
     {
       "showId": "jersey-boys-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16591,7 +16591,7 @@
     },
     {
       "showId": "waiting-for-lefty-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16621,7 +16621,7 @@
     },
     {
       "showId": "what-the-weird-sisters-saw-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16636,7 +16636,7 @@
     },
     {
       "showId": "the-curious-incident-of-the-dog-in-the-night-time-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16651,7 +16651,7 @@
     },
     {
       "showId": "the-good-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16666,7 +16666,7 @@
     },
     {
       "showId": "sondheim-tribute-revue-regional-2024-the-fred-anzevino-theatre",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16696,7 +16696,7 @@
     },
     {
       "showId": "teeth-playwrights-horizons-off-broadway-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16711,7 +16711,7 @@
     },
     {
       "showId": "wipeout-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16756,7 +16756,7 @@
     },
     {
       "showId": "brooklyn-laundry-off-broadway-2024",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16771,7 +16771,7 @@
     },
     {
       "showId": "the-smuggler-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16801,7 +16801,7 @@
     },
     {
       "showId": "billy-elliot-the-musical-regional-2024",
-      "reviewCount": 10,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16816,7 +16816,7 @@
     },
     {
       "showId": "silent-sky-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16846,7 +16846,7 @@
     },
     {
       "showId": "twihard-a-twilight-musical-parody-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16861,7 +16861,7 @@
     },
     {
       "showId": "antigone-regional-2024",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16876,7 +16876,7 @@
     },
     {
       "showId": "richard-iii-regional-2024",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16891,7 +16891,7 @@
     },
     {
       "showId": "in-the-heights-regional-2024",
-      "reviewCount": 11,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16921,7 +16921,7 @@
     },
     {
       "showId": "hit-me-like-a-flower-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16966,7 +16966,7 @@
     },
     {
       "showId": "islander-a-new-musical-regional-2023",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16981,7 +16981,7 @@
     },
     {
       "showId": "cant-pay-wont-pay-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -16996,7 +16996,7 @@
     },
     {
       "showId": "cinderella-regional-2023",
-      "reviewCount": 12,
+      "reviewCount": 13,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17011,7 +17011,7 @@
     },
     {
       "showId": "the-lifespan-of-a-fact-regional-2023",
-      "reviewCount": 7,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17026,7 +17026,7 @@
     },
     {
       "showId": "the-lion-in-winter-regional-2023",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17041,7 +17041,7 @@
     },
     {
       "showId": "witch-regional-2023",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17056,7 +17056,7 @@
     },
     {
       "showId": "waiting-for-godot-off-broadway-2023",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17071,7 +17071,7 @@
     },
     {
       "showId": "right-now-regional-2023",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17086,7 +17086,7 @@
     },
     {
       "showId": "bernarda-regional-2023",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17101,7 +17101,7 @@
     },
     {
       "showId": "the-tale-of-the-allergists-wife-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17122,7 +17122,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 6590940,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151147,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17137,7 +17137,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 6477503,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151155,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17146,7 +17146,7 @@
     },
     {
       "showId": "eurydice-regional-2023",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17161,7 +17161,7 @@
     },
     {
       "showId": "the-nacirema-society-regional-2023",
-      "reviewCount": 9,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17176,7 +17176,7 @@
     },
     {
       "showId": "the-rise-and-fall-of-little-voice-regional-2023",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17191,7 +17191,7 @@
     },
     {
       "showId": "north-and-sur-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17206,7 +17206,7 @@
     },
     {
       "showId": "the-light-regional-2023",
-      "reviewCount": 3,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17227,7 +17227,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 5751613,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151122,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17242,7 +17242,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 5557555,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151123,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17251,7 +17251,7 @@
     },
     {
       "showId": "the-art-of-bowing-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17272,7 +17272,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 5467403,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151119,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -17656,7 +17656,7 @@
     },
     {
       "showId": "villette-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17671,7 +17671,7 @@
     },
     {
       "showId": "right-to-be-forgotten-regional-2023",
-      "reviewCount": 3,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17731,7 +17731,7 @@
     },
     {
       "showId": "andy-warhol-in-iran-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17761,7 +17761,7 @@
     },
     {
       "showId": "tick-tick-boom-regional-2023",
-      "reviewCount": 2,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17896,7 +17896,7 @@
     },
     {
       "showId": "a-man-of-no-importance-off-broadway-2022",
-      "reviewCount": 20,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -17941,7 +17941,7 @@
     },
     {
       "showId": "buried-child-regional-2022",
-      "reviewCount": 2,
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -18255,6 +18255,111 @@
       "slowest_reviews": []
     },
     {
+      "showId": "napoli-brooklyn-off-broadway-2017",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "people-places-and-things-west-end-2016",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-artificial-jungle-off-broadway-2017",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-portuguese-kid-off-broadway-2017",
+      "reviewCount": 25,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "people-places-and-things-off-broadway-2017",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "attack-of-the-elvis-impersonators-off-broadway-2017",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "office-hour-off-broadway-2017",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
       "reviewCount": 7,
       "median_e2e_ms": null,
@@ -18271,7 +18376,7 @@
     },
     {
       "showId": "the-lion-king-tour-2021",
-      "reviewCount": 47,
+      "reviewCount": 48,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -18286,13 +18391,13 @@
     },
     {
       "showId": "even-these-things-royal-exchange-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151357,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18301,13 +18406,13 @@
     },
     {
       "showId": "the-maids-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151360,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18322,7 +18427,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151351,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18331,13 +18436,13 @@
     },
     {
       "showId": "gotta-dance-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151342,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18346,13 +18451,13 @@
     },
     {
       "showId": "monte-cristo-the-york-theatre-company-off-broadway-2026",
-      "reviewCount": 1,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151342,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18361,13 +18466,13 @@
     },
     {
       "showId": "manic-street-creature-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151341,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18376,13 +18481,13 @@
     },
     {
       "showId": "monstering-the-rocketman-off-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151336,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18391,13 +18496,13 @@
     },
     {
       "showId": "all-my-pretty-ones-birmingham-rep-regional-2025",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151326,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18406,13 +18511,13 @@
     },
     {
       "showId": "stephen-sondheims-old-friends-2025",
-      "reviewCount": 1,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151327,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18421,13 +18526,13 @@
     },
     {
       "showId": "parade-tour-2025",
-      "reviewCount": 3,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151318,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18436,13 +18541,13 @@
     },
     {
       "showId": "life-of-pi-tour-2024",
-      "reviewCount": 46,
+      "reviewCount": 47,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151310,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18451,13 +18556,13 @@
     },
     {
       "showId": "a-christmas-carol-a-ghost-story-birmingham-rep-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151300,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18466,13 +18571,13 @@
     },
     {
       "showId": "the-tragedy-of-macbeth-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151310,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18481,13 +18586,13 @@
     },
     {
       "showId": "seven-guitars-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151299,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18496,13 +18601,13 @@
     },
     {
       "showId": "shucked-tour-2024",
-      "reviewCount": 73,
+      "reviewCount": 74,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151293,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18511,13 +18616,13 @@
     },
     {
       "showId": "ironbound-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151285,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18526,7 +18631,7 @@
     },
     {
       "showId": "alabama-story-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -18541,13 +18646,13 @@
     },
     {
       "showId": "blue-eyed-soul-sung-by-brown-eyed-people-regional-2024",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151279,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18556,13 +18661,13 @@
     },
     {
       "showId": "misery-regional-2024",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151283,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18571,13 +18676,13 @@
     },
     {
       "showId": "inherit-the-wind-regional-2024",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151276,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18586,13 +18691,13 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-      "reviewCount": 59,
+      "reviewCount": 60,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151269,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18601,13 +18706,13 @@
     },
     {
       "showId": "a-raisin-in-the-sun-leeds-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151268,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18622,7 +18727,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151272,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18631,13 +18736,13 @@
     },
     {
       "showId": "dear-evan-hansen-tour-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151265,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18646,13 +18751,13 @@
     },
     {
       "showId": "network-regional-2024",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151257,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18661,13 +18766,13 @@
     },
     {
       "showId": "in-his-hands-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151254,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18676,13 +18781,13 @@
     },
     {
       "showId": "alice-by-heart-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 10,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151248,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18691,13 +18796,13 @@
     },
     {
       "showId": "someone-spectacular-off-broadway-2024",
-      "reviewCount": 14,
+      "reviewCount": 15,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151256,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18706,13 +18811,13 @@
     },
     {
       "showId": "empire-the-musical-off-broadway-2024",
-      "reviewCount": 13,
+      "reviewCount": 14,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151240,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18721,13 +18826,13 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
-      "reviewCount": 20,
+      "reviewCount": 23,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151220,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18736,13 +18841,13 @@
     },
     {
       "showId": "the-prodigal-daughter-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151224,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18751,7 +18856,7 @@
     },
     {
       "showId": "gods-and-monsters-regional-2024",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -18766,13 +18871,13 @@
     },
     {
       "showId": "the-thanksgiving-play-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151212,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18781,13 +18886,13 @@
     },
     {
       "showId": "nana-regional-2024",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151202,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18796,13 +18901,13 @@
     },
     {
       "showId": "bill-w-and-dr-bob-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151186,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18811,13 +18916,13 @@
     },
     {
       "showId": "macbeth-leeds-regional-2024",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151190,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18826,13 +18931,13 @@
     },
     {
       "showId": "on-golden-pond-regional-2024",
-      "reviewCount": 1,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 4151174,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18847,7 +18952,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1476872,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18856,13 +18961,13 @@
     },
     {
       "showId": "sunset-boulevard-2017",
-      "reviewCount": 1,
+      "reviewCount": 48,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1472078,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18871,13 +18976,13 @@
     },
     {
       "showId": "dear-evan-hansen-2016",
-      "reviewCount": 1,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1466136,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18886,13 +18991,13 @@
     },
     {
       "showId": "amazing-grace-2015",
-      "reviewCount": 1,
+      "reviewCount": 41,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1460452,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18901,13 +19006,13 @@
     },
     {
       "showId": "the-winslow-boy-2013",
-      "reviewCount": 1,
+      "reviewCount": 21,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1456296,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18916,13 +19021,13 @@
     },
     {
       "showId": "masquerade-off-broadway-2025",
-      "reviewCount": 3,
+      "reviewCount": 22,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1437014,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18937,7 +19042,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1347354,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18946,13 +19051,13 @@
     },
     {
       "showId": "mj-2022",
-      "reviewCount": 2,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1328804,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18961,13 +19066,13 @@
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "reviewCount": 1,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1319296,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18976,13 +19081,13 @@
     },
     {
       "showId": "six-2021",
-      "reviewCount": 1,
+      "reviewCount": 33,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1312586,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -18991,13 +19096,13 @@
     },
     {
       "showId": "the-play-that-goes-wrong-off-broadway-2019",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1303798,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -19006,13 +19111,13 @@
     },
     {
       "showId": "hamilton-2015",
-      "reviewCount": 1,
+      "reviewCount": 42,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "scored-to-rebuilt": 1289021,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -19021,6 +19126,471 @@
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1283578,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "les-miserables-west-end-2021",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1257801,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "revolution-days-citizens-regional-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1098515,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "our-brother-oran-mor-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1087868,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "starter-for-ten-bristol-old-vic-regional-2024",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1079491,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "nanny-bristol-old-vic-regional-2024",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1074775,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "life-out-there-lowry-regional-2026",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1511103,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jekyll-and-hyde-liverpool-everyman-regional-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1505721,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "return-to-the-forest-aviva-studios-regional-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1500869,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "someones-knockin-at-the-door-oran-mor-regional-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1486209,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1473051,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "all-is-but-fantasy-royal-shakespeare-regional-2026",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1454460,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "starter-for-ten-birmingham-rep-regional-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1437069,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ideal-lowry-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1427379,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "wallace-oran-mor-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1423148,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-great-gatsby-pitlochry-festival-regional-2025",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1408281,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "noises-off-stephen-joseph-regional-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 721454,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-inquisitor-oran-mor-regional-2025",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1382833,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "meme-girls-oran-mor-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1375018,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "tambo-and-bones-leeds-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1362508,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "animal-farm-leeds-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 665221,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-house-party-leeds-regional-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 657845,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "good-for-a-girl-birmingham-rep-regional-2025",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1321963,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "community-birmingham-rep-regional-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1315003,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-lion-the-witch-and-the-wardrobe-leeds-regional-2024",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1291655,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "lizzie-the-musical-hope-mill-regional-2024",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1284016,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "little-women-york-royal-regional-2024",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1274548,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-school-for-scandal-royal-shakespeare-regional-2024",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 949780,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "love-me-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1500235,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "scene-partners-off-broadway-2023",
+      "reviewCount": 16,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "make-me-gorgeous-off-broadway-2023",
+      "reviewCount": 6,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-pavilion-regional-2022",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -19035,22 +19605,7 @@
       "slowest_reviews": []
     },
     {
-      "showId": "les-miserables-west-end-2021",
-      "reviewCount": 2,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "revolution-days-citizens-regional-2026",
+      "showId": "the-tragedy-of-king-christophe-regional-2022",
       "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -19065,7 +19620,7 @@
       "slowest_reviews": []
     },
     {
-      "showId": "our-brother-oran-mor-regional-2025",
+      "showId": "spring-awakening-regional-2022",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -19080,7 +19635,22 @@
       "slowest_reviews": []
     },
     {
-      "showId": "starter-for-ten-bristol-old-vic-regional-2024",
+      "showId": "rasheeda-speaking-regional-2022",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "on-the-greenbelt-regional-2022",
       "reviewCount": 2,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -19095,7 +19665,7 @@
       "slowest_reviews": []
     },
     {
-      "showId": "nanny-bristol-old-vic-regional-2024",
+      "showId": "intimate-apparel-regional-2022",
       "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -19110,8 +19680,473 @@
       "slowest_reviews": []
     },
     {
-      "showId": "love-me-off-broadway-2026",
+      "showId": "rock-of-ages-regional-2022",
       "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "harmony-off-broadway-2022",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "molly-sweeney-regional-2022",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "good-night-oscar-regional-2022",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "white-regional-2022",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "passage-regional-2022",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "on-sugarland-off-broadway-2022",
+      "reviewCount": 12,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "solaris-regional-2022",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-martyrdom-of-peter-ohey-regional-2022",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "women-of-soul-regional-2022",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "relentless-regional-2022",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-accountants-aviva-studios-regional-2024",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1048310,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-secret-council-regional-2022",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "wellesley-girl-regional-2022",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "love-actually-the-unauthorized-musical-parody-regional-2021",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-alchemist-off-broadway-2021",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "sister-act-regional-2021",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hamlet-regional-2021",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "as-you-like-it-regional-2021",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-tragedy-of-othello-the-moor-of-venice-regional-2021",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "school-girls-or-the-african-mean-girls-play-regional-2021",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "molly-sweeney-off-broadway-2019",
+      "reviewCount": 7,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-only-way-out-is-in-pitlochry-festival-regional-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1146665,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "righ-iasgair-the-fisher-king-oran-mor-regional-2025",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1139738,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "cinderella-chichester-festival-regional-2024",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1117531,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "beautiful-the-carole-king-musical-pitlochry-festival-regional-2024",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1078986,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "roost-oran-mor-regional-2024",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1074401,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "work-it-out-home-regional-2024",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1064729,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "caesar-and-cleopatra-off-broadway-2019",
+      "reviewCount": 10,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "only-yesterday-off-broadway-2019",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "long-lost-off-broadway-2019",
+      "reviewCount": 19,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-other-josh-cohen-off-broadway-2018",
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
