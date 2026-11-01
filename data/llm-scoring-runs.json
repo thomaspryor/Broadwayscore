@@ -3140197,21 +3140197,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T06:04:43.202Z",
-    "completedAt": "2026-11-01T06:05:06.858Z",
-    "totalReviews": 5,
-    "processed": 5,
-    "skipped": 0,
+    "startedAt": "2026-11-01T06:06:36.163Z",
+    "completedAt": "2026-11-01T06:06:50.939Z",
+    "totalReviews": 7,
+    "processed": 3,
+    "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 29774,
-      "output": 1299,
-      "cacheRead": 19035,
+      "input": 18239,
+      "output": 951,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 74893
+      "total": 45596
     },
-    "costUsd": 0.1100276,
-    "runId": "41278906701",
+    "costUsd": 0.06895369999999999,
+    "runId": "41278970858",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3145634,6 +3145634,16 @@
           "flat": 6,
           "down": 6,
           "total": 13
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "babel-regional-2023",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 2,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -3169639,6 +3169649,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "promises-promises-regional-2023",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "proof-2000",
         "ourDistribution": {
           "up": 39,
@@ -3184430,16 +3184450,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "trial-in-the-delta-the-murder-of-emmett-till-regional-2026",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 0,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "triple-threat-off-broadway-2023",
         "ourDistribution": {
           "up": 5,
@@ -3187005,8 +3187015,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T06:10:04.245Z",
-    "completedAt": "2026-11-01T06:10:04.246Z",
+    "startedAt": "2026-11-01T06:11:48.589Z",
+    "completedAt": "2026-11-01T06:11:48.591Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3187019,7 +3187029,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41278906701",
+    "runId": "41278970858",
     "source": "comparative-rescore",
     "errorDetails": []
   }
