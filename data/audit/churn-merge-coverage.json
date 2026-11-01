@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-01T15:33:09.437Z",
+    "generatedAt": "2026-11-01T19:01:19.815Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,22 +9,36 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 1,
-    "coveredCount": 1,
-    "highChurnTracked": 2
+    "exemptCount": 2,
+    "coveredCount": 3,
+    "highChurnTracked": 5
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 54
+      "churn": 104
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 39
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 126,
+      "churn": 90,
       "mergeAttr": "union"
+    },
+    {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 49,
+      "mergeAttr": "union"
+    },
+    {
+      "path": "data/collection-state/scoring-progress.json",
+      "churn": 40,
+      "mergeAttr": "ours"
     }
   ]
 }
