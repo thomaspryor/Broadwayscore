@@ -108,12 +108,18 @@ jobs:
         if: success() && steps.gate.outputs.run == 'true' && github.event_name == 'schedule'
         run: node scripts/money-monthly/generate.mjs --write-snapshot --out="$RUNNER_TEMP/money-snap" >/dev/null
 
+      - name: Baseline cache key (one per month)
+        id: basekey
+        shell: bash
+        if: success() && steps.gate.outputs.run == 'true' && github.event_name == 'schedule'
+        run: echo "month=$(TZ=America/New_York date +%Y-%m)" >> "$GITHUB_OUTPUT"
+
       - name: Save estimate baseline
         if: success() && steps.gate.outputs.run == 'true' && github.event_name == 'schedule'
         uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: data/money-monthly/snapshot.json
-          key: money-monthly-baseline-${{ github.run_id }}
+          key: money-monthly-baseline-${{ steps.basekey.outputs.month }}
 
       - name: Notify on failure
         if: failure()

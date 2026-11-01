@@ -2,9 +2,8 @@
 // BRO-6773: pure logic for the monthly Profitability Scorecard email.
 // Preview-only: nothing here sends or creates a broadcast (CLAUDE.md §17).
 
-const RECOUPED_DESIGNATIONS = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Recouped']);
-const LOSS_DESIGNATIONS = new Set(['Fizzle', 'Did Not Recoup', 'Flop']);
-const FINAL_DESIGNATIONS = new Set([...RECOUPED_DESIGNATIONS, ...LOSS_DESIGNATIONS, 'Squeaker']);
+const { isLossDesignation, isRecoupedDesignation } = require('../lib/commercial-designations');
+const isFinalDesignation = (d) => isLossDesignation(d) || isRecoupedDesignation(d);
 
 // A firstAdded day with more than this many entries is a bulk backfill, not news.
 const BULK_DAY_THRESHOLD = 8;
@@ -92,7 +91,7 @@ function buildIssue({ commercial, shows, snapshot, window: w }) {
     if (isRecoupmentNews(e, w) && !bulk.has(String(e.firstAdded || '').slice(0, 10))) {
       recoupments.push({ slug, title: show.title, date: e.recoupedDate, designation: e.designation, url: link(slug) });
     }
-    if (show.status === 'closed' && show.closingDate >= w.start && show.closingDate <= w.end && FINAL_DESIGNATIONS.has(e.designation) && !e.nonprofitOrg) {
+    if (show.status === 'closed' && show.closingDate >= w.start && show.closingDate <= w.end && isFinalDesignation(e.designation) && !e.nonprofitOrg) {
       closings.push({ slug, title: show.title, closed: show.closingDate, designation: e.designation, capitalization: e.modelCapitalizationEstimate ? null : (e.capitalization || null), url: link(slug) });
     }
     const fa = e.firstAdded ? String(e.firstAdded).slice(0, 10) : null;
@@ -125,7 +124,7 @@ function buildIssue({ commercial, shows, snapshot, window: w }) {
   for (const [slug, e] of Object.entries(commercial)) {
     const show = bySlug.get(slug);
     if (!e || !show || show.status !== 'closed' || e.nonprofitOrg || show.type === 'tour') continue;
-    if (RECOUPED_DESIGNATIONS.has(e.designation)) rec++; else if (LOSS_DESIGNATIONS.has(e.designation)) loss++;
+    if (isRecoupedDesignation(e.designation)) rec++; else if (isLossDesignation(e.designation)) loss++;
   }
   const stat = rec + loss >= 20 ? { recouped: rec, total: rec + loss, pct: Math.round((100 * rec) / (rec + loss)) } : null;
 
@@ -152,4 +151,4 @@ function buildSubject(issue) {
   return `Money Scorecard, ${m}: ${bits.join(' and ')}`;
 }
 
-module.exports = { resolveWindow, isRecoupmentNews, bulkDays, snapshotOf, buildIssue, buildSubject, usd, fmtDay, midOf, BULK_DAY_THRESHOLD, FINAL_DESIGNATIONS };
+module.exports = { resolveWindow, isRecoupmentNews, bulkDays, snapshotOf, buildIssue, buildSubject, usd, fmtDay, midOf, BULK_DAY_THRESHOLD, isFinalDesignation };
