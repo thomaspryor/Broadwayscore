@@ -50,6 +50,9 @@ function loadSnapshot() {
 function buildSnapshot(mobileData) {
   const snapshot = { date: new Date().toISOString().slice(0, 10), shows: {} };
   for (const show of mobileData.shows) {
+    // Chicago local shows (BRO-6760) are not Broadway/West End news: one launch
+    // would list ~650 of them as "New show added (broadway)".
+    if (show.lo) continue;
     snapshot.shows[show.id] = {
       t: show.t,
       s: show.s,
