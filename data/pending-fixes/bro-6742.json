@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6742",
   "planId": "d0f6f2ff-8478-45ad-88c3-a615ab047f84",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T01:09:32.550Z",
   "submitter": {
     "name": null,
@@ -39,5 +39,24 @@
         "args": "--apply --refetch --deadline-sec=240"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T02:06:02.096Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marjorie-prime-2025/the-interested-bystander--cary-wong.json publishDate: null -> \"2025-12-08\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marjorie-prime-2025/the-interested-bystander--cary-wong.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran isolate-multi-show-sections.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
