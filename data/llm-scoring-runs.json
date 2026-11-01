@@ -3067149,21 +3067149,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T16:53:36.650Z",
-    "completedAt": "2026-11-01T16:53:50.677Z",
-    "totalReviews": 4,
-    "processed": 2,
-    "skipped": 1,
+    "startedAt": "2026-11-01T16:53:36.456Z",
+    "completedAt": "2026-11-01T16:54:19.945Z",
+    "totalReviews": 11,
+    "processed": 8,
+    "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 18968,
-      "output": 819,
-      "cacheRead": 7614,
-      "cacheWrite": 3807,
-      "total": 46655
+      "input": 55585,
+      "output": 2864,
+      "cacheRead": 26649,
+      "cacheWrite": 3762,
+      "total": 132173
     },
-    "costUsd": 0.08278635,
-    "runId": "41327955041",
+    "costUsd": 0.22176079999999998,
+    "runId": "41328154605",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3090846,16 +3090846,6 @@
         "disagreementDetails": "BWW: Up thumbs differ by 35% (ours: 65%, theirs: 100%)"
       },
       {
-        "showId": "maria-stuarda-off-broadway-2012",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 1,
-          "down": 0,
-          "total": 2
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "marie-and-rosetta-regional-2023",
         "ourDistribution": {
           "up": 4,
@@ -3091463,12 +3091453,22 @@
         "hasDisagreement": false
       },
       {
+        "showId": "medea-off-broadway-2022",
+        "ourDistribution": {
+          "up": 8,
+          "flat": 4,
+          "down": 0,
+          "total": 12
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "medea-off-broadway-2026",
         "ourDistribution": {
-          "up": 3,
-          "flat": 1,
+          "up": 8,
+          "flat": 4,
           "down": 0,
-          "total": 4
+          "total": 12
         },
         "hasDisagreement": false
       },
@@ -3114402,8 +3114402,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T16:58:47.931Z",
-    "completedAt": "2026-11-01T16:58:47.932Z",
+    "startedAt": "2026-11-01T16:59:17.049Z",
+    "completedAt": "2026-11-01T16:59:17.054Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3114416,7 +3114416,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41327955041",
+    "runId": "41328154605",
     "source": "comparative-rescore",
     "errorDetails": []
   }
