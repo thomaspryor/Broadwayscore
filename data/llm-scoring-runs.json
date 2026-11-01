@@ -3280808,21 +3280808,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T06:43:22.028Z",
-    "completedAt": "2026-11-01T06:44:03.109Z",
-    "totalReviews": 11,
-    "processed": 8,
-    "skipped": 3,
+    "startedAt": "2026-11-01T06:44:48.198Z",
+    "completedAt": "2026-11-01T06:45:40.199Z",
+    "totalReviews": 15,
+    "processed": 11,
+    "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 50541,
-      "output": 2418,
-      "cacheRead": 26649,
-      "cacheWrite": 3807,
-      "total": 124400
+      "input": 64272,
+      "output": 3289,
+      "cacheRead": 41877,
+      "cacheWrite": 0,
+      "total": 163322
     },
-    "costUsd": 0.20155345,
-    "runId": "41281525525",
+    "costUsd": 0.24351119999999998,
+    "runId": "41281550423",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3287581,16 +3287581,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Flat thumbs differ by 30% (ours: 30%, theirs: 0%)"
-      },
-      {
-        "showId": "birthday-candles-regional-2023",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 0,
-          "down": 0,
-          "total": 8
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "birthright-off-broadway-2026",
@@ -3312315,6 +3312305,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "selling-kabul-regional-2024",
+        "ourDistribution": {
+          "up": 11,
+          "flat": 0,
+          "down": 0,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "seminar-2011",
         "ourDistribution": {
           "up": 11,
@@ -3327766,8 +3327766,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T06:49:00.312Z",
-    "completedAt": "2026-11-01T06:49:00.314Z",
+    "startedAt": "2026-11-01T06:50:37.488Z",
+    "completedAt": "2026-11-01T06:50:37.490Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3327780,7 +3327780,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41281525525",
+    "runId": "41281550423",
     "source": "comparative-rescore",
     "errorDetails": []
   },
