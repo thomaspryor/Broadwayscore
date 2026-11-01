@@ -733,5 +733,36 @@
       }
     ],
     "queuedAt": "2026-11-01T15:58:14.545Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6773-money-monthly",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6773-money-monthly",
+    "description": "land.yml did not land land/bro-6773-money-monthly: the unit-tests-node gate went red at c75e028f1b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41322611829",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6773-money-monthly"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c75e028f1bc95af4fce8c07696b43fc22f649c54"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41322611829"
+      }
+    ],
+    "queuedAt": "2026-11-01T16:11:20.232Z"
   }
 ]
