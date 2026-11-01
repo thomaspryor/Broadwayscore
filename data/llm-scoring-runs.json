@@ -2656154,21 +2656154,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T02:06:05.875Z",
-    "completedAt": "2026-11-01T02:06:31.394Z",
-    "totalReviews": 7,
-    "processed": 5,
-    "skipped": 2,
+    "startedAt": "2026-11-01T02:08:41.810Z",
+    "completedAt": "2026-11-01T02:08:58.249Z",
+    "totalReviews": 6,
+    "processed": 3,
+    "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 29329,
-      "output": 1625,
-      "cacheRead": 19035,
+      "input": 19436,
+      "output": 940,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 74592
+      "total": 47447
     },
-    "costUsd": 0.1125642,
-    "runId": "41263284597",
+    "costUsd": 0.0723535,
+    "runId": "41263434063",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2657159,7 +2657159,7 @@
           "up": 7,
           "flat": 0,
           "down": 0,
-          "total": 15
+          "total": 16
         },
         "hasDisagreement": true,
         "disagreementDetails": "BWW: Down thumbs differ by 26% (ours: 26%, theirs: 0%)"
@@ -2659214,6 +2659214,16 @@
           "flat": 5,
           "down": 2,
           "total": 19
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "after-the-blast-regional-2022",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2692942,16 +2692952,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-gospel-at-colonus-regional-2023",
-        "ourDistribution": {
-          "up": 7,
-          "flat": 0,
-          "down": 0,
-          "total": 7
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-government-inspector-1994",
         "ourDistribution": {
           "up": 0,
@@ -2701455,16 +2701455,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "where-we-belong-regional-2022",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 0,
-          "down": 0,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "white-christmas-regional-2025",
         "ourDistribution": {
           "up": 8,
@@ -2702383,8 +2702373,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T02:11:28.735Z",
-    "completedAt": "2026-11-01T02:11:28.736Z",
+    "startedAt": "2026-11-01T02:13:55.400Z",
+    "completedAt": "2026-11-01T02:13:55.402Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2702397,7 +2702387,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41263284597",
+    "runId": "41263434063",
     "source": "comparative-rescore",
     "errorDetails": []
   },
