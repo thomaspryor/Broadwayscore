@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-25T17:28:21.695Z",
-  "totalFindings": 43,
+  "generatedAt": "2026-11-01T18:52:31.733Z",
+  "totalFindings": 59,
   "findings": [
     {
       "currentShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
@@ -64,6 +64,32 @@
       ],
       "reviewFile": "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-tour-2024/syracuse-herald-journal--len-fonte.json",
       "url": "https://www.syracuse.com/entertainment/2026/06/landmark-theatres-a-beautiful-noi",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "august-osage-county-2007",
+      "suggestedShowId": "august-osage-county-national-theatre-west-end-2008",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:407",
+        "days-from-closer:49"
+      ],
+      "reviewFile": "data/review-texts/august-osage-county-2007/theater-life--eric-march.json",
+      "url": "https://theaterlife.com/august-osage-county/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:909",
+        "days-from-closer:133"
+      ],
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/bestofthislife--emily-smith.json",
+      "url": "https://bestofthislife.com/beetlejuice-the-musical-review/",
       "reason": "publish-date"
     },
     {
@@ -145,17 +171,16 @@
       "reason": "publish-date"
     },
     {
-      "currentShowId": "death-of-a-salesman-2026",
-      "suggestedShowId": "death-of-a-salesman-2022",
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-2025",
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
-        "days-from-own:1278",
-        "days-from-closer:0",
-        "duplicate-in-suggested-dir"
+        "days-from-own:896",
+        "days-from-closer:146"
       ],
-      "reviewFile": "data/review-texts/death-of-a-salesman-2026/wsj--charles-isherwood.json",
-      "url": "https://www.wsj.com/articles/death-of-a-salesman-review-arthur-miller-wendell-pi",
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/syracuse-herald-journal--linda-lowen.json",
+      "url": "https://www.syracuse.com/entertainment/2025/05/darkly-snarky-and-rudely-crude-be",
       "reason": "publish-date"
     },
     {
@@ -315,6 +340,73 @@
       "reason": "publish-date"
     },
     {
+      "currentShowId": "little-shop-of-horrors-off-broadway-2019",
+      "suggestedShowId": "little-shop-of-horrors-crucible-regional-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1914",
+        "days-from-closer:0",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/little-shop-of-horrors-off-broadway-2019/thestage--john-murphy.json",
+      "url": "",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "little-shop-of-horrors-off-broadway-2019",
+      "suggestedShowId": "little-shop-of-horrors-regional-2024",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1914",
+        "days-from-closer:46"
+      ],
+      "reviewFile": "data/review-texts/little-shop-of-horrors-off-broadway-2019/thestage--john-murphy.json",
+      "url": "",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "little-shop-of-horrors-off-broadway-2019",
+      "suggestedShowId": "little-shop-of-horrors-crucible-regional-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1914",
+        "days-from-closer:0",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/little-shop-of-horrors-off-broadway-2019/whatsonstage--ron-simpson.json",
+      "url": "",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "little-shop-of-horrors-off-broadway-2019",
+      "suggestedShowId": "little-shop-of-horrors-regional-2024",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:1914",
+        "days-from-closer:46"
+      ],
+      "reviewFile": "data/review-texts/little-shop-of-horrors-off-broadway-2019/whatsonstage--ron-simpson.json",
+      "url": "",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "mamma-mia-west-end-2021",
+      "suggestedShowId": "mamma-mia-regional-2021",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:8216",
+        "days-from-closer:43"
+      ],
+      "reviewFile": "data/review-texts/mamma-mia-west-end-2021/dress-circle-antics--dress-circle-antics.json",
+      "url": "https://dresscircleantics.co.uk/review-mamma-mia-still-a-west-end-super-trouper/",
+      "reason": "publish-date"
+    },
+    {
       "currentShowId": "mamma-mia-west-end-2021",
       "suggestedShowId": "mamma-mia-tour-2026",
       "confidence": "high",
@@ -325,6 +417,19 @@
       ],
       "reviewFile": "data/review-texts/mamma-mia-west-end-2021/thereviewshub--kirstie-e.json",
       "url": "https://www.thereviewshub.com/mamma-mia-birmingham-hippodrome-2/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "matilda-the-musical-west-end-2021",
+      "suggestedShowId": "matilda-the-musical-theatre-row-off-broadway-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:5454",
+        "days-from-closer:85"
+      ],
+      "reviewFile": "data/review-texts/matilda-the-musical-west-end-2021/musical-theatre-review--unknown.json",
+      "url": "https://musicaltheatrereview.com/matilda-the-musical-milton-keynes-theatre-and-t",
       "reason": "publish-date"
     },
     {
@@ -486,16 +591,43 @@
       "reason": "publish-date"
     },
     {
-      "currentShowId": "operation-mincemeat-west-end-2024",
-      "suggestedShowId": "operation-mincemeat-tour-2026",
+      "currentShowId": "oh-mary-2024",
+      "suggestedShowId": "oh-mary-tour-2026",
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
-        "days-from-own:1239",
-        "days-from-closer:9"
+        "days-from-own:754",
+        "days-from-closer:46"
       ],
-      "reviewFile": "data/review-texts/operation-mincemeat-west-end-2024/thereviewshub--unknown.json",
-      "url": "https://www.thereviewshub.com/operation-mincemeat-wycombe-swan-high-wycombe/",
+      "reviewFile": "data/review-texts/oh-mary-2024/washpost--ethan-beck.json",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/08/04/bowen-yang-will-",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "samson-et-dalila-off-broadway-2026",
+      "suggestedShowId": "samson-et-dalila-off-broadway-2018",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:2985",
+        "days-from-closer:1",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/samson-et-dalila-off-broadway-2026/operawire--david-salazar.json",
+      "url": "https://operawire.com/metropolitan-opera-208-19-season-review-samson-et-dalila/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "starter-for-ten-bristol-old-vic-regional-2024",
+      "suggestedShowId": "starter-for-ten-birmingham-rep-regional-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:559",
+        "days-from-closer:36"
+      ],
+      "reviewFile": "data/review-texts/starter-for-ten-bristol-old-vic-regional-2024/all-that-dazzles-uk--seth-wilby.json",
+      "url": "https://www.allthatdazzles.co.uk/post/review-starter-for-ten-bristol-old-vic",
       "reason": "publish-date"
     },
     {
@@ -525,6 +657,45 @@
       "reason": "publish-date"
     },
     {
+      "currentShowId": "the-phantom-of-the-opera-west-end-1986",
+      "suggestedShowId": "the-phantom-of-the-opera-tour-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:14338",
+        "days-from-closer:64"
+      ],
+      "reviewFile": "data/review-texts/the-phantom-of-the-opera-west-end-1986/broadwayworld--gary-naylor.json",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-PHANTOM-OF-THE-OPERA-Re",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "the-sound-of-music-tour-2025",
+      "suggestedShowId": "the-sound-of-music-2027",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:411",
+        "days-from-closer:176"
+      ],
+      "reviewFile": "data/review-texts/the-sound-of-music-tour-2025/broadwayworld--jared-fessler.json",
+      "url": "https://www.broadwayworld.com/minneapolis/article/Review-THE-SOUND-OF-MUSIC-at-O",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "the-sound-of-music-tour-2025",
+      "suggestedShowId": "the-sound-of-music-2027",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:412",
+        "days-from-closer:175"
+      ],
+      "reviewFile": "data/review-texts/the-sound-of-music-tour-2025/minnesota-monthly--jerrod-sumner.json",
+      "url": "https://www.minnesotamonthly.com/general/the-sound-of-music-still-soars/",
+      "reason": "publish-date"
+    },
+    {
       "currentShowId": "titanique-west-end-2024",
       "suggestedShowId": "titanique-2026",
       "confidence": "high",
@@ -536,6 +707,19 @@
       ],
       "reviewFile": "data/review-texts/titanique-west-end-2024/deadline--greg-evans.json",
       "url": "https://deadline.com/2026/05/titanique-tour-1236915666/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "titanique-west-end-2024",
+      "suggestedShowId": "titanique-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:620",
+        "days-from-closer:161"
+      ],
+      "reviewFile": "data/review-texts/titanique-west-end-2024/theatreboard--unknown.json",
+      "url": "https://theatreboard.com/thread/10831/titanique-criterion?page=41",
       "reason": "publish-date"
     },
     {
@@ -551,6 +735,17 @@
       "reason": "url-year"
     },
     {
+      "currentShowId": "burn-this-1987",
+      "suggestedShowId": "burn-this-2019",
+      "confidence": "medium",
+      "signals": [
+        "venue-slug-match"
+      ],
+      "reviewFile": "data/review-texts/burn-this-1987/thestage--unknown.json",
+      "url": "https://www.thestage.co.uk/reviews/burn-this-review-at-hudson-theatre-new-york--",
+      "reason": "venue"
+    },
+    {
       "currentShowId": "cyrano-de-bergerac-2007",
       "suggestedShowId": "cyrano-de-bergerac-west-end-2019",
       "confidence": "medium",
@@ -559,6 +754,17 @@
       ],
       "reviewFile": "data/review-texts/cyrano-de-bergerac-2007/whatsonstage--unknown.json",
       "url": "https://www.whatsonstage.com/news/review-cyrano-de-bergerac-playhouse-theatre_50",
+      "reason": "venue"
+    },
+    {
+      "currentShowId": "eclipsed-2016",
+      "suggestedShowId": "eclipsed-off-broadway-2015",
+      "confidence": "medium",
+      "signals": [
+        "venue-slug-match"
+      ],
+      "reviewFile": "data/review-texts/eclipsed-2016/curtainup--elyse-sommer.json",
+      "url": "https://www.curtainup.com/eclipsedpublic15.html",
       "reason": "venue"
     }
   ]
