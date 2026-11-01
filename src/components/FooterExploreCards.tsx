@@ -54,6 +54,13 @@ export default function FooterExploreCards() {
     </Link>
   );
 
+  const chicagoCard = (
+    <Link key="chicago" href="/tours/chicago-il" className="flex-1 p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-sky-400/30 hover:bg-sky-400/[0.03] transition-colors text-center group">
+      <div className="text-xl mb-1">&#127961;</div>
+      <div className="text-sm font-bold text-white group-hover:text-sky-400 transition-colors whitespace-nowrap">Chicago</div>
+      <div className="text-[10px] text-fg-muted">Chicago Theater</div>
+    </Link>
+  );
   const operaCard = (
     <Link key="opera" href="/opera" className="flex-1 p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-amber-400/30 hover:bg-amber-400/[0.03] transition-colors text-center group">
       <div className="text-xl mb-1">&#127914;</div>
@@ -66,7 +73,7 @@ export default function FooterExploreCards() {
     <div className="mb-8 pb-8 border-b border-white/5">
       <h4 className="text-xs font-bold text-fg-muted uppercase tracking-wider mb-3">Explore More Theatre</h4>
       <div className="flex gap-2 sm:gap-3 flex-wrap">
-        {isLondon ? <>{weCard}{oweCard}{featureFlags.regional && ukCard}{obCard}{operaCard}</> : <>{obCard}{weCard}{oweCard}{featureFlags.regional && ukCard}{operaCard}</>}
+        {isLondon ? <>{weCard}{oweCard}{featureFlags.regional && ukCard}{obCard}{featureFlags.regional && chicagoCard}{operaCard}</> : <>{obCard}{weCard}{oweCard}{featureFlags.regional && ukCard}{featureFlags.regional && chicagoCard}{operaCard}</>}
       </div>
     </div>
   );

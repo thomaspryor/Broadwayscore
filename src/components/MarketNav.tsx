@@ -16,6 +16,8 @@ interface MarketStats {
   offWestEnd?: { openShows: number };
   /** UK regional theatre (Beyond London). `shows` = scored productions listed on the page. */
   ukRegional?: { shows: number; openShows: number };
+  /** Chicago city hub (BRO-6498): local productions in the metro. */
+  chicago?: { shows: number; openShows: number };
 }
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
@@ -33,6 +35,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isUkRegional = marketId === 'uk-regional';
+  const isChicagoHub = pathname === '/tours/chicago-il' || pathname.startsWith('/tours/chicago-il/');
   const isWestEnd = marketId === 'west-end' || isUkRegional;
   const isOffWestEnd = marketId === 'off-west-end';
   // Treat opera show pages as NOT off-broadway for the pill label, even though
@@ -292,6 +295,32 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                 </svg>
               )}
             </Link>
+          )}
+          {featureFlags.regional && stats.chicago && stats.chicago.shows > 0 && (
+            <>
+              <div className="h-px bg-white/[0.06] mx-2 my-1" />
+              <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Chicago</div>
+              <Link
+                href="/tours/chicago-il"
+                className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                  isChicagoHub ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                <div className="flex items-center gap-2">
+                  <span className={`w-1.5 h-1.5 rounded-full ${isChicagoHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
+                  <div>
+                    <div className={`text-sm font-semibold ${isChicagoHub ? 'text-sky-200' : 'text-white'}`}>Chicago Theater</div>
+                    <div className="text-[11px] text-fg-muted">{stats.chicago.openShows} playing now · reviews since 2021</div>
+                  </div>
+                </div>
+                {isChicagoHub && (
+                  <svg className="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </Link>
+            </>
           )}
         </div>
       )}

@@ -5,6 +5,7 @@
 import { pickRegionalShelf } from '@/lib/regional-shelf';
 import path from 'path';
 import { isLocalOnlyShow } from '@/lib/local-market';
+import { hubPhase } from '@/lib/city-hub';
 import { versionedImagePath } from './versioned-image-path';
 import {
   computeShowData,
@@ -429,6 +430,14 @@ export function getMarketStats() {
       shows: pickRegionalShelf(ukRegional, { limit: Infinity, requireEnoughReviews: true }).length,
       openShows: ukRegional.filter(s => s.status === 'open' || s.status === 'previews').length,
     },
+    // Chicago city hub (/tours/chicago-il, BRO-6498): regional productions in the metro.
+    // Tour stops are counted on the hub itself, not here.
+    chicago: (() => {
+      const chi = getAllShows().filter(s => s.city === 'chicago-il' && s.category === 'regional');
+      // Same phase rule as the hub page, so "playing now" cannot disagree with it.
+      const today = new Date().toISOString().slice(0, 10);
+      return { shows: chi.length, openShows: chi.filter(s => hubPhase(s, today) === 'now').length };
+    })(),
   };
 }
 
