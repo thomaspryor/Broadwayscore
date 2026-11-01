@@ -75,7 +75,10 @@ test('real app feed: every score, count and grade survives the projection', { sk
   // absolute KB cap, so it scales as the catalog grows (a fixed 250 KB cap went
   // red on data growth alone, BRO-6784) yet still fails if the projection starts
   // copying feed fields.
+  // Structural guard, independent of data size: catches field-copy bloat the ratio would miss.
+  for (const [id, row] of Object.entries(out.shows)) assert.ok(row.length <= 4, `${id} shows row has ${row.length} fields`);
+  for (const [id, row] of Object.entries(out.meta)) assert.equal(row.length, 6, `${id} meta row shape`);
   const size = JSON.stringify(out).length;
   const feedSize = readFileSync(MOBILE, 'utf8').length;
-  assert.ok(size < feedSize * 0.15, `stats-shows.json is ${(size / 1024).toFixed(0)} KB, ${((size / feedSize) * 100).toFixed(1)}% of the ${(feedSize / 1024).toFixed(0)} KB app feed (limit 15%)`);
+  assert.ok(size < feedSize * 0.11, `stats-shows.json is ${(size / 1024).toFixed(0)} KB, ${((size / feedSize) * 100).toFixed(1)}% of the ${(feedSize / 1024).toFixed(0)} KB app feed (limit 11%)`);
 });

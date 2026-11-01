@@ -1,7 +1,7 @@
 /**
  * Pure projection behind public/data/stats-shows.json — the slim show catalog
  * the web Stats view (src/components/my-shows/stats) reads instead of the
- * 2.2MB app catalog, public/data/mobile-shows.json (BRO-6170).
+ * ~3MB app catalog, public/data/mobile-shows.json (BRO-6170).
  *
  * WHY A PROJECTION OF mobile-shows.json, not a second scorer: every number
  * here is copied from the app feed, whose `cs` / `cr.rc` come from
