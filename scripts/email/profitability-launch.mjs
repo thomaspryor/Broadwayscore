@@ -23,6 +23,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { isMainModule } from '../lib/is-main-module.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(__dirname, '..', '..');
@@ -168,7 +169,7 @@ ${body}
   return applyUtm(html, { source: 'newsletter', campaign: 'profitability-launch', listLink: true });
 }
 
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
+if (isMainModule(import.meta.url)) {
   const outDir = process.env.NEWSLETTER_OUT_DIR || path.join(os.tmpdir(), 'profitability-launch');
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'profitability-launch.html'), buildHtml());
