@@ -1,15 +1,18 @@
 {
   "issueNumber": "bro-6706b-b",
-  "planId": "02574963-5d7f-4560-a116-f15df51937d1",
+  "planId": "07dbb75f-08e2-4ad9-adbf-ed1394f6100a",
   "status": "pending",
-  "createdAt": "2026-11-01T12:55:13.981Z",
+  "createdAt": "2026-11-01T13:00:21.626Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6706: verify 48 unverified-revival flags from review text (24 revival, 24 original) (part 2 of 2)",
+    "summary": "BRO-6706: verify 48 unverified-revival flags from review text (27 revival, 21 original) (part 2 of 2)",
     "steps": [
+      "shows.json: school-pictures-off-broadway-2026.isRevival",
+      "shows.json: white-rabbit-red-rabbit-west-end-2026.isRevival",
+      "shows.json: the-lost-boys-2026.revivalVerifiedNot",
       "shows.json: two-strangers-bway-2025.revivalVerifiedNot",
       "shows.json: just-in-time-2025.revivalVerifiedNot",
       "shows.json: buena-vista-social-club-2025.revivalVerifiedNot",
@@ -28,14 +31,38 @@
       "shows.json: affluenza-off-west-end-2026.revivalVerifiedNot",
       "shows.json: aftermath-art-new-york-off-broadway-2026.revivalVerifiedNot",
       "shows.json: memoirs-of-amorous-gentlemen-off-broadway-2026.revivalVerifiedNot",
-      "shows.json: white-rabbit-red-rabbit-west-end-2026.revivalVerifiedNot",
       "shows.json: christmas-carol-goes-wrong-west-end-2026.revivalVerifiedNot",
-      "shows.json: school-pictures-off-broadway-2026.revivalVerifiedNot",
-      "shows.json: going-bacharach-the-songs-of-an-icon-return-off-broadway-2026.revivalVerifiedNot",
-      "shows.json: dirty-dancing-west-end-2027.revivalVerifiedNot"
+      "shows.json: going-bacharach-the-songs-of-an-icon-return-off-broadway-2026.revivalVerifiedNot"
     ],
     "riskLevel": "low",
     "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: school-pictures-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "white-rabbit-red-rabbit-west-end-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: white-rabbit-red-rabbit-west-end-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lost-boys-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-lost-boys-2026.revivalVerifiedNot"
+      },
       {
         "type": "data-edit",
         "file": "shows.json",
@@ -201,15 +228,6 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "white-rabbit-red-rabbit-west-end-2026",
-        "field": "revivalVerifiedNot",
-        "oldValue": null,
-        "newValue": true,
-        "description": "shows.json: white-rabbit-red-rabbit-west-end-2026.revivalVerifiedNot"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
         "showId": "christmas-carol-goes-wrong-west-end-2026",
         "field": "revivalVerifiedNot",
         "oldValue": null,
@@ -219,29 +237,11 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "school-pictures-off-broadway-2026",
-        "field": "revivalVerifiedNot",
-        "oldValue": null,
-        "newValue": true,
-        "description": "shows.json: school-pictures-off-broadway-2026.revivalVerifiedNot"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
         "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
         "field": "revivalVerifiedNot",
         "oldValue": null,
         "newValue": true,
         "description": "shows.json: going-bacharach-the-songs-of-an-icon-return-off-broadway-2026.revivalVerifiedNot"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "dirty-dancing-west-end-2027",
-        "field": "revivalVerifiedNot",
-        "oldValue": null,
-        "newValue": true,
-        "description": "shows.json: dirty-dancing-west-end-2027.revivalVerifiedNot"
       }
     ]
   }

@@ -109,8 +109,8 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
       if (newValue !== true) return { ok: false, reason: `${field}: plans may only set true` };
     }
     // Read as a boolean by the site and syncRevivalTags; "true" would pass every other guard.
-    if (field === 'isRevival' && typeof newValue !== 'boolean') {
-      return { ok: false, reason: `isRevival: must be true or false, got ${JSON.stringify(newValue)}` };
+    if ((field === 'isRevival' || field === 'revivalVerifiedNot') && typeof newValue !== 'boolean') {
+      return { ok: false, reason: `${field}: must be true or false, got ${JSON.stringify(newValue)}` };
     }
     // BRO-6279: a wrong-production IBDB link (e.g. the 1964 page on a 2020 revival) is
     // fixed by plan; only a bare IBDB production URL is accepted, or null to clear it.

@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-6706b",
-  "planId": "7432ab4e-545e-4adc-b264-b74a0d7e2280",
+  "planId": "0a28ff42-563e-43c5-acc4-3b1c93ec6e42",
   "status": "pending",
-  "createdAt": "2026-11-01T12:55:13.981Z",
+  "createdAt": "2026-11-01T13:00:21.626Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6706: verify 48 unverified-revival flags from review text (24 revival, 24 original) (part 1 of 2)",
+    "summary": "BRO-6706: verify 48 unverified-revival flags from review text (27 revival, 21 original) (part 1 of 2)",
     "steps": [
       "shows.json: cabaret-at-the-kit-kat-club-west-end-2021.isRevival",
       "shows.json: tosca-off-broadway-2026.isRevival",
@@ -34,7 +34,7 @@
       "shows.json: death-of-a-salesman-liverpool-everyman-regional-2026.isRevival",
       "shows.json: 1984-citizens-regional-2026.isRevival",
       "shows.json: dial-m-for-murder-regional-2026.isRevival",
-      "shows.json: the-lost-boys-2026.revivalVerifiedNot"
+      "shows.json: dirty-dancing-west-end-2027.isRevival"
     ],
     "riskLevel": "low",
     "actions": [
@@ -257,11 +257,11 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showId": "the-lost-boys-2026",
-        "field": "revivalVerifiedNot",
-        "oldValue": null,
+        "showId": "dirty-dancing-west-end-2027",
+        "field": "isRevival",
+        "oldValue": false,
         "newValue": true,
-        "description": "shows.json: the-lost-boys-2026.revivalVerifiedNot"
+        "description": "shows.json: dirty-dancing-west-end-2027.isRevival"
       }
     ]
   }
