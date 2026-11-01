@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T17:24:00.441Z",
+  "timestamp": "2026-11-01T17:42:57.335Z",
   "stats": {
-    "totalReviews": 78509,
-    "alreadyFlagged": 21770,
+    "totalReviews": 78685,
+    "alreadyFlagged": 21814,
     "dateGuardCatches": 244,
-    "directorMismatch": 3375,
-    "tvFilmSignals": 2234,
+    "directorMismatch": 3383,
+    "tvFilmSignals": 2236,
     "londonSignals": 3554,
-    "offBroadwaySignals": 729,
+    "offBroadwaySignals": 733,
     "yearMismatch": 334,
-    "noPublishDate": 8532
+    "noPublishDate": 8528
   },
   "findings": [
     {
@@ -37445,6 +37445,29 @@
     },
     {
       "showId": "les-miserables-2014",
+      "file": "front-row-center--nicole-itkin.json",
+      "publishDate": "2026-08-31T19:04:00",
+      "url": "https://thefrontrowcenter.com/2026/08/les-miserables-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-2014",
       "file": "front-row-center--tulis-mccall.json",
       "score": 62,
       "publishDate": "2014-03-24T11:48:37",
@@ -41919,6 +41942,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher wheeldon\" from mj-2022"
+        }
+      ]
+    },
+    {
+      "showId": "molly-sweeney-regional-2022",
+      "file": "front-row-center--stanford-friedman.json",
+      "publishDate": "2024-05-23T21:30:53",
+      "url": "https://thefrontrowcenter.com/2024/05/molly-sweeney-2/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -50437,7 +50473,7 @@
     {
       "showId": "plenty-off-broadway-2016",
       "file": "carey-purcell--carey-purcell.json",
-      "publishDate": "November 4th, 2016",
+      "publishDate": "2020-02-25",
       "url": "http://www.careypurcell.com/?p=10822",
       "findings": [
         {
@@ -59797,6 +59833,19 @@
       ]
     },
     {
+      "showId": "sweeney-todd-the-demon-barber-of-fleet-street-regional-2022",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2023-04-22T12:36:21",
+      "url": "https://thefrontrowcenter.com/2023/04/sweeney-todd-the-demon-barber-of-fleet-street/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thomas kail\" from sweeney-todd-2023"
+        }
+      ]
+    },
+    {
       "showId": "sweet-charity-2005",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -63699,6 +63748,19 @@
     },
     {
       "showId": "the-doctor-off-broadway-2023",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2023-08-01T11:41:01",
+      "url": "https://thefrontrowcenter.com/2023/08/the-doctor/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from the-doctor-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-doctor-off-broadway-2023",
       "file": "nysr--frank-scheck.json",
       "score": 81,
       "publishDate": "2023-06-15",
@@ -63910,6 +63972,19 @@
       "score": 79,
       "publishDate": null,
       "url": "https://culturesauce.com/the-effect-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from the-effect-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "the-effect-off-broadway-2024",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2024-03-14T18:40:26",
+      "url": "https://thefrontrowcenter.com/2024/03/the-effect/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -67189,6 +67264,19 @@
       "score": 81,
       "publishDate": "2025-03-10",
       "url": "https://exeuntnyc.com/reviews/review-the-jonathan-larson-project-at-the-orpheum-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "front-row-center--vahni-kurra.json",
+      "publishDate": "2025-03-11T00:08:30",
+      "url": "https://thefrontrowcenter.com/2025/03/the-jonathan-larson-project/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -77279,6 +77367,19 @@
     },
     {
       "showId": "vanity-fair-off-broadway-2017",
+      "file": "front-row-center--ann-firestone.json",
+      "publishDate": "2017-05-21T12:49:28",
+      "url": "https://thefrontrowcenter.com/2017/05/vanity-fair/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "vanity-fair-off-broadway-2017",
       "file": "zeal-nyc--jil-picariello.json",
       "score": null,
       "publishDate": "2017-04-04",
@@ -80444,6 +80545,19 @@
       "score": 86,
       "publishDate": "October 14, 2012",
       "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/ct-ent-1014-woolf-broadway-review-20121014,0,1880359.column",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-2012",
+      "file": "front-row-center--victoria-weisfeld.json",
+      "publishDate": "2026-09-15T08:14:47",
+      "url": "https://thefrontrowcenter.com/2026/09/whos-afraid-of-virginia-woolf/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -86221,7 +86335,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2026-04-17",
       "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
       "findings": [
@@ -95701,6 +95815,19 @@
     },
     {
       "showId": "fire-and-air-off-broadway-2018",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2018-02-02T07:57:56",
+      "url": "https://thefrontrowcenter.com/2018/02/fire-and-air/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "fire-and-air-off-broadway-2018",
       "file": "talkinbroadway--david-hurst.json",
       "score": null,
       "publishDate": "February 1st, 2018",
@@ -104125,6 +104252,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "john-off-broadway-2015",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2015-08-12T12:50:04",
+      "url": "https://thefrontrowcenter.com/2015/08/john/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -116812,6 +116952,19 @@
     },
     {
       "showId": "saturday-church-off-broadway-2025",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2025-09-19T18:15:37",
+      "url": "https://thefrontrowcenter.com/2025/09/saturday-church/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
+      "showId": "saturday-church-off-broadway-2025",
       "file": "off-off-online--deirdre-donovan.json",
       "score": 77,
       "publishDate": "2025-09-22",
@@ -125265,6 +125418,19 @@
     },
     {
       "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "file": "theater-life--unknown.json",
+      "publishDate": "2026-10-31",
+      "url": "https://theaterlife.com/degenerates-the-hairy-ape/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
       "file": "theatrely--emily-wyrwa.json",
       "score": 77,
       "publishDate": "2026-10-04",
@@ -129007,7 +129173,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 57,
+      "score": 56,
       "publishDate": "2025-12-12",
       "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
       "findings": [
@@ -131010,7 +131176,7 @@
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "February 11th, 2026",
       "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
       "findings": [

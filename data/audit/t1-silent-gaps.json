@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T17:12:39.698Z",
+  "generatedAt": "2026-11-01T17:41:30.909Z",
   "windowDays": 45,
   "showsScanned": 212,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 167.32693777777777,
+      "fileAgeHours": 167.8149652777778,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 152.78981416666667,
+      "nonTerminalAgeHours": 153.27070583333332,
       "needsManualRecovery": false
     },
     {
@@ -40,10 +40,30 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 195.84664222222221,
+      "fileAgeHours": 196.33464388888888,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 181.90170555555557,
+      "nonTerminalAgeHours": 182.38259722222222,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
+      "openingDate": "2026-10-22",
+      "file": "thewrap--robert-hofler.json",
+      "outletId": "thewrap",
+      "tier": 2,
+      "type": "rejected-unscoreable",
+      "recoverable": false,
+      "url": "https://www.thewrap.com/creative-content/theater/the-imaginary-invalid-broadway-review-bill-irwin/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-imaginary-invalid-2026 --url=https://www.thewrap.com/creative-content/theater/the-imaginary-invalid-broadway-review-bill-irwin/ --outlet=thewrap --critic=\"Robert Hofler\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-23T02:57:17.702Z",
+      "fileAgeHours": 230.73645583333334,
+      "gapSeenAt": "2026-11-01T17:41:30.908Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
     }
   ],
   "contradictions": []

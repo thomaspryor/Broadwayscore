@@ -690,20 +690,6 @@
     "queuedAt": "2026-11-01T15:58:14.545Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T17:12:39.699Z"
-  },
-  {
     "conditionKey": "land:land/bro-6773-money-monthly",
     "title": "Landing blocked: unit-tests-node red on land/bro-6773-money-monthly",
     "description": "land.yml did not land land/bro-6773-money-monthly: the unit-tests-node gate went red at c75e028f1b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41322611829",
@@ -764,5 +750,145 @@
       }
     ],
     "queuedAt": "2026-11-01T16:47:14.426Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T17:41:30.909Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Secret Scan (gitleaks)",
+    "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
+    "description": "Secret Scan (gitleaks): Latest run failed (last success 2h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.370Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Test Suite",
+    "title": "Cron's latest run failed (not yet stale): Test Suite",
+    "description": "Test Suite: Latest run failed (last success 3h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.395Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Commercial Weekly Orchestrator",
+    "title": "Cron's latest run failed (not yet stale): Commercial Weekly Orchestrator",
+    "description": "Commercial Weekly Orchestrator: Latest run failed (last success 189h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.416Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Audit Aggregator Review Gap",
+    "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
+    "description": "Audit Aggregator Review Gap: Latest run failed (last success 1h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.434Z"
+  },
+  {
+    "conditionKey": "cron-health:Replay Push Rescue",
+    "title": "🚨 Critical cron stale, self-heal failed: Replay Push Rescue",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.582Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6743-gather-unreported-shards",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6743-gather-unreported-shards",
+    "description": "land.yml did not land land/bro-6743-gather-unreported-shards: the unit-tests-node gate went red at 26fdadf8f8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41331188117",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6743-gather-unreported-shards"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "26fdadf8f89a5acc7fe466b817020cda75c06993"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331188117"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:48:14.304Z"
   }
 ]
