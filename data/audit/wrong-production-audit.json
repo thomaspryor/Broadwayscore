@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T11:24:40.241Z",
+  "timestamp": "2026-11-01T12:34:55.057Z",
   "stats": {
-    "totalReviews": 78260,
-    "alreadyFlagged": 21756,
+    "totalReviews": 78261,
+    "alreadyFlagged": 21768,
     "dateGuardCatches": 242,
-    "directorMismatch": 3331,
-    "tvFilmSignals": 2218,
-    "londonSignals": 3540,
-    "offBroadwaySignals": 729,
-    "yearMismatch": 328,
-    "noPublishDate": 8912
+    "directorMismatch": 3344,
+    "tvFilmSignals": 2224,
+    "londonSignals": 3542,
+    "offBroadwaySignals": 730,
+    "yearMismatch": 330,
+    "noPublishDate": 8734
   },
   "findings": [
     {
@@ -1546,6 +1546,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        }
+      ]
+    },
+    {
+      "showId": "a-chorus-line-regional-2023-drury-lane-oakbrook",
+      "file": "daily-herald--barbara-vitello.json",
+      "publishDate": "2023-02-06",
+      "url": "https://www.dailyherald.com/entlife/20230206/drury-lanes-a-chorus-line-a-singular-sensation-indeed/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael bennett\" from a-chorus-line-2006"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob avian\" from a-chorus-line-2006"
         }
       ]
     },
@@ -5462,6 +5480,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"web series\""
+        }
+      ]
+    },
+    {
+      "showId": "anna-in-the-tropics-regional-2023",
+      "file": "third-coast-review--nancy-s-bishop.json",
+      "publishDate": "2023-02-21",
+      "url": "https://thirdcoastreview.com/2023/02/21/stages-review-anna-in-the-tropics-remy-bumppo-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emily mann\" from anna-in-the-tropics-2003"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2003 (2x) more than 2023 (0x). 2003 matches production: anna-in-the-tropics-2003"
         }
       ]
     },
@@ -10390,6 +10426,32 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rob marshall\" from cabaret-2014"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-01-23",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-cabaret-porchlight-theatre-review-20230123-47rnv3ijk5dbxlsdh2dvhak7re-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from cabaret-2014"
+        }
+      ]
+    },
+    {
+      "showId": "cabaret-regional-2023",
+      "file": "third-coast-review--lisa-trifone.json",
+      "publishDate": "2023-01-31",
+      "url": "https://thirdcoastreview.com/2023/01/31/stages-review-cabaret/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from cabaret-2014"
         }
       ]
     },
@@ -23403,6 +23465,19 @@
       ]
     },
     {
+      "showId": "get-out-alive-regional-2022",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2022-07-20",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/singing-past-stigma/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "ghetto-klown-2011",
       "file": "variety--marilyn-stasio.json",
       "score": 72,
@@ -33120,6 +33195,32 @@
       "score": 90,
       "publishDate": "2023-02-20",
       "url": "https://www.chicagoonstage.com/paramount-into-the-woods/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "daily-herald--barbara-vitello.json",
+      "publishDate": "2023-02-13",
+      "url": "https://www.dailyherald.com/entlife/20230214/paramounts-into-the-woods-beautiful-to-behold-marvelous-to-hear",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "lifeandtimes--rikki-lee-travolta.json",
+      "publishDate": "2023-02-11",
+      "url": "https://lifeandtimes.biz/2023/02/11/into-the-woods-is-paramount-theatres-best-musical-yet/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45469,6 +45570,19 @@
       ]
     },
     {
+      "showId": "once-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-02-27",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-writers-theatre-once-review-20230227-ki4pqeru55bvxdfehrc2nlnhcy-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from once-2012"
+        }
+      ]
+    },
+    {
       "showId": "once-upon-a-mattress-1996",
       "file": "hollywood-reporter--caitlin-huston.json",
       "score": null,
@@ -52561,6 +52675,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "routes-regional-2022",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2022-11-02",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-routes-remy-bumppo-review-20221102-xlwynfoycrenbnoube263fki3e-story.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2013 (2x) more than 2022 (1x). 2013 matches production: routes-west-end-2013"
         }
       ]
     },
@@ -66405,9 +66532,35 @@
     },
     {
       "showId": "the-island-regional-2022",
+      "file": "chicago-reader--sheri-flanders.json",
+      "publishDate": "2022-11-23",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/apartheid-and-antigone/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from the-island-1974"
+        }
+      ]
+    },
+    {
+      "showId": "the-island-regional-2022",
       "file": "chicago-sun-times--catey-sullivan.json",
       "publishDate": "2022-11-21",
       "url": "https://chicago.suntimes.com/2022/11/21/23471085/the-island-review-court-theatre-chicago-athol-fugard-john-kani-winston-ntshona",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"athol fugard\" from the-island-1974"
+        }
+      ]
+    },
+    {
+      "showId": "the-island-regional-2022",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2022-11-22",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-island-court-theatre-review-20221122-afneiz4psrcvbaxty5brtshsve-story.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -66784,6 +66937,19 @@
       "score": 71,
       "publishDate": "2018-07-06",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-kelly-girls-regional-2023",
+      "file": "third-coast-review--nancy-s-bishop.json",
+      "publishDate": "2023-02-27",
+      "url": "https://thirdcoastreview.com/2023/02/27/stages-review-factory-theater-the-kelly-girls/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -74095,9 +74261,48 @@
     },
     {
       "showId": "tick-tick-boom-regional-2023",
+      "file": "buzznews--anne-rakowiecki.json",
+      "publishDate": "2023-01-17",
+      "url": "https://www.buzznews.net/theatre/item/5082-the-edge-s-tick-tick-boom-understood-the-assignment.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tick-tick-boom-regional-2023",
       "file": "chi-mt--cori-lang.json",
       "publishDate": "2023-01-23",
       "url": "https://www.chi-mt.com/reviews/tick-tick-boom-boho-jan-23",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tick-tick-boom-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-01-19",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-tick-boom-boho-review-20230119-25fxzhdtrjajla2oddbdwlgcca-story.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "tick-tick-boom-regional-2023",
+      "file": "windycitytimes--scott-c-morgan.json",
+      "publishDate": "2023-01-19",
+      "url": "https://www.windycitytimes.com/lgbt/Theater-Review-tick-tickBOOM/74557.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -79498,6 +79703,20 @@
       ]
     },
     {
+      "showId": "white-noise-off-broadway-2019",
+      "file": "scribicide--aaron-botwick.json",
+      "score": null,
+      "publishDate": "2019-04-08",
+      "url": "https://scribicide.com/2019/04/08/not-silence-but-the-sound-of-silence/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
+        }
+      ]
+    },
+    {
       "showId": "white-pearl-west-end-2019",
       "file": "timeout-london--ka-bradley.json",
       "score": 82,
@@ -80452,6 +80671,19 @@
     },
     {
       "showId": "wuthering-heights-regional-2023",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2023-02-02",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/dead-romantics/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
       "file": "chicago-sun-times--catey-sullivan.json",
       "score": 19,
       "publishDate": "2023-01-30",
@@ -80470,6 +80702,19 @@
       "score": 79,
       "publishDate": "2023-01-31",
       "url": "https://www.chicagostageandscreen.com/post/a-new-look-at-wuthering-heights",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-01-30",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-wuthering-heights-chicago-shakespeare-review-20230130-3bnznn7vljaljgry6osithswk4-story.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -80526,6 +80771,19 @@
       "score": 77,
       "publishDate": "2023-02-03",
       "url": "https://thefourthwalsh.com/2023/02/review-wuthering-heights-chicago-shakespeare-theater-storytelling-captivates/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from wuthering-heights-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "wuthering-heights-regional-2023",
+      "file": "third-coast-review--lisa-trifone.json",
+      "publishDate": "2023-02-01",
+      "url": "https://thirdcoastreview.com/2023/02/01/stages-review-wuthering-heights/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -91962,6 +92220,19 @@
       "score": null,
       "publishDate": "2022-12-16",
       "url": "https://www.vulture.com/2022/12/theater-reviews-the-far-country-and-des-moines.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "describe-the-night-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-03-15",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-describe-night-steppenwolf-theatre-review-20230315-k4sruxblnfagbbwrbsedexka4u-story.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -115587,6 +115858,19 @@
       ]
     },
     {
+      "showId": "routes-regional-2022",
+      "file": "third-coast-review--nancy-s-bishop.json",
+      "publishDate": "2022-11-05",
+      "url": "https://thirdcoastreview.com/2022/11/05/stages-review-routes-remy-bumppo/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "routes-west-end-2013",
       "file": "british-theatre--philip-fisher.json",
       "score": 66,
@@ -124315,6 +124599,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-heretic-west-end-2011",
+      "file": "independent--unknown.json",
+      "score": null,
+      "publishDate": "2011-02-13",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-children-s-hour-comedy-theatre-londonplenty-crucible-studio-sheffieldthe-heretic-royal-court-downstairs-london-2213032.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
