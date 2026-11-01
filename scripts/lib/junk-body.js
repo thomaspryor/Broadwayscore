@@ -107,7 +107,9 @@ const WRONG_BODY_MIN_CHARS = 1000;
  *   - the stored body never names the show by its full title, and the
  *     incoming body names it in its first 1,500 chars (a "related reads" link
  *     further down does not count);
- *   - the incoming body is review-sized and clean.
+ *   - the incoming body is review-sized and clean;
+ *   - no person scored or judged it, and no stored rating was read from the
+ *     wrong body.
  * The verdict flags stay: the stored content check goes stale with the new
  * text, and the existing heals or a person decide them.
  * @param {string} storedText
@@ -120,6 +122,11 @@ function isRightArticleReplacementForWrongBody(storedText, incomingText, showTit
   const d = existing || {};
   if (d._locked === true || d.manualContentTier || d.wrongShowNote || d.humanReviewedWrongShow === true
     || d.manualNonReviewSet === true || d.manualReviewedBy || d.wrongProductionManualClear === true) return false;
+  // humanReviewScore, humanReviewedWrongProduction, manual wrongProduction provenance.
+  if (require('./contradicted-flag-basis').hasHumanAssertedFlag(d)) return false;
+  // A rating read out of the wrong body would outlive the swap (originalScore is
+  // write-protected); leave such a file to a person.
+  if (d.originalScoreCapturedFrom === 'fullText' && d.originalScore != null) return false;
   const verdict = d.wrongShow === true || d.wrongProduction === true || d.isNonReview === true
     || WRONG_BODY_REJECTIONS.has(d.rejectionReason);
   if (!verdict) return false;

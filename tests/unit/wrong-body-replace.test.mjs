@@ -55,6 +55,16 @@ test('a flagged wrong-article body is replaced by the right review of the same u
   assert.equal(d.llmScore, null, 'score of the old body is parked');
 });
 
+test('a model-classified isNonReview on the wrong body does not keep its score alive', () => {
+  const dir = setup({ wrongShow: true, wrongShowReason: 'CV-promoted: travel article', isNonReview: true, nonReviewType: 'feature',
+    nonReviewClassifiedBy: 'gemini', llmScore: { score: 70 }, assignedScore: 70 });
+  ingest(dir);
+  const d = read(dir);
+  assert.equal(d.fullText, REVIEW);
+  assert.equal(d.llmScore, null, 'score of the travel piece is parked');
+  assert.equal(d.isNonReview, true, 'flag itself stays for a person or plan');
+});
+
 test('a wrong_production rejection survives the body swap', () => {
   const dir = setup({ wrongProduction: true, rejectionReason: 'wrong_production', rejectedBy: 'ensemble-scoreability-check', rejectedAt: '2026-01-20T00:00:00Z' });
   ingest(dir);
@@ -77,6 +87,12 @@ test('no swap without a verdict, with a person ruling, when both name the show, 
   dir = setup({ wrongShow: true });
   ingest(dir, OTHER + OTHER + ' Related: Synthetic Noon review.');
   assert.equal(read(dir).fullText, OTHER, 'title only in a related-reads link past the opening');
+  dir = setup({ wrongShow: true, humanReviewScore: 64 });
+  ingest(dir);
+  assert.equal(read(dir).fullText, OTHER, 'a person scored it');
+  dir = setup({ wrongShow: true, originalScore: 4, originalScoreCapturedFrom: 'fullText' });
+  ingest(dir);
+  assert.equal(read(dir).fullText, OTHER, 'a rating read out of the wrong body would survive the swap');
   dir = setup({ wrongShow: true });
   ingest(dir, REVIEW, { replaceBadBody: false });
   assert.equal(read(dir).fullText, OTHER, 'only explicit single-url ingests swap bodies');

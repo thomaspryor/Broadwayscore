@@ -2873,10 +2873,12 @@ function isStaleGenericHomepageWrongShow(data, show, { urlFiledUnderOtherShow = 
  * full and sit inside its run; the flag on them is simply false.
  *
  * Clears only when the stated reason is falsified and the review is this run's:
- * the body (500+ chars) contains the full show title as a phrase (the keyword
+ * the body (500+ chars) contains the full show title as a phrase in its first
+ * 1,500 chars (the keyword
  * matcher accepts one common word such as "music", which would clear a Daily
  * Mail news story) and publishDate falls inside the show's own production
- * window. A rejection, wrongProduction flag or person's note keeps it out.
+ * window. A rejection or person's note keeps the flag; a wrongProduction flag
+ * on the same file is untouched and still excludes it.
  *
  * @param {object} data - Review-text JSON
  * @param {object} show - shows.json entry for the folder the file sits in
@@ -2891,7 +2893,8 @@ function isStaleBulkTitleWrongShow(data, show, { urlFiledUnderOtherShow = false 
   if (require('./approved-fix-flag').hasApprovedFlag(data, 'wrongShow')) return false;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
   if (text.length < 500) return false;
-  if (!require('./title-phrase').containsTitlePhrase(text, show.title)) return false;
+  // In the opening, where a review names its subject: a "Related:" link further down does not count.
+  if (!require('./title-phrase').containsTitlePhrase(text, show.title, { within: 1500 })) return false;
   return isReviewWithinOwnProductionWindow(show, data.publishDate || null);
 }
 

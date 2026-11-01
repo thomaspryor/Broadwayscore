@@ -17,15 +17,7 @@
       "Rejection judged an aggregator excerpt; the full review is now on file (BRO-6716)",
       "Replace the cookie-banner body with the review (BRO-6747 path)",
       "Replace the stored travel article with the review (BRO-6716 wrong-body path)",
-      "Read the article: After the refetch the body is Nick Curtis's High Noon review (\"Billy Crudup brings charisma to bonkers real-time Western\"); the CV flag described the old travel article.",
-      "Clear after the manual-clear marker above (BRO-6716).",
-      "Read the article: Same: the non-review verdict described the old travel article.",
-      "Clear after the manual-clear marker above (BRO-6716).",
       "Replace the stored hotel-advert body with the review (BRO-6716 wrong-body path)",
-      "Read the article: After the refetch the body is Nick Curtis's Theatre Royal Haymarket review; the CV flag described hotel adverts.",
-      "Clear after the manual-clear marker above (BRO-6716).",
-      "Read the article: Same: the non-review verdict described the hotel adverts.",
-      "Clear after the manual-clear marker above (BRO-6716).",
       "Stored body is a Standard NT Live news story, not the review at this URL; delete so the re-ingest below writes the real review (\"A strong turn from Nicola Coughlan\")",
       "Re-ingest the real Standard review",
       "Stored body is The Stage's review of a Mischief Theatre Dickens spoof, not Avenue Q; delete so the re-ingest writes the Avenue Q review (paywalled: 4/5 stars, no text)",
@@ -86,74 +78,10 @@
         "args": "--show=high-noon-west-end-2025 --url=https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html --outlet=standard --critic=\"Nick Curtis\""
       },
       {
-        "type": "review-field-edit",
-        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
-        "field": "wrongShowManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Read the article: After the refetch the body is Nick Curtis's High Noon review (\"Billy Crudup brings charisma to bonkers real-time Western\"); the CV flag described the old travel article."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
-        "field": "wrongShow",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Clear after the manual-clear marker above (BRO-6716)."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
-        "field": "nonReviewManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Read the article: Same: the non-review verdict described the old travel article."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "high-noon-west-end-2025/standard--nick-curtis.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Clear after the manual-clear marker above (BRO-6716)."
-      },
-      {
         "type": "run-script",
         "description": "Replace the stored hotel-advert body with the review (BRO-6716 wrong-body path)",
         "script": "ingest-review-from-url.js",
         "args": "--show=the-unlikely-pilgrimage-of-harold-fry-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html --outlet=standard --critic=\"Nick Curtis\""
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
-        "field": "wrongShowManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Read the article: After the refetch the body is Nick Curtis's Theatre Royal Haymarket review; the CV flag described hotel adverts."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
-        "field": "wrongShow",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Clear after the manual-clear marker above (BRO-6716)."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
-        "field": "nonReviewManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Read the article: Same: the non-review verdict described the hotel adverts."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/standard--nick-curtis.json",
-        "field": "isNonReview",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Clear after the manual-clear marker above (BRO-6716)."
       },
       {
         "type": "review-file-op",

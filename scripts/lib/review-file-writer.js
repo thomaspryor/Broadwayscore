@@ -1997,7 +1997,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     existing.fullText = fields.fullText;
     existing.wrongBodyReplacedAt = new Date().toISOString();
     if (fields.textFetchedAt) existing.textFetchedAt = fields.textFetchedAt;
-    require('./stale-automated-text-verdict').voidRejectionOnBodyReplacement(existing, undefined, 'wrong-body-replacement');
+    require('./stale-automated-text-verdict').voidRejectionOnBodyReplacement(existing, undefined, 'wrong-body-replacement', { allowCvNonReview: true });
     changed = true;
   }
 

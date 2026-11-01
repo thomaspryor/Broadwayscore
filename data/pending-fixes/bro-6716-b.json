@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-6716: clear 10 read-confirmed false drops in last-year shows (Blueberries x2, Fences, Dirty Dancing x2, Flamenc Oh!, You Got Older, Tru, Ulster American, Public Charge)",
+    "summary": "BRO-6716: clear 9 read-confirmed false drops in last-year shows (Blueberries x2, Fences, Dirty Dancing, Flamenc Oh!, You Got Older, Tru, Ulster American, Public Charge)",
     "steps": [
       "Read the article: Nick Curtis reviews the Stratford East staging (names Stratford East and new artistic director Lisa Spirling), dated 2026-02-12, the day after opening. The flag carries no reason.",
       "Clear after the manual-clear marker above (BRO-6716).",
@@ -17,8 +17,6 @@
       "Read the article: URL fences-lyric-hammersmith, dated 2026-10-10 (opened 10-09), Daniel Bailey production with Ray Fearon and Madeline Appiah: the Lyric Hammersmith run. CV only said it could not verify the venue.",
       "Clear after the manual-clear marker above (BRO-6716).",
       "Read the article: \"A new tour delivers a Dirty Dancing makeover\": the Chicago stop of this North American tour (Annalese Starzec, same lead as the live BroadwayWorld tour reviews). CV read \"Broadway in Chicago\" as a separate production.",
-      "Clear after the manual-clear marker above (BRO-6716).",
-      "Read the article: Review of the Nederlander Chicago tour stop with Annalese Starzec and Blake Zelesnikar, the tour cast. CV read the Chicago engagement as a different production.",
       "Clear after the manual-clear marker above (BRO-6716).",
       "Read the article: Penny Walshe reviews Ylana's Flamenc Oh! for Sadler's Wells, dated 2026-10-05 inside the Peacock Theatre run. The Peacock is Sadler's Wells' West End theatre; the ensemble objected to the name.",
       "Clear after the manual-clear marker above (BRO-6716).",
@@ -95,22 +93,6 @@
       {
         "type": "review-field-edit",
         "file": "dirty-dancing-tour-2026/new-city-stage--dennis-polkow.json",
-        "field": "wrongProduction",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Clear after the manual-clear marker above (BRO-6716)."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
-        "field": "wrongProductionManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Read the article: Review of the Nederlander Chicago tour stop with Annalese Starzec and Blake Zelesnikar, the tour cast. CV read the Chicago engagement as a different production."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
         "field": "wrongProduction",
         "oldValue": true,
         "newValue": false,

@@ -407,4 +407,5 @@ test('C2: a single title word, another run, a rejection or a person keeps the fl
   assert.equal(isStaleBulkTitleWrongShow(classC2({ fullText: rjText.slice(0, 300) }), rj), false, 'short body');
   assert.equal(isStaleBulkTitleWrongShow(classC2(), rj, { urlFiledUnderOtherShow: true }), false, 'URL under another show');
   assert.equal(isStaleBulkTitleWrongShow(classC2({ wrongShowReason: 'CV-promoted: different show' }), rj), false, 'other writer');
+  assert.equal(isStaleBulkTitleWrongShow(classC2({ fullText: 'Elsewhere tonight a new staging opens. '.repeat(45) + rjText }), rj), false, 'title only past the opening 1,500 chars');
 });
