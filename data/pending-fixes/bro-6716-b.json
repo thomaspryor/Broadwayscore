@@ -1,0 +1,225 @@
+{
+  "issueNumber": "bro-6716-b",
+  "planId": "fb9e620c-cf23-411d-a599-4e64e691d491",
+  "status": "pending",
+  "createdAt": "2026-11-01T12:18:13.433Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: clear 10 read-confirmed false drops in last-year shows (Blueberries x2, Fences, Dirty Dancing x2, Flamenc Oh!, You Got Older, Tru, Ulster American, Public Charge)",
+    "steps": [
+      "Read the article: Nick Curtis reviews the Stratford East staging (names Stratford East and new artistic director Lisa Spirling), dated 2026-02-12, the day after opening. The flag carries no reason.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: Dominic Maxwell reviews the London premiere at Theatre Royal Stratford East, dated 2026-02-12. The bulk remediation looked for the old title \"Here There Are Blueberries (Theatre Royal Stratford East)\" with its venue suffix.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: URL fences-lyric-hammersmith, dated 2026-10-10 (opened 10-09), Daniel Bailey production with Ray Fearon and Madeline Appiah: the Lyric Hammersmith run. CV only said it could not verify the venue.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: \"A new tour delivers a Dirty Dancing makeover\": the Chicago stop of this North American tour (Annalese Starzec, same lead as the live BroadwayWorld tour reviews). CV read \"Broadway in Chicago\" as a separate production.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: Review of the Nederlander Chicago tour stop with Annalese Starzec and Blake Zelesnikar, the tour cast. CV read the Chicago engagement as a different production.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: Penny Walshe reviews Ylana's Flamenc Oh! for Sadler's Wells, dated 2026-10-05 inside the Peacock Theatre run. The Peacock is Sadler's Wells' West End theatre; the ensemble objected to the name.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)",
+      "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)",
+      "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)",
+      "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)",
+      "Read the article: Body is Robert Hofler's review of You Got Older (Clare Barron, Mae, Anne Kauffman directing) under a stray headline for TheWrap's The Unknown review; CV read only the headline.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: LSA story.asp?ID=GZKHRD is David Barbour's review of the New York Tru (2026-03-06); \"Generic homepage URL\" came from the old flagger that dropped the ID.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read the article: LSA story.asp?ID=NFG9BN, dated 2026-03-17 in the Irish Rep run; the \"collision\" with Stereophonic came from the old URL normalizer that dropped the ID (BRO-6682). No other file holds this ID.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Read: Thom Geier's review ends with a 4/5 star verdict; a person already cleared the non-review flag, this not_a_review reason is leftover (BRO-6716)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Nick Curtis reviews the Stratford East staging (names Stratford East and new artistic director Lisa Spirling), dated 2026-02-12, the day after opening. The flag carries no reason."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--dominic-maxwell.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Dominic Maxwell reviews the London premiere at Theatre Royal Stratford East, dated 2026-02-12. The bulk remediation looked for the old title \"Here There Are Blueberries (Theatre Royal Stratford East)\" with its venue suffix."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026/times-uk--dominic-maxwell.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/north-west-end--michelle-knight.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: URL fences-lyric-hammersmith, dated 2026-10-10 (opened 10-09), Daniel Bailey production with Ray Fearon and Madeline Appiah: the Lyric Hammersmith run. CV only said it could not verify the venue."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fences-off-west-end-2026/north-west-end--michelle-knight.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/new-city-stage--dennis-polkow.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: \"A new tour delivers a Dirty Dancing makeover\": the Chicago stop of this North American tour (Annalese Starzec, same lead as the live BroadwayWorld tour reviews). CV read \"Broadway in Chicago\" as a separate production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/new-city-stage--dennis-polkow.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Review of the Nederlander Chicago tour stop with Annalese Starzec and Blake Zelesnikar, the tour cast. CV read the Chicago engagement as a different production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dirty-dancing-tour-2026/around-the-town-chicago--frank-meccia.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Penny Walshe reviews Ylana's Flamenc Oh! for Sadler's Wells, dated 2026-10-05 inside the Peacock Theatre run. The Peacock is Sadler's Wells' West End theatre; the ensemble objected to the name."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-10-10T15:19:23.955Z",
+        "newValue": null,
+        "description": "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "flamenc-oh-off-west-end-2026/theatreandtonic--penny-walshe.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: The review is for Flamenc Oh! at Sadler's Wells, but the Show context specifies the production at Peacock Theatre. These are different venues and therefore different productions.; openai: The review is about Flamenc Oh! at Sadlers Wells, not the Peacock Theatre.",
+        "newValue": null,
+        "description": "Read: wrong_production rejection was the Sadler's Wells/Peacock name mismatch (BRO-6716)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "you-got-older-off-broadway-2026/thewrap--robert-hofler.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: Body is Robert Hofler's review of You Got Older (Clare Barron, Mae, Anne Kauffman directing) under a stray headline for TheWrap's The Unknown review; CV read only the headline."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "you-got-older-off-broadway-2026/thewrap--robert-hofler.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tru-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: LSA story.asp?ID=GZKHRD is David Barbour's review of the New York Tru (2026-03-06); \"Generic homepage URL\" came from the old flagger that dropped the ID."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tru-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ulster-american-irish-repertory-theatre-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: LSA story.asp?ID=NFG9BN, dated 2026-03-17 in the Irish Rep run; the \"collision\" with Stereophonic came from the old URL normalizer that dropped the ID (BRO-6682). No other file holds this ID."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ulster-american-irish-repertory-theatre-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "public-charge-off-broadway-2026/culturesauce--thom-geier.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Read: Thom Geier's review ends with a 4/5 star verdict; a person already cleared the non-review flag, this not_a_review reason is leftover (BRO-6716)"
+      }
+    ]
+  }
+}

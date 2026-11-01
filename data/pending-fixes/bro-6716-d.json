@@ -1,0 +1,57 @@
+{
+  "issueNumber": "bro-6716-d",
+  "planId": "31879b09-86aa-4c54-b5d0-024aaa1b11b9",
+  "status": "pending",
+  "createdAt": "2026-11-01T12:18:13.434Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: ingest three last-year reviews never on file or truncated (The Other Place LSA, Every Brilliant Thing New York Notebook, Triumph BTG)",
+    "steps": [
+      "Fill the empty LSA body",
+      "Read the article: LSA ID=H04WKB (2026-02-12, Show Score lists it for The Other Place); the \"collision\" with A Christmas Carol came from the old ID-dropping URL normalizer. No other file holds this ID.",
+      "Clear after the manual-clear marker above (BRO-6716).",
+      "Ingest New York Notebook (the cited open.substack.com link redirects here)",
+      "Refetch the truncated BTG body; a longer copy replaces it and the stale-verdict sweep re-judges it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "description": "Fill the empty LSA body",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-other-place-off-broadway-2026 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB --outlet=lighting-and-sound-america --critic=\"David Barbour\""
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Read the article: LSA ID=H04WKB (2026-02-12, Show Score lists it for The Other Place); the \"collision\" with A Christmas Carol came from the old ID-dropping URL normalizer. No other file holds this ID."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-off-broadway-2026/lighting-and-sound-america--david-barbour.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "run-script",
+        "description": "Ingest New York Notebook (the cited open.substack.com link redirects here)",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=every-brilliant-thing-2026 --url=https://newyorknotebook.substack.com/p/every-brilliant-thing --outlet=new-york-notebook"
+      },
+      {
+        "type": "run-script",
+        "description": "Refetch the truncated BTG body; a longer copy replaces it and the stale-verdict sweep re-judges it",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=triumph-off-west-end-2026 --url=https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141 --outlet=british-theatre --critic=\"Keith McKenna\""
+      }
+    ]
+  }
+}
