@@ -3,9 +3,9 @@ name: Audit Aggregator Review Gap
 
 on:
   schedule:
-    # Hourly during opening-night window. Each run takes <5 min (one SERP per
-    # show + one fetch per aggregator article) and tagged shows are usually
-    # under 15. Detect aggregator-listed URLs missing from our review-texts and
+    # Hourly. Each run audits ~19 shows in an 18-min budget (job p50 25 min,
+    # p90 43 min, 2026-10-25..31). GitHub drops most ticks; the 1h re-dispatch
+    # band below fills them (BRO-6751). Detect aggregator-listed URLs missing from our review-texts and
     # auto-dispatch gather-reviews for the affected shows so the next poller
     # cron finds them.
     - cron: '37 * * * *'
@@ -36,7 +36,9 @@ on:
         required: false
         default: ''
       redispatched:
-        # redispatch-after-hours: 3  (BRO-3867: the paging band is now measured-wide; re-dispatch a dropped tick at the old 3h)
+        # redispatch-after-hours: 1  (BRO-6751: at 3h the grind got ~8 runs/day x ~19 shows = ~152 audits/day, below the
+        #   ~340/day the scheduler's own freshness rules need for the 1,021 last-year shows. 1h ~= max run time, so a
+        #   re-dispatch never queues behind a live grind and evicts a pending targeted run. Paging band stays 12h.)
         # BRO-4282: set by scripts/cron-redispatch.js when GitHub dropped the
         # hourly schedule. The run then uses the schedule's settings (3y window,
         # 6h ground-truth interval), never the manual-dispatch defaults.
@@ -53,8 +55,9 @@ concurrency:
   # group: two runs in parallel could push through the whole-file API fallback and
   # let a stale run overwrite the other's checkpoint stamps. Cost of sharing: GitHub
   # keeps one pending run, so a later cron tick can replace a queued targeted run.
-  # Runs last ~25 min against an hourly-ish cron, and the cron queue now puts live
-  # newest shows first, so the exposure is small. Verify a targeted dispatch started.
+  # Runs last ~25 min (p90 43) against the cron plus a 1h re-dispatch band (BRO-6751)
+  # that counts any created run, targeted ones included, so a re-dispatch waits 1h
+  # after a targeted dispatch; the cron queue puts live newest shows first, so the exposure is small. Verify a targeted dispatch started.
   group: audit-aggregator-gap
   cancel-in-progress: false
 

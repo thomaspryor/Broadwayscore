@@ -13,6 +13,14 @@
  * whose audit row is older than --max-age-hours (default 24) proves nothing about
  * reviews published since. A FAIL stays FAIL with "(stale)" appended.
  *
+ * OVERDUE (BRO-6751, information only, never changes the grade or --check):
+ * the show's last gap-audit checkpoint is older than the scheduler's own
+ * freshness promise for it (freshnessMsFor) plus OVERDUE_GRACE_HOURS. STALE
+ * asks "does this PASS still prove anything?"; OVERDUE asks "is the scheduler
+ * keeping up?". A closed last-year show is promised a 30-day recheck, so it
+ * can be STALE (>24h) without being OVERDUE; a rising OVERDUE count means the
+ * audit workflow is getting too few runs.
+ *
  * Frequent outlets missing (BRO-6687): outlets that reviewed >= 60% of the
  * market's openings over the trailing seasons (audit-standing-coverage's own
  * measurement, per category) with no live review, no audit-row URL and no
@@ -32,6 +40,8 @@ const { computeSeasonWindows, measureOutletCoverage } = require('./audit-standin
 
 const FREQUENT_OUTLET_RATE = 0.6;
 const DEFAULT_MAX_AGE_HOURS = 24;
+// One measured max gap between real audit runs (12.1h, BRO-3867) on top of the promise.
+const OVERDUE_GRACE_HOURS = 12;
 
 const ROOT = path.join(__dirname, '..');
 
@@ -95,6 +105,18 @@ function displayGrade(g, nowMs, maxAgeHours = DEFAULT_MAX_AGE_HOURS) {
   return { grade: stale && g.grade === 'PASS' ? 'STALE' : g.grade, stale, ageHours };
 }
 
+/**
+ * Is the scheduler behind on this show? `entry` is the show's entry from
+ * schedulingCheckpoint() (the same view the scheduler sorts by); no entry =
+ * never audited = overdue. Same freshness call and default the audit uses.
+ */
+function isOverdue(show, entry, nowMs, { freshnessMsFor, checkpointTs }, graceHours = OVERDUE_GRACE_HOURS) {
+  if (!show) return null;
+  if (!entry) return true;
+  const age = nowMs - checkpointTs(entry);
+  return age > freshnessMsFor(show, entry, { freshnessHours: 12, now: nowMs }) + graceHours * 3600000;
+}
+
 function main(argv = process.argv.slice(2)) {
   const showArg = argv.find((a) => a.startsWith('--show='));
   const ids = showArg ? showArg.split('=')[1].split(',').filter(Boolean) : [];
@@ -126,6 +148,14 @@ function main(argv = process.argv.slice(2)) {
     if (!liveOutlets.has(r.showId)) liveOutlets.set(r.showId, new Set());
     liveOutlets.get(r.showId).add(r.outletId);
   }
+  // BRO-6751: scheduler view for OVERDUE. Missing checkpoint file -> overdue unknown (null).
+  let sched = null;
+  let freshness = null;
+  try {
+    freshness = require('./lib/gap-audit-freshness');
+    const cp = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json'), 'utf8'));
+    sched = freshness.schedulingCheckpoint(cp, freshness.gapRowShowIds(audit), nowMs);
+  } catch { sched = null; }
   const frequentByCategory = new Map();
   const byId = new Map((audit.results || []).map((r) => [r.showId, r]));
   const out = ids.map((id) => {
@@ -140,9 +170,11 @@ function main(argv = process.argv.slice(2)) {
       auditAgeHours: d.ageHours === null ? null : Math.round(d.ageHours * 10) / 10,
       quarantined: !!(row?.quarantine || row?.quarantined), // rows store `quarantine` (BRO-3002)
       frequentMissing: freq.map((f) => f.outletId),
+      overdue: sched ? isOverdue(showById.get(id), sched[id], nowMs, freshness) : null,
     };
   });
-  if (argv.includes('--json')) console.log(JSON.stringify({ auditGeneratedAt: audit.generatedAt, shows: out }, null, 2));
+  const overdueCount = out.filter((s) => s.overdue === true).length;
+  if (argv.includes('--json')) console.log(JSON.stringify({ auditGeneratedAt: audit.generatedAt, overdueCount, shows: out }, null, 2));
   else {
     console.log(`gap audit generated ${audit.generatedAt}`);
     for (const s of out) {
@@ -151,9 +183,11 @@ function main(argv = process.argv.slice(2)) {
       for (const u of s.notLive) console.log(`         - ${u}`);
       if (s.frequentMissing.length) console.log(`         frequent outlets with nothing for this show: ${s.frequentMissing.join(', ')}`);
     }
+    const count = (g) => out.filter((s) => s.grade === g).length;
+    console.log(`summary: ${out.length} show(s): PASS ${count('PASS')}, STALE ${count('STALE')}, FAIL ${count('FAIL')}, NO-AUDIT ${count('NO-AUDIT')}; OVERDUE vs the scheduler's own recheck promise: ${sched ? overdueCount : 'unknown (no checkpoint)'}`);
   }
   return argv.includes('--check') && out.some((s) => s.grade !== 'PASS') ? 1 : 0;
 }
 
 if (require.main === module) process.exitCode = main();
-module.exports = { gradeShow, main, displayGrade, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };
+module.exports = { gradeShow, main, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };

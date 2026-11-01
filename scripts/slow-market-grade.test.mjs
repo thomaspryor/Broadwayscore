@@ -56,3 +56,29 @@ test('frequentMissing: null row and bad URLs do not throw', () => {
 test('gradeShow: no row is NO-AUDIT', () => {
   assert.equal(gradeShow(null, 3).grade, 'NO-AUDIT');
 });
+
+// BRO-6751: OVERDUE reads the scheduler's own promise (real freshnessMsFor), never the grade.
+import { createRequire as _cr6751 } from 'node:module';
+const _req6751 = _cr6751(import.meta.url);
+const F6751 = _req6751('./lib/gap-audit-freshness.js');
+const { isOverdue, OVERDUE_GRACE_HOURS } = _req6751('./slow-market-grade.js');
+const N6751 = Date.parse('2026-11-01T12:00:00Z');
+const daysAgo = (d) => new Date(N6751 - d * 864e5).toISOString();
+
+test('isOverdue: closed clean last-year show is not overdue at 5 days (30-day promise), is at 31 days', () => {
+  const show = { id: 'x', category: 'broadway', status: 'closed', openingDate: '2026-03-01', closingDate: '2026-06-01' };
+  assert.equal(isOverdue(show, { at: daysAgo(5), gaps: 0, uncollected: 0 }, N6751, F6751), false);
+  assert.equal(isOverdue(show, { at: daysAgo(31), gaps: 0, uncollected: 0 }, N6751, F6751), true);
+});
+
+test('isOverdue: in-window slow-market show is overdue past its 20h daily promise + grace', () => {
+  const show = { id: 'y', category: 'off-broadway', status: 'open', openingDate: new Date(N6751 - 12 * 864e5).toISOString().slice(0, 10) };
+  const limitH = 20 + OVERDUE_GRACE_HOURS;
+  assert.equal(isOverdue(show, { at: new Date(N6751 - (limitH - 1) * 36e5).toISOString(), gaps: 0, uncollected: 0 }, N6751, F6751), false);
+  assert.equal(isOverdue(show, { at: new Date(N6751 - (limitH + 1) * 36e5).toISOString(), gaps: 0, uncollected: 0 }, N6751, F6751), true);
+});
+
+test('isOverdue: no checkpoint entry is overdue; unknown show is null', () => {
+  assert.equal(isOverdue({ id: 'z', category: 'broadway', status: 'open', openingDate: '2026-01-01' }, undefined, N6751, F6751), true);
+  assert.equal(isOverdue(undefined, { at: daysAgo(1) }, N6751, F6751), null);
+});
