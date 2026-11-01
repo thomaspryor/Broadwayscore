@@ -10,7 +10,8 @@
 
          The command refuses to run before 2026-11-04 (ET date): until the morning-digest label is
          booted out (config/mac-retired.json, 3-day grace) its own run does the autofix, and two
-         runs a day would double-file. Same preamble / env as the retired digest plist.
+         runs a day would double-file. Same preamble / env as the retired digest plist, including SYNC_TAG=digest: send-morning-digest.js
+         (DIGEST_SYNC_TAG, autofixShouldDryRun) only trusts refusal snapshots under that tag.
 
          Install:  cp scripts/launchd/com.broadwayscore.digest-autofix.plist ~/Library/LaunchAgents/
                    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.digest-autofix.plist
@@ -23,7 +24,7 @@
     <array>
         <string>/bin/bash</string>
         <string>-c</string>
-        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; export SYNC_TAG=digest-autofix &amp;&amp; bash scripts/lib/sync-audit-checkout.sh; [ "$(TZ=America/New_York date +%F)" \&gt; "2026-11-03" ] || { echo "digest-autofix: before 2026-11-04, the old digest job still does autofix"; exit 0; }; exec node scripts/send-morning-digest.js --autofix-only</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; export SYNC_TAG=digest &amp;&amp; bash scripts/lib/sync-audit-checkout.sh; [ "$(TZ=America/New_York date +%F)" \&gt; "2026-11-03" ] || { echo "digest-autofix: before 2026-11-04, the old digest job still does autofix"; exit 0; }; exec node scripts/send-morning-digest.js --autofix-only</string>
     </array>
     <key>StartCalendarInterval</key>
     <dict>

@@ -212,12 +212,14 @@ test('the tag the plist EXPORTS is the constant autofixShouldDryRun defaults to'
   // DIGEST_SYNC_TAG is a constant, and this test is what stops it drifting from
   // the tag the plist actually runs the gate under. The plist `export` is the
   // machine-readable declaration this assertion reads.
-  const raw = fs.readFileSync(path.join(LAUNCHD_DIR, 'com.broadwayscore.morning-digest.plist'), 'utf8');
+  // BRO-6764: the digest-autofix job (--autofix-only) runs the same autofix gate, so it must export the same tag.
+  for (const plistName of ['com.broadwayscore.morning-digest.plist', 'com.broadwayscore.digest-autofix.plist']) {
+  const raw = fs.readFileSync(path.join(LAUNCHD_DIR, plistName), 'utf8');
   const decoded = raw.replace(/&amp;/g, '&');
   const cmdMatch = decoded.match(/<string>-c<\/string>\s*<string>([^<]*)<\/string>/);
   assert.ok(cmdMatch, 'could not find the bash -c command string');
   const tagMatch = cmdMatch[1].match(/export SYNC_TAG=([A-Za-z0-9_-]+)/);
-  assert.ok(tagMatch, `morning-digest.plist must EXPORT SYNC_TAG so send-morning-digest.js can read it: ${cmdMatch[1]}`);
+  assert.ok(tagMatch, `${plistName} must EXPORT SYNC_TAG so send-morning-digest.js can read it: ${cmdMatch[1]}`);
   assert.equal(tagMatch[1], DIGEST_SYNC_TAG,
     `the plist runs the sync gate as SYNC_TAG=${tagMatch[1]}, but the digest checks for refusals under '${DIGEST_SYNC_TAG}' — they must be the same string`);
   assert.equal(
@@ -225,6 +227,7 @@ test('the tag the plist EXPORTS is the constant autofixShouldDryRun defaults to'
     true,
     'a refusal written under the plist\'s own tag must force dry-run',
   );
+  }
 });
 
 // BRO-6216: a retired launchd job never runs again, and only the owning job

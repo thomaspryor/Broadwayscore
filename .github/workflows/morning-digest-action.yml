@@ -140,6 +140,8 @@ jobs:
           echo "digest send exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, not published)"
           grep -E '^\[digest\] (Resend sent-today guard|sent to|refusing)' "$RUNNER_TEMP/digest.log" | sed -E 's/\(subject: .*$/(subject withheld)/; s/sent to [^ ]+/sent to owner/' || true
           if [ "$status" -eq 3 ]; then echo "Already sent today: nothing to do."; exit 0; fi
+          # Sent, then the content-invariant check set exit 1: the owner has the digest (the email itself carries the problem), so warn instead of a critical "digest failed" email.
+          if [ "$status" -eq 1 ] && grep -q '^\[digest\] sent to ' "$RUNNER_TEMP/digest.log"; then echo "::warning::Digest sent, but its content-invariant check failed (see the email)"; exit 0; fi
           exit "$status"
 
       - name: Notify on failure

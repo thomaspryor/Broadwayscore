@@ -52,7 +52,8 @@ test('digest workflow: the only send is owner-only, guarded, report-only; never 
   assert.match(WF, /send-morning-digest\.js --send-to-owner --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   assert.match(WF, /send-morning-digest\.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   // Already sent (exit 3) is green; every other nonzero stays red.
-  assert.match(WF, /if \[ "\$status" -eq 3 \]; then[^\n]*exit 0; fi\n\s+exit "\$status"/);
+  assert.match(WF, /if \[ "\$status" -eq 3 \]; then[^\n]*exit 0; fi\n/);
+  assert.match(WF, /\[ "\$status" -eq 1 \] && grep -q '\^\\\[digest\\\] sent to '[^\n]*exit 0; fi\n\s+exit "\$status"/);
   // The dry-run/compare steps never run on schedule or with send=true (they would pin to our own send).
   for (const name of ["Fetch today's Mac-sent digest", 'Pin snapshots', 'Build the digest (dry run']) {
     const step = steps.find((x) => x.includes(name));
