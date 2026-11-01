@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T01:33:14.719Z",
+  "timestamp": "2026-11-01T01:53:10.421Z",
   "stats": {
-    "totalReviews": 76998,
-    "alreadyFlagged": 21743,
+    "totalReviews": 77085,
+    "alreadyFlagged": 21745,
     "dateGuardCatches": 238,
-    "directorMismatch": 3252,
-    "tvFilmSignals": 2187,
+    "directorMismatch": 3258,
+    "tvFilmSignals": 2188,
     "londonSignals": 3522,
     "offBroadwaySignals": 722,
-    "yearMismatch": 324,
-    "noPublishDate": 8821
+    "yearMismatch": 326,
+    "noPublishDate": 8848
   },
   "findings": [
     {
@@ -1450,6 +1450,7 @@
     {
       "showId": "a-chorus-line-regional-2023",
       "file": "chicago-reader--kelly-kleiman.json",
+      "score": 66,
       "publishDate": "2023-09-14",
       "url": "https://chicagoreader.com/arts-culture/theater-review/the-love-language-of-dance/",
       "findings": [
@@ -2161,6 +2162,7 @@
     {
       "showId": "a-new-brain-regional-2025",
       "file": "allie-and-the-after-party--allie-bugajski.json",
+      "score": 74,
       "publishDate": "2025-09-02",
       "url": "https://www.allieandtheafterparty.com/reviews/pridearts-a-new-brain",
       "findings": [
@@ -2174,6 +2176,7 @@
     {
       "showId": "a-new-brain-regional-2025",
       "file": "stageandcinema--cj-fernandes.json",
+      "score": 89,
       "publishDate": "2025-08-28",
       "url": "https://stageandcinema.com/2025/08/28/a-new-brain-pridearts/",
       "findings": [
@@ -6777,6 +6780,19 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "onstage-colorado--alex-miller.json",
+      "publishDate": "2025-01-24",
+      "url": "https://onstagecolorado.com/back-to-the-future-the-musical-flies-into-the-buell-at-88-mph/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "rachelsreviewstheatre--unknown.json",
       "score": 74,
       "publishDate": "2026-06-11",
@@ -7568,6 +7584,7 @@
     {
       "showId": "becky-shaw-2026",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 81,
       "publishDate": "2026-04-22",
       "url": "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html",
       "findings": [
@@ -7742,6 +7759,19 @@
       "file": "chicagotribune--collin-mccarthy.json",
       "publishDate": "2025-03-10",
       "url": "https://wgnradio.com/wgn-plus/steve-dales-other-world/beetlejuice-the-musical-is-back-by-popular-demand/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2022 (0x). 2025 matches production: beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "edmonton-journal--unknown.json",
+      "publishDate": "2025-01-15",
+      "url": "https://edmontonjournal.com/entertainment/review-beetlejuice-the-musical-edmonton-jubliee-auditorium",
       "findings": [
         {
           "type": "YEAR_MISMATCH",
@@ -11304,6 +11334,7 @@
     {
       "showId": "cats-the-jellicle-ball-2026",
       "file": "the-interested-bystander--interested-bystander.json",
+      "score": 82,
       "publishDate": "2026-04-09",
       "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
       "findings": [
@@ -12425,6 +12456,7 @@
     {
       "showId": "choir-boy-regional-2022",
       "file": "buzznews--wesley-david.json",
+      "score": 89,
       "publishDate": "2022-06-29",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5007-visually-and-audibly-beautiful-choir-boy.html",
       "findings": [
@@ -15627,6 +15659,19 @@
     },
     {
       "showId": "dear-evan-hansen-tour-2024",
+      "file": "onstage-colorado--leila-einhorn.json",
+      "publishDate": "2025-01-26",
+      "url": "https://onstagecolorado.com/revisiting-dear-evan-hansen-in-a-post-pandemic-world/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: dear-evan-hansen-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "dear-evan-hansen-tour-2024",
       "file": "the-show-report--theshowreport.json",
       "score": 90,
       "publishDate": "2025-02-15",
@@ -17168,6 +17213,7 @@
     {
       "showId": "diana-regional-2025",
       "file": "broadwayworld--misha-davenport.json",
+      "score": 62,
       "publishDate": "2025-06-02",
       "url": "https://www.broadwayworld.com/chicago/article/Review-DIANA-at-Theo-Ubique-20250602",
       "findings": [
@@ -19041,6 +19087,7 @@
     {
       "showId": "endgame-regional-2025",
       "file": "chicagotribune--emily-mcclanathan.json",
+      "score": 77,
       "publishDate": "2025-05-27",
       "url": "https://www.chicagotribune.com/2025/05/27/review-in-endgame-at-facility-theatre-reality-and-dystopia-wash-together/",
       "findings": [
@@ -24740,6 +24787,7 @@
     {
       "showId": "good-people-regional-2026",
       "file": "wernerstheatrereviews--emily-werner.json",
+      "score": 81,
       "publishDate": "2026-07-21",
       "url": "https://wernerstheatrereviews.wordpress.com/2026/07/21/4-chairs-theatres-good-people-delivers-a-timely-story-of-empathy-and-survival/",
       "findings": [
@@ -25857,6 +25905,7 @@
     {
       "showId": "gypsy-regional-2023",
       "file": "chicagotribune--chris-jones.json",
+      "score": 81,
       "publishDate": "2023-08-31",
       "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gypsy-marriott-theatre-review-20230831-nbqlidsrobbarhyjsuouhpzode-story.html",
       "findings": [
@@ -25870,6 +25919,7 @@
     {
       "showId": "gypsy-regional-2023",
       "file": "lifeandtimes--rikki-lee-travolta.json",
+      "score": 91,
       "publishDate": "2023-09-01",
       "url": "https://lifeandtimes.biz/2023/09/01/marriott-theatre-gets-everything-right-with-emotional-showstopper-gypsy/",
       "findings": [
@@ -26565,6 +26615,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "the-dallas-morning-news--manuel-mendoza.json",
+      "publishDate": "2025-02-20",
+      "url": "https://www.dallasnews.com/arts-entertainment/2025/02/20/as-tour-arrives-in-dallas-three-reasons-hadestown-became-a-classic-broadway-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
         }
       ]
     },
@@ -38755,6 +38818,20 @@
       ]
     },
     {
+      "showId": "macbeth-1981",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 43,
+      "publishDate": "1981-01-22",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=KP97EE",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from macbeth-2022"
+        }
+      ]
+    },
+    {
       "showId": "macbeth-2013",
       "file": "vulture--jesse-green.json",
       "score": 58,
@@ -40175,6 +40252,7 @@
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "talkinbroadway--james-wilson.json",
+      "score": 76,
       "publishDate": "2022-12-12",
       "url": "https://www.talkinbroadway.com/page/ob/12_12_22.html",
       "findings": [
@@ -43360,6 +43438,7 @@
     {
       "showId": "no-such-thing-regional-2025",
       "file": "chicagotribune--emily-mcclanathan.json",
+      "score": 75,
       "publishDate": "2025-04-03",
       "url": "https://www.chicagotribune.com/2025/04/03/review-no-such-thing-by-rivendell/",
       "findings": [
@@ -46727,6 +46806,24 @@
     },
     {
       "showId": "parade-tour-2025",
+      "file": "onefanshow--alex-lauer.json",
+      "publishDate": "2025-01-29",
+      "url": "https://onefanshow.com/2025/01/29/review-parade-offers-a-grim-history-lesson-on-first-stop-of-national-tour/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
       "file": "san-francisco-chronicle--zack-ruskin.json",
       "score": 78,
       "publishDate": "2025-05-23",
@@ -46797,6 +46894,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (4x) more than 2025 (2x). 2023 matches production: parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "theatermania--cameron-kelsall.json",
+      "publishDate": "2025-02-18",
+      "url": "https://www.theatermania.com/news/review-parade-grapples-with-a-legacy-of-bigotry-in-its-north-american-tour_1764216/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
         }
       ]
     },
@@ -47280,6 +47390,7 @@
     {
       "showId": "passion-regional-2025",
       "file": "around-the-town-chicago--mark-reinecke.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://aroundthetownchicago.com/theatre-reviews/passion-reviewed-by-mark-reinecke/",
       "findings": [
@@ -47293,6 +47404,7 @@
     {
       "showId": "passion-regional-2025",
       "file": "broadwayworld--zac-thriffiley.json",
+      "score": 78,
       "publishDate": "2025-07-22",
       "url": "https://www.broadwayworld.com/chicago/article/Review-PASSION-at-Blank-Theatre-Company-20250722",
       "findings": [
@@ -47306,6 +47418,7 @@
     {
       "showId": "passion-regional-2025",
       "file": "buzznews--john-accrocco.json",
+      "score": 85,
       "publishDate": "2025-07-17",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5940-review-blank-theatre-s-passion-at-greenhouse-theater-center.html",
       "findings": [
@@ -47319,6 +47432,7 @@
     {
       "showId": "passion-regional-2025",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 79,
       "publishDate": "2025-07-22",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/passion-blank-theatre-company/",
       "findings": [
@@ -47332,6 +47446,7 @@
     {
       "showId": "passion-regional-2025",
       "file": "chicago-theatre-review--kevin-curran.json",
+      "score": 91,
       "publishDate": "2025-07-17",
       "url": "https://www.chicagotheatrereview.com/2025/07/passion/",
       "findings": [
@@ -50818,6 +50933,7 @@
     {
       "showId": "queen-for-a-day-regional-2025",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 85,
       "publishDate": "2025-07-16",
       "url": "https://chicagoreader.com/performing-arts/theater/theater-review/queen-for-a-day-hell-in-a-handbag/",
       "findings": [
@@ -52934,6 +53050,7 @@
     {
       "showId": "side-by-side-by-sondheim-regional-2025",
       "file": "splash-magazines--mira-temkin.json",
+      "score": 88,
       "publishDate": "2025-09-05",
       "url": "https://chicago.splashmags.com/2025/09/side-by-side-by-sondheim-enjoy-a-musical-celebration-of-the-master/",
       "findings": [
@@ -55471,6 +55588,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "stand-up-if-youre-here-tonight-regional-2022",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/stand-up-if-youre-here-tonight/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -63010,6 +63140,7 @@
     {
       "showId": "the-f-ck-house-regional-2025",
       "file": "third-coast-review--nancy-s-bishop.json",
+      "score": 69,
       "publishDate": "2025-09-02",
       "url": "https://thirdcoastreview.com/stages/2025/09/02/review-strawdog-theatre-the-fck-house",
       "findings": [
@@ -66303,6 +66434,7 @@
     {
       "showId": "the-lifespan-of-a-fact-regional-2025",
       "file": "buzznews--mitchell-oldham.json",
+      "score": 90,
       "publishDate": "2025-03-21",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5813-the-search-for-truth-turns-to-war-in-oil-lamp-s-outstanding-the-lifespan-of-a-fact.html",
       "findings": [
@@ -78092,6 +78224,7 @@
     {
       "showId": "white-rabbit-red-rabbit-regional-2025",
       "file": "buzznews--bree-samani.json",
+      "score": 86,
       "publishDate": "2025-07-10",
       "url": "https://www.buzznews.net/theatre/theatre-reviews/item/5934-review-in-white-rabbit-red-rabbit-the-audience-becomes-the-play.html",
       "findings": [
@@ -84268,7 +84401,7 @@
     {
       "showId": "ballad-lines-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 92,
       "publishDate": "2026-01-30",
       "url": "https://theatreandtonic.co.uk/blog/ballad-lines-at-southwark-playhouse-elephant-review",
       "findings": [
@@ -89553,19 +89686,6 @@
       "score": 98,
       "publishDate": "October 23rd, 2023",
       "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-prince-edward-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "dear-england-west-end-2023",
-      "file": "standard--nick-curtis.json",
-      "publishDate": "2023-09-26",
-      "url": "https://www.standard.co.uk/culture/theatre/dear-england-national-theatre-review-james-graham-gareth-southgate-harry-kane-b1089139.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -119229,7 +119349,7 @@
     {
       "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 65,
       "publishDate": "2026-05-17",
       "url": "https://theatreandtonic.co.uk/blog/the-boy-who-harnessed-the-wind-sohoplace-review",
       "findings": [
@@ -132914,6 +133034,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "written-on-the-heart-west-end-2012",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": null,
+      "publishDate": "2012-04-24",
+      "url": "https://www.whatsonstage.com/news/written-on-the-heart-west-end_4617/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
