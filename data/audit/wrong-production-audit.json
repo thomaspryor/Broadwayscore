@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T09:45:57.098Z",
+  "timestamp": "2026-11-01T10:07:08.377Z",
   "stats": {
-    "totalReviews": 78245,
-    "alreadyFlagged": 21743,
+    "totalReviews": 78246,
+    "alreadyFlagged": 21747,
     "dateGuardCatches": 242,
-    "directorMismatch": 3320,
+    "directorMismatch": 3323,
     "tvFilmSignals": 2214,
     "londonSignals": 3540,
     "offBroadwaySignals": 729,
     "yearMismatch": 328,
-    "noPublishDate": 9103
+    "noPublishDate": 9082
   },
   "findings": [
     {
@@ -26243,6 +26243,19 @@
       "score": 81,
       "publishDate": "2023-08-31",
       "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gypsy-marriott-theatre-review-20230831-nbqlidsrobbarhyjsuouhpzode-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "daily-herald--barbara-vitello.json",
+      "publishDate": "2023-08-31",
+      "url": "https://www.dailyherald.com/entlife/20230831/what-a-homecoming-broadway-vet-lucia-spina-dazzles-in-marriotts-outstanding-gypsy",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53393,6 +53406,20 @@
     },
     {
       "showId": "shrek-the-musical-west-end-2011",
+      "file": "gramilano--unknown.json",
+      "score": null,
+      "publishDate": "2011-06-16",
+      "url": "https://www.gramilano.com/2011/06/critics-round-up-shrek-the-musical-opens-in-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jason moore\" from shrek-the-musical-2008"
+        }
+      ]
+    },
+    {
+      "showId": "shrek-the-musical-west-end-2011",
       "file": "guardian--michael-billington.json",
       "publishDate": "2011-06-14",
       "url": "https://www.theguardian.com/stage/2011/jun/14/shrek-the-musical-review",
@@ -62919,6 +62946,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-incident-of-the-dog-in-the-night-time-regional-2024",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2024-04-03",
+      "url": "https://chicagoreader.com/arts-culture/theater/theater-review/curious-incident-of-the-dog-in-the-nighttime-madkap-productions/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marianne elliott\" from the-curious-incident-of-the-dog-in-the-nighttime-2014"
         }
       ]
     },
