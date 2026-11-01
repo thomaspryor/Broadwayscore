@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-31T23:56:02.338Z",
+  "timestamp": "2026-11-01T00:09:39.432Z",
   "stats": {
-    "totalReviews": 76675,
-    "alreadyFlagged": 21735,
+    "totalReviews": 76725,
+    "alreadyFlagged": 21736,
     "dateGuardCatches": 238,
-    "directorMismatch": 3247,
-    "tvFilmSignals": 2178,
+    "directorMismatch": 3249,
+    "tvFilmSignals": 2182,
     "londonSignals": 3520,
     "offBroadwaySignals": 721,
     "yearMismatch": 323,
-    "noPublishDate": 8698
+    "noPublishDate": 8708
   },
   "findings": [
     {
@@ -6563,6 +6563,45 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "bachelor-the-unauthorized-musical-parody-regional-2022",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/bachelor-the-unauthorized-parody-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "bachelor-the-unauthorized-musical-parody-regional-2022",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": "2022-01-20",
+      "url": "https://www.broadwayworld.com/chicago/article/BWW-Review-BACHELOR-THE-UNAUTHORIZED-PARODY-MUSICAL-at-Apollo-Theater-20220120",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "bachelor-the-unauthorized-musical-parody-regional-2022",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2022-01-20",
+      "url": "https://www.chicagotheatrereview.com/2022/01/who-will-get-the-final-rose/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -25748,6 +25787,32 @@
       "score": 77,
       "publishDate": null,
       "url": "https://chicagotheaterandarts.com/2023/09/01/everything-is-coming-up-roses-for-gypsy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-08-31",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gypsy-marriott-theatre-review-20230831-nbqlidsrobbarhyjsuouhpzode-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-regional-2023",
+      "file": "lifeandtimes--rikki-lee-travolta.json",
+      "publishDate": "2023-09-01",
+      "url": "https://lifeandtimes.biz/2023/09/01/marriott-theatre-gets-everything-right-with-emotional-showstopper-gypsy/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53164,6 +53229,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jamie armitage\" from six-2021"
+        }
+      ]
+    },
+    {
+      "showId": "skates-regional-2022",
+      "file": "new-city-stage--brian-hieggelke.json",
+      "publishDate": "2022-06-09",
+      "url": "https://www.newcitystage.com/2022/06/09/all-alone-in-the-moonlight-a-review-of-skates-at-studebaker-theater/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
