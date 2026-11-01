@@ -7182,7 +7182,49 @@
       "archivedAt": "2026-11-01T14:16:50.780Z",
       "archivedReason": "unverified-figure",
       "archivedDetail": "no trusted cited page states the capitalization figure"
+    },
+    "unverified:much-ado-about-nothing": {
+      "capitalization": 7500000,
+      "capitalizationSource": "SEC Form D for JLC Much Ado Limited Partnership; filing states total offering amount $7.5M and clarifies maximum capitalization $7.5M, minimum capitalization $6.0M.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
+      "recoupedDate": null,
+      "recoupedSource": null,
+      "estimatedRecoupmentPct": null,
+      "designation": "TBD",
+      "notes": "Public SEC filing shows a $7.5M max capitalization ($6.0M minimum). I could not verify a public weekly nut. Broadway League lists the show in previews, so recoupment is still too early to tell.",
+      "confidence": "medium",
+      "sources": [
+        {
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/2133246/000213324626000001/xslFormDX01/primary_doc.xml",
+          "date": "2026-05-27"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.broadwayworld.com/article/when-broadway-finance-becomes-public-record-how-sec-filings-reveal-multi-million-dollar-fundraising-moves-20260912",
+          "date": "2026-09-12"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.broadway.org/shows/much-ado-about-nothing",
+          "date": null
+        }
+      ],
+      "title": "Much Ado About Nothing",
+      "slug": "much-ado-about-nothing",
+      "openingDate": "2026-11-19",
+      "status": "previews",
+      "researchedAt": "2026-10-31T21:52:26.010Z",
+      "model": "gpt-5.4-mini",
+      "researchTrigger": "backlog",
+      "sourceVerifyAttempts": 2,
+      "pendingKey": "much-ado-about-nothing",
+      "archivedAt": "2026-11-01T16:07:11.604Z",
+      "archivedReason": "unverified-figure",
+      "archivedDetail": "a cited page could not be fetched on 3 runs (capitalization unchecked)"
     }
   },
-  "lastUpdated": "2026-11-01T14:16:50.780Z"
+  "lastUpdated": "2026-11-01T16:07:11.604Z"
 }
