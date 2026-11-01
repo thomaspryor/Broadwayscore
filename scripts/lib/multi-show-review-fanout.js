@@ -670,6 +670,11 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   return sections;
 }
 
+// A section's lede (caption + first sentence) may hand over from the previous
+// show with a contrast word: "Whereas sentiment abounds at A, it's scarce at B".
+const HANDOVER_LEAD_CHARS = 330;
+const HANDOVER_WORD_RE = /\b(?:Whereas|While|Unlike|By contrast|In contrast|Where)\b/;
+
 // "How Shakespeare Saved My Life is at the Public Theater through October 25."
 const RUN_LISTING_RE = /[^.!?\n]{0,160}\bis (?:at|playing at|running at|now at|in performance at)\b[^.!?\n]{0,120}\b(?:through|until|to)\b[^.!?\n]{0,60}\.?/gi;
 
@@ -682,7 +687,14 @@ const RUN_LISTING_RE = /[^.!?\n]{0,160}\bis (?:at|playing at|running at|now at|i
  * has the same rule. Closing run listings ("X is at ... through ...") are
  * ignored.
  */
+// Vulture-style footer: "... Tags: vulture section lede theater review ... Most Viewed Stories ...".
+function cutTagsFooter(text) {
+  const at = text.lastIndexOf(' Tags: ');
+  return at > text.length / 2 ? text.slice(0, at) : text;
+}
+
 function captionSectionsCrossTalk(sections, shows) {
+  let talk = false;
   const byId = new Map(shows.map((sh) => [sh.id, sh]));
   const matchers = new Map();
   for (const sec of sections) {
@@ -690,20 +702,29 @@ function captionSectionsCrossTalk(sections, shows) {
     const m = show && buildShowMatcher(show);
     if (m) matchers.set(sec.showId, m);
   }
-  for (const sec of sections) {
-    const body = String(sec.sectionText || '').replace(RUN_LISTING_RE, ' ');
+  sections.forEach((sec, i) => {
+    // The page footer (tags, headline, newsletter chrome) names every show too.
+    let body = cutTagsFooter(String(sec.sectionText || '')).replace(RUN_LISTING_RE, ' ');
+    // A double review hands over from one show to the next in the new
+    // section's lede ("Whereas sentiment abounds at Night Side Songs, it's in
+    // short supply at Bigfoot!", BRO-6744): the opening sentence may name the
+    // previous show without the essay being interwoven.
+    if (i > 0 && HANDOVER_WORD_RE.test(body.slice(0, HANDOVER_LEAD_CHARS))) body = body.slice(HANDOVER_LEAD_CHARS);
     for (const [id, m] of matchers) {
       if (id === sec.showId) continue;
-      if (countMatches(m.any, body) > 0) return true;
+      if (countMatches(m.any, body) > 0) talk = true;
     }
-  }
-  return false;
+  });
+  return talk;
 }
 
 // "Broadway: Chess At the Imperial Theatre": the review-header line The
 // Interested Bystander (and sibling blog-style columns) opens every show's
 // section with, after a "Title (c) Photographer" caption (BRO-6744).
 const HEADER_RE = /(?:Broadway|Off[- ]Broadway|Theat(?:er|re)|West End|Opera|Dance|Concert|Cabaret)\s*:\s*([^\n]{2,90}?)\s+At\s+(?:the\s+)?[A-Z]/g;
+// "Becky Shaw . Open run at Second Stage's Hayes Theater (...). ***½" : La Voce
+// di New York's per-show line, a title then a run note after a spaced period.
+const LISTING_HEAD_RE = /([A-Z][\w'’:&,\- ]{1,80}?)\s\.\s+(?:Through|Open run|Limited run|Now playing|Extended through|Closes|Closing)\b/g;
 const HEADER_REF_WINDOW_DAYS = 300;
 
 /**
@@ -718,14 +739,28 @@ function headerSections(text, shows, ownShowId, publishDate) {
   const ownShow = shows.find((s) => s.id === ownShowId) || null;
   if (!ownShow) return none;
   const heads = [];
-  HEADER_RE.lastIndex = 0;
-  let hm;
-  while ((hm = HEADER_RE.exec(text))) heads.push({ at: hm.index, end: hm.index + hm[0].length, title: hm[1].trim() });
+  for (const re of [HEADER_RE, LISTING_HEAD_RE]) {
+    re.lastIndex = 0;
+    let hm;
+    while ((hm = re.exec(text))) heads.push({ at: hm.index, end: hm.index + hm[0].length, title: hm[1].trim(), listing: re === LISTING_HEAD_RE });
+  }
+  // One header style per article: a post mixing both is not a column we can cut.
+  if (new Set(heads.map((h) => h.listing)).size > 1) return none;
+  heads.sort((a, b) => a.at - b.at);
   if (heads.length < 2) return none;
-  // Pull each header back over its "<Title> (c) Photographer" caption.
+  // Pull each header back over the photo that opens its section: a
+  // "<Title> (c) Photographer" caption, or a WordPress [caption]...[/caption].
   heads.forEach((h, i) => {
     h.start = h.at;
     const floor = i ? heads[i - 1].end : 0;
+    const before = text.slice(floor, h.at);
+    if (h.listing) {
+      if (/\[\/caption\]\s*$/.test(before)) {
+        const open = before.lastIndexOf('[caption');
+        if (open >= 0) h.start = floor + open;
+      }
+      return;
+    }
     const winStart = Math.max(floor, h.at - 220);
     const win = text.slice(winStart, h.at);
     const j = win.lastIndexOf('(c)');
@@ -848,7 +883,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
   if (sections.length < 2 && !trimOnly) return null;
   // The last section carries the page footer (newsletter/subscribe chrome).
   const { stripTrailingJunk } = require('./text-cleaning');
-  sections = sections.map((sec) => ({ ...sec, sectionText: stripTrailingJunk(sec.sectionText) || sec.sectionText }));
+  sections = sections.map((sec) => ({ ...sec, sectionText: stripTrailingJunk(cutTagsFooter(sec.sectionText)) || sec.sectionText }));
   const ownSection = sections.find((s) => s.showId === ownShowId);
   if (!ownSection) return null;
   const otherSections = sections.filter((s) => s.showId !== ownShowId);

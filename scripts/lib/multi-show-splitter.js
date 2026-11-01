@@ -191,7 +191,14 @@ function findCaptionAnchors(text, shows) {
       `\\b(?:in|of|with)\\s+["“”'](?:${titleAlt})[",”’'\\s]*[,]\\s*[",”’'\\s]*[A-Z]`,
       'i'
     );
-    showVariants.push({ show, reVenue, reDescriptor });
+    // Pattern C (BRO-6744): the caption is just "<cast> in <Title>" or
+    // "From <Title>" and ends at the credit. Vulture's double reviews:
+    // "Grey Henson and Katerina McCrimmon in Bigfoot! Photo: ...".
+    const reTail = new RegExp(
+      `\\b(?:in|from)\\s+["“”']?(?:${titleAlt})["“”']?[\\s.!,]*$`,
+      'i'
+    );
+    showVariants.push({ show, reVenue, reDescriptor, reTail });
   }
 
   const anchors = [];
@@ -213,9 +220,13 @@ function findCaptionAnchors(text, shows) {
     // Find all shows named in this caption window via production-credit
     // anchors.
     const matches = [];
+    let tailOnly = null;
     for (const sv of showVariants) {
       if (sv.reVenue.test(caption) || sv.reDescriptor.test(caption)) {
         matches.push(sv.show);
+      } else if (sv.reTail.test(caption)) {
+        matches.push(sv.show);
+        tailOnly = sv;
       }
     }
 
@@ -223,8 +234,18 @@ function findCaptionAnchors(text, shows) {
     // ambiguous (which show does the next section belong to?) and zero-show
     // captions are just generic photo credits with no production attribution.
     if (matches.length === 1) {
+      let position = captionStart;
+      if (tailOnly) {
+        // The caption is the last sentence before the credit; flattened text
+        // has no paragraph break, so cut at the previous sentence end.
+        const tm = tailOnly.reTail.exec(caption);
+        const ends = [...caption.slice(0, tm.index).matchAll(/[.!?]["”’)]?\s+(?=[A-Z“"])/g)];
+        const last = ends[ends.length - 1];
+        position = captionStart + (last ? last.index + last[0].length : 0);
+      }
       anchors.push({
-        position: captionStart,
+        position,
+        exact: !!tailOnly,
         kind: 'caption',
         creditPosition: credit.position,
         showId: matches[0].id,
@@ -458,9 +479,10 @@ function splitMultiShowArticle(text, showsList, options = {}) {
     // Find the paragraph boundary at-or-before this anchor.
     // Look back for double-newline (\n\n) or large whitespace gap; fall back to
     // the previous newline if none found.
-    const sectionStart = findParagraphStart(text, cur.primary.position);
+    const startOf = (a) => (a.exact ? a.position : findParagraphStart(text, a.position));
+    const sectionStart = startOf(cur.primary);
     const sectionEnd = next
-      ? findParagraphStart(text, next.primary.position)
+      ? startOf(next.primary)
       : text.length;
 
     const sectionText = text.slice(sectionStart, sectionEnd).trim();

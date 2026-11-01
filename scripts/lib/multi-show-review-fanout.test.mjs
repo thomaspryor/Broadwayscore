@@ -852,3 +852,40 @@ test('header: a same-title revival outside the date window is not picked for a s
   assert.ok(plan && plan.trimOnly);
   assert.equal(plan.otherSections.length, 0);
 });
+
+test('listing-line headers (La Voce) and "cast in Title" captions (Vulture double review) split per show', () => {
+  const shows = [
+    { id: 'every-brilliant-thing-2026', title: 'Every Brilliant Thing', category: 'broadway', openingDate: '2026-03-30' },
+    { id: 'becky-shaw-2026', title: 'Becky Shaw', category: 'broadway', openingDate: '2026-04-09' },
+  ];
+  const text = `Two plays treat grief differently. ${filler('intro', 3)} Every Brilliant Thing . Through June 28 at the Hudson Theatre (141 West 44th Street). *****/***** (five stars out of five) ${filler('brilliant', 12)} `
+    + `[caption id="a1" align="aligncenter" width="940"] Lauren Patten. Photo by Marc J. Franklin[/caption] Becky Shaw . Open run at Second Stage’s Hayes Theater (240 West 44th Street). ***½ /***** (3.5 stars out of five) ${filler('shaw', 12)}`;
+  const plan = planMultiShowFanout({ showId: 'every-brilliant-thing-2026', contentTier: 'complete', publishDate: '2026-04-14', fullText: text }, shows);
+  assert.ok(plan, 'expected a listing-header split');
+  assert.equal(plan.strategy, 'header');
+  assert.equal(plan.otherSections[0].showId, 'becky-shaw-2026');
+  assert.ok(plan.otherSections[0].sectionText.startsWith('[caption'), 'the photo caption travels with its section');
+  assert.ok(!/brilliant sequence/.test(plan.otherSections[0].sectionText));
+
+  const vshows = [
+    { id: 'night-side-songs-off-broadway-2026', title: 'Night Side Songs', category: 'off-broadway', openingDate: '2026-03-02' },
+    { id: 'bigfoot-off-broadway-2026', title: 'Bigfoot!', category: 'off-broadway', openingDate: '2026-03-12' },
+  ];
+  const v = `From Night Side Songs . Photo: Marc J. Franklin ${filler('night', 14)} Grey Henson and Katerina McCrimmon in Bigfoot! Photo: Marc J. Franklin `
+    + `Whereas sentiment is in abundance at Night Side Songs , it’s in short supply at Bigfoot! , a musical comedy. ${filler('sketch', 14)} Night Side Songs is at Lincoln Center Theater through March 29. Bigfoot! is at New York City Center through April 26. Tags: vulture theater review night side songs bigfoot! More Show Comment`;
+  const vp = planMultiShowFanout({ showId: 'night-side-songs-off-broadway-2026', contentTier: 'complete', fullText: v }, vshows);
+  assert.ok(vp, 'expected a caption split of the double review');
+  assert.equal(vp.otherSections[0].showId, 'bigfoot-off-broadway-2026');
+  assert.ok(vp.otherSections[0].sectionText.startsWith('Grey Henson'));
+  assert.ok(!/Tags:/.test(vp.otherSections[0].sectionText));
+  assert.ok(!/night sequence/.test(vp.otherSections[0].sectionText));
+});
+
+test('an interwoven essay still blocks the caption split (mentions beyond the hand-over lede)', () => {
+  const vshows = [
+    { id: 'night-side-songs-off-broadway-2026', title: 'Night Side Songs', category: 'off-broadway', openingDate: '2026-03-02' },
+    { id: 'bigfoot-off-broadway-2026', title: 'Bigfoot!', category: 'off-broadway', openingDate: '2026-03-12' },
+  ];
+  const v = `From Night Side Songs . Photo: Marc J. Franklin ${filler('night', 14)} Grey Henson in Bigfoot! Photo: Marc J. Franklin Whereas sentiment abounds at Night Side Songs , it is scarce at Bigfoot! ${filler('sketch', 6)} Compare the choir in Night Side Songs again here. ${filler('more', 6)}`;
+  assert.equal(planMultiShowFanout({ showId: 'night-side-songs-off-broadway-2026', contentTier: 'complete', fullText: v }, vshows), null);
+});
