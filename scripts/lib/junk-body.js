@@ -31,6 +31,7 @@ const BANNER_MIN_SHARE = 0.25;
 const BANNER_MIN_SENTENCES = 8;
 const CLEAN_MAX_SHARE = 0.1;
 const CLEAN_MIN_CHARS = 300;
+const BANNER_CLEAN_MIN_CHARS = 1000;
 
 function consentShare(text) {
   const t = typeof text === 'string' ? text : '';
@@ -65,14 +66,6 @@ function junkBodyReason(text) {
   return null;
 }
 
-/** Chars of the stored body that are NOT consent-vocabulary sentences. */
-function residualArticleLength(text) {
-  const sentences = String(text || '').split(/(?<=[.!?])\s+|\n+/).filter((x) => x.trim());
-  let n = 0;
-  for (const x of sentences) if (!CONSENT_SENTENCE_RE.test(x)) n += x.length;
-  return n;
-}
-
 /**
  * True when `incomingText` is a clean article and `storedText` is a page dump.
  * Both halves are required: a junk fetch never replaces a junk body, and a
@@ -88,10 +81,11 @@ function isCleanReplacementForJunk(storedText, incomingText) {
   if (next.length < CLEAN_MIN_CHARS) return false;
   if (junkBodyReason(next)) return false;
   if (consentShare(next).share > CLEAN_MAX_SHARE) return false;
-  // A banner glued to a FULL article must not lose that article to a teaser:
-  // the incoming body has to keep most of what the stored body held besides the
-  // banner (raw HTML holds no article, so it has no such floor).
-  if (why === 'consent-banner' && next.length < 0.8 * residualArticleLength(storedText)) return false;
+  // A banner glued to the article must not lose it to a paywall teaser or a
+  // lede: a stored banner body can hold the whole review, so a banner-type
+  // replacement needs review-sized text (raw HTML holds no article, so it
+  // keeps the 300-char floor).
+  if (why === 'consent-banner' && next.length < BANNER_CLEAN_MIN_CHARS) return false;
   const { isGarbageContent } = require('./content-quality');
   return !isGarbageContent(next).isGarbage;
 }

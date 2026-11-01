@@ -31,7 +31,7 @@ const BANNER = [
 const ARTICLE = 'The staging of this invented musical is brisk and the lead performance carries the evening with real warmth. '
   + 'The score leans on repetition, and the second act loses its shape before a late recovery. '
   + 'The design is handsome and the band sits well in the mix, though the book never earns its final turn. '
-  + 'A mixed but watchable night at the theatre, with a few songs that stay in the head. '.repeat(3);
+  + 'A mixed but watchable night at the theatre, with a few songs that stay in the head. '.repeat(14);
 const HTML = '<!DOCTYPE html><html><head><title>x</title></head><body>'
   + '<div class="a"><span>menu</span><a href="/x">link</a></div>'.repeat(400) + '</body></html>';
 
