@@ -2064,21 +2064,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-01T04:06:25.121Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +12 more). Checked 2026-11-01.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T04:49:47.274Z"
+    "queuedAt": "2026-11-01T04:55:58.849Z"
   },
   {
     "conditionKey": "land:land/bro-5641-recouped-label",
