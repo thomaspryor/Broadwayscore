@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6742-g2",
   "planId": "cd904472-24fa-4c12-aef3-1669a6919ecf",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T04:27:33.351Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "args": "--show=martin-guerre-west-end-2026 --url=https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T05:13:51.705Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
