@@ -1721,8 +1721,10 @@ function commercialSection() {
     <tr><td style="padding:4px 16px;">
       <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0">${rows}</table>
     </td></tr>
+    ${seeAllLink(`${SITE}/biz`, 'See the Profitability Scorecard')}
   </table>`;
-  return sectionWrap(sectionHeading('Recoupment', 'Broadway'), body);
+  // BRO-6772: named after the /biz page it links to (was "Recoupment").
+  return sectionWrap(sectionHeading('Profitability Scorecard', 'Broadway'), body);
 }
 
 // SECTION: closing (next 7d from weekEnd)

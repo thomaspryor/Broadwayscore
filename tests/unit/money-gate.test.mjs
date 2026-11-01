@@ -114,6 +114,8 @@ test('email links to the owner\'s list (?subscriber=1) unlock on any page and ar
   assert.equal(gate.isListLink(search), true, 'a tagged list email link unlocks');
   // Only emails to the owner's list opt in.
   assert.match(read('scripts/newsletter/generate.mjs'), /applyUtm\(html, \{.*listLink: true/);
+  // The Sunday email's money section points readers at /biz under the page's own name.
+  assert.match(read('scripts/newsletter/generate.mjs'), /seeAllLink\(`\$\{SITE\}\/biz`[\s\S]{0,200}sectionHeading\('Profitability Scorecard'/);
   assert.match(read('scripts/send-opening-night-broadcast.js'), /applyUtm\(html, \{.*listLink: true/);
   for (const f of ['scripts/send-btc-results.js', 'scripts/send-btc-confirmation-emails.js', 'scripts/fantasy-weekly-email.js']) {
     assert.doesNotMatch(read(f), /listLink/, `${f} goes to people not on the list`);
