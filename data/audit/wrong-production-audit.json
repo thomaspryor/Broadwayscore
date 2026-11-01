@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T01:14:25.576Z",
+  "timestamp": "2026-11-01T01:33:14.719Z",
   "stats": {
-    "totalReviews": 76955,
-    "alreadyFlagged": 21742,
+    "totalReviews": 76998,
+    "alreadyFlagged": 21743,
     "dateGuardCatches": 238,
     "directorMismatch": 3252,
-    "tvFilmSignals": 2185,
+    "tvFilmSignals": 2187,
     "londonSignals": 3522,
-    "offBroadwaySignals": 721,
+    "offBroadwaySignals": 722,
     "yearMismatch": 324,
-    "noPublishDate": 8810
+    "noPublishDate": 8821
   },
   "findings": [
     {
@@ -77945,6 +77945,34 @@
       ]
     },
     {
+      "showId": "when-harry-met-rehab-regional-2021",
+      "file": "around-the-town-chicago--alan-bresloff.json",
+      "score": 90,
+      "publishDate": null,
+      "url": "http://www.aroundthetownchicago.com/theatre-reviews/when-harry-met-rehab/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "when-harry-met-rehab-regional-2021",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 87,
+      "publishDate": "2021-12-07",
+      "url": "https://www.chicagotheatrereview.com/2021/12/fun-facts-amid-fearlessness/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "when-we-have-sufficiently-tortured-each-other-west-end-2019",
       "file": "britishtheatrecom--paul-t-davies.json",
       "score": 32,
@@ -99738,6 +99766,20 @@
       "score": 92,
       "publishDate": "2017-04-18",
       "url": "http://www.theatermania.com/broadway/reviews/indecent_80762.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "indecent-2017",
+      "file": "timeout--adam-feldman.json",
+      "score": 90,
+      "publishDate": "2017-05-09",
+      "url": "https://www.timeout.com/newyork/theater/indecent-1",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
