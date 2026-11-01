@@ -1793,16 +1793,8 @@
     "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
     "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
     "murder-cathedral-off-west-end-2026/plays-to-see--tim-hochstrasser.json",
-    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
-    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
-    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
-    "girls-off-west-end-2026/radio-times--molly-moss.json",
-    "memoriam-off-west-end-2026/letterboxd--unknown.json",
-    "roleplay-off-west-end-2026/british-theatre--keith-mckenna.json",
-    "roleplay-off-west-end-2026/british-theatre--unknown.json",
-    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json"
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3368,7 +3360,7 @@
     ]
   },
   "startTime": "2026-11-01T03:36:50.252Z",
-  "lastProcessed": "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
   "log": [
     {
       "t": "2026-11-01T04:08:37.792Z",
@@ -3550,34 +3542,37 @@
       "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     },
     {
-      "t": "2026-11-01T23:34:48.847Z",
+      "t": "2026-11-01T23:41:59.240Z",
       "event": "bb-session",
-      "session": "c1364d0a",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "session": "fb401ddc",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
     },
     {
-      "t": "2026-11-01T23:36:01.225Z",
-      "event": "bb-session",
-      "session": "7677da62",
-      "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational"
+      "t": "2026-11-01T23:42:00.127Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-01T23:37:14.017Z",
+      "t": "2026-11-01T23:48:45.090Z",
       "event": "bb-session",
-      "session": "78deb5c1",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "e383830f",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
     },
     {
-      "t": "2026-11-01T23:39:18.381Z",
-      "event": "bb-session",
-      "session": "d63b4aa2",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "t": "2026-11-01T23:48:45.995Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-01T23:40:24.796Z",
+      "t": "2026-11-01T23:48:56.421Z",
       "event": "bb-session",
-      "session": "b643d412",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "2fcdd89c",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-11-01T23:48:57.314Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [
