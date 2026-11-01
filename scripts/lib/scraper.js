@@ -1881,8 +1881,11 @@ async function fetchJSON(url, options = {}) {
   // /api/calendar call re-tried SD 400 -> SD stealth 500 -> SB 500 (~40s) before
   // Bright Data answered; 8 weekly calls ate ~5.5 of update-lottery-rush's 10
   // job minutes and the 2026-10-29 run was cancelled by the job timeout.
+  // Own namespace ('json:' prefix): JSON endpoints use different SD/SB requests
+  // and a different chain (BD is the last resort) than fetchPage, so a latch
+  // learned on HTML pages must not strip fetchJSON's last tier or vice versa.
   let memoHost = null;
-  try { memoHost = new URL(url).hostname.replace(/^www\./, ''); } catch { /* malformed: no memo */ }
+  try { memoHost = 'json:' + new URL(url).hostname.replace(/^www\./, ''); } catch { /* malformed: no memo */ }
   if (!RUN_MEMO_DISABLED && memoHost) {
     for (const tier of _runMemo.skippedTiers(memoHost)) skips.add(tier);
   }

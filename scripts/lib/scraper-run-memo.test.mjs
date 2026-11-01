@@ -274,8 +274,8 @@ test('fetchJSON: SD and SB stop being called on a host once BD keeps recovering'
   assert.deepEqual(calls.slice(2).map((c) => c.sb), [0, 0, 0], stdout);
   assert.ok(calls.slice(0, 3).every((c) => c.sd > 0), `SD tried until it latches (3): ${stdout}`);
   assert.deepEqual(calls.slice(3).map((c) => c.sd), [0, 0], stdout);
-  assert.match(stdout, /run memo: scrapingbee failed 2x on memo-json-host\.example/);
-  assert.match(stdout, /run memo: scrapingdog failed 3x on memo-json-host\.example/);
+  assert.match(stdout, /run memo: scrapingbee failed 2x on json:memo-json-host\.example/);
+  assert.match(stdout, /run memo: scrapingdog failed 3x on json:memo-json-host\.example/);
 });
 
 test('fetchJSON: SCRAPER_RUN_MEMO_DISABLED=true keeps the full chain', () => {
