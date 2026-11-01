@@ -32,6 +32,20 @@ function isMergedDuplicateUrl(record, url) {
 }
 
 /**
+ * BRO-6742: drop `url` from `record`'s tombstones once it legitimately becomes
+ * the record's own url (an interview slot giving way to its review). Returns
+ * true when record changed.
+ */
+function forgetMergedDuplicateUrl(record, url) {
+  const k = keyOf(url);
+  if (!k || !record || !Array.isArray(record.mergedDuplicateUrls)) return false;
+  const kept = record.mergedDuplicateUrls.filter((u) => keyOf(u) !== k);
+  if (kept.length === record.mergedDuplicateUrls.length) return false;
+  if (kept.length) record.mergedDuplicateUrls = kept; else delete record.mergedDuplicateUrls;
+  return true;
+}
+
+/**
  * Record `url` on `target` as merged away. No-op for the target's own URL, an
  * empty/garbage URL, or one already recorded. Returns true when target changed.
  */
@@ -80,4 +94,4 @@ function findMergedDuplicateOwner({ showDir, url, outletId, normalizeOutletId = 
   return null;
 }
 
-module.exports = { isMergedDuplicateUrl, recordMergedDuplicateUrl, absorbMergedDuplicates, findMergedDuplicateOwner, MAX_TRACKED };
+module.exports = { isMergedDuplicateUrl, forgetMergedDuplicateUrl, recordMergedDuplicateUrl, absorbMergedDuplicates, findMergedDuplicateOwner, MAX_TRACKED };

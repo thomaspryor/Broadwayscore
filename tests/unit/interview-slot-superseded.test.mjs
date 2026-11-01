@@ -72,7 +72,13 @@ test('writer moves the slot to the review instead of refusing a stale merge', ()
   const showDir = path.join(root, SHOW.id);
   fs.mkdirSync(showDir, { recursive: true });
   const file = path.join(showDir, 'readaboutstuff--dan-english.json');
-  fs.writeFileSync(file, JSON.stringify({ ...INTERVIEW, showId: SHOW.id, assignedScore: 94 }));
+  // Real shape (Memoriam, The Moth): an earlier write folded the review into
+  // the interview file, leaving its url as a merged-away tombstone and its
+  // page-parsed stars on the record, with a byline read from the page.
+  fs.writeFileSync(file, JSON.stringify({
+    ...INTERVIEW, showId: SHOW.id, assignedScore: 94, criticEnrichedFrom: 'html-extraction',
+    mergedDuplicateUrls: [REVIEW_URL], originalScore: '5/5', originalScoreNormalized: 100,
+  }));
   const res = createOrMergeReviewFile(SHOW.id, {
     outletId: 'readaboutstuff', outlet: 'Read About Stuff', criticName: 'Dan English',
     url: REVIEW_URL, source: 'url-ingest',
@@ -84,5 +90,19 @@ test('writer moves the slot to the review instead of refusing a stale merge', ()
   assert.equal(landed.publishDate, '2026-10-27');
   assert.match(landed.fullText, /is a review/);
   assert.notEqual(landed.assignedScore, 94, 'the interview\'s score must not ride onto the review');
+  assert.equal(landed.mergedDuplicateUrls, undefined, 'the review url is the slot\'s own url now');
+  assert.equal(landed.criticName, 'Dan English', 'same critic: the byline stays');
   fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('the save-time restore only lets the adopted url leave the merged list', () => {
+  const { isIntentionalClear } = require('../../scripts/lib/review-write-guard.js');
+  const OTHER = 'https://readaboutstuff.com/2026/10/27/review-memoriam-amp/';
+  const committed = { url: INTERVIEW.url, mergedDuplicateUrls: [REVIEW_URL, OTHER] };
+  // Adopted url dropped, the other tombstone kept: intended.
+  assert.equal(isIntentionalClear('mergedDuplicateUrls', { url: REVIEW_URL, mergedDuplicateUrls: [OTHER] }, committed), true);
+  // Every tombstone dropped: the unrelated one must come back.
+  assert.equal(isIntentionalClear('mergedDuplicateUrls', { url: REVIEW_URL }, committed), false);
+  // The url did not move onto a tombstone: nothing to clear.
+  assert.equal(isIntentionalClear('mergedDuplicateUrls', { url: INTERVIEW.url, mergedDuplicateUrls: [OTHER] }, committed), false);
 });
