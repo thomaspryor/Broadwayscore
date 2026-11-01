@@ -35,6 +35,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+// linear-next main() without --model asks LIVE Linear for cloud Opus claims (opus-budget.js);
+// a Linear 429 then backs off 60s and times the test out (BRO-6764). Off here, inherited by subprocesses.
+if (process.env.OPUS_BUDGET_DISABLED === undefined) process.env.OPUS_BUDGET_DISABLED = '1';
+
 const SCRIPTS = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 // Modules whose main() reaches a dispatch-ledger append site. Matched without

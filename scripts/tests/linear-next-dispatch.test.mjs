@@ -34,6 +34,10 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { main } from '../linear-next.js';
 
+// linear-next main() without --model asks LIVE Linear for cloud Opus claims (opus-budget.js);
+// a Linear 429 then backs off 60s and times the test out (BRO-6764). Off here, inherited by subprocesses.
+if (process.env.OPUS_BUDGET_DISABLED === undefined) process.env.OPUS_BUDGET_DISABLED = '1';
+
 const require = createRequire(import.meta.url);
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
