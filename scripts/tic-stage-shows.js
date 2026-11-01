@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * Stage Chicago productions from the theatreinchicago crawl cache (BRO-6518).
+ * Stage local productions from a theatreinchicago / theatreindc crawl cache (BRO-6518, BRO-6771).
  *
- *   node scripts/tic-stage-shows.js --cache=<dir> --out=<manifest.json> [--limit=N] [--ids=1,2,3]
+ *   node scripts/tic-stage-shows.js [--city=chicago|dc] --cache=<dir> --out=<manifest.json> [--limit=N] [--ids=1,2,3]
  *
  * For each cached reviews page that passes the prefilter: fetch the detail page
  * (show type, theater, address, dates) and the first two reviews on free outlets
@@ -18,6 +18,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractPublishDate } = require('./lib/article-extractor');
 const tic = require('./lib/theatreinchicago');
 const stage = require('./lib/tic-stage');
+const { getCity } = require('./lib/tic-cities');
 
 function arg(name, def) {
   const hit = process.argv.slice(2).find((a) => a.startsWith(`--${name}=`));
@@ -26,7 +27,7 @@ function arg(name, def) {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 // Outlets that are paywalled or JS-walled: skip when picking date samples.
-const PAYWALLED = /tribune|sun-times|suntimes|wsj|nytimes|new york times/i;
+const PAYWALLED = /tribune|sun-times|suntimes|wsj|nytimes|new york times|washingtonpost|washington post/i;
 
 async function openingDateFor(page) {
   const picks = stage.linkedReviews(page).filter((r) => !PAYWALLED.test(r.outlet) && !PAYWALLED.test(r.url)).slice(0, 3);
@@ -45,6 +46,7 @@ async function openingDateFor(page) {
 }
 
 async function main() {
+  const city = getCity(arg('city', 'chicago'));
   const cacheDir = arg('cache');
   const out = arg('out');
   if (!cacheDir || !out) throw new Error('--cache and --out required');
@@ -62,19 +64,20 @@ async function main() {
     if (only && !only.has(id)) continue;
     if (manifest.staged[id] || manifest.rejected[id]) continue;
     const page = JSON.parse(fs.readFileSync(path.join(cacheDir, f), 'utf8'));
-    const pre = stage.prefilter(page);
+    const pre = stage.prefilter(page, city);
     if (!pre.ok) { manifest.rejected[id] = pre.reason; continue; }
     if (done >= limit) break;
     done++;
     try {
-      const dres = await fetchPage(tic.detailUrl(page.id, page.slug), { skipVerify: true });
+      const dres = await fetchPage(tic.detailUrl(page.id, page.slug, city.base), { skipVerify: true });
       const detail = tic.parseDetailPage(dres.content);
-      const df = stage.detailFilter(detail);
+      const df = stage.detailFilter(detail, page, city);
       if (!df.ok) { manifest.rejected[id] = df.reason; continue; }
       const dates = await openingDateFor(page);
       if (!dates) { manifest.rejected[id] = 'no-publish-date'; continue; }
-      const entry = stage.buildShowEntry({ page, detail, dates, discoveredAt: today });
-      const dupe = stage.findDuplicate(entry, [...existing, ...Object.values(manifest.staged).map((r) => r.show)]);
+      const entry = stage.buildShowEntry({ page, detail, dates, discoveredAt: today, city });
+      if (city.since && entry.openingDate < city.since && entry.status !== 'open') { manifest.rejected[id] = 'before-since'; continue; }
+      const dupe = stage.findDuplicate(entry, [...existing, ...Object.values(manifest.staged).map((r) => r.show)], city);
       if (dupe) { manifest.rejected[id] = `duplicate:${dupe.id}`; continue; }
       stage.dedupeId(entry, page, new Set([...existing.map((x) => x.id), ...Object.values(manifest.staged).map((r) => r.show.id)]));
       manifest.staged[id] = {

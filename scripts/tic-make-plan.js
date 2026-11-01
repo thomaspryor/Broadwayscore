@@ -26,7 +26,8 @@ function main() {
   const recs = Object.values(manifest.staged).filter((r) => !only || only.has(r.show.id));
   const actions = recs.map((r) => ({ type: 'add-show', show: r.show, description: `add ${r.show.id}` }));
   if (!actions.length) throw new Error('nothing staged');
-  const plans = buildPlans(id, `Add ${actions.length} Chicago local productions from theatreinchicago.com (BRO-6518)`, actions);
+  const label = get('label') || 'Chicago local productions from theatreinchicago.com (BRO-6518)';
+  const plans = buildPlans(id, `Add ${actions.length} ${label}`, actions);
   const dry = process.argv.includes('--dry-run');
   const written = plans.map((p) => {
     const f = path.join(ROOT, 'data', 'pending-fixes', `${p.name}.json`);

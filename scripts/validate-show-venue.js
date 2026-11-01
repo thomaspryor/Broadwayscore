@@ -214,7 +214,7 @@ function isExemptFromPlaybillCheck(show) {
   // Chicago local productions (BRO-6518): theatreinchicago.com lists them with 3+
   // dated critic reviews; Playbill has no page for most, and the page it does have
   // for a same-title show is usually the Broadway transfer. localOnly shows.
-  if (show.category === 'regional' && show.discoverySource === 'theatreinchicago') return true;
+  if (show.category === 'regional' && (show.discoverySource === 'theatreinchicago' || show.discoverySource === 'theatreindc')) return true;
   // Same rule for national tours (BRO-4211): a BWW tour roundup is dated,
   // third-party proof the tour exists and reviewed, which is what this check
   // establishes for a stub. A tour without a roundup still goes through the

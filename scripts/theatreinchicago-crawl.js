@@ -4,6 +4,7 @@
  *
  *   node scripts/theatreinchicago-crawl.js --from=13599 --to=12300 [--delay=2500] [--cache=<dir>]
  *   node scripts/theatreinchicago-crawl.js --list           # current /reviewlistings.php ids
+ *   node scripts/theatreinchicago-crawl.js --city=dc --from=5330 --to=5000   # theatreindc.com (BRO-6771)
  *
  * Everything goes through fetchPage() with skipVerify (the site 301s any slug
  * to the canonical one, which the url_mismatch guard would reject). Parsed
@@ -20,8 +21,10 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const tic = require('./lib/theatreinchicago');
+const { getCity } = require('./lib/tic-cities');
 
-const INDEX_PATH = path.join(__dirname, '..', 'data', 'theatreinchicago-index.json');
+const CITY = getCity((process.argv.slice(2).find((a) => a.startsWith('--city=')) || '').slice(7) || 'chicago');
+const INDEX_PATH = path.join(__dirname, '..', 'data', CITY.key === 'chicago' ? 'theatreinchicago-index.json' : `tic-index-${CITY.key}.json`);
 
 function arg(name, def) {
   const hit = process.argv.slice(2).find((a) => a.startsWith(`--${name}=`));
@@ -58,8 +61,8 @@ async function fetchOne(id, cacheDir) {
   let lastErr;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const r = await fetchPage(tic.reviewsUrl(id), { skipVerify: true });
-      const page = tic.parseReviewsPage(r.content, id);
+      const r = await fetchPage(tic.reviewsUrl(id, 'show', CITY.base), { skipVerify: true });
+      const page = tic.parseReviewsPage(r.content, id, CITY.base);
       fs.writeFileSync(file, JSON.stringify(page));
       return { cached: false, page };
     } catch (e) {
@@ -72,7 +75,7 @@ async function fetchOne(id, cacheDir) {
 
 async function main() {
   if (flag('list')) {
-    const r = await fetchPage(`${tic.BASE}/reviewlistings.php`);
+    const r = await fetchPage(`${CITY.base}/reviewlistings.php`);
     const rows = tic.parseListing(r.content);
     console.log(JSON.stringify(rows.map((x) => x.id)));
     await cleanup();
@@ -82,7 +85,7 @@ async function main() {
   const to = Number(arg('to'));
   if (!from || !to) throw new Error('--from and --to required');
   const delay = Number(arg('delay', 2500));
-  const cacheDir = arg('cache', path.join(__dirname, '..', 'data', 'cache', 'theatreinchicago'));
+  const cacheDir = arg('cache', path.join(__dirname, '..', 'data', 'cache', CITY.key === 'chicago' ? 'theatreinchicago' : `tic-${CITY.key}`));
   fs.mkdirSync(cacheDir, { recursive: true });
   const step = from >= to ? -1 : 1;
   const index = loadIndex();
