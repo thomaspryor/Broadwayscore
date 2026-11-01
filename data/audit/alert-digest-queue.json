@@ -1038,5 +1038,36 @@
       }
     ],
     "queuedAt": "2026-11-01T18:25:08.616Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6781-shared-plans-curtain-time",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6781-shared-plans-curtain-time",
+    "description": "land.yml did not land land/bro-6781-shared-plans-curtain-time: the unit-tests-node gate went red at c1ce598ad7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41333902344",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6781-shared-plans-curtain-time"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "c1ce598ad777495356d928174bf7d363373b3c8d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41333902344"
+      }
+    ],
+    "queuedAt": "2026-11-01T18:27:02.343Z"
   }
 ]
