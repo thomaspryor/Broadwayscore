@@ -3067149,21 +3067149,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T16:53:36.456Z",
-    "completedAt": "2026-11-01T16:54:19.945Z",
-    "totalReviews": 11,
-    "processed": 8,
-    "skipped": 3,
+    "startedAt": "2026-11-01T16:53:49.163Z",
+    "completedAt": "2026-11-01T16:54:24.948Z",
+    "totalReviews": 8,
+    "processed": 7,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 55585,
-      "output": 2864,
+      "input": 45750,
+      "output": 2267,
       "cacheRead": 26649,
-      "cacheWrite": 3762,
-      "total": 132173
+      "cacheWrite": 0,
+      "total": 111303
     },
-    "costUsd": 0.22176079999999998,
-    "runId": "41328154605",
+    "costUsd": 0.17103659999999998,
+    "runId": "41328044821",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3091453,22 +3091453,12 @@
         "hasDisagreement": false
       },
       {
-        "showId": "medea-off-broadway-2022",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 4,
-          "down": 0,
-          "total": 12
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "medea-off-broadway-2026",
         "ourDistribution": {
-          "up": 8,
-          "flat": 4,
+          "up": 3,
+          "flat": 1,
           "down": 0,
-          "total": 12
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -3111619,12 +3111609,22 @@
         "hasDisagreement": false
       },
       {
+        "showId": "tosca-off-broadway-2017",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 0,
+          "down": 4,
+          "total": 9
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "tosca-off-broadway-2026",
         "ourDistribution": {
-          "up": 1,
+          "up": 5,
           "flat": 0,
-          "down": 1,
-          "total": 2
+          "down": 4,
+          "total": 9
         },
         "hasDisagreement": false
       },
@@ -3114402,8 +3114402,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T16:59:17.049Z",
-    "completedAt": "2026-11-01T16:59:17.054Z",
+    "startedAt": "2026-11-01T16:59:22.292Z",
+    "completedAt": "2026-11-01T16:59:22.293Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3114416,7 +3114416,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41328154605",
+    "runId": "41328044821",
     "source": "comparative-rescore",
     "errorDetails": []
   }
