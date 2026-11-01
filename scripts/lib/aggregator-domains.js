@@ -68,6 +68,26 @@ const AGGREGATOR_OUTLET_IDS = new Set([
   'playbill-verdict', 'bww-roundup',
 ]);
 
+// BRO-6742: some aggregator hosts also publish their own critic's reviews on a
+// separate path. theatre.reviews keeps its round-ups under /reviews-roundup/ and
+// Paul Lewis's own reviews ("Theatre Reviews with Paul Seven") under /review/.
+// A URL on that path, filed under that outlet, is the outlet's own review, not
+// a round-up, so it is not an aggregator_url_mismatch. Host -> path prefix and
+// the one outlet id allowed there; any other outlet on that path still trips.
+const AGGREGATOR_OWN_REVIEW_PATHS = new Map([
+  ['theatre.reviews', { pathPrefix: '/review/', outletId: 'theatre-reviews-paul-seven' }],
+]);
+
+function isAggregatorOwnReviewUrl(url, outletId) {
+  if (!url || !outletId || typeof url !== 'string') return false;
+  let u;
+  try { u = new URL(url); } catch { return false; }
+  const rule = AGGREGATOR_OWN_REVIEW_PATHS.get(u.hostname.replace(/^www\./, '').toLowerCase());
+  if (!rule || !u.pathname.toLowerCase().startsWith(rule.pathPrefix)) return false;
+  const normId = normalizeOutlet(outletId) || outletId;
+  return normId === rule.outletId;
+}
+
 /**
  * Normalize a hostname from a URL: strip leading www., lowercase.
  * Returns null if the URL is unparseable (caller should not treat as a mismatch).
@@ -118,7 +138,8 @@ function isAggregatorUrlMismatch(url, outletId) {
   // a real outlet and be mis-flagged as a mismatch. The ingest guard already
   // passes a normalized id, so this is idempotent there.
   const normId = normalizeOutlet(outletId) || outletId;
-  return AGGREGATOR_DOMAINS.has(hostname) && !AGGREGATOR_OUTLET_IDS.has(normId);
+  if (!AGGREGATOR_DOMAINS.has(hostname) || AGGREGATOR_OUTLET_IDS.has(normId)) return false;
+  return !isAggregatorOwnReviewUrl(url, normId);
 }
 
 // `source` values that mean a review was discovered via an aggregator roundup.
@@ -328,6 +349,7 @@ module.exports = {
   SHARED_DOMAIN_OUTLETS,
   hostnameOf,
   isAggregatorUrlMismatch,
+  isAggregatorOwnReviewUrl,
   describeUnresolvedProvisionalOutlet,
   hasPreservableAggregatorScore,
   hasSubstantiveReviewText,

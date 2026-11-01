@@ -15,3 +15,23 @@ test('real-outlet id on a westendtheatre.com URL is flagged; the aggregator id i
   assert.equal(isAggregatorUrlMismatch(url, 'guardian'), true);
   assert.equal(isAggregatorUrlMismatch(url, 'westendtheatre'), false);
 });
+
+// BRO-6742: theatre.reviews publishes its own critic's reviews under /review/;
+// round-ups live under /reviews-roundup/.
+test('theatre.reviews own review under /review/ is not a mismatch for its own outlet only', () => {
+  const { isAggregatorOwnReviewUrl } = require('./aggregator-domains.js');
+  const own = 'https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/';
+  const roundup = 'https://theatre.reviews/reviews-roundup/martin-guerre-old-vic-reviews/';
+  assert.equal(isAggregatorUrlMismatch(own, 'theatre-reviews-paul-seven'), false);
+  assert.equal(isAggregatorOwnReviewUrl(own, 'theatre-reviews-paul-seven'), true);
+  assert.equal(isAggregatorUrlMismatch(own, 'guardian'), true);
+  assert.equal(isAggregatorUrlMismatch(roundup, 'theatre-reviews-paul-seven'), true);
+  assert.equal(isAggregatorOwnReviewUrl('not a url', 'theatre-reviews-paul-seven'), false);
+});
+
+test('validator-side hasAggregatorUrlMismatch agrees on the own-review path', () => {
+  const { hasAggregatorUrlMismatch } = require('./aggregator-url-latent.js');
+  const own = 'https://theatre.reviews/review/cherry-orchard-kristin-scott-thomas-review/';
+  assert.equal(hasAggregatorUrlMismatch({ url: own, outletId: 'theatre-reviews-paul-seven' }), false);
+  assert.equal(hasAggregatorUrlMismatch({ url: own, outletId: 'guardian' }), true);
+});

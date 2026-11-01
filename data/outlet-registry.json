@@ -14732,6 +14732,21 @@
       ],
       "domain": "danceinforma.com",
       "accessModel": "free"
+    },
+    "theatre-reviews-paul-seven": {
+      "displayName": "Theatre Reviews with Paul Seven",
+      "tier": 4,
+      "aliases": [
+        "theatre-reviews-paul-seven",
+        "theatre reviews with paul seven",
+        "paul seven",
+        "paulseven"
+      ],
+      "region": "london",
+      "accessModel": "free",
+      "defaultCritic": "Paul Lewis",
+      "multiAuthor": false,
+      "starScale": 5
     }
   },
   "_aliasIndex": {
@@ -15427,8 +15442,12 @@
     "the metroland": "themetroland",
     "metroland": "themetroland",
     "kidsoutandabout": "kidsoutandabout",
-    "kids out and about": "kidsoutandabout"
+    "kids out and about": "kidsoutandabout",
+    "theatre-reviews-paul-seven": "theatre-reviews-paul-seven",
+    "theatre reviews with paul seven": "theatre-reviews-paul-seven",
+    "paul seven": "theatre-reviews-paul-seven",
+    "paulseven": "theatre-reviews-paul-seven"
   },
-  "lastUpdated": "2026-10-31T20:20:02.075Z",
-  "lastChange": "BRO-6716: registered 57 review outlets and 5 domain aliases from unregistered-host gap rows (per-host sample reads); removed the stray \"austincom\" alias from the-austin-chronicle (austin.com is a separate site)"
+  "lastUpdated": "2026-11-01T03:38:44.000Z",
+  "lastChange": "BRO-6742: registered theatre-reviews-paul-seven (theatre.reviews' own /review/ pages by Paul Lewis; no domain, the host is an aggregator)"
 }
