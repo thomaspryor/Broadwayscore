@@ -53,6 +53,7 @@ const MIN_SECTION_SHARE = 0.15;
 const WINDOW_BEFORE_DAYS = 150;
 const WINDOW_AFTER_DAYS = 45;
 const DAY_MS = 86400000;
+const SIBLING_MAX_GAP_DAYS = 400;
 // The first show's introduction must fall within this share of the article.
 const FIRST_INTRO_MAX_SHARE = 0.4;
 // A later section's show must be named within this many chars of its start.
@@ -866,6 +867,18 @@ function planMultiShowFanout(data, shows, opts = {}) {
 
   let strategy = 'caption';
   let sections = headerOnly ? [] : splitMultiShowArticle(text, shows).filter((s) => showIds.has(s.showId));
+  // A caption can name a same-titled production from another year (three-houses-2026
+  // vs the-lonely-few-2024): a sibling must open within a year of the file's own show.
+  const ownForDates = shows.find((s) => s.id === ownShowId);
+  const ownOpenMs = ownForDates ? Date.parse(ownForDates.openingDate || ownForDates.previewsStartDate || '') : NaN;
+  if (Number.isFinite(ownOpenMs)) {
+    const byId = new Map(shows.map((s) => [s.id, s]));
+    sections = sections.filter((sec) => {
+      if (sec.showId === ownShowId) return true;
+      const od = Date.parse((byId.get(sec.showId) || {}).openingDate || '');
+      return !Number.isFinite(od) || Math.abs(od - ownOpenMs) <= SIBLING_MAX_GAP_DAYS * DAY_MS;
+    });
+  }
   let trimOnly = false;
   // Captions already showed one essay moving between the shows (BRO-4431):
   // no later strategy may cut it either.

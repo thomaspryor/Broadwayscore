@@ -895,3 +895,12 @@ test('an interwoven essay still blocks the caption split (mentions beyond the ha
   const v = `From Night Side Songs . Photo: Marc J. Franklin ${filler('night', 14)} Grey Henson in Bigfoot! Photo: Marc J. Franklin Whereas sentiment abounds at Night Side Songs , it is scarce at Bigfoot! ${filler('sketch', 6)} Compare the choir in Night Side Songs again here. ${filler('more', 6)}`;
   assert.equal(planMultiShowFanout({ showId: 'night-side-songs-off-broadway-2026', contentTier: 'complete', fullText: v }, vshows), null);
 });
+
+test('caption sibling from a different year is not filed as a sibling (same-title production)', () => {
+  const vshows = [
+    { id: 'three-houses-off-broadway-2026', title: 'Three Houses', category: 'off-broadway', openingDate: '2026-02-01' },
+    { id: 'the-lonely-few-off-broadway-2024', title: 'The Lonely Few', category: 'off-broadway', openingDate: '2024-03-01' },
+  ];
+  const v = `From Three Houses . Photo: A Person ${filler('houses', 14)} Cast members in The Lonely Few . Photo: A Person ${filler('lonely', 14)}`;
+  assert.equal(planMultiShowFanout({ showId: 'three-houses-off-broadway-2026', contentTier: 'complete', fullText: v }, vshows), null);
+});
