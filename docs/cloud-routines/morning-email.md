@@ -6,6 +6,11 @@ launchd job `com.broadwayscore.morning-digest`, which ran
 is the owner's one scheduled daily email; it reads snapshot files only and
 calls no LLM.
 
+Status (BRO-6764): from 2026-11-04 the owner's morning email is sent by the GitHub Action
+`.github/workflows/morning-digest-action.yml` (cron 12:30 UTC), and `check-morning-digest-sent.yml`
+starts it with `send=true` if it is overdue. This routine is now only a fallback. It is safe to leave
+running: the Resend sent-today guard (`send-morning-digest.js`, exit 3) makes a second sender a no-op.
+
 No human is watching. Never send more than one owner email per day. Never use
 a Resend broadcast or audience (CLAUDE.md §17): the script sends one
 transactional email to one recipient, and that is the only send allowed here.

@@ -16,7 +16,7 @@
 > remain in `scripts/launchd/`. The morning email survived the loop: it is now
 > `scripts/send-morning-digest.js` (snapshot registry:
 > `scripts/lib/digest-snapshots.js`), scheduled by
-> `com.broadwayscore.morning-digest` at **07:30 AM ET** and watched by
+> `com.broadwayscore.morning-digest` at **07:30 AM ET** (retired 2026-11-01 BRO-6764: from 2026-11-04 the GitHub Action morning-digest-action.yml sends it, 12:30 UTC) and watched by
 > monitor-scheduled-email-count.yml's zero-send floor (CI, 15:00 UTC daily —
 > the deadman's replacement). Loop code (`scripts/autonomous-*.js`,
 > autonomous-merge.yml, /api/autonomous-action) is dormant, pending one-commit
@@ -211,7 +211,7 @@ Note: CLAUDE.md §14 says orchestrator fires "3 AM UTC Broadway / 10 PM UTC West
 | com.broadwayscore.backfill-gather | daily 04:00 ET (= 08:00 UTC in EDT) | backfill gather run |
 | com.broadwayscore.worktree-gc | Sun 04:00 ET | worktree garbage collection |
 | ~~com.bwsc.nightly-digest~~ | — | GONE (verified absent from ~/Library/LaunchAgents 2026-07-27) |
-| com.broadwayscore.morning-digest | daily 07:30 ET | the ONE scheduled owner email (send-morning-digest.js, added 2026-07-27) |
+| com.broadwayscore.morning-digest | daily 07:30 ET until 2026-11-03 | the ONE scheduled owner email; retired (config/mac-retired.json), the GitHub Action morning-digest-action.yml sends it from 2026-11-04 |
 | com.bwsc.opening-night-backup-trigger | daily 21:00 ET (= 01:00 UTC) | orchestrator backup trigger |
 | com.bwsc.weekly-retro | Sun 10:00 ET | weekly retro |
 | com.tompryor.claude-token-health | daily 09:30 ET | token health check |
