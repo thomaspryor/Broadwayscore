@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6782",
   "planId": "c8de1655-61f9-4db1-81b7-ce46205036fa",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T20:13:45.475Z",
   "submitter": {
     "name": null,
@@ -233,5 +233,69 @@
         "description": "shows.json: breaking-the-waves-english-national-opera-west-end-2026.openingDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T21:41:26.413Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-monkey-king-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added simon-boccanegra-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mary-queen-of-scots-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for tosca-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for tosca-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for tosca-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for iphigenie-en-tauride-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for iphigenie-en-tauride-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for adriana-mater-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for adriana-mater-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for breaking-the-waves-english-national-opera-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for breaking-the-waves-english-national-opera-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
