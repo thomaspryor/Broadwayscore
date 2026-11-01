@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T12:16:19.915Z",
+  "generatedAt": "2026-11-01T12:46:03.801Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,10 +127,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-scene",
-      "error": "Timeout fetching https://www.theaterscene.net/feed/"
-    },
-    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
@@ -159,7 +155,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 766,
+  "itemsScanned": 778,
   "matchedGaps": 5,
   "possibleGaps": 12,
   "gaps": [
