@@ -1,8 +1,9 @@
 name: Morning Digest
 
 # BRO-6764 (Mac-to-cloud Phase 2b): this Action is the owner's morning digest sender. It was a
-# dry run in BRO-6230; the Mac launchd job (com.broadwayscore.morning-digest) is retired in
-# config/mac-retired.json (housekeeping: the reconciler boots the Mac job out about 2026-11-04).
+# dry run in BRO-6230. The Mac launchd job (com.broadwayscore.morning-digest) is NOT retired: from the
+# handoff date it keeps running but takes the --autofix-only path (autofix + canary, no email), so it
+# must stay out of config/mac-retired.json (the reconciler would boot out the job that runs autofix).
 #
 # ONE handoff date, config/morning-digest-handoff.json (handoffDate 2026-11-02), read by both
 # sides: the Mac sender no-ops for real owner sends from that ET day (scripts/lib/digest-handoff.js)
@@ -14,14 +15,13 @@ name: Morning Digest
 # --send-to-owner --no-autofix --skip-mac-local (--resend-sent-guard, or --test-send for a test dispatch): never a broadcast (rule 17),
 # one owner email a day (the guard refuses when Resend already shows today's digest; exit 3 =
 # already sent = green; any unreadable guard = red, never a send). Autofix and the canary are
-# NOT here: the Action rows are report-only, and the Mac runs them via
-# scripts/launchd/com.broadwayscore.digest-autofix.plist (--autofix-only).
+# NOT here: the Action rows are report-only, and the Mac's existing morning-digest job runs them
+# (--autofix-only path after the handoff date, no install step).
 #
 # Scheduled runs go through scripts/lib/digest-enable-gate.js: nothing before handoffDate and
 # nothing before 07:45 ET. The cron lines
 # cover both DST offsets (07:50 EDT = 11:50Z, 07:50 EST = 12:50Z, plus a retry), so no seasonal
-# edit is needed. ROLLBACK: delete the schedule block below, then un-retire the Mac label
-# (config/mac-retired.json _rollback).
+# edit is needed. ROLLBACK: push handoffDate far out (see above) or delete the schedule block below.
 #
 # Dispatch without send=true is still the dry run + compare against the Mac's email (kept until
 # the first real scheduled send is verified, then scripts/morning-digest-compare.js goes).

@@ -948,8 +948,22 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   // --autofix-only (BRO-6764): the Mac's post-cutover autofix + canary run. Builds the digest
   // like a dry run, sends nothing, and leaves autofix live (the Action's send is report-only).
-  const autofixOnly = !!args['autofix-only'];
-  if (autofixOnly && (args['send-to'] || args['send-to-owner'])) { console.error('[digest] --autofix-only never sends; drop --send-to/--send-to-owner'); process.exit(1); }
+  // BRO-6764 handoff (W2): from config/morning-digest-handoff.json's date the GitHub Action sends the owner's
+  // email and this machine must not (one email a day). The already-installed morning-digest job keeps running
+  // though, so instead of exiting it takes the --autofix-only path (autofix + canary, no email): autofix never
+  // skips a day waiting on a separate plist install. --force, --test-send, --dry-run, the Action itself and
+  // non-owner test recipients are unaffected. The Mac syncs to main before each run, so it picks the date up.
+  const macHandoff = !args['autofix-only'] && !args['dry-run'] && !args['test-send'] && !args.force
+    && process.env.GITHUB_ACTIONS !== 'true'
+    && (args['send-to-owner'] || (args['send-to'] && args['send-to'] !== true
+      && String(args['send-to']).toLowerCase() === String(process.env.OWNER_EMAIL || '').toLowerCase()))
+    && require('./lib/digest-handoff.js').actionOwnsToday();
+  if (macHandoff) {
+    console.log(`[digest] handoff: the GitHub Action sends the owner's digest from ${require('./lib/digest-handoff.js').handoffDate()}; this machine runs autofix + canary only (--autofix-only path). Nothing sent.`);
+    delete args['send-to']; delete args['send-to-owner'];
+  }
+  const autofixOnly = !!args['autofix-only'] || macHandoff;
+  if (args['autofix-only'] && (args['send-to'] || args['send-to-owner'])) { console.error('[digest] --autofix-only never sends; drop --send-to/--send-to-owner'); process.exit(1); }
   const dryRun = !!args['dry-run'] || autofixOnly; // --autofix-only --dry-run stays a dry run for autofix too
   if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
   const noAutofix = !!args['no-autofix'];
@@ -969,17 +983,12 @@ async function main() {
     process.exit(1);
   }
 
-  // BRO-6764 handoff: from config/morning-digest-handoff.json's date the GitHub Action sends the owner's
-  // email and this machine must not (one email a day). Runs before any work. The Mac syncs to main
-  // before each run (sync-audit-checkout.sh), so it picks the date up. --force and non-owner test
-  // recipients are unaffected; --autofix-only never reaches here.
-  if (!dryRun && sendTo && !autofixOnly && !args.force && process.env.GITHUB_ACTIONS !== 'true'
-      && String(sendTo).toLowerCase() === String(process.env.OWNER_EMAIL || '').toLowerCase()) {
-    const { actionOwnsToday, handoffDate } = require('./lib/digest-handoff.js');
-    if (actionOwnsToday()) {
-      console.log(`[digest] handoff: the GitHub Action sends the owner's digest from ${handoffDate()}; this machine does not. Nothing sent.`);
-      return;
-    }
+  // --test-send on the Mac after the handoff: no real email from this machine (the Action owns the day).
+  if (!dryRun && sendTo && testSend && !args.force && process.env.GITHUB_ACTIONS !== 'true'
+      && String(sendTo).toLowerCase() === String(process.env.OWNER_EMAIL || '').toLowerCase()
+      && require('./lib/digest-handoff.js').actionOwnsToday()) {
+    console.log('[digest] handoff: the GitHub Action owns the owner digest now; this machine sends no test either. Nothing sent.');
+    return;
   }
 
   const { sections, problems } = readAllSnapshots();

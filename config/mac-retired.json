@@ -113,25 +113,6 @@
           "note": "check-linear-drain-health.yml judges a silent Mac drain ledger (assessCloudCoverage, called from scripts/check-linear-drain-health.js) by cloud-worker coverage of the parked queue (BRO-5360), so a stopped Mac drain pages only when the cloud cannot reach the queue either."
         }
       ]
-    },
-    {
-      "label": "com.broadwayscore.morning-digest",
-      "retiredAt": "2026-11-01",
-      "replacedBy": [
-        ".github/workflows/morning-digest-action.yml (07:50 ET cron with DST-proof retries; sends once a day, Resend sent-today guard; first scheduled send 2026-11-02 via config/morning-digest-handoff.json, the Mac bootout about 2026-11-04 is housekeeping; autofix + canary stay on the Mac as scripts/launchd/com.broadwayscore.digest-autofix.plist, --autofix-only)"
-      ],
-      "watchers": [
-        {
-          "conditionKey": "mac:checkin-heartbeat-dead",
-          "file": "scripts/check-morning-digest-sent.js",
-          "note": "Dead-Mac pager: the digest arriving no longer proves the Mac is alive, so check-morning-digest-sent.yml judges the Mac by its checkout-sync heartbeat (default signal, no repo variable) and pages with its own key."
-        },
-        {
-          "conditionKey": "mac:morning-digest-missing",
-          "file": "scripts/check-morning-digest-sent.js",
-          "note": "Missed-digest page kept for the Action itself (--signal=digest, Resend send history, 16:30 UTC)."
-        }
-      ]
     }
   ]
 }
