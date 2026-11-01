@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T02:13:25.257Z",
+  "generatedAt": "2026-11-01T02:26:39.557Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -74,6 +74,11 @@
       "openingDate": "2026-11-02"
     },
     {
+      "id": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
+      "openingDate": "2026-11-01"
+    },
+    {
       "id": "specimen-off-broadway-2026",
       "title": "Specimen",
       "openingDate": "2026-10-30"
@@ -115,10 +120,6 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "the-greatest-story-ever-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
@@ -126,8 +127,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -148,13 +153,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 757,
+  "itemsScanned": 780,
   "matchedGaps": 6,
   "possibleGaps": 13,
   "gaps": [

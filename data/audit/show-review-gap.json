@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-01T02:12:48.530Z",
+  "generatedAt": "2026-11-01T02:25:54.906Z",
   "windowDays": 21,
-  "targets": 16,
-  "auditedThisRun": 16,
-  "carriedForward": 1549,
+  "targets": 21,
+  "auditedThisRun": 21,
+  "carriedForward": 1544,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 608,
-    "missingCurrentRun": 1292,
+    "withGap": 606,
+    "missingCurrentRun": 1289,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 811,
+    "totalFlaggedMisses": 807,
     "totalRecoverable": 56,
     "totalRecovered": 78,
     "humanExcluded": 18,
-    "automatedExcluded": 803,
-    "automatedExcludedListed": 602,
-    "priorProductionCitations": 5620
+    "automatedExcluded": 799,
+    "automatedExcludedListed": 598,
+    "priorProductionCitations": 5627
   },
   "results": [
     {
@@ -22397,7 +22397,7 @@
       ],
       "dirFiles": 3,
       "dirClean": 0,
-      "inReviewsJson": 0,
+      "inReviewsJson": 1,
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
@@ -22413,13 +22413,13 @@
           "dirFlags": [
             {
               "file": "off-off-online--walter-murphy.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://www.offoffonline.com/offoffonline/2026/1/31/anonymous"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         }
@@ -22462,7 +22462,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "another-shot-off-broadway-2024",
@@ -23026,8 +23026,8 @@
         "https://1minutecritic.com/antigone-this-play-i-read-in-high-school-review-public-theater/"
       ],
       "dirFiles": 26,
-      "dirClean": 23,
-      "inReviewsJson": 23,
+      "dirClean": 24,
+      "inReviewsJson": 24,
       "missing": [],
       "dirOnly": [
         {
@@ -23071,30 +23071,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7E6L0",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7E6L0"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -23106,19 +23083,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7E6L0"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -23142,6 +23111,12 @@
           {
             "url": "https://www.wsj.com/articles/antigone-this-play-i-read-in-high-school-review-inherited-roles-tyrannical-rules-a2d78233",
             "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7E6L0",
+            "outletId": "lightingandsoundamerica.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -23198,20 +23173,13 @@
             "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7E6L0",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
+        "liveCount": 14,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "antigone-tron-regional-2026",
@@ -52409,8 +52377,8 @@
         "https://pagesonstages.com/2026/02/26/chinese-republicans/"
       ],
       "dirFiles": 24,
-      "dirClean": 22,
-      "inReviewsJson": 22,
+      "dirClean": 23,
+      "inReviewsJson": 24,
       "missing": [],
       "dirOnly": [
         {
@@ -52434,30 +52402,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -52465,30 +52410,23 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 391,
+        "count": 392,
         "byReason": {
-          "not-http-url": 87,
-          "non-review-host": 36,
           "aggregator-internal-nav": 251,
-          "aggregator-section-root": 10,
+          "not-http-url": 87,
           "production-database-listing": 6,
-          "non-stage-review": 1
+          "aggregator-section-root": 10,
+          "non-review-host": 36,
+          "non-stage-review": 1,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -52552,6 +52490,12 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://www.talkinbroadway.com/page/ob/02_26_26.html",
             "outletId": "talkinbroadway.com",
             "state": "live",
@@ -52592,20 +52536,13 @@
             "outletId": "pagesonstages.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TB51II",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 17,
+        "liveCount": 18,
         "candidateCount": 18
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "choir-boy-off-west-end-2026",
@@ -79491,16 +79428,10 @@
         "https://culturesauce.com/2026/03/19/the-wild-party-lachiusa-musical-2026-off-broadway-review/",
         "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html"
       ],
-      "dirFiles": 15,
+      "dirFiles": 16,
       "dirClean": 10,
       "inReviewsJson": 10,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "cititour.com",
@@ -79515,7 +79446,30 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--interested-bystander.json",
+              "flag": "clean",
+              "urlInDir": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "combinedReviewOfOtherMemberOnly"
+          ],
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -79527,7 +79481,7 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -79596,7 +79550,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "end-of-the-rainbow-west-end-2026",
@@ -114123,7 +114077,7 @@
       ],
       "dirFiles": 8,
       "dirClean": 3,
-      "inReviewsJson": 3,
+      "inReviewsJson": 7,
       "missing": [],
       "dirOnly": [
         {
@@ -114144,13 +114098,13 @@
           "dirFlags": [
             {
               "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         },
@@ -114166,13 +114120,13 @@
           "dirFlags": [
             {
               "file": "front-row-center--brittany-crowell.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://thefrontrowcenter.com/2026/02/hate-radio/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         },
@@ -114188,13 +114142,13 @@
           "dirFlags": [
             {
               "file": "off-off-online--deirdre-donovan.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         }
@@ -114277,7 +114231,7 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "hay-fever-west-end-2026",
@@ -138795,33 +138749,25 @@
       "openingDate": "2026-04-26",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Jack-Holdens-KENREX-Opens-Off-Broadway-20260427"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/kenrex-off-broadway-review/",
-        "https://newyorktheater.me/2026/04/26/kenrex-review/",
-        "https://culturesauce.com/2026/04/26/kenrex-jack-holden-off-broadway-review/",
-        "https://www.vulture.com/article/theater-review-kenrex-holden-rheology-chowdhury-chakraborty.html",
-        "https://www.thewrap.com/creative-content/theater/kenrex-off-broadway-review-jack-holden/",
         "https://www.newyorktheatreguide.com/reviews/kenrex-off-broadway-review",
-        "https://frontmezzjunkies.com/2026/04/27/kenrex-tightens-its-grip-off-broadway-at-the-lucille-lortel/",
+        "https://www.vulture.com/article/theater-review-kenrex-holden-rheology-chowdhury-chakraborty.html",
         "https://www.theatermania.com/news/review-kenrex-a-remarkable-tale-of-vigilante-justice-in-america_1834594/",
         "https://www.theatrereviews.com/off-broadway-review-kenrex-at-the-lucille-lortel-theatre-through-sunday-june-27-2026/",
+        "https://newyorktheater.me/2026/04/26/kenrex-review/",
+        "https://culturesauce.com/2026/04/26/kenrex-jack-holden-off-broadway-review/",
         "https://pagesonstages.com/2026/05/02/kenrex/",
         "https://www.offoffonline.com/offoffonline/2026/4/27/kenrex-BtSlX",
-        "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html"
+        "https://1minutecritic.com/kenrex-off-broadway-review/",
+        "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html",
+        "https://www.thewrap.com/creative-content/theater/kenrex-off-broadway-review-jack-holden/",
+        "https://frontmezzjunkies.com/2026/04/27/kenrex-tightens-its-grip-off-broadway-at-the-lucille-lortel/"
       ],
-      "dirFiles": 30,
-      "dirClean": 22,
-      "inReviewsJson": 21,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "dirFiles": 31,
+      "dirClean": 23,
+      "inReviewsJson": 22,
+      "missing": [],
       "dirOnly": [
         {
           "host": "nysun.com",
@@ -138877,13 +138823,13 @@
           "dirFlags": [
             {
               "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongShow",
+              "flag": "nonReview",
               "urlInDir": "https://www.theatermania.com/news/review-kenrex-a-remarkable-tale-of-vigilante-justice-in-america_1834594/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "nonReview"
           ],
           "reverify": true
         }
@@ -138895,15 +138841,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 304,
-        "byReason": {
-          "not-http-url": 71,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 206,
-          "aggregator-section-root": 6,
-          "non-stage-review": 4,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -138911,13 +138850,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html"
-          },
           {
             "outletId": "theatermania",
             "outlet": "theatermania",
@@ -138929,8 +138861,20 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://1minutecritic.com/kenrex-off-broadway-review/",
-            "outletId": "1minutecritic.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/kenrex-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-kenrex-holden-rheology-chowdhury-chakraborty.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-kenrex-at-the-lucille-lortel-theatre-through-sunday-june-27-2026/",
+            "outletId": "theatrereviews.com",
             "state": "live",
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
@@ -138947,36 +138891,6 @@
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-kenrex-holden-rheology-chowdhury-chakraborty.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://www.thewrap.com/creative-content/theater/kenrex-off-broadway-review-jack-holden/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/kenrex-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://frontmezzjunkies.com/2026/04/27/kenrex-tightens-its-grip-off-broadway-at-the-lucille-lortel/",
-            "outletId": "frontmezzjunkies.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/off-broadway-review-kenrex-at-the-lucille-lortel-theatre-through-sunday-june-27-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-11T23:28:14.993Z"
-          },
-          {
             "url": "https://pagesonstages.com/2026/05/02/kenrex/",
             "outletId": "pagesonstages.com",
             "state": "live",
@@ -138989,11 +138903,28 @@
             "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
+            "url": "https://1minutecritic.com/kenrex-off-broadway-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
             "url": "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "interestedbystander.com",
+            "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/kenrex-off-broadway-review-jack-holden/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2026/04/27/kenrex-tightens-its-grip-off-broadway-at-the-lucille-lortel/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-11T23:28:14.993Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-kenrex-a-remarkable-tale-of-vigilante-justice-in-america_1834594/",
@@ -139004,10 +138935,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
+        "liveCount": 11,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "kid-victory-off-broadway-2017",
@@ -169945,8 +169876,8 @@
         "https://www.offoffonline.com/offoffonline/2026/2/24/meat-suit-or-the-shitshow-of-motherhood"
       ],
       "dirFiles": 9,
-      "dirClean": 7,
-      "inReviewsJson": 7,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [],
       "dirOnly": [
         {
@@ -169976,28 +169907,6 @@
             "wrongProduction"
           ],
           "reverify": true
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -170011,7 +169920,7 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -170022,13 +169931,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review"
-          },
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB"
           }
         ],
         "suppressedMissing": [],
@@ -170058,6 +169960,12 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://nystagereview.com/2026/02/25/meat-suit-or-the-shitshow-of-motherhood-an-overcooked-satire/",
             "outletId": "nystagereview.com",
             "state": "live",
@@ -170075,20 +169983,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 6,
+        "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "medea-off-broadway-2026",
@@ -178784,8 +178685,8 @@
         "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/"
       ],
       "dirFiles": 26,
-      "dirClean": 15,
-      "inReviewsJson": 15,
+      "dirClean": 17,
+      "inReviewsJson": 18,
       "missing": [],
       "dirOnly": [
         {
@@ -178803,28 +178704,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        },
-        {
           "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/",
           "host": "newyorktheater.me",
           "knownOutletId": "nyt-theater",
@@ -178836,13 +178715,13 @@
           "dirFlags": [
             {
               "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://newyorktheater.me/2026/02/23/mother-russia-review/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         },
@@ -178860,28 +178739,6 @@
               "file": "theater-life--samuel-l-leiter.json",
               "flag": "wrongProduction",
               "urlInDir": "https://theaterlife.com/mother-russia-1-2/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -178925,18 +178782,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 5,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX"
-          },
           {
             "outletId": "nyt-theater",
             "outlet": "nyt-theater",
@@ -178950,13 +178800,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theaterlife.com/mother-russia-1-2/"
-          },
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html"
           },
           {
             "outletId": "theater-pizzazz",
@@ -178993,6 +178836,12 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://nystagereview.com/2026/02/23/mother-russia-finding-comedy-in-a-countrys-dark-history/",
             "outletId": "nystagereview.com",
             "state": "live",
@@ -179013,6 +178862,12 @@
           {
             "url": "https://pagesonstages.com/2026/02/28/mother-russia/",
             "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
+            "outletId": "interestedbystander.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -179041,13 +178896,6 @@
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/",
             "outletId": "nyt-theater",
             "state": "GAP",
@@ -179062,13 +178910,6 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/",
             "outletId": "theater-pizzazz",
             "state": "GAP",
@@ -179077,10 +178918,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
+        "liveCount": 14,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "motherfucker-off-broadway-2026",
@@ -183704,16 +183545,10 @@
         "https://1minutecritic.com/music-city-review-lolo-pritchard/",
         "https://www.nysun.com/article/music-city-exuberantly-evokes-the-custom-of-country"
       ],
-      "dirFiles": 24,
-      "dirClean": 11,
-      "inReviewsJson": 11,
-      "missing": [
-        {
-          "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
-        }
-      ],
+      "dirFiles": 25,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [],
       "dirOnly": [
         {
           "host": "thefrontrowcenter.com",
@@ -183739,16 +183574,8 @@
       "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -183766,6 +183593,12 @@
           {
             "url": "https://www.offoffonline.com/offoffonline/2026/6/25/music-city",
             "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
+            "outletId": "interestedbystander.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -183810,20 +183643,13 @@
             "outletId": "nysun.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T15:52:55.659Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
+        "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "music-for-18-musicians-staged-variations-off-broadway-2026",
@@ -187234,7 +187060,7 @@
       ],
       "dirFiles": 13,
       "dirClean": 9,
-      "inReviewsJson": 9,
+      "inReviewsJson": 10,
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
@@ -187294,11 +187120,11 @@
       "candidatesRejected": {
         "count": 97,
         "byReason": {
-          "not-http-url": 20,
-          "non-review-host": 21,
           "aggregator-internal-nav": 44,
-          "aggregator-section-root": 5,
+          "not-http-url": 20,
           "production-database-listing": 6,
+          "aggregator-section-root": 5,
+          "non-review-host": 21,
           "non-stage-review": 1
         }
       },
@@ -187384,7 +187210,7 @@
         "liveCount": 9,
         "candidateCount": 10
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "nina-off-west-end-2026",
@@ -213261,7 +213087,7 @@
         "liveCount": 10,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -229879,7 +229705,7 @@
       ],
       "dirFiles": 8,
       "dirClean": 4,
-      "inReviewsJson": 4,
+      "inReviewsJson": 5,
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
@@ -229968,7 +229794,7 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "silverback-mountain-off-broadway-2026",
@@ -258209,35 +258035,137 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/jonathan-silverstein-to-direct-the-blue-violinist-over-west-end-avenue_1850252/"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theatermania.com/news/jonathan-silverstein-to-direct-the-blue-violinist-over-west-end-avenue_1850252/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 28,
+        "byReason": {
+          "aggregator-internal-nav": 5,
+          "production-database-listing": 1,
+          "non-review-host": 12,
+          "venue-production-page": 1,
+          "review-hub-page": 2,
+          "non-review-path": 1,
+          "bare-host": 3,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatermania.com/news/jonathan-silverstein-to-direct-the-blue-violinist-over-west-end-avenue_1850252/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/jonathan-silverstein-to-direct-the-blue-violinist-over-west-end-avenue_1850252/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/jonathan-silverstein-to-direct-the-blue-violinist-over-west-end-avenue_1850252/",
+            "outletId": "theatermania",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:25:54.906Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-31T21:45:18.470Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -260137,60 +260065,36 @@
       "openingDate": null,
       "status": "previews",
       "category": "off-west-end",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
-        "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
-        "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
-        "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
-        "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
         "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
         "https://www.timeout.com/london/theatre/the-bridge-4",
         "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-the-bridge",
         "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
         "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
         "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
+        "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
         "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
         "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
         "https://list.co.uk/event/the-bridge-603121",
-        "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
         "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
-        "https://ayoungishperspective.co.uk/2026/08/30/review-the-bridge/"
+        "https://ayoungishperspective.co.uk/2026/08/30/review-the-bridge/",
+        "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
+        "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+        "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
+        "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
+        "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
+        "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
+        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+        "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn"
       ],
       "dirFiles": 10,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
           "host": "theguardian.com",
@@ -260215,6 +260119,8 @@
           "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
           "host": "sierz.co.uk",
           "knownOutletId": "sierz-co-uk",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-11-01",
           "serpCensus": true
         },
         {
@@ -260222,34 +260128,90 @@
           "host": "theskinny.co.uk",
           "knownOutletId": "the-skinny",
           "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
+          "host": "ft.com",
+          "knownOutletId": "financialtimes",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn",
+          "host": "thetimes.com",
+          "knownOutletId": "sunday-times",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": true,
-          "recoverableFile": "thestage--siobhan-murphy.json",
-          "recoverableOutletId": "thestage",
-          "recoverableCritic": "Siobhan Murphy",
-          "recoverableCount": 2,
-          "dirFlags": [
-            {
-              "file": "thestage--siobhan-murphy.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://thestage.co.uk/reviews/london-city-ballet-firebird-a-double-bill-review-sadlers-well-london"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
         {
           "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-the-bridge",
           "host": "bestoftheatre.co.uk",
@@ -260418,11 +260380,36 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": true,
+          "recoverableFile": "thestage--siobhan-murphy.json",
+          "recoverableOutletId": "thestage",
+          "recoverableCritic": "Siobhan Murphy",
+          "recoverableCount": 2,
+          "dirFlags": [
+            {
+              "file": "thestage--siobhan-murphy.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://thestage.co.uk/reviews/london-city-ballet-firebird-a-double-bill-review-sadlers-well-london"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 11,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -260432,11 +260419,11 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 11,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 3
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -260507,7 +260494,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -260517,106 +260504,119 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 5,
         "error": null
       },
       "candidatesRejected": {
-        "count": 352,
+        "count": 32,
         "byReason": {
-          "not-http-url": 81,
-          "non-review-host": 27,
-          "aggregator-internal-nav": 227,
-          "aggregator-section-root": 4,
-          "no-review-evidence": 1,
-          "ticketing-listing": 1,
+          "aggregator-internal-nav": 1,
+          "non-review-host": 18,
+          "write-path-blocked": 2,
+          "non-review-path": 1,
           "bare-host": 1,
           "census-junk-host": 2,
-          "event-listing": 8
+          "ticketing-listing": 2,
+          "event-listing": 2,
+          "no-review-evidence": 3
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314",
-          "publishDate": "2023-03-14"
-        }
-      ],
       "automatedExcludedListed": 5,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
-          "host": "standard.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
-          "host": "whatsonstage.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
           "host": "theartsdesk.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
-        }
-      ],
-      "ingestResults": [
+        },
         {
           "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
           "host": "sierz.co.uk",
-          "outletId": "sierz-co-uk",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-bridge-off-west-end-2026: https://sierz.co.uk/reviews/old-bridge-bush-theatre/ dated 2021-11-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
-          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
-          "host": "theskinny.co.uk",
-          "outletId": "the-skinny",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-bridge-off-west-end-2026: https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "url": "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
+          "host": "ft.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn",
+          "host": "thetimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
         {
           "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
           "host": "theguardian.com",
@@ -260646,6 +260646,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "the-bridge-off-west-end-2026: https://www.timeout.com/london/theatre/the-bridge-4 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
+          "host": "theskinny.co.uk",
+          "outletId": "the-skinny",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-bridge-off-west-end-2026: https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
@@ -260665,13 +260680,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/the-bridge-4"
-          },
-          {
-            "outletId": "sierz-co-uk",
-            "outlet": "sierz-co-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/"
           },
           {
             "outletId": "the-skinny",
@@ -260747,13 +260755,6 @@
             "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
-            "url": "https://sierz.co.uk/reviews/old-bridge-bush-theatre/",
-            "outletId": "sierz-co-uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-31T21:45:18.470Z"
-          },
-          {
             "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
             "outletId": "the-skinny",
             "state": "IN_FLIGHT",
@@ -260812,9 +260813,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 10
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-31T21:45:18.470Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -265307,7 +265308,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-dog-show-come-sit-stay-off-broadway-2026",
@@ -269245,7 +269246,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -269286,16 +269287,18 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 37,
         "byReason": {
-          "aggregator-internal-nav": 2,
-          "non-review-host": 22,
-          "non-stage-review": 2,
-          "bare-host": 1,
-          "census-junk-host": 3,
+          "aggregator-internal-nav": 5,
+          "aggregator-section-root": 1,
+          "non-review-host": 20,
+          "roundup-page": 1,
+          "venue-production-page": 1,
           "write-path-blocked": 3,
           "review-hub-page": 1,
-          "static-asset": 1
+          "non-review-path": 2,
+          "bare-host": 2,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -269309,7 +269312,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -287279,8 +287282,8 @@
         "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-provides.html"
       ],
       "dirFiles": 44,
-      "dirClean": 17,
-      "inReviewsJson": 17,
+      "dirClean": 18,
+      "inReviewsJson": 18,
       "missing": [],
       "dirOnly": [
         {
@@ -287297,6 +287300,10 @@
         },
         {
           "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
           "count": 1
         },
         {
@@ -287351,7 +287358,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -287452,7 +287459,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-outsiders-2024",
@@ -296812,19 +296819,17 @@
       "openingDate": "2026-02-24",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-RESERVOIR-Opens-At-Atlantic-Theater-Company-20260224"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
-        "https://nystagereview.com/2026/02/24/the-reservoir-comic-play-about-addiction-doesnt-go-deep-enough/",
         "https://www.newyorktheatreguide.com/reviews/the-reservoir-off-broadway-review",
-        "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-review-noah-galvin/",
         "https://www.theatermania.com/news/review-the-reservoir-a-young-mans-struggle-with-alcoholism_1825463/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GOG550",
         "https://www.talkinbroadway.com/page/ob/02_24_26b.html",
+        "https://nystagereview.com/2026/02/24/the-reservoir-comic-play-about-addiction-doesnt-go-deep-enough/",
         "https://www.theaterscene.net/plays/offbway-plays/the-reservoir/victor-gluck/",
         "https://www.theatrereviews.com/off-broadway-review-the-reservoir-at-atlantic-theaters-linda-gross-theater-through-sunday-march-15-2026/",
+        "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
+        "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-review-noah-galvin/",
         "https://culturesauce.com/2026/03/01/reservoir-noah-galvin-off-broadway-review/",
         "https://www.offoffonline.com/offoffonline/2026/2/21/the-reservoir"
       ],
@@ -296922,13 +296927,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 287,
-        "byReason": {
-          "aggregator-internal-nav": 211,
-          "not-http-url": 55,
-          "aggregator-section-root": 6,
-          "non-review-host": 15
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -296954,28 +296954,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/02/24/the-reservoir-comic-play-about-addiction-doesnt-go-deep-enough/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "https://www.newyorktheatreguide.com/reviews/the-reservoir-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-review-noah-galvin/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GOG550",
@@ -296990,6 +296972,12 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "https://nystagereview.com/2026/02/24/the-reservoir-comic-play-about-addiction-doesnt-go-deep-enough/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://www.theaterscene.net/plays/offbway-plays/the-reservoir/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -297000,6 +296988,18 @@
             "outletId": "theatrereviews.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/the-reservoir-off-broadway-review-noah-galvin/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
             "url": "https://culturesauce.com/2026/03/01/reservoir-noah-galvin-off-broadway-review/",
@@ -297026,7 +297026,7 @@
         "liveCount": 9,
         "candidateCount": 11
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-resistible-rise-of-arturo-ui-royal-shakespeare-regional-2026",
@@ -303961,7 +303961,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
@@ -306036,7 +306036,7 @@
         "liveCount": 5,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "the-wedding-singer-regional-2026",
@@ -320447,7 +320447,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:25:54.906Z"
     },
     {
       "showId": "uncensored-no-need-to-overthink-it-off-broadway-2026",
