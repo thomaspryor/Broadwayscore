@@ -66,11 +66,25 @@ test('digest workflow: the public log never carries the recipient address or sub
   assert.ok(m, 'the send step filters the digest log through sed');
   const lines = [
     '[digest] sent to owner@example.com (subject: Private subject · id re_123)',
-    '[digest] already sent to owner@example.com today (ET 2026-11-04, Resend id re_9) — refusing duplicate send.',
+    '[digest] send failed (HTTP 422): {"message":"owner@example.com is invalid"}',
+    '[digest] fatal: boom for owner@example.com',
   ].join('\n');
-  const out = execFileSync('sed', ['-E', m[1].replace(/\\\\/g, '\\')], { input: lines }).toString();
+  const filt = WF.match(/grep -E '([^\n]*)' "\$RUNNER_TEMP\/digest\.log"/);
+  assert.ok(filt, 'allowlist grep present');
+  const kept = execFileSync('grep', ['-E', filt[1]], { input: lines }).toString();
+  const out = execFileSync('sed', ['-E', m[1].replace(/\\\\/g, '\\')], { input: kept }).toString();
   assert.doesNotMatch(out, /owner@example\.com|Private subject/);
   assert.match(out, /id re_123/);
+  assert.match(out, /send failed \(details withheld/);
+});
+
+test('pager: starts a guarded send when the digest is overdue, only after ENABLE_FROM (cron is unreliable)', () => {
+  const pager = read('.github/workflows/check-morning-digest-sent.yml');
+  assert.match(pager, /^ {2}actions: write/m);
+  assert.match(pager, /gh workflow run morning-digest-action\.yml --ref main -f send=true/);
+  assert.match(pager, /\[\[ "\$today" < "\$enable" \]\]/);
+  assert.match(pager, /if: inputs\.dry_run != 'true' && inputs\.date == ''/);
+  assert.match(read('scripts/check-morning-digest-sent.js'), /histDate/);
 });
 
 test('digest workflow: send mode skips the Mac fetch / snapshot pin / compare (the Mac is gone)', () => {

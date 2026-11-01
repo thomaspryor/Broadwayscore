@@ -328,7 +328,7 @@ const OWNER_ACTIONS = {
   'broadcast:draft-unsent:': 'Send the opening-night email draft.',
   'broadcast:deadline-draft:': 'Send the opening-night email draft before the deadline.',
   'cookie-renew:needs-human:': 'Re-capture the expired login cookie (needs your login).',
-  'check-morning-digest-sent.yml': 'Check the Mac is on, awake and signed in.',
+  'check-morning-digest-sent.yml': 'Nothing is needed from you unless the morning email is also missing. The check that watches the Mac and the morning email could not run; the failed run is on the Check Morning Digest Sent Actions page.',
   'opening-night-broadcast.yml': 'Send the opening-night email yourself.',
   'restore-supabase.yml': 'Restore the project from the Supabase dashboard (only you hold that login).',
   'update-theatr.yml': 'Re-capture the Theatr login from the iPhone app.',

@@ -133,8 +133,8 @@ jobs:
           node scripts/send-morning-digest.js $MODE --no-autofix --skip-mac-local --resend-sent-guard \
             > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
           echo "digest ${MODE#--} exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, kept off the public log)"
-          grep -E '^\[digest\] (Resend sent-today guard|DRY RUN|sent to|refusing|send failed|fatal)' "$RUNNER_TEMP/digest.log" \
-            | sed -E 's/^\[digest\] sent to .* id ([^ )]+)\)$/[digest] sent (recipient and subject withheld, id \1)/; s/already sent to [^ ]+ today/already sent today (recipient withheld)/' || true
+          grep -E '^\[digest\] (Resend sent-today guard|DRY RUN|sent to|send failed|fatal)' "$RUNNER_TEMP/digest.log" \
+            | sed -E 's/^\[digest\] sent to .* id ([^ )]+)\)$/[digest] sent (recipient and subject withheld, id \1)/; s/^\[digest\] (send failed|fatal).*/[digest] \1 (details withheld, they can hold the address)/' || true
           # Exit 3 = Resend already shows today's digest: a later cron after a good first run, or a manual
           # send=true after the Mac sent. Nothing to do, and not a failure (send-morning-digest.js ALREADY_SENT_EXIT).
           if [ "$status" = "3" ]; then echo "Today's digest was already sent; nothing to do."; exit 0; fi

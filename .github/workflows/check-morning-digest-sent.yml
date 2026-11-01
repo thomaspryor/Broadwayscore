@@ -37,11 +37,12 @@ concurrency:
 permissions:
   contents: write
   statuses: read
+  actions: write   # only to start morning-digest-action.yml with send=true (step below)
 
 jobs:
   check:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -50,6 +51,33 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
+
+      # BRO-6764 self-heal. GitHub drops and delays cron (cron-redispatch.yml), and a dispatched run is a
+      # dry run unless send=true, so a day whose three scheduled sends were all lost would end with no
+      # email. If the digest is not in Resend yet, start the Action with send=true and wait for it;
+      # the Action's sent-today guard keeps this to one email. Off before ENABLE_FROM (the Mac still
+      # sends then), on dry runs, and on historical --date checks. The check below then sees the result.
+      - name: Start the digest send if it is overdue
+        if: inputs.dry_run != 'true' && inputs.date == ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: |
+          enable=$(grep -m1 -oE "ENABLE_FROM: '[0-9-]+'" .github/workflows/morning-digest-action.yml | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+          today=$(date -u +%F)
+          if [ -z "$enable" ] || [[ "$today" < "$enable" ]]; then echo "Before ENABLE_FROM ($enable): the Mac still sends. Nothing to start."; exit 0; fi
+          # Same ET-hour floor as the checker: before 09:00 ET the digest is simply not due yet.
+          if ! node scripts/check-morning-digest-sent.js --signal=digest --dry-run > "$RUNNER_TEMP/pre.log" 2>&1; then echo "Pre-check could not tell; not starting a send."; tail -3 "$RUNNER_TEMP/pre.log"; exit 0; fi
+          cat "$RUNNER_TEMP/pre.log"
+          grep -q ': PAGE ' "$RUNNER_TEMP/pre.log" || { echo "Digest already arrived (or not due yet). Nothing to start."; exit 0; }
+          gh workflow run morning-digest-action.yml --ref main -f send=true
+          for i in 1 2 3 4 5 6 7 8 9 10; do
+            sleep 60
+            busy=$(gh run list --workflow=morning-digest-action.yml --limit 5 --json status --jq '[.[]|select(.status!="completed")]|length')
+            echo "wait $i: $busy digest run(s) still active"
+            [ "$busy" = "0" ] && break
+          done
 
       # One script, both signals (heartbeat first, then the digest); each has its own alert key and a
       # failure of one cannot skip the other. Exit 2 = cannot tell or page not delivered.

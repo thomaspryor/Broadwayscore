@@ -84,7 +84,9 @@ async function main() {
     console.error(`Bad --signal "${signal}" (want both, digest or heartbeat)`);
     process.exit(2);
   }
-  if (signal !== 'digest') await checkHeartbeat({ dryRun });
+  // A historical --date is report-only for the digest; the heartbeat has no date, so it is dry too.
+  const histDate = argv.some((x) => x.startsWith('--date='));
+  if (signal !== 'digest') await checkHeartbeat({ dryRun: dryRun || histDate });
   if (signal !== 'heartbeat') await checkDigest({ argv, dryRun });
 }
 
