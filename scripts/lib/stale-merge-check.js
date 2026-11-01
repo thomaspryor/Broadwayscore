@@ -106,7 +106,7 @@ function _shingles(words, n) {
  * @param {string} incomingText
  * @returns {boolean}
  */
-function isSameArticleBodyUpgrade(existing, incomingText) {
+function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   if (!existing || typeof incomingText !== 'string') return false;
   const before = typeof existing.fullText === 'string' ? existing.fullText : '';
   if (!before) return false; // blank bodies already fill through the merge
@@ -114,7 +114,11 @@ function isSameArticleBodyUpgrade(existing, incomingText) {
   // A split parent holds one section of the article; a re-ingest bringing
   // the whole article back lets the fan-out re-plan (re-trim, or undo a
   // wrong split). Only the lede test below applies to it.
-  const splitParent = existing.multiShowSplitParent === true;
+  // opts.multiShowWhole (BRO-6744): the caller found the incoming text is a
+  // multi-show article the fan-out can split, so a good stored body that is
+  // one show's half of it (a Vulture double cut off before the second
+  // review) is treated like a split parent.
+  const splitParent = existing.multiShowSplitParent === true || opts.multiShowWhole === true;
   if (!splitParent && !isPreExistingContentBad({ data: existing })) return false;
   const next = incomingText.trim();
   if (next.length < before.length + 200 || next.length < before.length * 1.25) return false;

@@ -154,6 +154,7 @@ function isParenthetical(text, at) {
 
 // What follows a show's title in a capsule's run-listing header: "Through
 // June 28 at the Hudson Theatre", "Open run at Second Stage's Hayes Theater".
+const PHOTO_CREDIT_AFTER_RE = /^[\s.!?”"’,]{0,4}(?:Photo(?:graph)?s?|Credit)\s*(?::|by\b)/i;
 const LISTING_HEADER_AFTER_RE = /^\s*[.:,–—-]?\s*(?:(?:Now )?through|until|open(?:-ended)? run|in previews|extended through|closes|closing)\b/i;
 // A capsule header sits at a unit start: the text start, a new line, a
 // sentence end, or the close of a WordPress photo caption.
@@ -464,7 +465,7 @@ const AFTER_TITLE_RE = /^[\s*★☆½,;:]+/;
 const WEB_ADDRESS_RE = /(?<![\w@/.-])(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|org|net|info|nyc|co\.uk|org\.uk)(?:\/[^\s]*)?(?=\s)/gi;
 // What may follow a one-word title that opens a sentence for it to count:
 // a star rating or a run listing ("Midnight Through Jan. 3 at ...").
-const ONE_WORD_LEAD_OK_RE = /^\s*(?:[*★☆]|(?:Through|Until|Closes|Extended|is (?:at|playing|running|now))\b)/;
+const ONE_WORD_LEAD_OK_RE = /^[!?]?\s*(?:[*★☆]|(?:Through|Until|Closes|Extended|is (?:at|playing|running|now))\b)/;
 
 /**
  * Sorted [start, end) spans where the matcher's title appears capitalised. A
@@ -558,6 +559,7 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   const people = creditedNames(ownShow);
   const normText = ` ${normTitle(text)} `;
   const byShow = new Map();
+  const captionMentions = [];
   for (const show of cands) {
     // Another show titled after someone credited on this one is that person,
     // not a second review: drop it outright for a one-word name ("Sting" for
@@ -570,7 +572,13 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     if (people.given.has(key) && [...people.given.get(key)].some((g) => normText.includes(` ${g} ${key} `))) continue;
     const m = buildJointMatcher(show);
     if (!m) continue;
-    let ms = jointMentions(m, text);
+    // A photo caption ("From Bigfoot!. Photo: A. Photographer", Vulture,
+    // BRO-6744) is page furniture, not prose: its mention would break the
+    // second show's stretch in two.
+    const isCaption = (mn) => PHOTO_CREDIT_AFTER_RE.test(text.slice(mn.end, mn.end + 16));
+    const raw = jointMentions(m, text);
+    let ms = raw.filter((mn) => !isCaption(mn));
+    captionMentions.push(...raw.filter(isCaption));
     if (people.given.has(key)) ms = ms.filter((mn) => !isCreditedPersonMention(text, mn, people.given.get(key)));
     if (ms.length >= 2) byShow.set(show.id, { show, mentions: ms });
   }
@@ -685,6 +693,17 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   }
   const cuts = bodyIdx.map(cutAt);
   if (transitionCut !== undefined) cuts[1] = transitionCut;
+  // A section's own photo caption just before its cut opens that section
+  // ("Kristolyn Lloyd in Bigfoot! Photo: A. Photographer Whereas ...").
+  for (let i = 1; i < cuts.length; i++) {
+    const id = runs[bodyIdx[i]].id;
+    const cap = captionMentions.filter((c) => c.id === id && c.at < cuts[i] && cuts[i] - c.at < 300
+      && !mentions.some((mn) => mn.at >= c.end && mn.at < cuts[i])).pop();
+    if (!cap) continue;
+    const prevEnd = Math.max(cuts[i - 1], ...mentions.filter((mn) => mn.at < cap.at).map((mn) => mn.end));
+    const capStart = sentenceStart(text, cap.at);
+    if (capStart >= prevEnd) cuts[i] = capStart;
+  }
   if (cuts[0] > text.length * FIRST_INTRO_MAX_SHARE) return [];
   const bodyEnd = tail.length ? cutAt(lastBody + 1) : text.length;
   // The tail is a closing listing and page chrome, never a big share of the

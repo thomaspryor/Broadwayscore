@@ -1883,8 +1883,26 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
     return cand === 'complete' || tierRank({ contentTier: cand }) > tierRank(existing);
   };
+  // BRO-6744: a stored body that is one show's half of a multi-show article
+  // (Vulture's Night Side Songs / Bigfoot! double, stored cut off before the
+  // Bigfoot! review) passes every "bad body" test, so a re-ingest of the
+  // whole article was never taken and the other show never got its review.
+  // Take the whole article when the fan-out can split it: the fan-out that
+  // runs after this write trims the file back to its own section and files
+  // the rest under the other show.
+  const _multiShowWhole = () => {
+    if (existing.multiShowSplitParent === true) return false;
+    try {
+      const fan = require('./multi-show-review-fanout');
+      const { loadShows } = require('./multi-show-splitter');
+      const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
+      if (!r || r.contentTier !== 'complete') return false;
+      return !!fan.planMultiShowFanout({ ...existing, fullText: fields.fullText }, loadShows(), { ownShowId: showId });
+    } catch { return false; }
+  };
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
-      && isSameArticleBodyUpgrade(existing, fields.fullText)
+      && (isSameArticleBodyUpgrade(existing, fields.fullText)
+        || (_multiShowWhole() && isSameArticleBodyUpgrade(existing, fields.fullText, { multiShowWhole: true })))
       && _bodyUpgradeTierOk()) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
     existing.fullText = fields.fullText;

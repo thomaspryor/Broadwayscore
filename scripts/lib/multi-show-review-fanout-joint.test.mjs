@@ -479,3 +479,28 @@ test('two reviews joined by a sentence naming both, listings for each at the end
   const short = text.replace(/ The aisle passage number[^]*?By the curtain call/, " By the curtain call");
   assert.equal(plan(ID.Midnight, short), null);
 });
+
+// BRO-6744 Vulture page as fetched: a photo caption opens each review
+// ("<actors> in Bigtop! Photo: A. Photographer"), the one-word title with an
+// exclamation mark opens its own listing line, and newsletter chrome follows.
+test('photo captions travel with their own show; "Bigtop! is at ..." is a listing (Vulture as fetched)', () => {
+  const shows = [...SHOWS, { id: 'bigtop-off-broadway-2026', title: 'BIGTOP!', category: 'off-broadway', openingDate: '2026-10-19' }];
+  const text = [
+    'From Midnight. Photo: A. Photographer',
+    `Before the performance begins at Midnight, the actors wander the aisles. ${filler('aisle', 6)} The patience of Midnight never flags. ${filler('lantern', 6)} By the curtain call, Midnight has earned every minute.`,
+    'Ann Actor and Bo Player in Bigtop! Photo: C. D. Photographer',
+    `Whereas patience is in abundance at Midnight, it is in short supply at Bigtop! ${filler('trapeze', 6)} On TV, Bigtop! would fit right in.`,
+    'Midnight is at the Daryl Roth Theater through January 3. Bigtop! is at New York City Center through April 26.',
+    'Sign up for the newsletter: Midnight and Bigtop! Your inbox will thank you.',
+  ].join(' ');
+  const p = planMultiShowFanout(base({ showId: ID.Midnight, publishDate: '2026-10-20', fullText: text }), shows, { joint: true });
+  assert.ok(p, 'expected a plan');
+  assert.equal(p.strategy, 'joint');
+  const m = section(p, ID.Midnight);
+  const b = section(p, 'bigtop-off-broadway-2026');
+  assert.doesNotMatch(m, /Bigtop|Photo: C\. D\./);
+  assert.match(m, /Midnight is at the Daryl Roth Theater through January 3\.$/);
+  assert.match(b, /^Ann Actor and Bo Player in Bigtop! Photo: C\. D\. Photographer Whereas/);
+  assert.match(b, /Bigtop! is at New York City Center through April 26\.$/);
+  assert.doesNotMatch(b, /newsletter/);
+});
