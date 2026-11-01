@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T21:36:10.604Z",
+  "generatedAt": "2026-11-01T22:23:04.452Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1204,6 +1204,172 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ]
+    },
+    {
+      "id": "tosca-english-national-opera-west-end-2026",
+      "title": "Tosca - English National Opera",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "opera",
+      "openingDate": "2026-10-30",
+      "status": "open",
+      "slug": "tosca-english-national-opera-west-end",
+      "thumbnail": "/images/shows/tosca-english-national-opera-west-end-2026/thumbnail.webp",
+      "siteScore": null,
+      "liveScore": 87,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 6,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-01T22:23:04.452Z",
+          "rc": 1,
+          "s": 87,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -4607,23 +4773,23 @@
       "status": "open",
       "slug": "middlemarch-rsc-regional-2026",
       "thumbnail": "/images/shows/middlemarch-rsc-regional-2026/thumbnail.jpg",
-      "siteScore": 77.59,
+      "siteScore": 77.55,
       "liveScore": 78,
-      "scoreDrift": 0.4099999999999966,
+      "scoreDrift": 0.45000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
+      "total": 11,
       "t1": 5,
       "t2": 3,
-      "t3": 2,
-      "positive": 7,
+      "t3": 3,
+      "positive": 8,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "10/12 total",
+          "11/12 total",
           "hi-conf:7/8"
         ],
         "highConfidence": 7,
@@ -5034,6 +5200,18 @@
           "m": 3,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-11-01T22:23:04.452Z",
+          "rc": 11,
+          "s": 77.55,
+          "t1": 5,
+          "t2": 3,
+          "t3": 3,
+          "p": 8,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     }
@@ -5426,6 +5604,31 @@
         "warnings": 2,
         "unknowns": 4,
         "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+      "title": "Iphigenie en Tauride - English National Opera",
+      "market": "west-end",
+      "category": "west-end",
+      "type": "opera",
+      "openingDate": "2026-11-06",
+      "status": "upcoming",
+      "slug": "iphigenie-en-tauride-english-national-opera-west-end",
+      "thumbnail": "/images/shows/iphigenie-en-tauride-english-national-opera-west-end-2026/thumbnail.jpg",
+      "daysUntil": 5,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        }
+      },
+      "readinessSummary": {
+        "failures": 1,
+        "warnings": 0,
+        "unknowns": 2,
+        "total": 4
       },
       "preflight": false
     },
