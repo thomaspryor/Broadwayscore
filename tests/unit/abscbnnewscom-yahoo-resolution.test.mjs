@@ -7,10 +7,12 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { executeReviewFieldEditIn } = require('../../scripts/lib/review-field-edit.js');
+const { moveReviewFile } = require('../../scripts/lib/review-file-move.js');
 const { _setShowsCacheForTest } = require('../../scripts/lib/review-write-guard.js');
 const { explainExclusion } = require('../../scripts/lib/review-guards.js');
 const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization.js');
 const plan = require('../../data/pending-fixes/bro-4504.json');
+const filenamePlan = require('../../data/pending-fixes/bro-4504-3.json');
 const root = path.resolve(import.meta.dirname, '../..');
 const stamp = { fixId: plan.planId, at: '2026-10-25T00:00:00.000Z' };
 const yahooFile = 'abscbnnewscom--mark-kennedy.json';
@@ -36,8 +38,18 @@ const write = (dir, file, data) => {
   fs.writeFileSync(path.join(dir, file), JSON.stringify(data));
 };
 
-function replay(dir) {
-  for (const action of plan.plan.actions) {
+function replay(dir, activePlan = plan) {
+  for (const action of activePlan.plan.actions) {
+    if (action.type === 'review-file-op') {
+      if (action.operation === 'delete') fs.unlinkSync(path.join(dir, action.sourcePath));
+      else {
+        assert.equal(action.operation, 'rename');
+        const result = moveReviewFile(dir, action.sourcePath, action.destPath);
+        assert.equal(result.ok, true, result.reason);
+      }
+      continue;
+    }
+    assert.equal(action.type, 'review-field-edit');
     // An applied plan remains testable against the updated private snapshot.
     if (JSON.stringify(read(dir, action.file)[action.field]) === JSON.stringify(action.newValue)) continue;
     const result = executeReviewFieldEditIn(dir, action, stamp);
@@ -116,7 +128,13 @@ test('BRO-4504: replay on real data changes only the intended records', t => {
   const raw = JSON.parse(fs.readFileSync(path.join(root, 'data/shows.json'), 'utf8'));
   const shows = new Map((raw.shows || raw).map(s => [s.id, s]));
   _setShowsCacheForTest(shows);
-  const allowed = new Set(plan.plan.actions.map(a => a.file));
+  // The filename repair may already be applied in a later private snapshot.
+  const currentPlan = structuredClone(plan);
+  for (const action of currentPlan.plan.actions) {
+    const rename = filenamePlan.plan.actions.find(a => a.operation === 'rename' && a.sourcePath === action.file);
+    if (rename && !fs.existsSync(path.join(source, action.file))) action.file = rename.destPath;
+  }
+  const allowed = new Set(currentPlan.plan.actions.map(a => a.file));
   const folders = [...new Set([...allowed].map(f => f.split('/')[0]).concat(phantom.split('/')[0], 'prince-of-broadway-2017'))];
   const before = new Map();
   for (const folder of folders) {
@@ -125,7 +143,7 @@ test('BRO-4504: replay on real data changes only the intended records', t => {
       before.set(`${folder}/${file}`, fs.readFileSync(path.join(dir, folder, file), 'utf8'));
     }
   }
-  replay(dir);
+  replay(dir, currentPlan);
   const changed = [...before].filter(([f, bytes]) => fs.readFileSync(path.join(dir, f), 'utf8') !== bytes).map(([f]) => f);
   assert.ok(changed.every(f => allowed.has(f)), 'no unrelated review may change');
   for (const showId of ['ann-2013', 'high-2011']) {
@@ -135,7 +153,7 @@ test('BRO-4504: replay on real data changes only the intended records', t => {
   }
   const ann = 'ann-2013/' + apFile;
   assert.equal(explainExclusion(read(dir, ann), shows.get('ann-2013'), path.join(dir, ann)), null, 'Ann keeps its AP review');
-  const exeunt = `${exeuntShow}/${junkFile}`;
+  const exeunt = currentPlan.plan.actions.find(a => a.field === 'criticName').file;
   assert.equal(read(dir, exeunt).criticName, 'Lane Williamson');
   assert.equal(explainExclusion(read(dir, exeunt), shows.get(exeuntShow), path.join(dir, exeunt)), null, 'Exeunt keeps its scoreable review');
   const yahooBefore = [...before].filter(([file, bytes]) => {
@@ -151,7 +169,86 @@ test('BRO-4504: replay on real data changes only the intended records', t => {
   assert.equal(yahooAfter.length, 0);
   t.diagnostic(`real-data replay: ${before.size} records checked; ${changed.length} changed; eligible ABS-CBN Yahoo reviews ${yahooBefore.length} -> ${yahooAfter.length}`);
   for (const file of allowed) {
-    const fields = plan.plan.actions.filter(a => a.file === file).map(a => a.field);
+    const fields = currentPlan.plan.actions.filter(a => a.file === file).map(a => a.field);
     t.diagnostic(`${file}: ${fields.map(f => `${f} ${JSON.stringify(JSON.parse(before.get(file))[f] ?? null)} -> ${JSON.stringify(read(dir, file)[f])}`).join('; ')}`);
   }
+});
+
+test('BRO-4504: filename plan deletes each excluded twin before renaming its scoreable source', () => {
+  assert.deepEqual(filenamePlan.plan.actions.map(({ type, operation, sourcePath, destPath }) =>
+    ({ type, operation, sourcePath, destPath })),
+  [exeuntShow, 'prince-faggot-playwrights-horizons-off-broadway-2025'].flatMap(show => [
+    { type: 'review-file-op', operation: 'delete', sourcePath: `${show}/${namedFile}`, destPath: undefined },
+    { type: 'review-file-op', operation: 'rename', sourcePath: `${show}/${junkFile}`, destPath: `${show}/${namedFile}` },
+  ]));
+});
+
+test('BRO-4504: filename plan preserves both real scoreable reviews and every neighboring record', t => {
+  const source = path.join(root, 'data/review-texts');
+  const targets = [exeuntShow, 'prince-faggot-playwrights-horizons-off-broadway-2025'];
+  const folders = [...targets, 'prince-of-broadway-2017'];
+  if (!fs.existsSync(path.join(root, 'data/shows.json')) || folders.some(f => !fs.existsSync(path.join(source, f)))) {
+    t.skip('private data is optional');
+    return;
+  }
+  const dir = scratch(t);
+  const raw = JSON.parse(fs.readFileSync(path.join(root, 'data/shows.json'), 'utf8'));
+  const shows = new Map((raw.shows || raw).map(s => [s.id, s]));
+  _setShowsCacheForTest(shows);
+  for (const folder of folders) fs.cpSync(path.join(source, folder), path.join(dir, folder), { recursive: true });
+
+  // Keep exercising the real mover after CI has applied the plan: reconstruct
+  // only the old filename collision on scratch copies of the real review.
+  for (const show of targets) {
+    if (!fs.existsSync(path.join(dir, show, junkFile))) {
+      const canonical = read(dir, `${show}/${namedFile}`);
+      assert.equal(explainExclusion(canonical, shows.get(show), path.join(dir, show, namedFile)), null);
+      write(dir, `${show}/${junkFile}`, canonical);
+      write(dir, `${show}/${namedFile}`, { ...canonical, duplicateOf: junkFile });
+      t.diagnostic(`${show}: plan already applied; reconstructed pre-repair collision in scratch only`);
+    }
+  }
+  const before = new Map();
+  for (const folder of folders) {
+    for (const file of fs.readdirSync(path.join(dir, folder)).filter(f => f.endsWith('.json'))) {
+      before.set(`${folder}/${file}`, fs.readFileSync(path.join(dir, folder, file), 'utf8'));
+    }
+  }
+  for (const show of targets) {
+    const primary = read(dir, `${show}/${junkFile}`);
+    const twin = read(dir, `${show}/${namedFile}`);
+    assert.equal(explainExclusion(primary, shows.get(show), path.join(dir, show, junkFile)), null);
+    assert.equal(twin.duplicateOf, junkFile);
+    assert.equal(explainExclusion(twin, shows.get(show), path.join(dir, show, namedFile)), 'duplicateOf');
+    const pointers = [...before].filter(([file, bytes]) => file.startsWith(`${show}/`)
+      && JSON.parse(bytes).duplicateOf === junkFile).map(([file]) => file);
+    assert.deepEqual(pointers, [`${show}/${namedFile}`], 'no other review may retain a dangling duplicateOf');
+    const blocked = moveReviewFile(dir, `${show}/${junkFile}`, `${show}/${namedFile}`);
+    assert.equal(blocked.ok, false, 'the twin must be deleted before the rename');
+    assert.match(blocked.reason, /Destination exists/);
+  }
+
+  replay(dir, filenamePlan);
+
+  const allowed = new Set(filenamePlan.plan.actions.map(a => a.sourcePath));
+  const changed = [...before].filter(([file, bytes]) => !fs.existsSync(path.join(dir, file))
+    || fs.readFileSync(path.join(dir, file), 'utf8') !== bytes).map(([file]) => file);
+  assert.deepEqual(changed.sort(), [...allowed].sort());
+  const afterPaths = folders.flatMap(folder => fs.readdirSync(path.join(dir, folder))
+    .filter(f => f.endsWith('.json')).map(file => `${folder}/${file}`));
+  assert.equal(afterPaths.length, before.size - 2);
+  assert.ok(afterPaths.every(file => before.has(file)), 'no unexpected review files created');
+  for (const show of targets) {
+    assert.deepEqual(fs.readdirSync(path.join(dir, show)).filter(f => f.startsWith('exeunt-magazine--') && f.endsWith('.json')), [namedFile]);
+    const prior = JSON.parse(before.get(`${show}/${junkFile}`));
+    const after = read(dir, `${show}/${namedFile}`);
+    assert.equal(explainExclusion(after, shows.get(show), path.join(dir, show, namedFile)), null);
+    assert.equal(after.assignedScore, prior.assignedScore);
+    assert.equal(after.criticName, 'Lane Williamson');
+    assert.equal(after._renamedFrom.file, `${show}/${junkFile}`);
+    // A rename adds provenance; all review content, scores and flags survive.
+    assert.deepEqual({ ...after, _renamedFrom: null }, { ...prior, _renamedFrom: null });
+    t.diagnostic(`${show}: Exeunt files 2 -> 1; score ${prior.assignedScore} -> ${after.assignedScore}; exclusion null -> null`);
+  }
+  t.diagnostic(`filename replay: ${before.size} records across ${folders.length} folders; ${changed.length} paths changed (2 excluded twins removed, 2 primaries renamed); ${before.size - changed.length} neighbors byte-identical`);
 });
