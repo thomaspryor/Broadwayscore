@@ -1,30 +1,30 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-01T09:17:26.411Z",
+  "lastChecked": "2026-11-01T14:12:17.010Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: opening date vs review dates",
-      "status": "warn",
-      "message": "20 show(s) store an opening date later than their reviews: silver-manhattan-off-broadway-2026 (stored 2026-03-04, reviews 2026-02-20); pen-pals-off-broadway-2025 (stored 2025-01-06, reviews 2024-12-12); an-american-in-paris-west-end-2017 (stored 2017-04-01, reviews 2017-03-22)"
+      "status": "pass",
+      "message": "No opening date contradicts its reviews (1 acked)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "7 NEW review(s) whose explicit rating contradicts the score (worst: wicked-2003 Time Out New York 1/5→20 vs LLM 88, gap 68); 1 star-won-hiding"
+      "message": "6 NEW review(s) whose explicit rating contradicts the score (worst: cardinal-off-broadway-2018 Theatre's Leiter Side A→90 vs LLM 36, gap 54); 1 star-won-hiding"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "92.2% scored (44912/48718)"
+      "message": "93.1% scored (45469/48861)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (3h ago)"
+      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1798 outlet(s), 78206 review(s)"
+      "message": "No broken-extractor signature in 1805 outlet(s), 78319 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "warn",
-      "message": "2 outlet(s) show a broken-extractor signature (worst: bristol247 — 5/7 recent invalid, 71% vs 0% baseline)"
+      "message": "3 outlet(s) show a broken-extractor signature (worst: portsmouth-news — 3/3 recent invalid, 100% vs 0% baseline)"
     },
     {
       "name": "Quality: standingCoverage drift",

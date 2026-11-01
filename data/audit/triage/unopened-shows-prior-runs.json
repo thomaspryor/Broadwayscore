@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-11-01T09:42:16.889Z",
+  "generatedAt": "2026-11-01T14:54:32.086Z",
   "linearIssue": "BRO-80",
   "scannedShows": 5744,
-  "flaggedShows": 53,
-  "flaggedFiles": 181,
+  "flaggedShows": 52,
+  "flaggedFiles": 180,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 29,
-    "needs-human-review": 24
+    "needs-human-review": 23
   },
   "shows": [
     {
@@ -2920,42 +2920,6 @@
           "criticName": "Stuart King",
           "publishDate": "2024-07-31",
           "url": "https://www.londonboxoffice.co.uk/news/post/death-of-england-michael-delroy-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": "2026-11-01",
-      "openingDate": "2026-11-01",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "broadwayworld--dc-felton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Alexandre Diaconu",
-          "publishDate": "2026-07-02",
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-La-Monnaie-20260702",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
