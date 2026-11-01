@@ -17,8 +17,8 @@ export interface ShowCardShow {
   slug: string;
   title: string;
   venue: string;
-  /** A city hub's own production (src/lib/local-market.ts). */
-  localOnly?: boolean;
+  /** Plays as a city hub's own production: run age reads 'in <town>', not 'in tryout' (BRO-6796). */
+  hubProduction?: boolean;
   openingDate: string;
   closingDate?: string;
   previewsStartDate?: string;

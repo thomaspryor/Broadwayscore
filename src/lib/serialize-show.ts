@@ -62,7 +62,7 @@ export function serializeShowForClient(
     title: show.title,
     venue: show.venue,
     // Run-age label reads 'in <city>' for a city hub's own production (BRO-6796).
-    localOnly: isLocalOnlyShow(show) || undefined,
+    hubProduction: isLocalOnlyShow(show) || undefined,
     openingDate: show.openingDate,
     closingDate: show.closingDate ?? undefined,
     previewsStartDate: show.previewsStartDate ?? undefined,

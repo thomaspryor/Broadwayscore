@@ -20,7 +20,6 @@ import HoverRateStars from '@/components/user/HoverRateStars';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { buildAffiliateUrl, trackTicketClick } from '@/lib/affiliate-utils';
 import type { ShowCardShow, ScoreModeParam } from './types';
-import { isLocalOnlyShow } from '@/lib/local-market';
 
 export interface ShowListCardProps {
   show: ShowCardShow;
@@ -92,7 +91,7 @@ const ShowListCard = memo(function ShowListCard({
   const canShowTicket = showTicketLink && primaryTicket && (show.status === 'open' || show.status === 'previews');
   const isOpera = isOperaShow(show);
   const marketLabel = isOpera ? getOperaMarketLabel(show) : getMarketLabel(category, show.venue);
-  const durationSuffix = isOpera ? getOperaHouseSuffix(show) : getDurationSuffix(category, show.venue, isLocalOnlyShow(show));
+  const durationSuffix = isOpera ? getOperaHouseSuffix(show) : getDurationSuffix(category, show.venue, show.hubProduction);
   const cardHref = overrideHref ?? `/show/${show.slug}`;
 
   // Score computation
