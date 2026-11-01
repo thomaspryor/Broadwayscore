@@ -304,6 +304,8 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
   const teamKey = opts.teamKey || 'BRO';
   let scanned = 0;
   let after = null;
+  // Eligible issues by task id, for the pause-history pass after the scan.
+  const survivors = new Map();
 
   if (!client || typeof client.graphql !== 'function') {
     return { ok: false, reason: 'no-linear-client', tasks, scanned: 0, eligible: 0 };
@@ -325,7 +327,7 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
         }
         if (!isWatchdogEligible(issue, opts)) continue;
         const task = mapIssueToTask(issue);
-        if (task) tasks.set(task.id, task);
+        if (task) { tasks.set(task.id, task); survivors.set(task.id, issue); }
       }
       if (!pageInfo.hasNextPage) break;
       after = pageInfo.endCursor;
@@ -355,7 +357,46 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
     };
   }
 
-  return { ok: true, reason: null, tasks, started, scanned, eligible: tasks.size };
+  const history = await applyPauseHistory(client, tasks, survivors, opts);
+  return { ok: true, reason: null, tasks, started, scanned, eligible: tasks.size, pauseHeld: history.held, pauseHistory: history.status };
+}
+
+/**
+ * BRO-6764: drop queue survivors an earlier worker's pause should keep out, by the SAME
+ * rule the cloud picker and Codex runner apply (cloud-worker-pick.js historySkipReason,
+ * BRO-5407: one call so the lanes can't drift). Measured 2026-11-01: BRO-6764 was reported
+ * paused with RECHECK-AFTER 2026-11-03 at 16:34:09Z and this queue re-dispatched it 13s
+ * later, and 13 of the 17 cards it held were Paused. Paused is a backlog-type state, so
+ * ineligibleReason alone passes it.
+ *
+ * Comments are fetched only for the survivors (about 20 cards, one batched request),
+ * not added to the backlog scan: that scan pages every open issue each refresh, and 50
+ * comments on each would multiply its query cost for no gain. Fails OPEN when the
+ * comment read fails (the queue stays as it was before this pass, and the reason is
+ * returned): linear-next.js re-applies the recheck/recent-pause part of the rule on the
+ * live card at dispatch time, so an outage here cannot re-launch a paused card.
+ * Mutates `tasks`. -> {held: [{taskId, reason}], status: 'ok'|'skipped'|'failed: ...'}
+ */
+async function applyPauseHistory(client, tasks, survivors, opts = {}) {
+  const held = [];
+  if (!survivors.size) return { held, status: 'ok' };
+  if (!client || typeof client.listIssueComments !== 'function') return { held, status: 'skipped' };
+  const { historySkipReason } = require('./cloud-worker-pick.js');
+  const nowMs = Number.isFinite(opts.now) ? opts.now : Date.now();
+  let byIdentifier;
+  try {
+    byIdentifier = await client.listIssueComments(
+      [...survivors.values()].map((i) => i.identifier), opts.teamKey || 'BRO', { maxPerIssue: 200 });
+  } catch (e) {
+    return { held, status: `failed: ${String((e && e.message) || e).split('\n')[0]}` };
+  }
+  for (const [taskId, issue] of survivors) {
+    const reason = historySkipReason(issue, byIdentifier.get(issue.identifier) || [], nowMs);
+    if (!reason) continue;
+    tasks.delete(taskId);
+    held.push({ taskId, reason });
+  }
+  return { held, status: 'ok' };
 }
 
 // ── write-back leak detection (BRO-3390) ───────────────────────────────────
@@ -421,6 +462,7 @@ module.exports = {
   parseLinearTaskId,
   isLinearTaskId,
   buildWatchdogBacklogQuery,
+  applyPauseHistory,
   priorityOf,
   hasSafeVerifyCommand,
   ineligibleReason,

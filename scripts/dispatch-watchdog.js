@@ -298,6 +298,9 @@ async function refreshLinearTasks() {
     const source = require('./lib/linear-watchdog-source.js');
     const client = require('./lib/linear-client.js');
     const res = await source.fetchLinearWatchdogTasks(client, { alreadyPassesIds });
+    // BRO-6764: cards held back by their pause history (same rule as the cloud picker).
+    if (res.ok && res.pauseHistory && res.pauseHistory !== 'ok') console.error(`[watchdog] pause-history check ${res.pauseHistory}; queue not filtered by it this refresh`);
+    else if (res.ok && res.pauseHeld && res.pauseHeld.length) console.error(`[watchdog] ${res.pauseHeld.length} card(s) held by pause history: ${res.pauseHeld.map(h => `${h.taskId}=${h.reason}`).join(', ')}`);
     if (res.ok) {
       linearTaskCache = {
         tasks: res.tasks, started: res.started || new Map(),

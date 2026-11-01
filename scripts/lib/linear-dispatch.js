@@ -829,6 +829,39 @@ function startedStateGuard(issue, opts) {
     `is a stalled issue that needs re-dispatch.`;
 }
 
+// -- pausedHoldGuard (BRO-6764) ----------------------------------------------
+//
+// A worker reported BRO-6764 paused with "RECHECK-AFTER: 2026-11-03" at
+// 16:34:09Z; the issue moved to Paused (a backlog-type state, so
+// startedStateGuard and reportedOutcomeGuard both pass it) and the dispatch
+// watchdog relaunched it 19s later from its 10-minute task cache. The whole
+// second session re-verified work that was already landed and waiting on a date.
+//
+// Same rule the cloud picker applies (cloud-worker-pick.js historySkipReason),
+// narrowed to the two reasons that are about TIME, not about who the card
+// belongs to: 'recheck-pending' (the newest RECHECK-AFTER date is still ahead
+// and no person has commented since) and 'recently-paused' (a worker paused it
+// within the cooldown, 24h for P0/P1). The other reasons ('backlog-unexplained'
+// etc.) are queue policy and would refuse ordinary --id dispatches of Backlog
+// cards, so they stay in the queue builders (linear-watchdog-source.js).
+// --force waives it: an operator naming the card is a decision, unlike a sweep.
+const PAUSED_HOLD_REASONS = new Set(['recheck-pending', 'recently-paused']);
+
+function pausedHoldGuard(issue, opts, nowMs = Date.now()) {
+  const o = opts || {};
+  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+  const comments = (issue && issue.comments && issue.comments.nodes) || [];
+  if (!comments.length) return null;
+  const { historySkipReason } = require('./cloud-worker-pick.js');
+  const reason = historySkipReason(issue, comments, nowMs);
+  if (!PAUSED_HOLD_REASONS.has(reason)) return null;
+  const why = reason === 'recheck-pending'
+    ? 'its newest RECHECK-AFTER date is still ahead (the nightly acceptance recheck owns it until then)'
+    : 'a worker reported it paused within the cooldown';
+  return `${(issue && issue.identifier) || '(unknown)'} is held by its pause history (${reason}): ${why}. `
+    + 'Refusing to dispatch; read the latest session report first. Re-run with --force if this card really should run now.';
+}
+
 // -- reportedOutcomeGuard (BRO-2543) ----------------------------------------
 //
 // The incident: BRO-2506's worker committed its fix to origin/main at
@@ -1205,6 +1238,8 @@ module.exports = {
   buildOpenIssuesQuery,
   buildOpenIssuesWithDescriptionsQuery,
   buildIssueCommentsByNumberQuery,
+  pausedHoldGuard,
+  PAUSED_HOLD_REASONS,
   findOpenIssueForTerm,
   unescapeMarkdown,
   buildCommentMutation,

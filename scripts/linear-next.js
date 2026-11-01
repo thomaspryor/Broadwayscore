@@ -785,6 +785,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
+  // Pause-history hold (BRO-6764): a card a worker just paused, or paused on a
+  // RECHECK-AFTER date still ahead, sits in a backlog-type state that the two
+  // guards around this one pass. See ld.pausedHoldGuard's header.
+  const pausedRefusal = ld.pausedHoldGuard(issue, args);
+  if (pausedRefusal) {
+    console.error(`[linear-next] REFUSING to dispatch ${identifier}: ${pausedRefusal}`);
+    process.exit(1);
+  }
+
   // Started-state guard (BRO-2518): the third clause of the same documented
   // funnel line the two guards above close ("Backlog/Todo, not `·
   // Marketing`, not BSC Daily/CANARY") — refuses an issue already in a
