@@ -69,12 +69,28 @@ function isSlowMarketDailyWindow(show, now = Date.now()) {
 // the 3-year back catalogue. A last-year show that is never audited or whose
 // last audit is >= 14 days old now sorts in its own tier after the slow-market
 // window and ahead of the back catalogue, and no last-year show is skipped
-// for more than 30 days. The time-boxed run only reorders; the catalogue and
+// for more than 30 days (BRO-6751: except a closed show past its first month
+// that audited clean, which keeps the 365d skip). The time-boxed run only reorders; the catalogue and
 // stale lanes keep their reserved slots.
 const LAST_YEAR_DAYS = 365;
 const LAST_YEAR_TIER = 1.75;
 const LAST_YEAR_STALE_MS = 14 * 24 * 60 * 60 * 1000;
 const LAST_YEAR_MAX_FRESHNESS_MS = 30 * 24 * 60 * 60 * 1000;
+// BRO-6751 (owner 2026-11-01: "Closed shows need very rare checking ... Or
+// even after a month after it opens"). Of 36,952 dated reviews, 89% publish
+// within 30 days of opening and 24 of 31,833 closed-show reviews published
+// more than a week after closing. A show more than 30 days past its opening
+// (or first preview when no opening date) is "mature": open ones re-audit
+// weekly instead of every 12h, and closed ones that audited clean keep the
+// 365d skip instead of the 30d last-year cap. A show with no parseable date or
+// a future opening is never mature (keeps the 12h default).
+const MATURE_DAYS = 30;
+const MATURE_OPEN_FRESHNESS_MS = 7 * 24 * 60 * 60 * 1000;
+function isMature(show, now = Date.now()) {
+  const opened = Date.parse(show?.openingDate || show?.previewsStartDate);
+  return Number.isFinite(opened) && now - opened > MATURE_DAYS * 24 * 60 * 60 * 1000;
+}
+
 function inLastYear(show, now = Date.now()) {
   return inOpeningWindow(show, now, LAST_YEAR_DAYS);
 }
@@ -93,7 +109,11 @@ function inOpeningPriorityWindow(show, now = Date.now()) {
 function freshnessMsFor(show, lastEntry, opts = {}) {
   const now = opts.now ?? Date.now();
   let base = baseFreshnessMs(show, lastEntry, opts);
-  if (inLastYear(show, now)) base = Math.min(base, LAST_YEAR_MAX_FRESHNESS_MS); // BRO-6687
+  // BRO-6687 caps last-year skips at 30d; BRO-6751 exempts a mature closed show
+  // that audited clean (a show that closed in its first month keeps the cap,
+  // since 11% of reviews land 8-30 days after opening).
+  const matureClosedClean = show?.status === 'closed' && !!lastEntry && lastEntry.gaps === 0 && isMature(show, now);
+  if (inLastYear(show, now) && !matureClosedClean) base = Math.min(base, LAST_YEAR_MAX_FRESHNESS_MS);
   // BRO-6687: in-window slow-market shows re-audit at least daily, whatever the
   // closed/clean skip or the configured freshness would otherwise allow.
   if (!isSlowMarketDailyWindow(show, now)) return base;
@@ -120,6 +140,9 @@ function baseFreshnessMs(show, lastEntry, { freshnessHours = 12, now = Date.now(
       ? OPENING_WINDOW_FRESHNESS_MS
       : OPENING_WARM_FRESHNESS_MS;
   }
+  // BRO-6751: fixed weekly for a mature open show (--freshness-hours does not
+  // shorten it; that flag tunes the young-show cadence).
+  if (isMature(show, now)) return MATURE_OPEN_FRESHNESS_MS;
   return freshnessHours * 60 * 60 * 1000; // open/previews — re-check often for new reviews
 }
 
@@ -360,6 +383,9 @@ module.exports = {
   LAST_YEAR_TIER,
   LAST_YEAR_STALE_MS,
   LAST_YEAR_MAX_FRESHNESS_MS,
+  MATURE_DAYS,
+  MATURE_OPEN_FRESHNESS_MS,
+  isMature,
   reserveStalestSlots,
   oldestGapRow,
   freshnessMsFor,

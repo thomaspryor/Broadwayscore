@@ -52,7 +52,21 @@ test('opening-window show re-audits every hourly run (55min freshness)', () => {
 });
 
 test('regular open show keeps the configured freshness hours', () => {
-  assert.equal(freshnessMsFor(openedLastMonth, { gaps: 0 }, { freshnessHours: 12, now: NOW }), 12 * 60 * 60 * 1000);
+  const openedTenDays = { id: 'ten', status: 'open', openingDate: iso(10 * DAY) };
+  assert.equal(freshnessMsFor(openedTenDays, { gaps: 0 }, { freshnessHours: 12, now: NOW }), 12 * 60 * 60 * 1000);
+});
+
+test('BRO-6751: an open show more than 30 days past opening re-audits weekly', () => {
+  const week = 7 * DAY;
+  const mature = { id: 'm', status: 'open', openingDate: iso(45 * DAY) };
+  assert.equal(freshnessMsFor(mature, { gaps: 0 }, { freshnessHours: 12, now: NOW }), week);
+  assert.equal(freshnessMsFor(mature, { gaps: 2, uncollected: 2 }, { now: NOW }), week);
+  // a long-runner from years ago too
+  assert.equal(freshnessMsFor({ ...mature, openingDate: iso(3000 * DAY) }, { gaps: 0 }, { now: NOW }), week);
+  // no opening date: first preview counts; no date at all or a future opening stays at 12h
+  assert.equal(freshnessMsFor({ id: 'p', status: 'previews', previewsStartDate: iso(60 * DAY) }, { gaps: 0 }, { now: NOW }), week);
+  assert.equal(freshnessMsFor({ id: 'n', status: 'open' }, { gaps: 0 }, { now: NOW }), 12 * 60 * 60 * 1000);
+  assert.equal(freshnessMsFor({ id: 'f', status: 'previews', openingDate: new Date(NOW + 40 * DAY).toISOString().slice(0, 10) }, { gaps: 0 }, { now: NOW }), 12 * 60 * 60 * 1000);
 });
 
 test('closed-clean show keeps the 365d skip', () => {
@@ -196,9 +210,12 @@ test('closed slow-market show inside the window still re-audits daily (no 365d/1
   assert.equal(auditTier(closed, { gaps: 0, uncollected: 0 }, NOW), SLOW_MARKET_TIER);
   assert.equal(freshnessMsFor(closed, { gaps: 0, uncollected: 0 }, { now: NOW }), SLOW_MARKET_DAILY_FRESHNESS_MS);
   assert.equal(freshnessMsFor(closed, { gaps: 3, uncollected: 0 }, { now: NOW }), SLOW_MARKET_DAILY_FRESHNESS_MS);
-  // outside the window the closed skips come back (capped at 30d inside the last year, BRO-6687)
+  // outside the window the closed skips come back (BRO-6751: a clean closed show
+  // past its first month keeps the 365d skip; only one closed in its first month
+  // keeps the 30d last-year cap)
   const fresh = new Date(NOW - DAY).toISOString();
-  assert.equal(freshnessMsFor({ ...closed, openingDate: iso(40 * DAY) }, { gaps: 0 }, { now: NOW }), 30 * DAY);
+  assert.equal(freshnessMsFor({ ...closed, openingDate: iso(40 * DAY) }, { gaps: 0 }, { now: NOW }), 365 * DAY);
+  assert.equal(freshnessMsFor({ ...closed, openingDate: iso(25 * DAY) }, { gaps: 0 }, { now: NOW }), 30 * DAY);
   assert.equal(freshnessMsFor({ ...closed, openingDate: iso(400 * DAY) }, { gaps: 0 }, { now: NOW }), 365 * DAY);
   assert.equal(auditTier({ ...closed, openingDate: iso(40 * DAY) }, { at: fresh, gaps: 0 }, NOW), 2);
 });
@@ -282,10 +299,13 @@ test('last-year show: tier 1.75 when unaudited or 14d stale, tier 2 when recentl
   assert.equal(auditTier(openedToday, undefined, NOW), 0);
 });
 
-test('last-year closed-clean show re-audits at most every 30d (was 365d); older shows unchanged', () => {
+test('BRO-6751: last-year closed show keeps the 30d cap only while it has gaps or closed in its first month', () => {
   const { LAST_YEAR_MAX_FRESHNESS_MS } = require('./gap-audit-freshness.js');
   const clean = { gaps: 0, uncollected: 0 };
-  assert.equal(freshnessMsFor(closedClean, clean, { now: NOW }), LAST_YEAR_MAX_FRESHNESS_MS);
+  assert.equal(freshnessMsFor(closedClean, clean, { now: NOW }), 365 * DAY);
+  assert.equal(freshnessMsFor(closedClean, { gaps: 2, uncollected: 0 }, { now: NOW }), 14 * DAY);
+  const shortRun = { id: 'short', status: 'closed', category: 'broadway', openingDate: iso(10 * DAY) };
+  assert.equal(freshnessMsFor(shortRun, clean, { now: NOW }), LAST_YEAR_MAX_FRESHNESS_MS);
   const older = { id: 'older', status: 'closed', openingDate: iso(400 * DAY) };
   assert.ok(freshnessMsFor(older, clean, { now: NOW }) > LAST_YEAR_MAX_FRESHNESS_MS);
   // a shorter cadence is never lengthened

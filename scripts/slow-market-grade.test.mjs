@@ -65,10 +65,11 @@ const { isOverdue, OVERDUE_GRACE_HOURS } = _req6751('./slow-market-grade.js');
 const N6751 = Date.parse('2026-11-01T12:00:00Z');
 const daysAgo = (d) => new Date(N6751 - d * 864e5).toISOString();
 
-test('isOverdue: closed clean last-year show is not overdue at 5 days (30-day promise), is at 31 days', () => {
+test('isOverdue: closed last-year show follows its own promise (365d clean, 14d with gaps; BRO-6751)', () => {
   const show = { id: 'x', category: 'broadway', status: 'closed', openingDate: '2026-03-01', closingDate: '2026-06-01' };
-  assert.equal(isOverdue(show, { at: daysAgo(5), gaps: 0, uncollected: 0 }, N6751, F6751), false);
-  assert.equal(isOverdue(show, { at: daysAgo(31), gaps: 0, uncollected: 0 }, N6751, F6751), true);
+  assert.equal(isOverdue(show, { at: daysAgo(31), gaps: 0, uncollected: 0 }, N6751, F6751), false);
+  assert.equal(isOverdue(show, { at: daysAgo(5), gaps: 2, uncollected: 0 }, N6751, F6751), false);
+  assert.equal(isOverdue(show, { at: daysAgo(15), gaps: 2, uncollected: 0 }, N6751, F6751), true);
 });
 
 test('isOverdue: in-window slow-market show is overdue past its 20h daily promise + grace', () => {
