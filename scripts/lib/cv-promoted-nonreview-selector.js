@@ -96,8 +96,16 @@ function planClear(data, result, clean) {
 
 // Files already re-verified from stored text keep isNonReview when refused; skip
 // them so a --limit batch moves on instead of re-paying for the same first N files.
+// BRO-6745: the skip holds only while that verdict is about the body the file
+// holds now. A refetch replaces fullText, so a verdict hashed on the old body
+// (or with no hash at all) says nothing about the new one: re-select it, or a
+// "not a review" label formed on a cookie banner outlives the real review.
 function alreadyReverified(d) {
-  return d?.contentVerification?.reverifiedFrom === 'stored-fullText';
+  const cv = d?.contentVerification;
+  if (cv?.reverifiedFrom !== 'stored-fullText') return false;
+  if (!cv.contentHash || typeof d.fullText !== 'string') return false;
+  // lazy: content-verifier pulls in the LLM client
+  return require('./content-verifier').contentHash(d.fullText) === cv.contentHash;
 }
 
 module.exports = {
