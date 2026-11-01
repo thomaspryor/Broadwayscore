@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-11-01T03:04:13.603Z",
-  "processed": 515,
-  "failed": 278,
-  "successRate": "64.9%",
+  "updatedAt": "2026-11-01T03:23:43.099Z",
+  "processed": 520,
+  "failed": 285,
+  "successRate": "64.6%",
   "tierBreakdown": {
-    "playwright": 281,
+    "playwright": 285,
     "amp": 3,
-    "browserbase": 14,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingdog": 33,
     "scrapingbee": 19,
     "brightdata": 0,
-    "archiveToday": 54,
+    "archiveToday": 61,
     "archive": 149
   },
   "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-31T22:47:50.514Z",
-      "event": "bb-session",
-      "session": "0fe6dd9c",
-      "url": "https://www.nytimes.com/2026/09/20/arts/music/met-opera-macbeth-louisa-proske.ht"
-    },
-    {
-      "t": "2026-10-31T22:47:51.181Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-31T23:01:13.582Z",
       "event": "bb-session",
@@ -127,6 +116,18 @@
       "t": "2026-11-01T02:58:15.094Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T03:15:15.098Z",
+      "event": "bb-session",
+      "session": "89d37254",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-01T03:16:21.470Z",
+      "event": "bb-session",
+      "session": "bca99027",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
