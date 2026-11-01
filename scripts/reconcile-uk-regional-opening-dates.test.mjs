@@ -48,7 +48,7 @@ test('BRO-6697: a theatreinchicago row seeded from its first TIC review moves to
     openingDate: d, openingDateSource: src, discoverySource: 'theatreinchicago', localOnly: true,
   });
   const shows = [tic('top-girls-regional-2026', '2026-02-26'), tic('other-chicago-regional-2026', '2026-02-26', 'ibdb')];
-  const reviews = [rev('top-girls-regional-2026', '2026-02-20'), rev('top-girls-regional-2026', '2026-02-26'), rev('other-chicago-regional-2026', '2026-02-20')];
+  const reviews = [rev('top-girls-regional-2026', '2026-02-20'), rev('top-girls-regional-2026', '2026-02-20'), rev('top-girls-regional-2026', '2026-02-26'), rev('other-chicago-regional-2026', '2026-02-20')];
   const moved = applyMoves(shows, reviews);
   assert.deepEqual(moved.map((m) => m.show.id), ['top-girls-regional-2026'], 'only the review-seeded TIC row moves');
   assert.equal(shows[0].openingDate, '2026-02-20');
@@ -60,4 +60,22 @@ test('BRO-6697: a theatreinchicago row seeded from its first TIC review moves to
 test('BRO-6697: a localOnly non-TIC regional row stays out of scope', () => {
   const shows = [{ ...row('c-local-2026', 'Gamma', '2026-10-11'), localOnly: true, venue: 'Some Hall, Springfield, IL' }];
   assert.equal(applyMoves(shows, [rev('c-local-2026', '2026-10-05')]).length, 0);
+});
+
+test('BRO-6697: one stray early review does not move a TIC row; a pinned or previews-fenced row never moves', () => {
+  const tic = (id, extra = {}) => ({
+    id, title: id, slug: id, category: 'regional', venue: 'Steppenwolf Theatre, Chicago, IL', status: 'closed', type: 'play',
+    openingDate: '2025-01-02', openingDateSource: 'tic-first-review', discoverySource: 'theatreinchicago', localOnly: true, ...extra,
+  });
+  const shows = [
+    tic('stray-regional-2025'),
+    tic('pinned-regional-2025', { humanCorrectedOpeningDate: '2025-01-02' }),
+    tic('fenced-regional-2025', { previewsStartDate: '2024-12-30' }),
+  ];
+  const reviews = [];
+  // stray: a lone preview-week post 12-29, everyone else on 01-02.
+  reviews.push(rev('stray-regional-2025', '2024-12-29'), rev('stray-regional-2025', '2025-01-02'), rev('stray-regional-2025', '2025-01-02'));
+  for (const id of ['pinned-regional-2025', 'fenced-regional-2025']) reviews.push(rev(id, '2024-12-28'), rev(id, '2024-12-28'));
+  assert.equal(applyMoves(shows, reviews).length, 0);
+  assert.deepEqual(shows.map((s) => s.openingDate), ['2025-01-02', '2025-01-02', '2025-01-02']);
 });

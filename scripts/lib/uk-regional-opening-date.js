@@ -27,10 +27,14 @@ function earliestReviewDate(publishDates) {
 }
 
 /**
+ * `minReviews` (BRO-6697): the new date must have at least this many reviews on or
+ * before it, so one stray (a preview-week blog post, a mis-dated page) cannot set it.
+ * theatreinchicago rows pass 2; the UK path keeps 1.
  * @returns {{action:'none'|'move'|'manual', openingDate?:string, openingDateSource?:string, gapDays?:number, reason?:string}}
  */
-function reconcileOpeningDate(show, publishDates) {
-  const first = earliestReviewDate(publishDates);
+function reconcileOpeningDate(show, publishDates, { minReviews = 1 } = {}) {
+  const days = (publishDates || []).filter(isDay).sort();
+  const first = days[Math.max(0, minReviews - 1)] || null;
   if (!first || !isDay(show && show.openingDate)) return { action: 'none' };
   const gap = daysBetween(show.openingDate, first);
   if (gap <= 0) return { action: 'none' };
@@ -38,6 +42,10 @@ function reconcileOpeningDate(show, publishDates) {
     return { action: 'manual', gapDays: gap, reason: `opening date source '${show.openingDateSource}' is not review-seeded` };
   }
   if (gap > MAX_GAP_DAYS) return { action: 'manual', gapDays: gap, reason: `earliest review is ${gap} days before the stored opening date` };
+  // BRO-6697: opening before first preview fails validate-data; that row needs a person.
+  if (isDay(show.previewsStartDate) && first < show.previewsStartDate) {
+    return { action: 'manual', gapDays: gap, reason: `earliest review ${first} is before previewsStartDate ${show.previewsStartDate}` };
+  }
   return { action: 'move', openingDate: first, openingDateSource: FIRST_REVIEW_SOURCE, gapDays: gap };
 }
 

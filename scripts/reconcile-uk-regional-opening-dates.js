@@ -30,7 +30,9 @@ function plan(shows, reviews) {
   const moves = []; const manual = [];
   for (const s of shows) {
     if (s.category !== 'regional' || !(isTicRow(s) || (isUkRegionalVenue(s.venue) && !isLocalOnlyShow(s)))) continue;
-    const d = reconcileOpeningDate(s, by[s.id]);
+    // A human-pinned date is restored by the shows write guard; never count it as moved.
+    if (s.humanCorrectedOpeningDate) continue;
+    const d = reconcileOpeningDate(s, by[s.id], { minReviews: isTicRow(s) ? 2 : 1 });
     if (d.action === 'move') moves.push({ show: s, ...d });
     else if (d.action === 'manual') manual.push({ show: s, ...d });
   }
