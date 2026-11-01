@@ -3,7 +3,7 @@
 /**
  * BRO-6710: per-show SERP sweep for UK hub shows still under the scoreable bar.
  *
- *   node scripts/uk-serp-sweep.js [--ids=a,b] [--limit=N] [--plan=<out.json>] [--verbose]
+ *   node scripts/uk-serp-sweep.js [--ids=a,b] [--limit=N] [--deep] [--plan=<out.json>] [--verbose]
  *
  * Two natural-language queries per show ("Title" venue year review; "Title" city review), which
  * return Guardian, Reviews Hub, Northern Arts Review, etc. where generic site: queries do not.
@@ -29,7 +29,7 @@ const DATA = path.join(__dirname, '..', 'data');
 
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/uk-serp-sweep.js [--ids=a,b] [--limit=N] [--plan=<out.json>] [--verbose]');
+    console.log('Usage: node scripts/uk-serp-sweep.js [--ids=a,b] [--limit=N] [--deep] [--plan=<out.json>] [--verbose]');
     return 0;
   }
   const arg = (k) => (argv.find((a) => a.startsWith(`--${k}=`)) || '').split('=').slice(1).join('=');
@@ -55,8 +55,11 @@ async function main(argv = process.argv.slice(2)) {
     const city = String(s.venue || '').split(',')[1]?.trim() || '';
     const year = String(s.openingDate || '').slice(0, 4);
     const results = [];
-    for (const q of [`"${s.title}" ${house} ${year} review`, `"${s.title}" ${city} theatre review`]) {
-      const r = await serpQuery(q, { nbResults: 10, skipProviders: ['scrapingbee'] });
+    const queries = [{ q: `"${s.title}" ${house} ${year} review` }, { q: `"${s.title}" ${city} theatre review` }];
+    // --deep: an unquoted query and the second result page of the first, for shows the plain pass left under the bar.
+    if (argv.includes('--deep')) queries.push({ q: `${s.title} ${house} review` }, { q: queries[0].q, page: 1 });
+    for (const { q, page } of queries) {
+      const r = await serpQuery(q, { nbResults: 10, skipProviders: ['scrapingbee'], page });
       if (r === null || r === undefined) serpFailed++;
       else results.push(...r);
     }
