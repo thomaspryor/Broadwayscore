@@ -3038663,21 +3038663,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T04:23:05.099Z",
-    "completedAt": "2026-11-01T04:23:33.023Z",
-    "totalReviews": 9,
-    "processed": 6,
-    "skipped": 3,
+    "startedAt": "2026-11-01T04:24:11.483Z",
+    "completedAt": "2026-11-01T04:24:26.845Z",
+    "totalReviews": 3,
+    "processed": 3,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 39126,
-      "output": 1734,
-      "cacheRead": 22842,
+      "input": 18770,
+      "output": 855,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 94869
+      "total": 46310
     },
-    "costUsd": 0.14333079999999998,
-    "runId": "41272435275",
+    "costUsd": 0.0694038,
+    "runId": "41272460338",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3068573,6 +3068573,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "red-summer-regional-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 1,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "red-velvet-west-end-2016",
         "ourDistribution": {
           "up": 2,
@@ -3079177,22 +3079187,12 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-producers-regional-2023",
-        "ourDistribution": {
-          "up": 10,
-          "flat": 0,
-          "down": 0,
-          "total": 10
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-producers-regional-2026",
         "ourDistribution": {
-          "up": 10,
+          "up": 4,
           "flat": 0,
           "down": 0,
-          "total": 10
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -3085211,8 +3085211,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T04:28:30.721Z",
-    "completedAt": "2026-11-01T04:28:30.722Z",
+    "startedAt": "2026-11-01T04:29:24.467Z",
+    "completedAt": "2026-11-01T04:29:24.468Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3085225,7 +3085225,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41272435275",
+    "runId": "41272460338",
     "source": "comparative-rescore",
     "errorDetails": []
   }
