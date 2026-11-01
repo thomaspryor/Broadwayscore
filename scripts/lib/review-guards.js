@@ -2865,10 +2865,6 @@ function isStaleGenericHomepageWrongShow(data, show, { urlFiledUnderOtherShow = 
   return Boolean(excerpt);
 }
 
-// Lowercased, accent- and punctuation-free, space-padded: " here there are blueberries ".
-const normTitlePhrase = (s) => ` ${String(s || '').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '')
-  .replace(/[’']/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').trim()} `;
-
 /**
  * BRO-6716 (class C2): a wrongShow flag from the one-off 2026 bulk remediation,
  * whose reason reads `CV-promoted (bulk-remediation): Show title "X" not found
@@ -2895,8 +2891,7 @@ function isStaleBulkTitleWrongShow(data, show, { urlFiledUnderOtherShow = false 
   if (require('./approved-fix-flag').hasApprovedFlag(data, 'wrongShow')) return false;
   const text = typeof data.fullText === 'string' ? data.fullText : '';
   if (text.length < 500) return false;
-  const title = normTitlePhrase(show.title).trim();
-  if (title.length < 4 || !normTitlePhrase(text).includes(` ${title} `)) return false;
+  if (!require('./title-phrase').containsTitlePhrase(text, show.title)) return false;
   return isReviewWithinOwnProductionWindow(show, data.publishDate || null);
 }
 

@@ -1984,6 +1984,22 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     require('./stale-automated-text-verdict').voidRejectionOnBodyReplacement(existing);
     changed = true;
   }
+  // BRO-6716: a stored body that is a DIFFERENT real article (an automated
+  // verdict on the file already says so) is replaced by a fetch of the same
+  // url that names this show in its opening and the old body never did. The
+  // flags stay; the stale content check lets the existing heals decide them.
+  else if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
+      && fullTextBefore && existing.fullText === fullTextBefore
+      && existing.multiShowSplitParent !== true
+      && (!existing.url || !input.url || require('./review-url-collision').sameArticleUrl(existing.url, input.url))
+      && require('./junk-body').isRightArticleReplacementForWrongBody(fullTextBefore, fields.fullText, input.showTitle || _getShowTitle(showId), existing)) {
+    console.log(`  ↑ Replacing a wrong-article stored body (${fullTextBefore.length} chars, flagged as the wrong content) with a fetch that names the show (${fields.fullText.length} chars)`);
+    existing.fullText = fields.fullText;
+    existing.wrongBodyReplacedAt = new Date().toISOString();
+    if (fields.textFetchedAt) existing.textFetchedAt = fields.textFetchedAt;
+    require('./stale-automated-text-verdict').voidRejectionOnBodyReplacement(existing, undefined, 'wrong-body-replacement');
+    changed = true;
+  }
 
   // Snapshot the score BEFORE the field merge too (BRO-4128 ship-check/Codex
   // finding): the merge loop below can plant fields.originalScore/

@@ -90,7 +90,50 @@ function isCleanReplacementForJunk(storedText, incomingText) {
   return !isGarbageContent(next).isGarbage;
 }
 
+// BRO-6716: verdicts that say the stored body is the wrong article, and the
+// human markers that make such a verdict final.
+const WRONG_BODY_REJECTIONS = new Set(['wrong_show', 'wrong_production', 'not_a_review', 'garbage_text']);
+const WRONG_BODY_TITLE_WINDOW = 1500;
+const WRONG_BODY_MIN_CHARS = 1000;
+
+/**
+ * BRO-6716: true when a fresh fetch of the SAME url should replace a stored
+ * body that is a different real article (an Evening Standard travel piece, an
+ * NT Live news story, TheWrap's review of another show) rather than a page dump.
+ * Requires all of:
+ *   - an automated verdict on the file already says the content is wrong
+ *     (wrongShow, wrongProduction, isNonReview or a matching rejection), and no
+ *     person has ruled on it;
+ *   - the stored body never names the show by its full title, and the
+ *     incoming body names it in its first 1,500 chars (a "related reads" link
+ *     further down does not count);
+ *   - the incoming body is review-sized and clean.
+ * The verdict flags stay: the stored content check goes stale with the new
+ * text, and the existing heals or a person decide them.
+ * @param {string} storedText
+ * @param {string} incomingText
+ * @param {string} showTitle
+ * @param {object} existing - the stored review record
+ * @returns {boolean}
+ */
+function isRightArticleReplacementForWrongBody(storedText, incomingText, showTitle, existing) {
+  const d = existing || {};
+  if (d._locked === true || d.manualContentTier || d.wrongShowNote || d.humanReviewedWrongShow === true
+    || d.manualNonReviewSet === true || d.manualReviewedBy || d.wrongProductionManualClear === true) return false;
+  const verdict = d.wrongShow === true || d.wrongProduction === true || d.isNonReview === true
+    || WRONG_BODY_REJECTIONS.has(d.rejectionReason);
+  if (!verdict) return false;
+  const next = typeof incomingText === 'string' ? incomingText.trim() : '';
+  if (next.length < WRONG_BODY_MIN_CHARS || junkBodyReason(next)) return false;
+  const { containsTitlePhrase } = require('./title-phrase');
+  if (!containsTitlePhrase(next, showTitle, { within: WRONG_BODY_TITLE_WINDOW })) return false;
+  if (containsTitlePhrase(storedText, showTitle)) return false;
+  const { isGarbageContent } = require('./content-quality');
+  return !isGarbageContent(next).isGarbage;
+}
+
 module.exports = {
+  isRightArticleReplacementForWrongBody,
   consentShare,
   isRawHtmlBody,
   junkBodyReason,

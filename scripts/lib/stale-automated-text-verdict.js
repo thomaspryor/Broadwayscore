@@ -332,14 +332,15 @@ function clearAutomatedTextRejectionOnRefetch(d, now) {
  * reason-gated predicates above never match. Unlike the refetch sweep this does
  * not need the text-fingerprint test: the caller knows the text changed.
  * wrong_production / wrong_show and every human verdict are left alone.
+ * clearedBy labels the breadcrumb (BRO-6716 passes 'wrong-body-replacement').
  * Mutates.
  *
  * @returns {boolean} true when a rejection was cleared
  */
-function voidRejectionOnBodyReplacement(d, now) {
+function voidRejectionOnBodyReplacement(d, now, clearedBy = 'junk-body-replacement') {
   if (!d || typeof d !== 'object' || hasHumanVerdict(d)) return false;
   const at = now || new Date().toISOString();
-  const prior = { clearedAt: at, clearedBy: 'junk-body-replacement' };
+  const prior = { clearedAt: at, clearedBy };
   let touched = false;
   const rejectionVoid = isAutomatedRejecter(d.rejectedBy)
     && (d.rejectionReason == null || TEXT_QUALITY_REASONS.has(d.rejectionReason));
