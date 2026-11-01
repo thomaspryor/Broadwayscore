@@ -859,7 +859,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
   const fromRejected = !(typeof data.fullText === 'string' && data.fullText.length >= MIN_TEXT_CHARS)
     && typeof data.wrongFullText === 'string' && !humanJudged;
   const headerOnly = autoExcluded || fromRejected;
-  const text = fromRejected ? data.wrongFullText : data.fullText;
+  const text = fromRejected ? String(data.wrongFullText) : data.fullText;
   if (typeof text !== 'string' || text.length < MIN_TEXT_CHARS) return null;
   const ownShowId = opts.ownShowId || data.showId;
   if (!ownShowId) return null;
