@@ -94,6 +94,18 @@ test('refuses: no explicit release (script auto-clear only), still flagged, garb
   assert.equal(releasedBodyRestoreVerdict(released({ fullText: null, wrongArticle: true }), deps).ok, false);
 });
 
+test('BRO-6742: a human "this is a review" clear releases a not-a-review / wrong-article quarantine', () => {
+  const nr = { wrongFullText: REVIEW, fullText: null, isNonReview: false, contentVerification: { wrongArticle: true, articleType: 'preview' } };
+  assert.equal(releasedBodyRestoreVerdict(nr, deps).ok, false, 'no human clear: still refused');
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true }, deps).ok, true);
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, wrongArticleManualClear: true }, deps).ok, true);
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, incompleteReason: 'non_review' }, deps).ok, true);
+  // the clear speaks for not-a-review only: a still-set exclusion flag or a hallucination still refuses
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, isNonReview: true }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, suspectedLlmHallucination: true }, deps).ok, false);
+  assert.equal(releasedBodyRestoreVerdict({ ...nr, nonReviewManualClear: true, contentMismatchNote: 'x' }, deps).ok, false);
+});
+
 test('released with no live text: restore, and the tier is re-derived from the full body', () => {
   const d = released({ fullText: null, quarantinedWordCount: 120, incompleteReason: 'partial_text' });
   assert.equal(releasedBodyRestoreVerdict(d, deps).ok, true);

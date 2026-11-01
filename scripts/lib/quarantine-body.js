@@ -95,15 +95,20 @@ function releasedBodyRestoreVerdict(data, deps) {
   // not-a-review verdict, a suspected LLM hallucination or a wrong-article CV.
   // A release of some other verdict does not speak for these.
   if (data.contentMismatchNote) return { ok: false, reason: 'quarantined for content mismatch' };
-  if (data.incompleteReason === 'non_review' || data.suspectedLlmHallucination === true) {
+  // A human "this is a review" clear (BRO-6742: public-charge culturesauce, a
+  // 4-star review CV read as a preview) releases the not-a-review and
+  // wrong-article quarantines; nothing else does.
+  const humanSaysReview = data.nonReviewManualClear === true || data.wrongArticleManualClear === true
+    || data.humanReviewedWrongArticle === false;
+  if ((data.incompleteReason === 'non_review' && !humanSaysReview) || data.suspectedLlmHallucination === true) {
     return { ok: false, reason: `quarantined as ${data.incompleteReason === 'non_review' ? 'not a review' : 'suspected hallucination'}` };
   }
   // flagged-recovery discardWrongPageFill sets no exclusion flag (BRO-5261 S11).
   if (data.incompleteReason === 'wrong_page_served') return { ok: false, reason: 'quarantined as a wrong page served' };
   if (data.wrongArticle === true) return { ok: false, reason: 'still excluded (wrongArticle)' };
-  if (data.contentVerification && data.contentVerification.wrongArticle === true) return { ok: false, reason: 'contentVerification says wrong article' };
+  if (data.contentVerification && data.contentVerification.wrongArticle === true && !humanSaysReview) return { ok: false, reason: 'contentVerification says wrong article' };
   const released = data.wrongProductionManualClear === true || data.wrongProductionOverride === true
-    || data.wrongShowManualClear === true || data.humanReviewedWrongProduction === false;
+    || data.wrongShowManualClear === true || data.humanReviewedWrongProduction === false || humanSaysReview;
   if (!released) return { ok: false, reason: 'no explicit human/override release' };
   if (deps.isGarbage(parked)) return { ok: false, reason: 'quarantined body is garbage' };
   const live = typeof data.fullText === 'string' ? data.fullText : '';
