@@ -764,5 +764,100 @@
       }
     ],
     "queuedAt": "2026-11-01T16:47:14.426Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Secret Scan (gitleaks)",
+    "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
+    "description": "Secret Scan (gitleaks): Latest run failed (last success 2h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.370Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Test Suite",
+    "title": "Cron's latest run failed (not yet stale): Test Suite",
+    "description": "Test Suite: Latest run failed (last success 3h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.395Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Commercial Weekly Orchestrator",
+    "title": "Cron's latest run failed (not yet stale): Commercial Weekly Orchestrator",
+    "description": "Commercial Weekly Orchestrator: Latest run failed (last success 189h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.416Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Audit Aggregator Review Gap",
+    "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
+    "description": "Audit Aggregator Review Gap: Latest run failed (last success 1h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.434Z"
+  },
+  {
+    "conditionKey": "cron-health:Replay Push Rescue",
+    "title": "🚨 Critical cron stale, self-heal failed: Replay Push Rescue",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41331628670)"
+      }
+    ],
+    "queuedAt": "2026-11-01T17:29:47.582Z"
   }
 ]

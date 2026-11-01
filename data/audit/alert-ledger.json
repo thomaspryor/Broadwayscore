@@ -21,10 +21,10 @@
       "title": "Cron's latest run failed (not yet stale): Test Suite",
       "firstSeen": "2026-10-12T20:42:23.460Z",
       "incidentOpenedAt": "2026-10-29T17:59:59.322Z",
-      "lastSeen": "2026-10-31T16:42:39.751Z",
-      "lastNotifiedAt": "2026-10-31T16:42:39.751Z",
-      "lastSurfacedAt": "2026-10-31T16:42:39.751Z",
-      "notifyCount": 6,
+      "lastSeen": "2026-11-01T17:29:47.395Z",
+      "lastNotifiedAt": "2026-11-01T17:29:47.395Z",
+      "lastSurfacedAt": "2026-11-01T17:29:47.395Z",
+      "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -20891,19 +20891,17 @@
       "resolveReason": "absent"
     },
     "cron-health-failed:Commercial Weekly Orchestrator": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Commercial Weekly Orchestrator",
       "firstSeen": "2026-10-18T15:12:15.173Z",
-      "incidentOpenedAt": "2026-10-18T15:12:15.173Z",
-      "lastSeen": "2026-10-18T15:12:15.173Z",
-      "lastNotifiedAt": "2026-10-18T15:12:15.173Z",
-      "lastSurfacedAt": "2026-10-18T15:12:15.173Z",
-      "notifyCount": 1,
+      "incidentOpenedAt": "2026-11-01T17:29:47.416Z",
+      "lastSeen": "2026-11-01T17:29:47.416Z",
+      "lastNotifiedAt": "2026-11-01T17:29:47.416Z",
+      "lastSurfacedAt": "2026-11-01T17:29:47.416Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-22T16:27:21.303Z",
-      "resolveReason": "latest run no longer failing"
+      "linearIdentifier": null
     },
     "cron-health-failed:Account Metrics": {
       "status": "resolved",
@@ -20926,10 +20924,10 @@
       "title": "Cron's latest run failed (not yet stale): Audit Aggregator Review Gap",
       "firstSeen": "2026-10-18T15:12:15.211Z",
       "incidentOpenedAt": "2026-10-29T17:59:59.365Z",
-      "lastSeen": "2026-10-29T17:59:59.365Z",
-      "lastNotifiedAt": "2026-10-29T17:59:59.365Z",
-      "lastSurfacedAt": "2026-10-29T17:59:59.365Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-11-01T17:29:47.434Z",
+      "lastNotifiedAt": "2026-11-01T17:29:47.434Z",
+      "lastSurfacedAt": "2026-11-01T17:29:47.434Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -34669,6 +34667,33 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6778"
+    },
+    "cron-health-failed:Secret Scan (gitleaks)": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
+      "firstSeen": "2026-11-01T17:29:47.370Z",
+      "incidentOpenedAt": "2026-11-01T17:29:47.370Z",
+      "lastSeen": "2026-11-01T17:29:47.370Z",
+      "lastNotifiedAt": "2026-11-01T17:29:47.370Z",
+      "lastSurfacedAt": "2026-11-01T17:29:47.370Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "cron-health:Replay Push Rescue": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Replay Push Rescue",
+      "firstSeen": "2026-11-01T17:29:47.580Z",
+      "incidentOpenedAt": "2026-11-01T17:29:47.580Z",
+      "lastSeen": "2026-11-01T17:29:47.580Z",
+      "lastNotifiedAt": "2026-11-01T17:29:47.580Z",
+      "lastSurfacedAt": "2026-11-01T17:29:47.580Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
