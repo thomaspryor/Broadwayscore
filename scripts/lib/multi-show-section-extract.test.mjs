@@ -166,3 +166,35 @@ test('planIsolation: a human/other-reason wrongShow is left alone; other hosts u
   assert.equal(p.data.wrongShow, true);
   assert.equal(planIsolation({ url: 'https://www.nytimes.com/x', fullText: SB_POST }, 'sunset-boulevard-2024', 'x'), null);
 });
+
+// BRO-6742: files rejected on the whole post before isolation existed (empty
+// fullText, or already one section) were never re-judged. every-brilliant-thing-2026
+// was flagged on the "Giant" section; data-off-broadway-2026 kept its reason only in
+// incompleteDetail; chess-2025's verdict came from 'Retroactive LLM verify'.
+const { planRefetchedIsolation, needsRefetch } = require('./multi-show-isolation-plan.js');
+const AT = '2026-11-01T00:00:00.000Z';
+test('BRO-6742 planRefetchedIsolation: empty-text file judged on another section is cleared from the refetched post', () => {
+  const data = { url: 'https://www.interestedbystander.com/2024/11/capsule.html', fullText: '',
+    wrongProduction: true, incompleteDetail: 'CV-promoted: The scraped content reviews "DRAG: The Musical", not Sunset Blvd' };
+  assert.equal(needsRefetch(data), true);
+  const p = planRefetchedIsolation(data, 'sunset-boulevard-2024', SB_POST, AT);
+  assert.ok(p);
+  assert.match(p.data.fullText, /^Sunset Blvd \(c\)/);
+  assert.equal(p.data.wrongProduction, false);
+  assert.equal(p.data.multiShowRefetchedAt, AT);
+  assert.equal(p.data.needsRescore, true);
+  const retro = { ...data, incompleteDetail: undefined, wrongProductionReason: "Retroactive LLM verify: a review of 'DRAG: The Musical' at New World Stages" };
+  assert.deepEqual(planRefetchedIsolation(retro, 'sunset-boulevard-2024', SB_POST, AT).clearedFlags, ['wrongProduction']);
+});
+
+test('BRO-6742 planRefetchedIsolation: a verdict not naming another section, an unflagged file or a missing section leaves the file alone', () => {
+  const base = { url: 'https://www.interestedbystander.com/x.html', fullText: '' };
+  // prior-production verdict (gypsy-2003): names no other section of the post
+  assert.equal(planRefetchedIsolation({ ...base, wrongProduction: true, incompleteDetail: 'Wrong production' }, 'sunset-boulevard-2024', SB_POST, AT), null);
+  assert.equal(needsRefetch({ ...base }), false);
+  assert.equal(needsRefetch({ ...base, url: 'https://www.nytimes.com/x', wrongShow: true }), false);
+  // stored text is still the whole post: planIsolation handles it, not the refetch
+  assert.equal(needsRefetch({ ...base, fullText: SB_POST, wrongShow: true }), false);
+  // the show has no section in the post: refused, never another show's text
+  assert.equal(planRefetchedIsolation({ ...base, wrongShow: true, wrongShowReason: 'CV-promoted: reviews "DRAG: The Musical"' }, 'hamilton-2015', SB_POST, AT), null);
+});

@@ -15,8 +15,14 @@
  * sweep repairs what was stored before it existed. Idempotent: an isolated
  * section has < 2 headings, so a second run finds nothing.
  *
+ * --refetch (BRO-6742): also re-fetch the post for flagged files whose stored
+ * text is empty or already one section (stored before this gate existed, then
+ * rejected on the whole post: every-brilliant-thing-2026 was judged on the
+ * "Giant" section of the same post). The verdict is cleared and the section
+ * stored only when the verdict named another section's show (planRefetchedIsolation).
+ *
  * Usage:
- *   node scripts/isolate-multi-show-sections.js [--apply] [--dir=PATH] [--show=ID]
+ *   node scripts/isolate-multi-show-sections.js [--apply] [--refetch] [--dir=PATH] [--show=ID]
  *     (default dry run; --dir or REVIEW_TEXTS_DIR selects the corpus)
  */
 
@@ -25,15 +31,17 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help');
-const { planIsolation } = require('./lib/multi-show-isolation-plan');
+const { planIsolation, planRefetchedIsolation, needsRefetch } = require('./lib/multi-show-isolation-plan');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
-const USAGE = 'Usage: node scripts/isolate-multi-show-sections.js [--apply] [--dir=PATH] [--show=ID]';
+const USAGE = 'Usage: node scripts/isolate-multi-show-sections.js [--apply] [--refetch] [--dir=PATH] [--show=ID]';
 
-function main() {
+async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const apply = argv.includes('--apply');
+  const refetch = argv.includes('--refetch');
+  const postCache = new Map();
   const dirArg = argv.find((a) => a.startsWith('--dir='));
   const showArg = argv.find((a) => a.startsWith('--show='));
   const dir = dirArg ? dirArg.slice(6) : (process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts'));
@@ -49,7 +57,12 @@ function main() {
       const filePath = path.join(showDir, file);
       let data;
       try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { continue; }
-      const plan = planIsolation(data, showId, at);
+      let plan = planIsolation(data, showId, at);
+      if (!plan && refetch && needsRefetch(data)) {
+        const post = await fetchPostText(data.url, postCache);
+        plan = post ? planRefetchedIsolation(data, showId, post, at) : null;
+        if (!plan) { console.log(`  keep    ${showId}/${file} (refetched: ${post ? 'verdict does not name another section' : 'fetch failed'})`); continue; }
+      }
       if (!plan) continue;
       if (plan.refused) { refused++; console.log(`  refuse  ${showId}/${file} (no unique section for this show — left as is)`); continue; }
       changed++;
@@ -60,4 +73,21 @@ function main() {
   console.log(`[isolate-multi-show-sections] ${changed} file(s) ${apply ? 'rewritten' : 'would be rewritten'}, ${refused} left (no unique section)${apply ? '' : ' (dry run)'}`);
 }
 
-if (require.main === module) main();
+/** The post as the collector stores it before isolation (extractor + preCleanForStorage). */
+async function fetchPostText(url, cache) {
+  const key = String(url).split('?')[0];
+  if (cache.has(key)) return cache.get(key);
+  let text = null;
+  try {
+    const { fetchPage } = require('./lib/scraper');
+    const { extractArticleText } = require('./lib/article-extractor');
+    const { preCleanForStorage } = require('./lib/stored-text-form');
+    const res = await fetchPage(key);
+    const raw = res && res.format === 'html' ? extractArticleText(res.content, key) : (res && res.content);
+    text = typeof raw === 'string' && raw.trim() ? preCleanForStorage(raw) : null;
+  } catch (e) { console.log(`  fetch failed ${key}: ${e.message}`); }
+  cache.set(key, text);
+  return text;
+}
+
+if (require.main === module) main().catch((e) => { console.error(e); process.exitCode = 1; });

@@ -126,6 +126,9 @@ const ALLOWED_SCRIPTS = [
   // show's theatre.reviews round-up (paywalled rows + star relay).
   'ingest-review-from-url.js',
   'split-multi-show-roundups.js',
+  // BRO-6742: re-judge multi-show blog post verdicts made on the whole post (refetches the
+  // post; clears only a verdict naming another section's show). Needs --apply --refetch.
+  'isolate-multi-show-sections.js',
   'scrape-theatre-reviews.js',
   // BRO-4623: remove id-keyed duplicate commercial records (the fix command
   // the weekly strict gate names). run-script alone triggers no validation;

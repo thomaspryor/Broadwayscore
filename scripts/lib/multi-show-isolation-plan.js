@@ -24,7 +24,9 @@ function countWords(t) { return (t.match(/\S+/g) || []).length; }
 function verdictCitesOtherSection(reason, fullPost, ownSectionText) {
   // Automated verdicts only (content verifier, collector LLM); a human reason stands.
   // Cross-show URL collision: the same post URL sits under several shows.
-  if (!/^(CV-promoted|Collector LLM|Cross-show URL collision)/.test(String(reason || ''))) return false;
+  // BRO-6742: 'Retroactive LLM verify' is the same automated verifier run later (chess-2025
+  // read the post's 'Initiative' section).
+  if (!/^(CV-promoted|Collector LLM|Cross-show URL collision|Retroactive LLM verify)/.test(String(reason || ''))) return false;
   const r = ` ${normSectionText(reason)} `;
   return findSectionHeadings(fullPost)
     .filter((h) => !ownSectionText.startsWith(fullPost.slice(h.start, h.start + 40)))
@@ -35,6 +37,15 @@ function verdictCitesOtherSection(reason, fullPost, ownSectionText) {
       const two = name.split(' ').slice(0, 2).join(' ');
       return (name.length >= 3 && r.includes(` ${name} `)) || (two.length >= 6 && two !== name && r.includes(` ${two} `));
     });
+}
+
+/**
+ * The verdict's reason text. BRO-6742: some writers kept it only in
+ * incompleteDetail (data-off-broadway-2026, pen-pals: wrongProductionReason absent),
+ * so the sweep could never see that it named another section's show.
+ */
+function verdictReason(data, flag) {
+  return data[`${flag}Reason`] || data.incompleteDetail || '';
 }
 
 /**
@@ -53,13 +64,13 @@ function planIsolation(data, showId, at) {
   out.isFullReview = iso.text.length > 1500;
   const clearedFlags = [];
   const why = `isolate-multi-show-sections ${at.slice(0, 10)}: verdict was made on the whole multi-show post; re-judge on this show's section`;
-  if (out.wrongShow === true && verdictCitesOtherSection(out.wrongShowReason, data.fullText, iso.text)) {
+  if (out.wrongShow === true && verdictCitesOtherSection(verdictReason(out, 'wrongShow'), data.fullText, iso.text)) {
     out.wrongShow = false;
     out.wrongShowAutoCleared = why;
     out.wrongShowAutoClearedAt = at;
     clearedFlags.push('wrongShow');
   }
-  if (out.wrongProduction === true && verdictCitesOtherSection(out.wrongProductionReason, data.fullText, iso.text)) {
+  if (out.wrongProduction === true && verdictCitesOtherSection(verdictReason(out, 'wrongProduction'), data.fullText, iso.text)) {
     out.wrongProduction = false;
     out.wrongProductionAutoCleared = why;
     out.wrongProductionAutoClearedAt = at;
@@ -83,4 +94,31 @@ function planIsolation(data, showId, at) {
   return { data: out, clearedFlags, from, to: iso.text.length };
 }
 
-module.exports = { planIsolation, verdictCitesOtherSection };
+/**
+ * BRO-6742: a file flagged wrongShow/wrongProduction by a verdict on the WHOLE
+ * post whose stored text is now empty or already one section (so planIsolation
+ * on the stored text finds nothing to do and the verdict never gets re-judged):
+ * dry-run planIsolation against the freshly fetched post. Returns its plan only
+ * when it clears a verdict that named another section's show; otherwise null
+ * (the file is left exactly as it is).
+ * @param {object} data stored record
+ * @param {string} showId
+ * @param {string} fetchedPost the post as the collector stores it before isolation
+ * @param {string} at ISO time
+ */
+function planRefetchedIsolation(data, showId, fetchedPost, at) {
+  if (!needsRefetch(data)) return null;
+  const plan = planIsolation({ ...data, fullText: fetchedPost }, showId, at);
+  if (!plan || plan.refused || plan.clearedFlags.length === 0) return null;
+  plan.data.multiShowRefetchedAt = at;
+  return plan;
+}
+
+/** Pure: is this a flagged multi-show file whose stored text cannot show the verdict was cross-section? */
+function needsRefetch(data) {
+  if (!data || !isMultiShowPostUrl(data.url)) return false;
+  if (data.wrongShow !== true && data.wrongProduction !== true) return false;
+  return findSectionHeadings(String(data.fullText || '')).length < 2;
+}
+
+module.exports = { planIsolation, verdictCitesOtherSection, verdictReason, planRefetchedIsolation, needsRefetch };
