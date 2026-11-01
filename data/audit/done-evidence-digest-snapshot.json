@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-31T08:39:06.255Z",
-  "bannerText": "77/284 Done(14d) verified on main · 6 FAILED · 0 vacuous · 6 stuck-but-done · 2 mis-armed, needs re-arming (BRO-3837, BRO-3073) — PARTIAL RUN: 205 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-11-01T09:27:24.096Z",
+  "bannerText": "77/250 Done(14d) verified on main · 3 FAILED · 2 vacuous · 5 stuck-but-done · 4 mis-armed, needs re-arming (BRO-6542, BRO-6502, BRO-6489, +1 more) — PARTIAL RUN: 146 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-3871 — the-producers-west-end-2025: whatsonstage--unknown.json scored (93) but missing from reviews.json",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3871/the-producers-west-end-2025-whatsonstage-unknownjson-scored-93-but"
+      "title": "FAILED BRO-6509 — BSC Daily: Data quality: revival-unverified lifetime sweep",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: revival-unverified lifetime sweep\" still listed in the 2026-11-01T09:17:32.738Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6509/bsc-daily-data-quality-revival-unverified-lifetime-sweep"
     },
     {
-      "title": "FAILED BRO-3688 — lint-workflow-guards.sh: bash-glob check_* functions (check_prebuild, check_scraping_fallback, check_scrapingdog_pairing, check_theatr_token, check_snapshot_overwrite, check_dry_run_flag_setter) have the same no-floor gap BRO-3686 fixed for the Node-based checks",
-      "detail": "TAP version 13",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3688/lint-workflow-guardssh-bash-glob-check-functions-check-prebuild-check"
+      "title": "FAILED BRO-6424 — BSC Daily: Data: early publish dates awaiting page-date recheck",
+      "detail": "[check-health-row-absent] FAIL: \"Data: early publish dates awaiting page-date recheck\" still listed in the 2026-11-01T09:17:32.738Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6424/bsc-daily-data-early-publish-dates-awaiting-page-date-recheck"
     },
     {
-      "title": "FAILED BRO-3012 — P2: youre-a-good-man-charlie-brown-off-broadway-2026 trips review-gap risk via candidateCount, not liveCount — confirm not a real coverage-loss bug",
-      "detail": "⚠️ WARNING: Tour \"the-bodyguard-tour-2026\" has no tourOf but 2 non-tour show(s) share its title (the-bodyguard-west-end-2016, the-bodyguard-west-end-2012); set tourOf if it tours …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3012/p2-youre-a-good-man-charlie-brown-off-broadway-2026-trips-review-gap"
+      "title": "FAILED BRO-6329 — 52 live show(s) carry art of another work",
+      "detail": "[check-alert-condition-absent] FAIL: \"live-show-art:wrong-work\" still firing — open, last fired 2026-10-26T13:17:13.050Z (140.3h ago, within 168h)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6329/52-live-shows-carry-art-of-another-work"
     },
     {
-      "title": "FAILED BRO-6653 — Opening-night stage-latency alert: scored entries missing",
-      "detail": "[check-alert-condition-absent] FAIL: \"workflow-alert:opening-night-stage-latency\" still firing — open, last fired 2026-10-30T18:22:01.226Z (14.4h ago, within 168h)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6653/opening-night-stage-latency-alert-scored-entries-missing"
-    },
-    {
-      "title": "FAILED BRO-6595 — main test.yml red: uk-regional-placement 'Pre-Broadway list and UK list split every regional show exactly once' (350 vs 838)",
-      "detail": "not ok: tests/unit/uk-regional-placement.test.mjs | first failure: Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/tmp/done-evidence-ad10s3/main",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6595/main-testyml-red-uk-regional-placement-pre-broadway-list-and-uk-list"
-    },
-    {
-      "title": "FAILED BRO-6592 — push-with-retry early-fallback-budget case 3 fails on Mac (hang not bounded by 20s deadline, took 240s)",
-      "detail": "TAP version 13",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6592/push-with-retry-early-fallback-budget-case-3-fails-on-mac-hang-not"
-    },
-    {
-      "title": "STUCK BRO-3699 — Audit pre-existing TICKETING_PLATFORMS entries for resale-vs-primary misclassification",
+      "title": "STUCK BRO-6520 — main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3699/audit-pre-existing-ticketing-platforms-entries-for-resale-vs-primary"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6520/main-testyml-red-lint-workflows-audit-no-submitter-pii-in-committed"
     },
     {
-      "title": "STUCK BRO-3096 — Remaining getFullYear() cousins of BRO-3047 on bare-date fields (server-only, low risk) + prevention audit",
+      "title": "STUCK BRO-6513 — Outlet census round 3: vet and ingest gaps on the newly enumerated outlets (timeout, frontmezzjunkies, off-off-online, pages-on-stages, thestage, theatrely, bystander, others)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3096/remaining-getfullyear-cousins-of-bro-3047-on-bare-date-fields-server"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6513/outlet-census-round-3-vet-and-ingest-gaps-on-the-newly-enumerated"
+    },
+    {
+      "title": "STUCK BRO-6506 — NYC show builders default unknown type to 'play': ~15 Off-Broadway musicals stored as plays (BRO-6489 audit)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6506/nyc-show-builders-default-unknown-type-to-play-15-off-broadway"
+    },
+    {
+      "title": "STUCK BRO-6505 — main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6505/main-testyml-red-unit-tests-run-unit-tests-no-data-dependency-classify"
+    },
+    {
+      "title": "STUCK BRO-5957 — Fill the Oct 22 shadow results (The Imaginary Invalid) into the hands-off plan, section 5",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5957/fill-the-oct-22-shadow-results-the-imaginary-invalid-into-the-hands"
     }
   ],
-  "moreCount": 4
+  "moreCount": 2
 }
