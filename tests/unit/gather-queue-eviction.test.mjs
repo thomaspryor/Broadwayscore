@@ -116,8 +116,8 @@ test('deferred shows: the remainder replaces the file; merged in order, de-dupli
     assert.equal(recordDeferredShows(['b-2026', 'c-2026'], f), true); // a-2026 is done
     const merged = collectDeferredShows([readFileSync(f, 'utf8'), 'b-2026,d-2026\n', '$(rm -rf /)\nBad Id\n']);
     assert.deepEqual(merged, ['b-2026', 'c-2026', 'd-2026']);
-    assert.equal(recordDeferredShows([], f), false); // all done: file emptied
-    assert.equal(readFileSync(f, 'utf8'), '');
+    assert.equal(recordDeferredShows([], f), false); // all done: file holds only the done sentinel
+    assert.equal(readFileSync(f, 'utf8'), '# done\n'); // BRO-6743: sentinel, not a zero-byte file
     assert.equal(recordDeferredShows(['a-2026'], join(dir, 'missing', 'x.txt')), false); // write fails: no throw
   } finally {
     rmSync(dir, { recursive: true, force: true });
