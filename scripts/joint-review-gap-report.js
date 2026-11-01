@@ -4,14 +4,14 @@
 /**
  * Joint-review parity audit (BRO-6736): gap rows whose cited URL is live under a
  * different show. Advisory (exit 0) unless --max=N is given and exceeded.
- * Usage: node scripts/audit-joint-review-gap.js [--hosts=regex] [--max=N] [--json]
+ * Usage: node scripts/joint-review-gap-report.js [--hosts=regex] [--max=N] [--json]
  */
 const fs = require('fs');
 const path = require('path');
 const { findCitedLiveElsewhere } = require('./lib/joint-review-gap');
 const { hasHelpFlag } = require('./lib/cli-help');
 
-const USAGE = 'Usage: node scripts/audit-joint-review-gap.js [--hosts=regex] [--max=N] [--json]';
+const USAGE = 'Usage: node scripts/joint-review-gap-report.js [--hosts=regex] [--max=N] [--json]';
 const argv = process.argv.slice(2);
 if (hasHelpFlag(argv)) { console.log(USAGE); process.exit(0); }
 const arg = (n) => (argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3) || null;
