@@ -43,18 +43,20 @@ function parseSiteDate(raw) {
   return `${m[3]}-${String(mo).padStart(2, '0')}-${String(m[2]).padStart(2, '0')}`;
 }
 
-function reviewsUrl(id, slug = 'show') {
-  return `${BASE}/${slug}/reviews/${id}/`;
+// `base` is the site origin; every function defaults to Chicago so existing
+// callers are unchanged. theatreindc.com is the same engine (BRO-6771).
+function reviewsUrl(id, slug = 'show', base = BASE) {
+  return `${base}/${slug}/reviews/${id}/`;
 }
 
-function detailUrl(id, slug) {
-  return `${BASE}/${slug}/${id}/`;
+function detailUrl(id, slug, base = BASE) {
+  return `${base}/${slug}/${id}/`;
 }
 
-function absUrl(href) {
+function absUrl(href, base = BASE) {
   if (!href) return null;
   if (/^https?:\/\//i.test(href)) return href;
-  if (href.startsWith('/')) return BASE + href;
+  if (href.startsWith('/')) return base + href;
   return null;
 }
 
@@ -97,7 +99,7 @@ function parseListing(html) {
 /**
  * Reviews page for one id. `empty:true` when the id has no production.
  */
-function parseReviewsPage(html, id = null) {
+function parseReviewsPage(html, id = null, base = BASE) {
   const $ = cheerio.load(html);
   const title = clean($('.single-review .post-content h3.section-title a').first().text());
   const reviews = [];
@@ -114,7 +116,7 @@ function parseReviewsPage(html, id = null) {
       critic: critic || null,
       verdict: normalizeVerdict(verdictRaw),
       excerpt,
-      url: absUrl(link),
+      url: absUrl(link, base),
     });
   });
   if (!title) return { id, empty: true, title: '', reviews: [] };

@@ -10,7 +10,7 @@
  */
 
 /** discoverySource values that mark a show as local-only even without the field. */
-export const LOCAL_DISCOVERY_SOURCES = ['theatreinchicago'];
+export const LOCAL_DISCOVERY_SOURCES = ['theatreinchicago', 'theatreindc'];
 
 export function isLocalOnlyShow(
   show: object | null | undefined,

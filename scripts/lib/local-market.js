@@ -12,7 +12,7 @@
  */
 
 /** discoverySource values that mark a show as local-only even without the field. */
-const LOCAL_DISCOVERY_SOURCES = ['theatreinchicago'];
+const LOCAL_DISCOVERY_SOURCES = ['theatreinchicago', 'theatreindc'];
 
 function isLocalOnlyShow(show) {
   if (!show) return false;

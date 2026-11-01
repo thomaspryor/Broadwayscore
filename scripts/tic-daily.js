@@ -4,6 +4,7 @@
  *
  *   node scripts/tic-daily.js [--dry-run] [--max=15]      # stage + write data/shows.json
  *   node scripts/tic-daily.js --dispatch-ingest          # after the core-data push: ingest + score
+ *   node scripts/tic-daily.js --city=dc [...]            # theatreindc.com (BRO-6771); default is chicago
  *
  * Step 1 reads /reviewlistings.php, evaluates ids not yet in shows.json with the
  * same rules as the backfill (scripts/lib/tic-stage.js), appends accepted
@@ -20,12 +21,11 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const tic = require('./lib/theatreinchicago');
 const { runDaily } = require('./lib/tic-daily');
+const { getCity } = require('./lib/tic-cities');
 const { openingDateFor } = require('./tic-stage-shows');
 
 const ROOT = path.join(__dirname, '..');
 const SHOWS = path.join(ROOT, 'data', 'shows.json');
-const SEEN = path.join(ROOT, 'data', 'audit', 'tic-daily-seen.json');
-const ADDED = path.join(ROOT, 'data', 'audit', 'tic-daily-added.json');
 const PROMOTED = path.join(ROOT, 'data', 'audit', 'last-promotion-ids.json');
 
 const flag = (n) => process.argv.includes(`--${n}`);
@@ -33,6 +33,9 @@ function arg(name, def) {
   const hit = process.argv.slice(2).find((a) => a.startsWith(`--${name}=`));
   return hit ? hit.split('=').slice(1).join('=') : def;
 }
+const CITY = getCity(arg('city', 'chicago'));
+const SEEN = path.join(ROOT, CITY.files.seen);
+const ADDED = path.join(ROOT, CITY.files.added);
 const readJson = (f, def) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return def; } };
 
 async function stageAndAdd() {
@@ -45,14 +48,14 @@ async function stageAndAdd() {
   // `pending` = shows whose ingest dispatch was deferred by the ingest-urls cap on an earlier run.
   const pending = readJson(ADDED, {}).pending || [];
   if (!flag('dry-run')) { fs.mkdirSync(path.dirname(ADDED), { recursive: true }); fs.writeFileSync(ADDED, JSON.stringify({ on: today, added: [], pending }) + '\n'); }
-  const listing = tic.parseListing((await fetchPage(`${tic.BASE}/reviewlistings.php`)).content);
+  const listing = tic.parseListing((await fetchPage(`${CITY.base}/reviewlistings.php`)).content);
   console.log(`[tic-daily] ${listing.length} listed`);
   const io = {
-    page: async (id) => tic.parseReviewsPage((await fetchPage(tic.reviewsUrl(id), { skipVerify: true })).content, id),
-    detail: async (page) => tic.parseDetailPage((await fetchPage(tic.detailUrl(page.id, page.slug), { skipVerify: true })).content),
+    page: async (id) => tic.parseReviewsPage((await fetchPage(tic.reviewsUrl(id, 'show', CITY.base), { skipVerify: true })).content, id, CITY.base),
+    detail: async (page) => tic.parseDetailPage((await fetchPage(tic.detailUrl(page.id, page.slug, CITY.base), { skipVerify: true })).content),
     dates: (page) => openingDateFor(page),
   };
-  const { added, seen: nextSeen } = await runDaily({ listing, shows, seen, today, io, max: Number(arg('max', 15)), log: console.log });
+  const { added, seen: nextSeen } = await runDaily({ listing, shows, seen, today, io, max: Number(arg('max', 15)), log: console.log, city: CITY });
   console.log(`[tic-daily] added ${added.length}`);
   if (flag('dry-run')) return;
   fs.mkdirSync(path.dirname(SEEN), { recursive: true });
@@ -64,7 +67,7 @@ async function stageAndAdd() {
   if (!added.length) return;
   // Let the existing image-fetch step pick the new ids up.
   const prev = readJson(PROMOTED, { promoted: [] });
-  prev.promoted = (prev.promoted || []).concat(added.map((a) => ({ id: a.id, source: 'theatreinchicago' })));
+  prev.promoted = (prev.promoted || []).concat(added.map((a) => ({ id: a.id, source: CITY.discoverySource })));
   fs.writeFileSync(PROMOTED, JSON.stringify(prev, null, 2) + '\n');
 }
 

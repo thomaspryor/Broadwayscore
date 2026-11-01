@@ -8,6 +8,8 @@
 
 const { isExcludedType, mapShowType } = require('./theatreinchicago');
 const { foldDiacritics } = require('./title-match');
+const { getCity } = require('./tic-cities');
+const { resolveMetro } = require('./venue-metro');
 
 const MIN_REVIEWS = 3;
 const CHICAGO_METRO = 'chicago-il'; // data/venue-metros.json metro slug (BRO-6515)
@@ -57,20 +59,30 @@ function linkedReviews(page) {
  * First-pass gate on the reviews page alone (no detail fetch yet).
  * Returns { ok:true } or { ok:false, reason }.
  */
-function prefilter(page) {
+function prefilter(page, city = getCity('chicago')) {
   if (!page || page.empty) return { ok: false, reason: 'empty' };
   const venue = page.venue || '';
   if (VIRTUAL_VENUE.test(venue)) return { ok: false, reason: 'virtual' };
-  if (TOUR_HOUSES.some((re) => re.test(venue))) return { ok: false, reason: 'tour-house' };
+  if ((city.tourHouses || TOUR_HOUSES).some((re) => re.test(venue))) return { ok: false, reason: 'tour-house' };
+  // Short-history launch (BRO-6771): a run that closed before the cutoff cannot qualify,
+  // and rejecting it here saves the detail and publish-date fetches.
+  if (city.since && page.closingDate && page.closingDate < city.since) return { ok: false, reason: 'before-since' };
   const outlets = new Set(linkedReviews(page).map((r) => r.outlet));
   if (outlets.size < MIN_REVIEWS) return { ok: false, reason: 'under-3-outlets' };
   return { ok: true };
 }
 
 /** Second gate once the detail page is known. */
-function detailFilter(detail) {
+function detailFilter(detail, page = null, city = getCity('chicago')) {
   if (!detail || detail.empty) return { ok: false, reason: 'no-detail' };
   if (isExcludedType(detail.showType)) return { ok: false, reason: `type:${detail.showType}` };
+  // theatreindc also lists Baltimore, Columbia, Annapolis and Frederick houses: keep only
+  // venues the shared venue-metro table maps to this city's metro (BRO-6771).
+  if (city.requireMetro) {
+    const line = venueLine(detail, page || {}, city);
+    if (!line) return { ok: false, reason: 'outside-metro' };
+    if (resolveMetro(line) !== city.metro) return { ok: false, reason: 'outside-metro' };
+  }
   return { ok: true };
 }
 
@@ -78,10 +90,30 @@ function detailFilter(detail) {
 const IL_CITIES = ['Chicago Heights', 'Oak Park', 'Oak Brook', 'Oakbrook Terrace', 'Highland Park', 'Arlington Heights', 'Lake Forest', 'Lake Zurich', 'Des Plaines', 'Park Ridge', 'Glen Ellyn', 'Downers Grove', 'La Grange', 'Forest Park', 'Morton Grove', 'Crystal Lake', 'Western Springs', 'Evergreen Park', 'Blue Island', 'Park Forest', 'Richton Park', 'St. Charles', 'Chicago', 'Evanston', 'Skokie', 'Glencoe', 'Lincolnshire', 'Aurora', 'Naperville', 'Wilmette', 'Winnetka', 'Rosemont', 'Schaumburg', 'Woodstock', 'Joliet', 'Elgin', 'Batavia', 'Geneva', 'Wheaton', 'Lombard', 'Berwyn', 'Cicero', 'Northbrook', 'Glenview', 'Niles', 'Lincolnwood', 'Palatine', 'Waukegan', 'Libertyville', 'Mundelein', 'Lemont', 'Highwood', 'Barrington', 'Harvey', 'Steger', 'Palos Heights', 'Palos Park', 'Hinsdale', 'Elmhurst', 'Villa Park', 'Bolingbrook', 'Orland Park', 'Tinley Park', 'Mokena', 'Munster', 'Oak Lawn', 'Skokie'];
 const IN_CITIES = ['Hammond', 'Gary', 'Munster', 'Valparaiso', 'Michigan City'];
 
+/**
+ * Generic "<Theater>, <City>, <ST>": the LAST listed city in the address wins
+ * ("1010 Chicago Ave Evanston" is Evanston). Returns null when no listed city
+ * appears, so the caller can reject a venue outside the metro.
+ */
+function venueLineFromCities(theater, addr, cities) {
+  let best = null;
+  for (const [name, state] of cities) {
+    const re = new RegExp(`\\b${name.replace('.', '\\.')}\\b`, 'gi');
+    let m;
+    while ((m = re.exec(addr))) {
+      const end = m.index + name.length;
+      if (!best || end > best.end || (end === best.end && name.length > best.name.length)) best = { name, state, end };
+    }
+  }
+  if (!best) return null;
+  return best.state === 'DC' ? `${theater}, Washington, DC` : `${theater}, ${best.name}, ${best.state}`;
+}
+
 /** "<Theater>, <City>, <ST>" from the detail page (the address ends with the city). */
-function venueLine(detail, page) {
+function venueLine(detail, page, cfg = getCity('chicago')) {
   const theater = (detail && detail.venue) || String(page.venue || '').split(/\s+at\s+/i).pop();
   const addr = String((detail && detail.address) || '');
+  if (cfg.venueCities) return venueLineFromCities(theater, addr, cfg.venueCities);
   // The address is "<street> <City>": the city is the last place name in it, so
   // "1010 Chicago Ave Evanston" is Evanston and "Chicago Heights" is not Chicago.
   let best = null;
@@ -106,7 +138,7 @@ function pickYear(openingDate) {
  * Build the add-show `show` object. `dates.openingDate` is the earliest
  * publish date among the fetched reviews (proxy for press opening).
  */
-function buildShowEntry({ page, detail, dates, discoveredAt }) {
+function buildShowEntry({ page, detail, dates, discoveredAt, city = getCity('chicago') }) {
   const year = pickYear(dates.openingDate);
   const base = slugify(page.title);
   const id = `${base}-regional-${year}`;
@@ -119,19 +151,19 @@ function buildShowEntry({ page, detail, dates, discoveredAt }) {
     id,
     title: page.title,
     slug: id,
-    venue: venueLine(detail, page), // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
+    venue: venueLine(detail, page, city) || String(page.venue || ''), // venue-write-guard-ok: staged entry only; add-show runs sanitizeVenueForWrite on apply
     status,
     type: mapShowType(detail && detail.showType),
     category: 'regional',
     market: 'regional',
     openingDate: dates.openingDate,
     openingDateSource: 'tic-first-review',
-    discoverySource: 'theatreinchicago',
+    discoverySource: city.discoverySource,
     localOnly: true,
-    // theatreinchicago covers Chicagoland only (suburbs and Hammond-area IN included): one metro hub.
-    city: CHICAGO_METRO,
+    // One metro hub per site (Chicagoland incl. Hammond-area IN; the DC metro).
+    city: city.metro || CHICAGO_METRO,
     discoveredAt,
-    evidenceUrls: [`https://www.theatreinchicago.com/${page.slug || 'show'}/${page.id}/`],
+    evidenceUrls: [`${city.base}/${page.slug || 'show'}/${page.id}/`],
   };
   if (closing) entry.closingDate = closing;
   return entry;
@@ -142,13 +174,16 @@ function buildShowEntry({ page, detail, dates, discoveredAt }) {
  * (a duplicate) or null. Titles compare normalised; a tour or earlier run of
  * the same title only counts when its dates are within ~120 days of this one.
  */
-function findDuplicate(entry, existingShows) {
+function findDuplicate(entry, existingShows, city = getCity('chicago')) {
   const nt = normTitle(entry.title);
   const open = Date.parse(entry.openingDate);
+  const sameMetro = (venue) => (city.requireMetro
+    ? resolveMetro(venue) === city.metro
+    : /, (chicago|[a-z. ]+), (il|in)\b/i.test(venue || ''));
   for (const s of existingShows) {
     if (normTitle(s.title) !== nt) continue;
     const so = Date.parse(s.openingDate || '');
-    if (s.category === 'regional' && /, (chicago|[a-z. ]+), (il|in)\b/i.test(s.venue || '') && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
+    if (s.category === 'regional' && sameMetro(s.venue) && Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 120 * 86400000) return s;
     if (s.category === 'tour') {
       if (Number.isFinite(open) && Number.isFinite(so) && Math.abs(open - so) < 400 * 86400000) return s;
       continue;
@@ -176,5 +211,5 @@ function dedupeId(entry, page, taken) {
 module.exports = {
   dedupeId,
   MIN_REVIEWS, TOUR_HOUSES, VIRTUAL_VENUE,
-  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, buildShowEntry, findDuplicate,
+  normTitle, slugify, linkedReviews, prefilter, detailFilter, venueLine, venueLineFromCities, buildShowEntry, findDuplicate,
 };
