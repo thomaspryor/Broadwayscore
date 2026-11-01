@@ -77,3 +77,23 @@ test('HTML path keeps first-fill-only semantics for the scraper and requires can
   assert.deepEqual(fresh.castBilling, ['Lead One', 'Lead Two']);
   assert.equal(enrichCastBilling({ status: 'open' }, html, 'https://playbill.com/production/other'), false);
 });
+
+import { createRequire as __cr } from 'node:module';
+import __test from 'node:test';
+import __assert from 'node:assert/strict';
+const __lib = __cr(import.meta.url)('./playbill-cast-billing.js');
+const __url = 'https://playbill.com/production/x';
+__test('BRO-6678 review: hand-corrected stamped billing is kept', () => {
+  const show = { status: 'open', castBilling: ['A', 'B', 'C', 'D'] };
+  __lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A', 'B', 'C', 'D'] }, __url);
+  show.castBilling = ['B', 'A', 'C', 'D'];
+  const changed = __lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A', 'B', 'C', 'E'] }, __url);
+  __assert.equal(changed, false);
+  __assert.deepEqual(show.castBilling, ['B', 'A', 'C', 'D']);
+});
+__test('BRO-6678 review: implausible shrink needs force', () => {
+  const show = { status: 'open', castBilling: ['A', 'B', 'C', 'D', 'E', 'F'] };
+  __lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A', 'B', 'C', 'D', 'E', 'F'] }, __url);
+  __assert.equal(__lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A'] }, __url), false);
+  __assert.equal(__lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A', 'B', 'C', 'X', 'E', 'F'] }, __url), true);
+});

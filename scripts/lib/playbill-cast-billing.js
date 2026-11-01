@@ -57,6 +57,10 @@ function enrichCastBilling(show, html, playbillUrl, { force = false } = {}) {
  * stamp existed is adopted only when it still equals the current snapshot, so
  * the next change after that refreshes it (BRO-6678).
  */
+function billingHash(names) {
+  return require('crypto').createHash('sha1').update(JSON.stringify(names)).digest('hex').slice(0, 12);
+}
+
 function enrichCastBillingFromSnapshot(show, snapshot, playbillUrl, { force = false } = {}) {
   if (!['open', 'previews'].includes(show.status)) return false;
   if (!playbillUrl || snapshot?.sourceUrl !== playbillUrl) return false;
@@ -69,13 +73,24 @@ function enrichCastBillingFromSnapshot(show, snapshot, playbillUrl, { force = fa
     // Legacy unstamped copy that still matches: adopt it so later changes refresh.
     if (same && show.castBillingSource === undefined) {
       show.castBillingSource = playbillUrl;
+      show.castBillingHash = billingHash(names);
       return true;
     }
     return false;
   }
-  if (same && fromThisSnapshot) return false;
+  if (same && fromThisSnapshot) {
+    if (show.castBillingHash === undefined) show.castBillingHash = billingHash(names);
+    return false;
+  }
+  if (!force && hasBilling && fromThisSnapshot) {
+    // Hand correction of stamped billing: the fingerprint no longer matches, keep it.
+    if (show.castBillingHash !== undefined && show.castBillingHash !== billingHash(show.castBilling)) return false;
+    // Implausible shrink (markup change, partial page): needs --force.
+    if (names.length < 2 || names.length < show.castBilling.length / 2) return false;
+  }
   show.castBilling = [...names];
   show.castBillingSource = playbillUrl;
+  show.castBillingHash = billingHash(names);
   return true;
 }
 
