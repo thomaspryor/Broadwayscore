@@ -88,3 +88,19 @@ test('runDaily (DC): adds an open in-metro show, rejects one that opened before 
   assert.equal(out.seen[2].reason, 'before-since');
   assert.equal(out.seen[2].retry, false);
 });
+
+test('DC lists a production from its first outlet; Chicago still needs 3', () => {
+  const stage = require('./tic-stage.js');
+  const pg = (n) => ({ id: 1, slug: 'x', title: 'T', venue: 'Arena Stage', reviews: Array.from({ length: n }, (_, i) => ({ outlet: `O${i}`, url: `http://o${i}/1` })) });
+  assert.equal(stage.prefilter(pg(1), getCity('dc')).ok, true);
+  assert.equal(stage.prefilter(pg(0), getCity('dc')).reason, 'under-1-outlets');
+  assert.equal(stage.prefilter(pg(2), getCity('chicago')).reason, 'under-3-outlets');
+});
+
+test('DC keeps Comedy-typed plays; Chicago drops them', () => {
+  const pg = { id: 1, venue: 'Keegan Theatre' };
+  const det = { venue: 'Keegan Theatre', address: '1742 Church St NW Washington, DC', showType: 'Comedy' };
+  assert.equal(stage.detailFilter(det, pg, getCity('dc')).ok, true);
+  assert.equal(stage.detailFilter({ ...det, showType: 'Childrens' }, pg, getCity('dc')).reason, 'type:Childrens');
+  assert.equal(stage.detailFilter({ ...det, address: '10 Wacker Dr Chicago, IL' }, pg, getCity('chicago')).reason, 'type:Comedy');
+});

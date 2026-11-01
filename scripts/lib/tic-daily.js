@@ -18,7 +18,8 @@ const { getCity } = require('./tic-cities');
 const idRe = (city) => new RegExp(`${city.host.replace(/\./g, '\\.')}/[^/]+/(\\d+)/`);
 
 // A rejection that more reviews or a later date can undo. Everything else is final.
-const RETRY_REASONS = new Set(['under-3-outlets', 'no-publish-date']);
+const RETRY_REASONS = new Set(['no-publish-date']);
+const UNDER_N = /^under-\d+-outlets$/;
 
 function ticIdOf(show, city = getCity('chicago')) {
   const re = idRe(city);
@@ -37,14 +38,15 @@ function pickCandidates(listing, shows, seen, city = getCity('chicago')) {
     const s = seen[row.id];
     // 'added' but absent from shows.json: the core-data push failed, so look again.
     if (s && !s.retry && s.reason !== 'added') return false;
-    return row.reviewCount >= stage.MIN_REVIEWS;
+    return row.reviewCount >= (city.minOutlets || stage.MIN_REVIEWS);
   });
   // Never-seen ids first so a backlog of retries cannot starve new productions.
   return [...open.filter((r) => !seen[r.id]), ...open.filter((r) => seen[r.id])];
 }
 
 function isRetry(reason) {
-  return RETRY_REASONS.has(String(reason).split(':')[0]);
+  const r = String(reason).split(':')[0];
+  return RETRY_REASONS.has(r) || UNDER_N.test(r);
 }
 
 /**
