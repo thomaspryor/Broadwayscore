@@ -20,7 +20,7 @@ Go to **https://broadwayscorecard.com/brand** → scroll to Downloads.
 
 ### `logos/` — 8 files
 - **Wordmarks** (1200 px wide): `{brand}-wordmark-{variant}.png`
-  - brands: `broadway`, `west-end`
+  - brands: `broadway`, `west-end`, `opera` (1200 px, `scripts/generate-opera-brand-kit.js`)
   - variants: `dark` (on dark background), `transparent` (alpha for overlay on dark), `light` (for light backgrounds — inverted colors)
 - **App icon** (400 px square): `icon-dark.png`, `icon-transparent.png` — the "BS" badge
 
@@ -52,6 +52,7 @@ Brand-only placeholder cards at correct platform aspect ratios. Drop text/images
 - `{broadway|west-end}-instagram-story-1080x1920.png` — IG/TikTok/Reels story
 - `{broadway|west-end}-og-1200x630.png` — Twitter/Facebook/LinkedIn link-preview image
 - `{broadway|west-end}-twitter-header-1500x500.png` — profile header banner
+- Opera: `opera-profile-1080x1080.png` (square profile picture), `opera-twitter-header-1500x500.png`, `opera-bluesky-banner-1500x500.png`, `opera-facebook-cover-1640x624.png`
 
 ## Brand tokens
 
@@ -60,6 +61,7 @@ Brand-only placeholder cards at correct platform aspect ratios. Drop text/images
 | Background (dark) | `#0f0f14` | Page bg, social card bg |
 | Card surface | `#1e1e2a → #16161f` (gradient) | Raised cards |
 | Brand gold | `#d4a574 → #b8956a` (gradient) | "Scorecard" wordmark, Broadway accents |
+| Opera red | `#f0627a → #c4213f` (gradient) | "Scorecard" wordmark for Opera (`opera-*` files; `node scripts/generate-opera-brand-kit.js`) |
 | West End pink | `#f472b6 → #ec4899` (gradient) | "Scorecard" wordmark for West End |
 | Critical Gold | `#DAA520 → #FFD700 → #FFF0A0` (gradient) + `#C8960E` border | Score 83–100 |
 | Recommended | `#22c55e` | Score 75–82, A grade |
