@@ -37,8 +37,8 @@ test('an unflagged row is never skipped', () => {
 test('detect-cross-outlet-duplicates: a pointer row never becomes the Layer 1 primary', async () => {
   const fs = await import('node:fs');
   const src = fs.readFileSync(new URL('../detect-cross-outlet-duplicates.js', import.meta.url), 'utf8');
-  // The primary is picked from rows without a cross-outlet pointer.
-  assert.match(src, /const plain = group\.filter\(r => !r\.pointerAcross\);\s*const primary = plain\[0\];/);
+  // The group is resolved from rows without a cross-outlet pointer only (BRO-6774: via resolveFingerprintGroup).
+  assert.match(src, /const plain = group\.filter\(r => !r\.pointerAcross\);\s*const resolved = resolveFingerprintGroup\(plain,/);
 });
 
 test('BRO-6742: a review-roundup row is never compared as a cross-outlet copy', async () => {
