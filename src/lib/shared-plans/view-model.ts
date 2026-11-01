@@ -25,7 +25,10 @@ export interface BookedPlanView extends PlanShowView {
   date: string;
   /** "Oct 18" — the My Shows Upcoming grid label. */
   dateLabel: string;
-  /** All-day event for AddToCalendarButtons (null if it can't be built). */
+  /**
+   * Event for AddToCalendarButtons (null if it can't be built): timed at the
+   * owner's curtain for the show's runtime when they set one, else all-day.
+   */
   event: PerformanceEvent | null;
 }
 
@@ -48,10 +51,12 @@ export function buildSharedPlansView(
   const selected = selectSharedPlans(payload, shows, nowMs);
   return {
     name: payload.name,
-    booked: selected.booked.map(({ show, date }) => {
-      // allDay: friends only ever see the date (owner decision). The calendar
+    booked: selected.booked.map(({ show, date, curtainTime }) => {
+      // Timed at the owner's curtain when they set one (owner reversed the
+      // date-only rule 2026-11-01: a friend's all-day calendar entry was a
+      // user complaint); all-day only when no time was picked. The calendar
       // module adds the 🎭 prefix itself; the owner goes in as a companion.
-      const ev = buildPlannedShowEvent(show.calendar, { planned_date: date, curtain_time: null }, {
+      const ev = buildPlannedShowEvent(show.calendar, { planned_date: date, curtain_time: curtainTime }, {
         allDay: true, companions: [payload.name],
       });
       return {

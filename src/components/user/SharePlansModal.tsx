@@ -122,7 +122,7 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
           <ModalCloseButton onClick={onClose} />
         </div>
         <p className="text-sm text-gray-400 mb-5">
-          Anyone with the link can see which shows you&apos;re seeing and on which days (not the times).
+          Anyone with the link can see which shows you&apos;re seeing, on which days, and the showtime if you picked one.
           They don&apos;t need an account. You can stop sharing anytime.
         </p>
 

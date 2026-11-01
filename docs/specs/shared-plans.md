@@ -13,7 +13,7 @@
 
 **What we build:** one link per person that shows their theater plans. Two sections:
 
-- **Booked**: shows with an upcoming date, soonest first. Date only, no curtain time.
+- **Booked**: shows with an upcoming date, soonest first. Date, plus the curtain time when the owner picked one (owner 2026-11-01; was date only).
 - **Want to see**: shows on the watchlist that aren't booked.
 
 The owner taps **Share** on the watchlist (web: My Shows → Watchlist; iOS: To Watch tab). The share sheet opens with the link (iMessage, WhatsApp, Mail, copy). A friend opens it in any browser, no account needed, and sees the list with posters and scores. They can tap a show to read about it, or add one of the owner's booked dates to their own calendar.
@@ -25,7 +25,7 @@ The owner taps **Share** on the watchlist (web: My Shows → Watchlist; iOS: To 
 | Question | Answer |
 |---|---|
 | What's on the page | Both sections, and the owner can switch either one off |
-| Date detail for booked shows | Date only (no time) |
+| Date detail for booked shows | Date + curtain time if set (2026-11-01) |
 | Link behaviour | Live: one link, always current; can be turned off or reset |
 | What viewers can do (V1) | Tap through to show pages; add a booked date to their calendar |
 | Sign-up nudge for viewers | V2 |

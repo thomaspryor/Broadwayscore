@@ -14,9 +14,9 @@ import { isCalendarExportAllowed } from '@/lib/calendar-route-gate';
  * and CI forbids referencing demo flags from server code — so a client flag here
  * would evaluate to false-but-unenforced and the route would in practice be open
  * to anyone in production the day it merged. It gates on a server-readable env
- * var instead. Set CALENDAR_EXPORT_ENABLED=1 in the environments where the
- * feature is live; everywhere else TIMED events 404 as though the route did not
- * exist. All-day events (no `t` param) are always served — they carry no
+ * var instead. Timed export launched 2026-11-01: TIMED events are served unless
+ * CALENDAR_EXPORT_ENABLED=0 (the kill switch), when they 404 as though the
+ * route did not exist. All-day events (no `t` param) are always served — they carry no
  * timezone for that gate to protect, and Shared Plans needs them in production
  * (BRO-4481). The rule lives in src/lib/calendar-route-gate.ts.
  */
@@ -27,7 +27,7 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 function disabled() {
-  // 404 rather than 403 — an unlaunched feature should not advertise itself.
+  // 404 rather than 403: with the kill switch on, timed export should not advertise itself.
   return new Response('Not found', { status: 404 });
 }
 

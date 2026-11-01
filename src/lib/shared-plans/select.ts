@@ -26,6 +26,11 @@ export interface SharedPlanEntry {
   planned_date: string | null;
   /** The outing for planned_date is already in the diary (iOS watchlist-slot rule). */
   logged: boolean;
+  /**
+   * Local wall-clock curtain ("HH:MM:SS") the owner picked, or null/absent.
+   * Absent from responses of the pre-20261101 RPC; treated the same as null.
+   */
+  curtain_time?: string | null;
 }
 
 /** The minimum a resolved show needs for the rule. Callers pass richer objects through. */
@@ -37,7 +42,7 @@ export interface PlanShowLike {
 
 export interface SelectedSharedPlans<T extends PlanShowLike> {
   /** Soonest first. */
-  booked: Array<{ show: T; date: string }>;
+  booked: Array<{ show: T; date: string; curtainTime: string | null }>;
   /** In the owner's watchlist order (newest first). */
   unbooked: Array<{ show: T }>;
   counts: { booked: number; unbooked: number };
@@ -59,7 +64,7 @@ export function selectSharedPlans<T extends PlanShowLike>(
   shows: ReadonlyMap<string, T>,
   nowMs: number,
 ): SelectedSharedPlans<T> {
-  const booked: Array<{ show: T; date: string; order: number }> = [];
+  const booked: Array<{ show: T; date: string; curtainTime: string | null; order: number }> = [];
   const unbooked: Array<{ show: T }> = [];
 
   payload.entries.forEach((entry, order) => {
@@ -69,7 +74,7 @@ export function selectSharedPlans<T extends PlanShowLike>(
     if (!show) return;
 
     if (entry.planned_date && entry.planned_date >= venueToday(show.category, nowMs)) {
-      if (payload.showBooked) booked.push({ show, date: entry.planned_date, order });
+      if (payload.showBooked) booked.push({ show, date: entry.planned_date, curtainTime: entry.curtain_time ?? null, order });
       return;
     }
     // Not booked: no date yet, or a past date whose outing is already logged
@@ -83,7 +88,7 @@ export function selectSharedPlans<T extends PlanShowLike>(
 
   booked.sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : a.order - b.order));
   return {
-    booked: booked.map(({ show, date }) => ({ show, date })),
+    booked: booked.map(({ show, date, curtainTime }) => ({ show, date, curtainTime })),
     unbooked,
     counts: { booked: booked.length, unbooked: unbooked.length },
   };
@@ -96,12 +101,13 @@ export function selectSharedPlans<T extends PlanShowLike>(
  * Input order is kept (pass the watchlist newest first, as the page shows it).
  */
 export function toSharedEntries(
-  watchlist: ReadonlyArray<{ show_id: string; planned_date: string | null }>,
+  watchlist: ReadonlyArray<{ show_id: string; planned_date: string | null; curtain_time?: string | null }>,
   reviews: ReadonlyArray<{ show_id: string; date_seen: string | null }>,
 ): SharedPlanEntry[] {
   return watchlist.map(w => ({
     show_id: w.show_id,
     planned_date: w.planned_date,
+    curtain_time: w.curtain_time ?? null,
     logged: w.planned_date !== null && reviews.some(r =>
       r.show_id === w.show_id && (r.date_seen === null || r.date_seen >= (w.planned_date as string))),
   }));

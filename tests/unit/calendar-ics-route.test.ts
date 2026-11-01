@@ -1,6 +1,6 @@
 /**
  * GET /api/calendar.ics gating (BRO-4481): all-day events are always served,
- * timed events only with CALENDAR_EXPORT_ENABLED=1.
+ * timed events unless the CALENDAR_EXPORT_ENABLED=0 kill switch is set.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -28,9 +28,10 @@ async function withEnv<T>(value: string | undefined, fn: () => Promise<T>): Prom
   }
 }
 
-test('gate: all-day always allowed; timed only with the env flag', () => {
+test('gate: all-day always allowed; timed unless the kill switch is set', () => {
   assert.equal(isCalendarExportAllowed({ time: null }, {}), true);
-  assert.equal(isCalendarExportAllowed({ time: '20:00' }, {}), false);
+  assert.equal(isCalendarExportAllowed({ time: null }, { CALENDAR_EXPORT_ENABLED: '0' }), true);
+  assert.equal(isCalendarExportAllowed({ time: '20:00' }, {}), true);
   assert.equal(isCalendarExportAllowed({ time: '20:00' }, { CALENDAR_EXPORT_ENABLED: '0' }), false);
   assert.equal(isCalendarExportAllowed({ time: '20:00' }, { CALENDAR_EXPORT_ENABLED: '1' }), true);
 });
@@ -43,8 +44,14 @@ test('route, env unset: all-day → 200 text/calendar with VALUE=DATE', async ()
   assert.match(body, /DTSTART;VALUE=DATE:20261018/);
 });
 
-test('route, env unset: timed → 404 (feature still unlaunched)', async () => {
+test('route, env unset: timed → 200 with TZID (launched 2026-11-01)', async () => {
   const res = await withEnv(undefined, () => GET(req({ ...BASE, time: '20:00' })));
+  assert.equal(res.status, 200);
+  assert.match(await res.text(), /DTSTART;TZID=America\/New_York:20261018T200000/);
+});
+
+test('route, kill switch 0: timed → 404', async () => {
+  const res = await withEnv('0', () => GET(req({ ...BASE, time: '20:00' })));
   assert.equal(res.status, 404);
 });
 

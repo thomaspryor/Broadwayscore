@@ -186,6 +186,14 @@ test('all-day (Shared Plans) UIDs carry the date: two plans for one show are two
   assert.notEqual(uid(ics({ time: null })), uid(ics({ time: null, date: '2026-11-01' })));
 });
 
+test('timed Shared Plans events (companions set) carry the date: never replace the friend\'s own plan', () => {
+  const uid = (s: string) => s.match(/^UID:(.+)$/m)![1].trim();
+  const shared = uid(ics({ companions: ['Tom'] }));
+  assert.equal(shared, 'bsc-wicked-2003-2026-09-11@broadwayscorecard.com');
+  assert.notEqual(shared, uid(ics()), 'differs from the friend\'s own timed plan for the same show');
+  assert.notEqual(shared, uid(ics({ companions: ['Bea'], date: '2026-11-01' })));
+});
+
 test('SEQUENCE differs for two exports inside the same second', () => {
   // Plain unix seconds collide on a double-click, and RFC 5545 clients may
   // treat an equal SEQUENCE as a no-op rather than an update.

@@ -4,7 +4,7 @@ import { useState, type MouseEvent } from 'react';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { upcomingRowDate } from '@/components/user/upcoming-cards';
 import { featureFlags } from '@/config/feature-flags';
-import { buildGoogleCalendarUrl, encodeEventParams } from '@/lib/calendar';
+import { buildGoogleCalendarUrl, encodeEventParams, formatTime } from '@/lib/calendar';
 import { isCalendarEventOffered } from '@/lib/calendar-route-gate';
 import type { PerformanceEvent } from '@/lib/calendar';
 
@@ -31,8 +31,8 @@ interface AddToCalendarButtonsProps {
  *
  * Shown under the same rule /api/calendar.ics serves by
  * (src/lib/calendar-route-gate.ts): all-day events always (Shared Plans,
- * BRO-4481, shares dates only), timed events only with
- * featureFlags.calendarExport (still demo-only — see that flag's doc). The
+ * BRO-4481), timed events only with featureFlags.calendarExport (launched
+ * 2026-11-01). The
  * rule lives here, not in each caller, so no page can show a button whose
  * download 404s.
  */
@@ -91,7 +91,7 @@ function CalendarSheet({ event, isOpen, onClose, onAdd }: {
         </div>
         <p className="text-sm text-gray-400 mb-5">
           <span className="text-white font-semibold">{event.title}</span>
-          {' · '}{upcomingRowDate(event.date)}
+          {' · '}{upcomingRowDate(event.date)}{event.time ? `, ${formatTime(event.time)}` : ''}
         </p>
         <div className="space-y-2">
           <a href={icsHref} onClick={chose('ics')} className="btn btn-secondary w-full h-12" data-testid="calendar-sheet-apple">

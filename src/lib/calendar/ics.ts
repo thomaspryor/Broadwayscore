@@ -118,12 +118,13 @@ export function buildIcs(ev: PerformanceEvent, opts: BuildIcsOptions): string {
     'METHOD:PUBLISH',
     ...vtimezoneLines(tz),
     'BEGIN:VEVENT',
-    // Timed (the owner's own plan): date excluded on purpose, so re-exporting
+    // The owner's own timed plan: date excluded on purpose, so re-exporting
     // after a reschedule UPDATES the existing event instead of adding one.
-    // All-day (a friend's Shared Plans date, BRO-4481): date included, or a
-    // friend adding two people's plans for the same show on different days
-    // would have the second silently replace the first.
-    `UID:bsc-${sanitizeUidPart(ev.showId)}${ev.time ? '' : `-${sanitizeUidPart(ev.date)}`}@${uidDomain}`,
+    // All-day, or someone else's plan (companions set: Shared Plans, BRO-4481,
+    // timed since 2026-11-01): date included, or a friend adding two people's
+    // plans for the same show (or their own plan) would have one silently
+    // replace the other.
+    `UID:bsc-${sanitizeUidPart(ev.showId)}${ev.time && !ev.companions?.length ? '' : `-${sanitizeUidPart(ev.date)}`}@${uidDomain}`,
     `DTSTAMP:${icsUtc(generatedAt)}`,
     `SEQUENCE:${sequence}`,
   ];

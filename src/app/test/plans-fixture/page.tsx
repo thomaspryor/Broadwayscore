@@ -23,8 +23,8 @@ export default async function PlansFixturePage(props: { searchParams: Promise<{ 
     .slice(0, 7)
     .map(s => s.id);
   const entries = searchParams.state === 'empty' ? [] : [
-    { show_id: open[0], planned_date: addDays(40), logged: false },
-    { show_id: open[1], planned_date: addDays(3), logged: false },
+    { show_id: open[0], planned_date: addDays(40), curtain_time: '14:00:00', logged: false },
+    { show_id: open[1], planned_date: addDays(3), curtain_time: '19:00:00', logged: false },
     { show_id: open[2], planned_date: addDays(12), logged: false },
     ...open.slice(3).map(id => ({ show_id: id, planned_date: null, logged: false })),
   ].filter(e => e.show_id);

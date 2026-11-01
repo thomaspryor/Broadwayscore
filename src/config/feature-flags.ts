@@ -122,7 +122,7 @@ export const featureFlags = {
    *  smoke test. Enable via NEXT_PUBLIC_FEATURES=showRanks. */
   get showRanks() { return has('showRanks'); },
   /**
-   * Add-to-Calendar and the showtime picker on diary entries.
+   * Timed Add-to-Calendar buttons (the showtime picker itself is ungated).
    *
    * Deliberately its OWN flag rather than riding `userAccounts`. The sibling
    * split for `diarySharing` was made so a decision to hold sharing could not
@@ -133,7 +133,9 @@ export const featureFlags = {
    * CLIENT-SIDE ONLY. `GET /api/calendar.ics` is a server route and cannot read
    * this (see the isDemo note at the top of this file — it returns false during
    * SSR by design), so the route gates on the CALENDAR_EXPORT_ENABLED env var
-   * instead. Both must be on for the feature to work end to end.
+   * instead (on unless CALENDAR_EXPORT_ENABLED=0).
    */
-  get calendarExport() { return has('calendarExport'); },
+  // Launched in code 2026-11-01 (owner: a Shared Plans friend's all-day calendar entry was a user
+  // complaint; owner has no Vercel env access). Server kill switch: CALENDAR_EXPORT_ENABLED=0.
+  get calendarExport() { return true; },
 };

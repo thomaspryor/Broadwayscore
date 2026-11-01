@@ -29,7 +29,7 @@ test('privacy policy explains opting into a revocable public plans link', () => 
   assert.match(plans, /private unless you turn on a shared link/i);
   assert.match(plans, /anyone with the link/i);
   assert.match(plans, /upcoming shows/i);
-  assert.match(plans, /dates only, no curtain times/i);
+  assert.match(plans, /date and showtime you picked/i);
   assert.match(plans, /not-yet-booked watchlist/i);
   assert.match(plans, /without an account/i);
   assert.match(plans, /turning the link off stops access/i);

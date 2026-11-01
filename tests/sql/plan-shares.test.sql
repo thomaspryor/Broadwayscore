@@ -18,8 +18,9 @@ INSERT INTO public.profiles (id, display_name) VALUES
   ('22222222-2222-2222-2222-222222222222', 'Bea Other');
 
 -- Owner A's watchlist + reviews, built from the parity fixture with dates
--- anchored to current_date. A curtain_time is set on every dated row so the
--- "never leaves the database" assertion below has something to catch.
+-- anchored to current_date. A curtain_time + time_slot is set on every dated
+-- row: the curtain time must reach the friend on dated rows (20261101, owner
+-- 2026-11-01), the slot must never leave the database.
 DO $$
 DECLARE
   c JSONB;
@@ -127,14 +128,24 @@ SELECT t.ok(current_setting('t.payload')::jsonb ->> 'name' = 'Tom', 'payload nam
 SELECT t.ok(NOT EXISTS (
               SELECT 1 FROM jsonb_array_elements(current_setting('t.payload')::jsonb -> 'entries') e,
                             jsonb_object_keys(e) k
-               WHERE k NOT IN ('show_id', 'planned_date', 'logged')),
-            'entries carry only show_id/planned_date/logged');
-SELECT t.ok(position('19:30' IN current_setting('t.payload')) = 0
-            AND position('evening' IN current_setting('t.payload')) = 0
+               WHERE k NOT IN ('show_id', 'planned_date', 'curtain_time', 'logged')),
+            'entries carry only show_id/planned_date/curtain_time/logged');
+SELECT t.ok(NOT EXISTS (
+              SELECT 1 FROM jsonb_array_elements(current_setting('t.payload')::jsonb -> 'entries') e
+               WHERE (e ->> 'planned_date') IS NOT NULL AND (e ->> 'curtain_time') IS DISTINCT FROM '19:30:00')
+            AND EXISTS (
+              SELECT 1 FROM jsonb_array_elements(current_setting('t.payload')::jsonb -> 'entries') e
+               WHERE (e ->> 'planned_date') IS NOT NULL),
+            'every dated entry carries its curtain time as HH:MM:SS');
+SELECT t.ok(NOT EXISTS (
+              SELECT 1 FROM jsonb_array_elements(current_setting('t.payload')::jsonb -> 'entries') e
+               WHERE (e ->> 'planned_date') IS NULL AND (e ->> 'curtain_time') IS NOT NULL),
+            'an undated entry never carries a time');
+SELECT t.ok(position('evening' IN current_setting('t.payload')) = 0
             AND position('private review text' IN current_setting('t.payload')) = 0
             AND position('Tom Owner' IN current_setting('t.payload')) = 0
             AND position('11111111' IN current_setting('t.payload')) = 0,
-            'no curtain time, slot, review text, profile name or user id anywhere in the payload');
+            'no slot, review text, profile name or user id anywhere in the payload');
 SELECT t.ok(position('b-only-show' IN current_setting('t.payload')) = 0, 'another user''s plans never appear');
 
 -- Parity fixture: inclusion and `logged` for every case.
