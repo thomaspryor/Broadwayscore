@@ -246,10 +246,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-11-01T19:18:59.837Z",
-      "lastSeen": "2026-11-01T19:18:59.837Z",
-      "lastNotifiedAt": "2026-11-01T19:18:59.837Z",
-      "lastSurfacedAt": "2026-11-01T19:18:59.837Z",
+      "incidentOpenedAt": "2026-11-01T19:24:21.368Z",
+      "lastSeen": "2026-11-01T19:24:21.368Z",
+      "lastNotifiedAt": "2026-11-01T19:24:21.368Z",
+      "lastSurfacedAt": "2026-11-01T19:24:21.368Z",
       "notifyCount": 197,
       "cardId": null,
       "linearIdentifier": null,
@@ -6789,7 +6789,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-11-01T14:42:51.732Z",
-      "lastSeen": "2026-11-01T19:18:59.826Z",
+      "lastSeen": "2026-11-01T19:24:21.351Z",
       "lastNotifiedAt": "2026-11-01T14:42:51.732Z",
       "lastSurfacedAt": null,
       "notifyCount": 18,
@@ -34623,9 +34623,9 @@
       },
       "absentRunIds": [
         "41331569683",
-        "41334724454"
+        "41334860263"
       ],
-      "resolvedAt": "2026-11-01T19:18:59.800Z",
+      "resolvedAt": "2026-11-01T19:24:21.309Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Unit Tests:da830c83": {
@@ -34686,7 +34686,8 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6784",
-      "resolvedAt": "2026-11-01T19:18:59.812Z",
+      "silentRefires": 1,
+      "resolvedAt": "2026-11-01T19:24:21.329Z",
       "resolveReason": "job-green"
     },
     "cron-health-failed:Secret Scan (gitleaks)": {
