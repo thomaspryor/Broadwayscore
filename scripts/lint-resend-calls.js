@@ -56,6 +56,11 @@ const ALLOWLIST = new Set([
   // 2026-10-04: "yes new accounts should get a welcome email." Transactional,
   // one recipient per call, never the broadcasts API. Its failure alerts go
   // through routeAlert, not this direct call.
+  // Welcome email to each NEW Profitability Scorecard sign-up (BRO-6309). Owner
+  // sign-off 2026-11-01 ("Yes, option A, that's what I asked for"). One
+  // transactional send per address, claim-before-send once-only, off until
+  // MONEY_WELCOME_ENABLED=true, never a broadcast or audience send.
+  'scripts/send-money-welcome.js',
   'scripts/send-welcome-emails.js',
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
