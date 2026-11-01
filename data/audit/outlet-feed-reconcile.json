@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T16:18:22.410Z",
+  "generatedAt": "2026-11-01T16:47:44.084Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,35 +122,15 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
-    },
-    {
-      "outletId": "cote-notices",
-      "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "theartsdispatch",
-      "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
-    },
-    {
-      "outletId": "rolandcat",
-      "error": "HTTP 403 for https://rolandcat.substack.com/feed"
-    },
-    {
-      "outletId": "matineemouse",
-      "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 744,
+  "itemsScanned": 801,
   "matchedGaps": 10,
   "possibleGaps": 12,
   "gaps": [

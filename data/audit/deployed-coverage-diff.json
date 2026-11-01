@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T16:18:22.070Z",
+  "generatedAt": "2026-11-01T16:47:43.814Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -7,47 +7,24 @@
   "clean": 294,
   "defective": 4,
   "byType": {
-    "score-drift": 4,
-    "missing-from-prod": 1
+    "score-drift": 4
   },
   "shows": [
     {
-      "showId": "hamilton-2015",
-      "title": "Hamilton",
-      "openingDate": "2015-08-06",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: dctheatrescene"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 91.33 vs local 91.75 (Δ0.42)"
-        }
-      ],
-      "missingFromProd": [
-        "dctheatrescene"
-      ],
-      "localCount": 42,
-      "deployedCount": 42,
-      "firstDefectAt": "2026-11-01T16:18:16.899Z"
-    },
-    {
-      "showId": "hells-kitchen-tour-2025",
-      "title": "Hell's Kitchen",
-      "openingDate": "2025-10-10",
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "openingDate": "2026-10-27",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.13 vs local 82.05 (Δ0.08)"
+          "detail": "deployed cs 76.17 vs local 76.31 (Δ0.14)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 34,
-      "deployedCount": 34,
-      "firstDefectAt": "2026-11-01T16:18:16.899Z"
+      "localCount": 15,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-11-01T16:47:40.718Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -63,7 +40,7 @@
       "missingFromProd": [],
       "localCount": 34,
       "deployedCount": 34,
-      "firstDefectAt": "2026-11-01T16:18:16.899Z"
+      "firstDefectAt": "2026-11-01T16:47:40.718Z"
     },
     {
       "showId": "hadestown-2019",
@@ -77,9 +54,25 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 50,
+      "localCount": 51,
       "deployedCount": 51,
-      "firstDefectAt": "2026-11-01T16:18:16.899Z"
+      "firstDefectAt": "2026-11-01T16:47:40.718Z"
+    },
+    {
+      "showId": "hamilton-2015",
+      "title": "Hamilton",
+      "openingDate": "2015-08-06",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 91.33 vs local 91.75 (Δ0.42)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 42,
+      "deployedCount": 42,
+      "firstDefectAt": "2026-11-01T16:47:40.718Z"
     }
   ],
   "persistentDefective": 0,

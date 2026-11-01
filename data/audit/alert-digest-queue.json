@@ -499,20 +499,6 @@
     "queuedAt": "2026-11-01T14:46:33.494Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T16:17:59.092Z"
-  },
-  {
     "conditionKey": "land:land/morning-digest-cutover",
     "title": "Landing blocked: unit-tests-node red on land/morning-digest-cutover",
     "description": "land.yml did not land land/morning-digest-cutover: the unit-tests-node gate went red at 4e2f90ad41. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41317297367",
@@ -614,20 +600,6 @@
     "queuedAt": "2026-11-01T15:38:54.805Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:msblackforpresident-off-broadway-2026",
-    "title": "Review gap — \"Ms. Blakk for President\" missing 1 cited review(s)",
-    "description": "Ms. Blakk for President (msblackforpresident-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=msblackforpresident-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T15:28:44.401Z"
-  },
-  {
     "conditionKey": "land:land/bro-6769-gsc-opera",
     "title": "Landing blocked: unit-tests-node red on land/bro-6769-gsc-opera",
     "description": "land.yml did not land land/bro-6769-gsc-opera: the unit-tests-node gate went red at 3f6fc00fba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41318891205",
@@ -670,7 +642,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-01T16:17:40.991Z"
+    "queuedAt": "2026-11-01T16:44:26.813Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
@@ -718,35 +690,18 @@
     "queuedAt": "2026-11-01T15:58:14.545Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 13 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41325327177",
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
-    "model": "opus",
+    "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41325327177)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41325049808)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "13"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests, E2E Tests"
-      }
-    ],
-    "queuedAt": "2026-11-01T16:46:05.360Z"
+    "fields": [],
+    "queuedAt": "2026-11-01T16:44:39.462Z"
   },
   {
     "conditionKey": "land:land/bro-6773-money-monthly",

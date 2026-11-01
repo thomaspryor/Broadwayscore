@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T16:17:59.091Z",
+  "generatedAt": "2026-11-01T16:44:39.462Z",
   "windowDays": 45,
   "showsScanned": 212,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 166.42262666666667,
+      "fileAgeHours": 166.86738805555555,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 151.87853416666667,
+      "nonTerminalAgeHours": 152.32308166666667,
       "needsManualRecovery": false
     },
     {
@@ -40,30 +40,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 194.94231833333333,
+      "fileAgeHours": 195.38706555555555,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 180.99042555555556,
+      "nonTerminalAgeHours": 181.43497305555556,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "manual-cinema-the-4th-witch-off-broadway-2026",
-      "title": "Manual Cinema: The 4th Witch",
-      "openingDate": "2026-10-15",
-      "file": "exeunt-magazine--unknown.json",
-      "outletId": "exeunt-magazine",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": false,
-      "url": "https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/",
-      "recovery": null,
-      "recoveryCount": 3,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=manual-cinema-the-4th-witch-off-broadway-2026 --url=https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/ --outlet=exeunt-magazine   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-01T14:49:05.153Z",
-      "fileAgeHours": 1.4812230555555554,
-      "gapSeenAt": "2026-11-01T15:29:05.864Z",
-      "nonTerminalAgeHours": 0.814785,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []
