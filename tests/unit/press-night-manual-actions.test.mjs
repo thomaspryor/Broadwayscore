@@ -15,16 +15,16 @@ const SHOW = 'a-few-good-men-2026';
 const rec = () => ({ ...JSON.parse(fs.readFileSync(path.join(ROOT, 'tests/fixtures/press-night', `${SHOW}-2026-10-29.json`), 'utf8')), manualActions: [] });
 const S = M.SEP;
 const RAW = [
-  `${S}d2aad044aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|2026-10-30T04:45:00Z|github-actions[bot]|ingest-urls: a-few-good-men-2026 (1 URL)`,
+  `${S}d2aad044aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|2026-10-30T04:45:00Z|github-actions[bot]|noreply@github.com|ingest-urls: a-few-good-men-2026 (1 URL)`,
   `${SHOW}/thewrap--robert-hofler.json`,
   '',
-  `${S}bbbbbbbb11111111111111111111111111111111|2026-10-30T03:10:00Z|github-actions[bot]|data: scrape reviews`,
+  `${S}bbbbbbbb11111111111111111111111111111111|2026-10-30T03:10:00Z|github-actions[bot]|noreply@github.com|data: scrape reviews`,
   `${SHOW}/nytimes--jesse-green.json`,
   '',
-  `${S}cccccccc22222222222222222222222222222222|2026-10-30T02:30:00Z|Thomas Pryor|fix: clear wrongShow flag`,
+  `${S}cccccccc22222222222222222222222222222222|2026-10-30T02:30:00Z|Thomas Pryor|t@example.com|fix: clear wrongShow flag`,
   `${SHOW}/variety--frank-rizzo.json`,
   '',
-  `${S}dddddddd33333333333333333333333333333333|2026-10-20T02:30:00Z|Thomas Pryor|old unrelated edit`,
+  `${S}dddddddd33333333333333333333333333333333|2026-10-20T02:30:00Z|Thomas Pryor|t@example.com|old unrelated edit`,
   `${SHOW}/ew--dalton-ross.json`,
   '',
 ].join('\n');
@@ -57,7 +57,7 @@ test('bot scrape commits and commits outside the night window are not hand fixes
 });
 
 test('a commit touching only other shows, or a bad embargo, logs nothing', () => {
-  const other = `${S}eeeeeeee44444444444444444444444444444444|2026-10-30T04:45:00Z|Thomas Pryor|ingest-urls: x\nother-show-2026/thewrap--a.json\n`;
+  const other = `${S}eeeeeeee44444444444444444444444444444444|2026-10-30T04:45:00Z|Thomas Pryor|t@example.com|ingest-urls: x\nother-show-2026/thewrap--a.json\n`;
   assert.deepEqual(M.manualActionsFromCommits(M.parseGitLog(other), { showId: SHOW, embargoAt: rec().embargoAt }), []);
   assert.deepEqual(M.manualActionsFromCommits(M.parseGitLog(RAW), { showId: SHOW, embargoAt: 'nope' }), []);
 });
@@ -72,4 +72,15 @@ test('alreadyLogged: a human entry for the same outlet 3 min earlier suppresses 
   r.manualActions = [{ at: '2026-10-30T04:42:00.000Z', outletId: 'thewrap', outlet: 'TheWrap', kind: 'hand-fix', source: 'BRO-5955 comment' }];
   const found = M.manualActionsFromCommits(M.parseGitLog(RAW), { showId: SHOW, embargoAt: r.embargoAt });
   assert.deepEqual(found.filter((a) => !M.alreadyLogged(r, a)).map((a) => a.outletId), ['variety']);
+});
+
+test('"GitHub Action" CI author (action@github.com) is a bot; multi-outlet ingest logs every outlet', () => {
+  const ci = `${S}ffffffff55555555555555555555555555555555|2026-10-30T04:50:00Z|GitHub Action|action@github.com|data: LLM ensemble scoring\n${SHOW}/nytimes--jesse-green.json\n`;
+  const multi = `${S}99999999aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa|2026-10-30T04:55:00Z|Thomas Pryor|t@example.com|ingest-urls: 3 review(s) for ${SHOW}\n${SHOW}/a--x.json\n${SHOW}/b--y.json\n${SHOW}/c--z.json\n`;
+  const r = rec();
+  const found = M.manualActionsFromCommits(M.parseGitLog(ci + multi), { showId: SHOW, embargoAt: r.embargoAt });
+  assert.deepEqual(found.map((a) => a.outletId).sort(), ['a', 'b', 'c']);
+  let added = 0;
+  for (const a of found) if (!M.alreadyLogged(r, a) && lib.addManualAction(r, a).added) added++;
+  assert.equal(added, 3);
 });

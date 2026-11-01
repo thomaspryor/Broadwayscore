@@ -361,10 +361,12 @@ jobs:
         run: |
           F="data/audit/press-night/${SHOW_ID}-${NIGHT}.json"
           if [ ! -f "$F" ]; then echo "No record; nothing to log against."; exit 0; fi
-          SINCE=$(node -e "const r=require('./$F');console.log(new Date(Date.parse(r.embargoAt)-4*3600000).toISOString())")
+          # 28h back: the oldest commit a shallow fetch keeps has no parent and lists every file, so keep a margin
+          # of boundary commits outside the 4h window (the parser filters by the exact window).
+          SINCE=$(F="$F" node -e "const r=require('./'+process.env.F);console.log(new Date(Date.parse(r.embargoAt)-28*3600000).toISOString())")
           . scripts/lib/git-net-timeout.sh
           git_net 120 -C data/review-texts fetch --shallow-since="$SINCE" origin main
-          node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --auto-log-manual
+          node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --auto-log-manual --git-ref=FETCH_HEAD
 
       - name: Stamp census coverage at the end
         if: always()

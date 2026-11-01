@@ -15,12 +15,15 @@
 const HOUR = 3600000;
 const SEP = '\x1e'; // record separator between commits in the git log output
 // `git -C data/review-texts log --format=<LOG_FORMAT> --name-only -- <show>/`
-const LOG_FORMAT = `${SEP}%H|%aI|%an|%s`;
+const LOG_FORMAT = `${SEP}%H|%aI|%an|%ae|%s`;
 
 const toMs = (v) => { const t = Date.parse(v); return Number.isFinite(t) ? t : null; };
 
-function isBotAuthor(name) {
-  return /\[bot\]|^github-actions|^dependabot/i.test(String(name || ''));
+// CI pushes use user.name "GitHub Action" / email action@github.com (.github/actions/push-review-texts), so match
+// the email too: a name-only check treated every routine scoring/rebuild commit as a hand fix.
+function isBotAuthor(name, email) {
+  return /\[bot\]|^github[- ]actions?\b|^dependabot/i.test(String(name || ''))
+    || /^(action|noreply)@github\.com$|\[bot\]@users\.noreply\.github\.com$/i.test(String(email || '').trim());
 }
 
 /** Parse `git log --format=LOG_FORMAT --name-only` output into [{ sha, at, author, subject, files }]. */
@@ -29,9 +32,9 @@ function parseGitLog(raw) {
   for (const chunk of String(raw || '').split(SEP)) {
     if (!chunk.trim()) continue;
     const lines = chunk.split('\n');
-    const m = /^([0-9a-f]{7,40})\|([^|]+)\|([^|]*)\|(.*)$/.exec(lines[0]);
+    const m = /^([0-9a-f]{7,40})\|([^|]+)\|([^|]*)\|([^|]*)\|(.*)$/.exec(lines[0]);
     if (!m) continue;
-    out.push({ sha: m[1], at: m[2], author: m[3], subject: m[4].trim(), files: lines.slice(1).map((l) => l.trim()).filter(Boolean) });
+    out.push({ sha: m[1], at: m[2], author: m[3], email: m[4], subject: m[5].trim(), files: lines.slice(1).map((l) => l.trim()).filter(Boolean) });
   }
   return out;
 }
@@ -56,7 +59,7 @@ function manualActionsFromCommits(commits, { showId, embargoAt, nightStartH = 4,
     const at = toMs(c.at);
     if (at == null || at < lo || at > hi) continue;
     const ingest = /^ingest-urls:/i.test(c.subject || '');
-    if (!ingest && isBotAuthor(c.author)) continue;
+    if (!ingest && isBotAuthor(c.author, c.email)) continue;
     const touched = (c.files || []).filter((f) => f.startsWith(`${showId}/`));
     if (!touched.length) continue;
     const source = `${String(c.sha).slice(0, 8)} ${c.subject}`;
@@ -71,7 +74,7 @@ function manualActionsFromCommits(commits, { showId, embargoAt, nightStartH = 4,
 /** True when rec.manualActions already holds this fix (same outlet within 30 min, or the same short sha in a source), e.g. a human logged it first. */
 function alreadyLogged(rec, a) {
   const sha = String(a.source || '').split(' ')[0];
-  return (rec.manualActions || []).some((m) => (sha && String(m.source || '').includes(sha))
+  return (rec.manualActions || []).some((m) => (sha && String(m.source || '').includes(sha) && (m.outletId || null) === (a.outletId || null))
     || ((m.outletId || null) === (a.outletId || null) && Math.abs(Date.parse(m.at) - Date.parse(a.at)) <= 30 * 60000));
 }
 
