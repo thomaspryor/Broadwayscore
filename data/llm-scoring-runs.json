@@ -2377734,21 +2377734,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T00:45:43.465Z",
-    "completedAt": "2026-11-01T00:46:07.832Z",
-    "totalReviews": 6,
-    "processed": 5,
-    "skipped": 1,
+    "startedAt": "2026-11-01T00:45:58.337Z",
+    "completedAt": "2026-11-01T00:46:03.974Z",
+    "totalReviews": 4,
+    "processed": 1,
+    "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 31155,
-      "output": 1561,
-      "cacheRead": 19035,
+      "input": 6703,
+      "output": 227,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 77213
+      "total": 16072
     },
-    "costUsd": 0.1168657,
-    "runId": "41257721781",
+    "costUsd": 0.023884800000000005,
+    "runId": "41257618332",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2378126,16 +2378126,6 @@
           "flat": 1,
           "down": 0,
           "total": 4
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "8-track-regional-2021",
-        "ourDistribution": {
-          "up": 8,
-          "flat": 0,
-          "down": 0,
-          "total": 8
         },
         "hasDisagreement": false
       },
@@ -2389858,6 +2389848,16 @@
       },
       {
         "showId": "educating-rita-dundee-rep-regional-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "edward-albees-whos-afraid-of-virginia-woolf-regional-2022",
         "ourDistribution": {
           "up": 1,
           "flat": 0,
@@ -2419870,16 +2419870,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "this-is-only-a-test-regional-2022",
-        "ourDistribution": {
-          "up": 0,
-          "flat": 4,
-          "down": 1,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "this-is-our-youth-2014",
         "ourDistribution": {
           "up": 25,
@@ -2423253,8 +2423243,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T00:51:04.909Z",
-    "completedAt": "2026-11-01T00:51:04.911Z",
+    "startedAt": "2026-11-01T00:51:00.925Z",
+    "completedAt": "2026-11-01T00:51:00.926Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2423267,7 +2423257,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41257721781",
+    "runId": "41257618332",
     "source": "comparative-rescore",
     "errorDetails": []
   }
