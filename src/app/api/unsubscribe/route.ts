@@ -13,6 +13,27 @@ import { NextRequest, NextResponse } from 'next/server';
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
 
+// Profitability Scorecard sign-ups (BRO-6309) live in Supabase, not Formspree.
+// The SECURITY DEFINER RPC only stamps unsubscribed_at, so the anon key is enough.
+async function unsubscribeMoney(email: string): Promise<void> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) {
+    console.error('Money unsubscribe skipped: Supabase env vars missing');
+    return;
+  }
+  try {
+    const res = await fetch(`${url}/rest/v1/rpc/money_scorecard_unsubscribe`, {
+      method: 'POST',
+      headers: { apikey: key, Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_email: email }),
+    });
+    if (!res.ok) console.error(`Money unsubscribe RPC failed: ${res.status}`);
+  } catch (err) {
+    console.error('Money unsubscribe RPC errored:', (err as Error).message);
+  }
+}
+
 export async function POST(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const email = searchParams.get('email');
@@ -20,6 +41,11 @@ export async function POST(request: NextRequest) {
 
   if (!email) {
     return NextResponse.json({ error: 'Missing email' }, { status: 400 });
+  }
+
+  if (searchParams.get('list') === 'money') {
+    await unsubscribeMoney(email);
+    return new NextResponse(null, { status: 200 });
   }
 
   const formId = market === 'west-end' && FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID
@@ -60,6 +86,9 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const email = searchParams.get('email') || '';
   const market = searchParams.get('market') || '';
+  if (email && searchParams.get('list') === 'money') {
+    await unsubscribeMoney(email);
+  }
   // Redirect to the client-side unsubscribe page
   const redirectUrl = new URL('/unsubscribe', request.url);
   if (email) redirectUrl.searchParams.set('email', email);
