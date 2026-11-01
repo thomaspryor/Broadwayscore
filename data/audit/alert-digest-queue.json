@@ -353,17 +353,34 @@
     "queuedAt": "2026-11-01T13:20:35.836Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
+    "conditionKey": "land:land/bro-6737-video-captions",
+    "title": "Landing blocked: rebase red on land/bro-6737-video-captions",
+    "description": "land.yml did not land land/bro-6737-video-captions: the rebase gate went red at cd666723d4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41312980292",
+    "severity": "error",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T13:48:07.874Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6737-video-captions"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "cd666723d417ff5535f015f0c6fd4996678624bf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41312980292"
+      }
+    ],
+    "queuedAt": "2026-11-01T13:50:34.524Z"
   }
 ]
