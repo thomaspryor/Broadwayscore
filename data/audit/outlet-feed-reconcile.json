@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T14:13:13.436Z",
+  "generatedAt": "2026-11-01T14:40:46.856Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -22,6 +22,11 @@
       "id": "medea-off-broadway-2026",
       "title": "Medea",
       "openingDate": "2026-10-30"
+    },
+    {
+      "id": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "openingDate": "2026-11-01"
     },
     {
       "id": "msblackforpresident-off-broadway-2026",
@@ -117,10 +122,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -131,10 +132,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -149,8 +146,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 766,
-  "matchedGaps": 5,
+  "itemsScanned": 785,
+  "matchedGaps": 8,
   "possibleGaps": 12,
   "gaps": [
     {
@@ -196,6 +193,33 @@
       "outletId": "theatre-reviews-limited",
       "url": "https://www.theatrereviews.com/off-broadway-review-the-heart-at-roundabout-theatre-companys-laura-pels-theatre-in-the-harold-and-miriam-steinberg-center-for-theatre-through-sunday-december-13-2026/",
       "headline": "Off-Broadway Review: &#8220;The Heart&#8221; at Roundabout Theatre Company&#8217;s Laura Pels Theatre in the Harold and Miriam Steinberg Center for Theatre (Through Sunday, December 13, 2026)",
+      "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
+      "headline": "TOSCA",
+      "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "theatre-weekly",
+      "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+      "headline": "Review: Tosca at London Coliseum",
+      "publishDate": "2026-10-30"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
+      "headline": "ENO: Tosca &#8211; London Coliseum",
       "publishDate": "2026-10-31"
     },
     {
