@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T03:16:27.823Z",
+  "timestamp": "2026-11-01T03:35:58.991Z",
   "stats": {
-    "totalReviews": 77388,
-    "alreadyFlagged": 21743,
+    "totalReviews": 77455,
+    "alreadyFlagged": 21747,
     "dateGuardCatches": 238,
-    "directorMismatch": 3283,
+    "directorMismatch": 3290,
     "tvFilmSignals": 2195,
-    "londonSignals": 3525,
+    "londonSignals": 3526,
     "offBroadwaySignals": 726,
     "yearMismatch": 327,
-    "noPublishDate": 8893
+    "noPublishDate": 8914
   },
   "findings": [
     {
@@ -11301,7 +11301,7 @@
     {
       "showId": "cats-the-jellicle-ball-2026",
       "file": "people--dave-quinn.json",
-      "score": 93,
+      "score": 96,
       "publishDate": null,
       "url": "https://people.com/cats-the-jellicle-ball-broadway-review-11944889",
       "findings": [
@@ -17994,7 +17994,7 @@
     {
       "showId": "dog-day-afternoon-2026",
       "file": "mashable--kristy-puchko.json",
-      "score": 47,
+      "score": 50,
       "publishDate": null,
       "url": "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal",
       "findings": [
@@ -32785,6 +32785,84 @@
       "file": "whatsonstage--ghenet-pinderhughes-randall.json",
       "publishDate": "2026-10-08",
       "url": "https://www.westendtheatre.com/371151/news/reviews/into-the-woods-reviews/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "broadwayworld--tina-st-angelo-wetzel.json",
+      "publishDate": "2023-02-12",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-INTO-THE-WOODS-at-Paramount-Theatre-20230212",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "chicago-sun-times--catey-sullivan.json",
+      "publishDate": "2023-02-14",
+      "url": "https://chicago.suntimes.com/2023/2/14/23599819/into-the-woods-review-a-magical-journey-worth-taking-at-paramount-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2023-02-12",
+      "url": "https://www.chicagotheatrereview.com/2023/02/once-upon-a-time-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "chicagoonstage--karen-topham.json",
+      "publishDate": "2023-02-20",
+      "url": "https://www.chicagoonstage.com/paramount-into-the-woods/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "new-city-stage--christine-trevino.json",
+      "publishDate": "2023-02-14",
+      "url": "https://www.newcitystage.com/2023/02/14/life-is-a-forest-a-review-of-paramount-theatres-into-the-woods/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-regional-2023",
+      "file": "wttw--hedy-weiss.json",
+      "publishDate": null,
+      "url": "https://news.wttw.com/2023/02/13/paramount-theater-s-production-woods-grand-scale-homage-stephen-sondheim",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -73142,6 +73220,19 @@
       ]
     },
     {
+      "showId": "the-year-of-magical-thinking-regional-2022",
+      "file": "chicago-theatre-review--colin-douglas.json",
+      "publishDate": "2022-05-03",
+      "url": "https://www.chicagotheatrereview.com/2022/05/grieving-through-observation-and-analysis/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david hare\" from the-year-of-magical-thinking-2007"
+        }
+      ]
+    },
+    {
       "showId": "the-years-west-end-2025",
       "file": "guardian--arifa-akbar.json",
       "score": null,
@@ -73410,7 +73501,7 @@
     {
       "showId": "titanique-2026",
       "file": "theatermania--zachary-stewart.json",
-      "score": 85,
+      "score": 91,
       "publishDate": "April 12, 2026",
       "url": "https://www.theatermania.com/news/review-titanique-broadways-fabulous-musical-shipwreck-now-with-more-celine_1832441/",
       "findings": [
@@ -113023,6 +113114,7 @@
     {
       "showId": "princess-ivona-regional-2023",
       "file": "around-the-town-chicago--jacob-davis.json",
+      "score": 89,
       "publishDate": null,
       "url": "http://www.aroundthetownchicago.com/theatre-reviews/princess-ivona-reviewed-by-jacob-davis/",
       "findings": [
@@ -116162,6 +116254,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "some-woman-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "publishDate": "2026-10-20",
+      "url": "http://partially-obstructed-view.blogspot.com/2026/10/theatre-review-some-woman.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
