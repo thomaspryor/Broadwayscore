@@ -13,6 +13,8 @@ const { planMultiShowFanout, applyMultiShowFanoutToFile, heldSiblingNeedsTrim } 
 const { findSectionHeadings, extractShowSection, isolateMultiShowSection } = require('./multi-show-section-extract.js');
 
 const SHOWS = [
+  { id: 'marjorie-prime-x', title: 'Marjorie Prime', category: 'broadway', openingDate: '2025-12-08' },
+  { id: 'anna-christie-x', title: 'Anna Christie', category: 'off-broadway', openingDate: '2025-12-11' },
   { id: 'bughouse-x', title: 'Bughouse', category: 'off-broadway', openingDate: '2026-03-05' },
   { id: 'silver-manhattan-x', title: 'Silver Manhattan', category: 'off-broadway', openingDate: '2026-03-08' },
   { id: 'burnout-paradise-x', title: 'Burnout Paradise', category: 'off-broadway', openingDate: '2026-03-10' },
@@ -130,4 +132,21 @@ test('bystander newline-separated caption/label headings are found and isolated'
   const iso = isolateMultiShowSection('https://www.interestedbystander.com/2025/12/x.html', BYSTANDER, 'Oedipus');
   assert.equal(iso.action, 'isolated');
   assert.doesNotMatch(iso.text, /Laowang/);
+});
+
+// New Yorker shape: no lede naming both, no listing; two full reviews back to back.
+const NYER = [
+  `Appropriately enough, “Marjorie Prime” has been here before. ${filler('prime', 4)} “Marjorie Prime” keeps its quiet. ${filler('prime', 4)} Here “Marjorie Prime” lands softly. ${filler('prime', 3)} At the end, “Marjorie Prime” fades.`,
+  `If during “Anna Christie,” the old play, O’Neill wanted fog, he wrote fog. ${filler('fog', 5)} In this revival Williams plays Anna Christie. ${filler('fog', 4)} The staging of “Anna Christie” never settles. ${filler('fog', 3)}`,
+].join('\n\n');
+
+test('side-by-side reviews with no shared lede split (New Yorker Marjorie Prime / Anna Christie)', () => {
+  for (const own of ['marjorie-prime-x', 'anna-christie-x']) {
+    const p = planMultiShowFanout(base({ showId: own, fullText: NYER, publishDate: '2025-12-14' }), SHOWS, { joint: true });
+    assert.ok(p, `plan from ${own}`);
+    assert.deepEqual(idsOf(p), ['anna-christie-x', 'marjorie-prime-x']);
+  }
+  // One review that only compares to the other show once or twice stays whole.
+  const compare = `Appropriately enough, “Marjorie Prime” has been here before. ${filler('prime', 14)} Unlike “Anna Christie,” it keeps quiet. ${filler('prime', 4)}`;
+  assert.equal(planMultiShowFanout(base({ showId: 'marjorie-prime-x', fullText: compare, publishDate: '2025-12-14' }), SHOWS, { joint: true }), null);
 });

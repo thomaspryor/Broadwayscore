@@ -168,7 +168,7 @@ function main() {
           console.log(`  ✗ child exists, skip: ${c.showId}/${file}`);
         } else {
           stats.childrenCreated++;
-          const verb = c.action === 'fill' ? 'filled' : c.action === 'held' ? 'held (same article already filed there)' : 'created';
+          const verb = c.action === 'fill' ? 'filled' : c.action === 'held' ? 'held (same article already filed there)' : c.action === 'held-trim' ? 'held, whole article trimmed to its section' : 'created';
           console.log(`  ✓ child ${verb}: ${c.showId}/${file} (${c.chars} chars)`);
         }
       }

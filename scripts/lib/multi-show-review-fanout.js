@@ -636,7 +636,14 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     if (tail.length) return [];
     const order = [];
     for (const r of head) if (!order.includes(r.id)) order.push(r.id);
-    if (order.join() !== bodyIdx.map((i) => runs[i].id).join()) return [];
+    // BRO-6736 (New Yorker, "Marjorie Prime" then "Anna Christie"): a piece whose
+    // lede names neither show's partner and has no listing is still two reviews
+    // when every stretch names its show at least three times and holds a third
+    // of the piece. The first stretch opens the article, so there is no lede
+    // to compare against.
+    const sideBySide = head.length === 0 && bodyIdx.length >= 2
+      && bodyIdx.every((i) => runs[i].count >= 3 && runs[i].extent / text.length >= SIDE_BY_SIDE_MIN_SHARE);
+    if (order.join() !== bodyIdx.map((i) => runs[i].id).join() && !sideBySide) return [];
     // The last stretch runs to the end of the piece with nothing after it to
     // bound it, so one passing mention there is a closing aside, not a review.
     if (runs[bodyIdx[bodyIdx.length - 1]].count < 2) return [];
@@ -816,6 +823,7 @@ const LISTING_HEAD_RE = /([A-Z][\w'’:&,\- ]{1,80}?)\s\.\s+(?:Through|Open run|
 // only ones used.
 const RATING_HEAD_RE = /([A-Z][\w'’:&,!\- ]{1,80}?)\s+\*{1,5}(?:½)?\/\*{5}\s*\([\w\- ]+stars? out of five\)/g;
 const HEADER_REF_WINDOW_DAYS = 300;
+const SIDE_BY_SIDE_MIN_SHARE = 0.3;
 
 /**
  * Strategy 4 (header): one critic reviews several shows under repeated
@@ -1200,10 +1208,13 @@ function urlKey(u) {
 function heldSiblingNeedsTrim(existing, sec) {
   if (!existing || existing.unreadable || typeof existing.fullText !== 'string') return false;
   if (existing.multiShowSplitProcessed || existing.multiShowUnsplitAt) return false;
-  if (existing._locked === true || isHumanJudged(existing) || existing.duplicateOf || existing.isNonReview) return false;
+  // Only a hand score or lock stops a TEXT trim; a manual production clear is
+  // about the production, not the text, and survives rewriteParent.
+  if (existing._locked === true || existing.humanReviewScore != null || existing.manualContentTier
+    || existing.duplicateOf || existing.isNonReview === true) return false;
   if (existing.fullText.length < sec.sectionText.length + 200) return false;
-  const key = (t) => normalizeTitle(String(t).slice(0, 200)).slice(0, 80);
-  return normalizeTitle(existing.fullText).includes(key(sec.sectionText));
+  const squash = (t) => String(t).replace(/\s+/g, ' ').trim();
+  return squash(existing.fullText).includes(squash(sec.sectionText).slice(0, 60));
 }
 
 function childWriteDecision(existing, parentData) {
@@ -1227,7 +1238,7 @@ function childWriteDecision(existing, parentData) {
 // already held. When every sibling slot holds a different review, apply
 // leaves the article whole, so a dry run must not count it as splittable.
 function fanoutMovesText(fan) {
-  return !!(fan && fan.applied && (fan.trimOnly || fan.children.some((c) => c.action === 'create' || c.action === 'fill' || c.action === 'held')));
+  return !!(fan && fan.applied && (fan.trimOnly || fan.children.some((c) => c.action === 'create' || c.action === 'fill' || c.action === 'held' || c.action === 'held-trim')));
 }
 
 /**
