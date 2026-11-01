@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-11-01T21:01:21.525Z",
-  "processed": 1042,
-  "failed": 551,
+  "updatedAt": "2026-11-01T21:06:47.332Z",
+  "processed": 1045,
+  "failed": 554,
   "successRate": "65.4%",
   "tierBreakdown": {
     "playwright": 667,
@@ -9,12 +9,12 @@
     "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 7,
-    "scrapingbee": 31,
+    "scrapingbee": 32,
     "brightdata": 65,
-    "archiveToday": 305,
-    "archive": 293
+    "archiveToday": 306,
+    "archive": 295
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-01T04:08:37.792Z",
@@ -90,6 +90,28 @@
     },
     {
       "t": "2026-11-01T09:34:44.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T20:58:40.154Z",
+      "event": "bb-session",
+      "session": "6a6c062a",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-01T20:58:40.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-01T21:00:30.232Z",
+      "event": "bb-session",
+      "session": "06351821",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-01T21:00:30.687Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }

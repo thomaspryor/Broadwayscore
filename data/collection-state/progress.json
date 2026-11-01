@@ -1041,7 +1041,10 @@
     "on-the-twentieth-century-1978/culturesauce--unknown.json",
     "a-few-good-men-2026/ground--unknown.json",
     "tosca-off-broadway-2026/guardian--flora-willson.json",
-    "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json"
   ],
   "failed": [
     "rent-west-end-2026/financialtimes--sarah-hemming.json",
@@ -1594,7 +1597,10 @@
     "precarious-regional-2026/morris-theatre-dc--unknown.json",
     "pippin-regional-2026/morris-theatre-dc--unknown.json",
     "the-motion-regional-2026/morris-theatre-dc--unknown.json",
-    "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026/morris-theatre-dc--unknown.json"
+    "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026/morris-theatre-dc--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2265,7 +2271,7 @@
       "the-mystery-of-edwin-drood-1985/time--unknown.json",
       "on-the-twentieth-century-1978/culturesauce--unknown.json",
       "tosca-off-broadway-2026/guardian--flora-willson.json",
-      "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-glass-menagerie-2017/chicagotribune--chris-jones.json"
@@ -2314,7 +2320,8 @@
       "sweeney-todd-west-end-2012/daily-mail--quentin-letts.json",
       "illinoise-2024/rollingstone--unknown.json",
       "the-glass-menagerie-2017/cititour--brian-scott-lipton.json",
-      "the-glass-menagerie-2017/broadwayworld--michael-dale.json"
+      "the-glass-menagerie-2017/broadwayworld--michael-dale.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json"
     ],
     "brightdata": [
       "animal-farm-leeds-regional-2025/deadline--greg-evans.json",
@@ -2688,7 +2695,8 @@
       "data/review-texts/precarious-regional-2026/morris-theatre-dc--unknown.json",
       "data/review-texts/pippin-regional-2026/morris-theatre-dc--unknown.json",
       "data/review-texts/the-motion-regional-2026/morris-theatre-dc--unknown.json",
-      "data/review-texts/the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026/morris-theatre-dc--unknown.json"
+      "data/review-texts/the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026/morris-theatre-dc--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
     ],
     "archive": [
       "avenue-q-west-end-2026/telegraph--marianka-swain.json",
@@ -2983,11 +2991,13 @@
       "misery-2015/american-theater-web--andy-propst.json",
       "fela-west-end-2010/metro-uk--claire-allfree.json",
       "fela-west-end-2010/whatsonstage--michael-coveney.json",
-      "the-merchant-of-venice-2010/newsday--linda-winer.json"
+      "the-merchant-of-venice-2010/newsday--linda-winer.json",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-11-01T03:36:50.252Z",
-  "lastProcessed": "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
   "log": [
     {
       "t": "2026-11-01T04:08:37.792Z",
@@ -3063,6 +3073,28 @@
     },
     {
       "t": "2026-11-01T09:34:44.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T20:58:40.154Z",
+      "event": "bb-session",
+      "session": "6a6c062a",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-01T20:58:40.708Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-01T21:00:30.232Z",
+      "event": "bb-session",
+      "session": "06351821",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-01T21:00:30.687Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     }
