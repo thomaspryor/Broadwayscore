@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6769",
   "planId": "96b08ac6-e7ab-45c2-bde4-c6219a16dc7a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T16:37:25.588Z",
   "submitter": {
     "name": null,
@@ -105,5 +105,44 @@
         "description": "Met Live in HD cinema date 2027-06-05, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T16:49:49.010Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: liveInHd updated for samson-et-dalila-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: liveInHd updated for la-fanciulla-del-west-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: liveInHd updated for silent-night-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: liveInHd updated for manon-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: liveInHd updated for otello-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: liveInHd updated for tosca-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: liveInHd updated for parsifal-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
