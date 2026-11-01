@@ -36,7 +36,12 @@ const ENTRY_RE = /"([a-z0-9-]+\.yml)\|(\d+)\|([^"|]+)(?:\|(\d+)-(\d+))?"/g;
 const REDISPATCHED_INPUT_RE = /^\s+redispatched\s*:\s*$/m;
 const AFTER_HOURS_RE = /^\s*#\s*redispatch-after-hours:\s*(\d+(?:\.\d+)?)\b/m;
 
-const DEFAULT_MAX_PER_SWEEP = 3;
+// Sizing rule (BRO-6751): must exceed the number of opted-in workflows with a
+// band <= 1h. Those are due every 2nd-3rd sweep, so with the cap at or below
+// their count, the 1h-band gap audit lost its slot ("over per-sweep cap 3",
+// 2026-11-01 11:28Z) and waited another bucket. re-dispatcher.test.mjs checks
+// the live registry against this rule.
+const DEFAULT_MAX_PER_SWEEP = 5;
 // The sweep runs on every main Test Suite completion (~100/day); at most one
 // sweep per fixed window of this many minutes.
 const DEFAULT_SWEEP_BUCKET_MIN = 30;
@@ -164,6 +169,7 @@ module.exports = {
   SCHEDULE_DEAD_DAYS,
   decideRedispatches,
   shouldThrottle,
+  DEFAULT_MAX_PER_SWEEP,
   DEFAULT_MAX_PER_SWEEP,
   DEFAULT_SWEEP_BUCKET_MIN,
 };

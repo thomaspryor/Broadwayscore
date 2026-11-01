@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parseCriticalCronEntries, decideRedispatches, shouldThrottle, acceptsRedispatch, redispatchBandHours, isScheduleDead } = require('./re-dispatcher.js');
+const { parseCriticalCronEntries, decideRedispatches, shouldThrottle, acceptsRedispatch, redispatchBandHours, isScheduleDead, DEFAULT_MAX_PER_SWEEP } = require('./re-dispatcher.js');
 
 const ROOT = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
 const NOW = Date.parse('2026-10-12T10:00:00Z');
@@ -147,6 +147,18 @@ test('caps a burst at maxPerSweep, most overdue relative to its band first', () 
   const { dispatch, skipped } = decideRedispatches({ entries, lastRuns, workflowYaml, now: NOW, maxPerSweep: 2 });
   assert.deepEqual(dispatch.map((d) => d.workflow), ['b.yml', 'd.yml']);
   assert.deepEqual(skipped.map((s) => s.workflow).sort(), ['a.yml', 'c.yml']);
+});
+
+test('BRO-6751: the per-sweep cap exceeds the live count of opted-in bands <= 1h', () => {
+  const dir = path.join(ROOT, '.github/workflows');
+  const entries = parseCriticalCronEntries(fs.readFileSync(path.join(dir, 'check-cron-health.yml'), 'utf8'));
+  const tight = entries.filter((e) => {
+    const text = fs.readFileSync(path.join(dir, e.workflow), 'utf8');
+    return acceptsRedispatch(text) && redispatchBandHours(text, e.maxHours) <= 1;
+  }).map((e) => e.workflow);
+  assert.ok(tight.includes('audit-aggregator-gap.yml'), `expected the gap audit among tight bands, got ${tight}`);
+  assert.ok(DEFAULT_MAX_PER_SWEEP > tight.length,
+    `per-sweep cap ${DEFAULT_MAX_PER_SWEEP} must exceed the ${tight.length} opted-in workflows with a band <= 1h (${tight.join(', ')}); raise it in re-dispatcher.js`);
 });
 
 test('throttle: one sweep per fixed 30-min window, never starved by a stream of throttled runs', () => {
