@@ -106,7 +106,7 @@ function _shingles(words, n) {
  * @param {string} incomingText
  * @returns {boolean}
  */
-function isSameArticleBodyUpgrade(existing, incomingText) {
+function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   if (!existing || typeof incomingText !== 'string') return false;
   const before = typeof existing.fullText === 'string' ? existing.fullText : '';
   if (!before) return false; // blank bodies already fill through the merge
@@ -114,8 +114,16 @@ function isSameArticleBodyUpgrade(existing, incomingText) {
   // A split parent holds one section of the article; a re-ingest bringing
   // the whole article back lets the fan-out re-plan (re-trim, or undo a
   // wrong split). Only the lede test below applies to it.
+  // opts.multiShowWhole (BRO-6744): the caller found the incoming text is a
+  // multi-show article the fan-out can split, so a good stored body that is
+  // one show's half of it (a Vulture double cut off before the second
+  // review) is treated like a split parent.
+  // A whole-article take of a good stored body must pass BOTH tests below:
+  // the stored opening AND most of the stored body appear in the incoming
+  // text, so a later roundup that quotes the lede never replaces it.
+  const multiShowWhole = existing.multiShowSplitParent !== true && opts.multiShowWhole === true;
   const splitParent = existing.multiShowSplitParent === true;
-  if (!splitParent && !isPreExistingContentBad({ data: existing })) return false;
+  if (!splitParent && !multiShowWhole && !isPreExistingContentBad({ data: existing })) return false;
   const next = incomingText.trim();
   if (next.length < before.length + 200 || next.length < before.length * 1.25) return false;
   const oldWords = _words(before);
@@ -124,15 +132,17 @@ function isSameArticleBodyUpgrade(existing, incomingText) {
   // wall) found in the incoming text is the same article.
   if (oldWords.length >= 15) {
     const lede = oldWords.slice(0, 15).join(' ');
-    if ((' ' + newWords.join(' ') + ' ').includes(' ' + lede + ' ')) return true;
-  }
+    const ledeFound = (' ' + newWords.join(' ') + ' ').includes(' ' + lede + ' ');
+    if (ledeFound && !multiShowWhole) return true;
+    if (!ledeFound && multiShowWhole) return false;
+  } else if (multiShowWhole) return false;
   if (splitParent) return false;
   const oldShingles = _shingles(oldWords, 5);
   if (oldShingles.size < 8) return false;
   const newShingles = _shingles(newWords, 5);
   let shared = 0;
   for (const s of oldShingles) if (newShingles.has(s)) shared++;
-  return shared / oldShingles.size >= 0.5;
+  return shared / oldShingles.size >= (multiShowWhole ? 0.8 : 0.5);
 }
 
 module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, isPreExistingContentBad, isSameArticleBodyUpgrade };

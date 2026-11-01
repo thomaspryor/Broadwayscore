@@ -781,6 +781,52 @@ test('listing block + lede before the next title move into that section', () => 
   assert.ok(tenor.sectionText.startsWith('Music Box Theatre,'), tenor.sectionText.slice(0, 80));
 });
 
+test('a good stored half of a two-show article takes the whole article on ingest, and the fan-out files the other half (BRO-6744)', () => {
+  // Real catalogue ids/titles (the writer reads shows.json); invented prose.
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const { _resetUrlOwnershipIndex } = require('./url-ownership.js');
+  const NSS = 'night-side-songs-off-broadway-2026';
+  const BF = 'bigfoot-off-broadway-2026';
+  const url = 'https://www.vulture.com/article/example-night-side-songs-bigfoot.html';
+  const nss = `Before the performance begins at Night Side Songs, the actors wander the aisles. ${filler('aisle', 6)} The patience of Night Side Songs never flags. ${filler('lantern', 6)} By the curtain call, Night Side Songs has earned every minute.`;
+  const whole = [nss,
+    `Whereas patience is in abundance at Night Side Songs, it is in short supply at Bigfoot! ${filler('trapeze', 7)} On TV, Bigfoot! would fit right in.`,
+    'Night Side Songs is at Lincoln Center Theater through March 29. Bigfoot! is at New York City Center through April 26.'].join(' ');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6744-whole-'));
+  fs.mkdirSync(path.join(dir, NSS));
+  const file = path.join(dir, NSS, 'vulture--jackson-mchenry.json');
+  const seed = { showId: NSS, outletId: 'vulture', outlet: 'Vulture', criticName: 'Jackson McHenry', url, publishDate: '2026-03-02', contentTier: 'complete', fullText: nss };
+  fs.writeFileSync(file, JSON.stringify(seed, null, 2));
+  const input = { outletId: 'vulture', outlet: 'Vulture', criticName: 'Jackson McHenry', url, source: 'submit-review-form', replaceBadBody: true };
+  _resetUrlOwnershipIndex();
+  createOrMergeReviewFile(NSS, { ...input, fields: { fullText: whole } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, whole, 'whole article taken');
+  _resetUrlOwnershipIndex();
+  const fan = applyMultiShowFanoutToFile(file, { reviewTextsDir: dir });
+  assert.ok(fan.applied, JSON.stringify(fan));
+  const child = JSON.parse(fs.readFileSync(path.join(dir, BF, 'vulture--jackson-mchenry.json'), 'utf8'));
+  assert.match(child.fullText, /^Whereas patience is in abundance/);
+  assert.doesNotMatch(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, /short supply at Bigfoot/);
+  // Control: a longer single-show copy (nothing to fan out) never replaces a good body.
+  fs.writeFileSync(file, JSON.stringify(seed, null, 2));
+  _resetUrlOwnershipIndex();
+  createOrMergeReviewFile(NSS, { ...input, fields: { fullText: `${nss} ${filler('epilogue', 12)}` } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, nss);
+  // Control: a page that quotes only the stored lede (a later roundup) never replaces it.
+  const quoted = `${nss.split('. ')[0]}. ${filler('roundup', 10)} Whereas patience is in abundance at Night Side Songs, it is in short supply at Bigfoot! ${filler('trapeze', 7)} On TV, Bigfoot! would fit right in. Night Side Songs is at Lincoln Center Theater through March 29. Bigfoot! is at New York City Center through April 26.`;
+  _resetUrlOwnershipIndex();
+  createOrMergeReviewFile(NSS, { ...input, fields: { fullText: quoted } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, nss, 'lede-only match kept the stored body');
+  // Control: the other show's slot already holds a different review, so the
+  // fan-out could not trim this file: the stored half stays.
+  fs.writeFileSync(path.join(dir, BF, 'vulture--jackson-mchenry.json'), JSON.stringify({ showId: BF, outletId: 'vulture', criticName: 'Jackson McHenry', url: 'https://www.vulture.com/article/another-bigfoot-review.html', contentTier: 'complete', fullText: filler('other', 10) }, null, 2));
+  _resetUrlOwnershipIndex();
+  createOrMergeReviewFile(NSS, { ...input, fields: { fullText: whole } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, nss, 'occupied sibling slot kept the stored body');
+  _resetUrlOwnershipIndex();
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
 // ---- BRO-6744: "Title (c) Photographer / Kind: Title At Venue" columns --------
 const { rewriteParent, headerSections } = require('./multi-show-review-fanout.js');
 const HSHOWS = [

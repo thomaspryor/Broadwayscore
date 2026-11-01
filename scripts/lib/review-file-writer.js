@@ -1921,8 +1921,45 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     }
     return cand === 'complete' || tierRank({ contentTier: cand }) > tierRank(existing);
   };
+  // BRO-6744: a stored body that is one show's half of a multi-show article
+  // (Vulture's Night Side Songs / Bigfoot! double, stored cut off before the
+  // Bigfoot! review) passes every "bad body" test, so a re-ingest of the
+  // whole article was never taken and the other show never got its review.
+  // Take the whole article when the fan-out can split it: the fan-out that
+  // runs after this write trims the file back to its own section and files
+  // the rest under the other show.
+  const _multiShowWhole = () => {
+    if (existing.multiShowSplitParent === true) return false;
+    try {
+      const fan = require('./multi-show-review-fanout');
+      const { loadShows } = require('./multi-show-splitter');
+      const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
+      if (!r || r.contentTier !== 'complete') return false;
+      const plan = fan.planMultiShowFanout({ ...existing, fullText: fields.fullText }, loadShows(), { ownShowId: showId });
+      if (!plan) return false;
+      // The fan-out only trims this file when some other section lands
+      // somewhere; when every sibling slot is blocked or holds a different
+      // review it leaves the article whole, and this file would then carry
+      // the other show's review too. Take the whole article only when a
+      // sibling slot will take its section.
+      const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
+      const root = path.dirname(path.dirname(filepath));
+      const url = existing.url || fields.url;
+      return plan.otherSections.some((sec) => {
+        const childDir = path.join(root, sec.showId);
+        if (url && findBlockedEntry(loadBlocklist(childDir), url)) return false;
+        const childPath = path.join(childDir, path.basename(filepath));
+        let child = null;
+        if (fs.existsSync(childPath)) {
+          try { child = JSON.parse(fs.readFileSync(childPath, 'utf8')); } catch { return false; }
+        }
+        return fan.childWriteDecision(child, { ...existing, url }) !== 'skip';
+      });
+    } catch { return false; }
+  };
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
-      && isSameArticleBodyUpgrade(existing, fields.fullText)
+      && (isSameArticleBodyUpgrade(existing, fields.fullText)
+        || (_multiShowWhole() && isSameArticleBodyUpgrade(existing, fields.fullText, { multiShowWhole: true })))
       && _bodyUpgradeTierOk()) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
     existing.fullText = fields.fullText;

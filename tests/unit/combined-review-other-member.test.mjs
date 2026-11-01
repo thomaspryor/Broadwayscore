@@ -125,3 +125,19 @@ test('opaque url: a uuid whose groups are letters-only hex still counts as opaqu
   const d = { ...ftTempest(), url: 'https://www.ft.com/content/deadbeef-cafe-4bff-a896-6a9c4d1bf3d3' };
   assert.equal(isCombinedReviewOfOtherMemberOnly(d, MIKE, { titleOf }), true);
 });
+
+test('an "Encores!" series prefix is not part of the name critics use (BRO-6744, Wild Party)', () => {
+  // shows.json files City Center's series as "Encores! The Wild Party"; a
+  // joint column whose url slug names only the co-member calls it "The Wild
+  // Party". That is this show named in the text, so the row stays live.
+  const WILD = { id: 'encores-the-wild-party-off-broadway-2026', title: 'Encores! The Wild Party', category: 'off-broadway', openingDate: '2026-10-01' };
+  const d = {
+    showId: WILD.id, outletId: 'blog', outlet: 'Blog', criticName: 'Critic',
+    url: 'https://blog.example.com/2026/10/some-other-show-review/',
+    fullText: 'Two nights out this week. Some Other Show is a quiet chamber piece. Over at City Center, The Wild Party roars back with a big band and a bigger cast.',
+    isCombinedReview: true, combinedWith: ['some-other-show-off-broadway-2026'],
+  };
+  assert.equal(isCombinedReviewOfOtherMemberOnly(d, WILD), false);
+  // Control: the same column with no mention of this show is still excluded.
+  assert.equal(isCombinedReviewOfOtherMemberOnly({ ...d, fullText: 'Two nights out this week. Some Other Show is a quiet chamber piece with a fine cast.' }, WILD), true);
+});

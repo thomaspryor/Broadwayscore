@@ -153,6 +153,45 @@ function isParenthetical(text, at) {
   return /\(\s*$/.test(text.slice(Math.max(0, at - 3), at));
 }
 
+// What follows a show's title in a capsule's run-listing header: "Through
+// June 28 at the Hudson Theatre", "Open run at Second Stage's Hayes Theater".
+const PHOTO_CREDIT_AFTER_RE = /^[\s.!?”"’,]{0,4}(?:Photo(?:graph)?s?|Credit)\s*(?::|by\b)/i;
+// Case-sensitive, with a separator after the title, and a date or a venue
+// ("at the ...") right after the keyword: prose such as "Two Girls, through
+// its sheer wit, ..." or "Two Girls closes in January" is not a header.
+const LISTING_HEADER_AFTER_RE = /^\s*[.:–—-]\s*(?:(?:Now )?Through|Until|Open(?:-ended)? run|In previews|Extended through|Closes|Closing)\b[^.,\n]{0,12}?(?:\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d|\bat\s+(?:the\s+)?\p{Lu})/u;
+// A capsule header sits at a unit start: the text start, a new line, a
+// sentence end, or the close of a WordPress photo caption.
+const UNIT_END_BEFORE_RE = /(?:^|\n|[.!?][”"’]?|\[\/caption\])\s*$/;
+
+/**
+ * Offset of the first run-listing header naming this show ("Becky Shaw .
+ * Open run at ...") at a unit start, or -1. Pure.
+ */
+function listingHeaderAt(m, text) {
+  m.any.lastIndex = 0;
+  let x;
+  while ((x = m.any.exec(text))) {
+    const end = x.index + x[0].length;
+    if (!LISTING_HEADER_AFTER_RE.test(text.slice(end, end + 80))) continue;
+    if (!UNIT_END_BEFORE_RE.test(text.slice(Math.max(0, x.index - 40), x.index))) continue;
+    return x.index;
+  }
+  return -1;
+}
+
+/**
+ * When a photo caption block ("[caption ...] Cast names. Photo by
+ * ...[/caption]") ends right before `at`, its start, so the caption moves with
+ * the capsule it illustrates; else undefined.
+ */
+function captionBlockStart(text, at) {
+  const before = text.slice(Math.max(0, at - 600), at);
+  if (!/\[\/caption\]\s*$/.test(before)) return undefined;
+  const open = before.lastIndexOf('[caption');
+  return open >= 0 ? at - before.length + open : undefined;
+}
+
 /** Start of the sentence containing `pos` (or the separator just before it). */
 // A theatre listing line: street address, phone number, or price range.
 const LISTING_LINE_RE = /\b\d+\s+[NSEW]\.?\s+\d+(?:st|nd|rd|th)\s+St\b|\b\d{3}-\d{3}-\d{4}\b|\$\d+(?:\.\d\d)?\s*-\s*\$\d+/;
@@ -291,6 +330,14 @@ function introSections(text, shows, ownShowId, publishDate) {
       intros.push({ m, at: head.at, afterSeparator: true, heading: true });
       continue;
     }
+    // A run-listing header ("Becky Shaw . Open run at Second Stage's Hayes
+    // Theater ... (3.5 stars)") opens a capsule as surely as a heading does
+    // (BRO-6744: La Voce di New York's two-show column never split).
+    const listingAt = listingHeaderAt(m, text);
+    if (listingAt >= 0) {
+      intros.push({ m, at: listingAt, afterSeparator: true, heading: true, cutAt: captionBlockStart(text, listingAt) });
+      continue;
+    }
     const quotedAt = firstIndex(m.quoted, text, (at) => isParenthetical(text, at));
     const anyAt = firstIndex(m.any, text, (at) => isParenthetical(text, at));
     let at = -1;
@@ -317,9 +364,9 @@ function introSections(text, shows, ownShowId, publishDate) {
   // so its text is never folded into a tracked show's section.
   const headingStructured = headings.filter((h) => h.showId).length >= 2;
   const foreignHeads = headingStructured ? headings.filter((h) => !h.showId).map((h) => h.at) : [];
-  const cuts = intros.map(({ at, heading }, i) => {
+  const cuts = intros.map(({ at, heading, cutAt }, i) => {
     if (i === 0) return 0;
-    if (heading) return at;
+    if (heading) return Number.isFinite(cutAt) ? cutAt : at;
     const sep = sepEnds.filter((e) => e <= at && at - e < 250).pop();
     return sep !== undefined ? sep : sentenceStart(text, at);
   });
@@ -422,7 +469,7 @@ const AFTER_TITLE_RE = /^[\s*★☆½,;:]+/;
 const WEB_ADDRESS_RE = /(?<![\w@/.-])(?:www\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|org|net|info|nyc|co\.uk|org\.uk)(?:\/[^\s]*)?(?=\s)/gi;
 // What may follow a one-word title that opens a sentence for it to count:
 // a star rating or a run listing ("Midnight Through Jan. 3 at ...").
-const ONE_WORD_LEAD_OK_RE = /^\s*(?:[*★☆]|(?:Through|Until|Closes|Extended|is (?:at|playing|running|now))\b)/;
+const ONE_WORD_LEAD_OK_RE = /^[!?]?\s*(?:[*★☆]|(?:Through|Until|Closes|Extended|is (?:at|playing|running|now))\b)/;
 
 /**
  * Sorted [start, end) spans where the matcher's title appears capitalised. A
@@ -516,6 +563,7 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   const people = creditedNames(ownShow);
   const normText = ` ${normTitle(text)} `;
   const byShow = new Map();
+  const captionMentions = [];
   for (const show of cands) {
     // Another show titled after someone credited on this one is that person,
     // not a second review: drop it outright for a one-word name ("Sting" for
@@ -528,7 +576,13 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     if (people.given.has(key) && [...people.given.get(key)].some((g) => normText.includes(` ${g} ${key} `))) continue;
     const m = buildJointMatcher(show);
     if (!m) continue;
-    let ms = jointMentions(m, text);
+    // A photo caption ("From Bigfoot!. Photo: A. Photographer", Vulture,
+    // BRO-6744) is page furniture, not prose: its mention would break the
+    // second show's stretch in two.
+    const isCaption = (mn) => PHOTO_CREDIT_AFTER_RE.test(text.slice(mn.end, mn.end + 16));
+    const raw = jointMentions(m, text);
+    let ms = raw.filter((mn) => !isCaption(mn));
+    captionMentions.push(...raw.filter(isCaption));
     if (people.given.has(key)) ms = ms.filter((mn) => !isCreditedPersonMention(text, mn, people.given.get(key)));
     if (ms.length >= 2) byShow.set(show.id, { show, mentions: ms });
   }
@@ -624,9 +678,39 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
   // both shows: the review then interleaves them (BRO-5942). A transition
   // after a lede that already named them ("While Birthright explores...,
   // A Walk on the Moon...") is a real join.
+  let transitionCut;
   if (!head.length && bodyIdx.length > 1
-    && sentenceStart(text, runs[bodyIdx[1]].at) < runs[bodyIdx[0]].lastEnd) return [];
+    && sentenceStart(text, runs[bodyIdx[1]].at) < runs[bodyIdx[0]].lastEnd) {
+    // Two full reviews joined by a sentence naming both ("Whereas sentiment
+    // is in abundance at Night Side Songs, it's in short supply at Bigfoot!",
+    // Vulture, BRO-6744) is a real join when the closing listing gives each
+    // show its run and the first stretch is a review on its own before that
+    // sentence. The join sentence opens the second section.
+    const join = sentenceStart(text, runs[bodyIdx[1]].at);
+    const first = runs[bodyIdx[0]];
+    const firstMentionsBefore = mentions.filter((mn) => mn.id === first.id && mn.at >= first.at && mn.end <= join).length;
+    const firstLen = join - first.at;
+    const realJoin = bodyIdx.length === 2 && tailAll && firstMentionsBefore >= 3
+      && firstLen >= MIN_SECTION_CHARS && firstLen / text.length >= MIN_SECTION_SHARE;
+    if (!realJoin) return [];
+    transitionCut = join;
+  }
   const cuts = bodyIdx.map(cutAt);
+  if (transitionCut !== undefined) cuts[1] = transitionCut;
+  // A section's own photo caption just before its cut opens that section
+  // ("Kristolyn Lloyd in Bigfoot! Photo: A. Photographer Whereas ...").
+  for (let i = 1; i < cuts.length; i++) {
+    const id = runs[bodyIdx[i]].id;
+    const cap = captionMentions.filter((c) => c.id === id && c.at < cuts[i] && cuts[i] - c.at < 300
+      && !mentions.some((mn) => mn.at >= c.end && mn.at < cuts[i])).pop();
+    if (!cap) continue;
+    const prevEnd = Math.max(cuts[i - 1], ...mentions.filter((mn) => mn.at < cap.at).map((mn) => mn.end));
+    const capStart = sentenceStart(text, cap.at);
+    // A caption is a short credit line ("Ann Actor and Bo Player in X!"):
+    // a sentence start further back is the end of the previous section's
+    // prose, which never moves.
+    if (capStart >= prevEnd && cap.at - capStart <= 120) cuts[i] = capStart;
+  }
   if (cuts[0] > text.length * FIRST_INTRO_MAX_SHARE) return [];
   const bodyEnd = tail.length ? cutAt(lastBody + 1) : text.length;
   // The tail is a closing listing and page chrome, never a big share of the

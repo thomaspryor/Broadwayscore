@@ -120,6 +120,9 @@ const PROPER_NOUN_TITLES = new Set((SHORT_NAMES_RAW.properNounTitles || []).map(
 // the prefix is multi-word ("Kiss Me, Kate" does NOT produce "kiss me" as a
 // standalone variant — see prefix rules below).
 const SUBTITLE_SPLIT_RE = /\s*:\s*|\s+[-–—]\s+|\s*[–—]\s*/;
+// City Center's "Encores!" (and "Encores! Off-Center") series name prefixed to
+// the show title in shows.json ("Encores! La Cage Aux Folles").
+const SERIES_PREFIX_RE = /^\s*(?:(?:new york\s+)?city center(?:'s|’s)?\s+)?encores!?(?:\s+off[\s-]center)?\s*[:\-–—]?\s+(?=\S)/i;
 
 function isGenericPhrase(normPhrase) {
   const words = normPhrase.split(' ').filter(Boolean);
@@ -151,9 +154,24 @@ function buildShowTitleVariants(title, opts = {}) {
   if (full) out.add(full);
   const noThe = full.replace(/^the /, '');
   if (noThe && noThe !== full) out.add(noThe);
+  // A presenting-series prefix is not part of the show's name: reviews of
+  // "Encores! The Wild Party" call it "The Wild Party" (BRO-6744: the
+  // Interested Bystander Jesa / Wild Party post was dropped as the other
+  // show's review because its Wild Party section never said "Encores").
+  const series = foldDiacritics(title).match(SERIES_PREFIX_RE);
+  if (series) {
+    const rest = normalizeForMention(title.slice(series[0].length));
+    const restNoThe = rest.replace(/^the /, '');
+    if (restNoThe.length >= 5 && !isGenericPhrase(restNoThe)) {
+      out.add(rest);
+      out.add(restNoThe);
+    }
+  }
 
   if (includePrefix) {
     const addPrefix = (raw) => {
+      // The pre-colon part of "Encores! Off-Center: Assassins" is the series.
+      if (`${raw} x`.replace(SERIES_PREFIX_RE, '') === 'x') return;
       const p = normalizeForMention(raw);
       const pNoThe = p.replace(/^the /, '');
       if (pNoThe.length >= 5 && !isGenericPhrase(pNoThe) && pNoThe !== noThe) {

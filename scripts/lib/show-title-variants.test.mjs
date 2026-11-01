@@ -207,3 +207,13 @@ test('normalizeForMention reads asterisk-censored s**t and c*ck titles as the fu
   assert.equal(normalizeForMention('a * b'), 'a b');
   assert.ok(!normalizeForMention('**s**tar of the show').includes('shit'), 'Markdown bold is not a censor');
 });
+
+test('City Center "Encores!" series prefix: the bare show title is a variant (BRO-6744)', () => {
+  const v = buildShowTitleVariants('Encores! The Wild Party');
+  assert.ok(v.includes('the wild party') && v.includes('wild party'), JSON.stringify(v));
+  assert.ok(buildShowTitleVariants('Encores! Off-Center: Assassins').includes('assassins'));
+  assert.ok(textMentionsTitle('At City Center, The Wild Party swings hard.' + FILLER, 'Encores! The Wild Party'));
+  // The series name alone is never a variant, and a title without the prefix is untouched.
+  assert.ok(!buildShowTitleVariants('Encores! The Wild Party').includes('encores'));
+  assert.ok(!buildShowTitleVariants('The Wild Party').some((x) => /encores/.test(x)));
+});
