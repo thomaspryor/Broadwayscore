@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T20:16:43.582Z",
+  "timestamp": "2026-11-01T21:06:54.674Z",
   "stats": {
-    "totalReviews": 78884,
-    "alreadyFlagged": 21837,
+    "totalReviews": 78987,
+    "alreadyFlagged": 21853,
     "dateGuardCatches": 245,
-    "directorMismatch": 3399,
+    "directorMismatch": 3398,
     "tvFilmSignals": 2242,
-    "londonSignals": 3560,
+    "londonSignals": 3564,
     "offBroadwaySignals": 741,
     "yearMismatch": 343,
-    "noPublishDate": 8515
+    "noPublishDate": 8429
   },
   "findings": [
     {
@@ -1664,6 +1664,7 @@
     {
       "showId": "a-christmas-carol-2022",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 49,
       "publishDate": "2022-11-21",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-7PRRZ7",
       "findings": [
@@ -10094,20 +10095,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
-      "showId": "burn-this-1987",
-      "file": "thestage--nicole-serratore.json",
-      "score": null,
-      "publishDate": "2019-04-17",
-      "url": "https://www.thestage.co.uk/reviews/burn-this-review-at-hudson-theatre-new-york--a-sublime-performance-from-adam-driver",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"michael mayer\" from burn-this-2019"
         }
       ]
     },
@@ -19426,7 +19413,7 @@
       "showId": "empire-the-musical-off-broadway-2024",
       "file": "vulture--sara-holdren.json",
       "score": 15,
-      "publishDate": null,
+      "publishDate": "July 11th, 2024",
       "url": "https://www.vulture.com/article/theater-review-empire-musical-new-world-stages.html",
       "findings": [
         {
@@ -23578,7 +23565,7 @@
       "showId": "gatz-off-broadway-2024",
       "file": "this-week-in-new-york--unknown.json",
       "score": 92,
-      "publishDate": null,
+      "publishDate": "November 18th, 2024",
       "url": "https://twi-ny.com/2024/11/10/hanging-on-every-word-the-great-gatsby-from-start-to-finish/",
       "findings": [
         {
@@ -23591,6 +23578,7 @@
     {
       "showId": "get-out-alive-regional-2022",
       "file": "chicago-reader--kerry-reid.json",
+      "score": 82,
       "publishDate": "2022-07-20",
       "url": "https://chicagoreader.com/arts-culture/theater-review/singing-past-stigma/",
       "findings": [
@@ -24090,6 +24078,7 @@
     {
       "showId": "girlfriend-regional-2022",
       "file": "chicago-sun-times--kris-vire.json",
+      "score": 78,
       "publishDate": "2022-08-30",
       "url": "https://chicago.suntimes.com/2022/8/30/23329368/girlfriend-review-pride-arts-chicago-theater-todd-almond",
       "findings": [
@@ -24917,6 +24906,7 @@
     {
       "showId": "godspell-regional-2022",
       "file": "chicago-reader--amanda-finn.json",
+      "score": 34,
       "publishDate": "2022-06-24",
       "url": "https://chicagoreader.com/arts-culture/theater-review/the-magic-is-gone/",
       "findings": [
@@ -24930,6 +24920,7 @@
     {
       "showId": "godspell-regional-2022",
       "file": "chicagotribune--chris-jones.json",
+      "score": 78,
       "publishDate": "2022-06-27",
       "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-godspell-theo-ubique-review-20220627-4ipdtt3yn5dzndon5dk6jcqzzu-story.html",
       "findings": [
@@ -28468,8 +28459,8 @@
       "showId": "harmony-off-broadway-2022",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 82,
-      "publishDate": null,
-      "url": null,
+      "publishDate": "April 14th, 2022",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-QAXRCO",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -30216,7 +30207,7 @@
     {
       "showId": "high-noon-west-end-2025",
       "file": "daily-mail--patrick-marmion.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2026-01-16",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-15468189/The-sheriff-waiting-villain-coming-clock-ticking-wheres-tension-new-stage-classic-western-High-Noon.html",
       "findings": [
@@ -52520,6 +52511,7 @@
     {
       "showId": "rent-regional-2022",
       "file": "thefourthwalsh--katy-walsh.json",
+      "score": 88,
       "publishDate": "2022-11-04",
       "url": "http://thefourthwalsh.com/2022/11/review-rent-porchlight-music-theatre-dont-forget-to-pay-for-rent-this-month/",
       "findings": [
@@ -53289,6 +53281,7 @@
     {
       "showId": "routes-regional-2022",
       "file": "chicagotribune--chris-jones.json",
+      "score": 61,
       "publishDate": "2022-11-02",
       "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-routes-remy-bumppo-review-20221102-xlwynfoycrenbnoube263fki3e-story.html",
       "findings": [
@@ -54770,6 +54763,7 @@
     {
       "showId": "skates-regional-2022",
       "file": "new-city-stage--brian-hieggelke.json",
+      "score": 62,
       "publishDate": "2022-06-09",
       "url": "https://www.newcitystage.com/2022/06/09/all-alone-in-the-moonlight-a-review-of-skates-at-studebaker-theater/",
       "findings": [
@@ -61677,7 +61671,7 @@
     {
       "showId": "the-big-gay-jamboree-off-broadway-2024",
       "file": "the-interested-bystander--cary-wong.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2024-10-24",
       "url": "https://www.interestedbystander.com/2024/10/theater-review-romeo-juliet-jellicle.html",
       "findings": [
@@ -63906,6 +63900,7 @@
     {
       "showId": "the-doctor-off-broadway-2023",
       "file": "front-row-center--tulis-mccall.json",
+      "score": 76,
       "publishDate": "2023-08-01T11:41:01",
       "url": "https://thefrontrowcenter.com/2023/08/the-doctor/",
       "findings": [
@@ -64140,6 +64135,7 @@
     {
       "showId": "the-effect-off-broadway-2024",
       "file": "front-row-center--tulis-mccall.json",
+      "score": 88,
       "publishDate": "2024-03-14T18:40:26",
       "url": "https://thefrontrowcenter.com/2024/03/the-effect/",
       "findings": [
@@ -67361,6 +67357,7 @@
     {
       "showId": "the-island-regional-2022",
       "file": "around-the-town-chicago--frank-meccia.json",
+      "score": 91,
       "publishDate": null,
       "url": "http://www.aroundthetownchicago.com/theatre-reviews/the-island-reviewed-by-frank-meccia/",
       "findings": [
@@ -67374,6 +67371,7 @@
     {
       "showId": "the-island-regional-2022",
       "file": "buzznews--wesley-david.json",
+      "score": 89,
       "publishDate": "2022-11-23",
       "url": "https://buzznews.net/theatre/theatre-reviews/item/5059-review-the-island-at-court-theatre.html",
       "findings": [
@@ -67387,6 +67385,7 @@
     {
       "showId": "the-island-regional-2022",
       "file": "chicago-reader--sheri-flanders.json",
+      "score": 91,
       "publishDate": "2022-11-23",
       "url": "https://chicagoreader.com/arts-culture/theater-review/apartheid-and-antigone/",
       "findings": [
@@ -67400,6 +67399,7 @@
     {
       "showId": "the-island-regional-2022",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 89,
       "publishDate": "2022-11-21",
       "url": "https://chicago.suntimes.com/2022/11/21/23471085/the-island-review-court-theatre-chicago-athol-fugard-john-kani-winston-ntshona",
       "findings": [
@@ -67413,6 +67413,7 @@
     {
       "showId": "the-island-regional-2022",
       "file": "chicagotribune--chris-jones.json",
+      "score": 81,
       "publishDate": "2022-11-22",
       "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-island-court-theatre-review-20221122-afneiz4psrcvbaxty5brtshsve-story.html",
       "findings": [
@@ -67426,6 +67427,7 @@
     {
       "showId": "the-island-regional-2022",
       "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 85,
       "publishDate": "2022-11-19",
       "url": "https://www.letsplaytheatricalreview.com/blog/the-island",
       "findings": [
@@ -67439,6 +67441,7 @@
     {
       "showId": "the-island-regional-2022",
       "file": "new-city-stage--tristan-bruns.json",
+      "score": 84,
       "publishDate": "2022-12-01",
       "url": "https://www.newcitystage.com/2022/12/01/courage-brothers-a-review-of-the-island-at-court-theatre/",
       "findings": [
@@ -67535,6 +67538,7 @@
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "front-row-center--vahni-kurra.json",
+      "score": 85,
       "publishDate": "2025-03-11T00:08:30",
       "url": "https://thefrontrowcenter.com/2025/03/the-jonathan-larson-project/",
       "findings": [
@@ -69045,6 +69049,7 @@
     {
       "showId": "the-notebook-tour-2025",
       "file": "berkshire-on-stage--suzanne-wells.json",
+      "score": 78,
       "publishDate": "2025-10-02",
       "url": "https://berkshireonstage.blog/2025/10/02/review-the-notebook-the-musical-at-the-bushnell/",
       "findings": [
@@ -71428,6 +71433,7 @@
     {
       "showId": "the-penelopiad-york-royal-regional-2026",
       "file": "grandgoldman--claire-hodges.json",
+      "score": 72,
       "publishDate": "2026-10-17",
       "url": "https://grandgoldman.com/fa/blogs/celebrity/the-penelopiad-review-atwood-gives-voice-to-penelopes-maids",
       "findings": [
@@ -72067,6 +72073,7 @@
     {
       "showId": "the-play-that-goes-wrong-regional-2026",
       "file": "hillrag--matthew-mcclure.json",
+      "score": 84,
       "publishDate": null,
       "url": "https://www.hillrag.com/2026/06/17/a-play-goes-wrong-at-keegan/",
       "findings": [
@@ -77778,6 +77785,7 @@
     {
       "showId": "vanya-off-broadway-2025",
       "file": "new-york-sun--elysa-gardner.json",
+      "score": 59,
       "publishDate": "2025-03-18",
       "url": "https://www.nysun.com/article/reworked-as-a-one-man-show-called-vanya-a-chekhov-classic-is-more-exhausting-than-haunting",
       "findings": [
@@ -81420,6 +81428,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "greenville-journal--paul-hyde.json",
+      "score": 90,
       "publishDate": "2023-08-07",
       "url": "https://greenvillejournal.com/arts-culture/powerful-poignant-wicked-soars-at-the-peace-center-review/",
       "findings": [
@@ -81522,6 +81531,7 @@
     {
       "showId": "wicked-tour-2021",
       "file": "riverfront-times--tina-farmer.json",
+      "score": 91,
       "publishDate": "2023-04-17",
       "url": "https://www.riverfronttimes.com/arts/review-wicked-now-at-the-fox-is-a-wickedly-good-time-39879011",
       "findings": [
@@ -86702,7 +86712,7 @@
     {
       "showId": "avenue-q-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-04-17",
       "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
       "findings": [
@@ -88735,6 +88745,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "bluets-west-end-2024",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": "2024-05-18",
+      "url": "https://monstagigz.com/2024/05/19/theatre-review-bluets-starring-ben-whishaw-emma-darcy-at-the-royal-court/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -98696,6 +98720,7 @@
     {
       "showId": "gruesome-playground-injuries-regional-2026",
       "file": "metro-weekly--andre-hereford.json",
+      "score": 67,
       "publishDate": "2026-08-22",
       "url": "https://www.metroweekly.com/2026/08/gruesome-playground-injuries-review-keegan-theatre/",
       "findings": [
@@ -110055,6 +110080,7 @@
     {
       "showId": "miss-holmes-returns-regional-2022",
       "file": "rescripted--aaron-lockman.json",
+      "score": 90,
       "publishDate": "2022-09-27",
       "url": "http://rescripted.org/2022/09/27/miss-holmes-returns-lifeline/",
       "findings": [
@@ -112125,6 +112151,34 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "nye-west-end-2024",
+      "file": "britishtheatrecom--paul-t-davies.json",
+      "score": null,
+      "publishDate": "2024-03-11",
+      "url": "https://www.britishtheatre.com/fr/posts/review-nye-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nye-west-end-2024",
+      "file": "monstagigz--unknown.json",
+      "score": null,
+      "publishDate": "2024-02-25",
+      "url": "https://monstagigz.com/2024/02/25/theatre-review-nye-starring-michael-sheen-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -117196,6 +117250,7 @@
     {
       "showId": "routes-regional-2022",
       "file": "third-coast-review--nancy-s-bishop.json",
+      "score": 63,
       "publishDate": "2022-11-05",
       "url": "https://thirdcoastreview.com/2022/11/05/stages-review-routes-remy-bumppo/",
       "findings": [
@@ -117419,6 +117474,7 @@
     {
       "showId": "saturday-church-off-broadway-2025",
       "file": "front-row-center--tulis-mccall.json",
+      "score": 72,
       "publishDate": "2025-09-19T18:15:37",
       "url": "https://thefrontrowcenter.com/2025/09/saturday-church/",
       "findings": [
@@ -118660,7 +118716,7 @@
     {
       "showId": "snow-in-midsummer-off-broadway-2022",
       "file": "theater-life--samuel-l-leiter.json",
-      "score": null,
+      "score": 34,
       "publishDate": "2022-06-19",
       "url": "https://theaterlife.com/snow-in-midsummer-2/",
       "findings": [
@@ -119076,6 +119132,7 @@
     {
       "showId": "somewhere-over-the-border-regional-2026",
       "file": "metro-weekly--andre-hereford.json",
+      "score": 77,
       "publishDate": "2026-09-21",
       "url": "https://www.metroweekly.com/2026/09/somewhere-over-the-border-review/",
       "findings": [
@@ -125926,6 +125983,7 @@
     {
       "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
       "file": "theater-life--unknown.json",
+      "score": 88,
       "publishDate": "2026-10-31",
       "url": "https://theaterlife.com/degenerates-the-hairy-ape/",
       "findings": [
@@ -126591,8 +126649,22 @@
     },
     {
       "showId": "the-importance-of-being-earnest-west-end-2025",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 95,
+      "publishDate": "2025-10-01",
+      "url": "https://www.cityam.com/the-importance-of-being-earnest-review-stephen-fry-and-olly-alexander-do-wilde-proud/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-importance-of-being-earnest-west-end-2025",
       "file": "jacktheladmag--simon-webb.json",
-      "score": 93,
+      "score": 92,
       "publishDate": "2025-10-19",
       "url": "https://www.jacktheladmag.com/theatre-reviews/the-importance-of-being-earnest",
       "findings": [
@@ -128296,7 +128368,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "city-am--steve-dinneen.json",
-      "score": 57,
+      "score": 56,
       "publishDate": "2026-06-30",
       "url": "https://www.cityam.com/the-misanthrope-at-the-national-theatre-sandra-oh-shines-in-a-play-that-flatters-to-deceive/",
       "findings": [
@@ -128366,7 +128438,7 @@
     {
       "showId": "the-misanthrope-west-end-2026",
       "file": "londontheatre1--fiona-gilbert.json",
-      "score": 57,
+      "score": 59,
       "publishDate": "2026-06-24",
       "url": "https://www.londontheatre1.com/reviews/the-misanthrope-national-theatre/",
       "findings": [
@@ -129679,7 +129751,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
       "file": "standard--nick-curtis.json",
-      "score": 56,
+      "score": 58,
       "publishDate": "2025-12-12",
       "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
       "findings": [
@@ -131696,7 +131768,7 @@
     {
       "showId": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "February 11th, 2026",
       "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
       "findings": [
@@ -135441,7 +135513,7 @@
       "showId": "we-are-your-robots-off-broadway-2024",
       "file": "off-off-online--deirdre-donovan.json",
       "score": 88,
-      "publishDate": null,
+      "publishDate": "November 25th, 2024",
       "url": "https://www.offoffonline.com/offoffonline/2024/11/19/we-are-your-robots-b6Vuh",
       "findings": [
         {
