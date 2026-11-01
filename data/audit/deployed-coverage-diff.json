@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-01T13:48:34.974Z",
+  "generatedAt": "2026-11-01T14:13:13.145Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 297,
-  "clean": 296,
-  "defective": 1,
-  "byType": {
-    "unreachable": 1
-  },
-  "shows": [
-    {
-      "showId": "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026",
-      "title": "Tales of Urban Hysteria is an evening of four short plays by award-winning playwright Mark Borkowski.",
-      "openingDate": "2026-10-21",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null,
-      "firstDefectAt": "2026-11-01T13:48:28.013Z"
-    }
-  ],
+  "clean": 297,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
