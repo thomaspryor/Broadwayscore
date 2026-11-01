@@ -1327,11 +1327,11 @@ test('BRO-6761: catalogue lane speeds up for a large never-audited backlog and s
   assert.ok(every < BASE && every > AT, 'boosted lane still has catalogueAt < every');
   assert.equal(every % 4, 0, 'every slot stays a stale-lane slot (n % 4 === 1), so tier-0 shows lose nothing');
   assert.equal(AT % 4, 1);
-  const opening = Array.from({ length: 30 }, (_, i) => ({ id: `opening-${i}` }));
+  const opening = Array.from({ length: 40 }, (_, i) => ({ id: `opening-${i}` }));
   const never = Array.from({ length: 6 }, (_, i) => ({ id: `old-${i}` }));
   const catalogueIds = new Set(never.map(s => s.id));
   const base = reserveStalestSlots([...opening, ...never], new Map(), { catalogueIds });
   const boosted = reserveStalestSlots([...opening, ...never], new Map(), { catalogueIds, catalogueEvery: every });
-  const inFirst20 = (r) => r.targets.slice(0, 20).filter(s => catalogueIds.has(s.id)).length;
+  const inFirst20 = (r) => r.targets.slice(0, 30).filter(s => catalogueIds.has(s.id)).length;
   assert.ok(inFirst20(boosted) > inFirst20(base), `${inFirst20(boosted)} > ${inFirst20(base)}`);
 });
