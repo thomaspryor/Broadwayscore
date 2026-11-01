@@ -74,3 +74,27 @@ test('bylineless file hides only at near-identical similarity', () => {
   assert.equal(classifyCrossOutletPair(named, blank, { similarity: 85 }).action, 'flag');
   assert.equal(classifyCrossOutletPair(named, blank, { similarity: 58 }).action, 'review');
 });
+
+test('review fixes: wire subscribers are not related to each other, only to the wire', () => {
+  const a = { outletId: 'washpost', outlet: 'Washington Post', criticName: 'Peter Marks', text: 'x' };
+  const b = { outletId: 'bloomberg', outlet: 'Bloomberg', criticName: 'Jeremy Gerard', text: 'x' };
+  assert.equal(classifyCrossOutletPair(a, b, { similarity: 90 }).action, 'review');
+  const ap = { outletId: 'ap', outlet: 'Associated Press', criticName: 'Mark Kennedy', text: 'x' };
+  assert.equal(classifyCrossOutletPair(a, ap, { similarity: 90 }).action, 'flag');
+});
+
+test('review fixes: ordinary prose is not provenance', () => {
+  const stage = { outletId: 'the-stage', outlet: 'The Stage', criticName: 'A', text: 'x' };
+  const variety = { outletId: 'variety', outlet: 'Variety', criticName: 'B', text: 'x' };
+  assert.equal(declaresProvenance({ text: 'She first appeared on the stage in 1990.' }, stage), false);
+  assert.equal(declaresProvenance({ text: 'originally a wide variety of tunes' }, variety), false);
+  assert.equal(declaresProvenance({ text: 'This review first appeared in The Stage.' }, stage), true);
+});
+
+test('review fixes: sameCritic does not merge different people', () => {
+  assert.equal(sameCritic('Mark Kennedy', 'Mary Kennedy'), false);
+  assert.equal(sameCritic('Smith', 'Sarah Smith'), false);
+  assert.equal(sameCritic('Иван Петров', 'Олег Сидоров'), false);
+  assert.equal(sameCritic('Aleks Sierz', 'Alex Sierz'), true);
+  assert.equal(sameCritic('Rachelrweinberg', 'Rachel Weinberg'), true);
+});

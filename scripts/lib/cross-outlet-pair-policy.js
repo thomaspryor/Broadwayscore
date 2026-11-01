@@ -39,6 +39,7 @@ function sameCritic(nameA, nameB) {
   if (isPlaceholderCritic(nameA) || isPlaceholderCritic(nameB)) return false;
   const a = compact(nameA);
   const b = compact(nameB);
+  if (!a || !b) return false;
   if (a === b) return true;
   const tok = (n) => String(n).toLowerCase().normalize('NFKD').replace(/[^a-z\s-]/g, '').split(/[\s-]+/).filter(Boolean);
   const ta = tok(nameA);
@@ -46,8 +47,8 @@ function sameCritic(nameA, nameB) {
   const lastA = ta[ta.length - 1];
   const lastB = tb[tb.length - 1];
   // Slug-style single token containing the other name's last name + first initial.
-  if (ta.length === 1 && lastB && a.includes(lastB) && a[0] === tb[0][0]) return true;
-  if (tb.length === 1 && lastA && b.includes(lastA) && b[0] === ta[0][0]) return true;
+  if (ta.length === 1 && tb.length > 1 && a.startsWith(tb[0]) && a.includes(lastB)) return true;
+  if (tb.length === 1 && ta.length > 1 && b.startsWith(ta[0]) && b.includes(lastA)) return true;
   // Same last name, first names within one edit (Alex / Aleks).
   if (lastA === lastB && ta.length > 1 && tb.length > 1) {
     const fa = ta[0];
@@ -55,7 +56,7 @@ function sameCritic(nameA, nameB) {
     const shortF = fa.length <= fb.length ? fa : fb;
     const longF = fa.length <= fb.length ? fb : fa;
     // Nickname / spelling variants: Doug~Douglas, Alex~Aleks.
-    if (fa === fb || (shortF.length >= 3 && longF.startsWith(shortF)) || (fa.slice(0, 3) === fb.slice(0, 3) && editDistance(fa, fb) <= 2)) return true;
+    if (fa === fb || (shortF.length >= 3 && longF.startsWith(shortF)) || (shortF.length >= 4 && longF.length - shortF.length === 1 && fa.slice(0, 3) === fb.slice(0, 3) && editDistance(fa, fb) <= 2)) return true;
   }
   return false;
 }
@@ -98,27 +99,34 @@ const VERIFIED_OUTLET_FAMILIES = [
   ['san-diego-union-tribune', 'headtopics'],
 ];
 
+// Wire groups are hub-and-spoke: two subscribers (washpost, bloomberg) are not
+// related to each other, only through the wire itself.
+const HUB_GROUPS = new Map([['ap', 'ap']]);
+
 function related(oa, ob) {
   if (!oa || !ob || oa === ob) return false;
   for (const g of [...VERIFIED_OUTLET_FAMILIES, ...PUBLISHING_GROUPS]) {
+    if (g.includes('ap') && g.includes(oa) && g.includes(ob)) { if (oa === 'ap' || ob === 'ap') return true; continue; }
     if (g.includes(oa) && g.includes(ob)) return true;
   }
   return false;
 }
 
 function outletVariants(rec) {
+  // Capitalized forms only: "the stage" / "a wide variety" in prose are not outlet names.
   const names = new Set();
-  const id = String(rec.outletId || '').toLowerCase();
-  if (id) names.add(id.replace(/-/g, ' '));
-  const o = String(rec.outlet || '').toLowerCase().trim();
-  if (o) names.add(o);
+  const title = (t) => t.replace(/\b[a-z]/g, (c) => c.toUpperCase());
+  const id = String(rec.outletId || '').trim();
+  if (id) names.add(title(id.replace(/-/g, ' ')));
+  const o = String(rec.outlet || '').trim();
+  if (o) { names.add(o); names.add(title(o)); }
   return [...names].filter((n) => n.length >= 4);
 }
 
 /** Trigram similarity at which a bylineless file is the same article as a named one. */
 const NEAR_IDENTICAL = 80;
 
-const PROVENANCE_VERBS = '(?:posted|published|appeared|originally|first (?:appeared|ran|published)|reprinted|republished|courtesy of|distributed by|syndicated|via|previously|see (?:the )?original)';
+const PROVENANCE_VERBS = '(?:was posted|posted on|first (?:appeared|ran|published) (?:on|in|at)|originally (?:appeared|published|posted|ran) (?:on|in|at)|reprinted|republished|courtesy of|distributed by|syndicated (?:from|by|with)|via|see (?:the )?original)';
 
 /**
  * Does `copy`'s own text say it is `other`'s article? True when a provenance
@@ -129,10 +137,14 @@ function declaresProvenance(copy, other) {
   const text = String(copy.text || '').slice(0, 4000) + ' ' + String(copy.text || '').slice(-1500);
   for (const n of outletVariants(other)) {
     const esc = n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    if (new RegExp(`${PROVENANCE_VERBS}[^.\\n]{0,60}\\b${esc}\\b`, 'i').test(text)) return true;
+    // Verb phrase is case-insensitive, the outlet name is not.
+    const verb = new RegExp(`${PROVENANCE_VERBS}([^.\\n]{0,60})`, 'gi');
+    const name = new RegExp(`\\b${esc}\\b`);
+    let m;
+    while ((m = verb.exec(text))) if (name.test(m[1])) return true;
     if (new RegExp(`\\(${esc}\\)`, 'i').test(text)) return true;
   }
-  if (/^ap|associated-press/.test(String(other.outletId || '')) && /\(AP\)|Associated Press/.test(text)) return true;
+  if (/^(ap|associated-press)$/.test(String(other.outletId || '')) && /\(AP\)|Associated Press/.test(text)) return true;
   return false;
 }
 
