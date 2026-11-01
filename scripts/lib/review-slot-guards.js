@@ -99,8 +99,10 @@ function isStaleNonReviewSlot(existing, incomingUrl) {
 
 // BRO-6742: an outlet's interview slug ("interview-noga-flaishon-discusses-
 // memoriam", "/interviews/...") and its review slug ("review-memoriam-...").
-// "qa" alone is left out: too short to tell from other slug words.
-const INTERVIEW_SLUG = /(?:^|[/_-])(?:interview|interviews|in-conversation|q-and-a)(?=[/_.-]|$)/i;
+// "qa" alone is left out: too short to tell from other slug words. The word
+// must open a path segment: a title like "Murdoch: The Final Interview" puts
+// it mid-slug on real reviews ("murdoch-the-final-interview-off-broadway").
+const INTERVIEW_SLUG = /(?:^|\/)(?:interview|interviews|in-conversation|q-and-a)(?=[/_.-]|$)/i;
 const REVIEW_SLUG = /review|critic|critique/i;
 
 function _pathOf(url) {

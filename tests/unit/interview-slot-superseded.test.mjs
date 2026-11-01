@@ -52,6 +52,10 @@ test('never moves a slot unless both urls say so', () => {
   assert.equal(isInterviewSlotSupersededBy(INTERVIEW, 'https://www.thestage.co.uk/reviews/memoriam-review'), false);
   // Same url.
   assert.equal(isInterviewSlotSupersededBy(INTERVIEW, INTERVIEW.url), false);
+  // A show titled "... Interview": the word sits mid-slug on a real review url.
+  assert.equal(isInterviewSlotSupersededBy(
+    { url: 'https://example.com/2025/09/murdoch-the-final-interview-off-broadway/' },
+    'https://example.com/2025/10/murdoch-review/'), false);
   // "interviewing" is not the interview marker.
   assert.equal(isInterviewSlotSupersededBy(
     { url: 'https://example.com/2026/interviewing-the-cast-on-tour/' }, 'https://example.com/2026/review-x/'), false);
