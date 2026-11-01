@@ -14,6 +14,7 @@ const crypto = require('crypto');
 const { isOwnerTestEmail } = require('./admin-money-signups');
 
 const PER_RUN_CAP = 50;
+const FLOOD_LIMIT = 25; // more than this many new sign-ups in one hourly run looks like abuse: send nothing, alert the owner
 const MAX_AGE_DAYS = 14; // a late switch-on never mails a stale backlog
 const MAX_CONSECUTIVE_REJECTS = 2; // 2 in a row is our payload, not the recipients
 const SITE = 'https://broadwayscorecard.com';
@@ -93,9 +94,10 @@ const defaultSleep = (ms) => new Promise((r) => setTimeout(r, ms));
  * and after MAX_CONSECUTIVE_REJECTS rejections in a row (likely our payload).
  * Callers must fail the run when halted or rejected is non-zero.
  */
-async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now, sleep = defaultSleep, gapMs = 250 }) {
+async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now, sleep = defaultSleep, gapMs = 250, flood = FLOOD_LIMIT }) {
   const plan = planWelcomes(rows, { cap, now });
-  const out = { sent: 0, rejected: 0, lost_claim: 0, stamped: 0, halted: false, skipped: plan.skipped };
+  const out = { sent: 0, rejected: 0, lost_claim: 0, stamped: 0, halted: false, flood: false, skipped: plan.skipped };
+  if (plan.send.length + plan.skipped.over_cap > flood) { out.flood = true; out.halted = true; return out; }
   for (const row of plan.stamp) { if (await claim(row.email)) out.stamped++; }
   let streak = 0;
   for (const row of plan.send) {
@@ -117,6 +119,6 @@ async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now
 }
 
 module.exports = {
-  PER_RUN_CAP, MAX_AGE_DAYS, MAX_CONSECUTIVE_REJECTS, FROM, REPLY_TO, isProbeEmail, planWelcomes, buildWelcomeEmail, unsubscribeUrl,
+  PER_RUN_CAP, FLOOD_LIMIT, MAX_AGE_DAYS, MAX_CONSECUTIVE_REJECTS, FROM, REPLY_TO, isProbeEmail, planWelcomes, buildWelcomeEmail, unsubscribeUrl,
   idempotencyKey, resendOutcome, runAllowed, sendWelcomes,
 };

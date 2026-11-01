@@ -134,3 +134,34 @@ test('isProbeEmail boundaries', () => {
   assert.equal(w.isProbeEmail('x@examples.com'), false);
   assert.equal(w.isProbeEmail('person@gmail.com'), false);
 });
+
+test('flood guard: too many new sign-ups in one run sends nothing', async () => {
+  const rows = Array.from({ length: 26 }, (_, i) => row(`u${i}@real.org`));
+  let sends = 0;
+  const out = await w.sendWelcomes(rows, {
+    sleep: noSleep, claim: async () => true, release: async () => {},
+    send: async () => { sends++; return { statusCode: 200 }; },
+  });
+  assert.equal(out.flood, true);
+  assert.equal(out.halted, true);
+  assert.equal(sends, 0);
+});
+
+test('exactly the flood limit still sends', async () => {
+  const rows = Array.from({ length: 25 }, (_, i) => row(`u${i}@real.org`));
+  const out = await w.sendWelcomes(rows, mk({}));
+  assert.equal(out.sent, 25);
+  assert.equal(out.flood, false);
+});
+
+test('a row with a missing created_at is treated as new, not stale', () => {
+  const p = w.planWelcomes([row('a@real.org')], { now: Date.parse('2030-01-01') });
+  assert.equal(p.send.length, 1);
+});
+
+test('a claim that throws escapes so the run fails instead of sending', async () => {
+  await assert.rejects(() => w.sendWelcomes([row('a@real.org')], {
+    sleep: noSleep, release: async () => {}, send: async () => ({ statusCode: 200 }),
+    claim: async () => { throw new Error('claim: HTTP 500'); },
+  }), /claim/);
+});

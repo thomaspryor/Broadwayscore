@@ -45,8 +45,7 @@ async function readAudience(id) {
   return j.data || [];
 }
 
-// BRO-6309: anyone who unsubscribed from the welcome email must not be re-added to the monthly audience.
-const signups = (await readSignups()).filter((r) => !r.unsubscribed_at);
+const signups = await readSignups(); // BRO-6309: planAudienceSync honors unsubscribed_at
 const general = await readAudience(GENERAL_ID);
 const existing = MONEY_ID ? await readAudience(MONEY_ID) : [];
 const plan = planAudienceSync({ signups, general, existing });
@@ -65,5 +64,16 @@ for (const email of plan.toAdd) {
   if (res.ok) added++; else { errors++; if (errors <= 3) console.error(`add failed for ${mask(email)}: ${res.status}`); }
   await delay(200);
 }
-console.log(`added=${added} errors=${errors}`);
+// BRO-6309: someone who unsubscribed via the welcome email must also stop getting the monthly.
+let unsubscribed = 0;
+for (const c of plan.toUnsubscribe) {
+  const res = await fetch(`https://api.resend.com/audiences/${MONEY_ID}/contacts/${c.id}`, {
+    method: 'PATCH', signal: AbortSignal.timeout(30000),
+    headers: { Authorization: `Bearer ${rk}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ unsubscribed: true }),
+  });
+  if (res.ok) unsubscribed++; else { errors++; console.error(`unsubscribe failed: ${res.status}`); }
+  await delay(200);
+}
+console.log(`added=${added} unsubscribed=${unsubscribed} errors=${errors}`);
 if (errors) process.exit(1);

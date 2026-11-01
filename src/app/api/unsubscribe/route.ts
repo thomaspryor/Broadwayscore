@@ -15,12 +15,12 @@ const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_W
 
 // Profitability Scorecard sign-ups (BRO-6309) live in Supabase, not Formspree.
 // The SECURITY DEFINER RPC only stamps unsubscribed_at, so the anon key is enough.
-async function unsubscribeMoney(email: string): Promise<void> {
+async function unsubscribeMoney(email: string): Promise<boolean> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) {
     console.error('Money unsubscribe skipped: Supabase env vars missing');
-    return;
+    return false;
   }
   try {
     const res = await fetch(`${url}/rest/v1/rpc/money_scorecard_unsubscribe`, {
@@ -29,8 +29,10 @@ async function unsubscribeMoney(email: string): Promise<void> {
       body: JSON.stringify({ p_email: email }),
     });
     if (!res.ok) console.error(`Money unsubscribe RPC failed: ${res.status}`);
+    return res.ok;
   } catch (err) {
     console.error('Money unsubscribe RPC errored:', (err as Error).message);
+    return false;
   }
 }
 
@@ -52,7 +54,10 @@ export async function POST(request: NextRequest) {
   }
 
   if (searchParams.get('list') === 'money') {
-    await unsubscribeMoney(email);
+    if (!(await unsubscribeMoney(email))) {
+      // Not recorded: tell the person (and one-click mail clients) so nobody believes they are off the list.
+      return new NextResponse('<!doctype html><meta charset="utf-8"><body style="font-family:Arial,Helvetica,sans-serif;max-width:420px;margin:15vh auto;padding:0 16px;text-align:center"><h1 style="font-size:22px">Something went wrong</h1><p>We could not record your unsubscribe. Please reply to any email from us and we will remove you by hand.</p></body>', { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } });
+    }
     // Browser form posts get a readable page; one-click mail clients only need the 200.
     return new NextResponse(
       '<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><body style="font-family:Arial,Helvetica,sans-serif;max-width:420px;margin:15vh auto;padding:0 16px;text-align:center"><h1 style="font-size:22px">Unsubscribed</h1><p>You will not get any more email from the Profitability Scorecard.</p></body>',

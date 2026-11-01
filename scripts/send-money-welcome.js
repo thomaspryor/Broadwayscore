@@ -87,6 +87,10 @@ async function main() {
   if (!apiKey) throw new Error('RESEND_API_KEY not set');
   const out = await w.sendWelcomes(rows, { claim, release, send: (row) => resendSend(row, apiKey) });
   console.log(`Done: sent=${out.sent} rejected=${out.rejected} stamped=${out.stamped} lost_claim=${out.lost_claim} halted=${out.halted} skipped=${JSON.stringify(out.skipped)}`);
+  if (out.flood) {
+    console.error('FLOOD GUARD: more than ' + w.FLOOD_LIMIT + ' new sign-ups waiting in one run. Nothing was sent. Check for junk sign-ups, then clear them or raise the limit.');
+    process.exit(1);
+  }
   if (out.halted || out.rejected > 0) {
     console.error('Resend refused one or more welcome sends (halted=' + out.halted + ', rejected=' + out.rejected + '). Check the payload; rejected rows are not retried.');
     process.exit(1);
