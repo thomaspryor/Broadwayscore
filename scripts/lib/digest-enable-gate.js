@@ -2,9 +2,9 @@
 // scripts/lib/digest-enable-gate.js — should a SCHEDULED morning-digest Action run send now? (BRO-6764)
 //
 // Two refusals, both fail-closed:
-//  * before ENABLE_FROM (an ET calendar day): the Mac launchd job is booted out by the reconciler
-//    at retiredAt + RETIRE_GRACE_DAYS (config/mac-retired.json); the Action must not send until
-//    that is done, or the owner gets two digests. A committed date, not a repo variable.
+//  * before ENABLE_FROM (an ET calendar day; the handoffDate in config/morning-digest-handoff.json):
+//    the Mac sender no-ops for owner sends from that same day (scripts/lib/digest-handoff.js), so the
+//    Action must not send earlier or the owner gets two digests. A committed date, not a repo variable.
 //  * before 07:45 ET: the workflow has cron lines for BOTH DST offsets (11:50/12:50/13:50 UTC) so
 //    no March/November edit is needed; the early one for the current season is a no-op here, and
 //    the Resend sent-today guard makes the later ones no-ops once the digest is out.

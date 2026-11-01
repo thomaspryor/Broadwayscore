@@ -322,6 +322,8 @@ Usage:
   --skip-mac-local      skip the readers of Mac-only state (cmux, dispatch ledgers, the shared
                         checkout) and print one line naming them plus the Mac's heartbeat age
                         (needs GH_TOKEN)
+  --test-send           send the real digest with a "TEST: " subject, skipping the sent-today guards
+                        and leaving the sent-state and board snapshot untouched (BRO-6764)
   --resend-sent-guard   also refuse a send when Resend already shows today's digest to the
                         recipient (needs a full-access RESEND_API_KEY; unreadable = refuse).
                         With --dry-run it reports what the guard would do.
@@ -952,7 +954,11 @@ async function main() {
   if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
   const noAutofix = !!args['no-autofix'];
   const skipMacLocal = !!args['skip-mac-local'];
-  const resendSentGuard = !!args['resend-sent-guard'];
+  // --test-send (BRO-6764): one labelled "TEST: " email that touches NO sent-state: it skips both sent-today guards
+  // (so it can go out after the day's real digest), writes no ~/.broadwayscore-state stamp and no board snapshot.
+  // "TEST: Morning digest" does not match /^Morning digest/, so the pager and counters ignore it.
+  const testSend = !!args['test-send'];
+  const resendSentGuard = !!args['resend-sent-guard'] && !testSend;
   let sendTo = args['send-to'] && args['send-to'] !== true ? String(args['send-to']) : null;
   if (!sendTo && args['send-to-owner']) {
     sendTo = process.env.OWNER_EMAIL || null;
@@ -961,6 +967,19 @@ async function main() {
   if (!dryRun && !sendTo) {
     console.error('[digest] refusing to run without an explicit recipient (rule 17) — use --send-to <addr>, --send-to-owner, or --dry-run');
     process.exit(1);
+  }
+
+  // BRO-6764 handoff: from config/morning-digest-handoff.json's date the GitHub Action sends the owner's
+  // email and this machine must not (one email a day). Runs before any work. The Mac syncs to main
+  // before each run (sync-audit-checkout.sh), so it picks the date up. --force and non-owner test
+  // recipients are unaffected; --autofix-only never reaches here.
+  if (!dryRun && sendTo && !autofixOnly && !args.force && process.env.GITHUB_ACTIONS !== 'true'
+      && String(sendTo).toLowerCase() === String(process.env.OWNER_EMAIL || '').toLowerCase()) {
+    const { actionOwnsToday, handoffDate } = require('./lib/digest-handoff.js');
+    if (actionOwnsToday()) {
+      console.log(`[digest] handoff: the GitHub Action sends the owner's digest from ${handoffDate()}; this machine does not. Nothing sent.`);
+      return;
+    }
   }
 
   const { sections, problems } = readAllSnapshots();
@@ -1685,7 +1704,7 @@ async function main() {
         : (parsed.to ? { [parsed.to]: parsed } : {});
     }
   } catch { /* no state yet */ }
-  if (!args.force) {
+  if (!args.force && !testSend) {
     const prev = sentState[sendTo];
     if (prev && prev.dayET === todayET) {
       console.error(`[digest] already sent to ${sendTo} today (ET ${todayET}, Resend id ${prev.id || '?'}) — refusing duplicate send. Use --dry-run to preview, or --force for a deliberate re-send.`);
@@ -1707,7 +1726,7 @@ async function main() {
     // (plan-review user-impact finding).
     from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
     to: [sendTo],
-    subject,
+    subject: testSend ? `TEST: ${subject}` : subject,
     html,
   });
   if (res.status < 200 || res.status >= 300) {
@@ -1718,6 +1737,11 @@ async function main() {
   // Tomorrow's "change since yesterday" reads this; a dry run never writes it.
   // The snapshot is the owner's baseline for the (+N) deltas: a test send to
   // another address must not move it.
+  if (testSend) {
+    console.log('[digest] test send: sent-state and board snapshot left untouched');
+    if (invariantViolations.length) process.exitCode = 1;
+    return;
+  }
   if (process.env.OWNER_EMAIL && sendTo === process.env.OWNER_EMAIL) saveBoardTableSnapshot(boardTable.report);
   try {
     sentState[sendTo] = { dayET: todayET, id: res.json?.id || null, at: new Date().toISOString() };

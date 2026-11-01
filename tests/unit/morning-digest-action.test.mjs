@@ -23,24 +23,28 @@ const cmp = require('../../scripts/morning-digest-compare.js');
 const WF = read('.github/workflows/morning-digest-action.yml');
 const steps = WF.split(/\n {6}- (?:name|uses):/).slice(1);
 
-test('digest workflow: committed schedule (both DST offsets), gated by ENABLE_FROM, no repo variable', () => {
+test('digest workflow: committed schedule (both DST offsets), gated by the handoff date, no repo variable', () => {
   assert.match(WF, /^ {2}workflow_dispatch:/m);
   const crons = [...WF.matchAll(/^ {4}- cron: '([^']+)'$/gm)].map((m) => m[1]);
   assert.deepEqual(crons, ['50 11 * * *', '50 12 * * *', '50 13 * * *']);
   assert.doesNotMatch(WF, /MORNING_DIGEST_ACTION_ENABLED|MAC_ALIVE_SIGNAL/);
-  assert.match(WF, /^ {2}ENABLE_FROM: '2026-11-04'$/m);
-  assert.match(WF, /run: node scripts\/lib\/digest-enable-gate\.js "\$ENABLE_FROM"/);
+  assert.doesNotMatch(WF, /ENABLE_FROM: '/, 'the date lives only in config/morning-digest-handoff.json');
+  assert.match(WF, /d=\$\(node -p "require\('\.\/scripts\/lib\/digest-handoff\.js'\)\.handoffDate\(\)"\)\n\s+node scripts\/lib\/digest-enable-gate\.js "\$d"/);
+  assert.match(WF, /^ {6}test:$/m);
   // A scheduled run sends only when the gate said go; dispatch sends only with send=true.
   assert.match(WF, /if: \(github\.event_name == 'schedule' && steps\.gate\.outputs\.go == 'true'\) \|\| \(github\.event_name == 'workflow_dispatch' && inputs\.send\)/);
 });
 
-test('digest workflow: ENABLE_FROM is not before the day the reconciler boots the Mac job out', () => {
+test('digest workflow: handoff date precedes the bootout and the Mac sender honours it', () => {
   const { RETIRE_GRACE_DAYS } = require('../../scripts/lib/mac-retired-reconciler.js');
   const entry = JSON.parse(read('config/mac-retired.json')).entries.find((e) => e.label === 'com.broadwayscore.morning-digest');
   assert.ok(entry, 'morning-digest must be retired');
   const bootout = new Date(Date.parse(`${entry.retiredAt}T00:00:00Z`) + RETIRE_GRACE_DAYS * 86400e3).toISOString().slice(0, 10);
-  const from = WF.match(/ENABLE_FROM: '(\d{4}-\d{2}-\d{2})'/)[1];
-  assert.ok(from >= bootout, `ENABLE_FROM ${from} precedes the bootout day ${bootout}: the Mac and the Action could both send`);
+  // Handoff is deliberately BEFORE the bootout: the Mac sender no-ops from handoffDate (digest-handoff.js),
+  // so the bootout is housekeeping. Pin that the Mac side really honours the same date.
+  const from = handoff.handoffDate();
+  assert.ok(from < bootout, `handoff ${from} should precede the bootout ${bootout} (Mac no-op covers the gap)`);
+  assert.match(read('scripts/send-morning-digest.js'), /actionOwnsToday\(\)/);
   assert.ok(entry.replacedBy.some((r) => r.includes('.github/workflows/morning-digest-action.yml')));
   assert.deepEqual(entry.watchers.map((w) => w.conditionKey).sort(), ['mac:checkin-heartbeat-dead', 'mac:morning-digest-missing']);
 });
@@ -49,7 +53,8 @@ test('digest workflow: the only send is owner-only, guarded, report-only; never 
   const code = WF.replace(/^\s*#.*$/gm, '');
   assert.doesNotMatch(code, /--send-to [^-]|broadcasts|--force/);
   assert.equal(code.match(/--send-to-owner/g).length, 1);
-  assert.match(WF, /send-morning-digest\.js --send-to-owner --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
+  assert.match(WF, /send-morning-digest\.js --send-to-owner --no-autofix --skip-mac-local \$MODE \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
+  assert.match(WF, /MODE="--resend-sent-guard"/);
   assert.match(WF, /send-morning-digest\.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   // Already sent (exit 3) is green; every other nonzero stays red.
   assert.match(WF, /if \[ "\$status" -eq 3 \]; then[^\n]*exit 0; fi\n/);
@@ -96,19 +101,21 @@ test('pager script: heartbeat is the default signal and uses its own, allowliste
 
 // ── scheduled-send gate ─────────────────────────────────────────────────────
 const gate = require('../../scripts/lib/digest-enable-gate.js');
+const handoff = require('../../scripts/lib/digest-handoff.js');
 test('gate: refuses before ENABLE_FROM, before 07:45 ET, and on a bad date; sends in both DST seasons', () => {
-  const d = (iso) => gate.decideScheduledSend({ now: new Date(iso), enableFrom: '2026-11-04' });
-  assert.equal(d('2026-11-03T12:50:00Z').go, false, 'day before: Mac may still send');
-  assert.equal(d('2026-11-04T11:50:00Z').go, false, 'EST 06:50 is early');
-  assert.equal(d('2026-11-04T12:50:00Z').go, true, 'EST 07:50');
-  assert.equal(d('2026-11-04T13:50:00Z').go, true, 'EST retry');
+  const d = (iso) => gate.decideScheduledSend({ now: new Date(iso), enableFrom: handoff.handoffDate() });
+  assert.equal(handoff.handoffDate(), '2026-11-02');
+  assert.equal(d('2026-11-01T12:50:00Z').go, false, 'day before: Mac still sends');
+  assert.equal(d('2026-11-02T11:50:00Z').go, false, 'EST 06:50 is early');
+  assert.equal(d('2026-11-02T12:50:00Z').go, true, 'EST 07:50');
+  assert.equal(d('2026-11-02T13:50:00Z').go, true, 'EST retry');
   assert.equal(d('2027-07-01T11:50:00Z').go, true, 'EDT 07:50');
   assert.equal(d('2027-07-01T10:50:00Z').go, false);
   for (const bad of [undefined, '', '2026-13-45', 'tomorrow']) assert.equal(gate.decideScheduledSend({ now: new Date('2027-01-01T13:00:00Z'), enableFrom: bad }).go, false, String(bad));
 });
 
 // ── --autofix-only ──────────────────────────────────────────────────────────
-test('autofix-only: never sends, keeps autofix live; plist runs it only from ENABLE_FROM', () => {
+test('autofix-only: never sends, keeps autofix live; plist runs it only from the handoff day', () => {
   const src = read('scripts/send-morning-digest.js');
   assert.match(src, /autofixShouldDryRun\(\{ dryRun: !!args\['dry-run'\],/);
   assert.match(src, /--autofix-only never sends/);
@@ -117,9 +124,9 @@ test('autofix-only: never sends, keeps autofix live; plist runs it only from ENA
   const plist = read('scripts/launchd/com.broadwayscore.digest-autofix.plist');
   assert.match(plist, /exec node scripts\/send-morning-digest\.js --autofix-only/);
   assert.doesNotMatch(plist, /--send-to/);
-  assert.match(plist, /"2026-11-03"/);
-  const from = WF.match(/ENABLE_FROM: '(\d{4}-\d{2}-\d{2})'/)[1];
-  assert.equal(new Date(Date.parse(`${from}T00:00:00Z`) - 86400e3).toISOString().slice(0, 10), '2026-11-03');
+  const from = handoff.handoffDate();
+  const dayBefore = new Date(Date.parse(`${from}T00:00:00Z`) - 86400e3).toISOString().slice(0, 10);
+  assert.ok(plist.includes(`"${dayBefore}"`), `plist must refuse through ${dayBefore}`);
 });
 
 // ── require graph: the workflow skips npm ci ────────────────────────────────
@@ -334,4 +341,26 @@ test('report-only email says no fix was started; the Mac email keeps its queued 
 test('pager: heartbeat step runs even when the digest check went red', () => {
   const pager = read('.github/workflows/check-morning-digest-sent.yml');
   assert.match(pager, /name: Check the Mac heartbeat[^\n]*\n {8}if: always\(\)/);
+});
+
+// ── handoff + test-send (BRO-6764) ──────────────────────────────────────────
+test('handoff: one date, Mac no-ops on and after it, before it the Mac sends', () => {
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'handoff-')), 'h.json');
+  fs.writeFileSync(f, JSON.stringify({ handoffDate: '2026-11-02' }));
+  assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T05:00:00Z'), f), true, '05:00Z = 00:00 EST of 11-02');
+  assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T04:59:00Z'), f), false);
+  assert.equal(handoff.actionOwnsToday(new Date('2026-11-02T12:33:00Z'), f), true, 'Mac 07:30 ET slot is a no-op');
+  assert.equal(handoff.actionOwnsToday(new Date('2026-11-01T12:33:00Z'), f), false);
+  fs.writeFileSync(f, JSON.stringify({ handoffDate: 'soon' }));
+  assert.throws(() => handoff.handoffDate(f));
+});
+
+test('test-send: TEST subject, no guards, no sent-state or snapshot write', () => {
+  const src = read('scripts/send-morning-digest.js');
+  assert.match(src, /subject: testSend \? `TEST: \$\{subject\}` : subject,/);
+  assert.match(src, /resendSentGuard = !!args\['resend-sent-guard'\] && !testSend/);
+  assert.match(src, /if \(!args\.force && !testSend\) \{\n\s+const prev = sentState\[sendTo\]/);
+  const iTest = src.indexOf("sent-state and board snapshot left untouched");
+  assert.ok(iTest > 0 && iTest < src.indexOf('saveBoardTableSnapshot(boardTable.report)'));
+  assert.match(WF, /if \[ "\$IS_TEST" = "true" \]; then MODE="--test-send"; else MODE="--resend-sent-guard"; fi/);
 });
