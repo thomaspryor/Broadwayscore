@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-01T10:51:06.680Z",
+    "generatedAt": "2026-11-01T15:47:35.712Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 373,
+  "totalGaps": 374,
   "errorSeverity": 261,
-  "warningSeverity": 112,
+  "warningSeverity": 113,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -2679,6 +2679,15 @@
       "gap": 32,
       "ratio": 0.2,
       "severity": "error"
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "category": "broadway",
+      "expected": 59,
+      "extracted": 48,
+      "gap": 11,
+      "ratio": 0.81,
+      "severity": "warning"
     },
     {
       "showId": "the-great-gatsby-2024",
