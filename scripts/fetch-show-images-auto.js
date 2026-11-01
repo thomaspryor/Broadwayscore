@@ -310,6 +310,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
 
   // Candidate source URLs, best-first.
   const sources = [];
+  if (venueEntry && venueEntry.pageUrls) for (const url of venueEntry.pageUrls(show)) sources.push({ url, label: 'venue page' });
   if (venueEntry && venueEntry.domain) {
     try {
       // Quoted first, then unquoted: Google returns nothing for some exact-title queries (BRO-6771).
@@ -332,6 +333,7 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
       const ogImage = extractOgImage(html, src.url);
       if (!ogImage) { console.log(`   ⚠ no og:image on ${src.label}`); continue; }
       console.log(`   Regional source (${src.label}): ${ogImage.slice(0, 90)}`);
+      if (venueEntry && venueEntry.genericImage && venueEntry.genericImage.test(ogImage)) { console.log(`   ⚠ ${src.label} og:image is the venue's generic photo`); continue; }
       if (isRejectedImage({ poster: ogImage }, show)) { console.log('   ✗ og:image is in this show\'s rejectedImageUrls'); continue; }
       const buffer = await downloadImageDirect(ogImage);
       const meta = await sharpLib(buffer).metadata();
