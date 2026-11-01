@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T14:07:46.997Z",
+  "generatedAt": "2026-11-01T14:29:25.103Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,31 +9,31 @@
       "category": "off-broadway",
       "type": "opera",
       "openingDate": "2026-11-01",
-      "status": "upcoming",
+      "status": "open",
       "slug": "tosca-off-broadway",
       "thumbnail": "/images/shows/tosca-off-broadway-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 89,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
       "t2": 0,
-      "t3": 0,
-      "positive": 0,
+      "t3": 1,
+      "positive": 1,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "1/12 total",
           "T1:0/3",
           "T2:0/3",
-          "hi-conf:0/8"
+          "hi-conf:1/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -341,6 +341,10 @@
           "isDualMarket": false
         },
         {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
           "name": "LondonTheatre1",
           "isDualMarket": false
         },
@@ -368,6 +372,20 @@
           "name": "The Tennessean",
           "isDualMarket": false
         }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-01T14:29:25.103Z",
+          "rc": 1,
+          "s": 89,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        }
       ]
     },
     {
@@ -377,7 +395,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-01",
-      "status": "previews",
+      "status": "open",
       "slug": "msblackforpresident",
       "thumbnail": "/images/shows/msblackforpresident-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -753,7 +771,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-01",
-      "status": "previews",
+      "status": "open",
       "slug": "the-blue-violinist-over-west-end-avenue-off-broadway",
       "thumbnail": "/images/shows/the-blue-violinist-over-west-end-avenue-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,

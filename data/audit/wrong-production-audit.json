@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T14:07:26.393Z",
+  "timestamp": "2026-11-01T14:29:05.080Z",
   "stats": {
-    "totalReviews": 78352,
-    "alreadyFlagged": 21779,
+    "totalReviews": 78364,
+    "alreadyFlagged": 21769,
     "dateGuardCatches": 242,
-    "directorMismatch": 3354,
-    "tvFilmSignals": 2229,
+    "directorMismatch": 3355,
+    "tvFilmSignals": 2231,
     "londonSignals": 3553,
     "offBroadwaySignals": 731,
     "yearMismatch": 332,
-    "noPublishDate": 8602
+    "noPublishDate": 8564
   },
   "findings": [
     {
@@ -66811,6 +66811,19 @@
       ]
     },
     {
+      "showId": "the-jigsaw-bride-regional-2021",
+      "file": "chicago-reader--catey-sullivan.json",
+      "publishDate": "2021-10-21",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/putting-the-pieces-together-in-first-folios-the-jigsaw-bride/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "cititour--brian-scott-lipton.json",
       "score": 91,
@@ -72018,6 +72031,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "the-school-for-scandal-royal-shakespeare-regional-2024",
+      "file": "guardian--arifa-akbar.json",
+      "score": 49,
+      "publishDate": "2024-07-10",
+      "url": "https://www.theguardian.com/stage/article/2024/jul/10/the-school-for-scandal-review-royal-shakespeare-theatre-stratford-upon-avon",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -81192,6 +81219,19 @@
       "score": 76,
       "publishDate": "2021-12-10",
       "url": "https://chicagotheaterandarts.com/2021/12/10/grab-a-handful-of-peanuts/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from youre-a-good-man-charlie-brown-1999"
+        }
+      ]
+    },
+    {
+      "showId": "youre-a-good-man-charlie-brown-regional-2021",
+      "file": "daily-herald--barbara-vitello.json",
+      "publishDate": "2021-11-26",
+      "url": "https://www.dailyherald.com/entlife/20211126/citadels-youre-a-good-man-charlie-brown-has-appeal-especially-for-young-audience-members",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
