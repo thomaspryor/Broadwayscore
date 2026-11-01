@@ -403,6 +403,26 @@ async function processShow(showId, deps = {}) {
       kept++;
       continue;
     }
+    // BRO-6321: an rss-discovery stub whose headline AND url slug do not name the
+    // show (celebrity-baby news filed under the musical "Baby") is junk, not a
+    // stuck review. Tag it like the sweep does so it never reaches the alert.
+    if (data.source === 'rss-discovery' && show?.title) {
+      const { titleMatchesShow, urlSlugMatchesShow } = require('./lib/rss-discovery');
+      const identityOk = (data.title && titleMatchesShow(data.title, show.title))
+        || (data.articleTitle && titleMatchesShow(data.articleTitle, show.title))
+        || urlSlugMatchesShow(data.url, show.title);
+      if (!identityOk) {
+        console.log(`  [${file}] rss identity reject (no title/slug match to "${show.title}") — tagged, not a stuck review`);
+        if (!dry) {
+          data.rssIdentityRejected = true;
+          data.rssIdentityRejectedReason = 'no title/slug match to show at replay (BRO-6321)';
+          data.rssIdentityRejectedAt = now().toISOString();
+          try { fs.writeFileSync(filepath, JSON.stringify(data, null, 2)); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+        }
+        kept++;
+        continue;
+      }
+    }
     const url = data.url;
     if (!url) {
       console.log(`  [${file}] no URL — skip`);

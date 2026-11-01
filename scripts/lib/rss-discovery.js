@@ -358,6 +358,8 @@ function urlSlugMatchesShow(url, showTitle, opts = {}) {
   if (significantWords.length <= 1) {
     const phrase = normalize(showTitle);
     if (!phrase) return false;
+    // BRO-6321: bare generic titles ("Baby") need more than the word in the slug.
+    if (!passesGenericTitleIdentity(url, showTitle)) return false;
     return (' ' + normalize(slugText) + ' ').includes(' ' + phrase + ' ');
   }
   return titleMatchesShow(slugText, showTitle, opts);
