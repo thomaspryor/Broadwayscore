@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T19:00:47.075Z",
+  "generatedAt": "2026-11-01T19:28:49.777Z",
   "windowDays": 45,
   "showsScanned": 227,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 169.13563638888888,
+      "fileAgeHours": 169.60333,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 154.59186305555556,
+      "nonTerminalAgeHours": 155.05928055555555,
       "needsManualRecovery": true
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 197.65534805555555,
+      "fileAgeHours": 198.123025,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 183.70375444444446,
+      "nonTerminalAgeHours": 184.17117194444444,
       "needsManualRecovery": true
     },
     {
@@ -60,9 +60,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-imaginary-invalid-2026 --url=https://www.thewrap.com/creative-content/theater/the-imaginary-invalid-broadway-review-bill-irwin/ --outlet=thewrap --critic=\"Robert Hofler\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-23T02:57:17.702Z",
-      "fileAgeHours": 232.05733138888888,
+      "fileAgeHours": 232.52492972222223,
       "gapSeenAt": "2026-11-01T18:06:26.493Z",
-      "nonTerminalAgeHours": 0.9057169444444444,
+      "nonTerminalAgeHours": 1.3731344444444444,
       "needsManualRecovery": false
     }
   ],

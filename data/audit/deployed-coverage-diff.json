@@ -1,112 +1,13 @@
 {
-  "generatedAt": "2026-11-01T19:01:13.891Z",
+  "generatedAt": "2026-11-01T19:29:12.622Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 311,
-  "clean": 305,
-  "defective": 6,
-  "byType": {
-    "score-drift": 6
-  },
-  "shows": [
-    {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "openingDate": "2026-10-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.34 vs local 76.68 (Δ2.34)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-01T19:01:08.341Z"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.2 vs local 76.82 (Δ0.38)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-01T19:01:08.341Z"
-    },
-    {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "openingDate": "2026-10-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.94 vs local 73.98 (Δ0.96)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-01T19:01:08.341Z"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76.66 vs local 76.17 (Δ0.49)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 16,
-      "firstDefectAt": "2026-11-01T19:01:08.341Z"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.38 vs local 73.49 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 35,
-      "deployedCount": 35,
-      "firstDefectAt": "2026-11-01T19:01:08.341Z"
-    },
-    {
-      "showId": "matilda-the-musical-west-end-2021",
-      "title": "Matilda The Musical",
-      "openingDate": "2011-11-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 89.99 vs local 89.35 (Δ0.64)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 17,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-01T19:01:08.341Z"
-    }
-  ],
+  "clean": 311,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
