@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T05:50:51.580Z",
+  "timestamp": "2026-11-01T06:09:50.940Z",
   "stats": {
-    "totalReviews": 77972,
-    "alreadyFlagged": 21726,
+    "totalReviews": 78020,
+    "alreadyFlagged": 21725,
     "dateGuardCatches": 241,
     "directorMismatch": 3313,
-    "tvFilmSignals": 2206,
+    "tvFilmSignals": 2207,
     "londonSignals": 3535,
     "offBroadwaySignals": 727,
     "yearMismatch": 327,
-    "noPublishDate": 9137
+    "noPublishDate": 9160
   },
   "findings": [
     {
@@ -3649,6 +3649,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "alaiyo-regional-2023",
+      "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 78,
+      "publishDate": "2023-02-07",
+      "url": "https://www.letsplaytheatricalreview.com/blog/alaiyo",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"web series\""
         }
       ]
     },
@@ -80024,6 +80038,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "around-the-town-chicago--alan-bresloff.json",
+      "score": 75,
       "publishDate": null,
       "url": "http://www.aroundthetownchicago.com/theatre-reviews/wise-childrens-wuthering-heights/",
       "findings": [
@@ -80037,6 +80052,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "chi-mt--quinn-rigg.json",
+      "score": 63,
       "publishDate": "2023-02-03",
       "url": "https://www.chi-mt.com/reviews/chicago-shakes-wuthering-heights-cot-albert-herring-feb-23",
       "findings": [
@@ -80050,6 +80066,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "chicago-sun-times--catey-sullivan.json",
+      "score": 19,
       "publishDate": "2023-01-30",
       "url": "https://chicago.suntimes.com/2023/1/30/23577989/wuthering-heights-review-chicago-shakespeare-theater-emily-bronte",
       "findings": [
@@ -80063,6 +80080,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "chicagostageandscreen--angela-allyn.json",
+      "score": 79,
       "publishDate": "2023-01-31",
       "url": "https://www.chicagostageandscreen.com/post/a-new-look-at-wuthering-heights",
       "findings": [
@@ -80076,6 +80094,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "letsplaytheatricalreview--rick-mccain.json",
+      "score": 62,
       "publishDate": "2023-01-30",
       "url": "https://www.letsplaytheatricalreview.com/blog/wuthering-heights",
       "findings": [
@@ -80089,6 +80108,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "new-city-stage--amanda-finn.json",
+      "score": 77,
       "publishDate": "2023-02-02",
       "url": "https://www.newcitystage.com/2023/02/02/an-examination-of-trauma-a-review-of-wuthering-heights-at-chicago-shakespeare-theater/",
       "findings": [
@@ -80102,6 +80122,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "picture-this-post--anthony-neri.json",
+      "score": 89,
       "publishDate": "2023-01-30",
       "url": "https://www.picturethispost.com/chicago-shakespeare-hosts-wise-childrens-wuthering-heights-review/",
       "findings": [
@@ -80115,6 +80136,7 @@
     {
       "showId": "wuthering-heights-regional-2023",
       "file": "thefourthwalsh--katy-walsh.json",
+      "score": 77,
       "publishDate": "2023-02-03",
       "url": "https://thefourthwalsh.com/2023/02/review-wuthering-heights-chicago-shakespeare-theater-storytelling-captivates/",
       "findings": [
