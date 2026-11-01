@@ -513,6 +513,37 @@
     "queuedAt": "2026-11-01T14:46:33.494Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41318671234",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41318671234)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41315392149)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "4"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "E2E Tests"
+      }
+    ],
+    "queuedAt": "2026-11-01T15:22:51.017Z"
+  },
+  {
     "conditionKey": "land:land/morning-digest-cutover",
     "title": "Landing blocked: unit-tests-node red on land/morning-digest-cutover",
     "description": "land.yml did not land land/morning-digest-cutover: the unit-tests-node gate went red at 4e2f90ad41. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41317297367",
