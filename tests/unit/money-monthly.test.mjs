@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const L = require('../../scripts/money-monthly/lib.js');
 const { renderHtml } = require('../../scripts/money-monthly/render.js');
-const { planAudienceSync } = require('../../scripts/money-monthly/audience.js');
+const { planAudienceSync, readAllContactPages } = require('../../scripts/money-monthly/audience.js');
 
 const show = (o) => ({ market: 'broadway', status: 'open', type: 'musical', ...o });
 const W = { start: '2026-10-01', end: '2026-10-31', label: 'October', monthKey: '2026-10', catchup: false };
@@ -118,4 +118,23 @@ test('with a baseline, a brand-new production with a disclosed capitalization co
   const shows = [{ slug: 'newshow', title: 'New Show', market: 'broadway', status: 'open' }];
   const issue = L.buildIssue({ commercial, shows, snapshot: {}, window: L.resolveWindow({ today: '2026-10-02', month: '2026-09' }) });
   assert.equal(issue.sections.capitalization.length, 1);
+});
+
+test('readAllContactPages follows has_more so an unsubscribed contact on page 2 is never re-added', async () => {
+  const pages = [
+    { data: [{ id: 'a', email: 'x@e.com' }], has_more: true },
+    { data: [{ id: 'b', email: 'gone@e.com', unsubscribed: true }], has_more: false },
+  ];
+  const seen = [];
+  const all = await readAllContactPages(async (after) => { seen.push(after); return pages[seen.length - 1]; });
+  assert.deepEqual(seen, [null, 'a']);
+  assert.equal(all.length, 2);
+  const plan = planAudienceSync({ signups: [{ email: 'gone@e.com' }], general: [], existing: all });
+  assert.deepEqual(plan.toAdd, []);
+  await assert.rejects(readAllContactPages(async () => ({ data: [], has_more: true })), /empty/);
+});
+
+test('sync-audience never posts unsubscribed:false', () => {
+  const src = require('node:fs').readFileSync(new URL('../../scripts/money-monthly/sync-audience.mjs', import.meta.url), 'utf8');
+  assert.doesNotMatch(src, /unsubscribed:\s*false/);
 });

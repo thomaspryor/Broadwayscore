@@ -22,4 +22,19 @@ function planAudienceSync({ signups, general, existing }) {
   return { toAdd, inGeneral, alreadyThere, skipped };
 }
 
-module.exports = { planAudienceSync, norm };
+// Reads every page of a Resend contacts list. fetchPage(after) resolves to
+// { data, has_more }. Throws rather than return a partial list.
+async function readAllContactPages(fetchPage, maxPages = 500) {
+  const out = []; let after = null;
+  for (let i = 0; i < maxPages; i++) {
+    const j = await fetchPage(after);
+    const data = (j && j.data) || [];
+    out.push(...data);
+    if (!j || !j.has_more) return out;
+    if (!data.length) throw new Error('contacts page said has_more but was empty');
+    after = data[data.length - 1].id;
+  }
+  throw new Error('contacts read exceeded page cap');
+}
+
+module.exports = { planAudienceSync, readAllContactPages, norm };
