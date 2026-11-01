@@ -1,28 +1,8 @@
 {
-  "generatedAt": "2026-11-01T15:05:39.659Z",
+  "generatedAt": "2026-11-01T15:29:05.864Z",
   "windowDays": 45,
   "showsScanned": 212,
   "gaps": [
-    {
-      "showId": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
-      "openingDate": "2026-10-19",
-      "file": "hollywood-reporter--caitlin-huston.json",
-      "outletId": "hollywood-reporter",
-      "tier": 1,
-      "type": "rejected-unscoreable",
-      "recoverable": false,
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dua-lipa-amy-poehler-bowen-yang-lincoln-in-the-bardo-opera-1236736336/",
-      "recovery": null,
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=lincoln-in-the-bardo-off-broadway-2026 --url=https://www.hollywoodreporter.com/lifestyle/arts/dua-lipa-amy-poehler-bowen-yang-lincoln-in-the-bardo-opera-1236736336/ --outlet=hollywood-reporter --critic=\"Caitlin Huston\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-21T07:33:46.472Z",
-      "fileAgeHours": 271.52963027777776,
-      "gapSeenAt": "2026-11-01T04:55:58.847Z",
-      "nonTerminalAgeHours": 10.161336666666667,
-      "needsManualRecovery": false
-    },
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
       "title": "Lincoln in the Bardo",
@@ -39,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 165.21648944444445,
+      "fileAgeHours": 165.60664888888888,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 150.67313666666666,
+      "nonTerminalAgeHours": 151.06374916666667,
       "needsManualRecovery": false
     },
     {
@@ -60,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 193.73617833333333,
+      "fileAgeHours": 194.12633861111112,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 179.78502805555556,
+      "nonTerminalAgeHours": 180.17564055555556,
       "needsManualRecovery": true
     },
     {
@@ -80,12 +60,12 @@
         "ok": false,
         "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=manual-cinema-the-4th-witch-off-broadway-2026 --url=https://exeuntnyc.com/reviews/review-the-4th-witch-at-nyu-skirball-center/ --outlet=exeunt-magazine   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-01T14:49:05.153Z",
-      "fileAgeHours": 0.27583833333333335,
-      "gapSeenAt": "2026-11-01T15:05:39.659Z",
+      "fileAgeHours": 0.6664405555555556,
+      "gapSeenAt": "2026-11-01T15:29:05.864Z",
       "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     }

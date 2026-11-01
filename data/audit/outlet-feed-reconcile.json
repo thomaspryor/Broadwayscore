@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T15:05:58.670Z",
+  "generatedAt": "2026-11-01T15:29:29.688Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,6 +122,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
@@ -132,6 +136,10 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -150,7 +158,7 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 754,
+  "itemsScanned": 766,
   "matchedGaps": 8,
   "possibleGaps": 12,
   "gaps": [
