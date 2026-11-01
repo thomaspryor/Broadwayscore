@@ -170,6 +170,5 @@ module.exports = {
   decideRedispatches,
   shouldThrottle,
   DEFAULT_MAX_PER_SWEEP,
-  DEFAULT_MAX_PER_SWEEP,
   DEFAULT_SWEEP_BUCKET_MIN,
 };
