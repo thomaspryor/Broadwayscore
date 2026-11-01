@@ -431,9 +431,9 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41317886120",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41319512941",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -442,7 +442,7 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41317886120)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41319512941)"
       },
       {
         "name": "Previous failed run",
@@ -450,14 +450,14 @@
       },
       {
         "name": "Consecutive failures",
-        "value": "5"
+        "value": "6"
       },
       {
         "name": "Currently failing job(s)",
         "value": "E2E Tests"
       }
     ],
-    "queuedAt": "2026-11-01T15:24:42.797Z"
+    "queuedAt": "2026-11-01T15:33:56.870Z"
   },
   {
     "conditionKey": "land:land/morning-digest-cutover",
@@ -587,20 +587,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-01T15:28:44.646Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T15:29:05.865Z"
   },
   {
     "conditionKey": "land:land/bro-6769-gsc-opera",
