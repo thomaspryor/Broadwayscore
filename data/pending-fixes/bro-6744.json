@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6744",
   "planId": "1d2418ba-c2cd-4ce8-8dd8-a52d7072c16d",
-  "status": "partial",
+  "status": "pending",
   "createdAt": "2026-11-01T04:59:26.685Z",
   "submitter": {
     "name": null,
@@ -17,18 +17,9 @@
       {
         "type": "run-script",
         "description": "Split the La Voce di New York column (Hate Radio + The Tragedy of Coriolanus) at the Coriolanus listing header; Coriolanus gets its own section, Hate Radio keeps its own and is requeued for scoring",
-        "script": "scripts/split-multi-show-roundups.js",
+        "script": "split-multi-show-roundups.js",
         "args": "--show=hate-radio-off-broadway-2026 --file=la-voce-di-new-york--jk-clarke.json --scan-all --apply"
       }
     ]
-  },
-  "executedAt": "2026-11-01T08:32:38.393Z",
-  "results": [
-    {
-      "action": "run-script",
-      "ok": false,
-      "reason": "Script \"scripts/split-multi-show-roundups.js\" not in allowlist (name it \"split-multi-show-roundups.js\", without the scripts/ prefix)"
-    }
-  ],
-  "executedIn": "ci"
+  }
 }

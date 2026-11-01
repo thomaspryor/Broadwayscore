@@ -132,3 +132,12 @@ test('planShapeProblems: review-file-op moves need destPath, operations are know
   assert.deepEqual(planShapeProblems('bro-9.json', plan([{ type: 'review-file-op', operation: 'restore', sourcePath: 'a-2026/x.json' }])), []);
   assert.match(planShapeProblems('bro-9.json', plan([{ type: 'review-file-op', operation: 'remove', sourcePath: 'a-2026/x.json' }]))[0], /not one of delete, move, rename, restore/);
 });
+
+test('planShapeProblems: run-script names must be on the executor allowlist by bare name (BRO-6744)', () => {
+  const rs = (script) => ({ issueNumber: 'bro-1', planId: 'x', status: 'pending', plan: { actions: [{ type: 'run-script', script, args: '--apply' }] } });
+  assert.deepEqual(planShapeProblems('bro-1.json', rs('split-multi-show-roundups.js')), []);
+  assert.deepEqual(planShapeProblems('bro-1.json', rs('scripts/split-multi-show-roundups.js')), [
+    'bro-1.json: run-script Script "scripts/split-multi-show-roundups.js" not in allowlist (name it "split-multi-show-roundups.js", without the scripts/ prefix)',
+  ]);
+  assert.equal(planShapeProblems('bro-1.json', rs('not-a-real-script.js')).length, 1);
+});

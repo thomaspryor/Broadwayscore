@@ -10,6 +10,7 @@ const path = require('path');
 const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits.js');
 const { internalWordingIn, PUBLIC_TEXT_FIELDS } = require('./commercial-record-checks.js');
 const { planStatusAction, DONE_STATUSES } = require('./plan-status.js');
+const { runScriptAllowProblem } = require('./run-script-allowlist.js');
 
 const REVIEW_FILE_OPS = new Set(['delete', 'move', 'rename', 'restore']);
 const isPending = (plan) => Boolean(plan) && plan.status === 'pending';
@@ -57,6 +58,12 @@ function planShapeProblems(name, plan) {
   // 'partial' (BRO-5843).
   const stamped = new Map(); // `${showId}|${sourceField}` -> stamped value
   for (const a of actions) {
+    // The executor refuses a run-script it does not allowlist by bare name; a
+    // "scripts/x.js" name landed and was refused only at apply time (BRO-6744).
+    if (a && a.type === 'run-script') {
+      const notAllowed = runScriptAllowProblem(a.script);
+      if (notAllowed) problems.push(`${name}: run-script ${notAllowed}`);
+    }
     // review-file-op paths are relative to the review-texts tree; the
     // data/review-texts/ prefix is refused as "Source not found" (BRO-5853).
     if (a && a.type === 'review-file-op') {
