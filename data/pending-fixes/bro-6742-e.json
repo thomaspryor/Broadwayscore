@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6742-e",
   "planId": "4b90ba1c-be1b-4e3e-bfe4-7b294c8f4d1e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T03:35:32.088Z",
   "submitter": {
     "name": null,
@@ -172,5 +172,99 @@
         "args": "--show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --url=https://twi-ny.com/2026/10/04/in-honor-of-jean-michel-basquiat-roger-guenveur-smith-nytw/ --outlet=this-week-in-new-york --critic=\"Mark Rifkin\" --publish-date=2026-10-04"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T03:44:19.626Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/theater-scene--deb-miller.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "teeth-n-smiles-west-end-2026/artsdesk--aleks-sierz.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "marie-and-rosetta-west-end-2026/all-that-dazzles-uk--daz-gale.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "paranormal-activity-west-end-2025/whatsonstage--rachel-agyekum.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2026/standard--nick-curtis.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2026/standard--nick-curtis.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-unlikely-pilgrimage-of-harold-fry-west-end-2026/thestage--paul-vale.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-spy-who-came-in-from-the-cold-west-end-2025/whatsonstage--sarah-crompton.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-sorry-prime-minister-west-end-2026/artsdesk--helen-hawkins.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-sorry-prime-minister-west-end-2026/artsdesk--helen-hawkins.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran restore-released-quarantined-body.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
