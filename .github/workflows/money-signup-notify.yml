@@ -4,7 +4,7 @@ name: Money Signup Notify
 # Stateless: scripts/money-signup-notify.js emails rows newer than a baked-in
 # seed and younger than 20h; Resend's 24h Idempotency-Key stops repeats. A gap
 # in runs longer than 20h loses those rows (the BSC Daily digest still counts
-# them). Max 5 emails per run plus one summary. Never emails the sign-ups.
+# them). More than 10 fresh rows at once go out as one digest email. Never emails the sign-ups.
 # No git writes. Dispatch with test_email=true to send one sample to the owner.
 on:
   schedule:
@@ -41,3 +41,9 @@ jobs:
           TEST_EMAIL: ${{ inputs.test_email }}
         run: |
           if [ "$TEST_EMAIL" = "true" ]; then node scripts/money-signup-notify.js --test-email; else node scripts/money-signup-notify.js; fi
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Money Signup Notify Failed'
+          severity: 'warning'

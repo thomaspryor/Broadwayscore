@@ -3,7 +3,7 @@
 // BRO-6763: email the owner (only) about each new Profitability Scorecard
 // sign-up. Logic in lib/money-signup-notify.js. Never prints addresses.
 // Flags: --dry-run (print counts, send nothing), --test-email (send one sample to the owner).
-const { planNotifications, buildSignupEmail } = require('./lib/money-signup-notify');
+const { planNotifications, buildSignupEmail, buildDigestEmail } = require('./lib/money-signup-notify');
 
 const DRY = process.argv.includes('--dry-run');
 const TEST = process.argv.includes('--test-email');
@@ -29,14 +29,15 @@ async function readAll(url, key) {
 async function main() {
   const { NEXT_PUBLIC_SUPABASE_URL: url, SUPABASE_SERVICE_ROLE_KEY: key } = process.env;
   if (!url || !key) throw new Error('NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY not set');
+  // sendEmailAlert returns false (no throw) without these: fail on quiet days too.
+  if (!DRY && (!process.env.RESEND_API_KEY || !process.env.OWNER_EMAIL)) throw new Error('RESEND_API_KEY / OWNER_EMAIL not set');
   const rows = await readAll(url, key);
   const plan = planNotifications(rows, { secret: key });
-  console.log(`rows=${rows.length} real=${plan.total} to_send=${plan.send.length} deferred=${plan.deferred}`);
+  console.log(`rows=${rows.length} real=${plan.total} to_send=${plan.send.length} digest=${plan.digest ? plan.digest.items.length : 0}`);
   const { sendEmailAlert } = require('./lib/discord-notify');
   const out = [];
   if (TEST) {
-    const newest = rows.filter(r => r.email).slice(-1)[0];
-    out.push({ row: { ...newest, email: 'sample-signup@example.com' }, ordinal: plan.total, key: `money-signup-test:${Date.now()}`, test: true });
+    out.push({ row: { email: 'sample-signup@example.com', role: 'fan', first_page: 'biz-season:/biz/season/2026-2027', signup_count: 1, created_at: new Date().toISOString() }, ordinal: plan.total + 1, key: `money-signup-test:${Date.now()}`, test: true });
   } else out.push(...plan.send);
   let failed = 0;
   for (const item of out) {
@@ -46,10 +47,10 @@ async function main() {
     const ok = await sendEmailAlert({ title: item.test ? `[TEST] ${subject}` : subject, description: '', severity: 'error', subjectLabel: '', html, idempotencyKey: item.key });
     if (!ok) { failed++; console.error(`send failed for ordinal ${item.ordinal}`); } else console.log(`sent: ${subject}`);
   }
-  if (plan.deferred && !DRY && !TEST) {
-    const hour = new Date().toISOString().slice(0, 13);
-    const ok = await sendEmailAlert({ title: `${plan.deferred} more Profitability Scorecard sign-ups waiting`, description: 'Over the per-run cap; they are emailed on the next runs. Check the admin sign-ups page.', severity: 'error', subjectLabel: '', idempotencyKey: `money-signup-summary:${hour}` });
-    if (!ok) failed++;
+  if (plan.digest && !DRY && !TEST) {
+    const { subject, html } = buildDigestEmail(plan.digest, plan.total);
+    const ok = await sendEmailAlert({ title: subject, description: '', severity: 'error', subjectLabel: '', html, idempotencyKey: plan.digest.key });
+    if (!ok) failed++; else console.log(`sent digest of ${plan.digest.items.length}`);
   }
   // false from sendEmailAlert also means missing RESEND_API_KEY / OWNER_EMAIL: fail loudly.
   if (failed) process.exit(1);

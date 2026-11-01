@@ -16,7 +16,7 @@ const { isOwnerTestEmail } = require('./admin-money-signups');
 // Newest sign-up that existed when this was built (44 rows): never emailed.
 const SEED = '2026-10-30T23:25:33.639794+00:00';
 const WINDOW_MS = 20 * 60 * 60 * 1000;
-const MAX_PER_RUN = 5;
+const MAX_PER_RUN = 10;
 
 function rowKey(row, secret) {
   // Logs of this public repo print the key, so never derive it from the bare email.
@@ -26,8 +26,13 @@ function rowKey(row, secret) {
 
 /**
  * rows: every table row (email, created_at, role, first_page, signup_count).
- * Returns { send: [{row, ordinal, key}], deferred: n } where ordinal is the
- * 1-based running total at that row (owner test addresses excluded).
+ * Returns { send, digest, total }. Up to `cap` fresh rows: send = one email each.
+ * More than `cap` (a burst, likely abuse): send = [] and digest = all of them,
+ * emailed once; digestKey changes only when the set of rows changes, so a
+ * repeat run over the same set is deduped. (Stateless code cannot tell which
+ * rows an earlier run sent, so "first N now, rest later" would resend the
+ * first N and strand the rest.) ordinal = 1-based running total at that row,
+ * owner test addresses excluded.
  */
 function planNotifications(rows, { now = new Date(), seed = SEED, windowMs = WINDOW_MS, cap = MAX_PER_RUN, secret } = {}) {
   const real = rows
@@ -40,7 +45,9 @@ function planNotifications(rows, { now = new Date(), seed = SEED, windowMs = WIN
     const t = Date.parse(row.created_at);
     if (t > since && t <= new Date(now).getTime()) fresh.push({ row, ordinal: i + 1, key: rowKey(row, secret) });
   });
-  return { send: fresh.slice(0, cap), deferred: Math.max(0, fresh.length - cap), total: real.length };
+  if (fresh.length <= cap) return { send: fresh, digest: null, total: real.length };
+  const digestKey = 'money-signup-digest:' + crypto.createHash('sha256').update(fresh.map(f => f.key).join('|')).digest('hex').slice(0, 24);
+  return { send: [], digest: { items: fresh, key: digestKey }, total: real.length };
 }
 
 function esc(s) {
@@ -60,4 +67,12 @@ function buildSignupEmail({ row, ordinal }, total) {
   return { subject, html };
 }
 
-module.exports = { SEED, WINDOW_MS, MAX_PER_RUN, rowKey, planNotifications, buildSignupEmail };
+function buildDigestEmail({ items }, total) {
+  const subject = `${items.length} new Profitability Scorecard sign-ups at once`;
+  const li = items.map(({ row, ordinal }) => `<li>#${ordinal} ${esc(row.email)} (${esc(row.role || 'no role')}, ${esc(row.created_at)})</li>`).join('');
+  const html = `<div style="font-family:system-ui,sans-serif;max-width:600px"><h2>${esc(subject)}</h2><p>Over the per-run cap, so sent as one email. ${total} sign-ups now.</p><ul>${li}</ul>` +
+    '<p style="color:#999;font-size:12px">Owner-only notification. These people were not emailed.</p></div>';
+  return { subject, html };
+}
+
+module.exports = { buildDigestEmail, SEED, WINDOW_MS, MAX_PER_RUN, rowKey, planNotifications, buildSignupEmail };

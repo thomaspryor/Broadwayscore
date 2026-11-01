@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { planNotifications, buildSignupEmail, rowKey } = require('../../scripts/lib/money-signup-notify.js');
+const { planNotifications, buildSignupEmail, buildDigestEmail, rowKey } = require('../../scripts/lib/money-signup-notify.js');
 
 const NOW = new Date('2026-11-02T12:00:00Z');
 const row = (email, iso, extra = {}) => ({ email, created_at: iso, role: 'fan', first_page: 'biz-season:/biz/season', signup_count: 1, ...extra });
@@ -30,11 +30,15 @@ test('ties on created_at break by email and ordinals stay distinct', () => {
   const p = planNotifications([row('b@x.com', t), row('a@x.com', t)], { now: NOW, seed });
   assert.deepEqual(p.send.map(s => [s.row.email, s.ordinal]), [['a@x.com', 1], ['b@x.com', 2]]);
 });
-test('per-run cap defers the rest', () => {
+test('a burst over the cap becomes one digest with a set-stable key', () => {
   const rows = Array.from({ length: 8 }, (_, i) => row(`u${i}@x.com`, `2026-11-02T11:0${i}:00Z`));
   const p = planNotifications(rows, { now: NOW, seed, cap: 5 });
-  assert.equal(p.send.length, 5);
-  assert.equal(p.deferred, 3);
+  assert.equal(p.send.length, 0);
+  assert.equal(p.digest.items.length, 8);
+  assert.equal(planNotifications(rows, { now: NOW, seed, cap: 5 }).digest.key, p.digest.key);
+  const more = planNotifications([...rows, row('u9@x.com', '2026-11-02T11:09:00Z')], { now: NOW, seed, cap: 5 });
+  assert.notEqual(more.digest.key, p.digest.key);
+  assert.ok(buildDigestEmail(p.digest, 50).html.includes('u0@x.com'));
 });
 test('key is stable, hides the address, and changes per row', () => {
   const r = row('a@x.com', '2026-11-02T11:00:00Z');
