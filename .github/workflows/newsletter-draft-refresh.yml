@@ -36,10 +36,25 @@ name: Newsletter Draft Refresh (Sunday)
 # (overrides aren't persisted anywhere for a refresh to pick up). The "none"
 # recovery dispatch below has the same limitation for the same reason.
 
+# BRO-6775: owner wants fresh [DRAFT] preview emails Sunday 9am ET. GitHub
+# runs the cron below 3 to 5h late and cron is UTC only (9am ET moves between
+# 13:00 and 14:00 UTC with DST), so the 9am email is NOT driven by the cron.
+# An external Claude scheduled task ("Sunday 9am ET newsletter preview",
+# CRON_TZ=America/New_York 50 8 * * 0) dispatches this workflow with
+# sendPreview=1 (workflow_dispatch is punctual). The run-name below tags those
+# runs "(preview)" so the cron run can tell a preview already went out: the
+# late cron sends the preview itself ONLY when no successful "(preview)" run
+# happened in the last 12h (fallback if the scheduled task ever stops firing).
+# Previews are transactional sends to the owner (send-test.mjs), never a
+# broadcast, never /send.
+run-name: Newsletter Draft Refresh (Sunday)${{ github.event.inputs.sendPreview == '1' && ' (preview)' || '' }}
+
 on:
   schedule:
     # Sunday ~12:00 UTC — ahead of the owner's usual Sunday send, well after
     # the Saturday draft-creation crons (11:00 / 11:30 UTC) have landed.
+    # Silent refresh (PATCHes the draft). Emails a preview only as the
+    # fallback described above.
     - cron: '4 12 * * 0'
   workflow_dispatch:
     inputs:
@@ -55,6 +70,13 @@ on:
       # newsletter-draft.yml's allowGaps input. Do not "modernize" to boolean.
       allowGaps:
         description: "Set to 1 to keep featured openings whose reviews are uncollected (skips the coverage-gap swap). Empty = swap as usual."
+        required: false
+        default: ''
+      # String, NOT type:boolean, same '1'-or-empty convention as allowGaps
+      # above (and for the same reason: a boolean renders "true"/"false", never
+      # '1'). Do not "modernize" to boolean.
+      sendPreview:
+        description: "Set to 1 to email the owner a [DRAFT] preview of the refreshed draft (transactional, one email per edition). Empty = silent refresh."
         required: false
         default: ''
 
@@ -261,6 +283,55 @@ jobs:
           git commit -m "chore(newsletter): update de-dup state for ${{ steps.week.outputs.weekStart }} (Sunday refresh)"
           # BRO-5509: the other matrix job pushes this file in parallel.
           PUSH_RECONCILE_MERGED_JSON=1 bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::newsletter-state push failed"; exit 1; }
+
+      # BRO-6775: decide whether this run emails the owner a preview. Yes when
+      # dispatched with sendPreview=1 (the Sunday 9am ET scheduled task). On the
+      # cron, yes only if no successful "(preview)" run happened in the last 12h
+      # (fallback), and also yes if that lookup fails (a duplicate email is
+      # harmless, a missing one is not).
+      - name: Decide whether to send owner preview
+        id: preview
+        if: steps.status.outputs.status == 'draft'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_SENDPREVIEW: ${{ github.event.inputs.sendPreview }}
+        run: |
+          send=0
+          if [ "${INPUT_SENDPREVIEW}" = "1" ]; then
+            send=1
+            echo "Preview requested via sendPreview=1."
+          elif [ "${EVENT_NAME}" = "schedule" ]; then
+            cutoff=$(date -u -d '12 hours ago' +%Y-%m-%dT%H:%M:%SZ)
+            if recent=$(gh run list --workflow=newsletter-draft-refresh.yml --status=success --limit 30 \
+                --json displayTitle,createdAt \
+                --jq "[.[] | select(.displayTitle | endswith(\"(preview)\")) | select(.createdAt > \"${cutoff}\")] | length"); then
+              if [ "${recent}" = "0" ]; then
+                send=1
+                echo "Cron fallback: no successful preview run since ${cutoff}, sending preview."
+              else
+                echo "Cron: a preview already went out since ${cutoff} (${recent} run), staying silent."
+              fi
+            else
+              send=1
+              echo "::warning::Could not list recent preview runs, sending preview anyway."
+            fi
+          fi
+          echo "send=$send" >> "$GITHUB_OUTPUT"
+
+      # Runs AFTER the de-dup commit on purpose: a preview failure must never
+      # skip the ledger commit above. Same transactional single-recipient send
+      # as newsletter-draft.yml's "Send [DRAFT] preview to owner" step. Never a
+      # broadcast, never /send.
+      - name: Send [DRAFT] preview to owner
+        if: success() && steps.status.outputs.status == 'draft' && steps.preview.outputs.send == '1'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          NEWSLETTER_SLUG: A-${{ steps.week.outputs.weekStart }}
+          NEWSLETTER_TEST_RECIPIENT: ${{ secrets.OWNER_EMAIL }}
+          NEWSLETTER_SUBJECT_PREFIX: '[DRAFT] (Sunday refresh)'
+        run: |
+          node scripts/newsletter/send-test.mjs
 
       - name: Notify on failure
         if: failure()

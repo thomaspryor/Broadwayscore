@@ -383,7 +383,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
 | `OPENAI_API_KEY` | 33 cross-repo writers (of 49 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 15 workflows using it) |
-| `OWNER_EMAIL` | 68 cross-repo writers (of 145 workflows using it) |
+| `OWNER_EMAIL` | 68 cross-repo writers (of 146 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
 | `REDDIT_CLIENT_SECRET` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
 | `RESEND_API_KEY` | 72 cross-repo writers (of 153 workflows using it) |

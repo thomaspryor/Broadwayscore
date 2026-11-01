@@ -773,3 +773,9 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Does:** checks the domain is registered to the Vercel team, attaches it to the production project (409 = already attached, treated as success), then fails unless `GET /v6/domains/<d>/config` says `misconfigured: false` (DNS actually serving). Where the domain points is set in `vercel.json` host redirects, not here. Response bodies are never printed (public logs; the `/v5/domains` body carries account details). When attaching a new apex, also add it to the owner-domain regex in `scripts/lib/owner-accounts.js`.
 - **Requires:** `VERCEL_TOKEN`.
 - **Origin:** BRO-6145 (2026-10-24): `broadwaymoneyscorecard.com` + `www.` for the Money Scorecard launch; both redirect (307, temporary, until launch) to `https://broadwayscorecard.com/biz`.
+
+## `newsletter-draft-refresh.yml`
+- **Runs:** Sunday cron `4 12 * * 0` (GitHub starts it 3 to 5h late) plus manual dispatch. Matrix of both editions (broadway, west-end).
+- **Does:** Regenerates and PATCHes the unsent Saturday Resend draft in place (never `/send`). Silent by default. With `sendPreview=1` (string input, same '1' convention as `allowGaps`, never `type: boolean`) it also emails the owner a transactional `[DRAFT] (Sunday refresh)` preview per edition via `send-test.mjs`, after the de-dup commit so a preview failure cannot skip the ledger.
+- **Sunday 9am ET email (BRO-6775):** driven by an EXTERNAL Claude scheduled task (`CRON_TZ=America/New_York 50 8 * * 0`) that dispatches this workflow with `sendPreview=1`; `workflow_dispatch` is punctual where the cron is not, and cron is UTC only so it cannot hold 9am through DST. If that task ever stops firing, the late cron sends the preview itself when no successful `(preview)` run (tagged in `run-name`) happened in the last 12h. If the owner stops getting 9am emails, check the scheduled task first.
+- **Pinned by:** `tests/unit/newsletter-refresh-preview.test.mjs`.
