@@ -2871,14 +2871,23 @@ function ensembleScoredSinceCv(data) {
  */
 function isStaleCvNonReviewVerdictOverruled(data) {
   if (!data || data.rejectedAt) return false;
-  if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy) return false;
+  if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
+    || data.nonReviewOverride || data._locked === true || data.manualContentTier
+    || /^manual \(not a review\)/i.test(String(data.isNonReviewReason || ''))) return false;
   const cv = data.contentVerification;
   if (!cv || cv.wrongArticle !== true) return false;
+  // Only the "not a review" family: a "review of a different show" verdict is stable across a refetch
+  // (same URL, same wrong page), which is why rebuild keeps trustWrongArticleDespiteStale for it.
+  if (cvWrongArticleFamily(cv) !== 'nonReview' || hasStrongDifferentShowSignal(cv.issues, cv.reasoning)) return false;
   if (!computeCvIsStale(data) || !hasHighConfidenceLlmScore(data)) return false;
-  // The score must be of the body the file holds: one made before the last refetch read a different page.
+  // The score must be of the body the file holds: one made before the last refetch or before the verdict
+  // read a different page (ensembleScoredSinceCv's reasoning, BRO-6225). An undated score proves nothing.
   const scored = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');
+  if (!Number.isFinite(scored)) return false;
   const fetched = Date.parse(data.textFetchedAt || '');
-  if (Number.isFinite(scored) && Number.isFinite(fetched) && scored < fetched) return false;
+  if (Number.isFinite(fetched) && scored < fetched) return false;
+  const verified = Date.parse(cv.verifiedAt || '');
+  if (Number.isFinite(verified) && scored < verified) return false;
   return true;
 }
 

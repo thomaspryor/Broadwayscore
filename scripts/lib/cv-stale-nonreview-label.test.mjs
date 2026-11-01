@@ -28,7 +28,7 @@ function labelled(extra = {}) {
     ...extra,
   };
 }
-const ensemble = { llmScore: { score: 82, confidence: 'high' } };
+const ensemble = { llmScore: { score: 82, confidence: 'high' }, llmMetadata: { scoredAt: '2026-10-05T00:00:00Z' } };
 
 test('label set on the old body, body refetched: stale, and the ensemble verdict demotes it', () => {
   const d = labelled({ ...ensemble, textFetchedAt: '2026-10-01T00:00:00Z' });
@@ -49,6 +49,16 @@ test('ensemble score older than the last refetch does not corroborate (it read a
   assert.equal(explainExclusion(d), 'nonReview');
   const after = labelled({ ...ensemble, textFetchedAt: '2026-10-01T00:00:00Z', llmMetadata: { scoredAt: '2026-10-02T00:00:00Z' } });
   assert.equal(explainExclusion(after), null);
+});
+
+test('undated score, protected rows and different-show verdicts are never overruled', () => {
+  const undated = labelled({ llmScore: { score: 82, confidence: 'high' } });
+  assert.equal(isNonReviewDemotedByFreshCV(undated), false);
+  assert.equal(isNonReviewDemotedByFreshCV(labelled({ ...ensemble, nonReviewOverride: 'human' })), false);
+  assert.equal(isNonReviewDemotedByFreshCV(labelled({ ...ensemble, _locked: true })), false);
+  const wrong = labelled(ensemble);
+  wrong.contentVerification.wrongProduction = true;
+  assert.equal(explainExclusion(wrong) === null, false);
 });
 
 test('stale label without an ensemble score stays excluded (needs a re-check, not a blind clear)', () => {
