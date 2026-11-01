@@ -51,16 +51,21 @@ else {
   for (const f of findings) console.log(`  ${f.showId}: ${f.code} (${f.detail}) ${f.postUrl || ''}`);
 }
 if (argv.includes('--delete')) {
-  // Broadway/off-Broadway rows only: a UK regional or tour house (RSC Stratford) is a place WET may really review.
+  // Default: Broadway/off-Broadway rows only (a UK regional or tour house is a place WET may really review).
+  // --codes=a,b (BRO-6694) also deletes those finding codes, e.g. post-predates-run,unknown-show: an
+  // archive for another run or for a show row that no longer exists is a stale cache, recoverable
+  // from the private archive repo's history.
   const catOf = new Map(shows.map((x) => [x.id, x.category || 'broadway']));
-  const bad = findings.filter((f) => f.code === 'non-london-show' && ['broadway', 'off-broadway'].includes(catOf.get(f.showId)));
+  const codes = new Set(arg('codes', 'non-london-show').split(',').filter(Boolean));
+  const bad = findings.filter((f) => codes.has(f.code) &&
+    (f.code !== 'non-london-show' || ['broadway', 'off-broadway'].includes(catOf.get(f.showId))));
   const expect = Number(arg('expect', NaN));
   if (!Number.isInteger(expect) || bad.length !== expect) {
-    console.error(`audit-wet-archive-market: --delete needs --expect=N matching the ${bad.length} non-london-show archives; deleted nothing`);
+    console.error(`audit-wet-archive-market: --delete needs --expect=N matching the ${bad.length} archives with code ${[...codes].join('/')}; deleted nothing`);
     process.exit(2);
   }
   for (const f of bad) fs.unlinkSync(path.join(dir, `${f.showId}.json`));
-  console.log(`audit-wet-archive-market: deleted ${bad.length} non-london-show archives`);
+  console.log(`audit-wet-archive-market: deleted ${bad.length} archives (${[...codes].join(', ')})`);
   process.exit(0);
 }
 process.exit(findings.length ? 1 : 0);

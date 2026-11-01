@@ -12,6 +12,7 @@
  * @returns {{code:string, detail:string}|null}
  */
 const { isLondonMarket } = require('./venue-classification');
+const { isUkRegionalVenue } = require('./market-label');
 
 // A roundup is posted within days of press night. 120 days before the show's
 // opening still allows long preview periods; anything older reviews a
@@ -20,7 +21,10 @@ const POST_BEFORE_OPENING_MAX_DAYS = 120;
 
 function wetArchiveProblem(show, archive) {
   if (!show) return { code: 'unknown-show', detail: 'no show row for archive' };
-  if (!isLondonMarket(show.category)) {
+  // A UK regional feeder house (RSC Stratford) is somewhere WET really reviews:
+  // exempt from the market check, not from the date check below (BRO-6694).
+  const ukRegional = show.category === 'regional' && isUkRegionalVenue(show.venue);
+  if (!ukRegional && !isLondonMarket(show.category)) {
     return { code: 'non-london-show', detail: `${show.id} is category "${show.category || 'broadway'}"; WET only covers West End productions` };
   }
   const postDate = archive && (archive.postDate || archive.date);
