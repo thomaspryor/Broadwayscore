@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T10:41:00.163Z",
+  "timestamp": "2026-11-01T11:05:42.933Z",
   "stats": {
-    "totalReviews": 78251,
-    "alreadyFlagged": 21749,
+    "totalReviews": 78260,
+    "alreadyFlagged": 21756,
     "dateGuardCatches": 242,
-    "directorMismatch": 3328,
-    "tvFilmSignals": 2216,
+    "directorMismatch": 3331,
+    "tvFilmSignals": 2218,
     "londonSignals": 3540,
     "offBroadwaySignals": 729,
     "yearMismatch": 328,
-    "noPublishDate": 8999
+    "noPublishDate": 8912
   },
   "findings": [
     {
@@ -25232,6 +25232,19 @@
       ]
     },
     {
+      "showId": "grease-regional-2023",
+      "file": "lifeandtimes--rikki-lee-travolta.json",
+      "publishDate": "2023-04-29",
+      "url": "https://lifeandtimes.biz/2023/04/29/get-ready-to-rumble-drury-lane-grease-sparkles-and-thrills/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jeff calhoun\" from grease-1994"
+        }
+      ]
+    },
+    {
       "showId": "grey-house-2023",
       "file": "frontmezzjunkies--unknown.json",
       "score": 78,
@@ -27696,20 +27709,6 @@
       "score": 97,
       "publishDate": "2018-02-05",
       "url": "https://www.amny.com/entertainment/hangmen-review-off-broadway-1.16559497",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"matthew dunster\" from hangmen-2022"
-        }
-      ]
-    },
-    {
-      "showId": "hangmen-off-broadway-2018",
-      "file": "broadway-blog--samuel-l-leiter.json",
-      "score": null,
-      "publishDate": "February 16th, 2018",
-      "url": "https://thebroadwayblog.com/hangmen-atlantic-theater-company/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -48434,34 +48433,6 @@
     },
     {
       "showId": "people-places-and-things-off-broadway-2017",
-      "file": "broadway-and-me--janice-c-simpson.json",
-      "score": null,
-      "publishDate": "November 11th, 2017",
-      "url": "https://broadwayandme.blogspot.com/2017/11/people-places-things-is-good-thing.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
-        }
-      ]
-    },
-    {
-      "showId": "people-places-and-things-off-broadway-2017",
-      "file": "broadway-blog--samuel-l-leiter.json",
-      "score": null,
-      "publishDate": "October 29th, 2017",
-      "url": "https://thebroadwayblog.com/people-places-and-things-review/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
-        }
-      ]
-    },
-    {
-      "showId": "people-places-and-things-off-broadway-2017",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 93,
       "publishDate": "2017-10-25",
@@ -48476,20 +48447,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "people-places-and-things-off-broadway-2017",
-      "file": "huffpost--david-finkle.json",
-      "score": null,
-      "publishDate": "November 3rd, 2017",
-      "url": "https://www.huffpost.com/entry/must-sees-duncan-macmillans-people-places-things_us_59fcf29ee4b076eaaae26f88",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
         }
       ]
     },
@@ -49228,6 +49185,19 @@
     },
     {
       "showId": "pippin-regional-2023",
+      "file": "lifeandtimes--rikki-lee-travolta.json",
+      "publishDate": "2023-06-10",
+      "url": "https://lifeandtimes.biz/2023/06/10/music-theater-works-pippin-is-one-of-the-best-shows-youll-see-in-chicago-this-season/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
+        }
+      ]
+    },
+    {
+      "showId": "pippin-regional-2023",
       "file": "thefourthwalsh--katy-walsh.json",
       "score": 74,
       "publishDate": "2023-06-05",
@@ -49928,20 +49898,6 @@
       "score": null,
       "publishDate": "October 24th, 2016",
       "url": "http://www.broadwayworld.com/article/BWW-Review-Post-War-Is-Hell-For-Women-in-David-Hares-PLENTY-20161024",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"david hare\" from plenty-1983"
-        }
-      ]
-    },
-    {
-      "showId": "plenty-off-broadway-2016",
-      "file": "carey-purcell--carey-purcell.json",
-      "score": null,
-      "publishDate": "November 4th, 2016",
-      "url": "https://www.careypurcell.com/?p=10822",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -51715,6 +51671,19 @@
       ]
     },
     {
+      "showId": "ragtime-regional-2023",
+      "file": "lifeandtimes--rikki-lee-travolta.json",
+      "publishDate": "2023-05-13",
+      "url": "https://lifeandtimes.biz/2023/05/14/metropolis-ragtime-grabs-your-heart-and-moves-your-soul/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"frank galati\" from ragtime-1998"
+        }
+      ]
+    },
+    {
       "showId": "real-women-have-curves-2025",
       "file": "billboard--sigal-ratner-arias.json",
       "score": null,
@@ -53144,6 +53113,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "shaw-vs-tunney-regional-2023",
+      "file": "lifeandtimes--rikki-lee-travolta.json",
+      "publishDate": "2023-06-05",
+      "url": "https://lifeandtimes.biz/2023/06/05/brilliant-shaw-vs-tunney-downplays-pugilism-and-highlights-friendship-of-two-icons/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -64237,6 +64219,19 @@
     },
     {
       "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2023-05-24",
+      "url": "https://chicagoreader.com/arts-culture/theater-review/the-gospel-at-colonus-gets-a-rousing-revival-at-court/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
       "file": "chicago-sun-times--steven-oxman.json",
       "score": 74,
       "publishDate": "2023-05-21",
@@ -64265,6 +64260,19 @@
     },
     {
       "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2023-05-22",
+      "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gospel-colonus-court-theatre-review-20230522-fjlqyarmuba5vkhd7qi453oz6m-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
       "file": "letsplaytheatricalreview--rick-mccain.json",
       "score": 91,
       "publishDate": "2023-05-20",
@@ -64283,6 +64291,19 @@
       "score": 90,
       "publishDate": "2023-05-22",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2023/5/22/picksinsix-review-the-gospel-at-colonus-court-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lee breuer\" from the-gospel-at-colonus-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-gospel-at-colonus-regional-2023",
+      "file": "third-coast-review--kathy-d-hey.json",
+      "publishDate": "2023-05-23",
+      "url": "https://thirdcoastreview.com/2023/05/23/stages-review-court-theatre-the-gospel-at-colonus/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -68868,6 +68889,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-october-storm-regional-2023",
+      "file": "third-coast-review--kathy-d-hey.json",
+      "publishDate": "2023-05-19",
+      "url": "https://thirdcoastreview.com/2023/05/19/stages-review-the-october-storm-raven-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -73541,6 +73575,19 @@
     },
     {
       "showId": "the-whos-tommy-regional-2023",
+      "file": "lifeandtimes--rikki-lee-travolta.json",
+      "publishDate": "2023-06-29",
+      "url": "https://lifeandtimes.biz/2023/06/29/30th-anniversary-of-the-whos-tommy-shatters-reality-at-goodman-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-regional-2023",
       "file": "picksinsix--scott-gryder.json",
       "publishDate": "2023-06-27",
       "url": "https://www.conversationswithedtracy.com/picksinsix/2023/6/27/picksinsix-review-the-whos-tommy-goodman-theatre",
@@ -73583,6 +73630,19 @@
       "file": "third-coast-review--karin-mckie.json",
       "publishDate": "2023-06-29",
       "url": "https://thirdcoastreview.com/2023/06/29/stages-review-the-whos-tommy-at-goodman-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from the-whos-tommy-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-whos-tommy-regional-2023",
+      "file": "windycitytimes--scott-c-morgan.json",
+      "publishDate": "2023-07-05",
+      "url": "https://www.windycitytimes.com/lgbt/THEATER-The-Whos-Tommy-adeptly-reconfigured-for-the-21st-Century/75251.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
