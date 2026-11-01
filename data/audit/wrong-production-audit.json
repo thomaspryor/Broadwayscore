@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T16:35:51.511Z",
+  "timestamp": "2026-11-01T17:08:18.914Z",
   "stats": {
-    "totalReviews": 78450,
-    "alreadyFlagged": 21763,
+    "totalReviews": 78478,
+    "alreadyFlagged": 21764,
     "dateGuardCatches": 244,
     "directorMismatch": 3375,
-    "tvFilmSignals": 2232,
+    "tvFilmSignals": 2233,
     "londonSignals": 3554,
     "offBroadwaySignals": 729,
-    "yearMismatch": 333,
-    "noPublishDate": 8519
+    "yearMismatch": 334,
+    "noPublishDate": 8525
   },
   "findings": [
     {
@@ -35489,6 +35489,19 @@
       ]
     },
     {
+      "showId": "julius-caesar-off-broadway-2017",
+      "file": "nbcny--robert-kahn.json",
+      "publishDate": "2017-06-10",
+      "url": "https://www.nbcnewyork.com/news/local/Review-Shakespeare-Julius-Caesar-Donald-Trump-427672483.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "juno-and-the-paycock-west-end-2024",
       "file": "british-theatre--howard-loxton.json",
       "score": 78,
@@ -35775,6 +35788,7 @@
     {
       "showId": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
       "file": "broadway-baby--unknown.json",
+      "score": 93,
       "publishDate": null,
       "url": "https://broadwaybaby.com/shows/kelly-mccaughan-catholic-guilt/808297",
       "findings": [
@@ -53295,8 +53309,23 @@
       ]
     },
     {
+      "showId": "samson-et-dalila-off-broadway-2018",
+      "file": "vulture--justin-davidson.json",
+      "publishDate": "2018-09-25",
+      "url": "http://www.vulture.com/2018/09/the-mets-sampson-et-delila-with-just-enough-fromage.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2018 (0x). 2026 matches production: samson-et-dalila-off-broadway-2026"
+        }
+      ]
+    },
+    {
       "showId": "samson-et-dalila-off-broadway-2026",
       "file": "operawire--david-salazar.json",
+      "publishDate": "2018-09-25",
+      "url": "https://operawire.com/metropolitan-opera-208-19-season-review-samson-et-dalila/",
       "findings": [
         {
           "type": "DATE_GUARD",

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-01T16:35:35.048Z",
-  "totalScanned": 78645,
-  "totalExcluded": 30057,
+  "generatedAt": "2026-11-01T17:07:58.792Z",
+  "totalScanned": 78674,
+  "totalExcluded": 30072,
   "ruleCounts": {
-    "wrongProduction": 19638,
+    "wrongProduction": 19640,
     "duplicateOf": 2226,
     "rejectionReason": 1375,
     "wrongShow": 1201,
-    "noTextOrScoreSignal": 1060,
+    "noTextOrScoreSignal": 1072,
     "unverifiableWebSearchRow": 903,
     "nonReview": 848,
     "cvWrongArticleHighConfidence": 433,
@@ -27,7 +27,7 @@
     "rejectedAt": 61,
     "directorMismatch": 35,
     "cancelledBeforeOpening": 29,
-    "combinedReviewOfOtherMemberOnly": 27,
+    "combinedReviewOfOtherMemberOnly": 28,
     "urlYearReroute": 18,
     "fabricatedEntry": 16,
     "wrongContentFlagsUncleared": 14,
@@ -44,19 +44,16 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 3,
-    "rejectionReason": -1,
-    "noTextOrScoreSignal": -159,
-    "wrongShow": 1,
-    "nonReview": 1,
-    "fullTextWrongAuthorNoExcerpt": -2
+    "wrongProduction": 2,
+    "noTextOrScoreSignal": 12,
+    "combinedReviewOfOtherMemberOnly": 1
   },
-  "previousGeneratedAt": "2026-11-01T16:19:34.916Z",
+  "previousGeneratedAt": "2026-11-01T16:35:35.048Z",
   "mirror": {
-    "comparedShows": 4517,
-    "comparedFiles": 78011,
-    "agreeExcluded": 32347,
-    "agreeIncluded": 44976,
+    "comparedShows": 4518,
+    "comparedFiles": 78039,
+    "agreeExcluded": 32373,
+    "agreeIncluded": 44978,
     "mirrorOnly": 360,
     "rebuildOnly": 328,
     "disagreements": 688,
@@ -91,7 +88,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 74,
-    "notComparedFiles": 634
+    "notComparedFiles": 635
   },
   "previousDisagreementRate": 0.0088
 }
