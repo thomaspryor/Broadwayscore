@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-01T03:21:48.549Z",
+  "generatedAt": "2026-11-01T03:33:38.067Z",
   "windowDays": 21,
-  "targets": 21,
-  "auditedThisRun": 21,
-  "carriedForward": 1544,
+  "targets": 5,
+  "auditedThisRun": 5,
+  "carriedForward": 1560,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 595,
-    "missingCurrentRun": 1258,
+    "missingCurrentRun": 1260,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 789,
     "totalRecoverable": 55,
     "totalRecovered": 80,
     "humanExcluded": 18,
-    "automatedExcluded": 782,
+    "automatedExcluded": 783,
     "automatedExcludedListed": 580,
-    "priorProductionCitations": 5553
+    "priorProductionCitations": 5558
   },
   "results": [
     {
@@ -18597,10 +18597,10 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://soundsandstage.com/show/angel-s-bone",
-        "https://markaspen.com/2026/10/17/angel-bone/",
         "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
+        "https://markaspen.com/2026/10/17/angel-bone/",
         "https://www.jackstage.co.uk/post/eno-s-angel-s-bone-review-a-cinematic-expose-of-human-trafficking",
+        "https://soundsandstage.com/show/angel-s-bone",
         "https://bachtrack.com/review-angels-bone-du-yun-vavrek-english-national-opera-london-october-2026",
         "https://www.standard.co.uk/culture/opera/angels-bone-at-london-coliseum-review-b1301400.html",
         "https://nick-holmes-music.com/2026/10/19/english-national-opera-angels-bone-live-review/",
@@ -18629,7 +18629,7 @@
         {
           "url": "https://www.planethugill.com/2026/10/deeply-problematic-both-aesthetically.html",
           "host": "planethugill.com",
-          "knownOutletId": null,
+          "knownOutletId": "planet-hugill",
           "weRef": true,
           "weRefSources": [
             "bestoftheatre"
@@ -18729,7 +18729,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -18739,7 +18739,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -18748,8 +18748,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -18775,22 +18775,53 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 20,
         "byReason": {
-          "non-review-host": 20,
-          "ticketing-listing": 1,
-          "census-junk-host": 4,
-          "ticketing-reseller": 4,
-          "static-asset": 1
+          "non-review-host": 17,
+          "ticketing-listing": 2,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.planethugill.com/2026/10/deeply-problematic-both-aesthetically.html",
+          "host": "planethugill.com",
+          "outletId": "planet-hugill",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://soundsandstage.com/show/angel-s-bone",
+          "host": "soundsandstage.com",
+          "outletId": "soundsandstage",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "angels-bone-west-end-2026: https://soundsandstage.com/show/angel-s-bone has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -18802,8 +18833,8 @@
             "url": "https://soundsandstage.com/show/angel-s-bone"
           },
           {
-            "outletId": "planethugill.com",
-            "outlet": "planethugill.com",
+            "outletId": "planet-hugill",
+            "outlet": "planet-hugill",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.planethugill.com/2026/10/deeply-problematic-both-aesthetically.html"
@@ -18812,16 +18843,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://markaspen.com/2026/10/17/angel-bone/",
-            "outletId": "markaspen.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
             "url": "https://www.britishtheatreguide.info/reviews/angel-s-bone-aviva-studios-25587",
             "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-10-19T18:05:32.145Z"
+          },
+          {
+            "url": "https://markaspen.com/2026/10/17/angel-bone/",
+            "outletId": "markaspen.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
           },
           {
             "url": "https://www.jackstage.co.uk/post/eno-s-angel-s-bone-review-a-cinematic-expose-of-human-trafficking",
@@ -18916,7 +18947,7 @@
           },
           {
             "url": "https://www.planethugill.com/2026/10/deeply-problematic-both-aesthetically.html",
-            "outletId": "planethugill.com",
+            "outletId": "planet-hugill",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
@@ -18926,7 +18957,7 @@
         "liveCount": 15,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T03:33:38.067Z"
     },
     {
       "showId": "angry-alan-off-broadway-2025",
@@ -161534,25 +161565,31 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
+        "https://theatreboard.co.uk/thread/7596/martin-guerre-wait-finally-over",
+        "https://theatreboard.co.uk/thread/7596/martin-guerre-2024",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/martin-guerre-the-old-vic",
+        "https://www.oldvictheatre.com/stage/martin-guerre/",
+        "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+        "https://www.londontheatre.co.uk/reviews/martin-guerre",
+        "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
+        "https://www.westminsterextra.co.uk/article/review-martin-guerre-at-old-vic-theatre",
+        "https://thespyinthestalls.com/2026/10/martin-guerre/",
+        "https://musicaltheatremusings.co.uk/martin-guerre/",
+        "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/",
+        "https://www.islingtontribune.co.uk/article/review-martin-guerre-at-old-vic-theatre",
+        "https://www.oldvictheatre.com/news/martin-guerre-press-night/",
+        "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
+        "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
+        "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
         "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
         "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
         "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
-        "https://www.oldvictheatre.com/stage/martin-guerre/",
         "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
-        "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
         "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
         "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/martin-guerre-the-old-vic",
-        "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
-        "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
-        "https://www.londontheatre.co.uk/reviews/martin-guerre",
-        "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/",
-        "https://musicaltheatremusings.co.uk/martin-guerre/",
         "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
         "https://www.thestage.co.uk/reviews/martin-guerre-review-old-vic-theatre-london-matthew-warchus",
         "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
-        "https://thespyinthestalls.com/2026/10/martin-guerre/",
         "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
         "https://www.broadwayworld.com/westend/article/Review-MARTIN-GUERRE-The-Old-Vic-20261021",
         "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
@@ -161563,21 +161600,37 @@
         "https://www.thetimes.com/culture/theatre-dance/article/martin-guerre-is-too-confusing-to-be-another-les-mis-ld5pfrktp",
         "https://www.telegraph.co.uk/theatre/what-to-see/martin-guerre-old-vic-review/",
         "https://playsinternational.org.uk/martin-guerre-the-old-vic/",
-        "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
         "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
-        "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
-        "https://www.westminsterextra.co.uk/article/review-martin-guerre-at-old-vic-theatre",
         "https://theatreboard.co.uk/thread/7596/martin-guerre",
         "https://broadwaybaby.com/shows/martin-guerre/839230",
         "https://www.theatremonkey.com/show/martin-guerre/",
         "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/",
-        "https://www.oldvictheatre.com/news/martin-guerre-press-night/",
+        "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
+        "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
         "https://soundsandstage.com/tag/martin-guerre"
       ],
       "dirFiles": 46,
       "dirClean": 28,
       "inReviewsJson": 30,
       "missing": [
+        {
+          "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-wait-finally-over",
+          "host": "theatreboard.co.uk",
+          "knownOutletId": "theatreboard",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-2024",
+          "host": "theatreboard.co.uk",
+          "knownOutletId": "theatreboard",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
+          "host": "oldvictheatre.com",
+          "knownOutletId": "oldvictheatrecom",
+          "serpCensus": true
+        },
         {
           "url": "https://www.westminsterextra.co.uk/article/review-martin-guerre-at-old-vic-theatre",
           "host": "westminsterextra.co.uk",
@@ -161610,12 +161663,6 @@
           "weRefSources": [
             "bestoftheatre"
           ]
-        },
-        {
-          "url": "https://www.oldvictheatre.com/news/martin-guerre-press-night/",
-          "host": "oldvictheatre.com",
-          "knownOutletId": "oldvictheatrecom",
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -161624,15 +161671,90 @@
           "count": 1
         },
         {
-          "host": "islingtontribune.co.uk",
-          "count": 1
-        },
-        {
           "host": "londontheatrereviews.co.uk",
           "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
+          "host": "oldvictheatre.com",
+          "knownOutletId": "oldvictheatrecom",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "oldvictheatrecom--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.oldvictheatre.com/stage/martin-guerre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-08",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musical-theatre-review--angela-thomas.json",
+              "flag": "clean",
+              "urlInDir": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.oldvictheatre.com/news/martin-guerre-press-night/",
+          "host": "oldvictheatre.com",
+          "knownOutletId": "oldvictheatrecom",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "oldvictheatrecom--magid-el-bushra.json",
+              "flag": "clean",
+              "urlInDir": "https://www.oldvictheatre.com/news/martin-guerre-press-night/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
           "host": "monstagigz.com",
@@ -161661,31 +161783,6 @@
           "reverify": false
         },
         {
-          "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
-          "host": "oldvictheatre.com",
-          "knownOutletId": "oldvictheatrecom",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oldvictheatrecom--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.oldvictheatre.com/stage/martin-guerre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-06-08",
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
           "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
           "host": "londontheatredirect.com",
           "knownOutletId": "londontheatredirect",
@@ -161704,33 +161801,6 @@
           "exclusion": "automatedExcluded",
           "basis": [
             "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
-          "host": "oldvictheatre.com",
-          "knownOutletId": "oldvictheatrecom",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oldvictheatrecom--magid-el-bushra.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
           ],
           "confirmedNonReview": true,
           "confirmedBasis": [
@@ -161765,7 +161835,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 27,
+        "rowCount": 35,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -161775,11 +161845,11 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 8,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 3
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -161804,8 +161874,8 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 27,
-        "corroborated": 20,
+        "currentRunRows": 35,
+        "corroborated": 21,
         "perSource": {
           "westendtheatre": {
             "cited": 5,
@@ -161814,6 +161884,10 @@
           "bestoftheatre": {
             "cited": 20,
             "corroborated": 20
+          },
+          "theatre-reviews": {
+            "cited": 7,
+            "corroborated": 7
           },
           "lbo-roundup": {
             "cited": 1,
@@ -161833,7 +161907,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -161843,7 +161917,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 7,
             "error": null
           },
           {
@@ -161853,7 +161927,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -161869,16 +161943,19 @@
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 12,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 24,
         "byReason": {
-          "non-review-host": 14,
-          "roundup-page": 3,
-          "write-path-blocked": 1,
-          "non-review-path": 1
+          "non-review-host": 13,
+          "no-review-evidence": 4,
+          "ticketing-listing": 1,
+          "non-review-path": 1,
+          "write-path-blocked": 2,
+          "roundup-page": 1,
+          "bare-host": 2
         }
       },
       "dedupedVariants": [],
@@ -161886,9 +161963,9 @@
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.theatremonkey.com/show/martin-guerre/",
-          "host": "theatremonkey.com",
-          "outletId": "theatremonkey",
+          "url": "https://broadwaybaby.com/shows/martin-guerre/839230",
+          "host": "broadwaybaby.com",
+          "outletId": "broadway-baby",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -161898,7 +161975,52 @@
           "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "martin-guerre-west-end-2026: https://www.theatremonkey.com/show/martin-guerre/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "martin-guerre-west-end-2026: https://broadwaybaby.com/shows/martin-guerre/839230 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-wait-finally-over",
+          "host": "theatreboard.co.uk",
+          "outletId": "theatreboard",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "martin-guerre-west-end-2026: https://theatreboard.co.uk/thread/7596/martin-guerre-wait-finally-over has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-2024",
+          "host": "theatreboard.co.uk",
+          "outletId": "theatreboard",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "martin-guerre-west-end-2026: https://theatreboard.co.uk/thread/7596/martin-guerre-2024 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
+          "host": "oldvictheatre.com",
+          "outletId": "oldvictheatrecom",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/",
@@ -161914,63 +162036,49 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "Fetch failed: All scraping methods failed"
-        },
-        {
-          "url": "https://www.oldvictheatre.com/news/martin-guerre-press-night/",
-          "host": "oldvictheatre.com",
-          "outletId": "oldvictheatrecom",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.westminsterextra.co.uk/article/review-martin-guerre-at-old-vic-theatre",
-          "host": "westminsterextra.co.uk",
-          "outletId": "westminsterextra",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "martin-guerre-west-end-2026: https://www.westminsterextra.co.uk/article/review-martin-guerre-at-old-vic-theatre has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://theatreboard.co.uk/thread/7596/martin-guerre",
-          "host": "theatreboard.co.uk",
-          "outletId": "theatreboard",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "martin-guerre-west-end-2026: https://theatreboard.co.uk/thread/7596/martin-guerre has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://broadwaybaby.com/shows/martin-guerre/839230",
-          "host": "broadwaybaby.com",
-          "outletId": "broadway-baby"
+          "url": "https://www.westminsterextra.co.uk/article/review-martin-guerre-at-old-vic-theatre",
+          "host": "westminsterextra.co.uk",
+          "outletId": "westminsterextra"
+        },
+        {
+          "url": "https://theatreboard.co.uk/thread/7596/martin-guerre",
+          "host": "theatreboard.co.uk",
+          "outletId": "theatreboard"
+        },
+        {
+          "url": "https://www.theatremonkey.com/show/martin-guerre/",
+          "host": "theatremonkey.com",
+          "outletId": "theatremonkey"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "theatreboard",
+            "outlet": "theatreboard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-wait-finally-over"
+          },
+          {
+            "outletId": "theatreboard",
+            "outlet": "theatreboard",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-2024"
+          },
+          {
+            "outletId": "oldvictheatrecom",
+            "outlet": "oldvictheatrecom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/"
+          },
           {
             "outletId": "westminsterextra",
             "outlet": "westminsterextra",
@@ -162007,6 +162115,13 @@
             "url": "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/"
           },
           {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/"
+          },
+          {
             "outletId": "oldvictheatrecom",
             "outlet": "oldvictheatrecom",
             "critic": "Unknown",
@@ -162028,13 +162143,6 @@
             "url": "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic"
           },
           {
-            "outletId": "oldvictheatrecom",
-            "outlet": "oldvictheatrecom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/"
-          },
-          {
             "outletId": "soundsandstage",
             "outlet": "soundsandstage",
             "critic": "Unknown",
@@ -162044,6 +162152,60 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/martin-guerre-the-old-vic",
+            "outletId": "stagedtheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/martin-guerre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T01:58:58.789Z"
+          },
+          {
+            "url": "https://musicaltheatremusings.co.uk/martin-guerre/",
+            "outletId": "musicaltheatremusings.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T01:58:58.789Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/",
+            "outletId": "musicaltheatrereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T00:11:50.524Z"
+          },
+          {
+            "url": "https://www.islingtontribune.co.uk/article/review-martin-guerre-at-old-vic-theatre",
+            "outletId": "islingtontribune.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T03:33:38.067Z"
+          },
+          {
+            "url": "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T08:15:37.359Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+          },
+          {
+            "url": "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
+            "outletId": "theatrecat.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
           {
             "url": "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
             "outletId": "londontheatre.co.uk",
@@ -162081,42 +162243,6 @@
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/martin-guerre-the-old-vic",
-            "outletId": "stagedtheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T02:53:45.143Z"
-          },
-          {
-            "url": "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
-            "outletId": "theatrecat.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T02:53:45.143Z"
-          },
-          {
-            "url": "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
-            "outletId": "therecs.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T08:15:37.359Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/martin-guerre",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T02:53:45.143Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/new-look-martin-guerre-to-debut-at-the-old-vic/",
-            "outletId": "musicaltheatrereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T00:11:50.524Z"
-          },
-          {
-            "url": "https://musicaltheatremusings.co.uk/martin-guerre/",
-            "outletId": "musicaltheatremusings.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T01:58:58.789Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
@@ -162133,12 +162259,6 @@
             "outletId": "musicomh.com",
             "state": "live",
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T01:58:58.789Z"
           },
           {
             "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
@@ -162201,16 +162321,31 @@
             "firstSeenAt": "2026-10-23T17:42:57.462Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T19:57:41.264Z"
-          },
-          {
             "url": "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
             "outletId": "firstnightmagazine.com",
             "state": "live",
             "firstSeenAt": "2026-10-23T17:42:57.462Z"
+          },
+          {
+            "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-wait-finally-over",
+            "outletId": "theatreboard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T03:33:38.067Z"
+          },
+          {
+            "url": "https://theatreboard.co.uk/thread/7596/martin-guerre-2024",
+            "outletId": "theatreboard",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T03:33:38.067Z"
+          },
+          {
+            "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
+            "outletId": "oldvictheatrecom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T00:11:50.524Z"
           },
           {
             "url": "https://www.westminsterextra.co.uk/article/review-martin-guerre-at-old-vic-theatre",
@@ -162248,6 +162383,13 @@
             "firstSeenAt": "2026-10-25T14:15:42.198Z"
           },
           {
+            "url": "https://musicaltheatrereview.com/casting-for-the-old-vics-martin-guerre/",
+            "outletId": "musical-theatre-review",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T03:33:38.067Z"
+          },
+          {
             "url": "https://www.oldvictheatre.com/news/martin-guerre-press-night/",
             "outletId": "oldvictheatrecom",
             "state": "GAP",
@@ -162269,13 +162411,6 @@
             "firstSeenAt": "2026-10-20T06:53:09.029Z"
           },
           {
-            "url": "https://www.oldvictheatre.com/news/things-you-need-to-know-about-martin-guerre/",
-            "outletId": "oldvictheatrecom",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T00:11:50.524Z"
-          },
-          {
             "url": "https://soundsandstage.com/tag/martin-guerre",
             "outletId": "soundsandstage",
             "state": "GAP",
@@ -162284,10 +162419,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 25,
-        "candidateCount": 34
+        "liveCount": 26,
+        "candidateCount": 36
       },
-      "computedAt": "2026-10-31T23:09:19.251Z"
+      "computedAt": "2026-11-01T03:33:38.067Z"
     },
     {
       "showId": "mary-gets-hers-off-broadway-2023",
@@ -225894,12 +226029,77 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Showstopper! The Kids Show\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Showstopper! The Kids Show\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Showstopper! The Kids Show\" review soho",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Showstopper! The Kids Show Soho Theatre Walthamstow review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Showstopper! The Kids Show Soho Theatre Walthamstow review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Showstopper! The Kids Show Soho Theatre Walthamstow review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 26,
+        "byReason": {
+          "non-review-host": 13,
+          "no-review-evidence": 2,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 2,
+          "event-listing": 4,
+          "ticket-seller-product-page": 1,
+          "venue-production-page": 3
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
@@ -225949,7 +226149,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-01T00:08:34.874Z"
+      "computedAt": "2026-11-01T03:33:38.067Z"
     },
     {
       "showId": "shucked-tour-2024",
@@ -278317,14 +278517,16 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.britishtheatre.com/posts/the-lives-of-others-adelphi-theatre-keira-knightley",
-        "https://www.theguardian.com/film/the-lives-of-others",
-        "https://www.britishtheatre.com/da/shows/the-lives-of-others",
-        "https://monstagigz.com/2026/10/17/theatre-review-the-lives-of-others-starring-keira-knightley-and-luke-thompson-at-the-adelphi-theatre/",
-        "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/news/keira-knightley-lives-others-west-end-b3069948.html",
         "https://oazis.app/it/evento/the-lives-of-others",
+        "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+        "https://monstagigz.com/2026/10/17/theatre-review-the-lives-of-others-starring-keira-knightley-and-luke-thompson-at-the-adelphi-theatre/",
+        "https://www.britishtheatre.com/posts/keira-knightley-stephen-dillane-and-luke-thompson-set-for-the-lives-of-others-st",
         "https://www.whatsonstage.com/news/keira-knightley-luke-thompson-and-stephen-dillane-on-surveillance-and-kindness-in-uncertain-times-the-lives-of-others-opens-in-the-west-end_1736276/",
+        "https://www.timeout.com/london/theatre/the-lives-of-others",
+        "https://www.britishtheatre.com/posts/the-lives-of-others-adelphi-theatre-keira-knightley",
+        "https://www.britishtheatre.com/da/shows/the-lives-of-others",
+        "https://www.theguardian.com/film/the-lives-of-others",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/news/keira-knightley-lives-others-west-end-b3069948.html",
         "https://www.whatsonstage.com/news/the-lives-of-others-with-keira-knightley-luke-thompson-and-stephen-dillane-begins-west-end-performances_1735180/"
       ],
       "dirFiles": 16,
@@ -278352,7 +278554,34 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.theguardian.com/film/the-lives-of-others",
+          "url": "https://oazis.app/it/evento/the-lives-of-others",
+          "host": "oazis.app",
+          "knownOutletId": "oazis",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "oazis--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://oazis.app/it/evento/the-lives-of-others"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
           "host": "theguardian.com",
           "knownOutletId": "guardian",
           "recoverable": false,
@@ -278362,9 +278591,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "guardian--unknown.json",
+              "file": "guardian--ryan-gilbey.json",
               "flag": "clean",
-              "urlInDir": "https://www.theguardian.com/film/the-lives-of-others"
+              "urlInDir": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -278402,7 +278631,80 @@
           "reverify": true
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+          "url": "https://www.britishtheatre.com/posts/keira-knightley-stephen-dillane-and-luke-thompson-set-for-the-lives-of-others-st",
+          "host": "britishtheatre.com",
+          "knownOutletId": "britishtheatrecom",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "britishtheatrecom--susan-novak.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.britishtheatre.com/posts/keira-knightley-stephen-dillane-and-luke-thompson-set-for-the-lives-of-others-st"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-04-30",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/keira-knightley-luke-thompson-and-stephen-dillane-on-surveillance-and-kindness-in-uncertain-times-the-lives-of-others-opens-in-the-west-end_1736276/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--tom-millward.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.whatsonstage.com/news/keira-knightley-luke-thompson-and-stephen-dillane-on-surveillance-and-kindness-in-uncertain-times-the-lives-of-others-opens-in-the-west-end_1736276/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-lives-of-others",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/the-lives-of-others"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-05-06",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.theguardian.com/film/the-lives-of-others",
           "host": "theguardian.com",
           "knownOutletId": "guardian",
           "recoverable": false,
@@ -278412,9 +278714,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "guardian--ryan-gilbey.json",
+              "file": "guardian--unknown.json",
               "flag": "clean",
-              "urlInDir": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others"
+              "urlInDir": "https://www.theguardian.com/film/the-lives-of-others"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -278454,56 +278756,6 @@
           ],
           "serpCensus": true,
           "reverify": false
-        },
-        {
-          "url": "https://oazis.app/it/evento/the-lives-of-others",
-          "host": "oazis.app",
-          "knownOutletId": "oazis",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oazis--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://oazis.app/it/evento/the-lives-of-others"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/keira-knightley-luke-thompson-and-stephen-dillane-on-surveillance-and-kindness-in-uncertain-times-the-lives-of-others-opens-in-the-west-end_1736276/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--tom-millward.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.whatsonstage.com/news/keira-knightley-luke-thompson-and-stephen-dillane-on-surveillance-and-kindness-in-uncertain-times-the-lives-of-others-opens-in-the-west-end_1736276/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "serpCensus": true,
-          "reverify": true
         },
         {
           "url": "https://www.whatsonstage.com/news/the-lives-of-others-with-keira-knightley-luke-thompson-and-stephen-dillane-begins-west-end-performances_1735180/",
@@ -278575,13 +278827,77 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Lives of Others\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Lives of Others\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Lives of Others\" review adelphi",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Lives of Others Adelphi Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Lives of Others Adelphi Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Lives of Others Adelphi Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 40,
         "byReason": {
-          "write-path-blocked": 1
+          "non-review-host": 22,
+          "no-review-evidence": 6,
+          "ticketing-listing": 3,
+          "non-review-path": 1,
+          "write-path-blocked": 4,
+          "census-junk-host": 2,
+          "event-listing": 1,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
@@ -278638,18 +278954,11 @@
             "url": "https://www.britishtheatre.com/da/shows/the-lives-of-others"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
+            "outletId": "oazis",
+            "outlet": "oazis",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theguardian.com/film/the-lives-of-others"
-          },
-          {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://monstagigz.com/2026/10/17/theatre-review-the-lives-of-others-starring-keira-knightley-and-luke-thompson-at-the-adelphi-theatre/"
+            "url": "https://oazis.app/it/evento/the-lives-of-others"
           },
           {
             "outletId": "guardian",
@@ -278659,18 +278968,11 @@
             "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others"
           },
           {
-            "outletId": "independent",
-            "outlet": "independent",
+            "outletId": "monstagigz",
+            "outlet": "monstagigz",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/news/keira-knightley-lives-others-west-end-b3069948.html"
-          },
-          {
-            "outletId": "oazis",
-            "outlet": "oazis",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://oazis.app/it/evento/the-lives-of-others"
+            "url": "https://monstagigz.com/2026/10/17/theatre-review-the-lives-of-others-starring-keira-knightley-and-luke-thompson-at-the-adelphi-theatre/"
           },
           {
             "outletId": "whatsonstage",
@@ -278678,6 +278980,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.whatsonstage.com/news/keira-knightley-luke-thompson-and-stephen-dillane-on-surveillance-and-kindness-in-uncertain-times-the-lives-of-others-opens-in-the-west-end_1736276/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/film/the-lives-of-others"
+          },
+          {
+            "outletId": "independent",
+            "outlet": "independent",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/news/keira-knightley-lives-others-west-end-b3069948.html"
           },
           {
             "outletId": "whatsonstage",
@@ -278704,15 +279020,8 @@
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
-            "url": "https://www.theguardian.com/film/the-lives-of-others",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T20:57:30.162Z"
-          },
-          {
-            "url": "https://monstagigz.com/2026/10/17/theatre-review-the-lives-of-others-starring-keira-knightley-and-luke-thompson-at-the-adelphi-theatre/",
-            "outletId": "monstagigz",
+            "url": "https://oazis.app/it/evento/the-lives-of-others",
+            "outletId": "oazis",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
@@ -278725,15 +279034,8 @@
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
           },
           {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/news/keira-knightley-lives-others-west-end-b3069948.html",
-            "outletId": "independent",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T20:57:30.162Z"
-          },
-          {
-            "url": "https://oazis.app/it/evento/the-lives-of-others",
-            "outletId": "oazis",
+            "url": "https://monstagigz.com/2026/10/17/theatre-review-the-lives-of-others-starring-keira-knightley-and-luke-thompson-at-the-adelphi-theatre/",
+            "outletId": "monstagigz",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
@@ -278744,6 +279046,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-30T19:10:35.876Z"
+          },
+          {
+            "url": "https://www.theguardian.com/film/the-lives-of-others",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T20:57:30.162Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/news/keira-knightley-lives-others-west-end-b3069948.html",
+            "outletId": "independent",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T20:57:30.162Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/the-lives-of-others-with-keira-knightley-luke-thompson-and-stephen-dillane-begins-west-end-performances_1735180/",
@@ -278757,7 +279073,7 @@
         "liveCount": 0,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-01T00:08:34.874Z"
+      "computedAt": "2026-11-01T03:33:38.067Z"
     },
     {
       "showId": "the-lonely-few-off-broadway-2024",
@@ -294447,11 +294763,17 @@
       "aggregatorListedUrls": [
         "https://www.harrytheatrelife.co.uk/post/review-the-revlon-girl-park-theatre-london",
         "https://theatreandtonic.co.uk/blog/the-revlon-girl-park-theatre-review",
-        "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
         "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
-        "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
+        "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
         "https://theatresoutheast.com/revlon-girl-park-90-review/",
+        "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
         "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
+        "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
+        "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+        "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
+        "https://fairypoweredproductions.com/revlon-girl-review/",
+        "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
+        "https://www.timeout.com/london/theatre/the-revlon-girl",
         "https://www.allthatdazzles.co.uk/post/review-the-revlon-girl-park-theatre",
         "https://www.westendbestfriend.co.uk/news/review-the-revlon-girl-park-theatre",
         "https://thespyinthestalls.com/2026/10/the-revlon-girl/",
@@ -294459,10 +294781,8 @@
         "https://www.thestage.co.uk/reviews/the-revlon-girl-review-park-theatre-london",
         "https://readaboutstuff.com/2026/10/29/review-the-revlon-girl-park-theatre-london/",
         "https://theatresoutheast.com/tag/revlon-girl/",
-        "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
         "https://www.london-unattached.com/the-revlon-girl-park-theatre/",
         "https://www.buzzmag.co.uk/revlon-girl-stage-review-riverfront-newport-aberfan-disaster/",
-        "https://www.timeout.com/london/theatre/the-revlon-girl",
         "https://oazis.app/en/event/the-revlon-girl-2026-10-26",
         "https://ayoungishperspective.co.uk/2026/10/30/review-revlon-girls/"
       ],
@@ -294470,6 +294790,22 @@
       "dirClean": 16,
       "inReviewsJson": 16,
       "missing": [
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+          "host": "westminsterextra.co.uk",
+          "knownOutletId": "westminsterextra",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-09-29",
+          "serpCensus": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/revlon-girl-review/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-09-21",
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/london/theatre/the-revlon-girl",
           "host": "timeout.com",
@@ -294484,7 +294820,33 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "london-box-office--stacey-tyler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2017-09-26",
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 15,
@@ -294540,16 +294902,85 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Revlon Girl\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Revlon Girl\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 7,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Revlon Girl Park Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Revlon Girl Park Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Revlon Girl Park Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 15,
+        "byReason": {
+          "non-review-host": 10,
+          "ticketing-listing": 2,
+          "aggregator-internal-nav": 1,
+          "non-stage-review": 1,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.westminsterextra.co.uk/article/review-the-revlon-girl-at-park-theatre-90",
+          "host": "westminsterextra.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/revlon-girl-review/",
+          "host": "fairypoweredproductions.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/london/theatre/the-revlon-girl",
@@ -294616,22 +295047,16 @@
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T01:32:30.606Z"
-          },
-          {
             "url": "https://loureviews.blog/2026/10/29/play-review-the-revlon-girl-at-park-theatre/",
             "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-10-29T19:29:04.194Z"
           },
           {
-            "url": "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-revlon-girl-park-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+            "firstSeenAt": "2026-10-29T01:32:30.606Z"
           },
           {
             "url": "https://theatresoutheast.com/revlon-girl-park-90-review/",
@@ -294640,10 +295065,28 @@
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
+            "url": "https://www.thereviewshub.com/26-the-revlon-girl-park-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
             "url": "https://www.britishtheatreguide.info/reviews/the-revlon-girl-park-theatre-9-26172",
             "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-10-31T10:20:07.676Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-revlon-girl-review-at-assembly-roxy-edinburgh--emotional-clarity",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T03:33:38.067Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-revlon-girl-park-theatre",
@@ -294688,12 +295131,6 @@
             "firstSeenAt": "2026-10-31T10:20:07.676Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/the-revlon-girl-oso-arts-centre-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T06:43:10.293Z"
-          },
-          {
             "url": "https://www.london-unattached.com/the-revlon-girl-park-theatre/",
             "outletId": "london-unattached.com",
             "state": "live",
@@ -294730,7 +295167,7 @@
         "liveCount": 16,
         "candidateCount": 18
       },
-      "computedAt": "2026-11-01T00:08:34.874Z"
+      "computedAt": "2026-11-01T03:33:38.067Z"
     },
     {
       "showId": "the-rocky-horror-show-2026",
