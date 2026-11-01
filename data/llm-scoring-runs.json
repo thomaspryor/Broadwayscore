@@ -3379082,21 +3379082,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T07:00:42.982Z",
-    "completedAt": "2026-11-01T07:01:20.868Z",
-    "totalReviews": 12,
-    "processed": 8,
+    "startedAt": "2026-11-01T07:02:21.084Z",
+    "completedAt": "2026-11-01T07:02:41.522Z",
+    "totalReviews": 8,
+    "processed": 4,
     "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 49257,
-      "output": 2377,
-      "cacheRead": 30456,
+      "input": 23676,
+      "output": 1256,
+      "cacheRead": 15228,
       "cacheWrite": 0,
-      "total": 122464
+      "total": 59934
     },
-    "costUsd": 0.18397480000000002,
-    "runId": "41282720192",
+    "costUsd": 0.0901976,
+    "runId": "41282732798",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3386923,22 +3386923,12 @@
         "hasDisagreement": false
       },
       {
-        "showId": "buddy-the-buddy-holly-story-regional-2023",
-        "ourDistribution": {
-          "up": 12,
-          "flat": 1,
-          "down": 0,
-          "total": 13
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "buddy-the-buddy-holly-story-regional-2026",
         "ourDistribution": {
-          "up": 12,
+          "up": 4,
           "flat": 1,
           "down": 0,
-          "total": 13
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -3413749,6 +3413739,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-39-steps-regional-2023",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 1,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-39-steps-west-end-2024",
         "ourDistribution": {
           "up": 4,
@@ -3426110,8 +3426110,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T07:06:16.587Z",
-    "completedAt": "2026-11-01T07:06:16.588Z",
+    "startedAt": "2026-11-01T07:07:38.156Z",
+    "completedAt": "2026-11-01T07:07:38.157Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3426124,7 +3426124,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41282720192",
+    "runId": "41282732798",
     "source": "comparative-rescore",
     "errorDetails": []
   }
