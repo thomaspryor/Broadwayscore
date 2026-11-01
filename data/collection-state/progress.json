@@ -784,7 +784,17 @@
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
     "hedwig-and-the-angry-inch-regional-2026/curtaincallchicago--paul-lisnek.json",
     "hedwig-and-the-angry-inch-regional-2026/talkinbroadway--christine-malcom.json",
-    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json"
+    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1089,7 +1099,8 @@
       "data/review-texts/macbeth-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "macbeth-off-broadway-2026/nytimes--elisabeth-vincentelli.json",
       "data/review-texts/mean-girls-regional-2026/wsj--charles-isherwood.json",
-      "mean-girls-regional-2026/wsj--charles-isherwood.json"
+      "mean-girls-regional-2026/wsj--charles-isherwood.json",
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1200,7 +1211,10 @@
       "data/review-texts/hair-regional-2026/curtaincallchicago--paul-lisnek.json",
       "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
       "data/review-texts/hedwig-and-the-angry-inch-regional-2026/curtaincallchicago--paul-lisnek.json",
-      "data/review-texts/hedwig-and-the-angry-inch-regional-2026/talkinbroadway--christine-malcom.json"
+      "data/review-texts/hedwig-and-the-angry-inch-regional-2026/talkinbroadway--christine-malcom.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json"
     ],
     "archive": [
       "the-umbrellas-of-cherbourg-west-end-2011/standard--henry-hitchings.json",
@@ -1355,7 +1369,7 @@
     ]
   },
   "startTime": "2026-10-31T18:25:46.581Z",
-  "lastProcessed": "the-whoopi-monologues-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
   "log": [
     {
       "t": "2026-10-31T21:17:08.425Z",
@@ -1501,6 +1515,28 @@
       "event": "bb-session",
       "session": "a866be97",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-01T02:56:24.493Z",
+      "event": "bb-session",
+      "session": "24bb638f",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-01T02:56:25.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-01T02:58:14.491Z",
+      "event": "bb-session",
+      "session": "d9a273e0",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-01T02:58:15.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
