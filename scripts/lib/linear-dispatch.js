@@ -838,26 +838,38 @@ function startedStateGuard(issue, opts) {
 // second session re-verified work that was already landed and waiting on a date.
 //
 // Same rule the cloud picker applies (cloud-worker-pick.js historySkipReason),
-// narrowed to the two reasons that are about TIME, not about who the card
-// belongs to: 'recheck-pending' (the newest RECHECK-AFTER date is still ahead
-// and no person has commented since) and 'recently-paused' (a worker paused it
-// within the cooldown, 24h for P0/P1). The other reasons ('backlog-unexplained'
-// etc.) are queue policy and would refuse ordinary --id dispatches of Backlog
-// cards, so they stay in the queue builders (linear-watchdog-source.js).
+// narrowed to the reasons that come from the card's own pause reports:
+// 'recheck-pending' (newest RECHECK-AFTER date still ahead, no person has
+// commented since), 'recently-paused' (paused within the cooldown, 24h for
+// P0/P1), 'paused-repeatedly' (3+ pauses with no person commenting: BRO-6417
+// was relaunched 111 times this way) and 'awaiting-owner' (the report names
+// the owner's call). 'backlog-unexplained' and 'reclaimed-to-backlog' are
+// queue policy that would refuse ordinary --id dispatches of Backlog cards, so
+// they stay in the queue builders (linear-watchdog-source.js).
+// A person commenting after the pause clears all four (historySkipReason).
 // --force waives it: an operator naming the card is a decision, unlike a sweep.
-const PAUSED_HOLD_REASONS = new Set(['recheck-pending', 'recently-paused']);
+const PAUSED_HOLD_REASONS = new Set(['recheck-pending', 'recently-paused', 'paused-repeatedly', 'awaiting-owner']);
 
-function pausedHoldGuard(issue, opts, nowMs = Date.now()) {
-  const o = opts || {};
-  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+/** PURE. The pause-history reason that holds this issue (comments on issue.comments.nodes), or null. */
+function pausedHoldReason(issue, nowMs = Date.now()) {
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
   if (!comments.length) return null;
   const { historySkipReason } = require('./cloud-worker-pick.js');
   const reason = historySkipReason(issue, comments, nowMs);
-  if (!PAUSED_HOLD_REASONS.has(reason)) return null;
-  const why = reason === 'recheck-pending'
-    ? 'its newest RECHECK-AFTER date is still ahead (the nightly acceptance recheck owns it until then)'
-    : 'a worker reported it paused within the cooldown';
+  return PAUSED_HOLD_REASONS.has(reason) ? reason : null;
+}
+
+function pausedHoldGuard(issue, opts, nowMs = Date.now()) {
+  const o = opts || {};
+  if (o.force || o['dry-run'] || o['print-prompt']) return null;
+  const reason = pausedHoldReason(issue, nowMs);
+  if (!reason) return null;
+  const why = {
+    'recheck-pending': 'its newest RECHECK-AFTER date is still ahead (the nightly acceptance recheck owns it until then)',
+    'recently-paused': 'a worker reported it paused within the cooldown',
+    'paused-repeatedly': 'it has been paused 3+ times with no person commenting since; it needs a person or a re-scope',
+    'awaiting-owner': "its latest pause report is waiting on the owner's call",
+  }[reason];
   return `${(issue && issue.identifier) || '(unknown)'} is held by its pause history (${reason}): ${why}. `
     + 'Refusing to dispatch; read the latest session report first. Re-run with --force if this card really should run now.';
 }
@@ -1239,6 +1251,7 @@ module.exports = {
   buildOpenIssuesWithDescriptionsQuery,
   buildIssueCommentsByNumberQuery,
   pausedHoldGuard,
+  pausedHoldReason,
   PAUSED_HOLD_REASONS,
   findOpenIssueForTerm,
   unescapeMarkdown,

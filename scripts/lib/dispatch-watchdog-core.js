@@ -979,6 +979,9 @@ function planSweep(entries, tasks, opts) {
     // path specifically; this is the same policy applied consistently to
     // dead-retry, not itself separately measured.)
     if (task && task.fromArchive) continue;
+    // BRO-6764: held by its pause history (linear-watchdog-source applyPauseHistory);
+    // linear-next would refuse the retry anyway, so don't spend a claim on it.
+    if (task && task.pauseHold) continue;
     // BRO-3878 (Codex ship-check catch): the p01Queue exclusion above only
     // stops FRESH claims against the frozen Notion mirror — a mirror task
     // that already died once still reached this retry loop and generated a

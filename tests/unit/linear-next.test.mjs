@@ -1146,6 +1146,58 @@ test('reportedOutcomeGuard wiring: --force does NOT dispatch an issue whose outs
   assert.doesNotMatch(res.stderr, /RUNJOB_WAS_CALLED/, 'runJob must NEVER be called — this is BRO-2506 recurring');
 });
 
+// -- pausedHoldGuard wiring, BRO-6764 ---------------------------------------
+// Same reason as the reportedOutcomeGuard wiring test above: a predicate test
+// passes even if main() never calls the guard. BRO-6764 as it stood when the
+// watchdog relaunched it: Paused (backlog type), paused report with a
+// RECHECK-AFTER date still ahead. Without --force: refused, nothing launches.
+for (const [label, extraArgs, expectRefusal] of [
+  ['without --force refuses', [], true],
+  ['with --force is waived', ['--force'], false],
+]) test(`pausedHoldGuard wiring: a card paused on a future RECHECK-AFTER date ${label}`, () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const stamp = new Date(Date.now() + 2 * 86400e3).toISOString().slice(0, 10);
+    const issue = {
+      id: 'issue-uuid-6764', identifier: 'BRO-9764',
+      title: 'Paused hold fixture issue',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-9764/x',
+      priority: 1,
+      state: { id: 'paused-1', name: 'Paused', type: 'backlog' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: '**Session report (paused)**\\n\\nCutover landed. RECHECK-AFTER: ' + stamp + '.', createdAt: new Date(Date.now() - 30e3).toISOString() },
+      ] },
+    };
+    main(['--id', issue.identifier, '--model', 'opus', ...${JSON.stringify(extraArgs)}], {
+      getIssue: async () => issue,
+      launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null, headlessOutcome: 'done' }; },
+      cmuxAvailable: () => true,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => true,
+      terminalSurfaceAliveIn: () => true,
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  if (expectRefusal) {
+    assert.equal(res.status, 1, `expected exit 1 (pause-history refusal), got ${res.status}. stderr:\n${res.stderr}`);
+    assert.match(res.stderr, /held by its pause history \(recheck-pending\)/);
+    assert.doesNotMatch(res.stderr, /LAUNCHCMUX_WAS_CALLED|RUNJOB_WAS_CALLED/);
+  } else {
+    assert.doesNotMatch(res.stderr, /held by its pause history/, `--force must waive the hold. stderr:\n${res.stderr}`);
+  }
+});
+
 // -- BRO-2648: contradicted dead rows in the LIVE dead-dispatch gate -------
 // Two cmux deaths reach DEAD_ATTEMPT_LIMIT. When the second buried worker
 // later posted its own (blocked) session report, that death is disproven and

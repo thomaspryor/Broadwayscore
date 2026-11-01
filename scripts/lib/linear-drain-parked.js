@@ -180,11 +180,13 @@ async function fetchDrainIssuesWithComments(issues, opts = {}) {
  * @param {object} [opts]
  * @param {number} [opts.limit] - defaults to 6, the CLI's DISPATCH_CAP
  * @param {Set<string>} [opts.alreadyAttempted] - identifiers to skip
+ * @param {number} [opts.nowMs] - for the pause-history hold (pausedHoldReason)
  */
-function selectDrainCandidates(issues, { limit = 6, alreadyAttempted = new Set() } = {}) {
-  const { priorityRank } = require('./linear-dispatch.js');
+function selectDrainCandidates(issues, { limit = 6, alreadyAttempted = new Set(), nowMs = Date.now() } = {}) {
+  const { priorityRank, pausedHoldReason } = require('./linear-dispatch.js');
   return (Array.isArray(issues) ? issues : [])
-    .filter((iss) => iss && isDrainEligible(iss) && !alreadyAttempted.has(iss.identifier))
+    // BRO-6764: a card linear-next's pausedHoldGuard would refuse costs a slot and a day's dispatch for nothing.
+    .filter((iss) => iss && isDrainEligible(iss) && !alreadyAttempted.has(iss.identifier) && !pausedHoldReason(iss, nowMs))
     .sort((a, b) => (priorityRank(a) - priorityRank(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)))
     .slice(0, Math.max(0, limit));
 }

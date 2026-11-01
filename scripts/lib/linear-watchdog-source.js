@@ -358,7 +358,7 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
   }
 
   const history = await applyPauseHistory(client, tasks, survivors, opts);
-  return { ok: true, reason: null, tasks, started, scanned, eligible: tasks.size, pauseHeld: history.held, pauseHistory: history.status };
+  return { ok: true, reason: null, tasks, started, scanned, eligible: tasks.size - history.held.length, pauseHeld: history.held, pauseHistory: history.status };
 }
 
 /**
@@ -375,7 +375,7 @@ async function fetchLinearWatchdogTasks(client, opts = {}) {
  * comment read fails (the queue stays as it was before this pass, and the reason is
  * returned): linear-next.js re-applies the recheck/recent-pause part of the rule on the
  * live card at dispatch time, so an outage here cannot re-launch a paused card.
- * Mutates `tasks`. -> {held: [{taskId, reason}], status: 'ok'|'skipped'|'failed: ...'}
+ * Marks held tasks in `tasks` (status 'in_progress', pauseHold). -> {held: [{taskId, reason}], status: 'ok'|'skipped'|'failed: ...'}
  */
 async function applyPauseHistory(client, tasks, survivors, opts = {}) {
   const held = [];
@@ -393,7 +393,11 @@ async function applyPauseHistory(client, tasks, survivors, opts = {}) {
   for (const [taskId, issue] of survivors) {
     const reason = historySkipReason(issue, byIdentifier.get(issue.identifier) || [], nowMs);
     if (!reason) continue;
-    tasks.delete(taskId);
+    // Kept, not deleted: blocked-job and unlanded-work detection read a missing task as closed.
+    // 'in_progress' is the other value isTaskOpen() accepts, and p01Queue only takes 'pending'
+    // (same trick as mapStartedToTask); pauseHold also keeps the dead-launch retry off it.
+    const task = tasks.get(taskId);
+    if (task) { task.status = 'in_progress'; task.pauseHold = reason; }
     held.push({ taskId, reason });
   }
   return { held, status: 'ok' };

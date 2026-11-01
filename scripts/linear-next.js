@@ -788,7 +788,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // Pause-history hold (BRO-6764): a card a worker just paused, or paused on a
   // RECHECK-AFTER date still ahead, sits in a backlog-type state that the two
   // guards around this one pass. See ld.pausedHoldGuard's header.
-  const pausedRefusal = ld.pausedHoldGuard(issue, args);
+  // getIssue reads the newest 50 comments; a card in a relaunch loop can bury
+  // its pause report under 50 machine receipts, so read the whole thread then.
+  let holdIssue = issue;
+  if (!args.force && ((issue.comments && issue.comments.nodes) || []).length >= 50 && typeof (deps.linear || linear).listIssueComments === 'function') {
+    try {
+      const deep = (await (deps.linear || linear).listIssueComments([identifier], undefined, { maxPerIssue: 500 })).get(identifier);
+      if (deep && deep.length) holdIssue = { ...issue, comments: { nodes: deep } };
+    } catch (e) { console.error(`[linear-next] WARN full comment read for the pause-history check failed (${e.message}); using the newest 50`); }
+  }
+  const pausedRefusal = ld.pausedHoldGuard(holdIssue, args);
   if (pausedRefusal) {
     console.error(`[linear-next] REFUSING to dispatch ${identifier}: ${pausedRefusal}`);
     process.exit(1);
