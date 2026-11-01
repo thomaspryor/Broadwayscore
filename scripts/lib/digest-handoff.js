@@ -1,7 +1,7 @@
 'use strict';
 // scripts/lib/digest-handoff.js — which machine sends the owner's morning email today (BRO-6764).
 // One committed date, config/morning-digest-handoff.json. Before it the Mac's launchd job sends; on or
-// after it the GitHub Action sends and the Mac no-ops. Pure apart from the file read.
+// after it the GitHub Action sends and the Mac runs autofix + canary only and sends nothing. Pure apart from the file read.
 const fs = require('fs');
 const path = require('path');
 const { dayKeyET } = require('./scheduled-email-count-rules');

@@ -211,7 +211,7 @@ Note: CLAUDE.md §14 says orchestrator fires "3 AM UTC Broadway / 10 PM UTC West
 | com.broadwayscore.backfill-gather | daily 04:00 ET (= 08:00 UTC in EDT) | backfill gather run |
 | com.broadwayscore.worktree-gc | Sun 04:00 ET | worktree garbage collection |
 | ~~com.bwsc.nightly-digest~~ | — | GONE (verified absent from ~/Library/LaunchAgents 2026-07-27) |
-| com.broadwayscore.morning-digest | daily 07:30 ET | the ONE scheduled owner email (send-morning-digest.js, added 2026-07-27) |
+| com.broadwayscore.morning-digest | daily 07:30 ET | the Mac's morning job: owner email until the digest handoff date (config/morning-digest-handoff.json), then autofix + canary only while the GitHub Action sends (BRO-6764) |
 | com.bwsc.opening-night-backup-trigger | daily 21:00 ET (= 01:00 UTC) | orchestrator backup trigger |
 | com.bwsc.weekly-retro | Sun 10:00 ET | weekly retro |
 | com.tompryor.claude-token-health | daily 09:30 ET | token health check |

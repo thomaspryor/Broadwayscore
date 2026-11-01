@@ -209,7 +209,7 @@ async function main() {
     'morning-digest': {
       title: (day) => `Morning digest did not arrive on ${day}`,
       body: 'The owner\'s morning email (scripts/send-morning-digest.js, launchd com.broadwayscore.morning-digest at 07:30 ET) likely failed silently — Mac asleep, launchd job unloaded, missing env, or a send error.',
-      hint: 'On the Mac Studio: launchctl print gui/501/com.broadwayscore.morning-digest (loaded?), then check /tmp/morning-digest-launchd.log, then `node scripts/send-morning-digest.js --send-to-owner` to send manually.',
+      hint: 'On the Mac Studio: launchctl print gui/501/com.broadwayscore.morning-digest (loaded?), then check /tmp/morning-digest-launchd.log, then send manually: before the handoff date `node scripts/send-morning-digest.js --send-to-owner`; from it, dispatch the Morning Digest workflow (morning-digest-action.yml) with send=true.',
     },
     'opening-digest': {
       title: (day) => `Opening digest did not arrive on ${day}`,
