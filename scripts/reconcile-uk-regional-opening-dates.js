@@ -55,11 +55,11 @@ if (require.main === module) {
       actions.push({ ...base, field: 'openingDate', newValue: m.openingDate, description: `Earliest review is ${m.gapDays}d before the review-seeded opening date` });
       actions.push({ ...base, field: 'openingDateSource', newValue: m.openingDateSource, description: 'Opening date now the earliest review date (unconfirmed upper bound)' });
       // openingDate edits stamp a human pin that would block later press-night sources: clear it.
-      actions.push({ ...base, field: 'humanCorrectedOpeningDate', newValue: null, description: 'Clear the pin so Playbill/theatremonkey press-night dates can still refine this date' });
+      actions.push({ ...base, field: 'humanCorrectedOpeningDate', newValue: null, description: 'Clear the pin so a press-night source can still refine this date' });
     }
     const file = path.join(os.tmpdir(), `reconcile-opening-${process.pid}.json`);
     fs.writeFileSync(file, JSON.stringify(actions));
-    execFileSync('node', [path.join(__dirname, 'new-fix-plan.js'), `--id=${arg.slice(7)}`, '--summary=UK regional: move review-seeded opening dates to the earliest review date', `--actions=${file}`], { stdio: 'inherit' });
+    execFileSync('node', [path.join(__dirname, 'new-fix-plan.js'), `--id=${arg.slice(7)}`, '--summary=UK regional + theatreinchicago: move review-seeded opening dates to the earliest review date', `--actions=${file}`], { stdio: 'inherit' });
   }
 }
 // CI path (BRO-6725): the daily status job applies the same moves to shows that were

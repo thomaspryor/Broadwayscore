@@ -576,3 +576,16 @@ test('BRO-5851: a sourced no-press-night-found row is never re-dated by a review
   const wos = { ...show, openingDateSource: 'whatsonstage-first-performance' };
   assert.equal(inferPressNightFromReviews({ candidateShows: [wos], reviews }).length, 1);
 });
+
+test('BRO-6697: review-seeded bounds (incl. reconciled first-review-date) never move forward', () => {
+  for (const src of ['guardian-review', 'tic-first-review', 'first-review-date']) {
+    const show = {
+      id: `seeded-${src}-2026`, title: 'Seeded', slug: `seeded-${src}-2026`, category: 'west-end',
+      openingDate: '2026-03-01', previewsStartDate: '2026-03-01', openingDateSource: src,
+    };
+    // A straggler wave 10 days later would move an unconfirmed collapsed date forward.
+    const reviews = reviewsOn(show.id, '2026-03-11', 4);
+    const out = inferPressNightFromReviews({ candidateShows: [show], reviews });
+    assert.equal(out.length, 0, `${src} is a press-night upper bound, not a date to chase forward`);
+  }
+});
