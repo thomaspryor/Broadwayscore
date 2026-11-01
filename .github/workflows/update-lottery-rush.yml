@@ -35,7 +35,11 @@ permissions:
 jobs:
   update-lottery-rush:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # BRO-6364: was 10. A healthy run (2026-10-29, 40915400469) needed ~10m17s
+    # (two LLM extractions ~2 min + paid-tier fallbacks) and was cancelled in
+    # push-core-data after the scrape had already committed. fetchJSON now
+    # honours the per-run tier memo, which cuts ~4 min; 15 keeps headroom.
+    timeout-minutes: 15
 
     steps:
       - name: Checkout repository
@@ -124,7 +128,7 @@ jobs:
       # longer emails (nothing for the owner to do); check-cron-health.yml
       # keeps the failure owner-visible in the morning digest (110h threshold).
       - name: Notify on failure
-        # BRO-3707: a hang hitting the job's own timeout-minutes: 10 reports
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 15 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # silently drop this critical alert.
         if: failure() || cancelled()

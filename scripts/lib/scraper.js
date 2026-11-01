@@ -1877,6 +1877,23 @@ async function fetchJSON(url, options = {}) {
   // fetchJSON must too, or an empirically-dead tier for a given host keeps
   // getting tried on every call (ship-check finding, task #203 reopen).
   const skips = _getDomainSkips(url);
+  // BRO-6364: the BRO-4296 run memo too. Without it every bwayrush.com
+  // /api/calendar call re-tried SD 400 -> SD stealth 500 -> SB 500 (~40s) before
+  // Bright Data answered; 8 weekly calls ate ~5.5 of update-lottery-rush's 10
+  // job minutes and the 2026-10-29 run was cancelled by the job timeout.
+  let memoHost = null;
+  try { memoHost = new URL(url).hostname.replace(/^www\./, ''); } catch { /* malformed: no memo */ }
+  if (!RUN_MEMO_DISABLED && memoHost) {
+    for (const tier of _runMemo.skippedTiers(memoHost)) skips.add(tier);
+  }
+  // Same shape fetchPage() feeds the memo: one entry per paid tier, in chain
+  // order, recorded only when some tier returned parsed JSON.
+  const outcomes = [];
+  const won = (tier, value) => {
+    outcomes.push({ tier, attempted: true, ok: true });
+    _recordRunMemo(memoHost, outcomes);
+    return value;
+  };
 
   // Try direct fetch first — free, and most JSON API endpoints (WP-JSON, etc.)
   // aren't bot-protected. May be TLS-blocked for some hosts in CI; falls
@@ -1933,10 +1950,14 @@ async function fetchJSON(url, options = {}) {
   // still routes past SD to ScrapingBee/Bright Data below instead of retrying.
   if (USE_SCRAPINGDOG && SCRAPINGDOG_API_KEY && !_scraperStats.sdBudgetExceeded && !_sdQuotaExceeded && !skips.has('scrapingdog')) {
     let sdStealthEligible = false;
+    // A caps/breaker decline of the first call is no evidence the tier is dead
+    // on this host (stealth only runs after a real plain-tier 400).
+    let sdSkipped = false;
+    const sdOnSkip = () => { sdSkipped = true; };
     try {
-      const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false, throwOn400: true });
+      const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false, throwOn400: true, onSkip: sdOnSkip });
       if (raw && raw.content) {
-        return JSON.parse(raw.content);
+        return won('scrapingdog', JSON.parse(raw.content));
       }
     } catch (err) {
       if (err.sdStatus === 400) {
@@ -1950,12 +1971,13 @@ async function fetchJSON(url, options = {}) {
       try {
         const raw = await fetchWithScrapingdog(url, { ...options, renderJs: false, stealthMode: true });
         if (raw && raw.content) {
-          return JSON.parse(raw.content);
+          return won('scrapingdog', JSON.parse(raw.content));
         }
       } catch (err) {
         console.log(`  fetchJSON Scrapingdog stealth_mode failed: ${err.message}`);
       }
     }
+    outcomes.push({ tier: 'scrapingdog', attempted: !sdSkipped, ok: false });
   }
 
   // Last resort: ScrapingBee (render_js=false = 1 credit)
@@ -1982,8 +2004,9 @@ async function fetchJSON(url, options = {}) {
       _scraperStats.sbCredits += creditsFor('sb', 'page'); // render_js=false
       sbHostCooldown.record(url, true);
       recordSbCall({ url, fn: 'json', success: true, status: 200, credits: creditsFor('sb', 'page') });
-      return JSON.parse(response);
+      return won('scrapingbee', JSON.parse(response));
     } catch (err) {
+      outcomes.push({ tier: 'scrapingbee', attempted: true, ok: false });
       sbHostCooldown.record(url, false);
       recordSbCall({ url, fn: 'json', success: false, status: (err.message || 'error').slice(0, 80), credits: creditsFor('sb', 'page') });
       console.log(`  fetchJSON ScrapingBee failed: ${err.message}`);
@@ -2004,7 +2027,7 @@ async function fetchJSON(url, options = {}) {
     const raw = await fetchWithBrightData(url);
     if (raw && raw.content) {
       try {
-        return JSON.parse(raw.content);
+        return won('brightdata', JSON.parse(raw.content));
       } catch (err) {
         console.log(`  fetchJSON Bright Data returned non-JSON: ${err.message}`);
       }

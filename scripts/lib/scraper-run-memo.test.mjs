@@ -187,3 +187,99 @@ test('fetchPage: SCRAPER_RUN_MEMO_DISABLED=true keeps trying SD every time', () 
   assert.ok(!stdout.includes('CHILD_ERROR'), stdout);
   assert.ok(sdPerFetch.length === 5 && sdPerFetch.every((n) => n > 0), `${sdPerFetch}`);
 });
+
+// --- Through the real fetchJSON (BRO-6364) ---
+// bwayrush.com /api/calendar shape: direct 403, Scrapingdog errors, ScrapingBee
+// 500, Bright Data returns the JSON. Before BRO-6364 fetchJSON ignored the run
+// memo, so all 8 weekly calls paid the full ~40s chain and the job timed out.
+const JSON_CHILD = `
+'use strict';
+const https = require('https');
+const { EventEmitter } = require('events');
+let sd = 0, sb = 0;
+function fakeRes(status, body) {
+  const res = new EventEmitter();
+  res.statusCode = status;
+  res.headers = {};
+  setImmediate(() => { res.emit('data', body); res.emit('end'); });
+  return res;
+}
+function fakeReq() {
+  const req = new EventEmitter();
+  req.write = () => {}; req.destroy = () => {}; req.setTimeout = () => {};
+  return req;
+}
+https.request = (url, opts, cb) => {
+  const req = fakeReq();
+  req.end = () => cb(fakeRes(200, JSON.stringify({ week: 'ok', shows: [1, 2, 3] })));
+  return req;
+};
+https.get = (url, opts, cb) => {
+  const u = String(url);
+  const req = fakeReq();
+  if (u.includes('/scrape?')) { sd++; setImmediate(() => req.emit('error', new Error('stubbed: SD down'))); return req; }
+  if (u.includes('scrapingbee.com')) { sb++; setImmediate(() => cb(fakeRes(500, 'boom'))); return req; }
+  setImmediate(() => cb(fakeRes(403, 'blocked')));
+  return req;
+};
+const { fetchJSON } = require(process.env.SCRAPER_PATH);
+(async () => {
+  for (let i = 1; i <= 5; i++) {
+    const b = { sd, sb };
+    const out = await fetchJSON('https://www.memo-json-host.example/api/calendar?week=' + i);
+    console.log('JSON ' + i + ' ok=' + (out && out.week === 'ok') + ' sd=' + (sd - b.sd) + ' sb=' + (sb - b.sb));
+  }
+})().catch((e) => { console.log('CHILD_ERROR ' + e.message); process.exit(3); });
+`;
+
+function runJsonChild(extraEnv = {}) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6364-'));
+  const child = path.join(dir, 'child.cjs');
+  fs.writeFileSync(child, JSON_CHILD);
+  const stdout = execFileSync(process.execPath, [child], {
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+    env: {
+      ...process.env,
+      SCRAPER_PATH: path.join(HERE, 'scraper.js'),
+      SCRAPER_SPEND_LEDGER_PATH: path.join(dir, 'ledger.jsonl'),
+      SD_BREAKER_STATE_PATH: path.join(dir, 'sd-circuit-breaker.json'),
+      BD_BREAKER_STATE_PATH: path.join(dir, 'bd-circuit-breaker.json'),
+      SB_BREAKER_STATE_PATH: path.join(dir, 'sb-circuit-breaker.json'),
+      SB_HOST_COOLDOWN_DISABLED: '1',
+      SCRAPER_USE_SCRAPINGDOG: '1',
+      SCRAPINGDOG_API_KEY: 'test-sd-key',
+      BRIGHTDATA_TOKEN: 'test-bd-token',
+      SCRAPINGBEE_API_KEY: 'test-sb-key',
+      SD_CAPS_DISABLED: '1',
+      BD_CAPS_DISABLED: '1',
+      BD_OPENING_NIGHT: '',
+      GITHUB_WORKFLOW: '',
+      SCRAPER_RUN_MEMO_DISABLED: '',
+      ...extraEnv,
+    },
+  });
+  fs.rmSync(dir, { recursive: true, force: true });
+  const calls = [...stdout.matchAll(/JSON \d+ ok=(\w+) sd=(\d+) sb=(\d+)/g)]
+    .map((m) => ({ ok: m[1] === 'true', sd: Number(m[2]), sb: Number(m[3]) }));
+  return { stdout, calls };
+}
+
+test('fetchJSON: SD and SB stop being called on a host once BD keeps recovering', () => {
+  const { stdout, calls } = runJsonChild();
+  assert.ok(!stdout.includes('CHILD_ERROR'), stdout);
+  assert.equal(calls.length, 5, stdout);
+  assert.ok(calls.every((c) => c.ok), `every call still returns the JSON: ${stdout}`);
+  assert.ok(calls.slice(0, 2).every((c) => c.sb > 0), `SB tried until it latches (2): ${stdout}`);
+  assert.deepEqual(calls.slice(2).map((c) => c.sb), [0, 0, 0], stdout);
+  assert.ok(calls.slice(0, 3).every((c) => c.sd > 0), `SD tried until it latches (3): ${stdout}`);
+  assert.deepEqual(calls.slice(3).map((c) => c.sd), [0, 0], stdout);
+  assert.match(stdout, /run memo: scrapingbee failed 2x on memo-json-host\.example/);
+  assert.match(stdout, /run memo: scrapingdog failed 3x on memo-json-host\.example/);
+});
+
+test('fetchJSON: SCRAPER_RUN_MEMO_DISABLED=true keeps the full chain', () => {
+  const { stdout, calls } = runJsonChild({ SCRAPER_RUN_MEMO_DISABLED: 'true' });
+  assert.ok(!stdout.includes('CHILD_ERROR'), stdout);
+  assert.ok(calls.length === 5 && calls.every((c) => c.ok && c.sd > 0 && c.sb > 0), stdout);
+});
