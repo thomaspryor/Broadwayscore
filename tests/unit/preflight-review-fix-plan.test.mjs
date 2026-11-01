@@ -163,3 +163,15 @@ test('a commercial plan with no shows.json in the core dir FAILs the add cleanly
   assert.equal(failed, 1, lines.join('\n'));
   assert.ok(lines.some((l) => /FAIL c6 add-commercial-entry beta: .*shows.json not found/.test(l)));
 });
+
+// BRO-6742: plan g named "scripts/ingest-review-from-url.js"; preflight skipped it and CI refused both actions.
+test('a run-script action whose script is not in the executor allowlist fails preflight, with the prefix hint', () => {
+  const run = (script) => ({ type: 'run-script', script, args: '--show=fixture-show-2026 --url=https://example.com/r' });
+  const c = fixture({}, [run('scripts/ingest-review-from-url.js'), run('ingest-review-from-url.js')]);
+  try {
+    const logs = [];
+    const { failed } = preflight([c.plan], { reviewTextsDir: c.reviewTextsDir, log: (m) => logs.push(m) });
+    assert.equal(failed, 1, logs.join('\n'));
+    assert.ok(logs.some((l) => /FAIL .*not in allowlist \(name it "ingest-review-from-url\.js"/.test(l)), logs.join('\n'));
+  } finally { c.cleanup(); }
+});
