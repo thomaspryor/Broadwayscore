@@ -5,7 +5,7 @@ import { isCategoryEnabled } from '@/lib/markets';
 import { getTourCities, getTourCity, type TourCity } from '@/lib/data-tour-cities';
 import { getTourStopTickets } from '@/lib/data-tour-schedule';
 import { seasonLabel } from '@/lib/tour-cities';
-import { HUB_CITIES } from '@/lib/city-hub';
+import { HUB_CITIES, hubVenue } from '@/lib/city-hub';
 import { getCityHubShows } from '@/lib/data-city-hub';
 import { getOutletRegistry } from '@/lib/outlet-id-mapper';
 import { localCriticStat, LOCAL_CRITICS_MIN, type OutletMetroEntry } from '@/lib/outlet-metro';
@@ -174,7 +174,7 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
       <p className="text-xs text-fg-muted mb-1.5 tabular-nums">
         {s.openingDate ? formatShowDate(s.openingDate, { month: 'short', day: 'numeric', year: 'numeric' }) : ''}
         {s.closingDate ? `–${formatShowDate(s.closingDate, { month: 'short', day: 'numeric', year: 'numeric' })}` : ''}
-        {s.venue ? ` · ${s.venue.replace(/,\s*Chicago,\s*IL$/, '')}` : ''}
+        {s.venue ? ` · ${hubVenue(s.venue, c.slug)}` : ''}
       </p>
       <ShowListCard show={{ ...serializeShowForClient(s), tourNowNext: null, ticketLinks: [] }} index={i} scoreMode="critics" variant="compact" showReviewCount />
     </li>

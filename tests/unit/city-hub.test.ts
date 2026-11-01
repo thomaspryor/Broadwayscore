@@ -3,7 +3,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sectionHubShows, hubPhase, CLOSED_LIMIT, RECENT_DAYS } from '../../src/lib/city-hub';
+import { sectionHubShows, hubPhase, hubVenue, CLOSED_LIMIT, RECENT_DAYS } from '../../src/lib/city-hub';
 import { outletMetro, localCriticStat } from '../../src/lib/outlet-metro';
 import { citySlug } from '../../src/lib/tour-cities';
 
@@ -87,4 +87,24 @@ test('getCityHubShows draws from getAllShows via hubCandidates, not getRegionalS
   assert.match(src, /hubCandidates\(getAllShows\(\)/);
   assert.doesNotMatch(src, /getRegionalShows\(/);
   assert.match(src, /isUkRegionalShow/);
+});
+
+test('hubVenue strips only the hub home city', () => {
+  assert.equal(hubVenue('Steppenwolf Theatre, Chicago, IL', 'chicago-il'), 'Steppenwolf Theatre');
+  assert.equal(hubVenue('Arena Stage, Washington, DC', 'washington-dc'), 'Arena Stage');
+  assert.equal(hubVenue('Olney Theatre Center, Olney, MD', 'washington-dc'), 'Olney Theatre Center, Olney, MD');
+  assert.equal(hubVenue(null, 'washington-dc'), '');
+});
+
+test('DC hub: a closed run that opened before 2026-05-01 is left off; open and upcoming stay (BRO-6771)', () => {
+  const dc = (id: string, o: object) => ({ id, city: 'washington-dc', ...o });
+  const s = sectionHubShows([
+    dc('old-closed', { status: 'closed', openingDate: '2026-01-10', closingDate: '2026-02-07' }),
+    dc('new-closed', { status: 'closed', openingDate: '2026-06-01', closingDate: '2026-07-26' }),
+    dc('old-open', { status: 'open', openingDate: '2026-03-01', closingDate: '2026-12-20' }),
+    dc('soon', { status: 'upcoming', openingDate: '2026-12-01' }),
+  ], 'washington-dc', TODAY);
+  assert.deepEqual(s.closedRecent.map(x => x.id), ['new-closed']);
+  assert.deepEqual([...s.now, ...s.soon].map(x => x.id).sort(), ['old-open', 'soon']);
+  assert.equal(s.archive.length, 0);
 });

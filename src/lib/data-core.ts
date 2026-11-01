@@ -400,6 +400,13 @@ export function getAllLondonShows(): ComputedShow[] {
 /**
  * Get market stats for the header market picker
  */
+/** Market-menu counts for one city hub. Same phase rule as the hub page, so "playing now" cannot disagree with it. */
+function hubMarketStats(metro: string): { shows: number; openShows: number } {
+  const local = getAllShows().filter(s => s.city === metro && s.category === 'regional');
+  const today = new Date().toISOString().slice(0, 10);
+  return { shows: local.length, openShows: local.filter(s => hubPhase(s, today) === 'now').length };
+}
+
 export function getMarketStats() {
   const bwShows = getBroadwayShows();
   const weShows = getWestEndShows();
@@ -431,14 +438,10 @@ export function getMarketStats() {
       shows: pickRegionalShelf(ukRegional, { limit: Infinity, requireEnoughReviews: true }).length,
       openShows: ukRegional.filter(s => s.status === 'open' || s.status === 'previews').length,
     },
-    // Chicago city hub (/tours/chicago-il, BRO-6498): regional productions in the metro.
+    // City hubs (/tours/chicago-il BRO-6498, /tours/washington-dc BRO-6771): regional productions in the metro.
     // Tour stops are counted on the hub itself, not here.
-    chicago: (() => {
-      const chi = getAllShows().filter(s => s.city === 'chicago-il' && s.category === 'regional');
-      // Same phase rule as the hub page, so "playing now" cannot disagree with it.
-      const today = new Date().toISOString().slice(0, 10);
-      return { shows: chi.length, openShows: chi.filter(s => hubPhase(s, today) === 'now').length };
-    })(),
+    chicago: hubMarketStats('chicago-il'),
+    washingtonDc: hubMarketStats('washington-dc'),
   };
 }
 

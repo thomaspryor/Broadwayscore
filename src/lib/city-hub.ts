@@ -6,10 +6,20 @@
 export const RECENT_DAYS = 365;
 export const CLOSED_LIMIT = 12;
 
-/** Slug of the one metro that has a hub page today. */
-export const HUB_CITIES: Record<string, { name: string; short: string }> = {
-  'chicago-il': { name: 'Chicago, IL', short: 'Chicago' },
+/** Slugs of the metros that have a hub page. `home` is the trailing "City, ST" a venue drops on that hub's own page. */
+export const HUB_CITIES: Record<string, { name: string; short: string; home: string; since?: string }> = {
+  'chicago-il': { name: 'Chicago, IL', short: 'Chicago', home: 'Chicago, IL' },
+  // BRO-6771: short-history launch (open now + opened since 2026-05-01), Theatre In DC.
+  'washington-dc': { name: 'Washington, DC', short: 'Washington DC', home: 'Washington, DC', since: '2026-05-01' },
 };
+
+/** "Arena Stage, Washington, DC" -> "Arena Stage" on the DC hub; suburbs keep their city. */
+export function hubVenue(venue: string | null | undefined, slug: string): string {
+  const home = HUB_CITIES[slug]?.home;
+  if (!venue || !home) return venue || '';
+  const esc = home.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/,\s*/g, ',\\s*');
+  return venue.replace(new RegExp(`,\\s*${esc}$`), '');
+}
 
 export interface HubShowLike {
   id: string;
@@ -57,7 +67,8 @@ export function hubCandidates<T extends { category?: string }>(shows: T[], isUkR
 }
 
 export function sectionHubShows<T extends HubShowLike>(shows: T[], metro: string, today: string): HubSections<T> {
-  const mine = shows.filter(s => s.city === metro);
+  const cutoff = HUB_CITIES[metro]?.since;
+  const mine = shows.filter(s => s.city === metro && !(cutoff && hubPhase(s, today) === 'closed' && (s.openingDate || '') < cutoff));
   const out: HubSections<T> = { now: [], soon: [], closedRecent: [], archive: [] };
   const since = addDays(today, -RECENT_DAYS);
   const closed: T[] = [];
