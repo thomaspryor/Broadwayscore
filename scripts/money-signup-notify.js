@@ -5,6 +5,11 @@
 // Flags: --dry-run (print counts, send nothing), --test-email (send one sample to the owner).
 const { planNotifications, buildSignupEmail, buildDigestEmail } = require('./lib/money-signup-notify');
 
+const { hasHelpFlag } = require('./lib/cli-help.js');
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/money-signup-notify.js [--dry-run | --test-email]\nEmails the owner (only) about new Profitability Scorecard sign-ups. --dry-run sends nothing; --test-email sends one sample.');
+  process.exit(0);
+}
 const DRY = process.argv.includes('--dry-run');
 const TEST = process.argv.includes('--test-email');
 
