@@ -41,6 +41,21 @@ function commercialHistoryIssue(history, nowMs = Date.now()) {
  *   has modelDesignationFlagCount, aiEstimatedCount, modelMethodBreakdown, etc.
  * @returns {{status: 'pass'|'warn', message: string}}
  */
+// Share rises smaller than this (0.5 percentage points) are rounding-level
+// churn, not drift.
+const AI_SHARE_TOLERANCE = 0.005;
+const pct = (x) => (x * 100).toFixed(1);
+
+/** ai-estimated / all modelled shows, or null when the entry has no breakdown. */
+function aiEstimatedShare(entry) {
+  const breakdown = entry && entry.modelMethodBreakdown;
+  if (!breakdown || typeof breakdown !== 'object') return null;
+  const total = Object.values(breakdown).reduce((sum, n) => sum + (Number.isFinite(n) ? n : 0), 0);
+  if (total <= 0) return null;
+  const ai = Number.isFinite(entry.aiEstimatedCount) ? entry.aiEstimatedCount : (breakdown['ai-estimated'] || 0);
+  return ai / total;
+}
+
 function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   if (!Array.isArray(history) || history.length === 0) {
     return {
@@ -77,7 +92,17 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
   if (flagDelta > 0) {
     issues.push(`modelDesignationFlag contradictions up ${flagDelta} (${priorFlagCount} → ${latestFlagCount})`);
   }
-  if (aiDelta > 0) {
+  // BRO-5749: the modelled set keeps growing (230 → 476 shows, Sep-Oct 2026),
+  // so the raw ai-estimated count rose most weeks while its SHARE fell
+  // (47% → 26%). Drift is the share rising; the raw count is only the
+  // fallback when an entry has no modelMethodBreakdown to divide by.
+  const priorShare = aiEstimatedShare(prior);
+  const latestShare = aiEstimatedShare(latest);
+  if (priorShare != null && latestShare != null) {
+    if (aiDelta > 0 && latestShare - priorShare > AI_SHARE_TOLERANCE) {
+      issues.push(`ai-estimated share up ${pct(latestShare - priorShare)} pts (${pct(priorShare)}% → ${pct(latestShare)}%; count ${priorAiCount} → ${latestAiCount})`);
+    }
+  } else if (aiDelta > 0) {
     issues.push(`ai-estimated tier count up ${aiDelta} (${priorAiCount} → ${latestAiCount})`);
   }
 
@@ -87,8 +112,8 @@ function computeCommercialModelDriftStatus(history, nowMs = Date.now()) {
 
   return {
     status: 'pass',
-    message: `${latestFlagCount} modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows (stable vs prior week)`,
+    message: `${latestFlagCount} modelDesignationFlag contradiction(s), ${latestAiCount} ai-estimated shows${latestShare != null ? ` (${pct(latestShare)}% of modelled)` : ''} (no rise vs prior week)`,
   };
 }
 
-module.exports = { computeCommercialModelDriftStatus, commercialHistoryIssue, COMMERCIAL_HISTORY_MAX_AGE_HOURS };
+module.exports = { computeCommercialModelDriftStatus, aiEstimatedShare, commercialHistoryIssue, COMMERCIAL_HISTORY_MAX_AGE_HOURS };
