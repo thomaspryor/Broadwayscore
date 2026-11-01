@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-01T14:48:06.631Z",
+  "timestamp": "2026-11-01T15:11:41.426Z",
   "stats": {
-    "totalReviews": 78368,
-    "alreadyFlagged": 21766,
-    "dateGuardCatches": 242,
-    "directorMismatch": 3356,
-    "tvFilmSignals": 2231,
-    "londonSignals": 3553,
-    "offBroadwaySignals": 731,
+    "totalReviews": 78405,
+    "alreadyFlagged": 21757,
+    "dateGuardCatches": 243,
+    "directorMismatch": 3354,
+    "tvFilmSignals": 2227,
+    "londonSignals": 3552,
+    "offBroadwaySignals": 727,
     "yearMismatch": 332,
-    "noPublishDate": 8555
+    "noPublishDate": 8576
   },
   "findings": [
     {
@@ -2017,20 +2017,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "a-dolls-house-2023",
-      "file": "dailybeast--tim-teeman.json",
-      "score": 87,
-      "publishDate": "2023-03-10",
-      "url": "https://www.thedailybeast.com/jessica-chastain-electrifies-a-no-frills-broadway-revival-of-a-dolls-house/#:~:text=Review%3A%20Jessica%20Chastain%20Electrifies%20Broadway,Revival%20of%20'A%20Doll's%20House'&text=%C2%A9%202025%20The%20Daily%20Beast,Company%20LLC",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -18401,7 +18387,7 @@
     {
       "showId": "dog-man-the-musical-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
-      "score": 59,
+      "score": 55,
       "publishDate": "2026-08-04",
       "url": "https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/",
       "findings": [
@@ -31097,25 +31083,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "illinoise-2024",
-      "file": "variety--christian-lewis.json",
-      "score": 88,
-      "publishDate": "April 26, 2024",
-      "url": "https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
         }
       ]
     },
@@ -53271,25 +53238,6 @@
     },
     {
       "showId": "sea-wall-a-life-2019",
-      "file": "dailybeast--tim-teeman.json",
-      "score": 77,
-      "publishDate": "2019-08-08",
-      "url": "https://www.thedailybeast.com/sea-walla-life-jake-gyllenhaal-and-tom-sturridge-confront-life-and-death-on-broadway/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "sea-wall-a-life-2019",
       "file": "national-review--kyle-smith.json",
       "score": 38,
       "publishDate": "2019-08-09",
@@ -57387,20 +57335,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "variety--frank-rizzo.json",
-      "score": 86,
-      "publishDate": "April 18th, 2024",
-      "url": "https://variety.com/2024/legit/reviews/suffs-review-musical-broadway-1235974881/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -64464,20 +64398,6 @@
     },
     {
       "showId": "the-glass-menagerie-2017",
-      "file": "guardian--alexis-soloski.json",
-      "score": 78,
-      "publishDate": "2017-02-12",
-      "url": "https://www.theguardian.com/stage/2017/feb/12/the-glass-menagerie-duke-of-york-theatre-review-john-tiffany-kate-o-flynn",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 62,
       "publishDate": "2017-03-09",
@@ -64509,20 +64429,6 @@
       "file": "theater-life--david-sheward.json",
       "publishDate": "2017-03-14",
       "url": "http://theaterlife.com/the-glass-menagerie-sweeney-todd-man-from-nebraska/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
-      "file": "timeout--david-cote.json",
-      "score": 82,
-      "publishDate": "March 9, 2017",
-      "url": "http://www.timeout.com/newyork/theater/the-glass-menagerie-1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -101704,24 +101610,10 @@
     },
     {
       "showId": "illinoise-2024",
-      "file": "variety--charles-isherwood.json",
+      "file": "variety--christian-lewis.json",
       "score": 88,
       "publishDate": "April 25, 2024",
       "url": "https://variety.com/2024/legit/reviews/illinoise-review-broadway-sufjan-stevens-1235983600/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
-        }
-      ]
-    },
-    {
-      "showId": "illinoise-2024",
-      "file": "vulture--sara-holdren.json",
-      "score": 91,
-      "publishDate": "April 26, 2024",
-      "url": "https://www.vulture.com/article/theater-review-sufjan-stevens-illinoise-armory.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -103008,7 +102900,7 @@
     {
       "showId": "jeezus-off-west-end-2026",
       "file": "musical-theatre-review--sorcha-exworthy.json",
-      "score": 78,
+      "score": 77,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/jeezus-continues-at-the-new-diorama-theatre/",
       "findings": [
@@ -112671,7 +112563,7 @@
     {
       "showId": "operation-mincemeat-west-end-2024",
       "file": "lost-in-theatreland--amy-rye.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2023-05-10",
       "url": "https://lostintheatreland.co.uk/operation-mincemeat-review-fortune-theatre/",
       "findings": [
@@ -116762,20 +116654,6 @@
     },
     {
       "showId": "sea-wall-a-life-2019",
-      "file": "timeout--adam-feldman.json",
-      "score": 59,
-      "publishDate": "August 8, 2019",
-      "url": "https://www.timeout.com/newyork/theater/sea-wall-a-life-review-broadway-jake-gyllenhaal-tom-sturridge",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "sea-wall-a-life-2019",
       "file": "timeout--unknown.json",
       "score": 62,
       "publishDate": null,
@@ -117196,7 +117074,7 @@
       "showId": "significant-other-2017",
       "file": "huffpost--steven-suskin.json",
       "score": 25,
-      "publishDate": null,
+      "publishDate": "2017-03-02T19:41:05-05:00",
       "url": "https://www.huffpost.com/entry/aisle-view-significant-laughter-on-broadway_us_58b84de0e4b0ffd61787bc99",
       "findings": [
         {
@@ -122425,7 +122303,7 @@
       "showId": "the-collaboration-2022",
       "file": "cititour--brian-scott-lipton.json",
       "score": 42,
-      "publishDate": null,
+      "publishDate": "2022-12-20T21:08:43-05:00",
       "url": "https://cititour.com/NYC_Broadway/The-Collaboration/1121",
       "findings": [
         {
@@ -122460,20 +122338,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-collaboration-2022",
-      "file": "theatermania--david-gordon.json",
-      "score": 44,
-      "publishDate": "December 20, 2022",
-      "url": "https://www.theatermania.com/broadway/news/review-the-collaboration_94693.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -133041,6 +132905,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-off-broadway-2026",
+      "file": "lisa-in-the-theatre--lisa-in-the-theatre.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 31d before show (2026-10-01 vs 2026-11-01)"
         }
       ]
     },
