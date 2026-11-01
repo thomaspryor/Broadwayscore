@@ -324,7 +324,14 @@ Usage:
   --resend-sent-guard   also refuse a send when Resend already shows today's digest to the
                         recipient (needs a full-access RESEND_API_KEY; unreadable = refuse).
                         With --dry-run it reports what the guard would do.
-  --help, -h   show this message, do nothing else`;
+  --autofix-only        build the digest data, run auto-fix planning + dispatch and the daily canary,
+                        then stop: no email, no recipient needed (BRO-6764: the Mac keeps this
+                        part after the email moved to GitHub; see scripts/lib/digest-autofix-schedule.js)
+  --help, -h   show this message, do nothing else
+
+Exit codes: 0 sent (or dry run); 1 failed; 2 Resend guard could not tell, refused;
+3 Resend shows today's digest already, refused (not a failure).`;
+const ALREADY_SENT_EXIT = 3;
 
 function parseArgs(argv) {
   const a = { _: [] };
@@ -948,12 +955,13 @@ async function main() {
   const noAutofix = !!args['no-autofix'];
   const skipMacLocal = !!args['skip-mac-local'];
   const resendSentGuard = !!args['resend-sent-guard'];
+  const autofixOnly = !!args['autofix-only'];
   let sendTo = args['send-to'] && args['send-to'] !== true ? String(args['send-to']) : null;
   if (!sendTo && args['send-to-owner']) {
     sendTo = process.env.OWNER_EMAIL || null;
     if (!sendTo) { console.error('[digest] --send-to-owner but OWNER_EMAIL is not set (.env)'); process.exit(1); }
   }
-  if (!dryRun && !sendTo) {
+  if (!dryRun && !sendTo && !autofixOnly) {
     console.error('[digest] refusing to run without an explicit recipient (rule 17) — use --send-to <addr>, --send-to-owner, or --dry-run');
     process.exit(1);
   }
@@ -1556,6 +1564,13 @@ async function main() {
     console.error(`[digest] WARN autofix canary failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }
 
+  // BRO-6764: the email now goes out from GitHub, but auto-fix planning/dispatch and the canary need
+  // this machine's task dir and dispatch fleet. checkout-sync-post.js runs this mode once a day.
+  if (autofixOnly) {
+    console.log('[digest] --autofix-only: auto-fix + canary done, no email built or sent');
+    return;
+  }
+
   // One plain sentence of overnight activity (replaces the old commit-list block).
   let overnightLine = null;
   try {
@@ -1628,8 +1643,12 @@ async function main() {
 
   // BRO-6230: the ~/.broadwayscore-state guard below lives on one machine. A
   // second sender (the GitHub Action) cannot see it, so it asks Resend instead.
+  // BRO-6764: a real send always asks Resend, so the Mac cannot send after the Action did (a Mac that
+  // sleeps through the handoff wakes and fires its launchd job). Without the flag this is SOFT: only a
+  // confirmed 'already-sent' refuses; an unreadable Resend (e.g. a send-only key) still sends.
+  const softResendGuard = !resendSentGuard && !dryRun && !!sendTo && !args.force;
   let resendGuard = null;
-  if (resendSentGuard) {
+  if (resendSentGuard || softResendGuard) {
     const recipient = sendTo || process.env.OWNER_EMAIL || null;
     resendGuard = await resendSentToday({ apiKey: process.env.RESEND_API_KEY, recipient });
     console.log(`[digest] Resend sent-today guard: ${resendGuard.verdict} — ${resendGuard.reason}`);
@@ -1679,9 +1698,9 @@ async function main() {
     }
   }
 
-  if (resendGuard && !args.force && resendGuard.verdict !== 'send') {
+  if (resendGuard && !args.force && resendGuard.verdict !== 'send' && (!softResendGuard || resendGuard.verdict === 'already-sent')) {
     console.error(`[digest] refusing to send: Resend guard says ${resendGuard.verdict} (${resendGuard.reason}).`);
-    process.exit(resendGuard.verdict === 'already-sent' ? 1 : 2);
+    process.exit(resendGuard.verdict === 'already-sent' ? ALREADY_SENT_EXIT : 2);
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -1718,4 +1737,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, saveBoardTableSnapshot };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, saveBoardTableSnapshot, ALREADY_SENT_EXIT };

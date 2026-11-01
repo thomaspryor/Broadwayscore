@@ -8,6 +8,8 @@
 //  1. Retire Mac launchd jobs listed in config/mac-retired.json
 //     (scripts/lib/mac-retired-reconciler.js).
 //  2. Post the applied-sha heartbeat (scripts/lib/mac-applied-heartbeat.js).
+//  3. Once per ET day, after the morning-digest job is retired: run the digest's auto-fix part
+//     (BRO-6764; scripts/lib/digest-autofix-schedule.js). Detached, fail-soft.
 //
 // Always exits 0: nothing here may turn a good sync into a refusal.
 //
@@ -15,7 +17,7 @@
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 if (hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/checkout-sync-post.js [--dry-run] [--no-heartbeat]\nRuns after a successful checkout-sync: retires launchd jobs in config/mac-retired.json, posts the applied-sha heartbeat.');
+  console.log('Usage: node scripts/checkout-sync-post.js [--dry-run] [--no-heartbeat]\nRuns after a successful checkout-sync: retires launchd jobs in config/mac-retired.json, posts the applied-sha heartbeat, runs the digest auto-fix once per ET day after the morning-digest job is retired.');
   process.exit(0);
 }
 
@@ -90,7 +92,32 @@ function heartbeat() {
   }
 }
 
-for (const [name, fn] of [['reconcile', reconcile], ['heartbeat', heartbeat]]) {
+// BRO-6764: only the Mac can run the digest's auto-fix + canary (task dir, dispatch fleet), and the email
+// no longer does. BSC_RUNNER_DISABLED=1 is the same kill switch the digest's plist sets for its headless
+// spawn path; detached + unref so the child outlives this short-lived post step and launchd's job exit.
+function autofix() {
+  const sched = require('./lib/digest-autofix-schedule.js');
+  const file = path.join(ROOT, 'config', 'mac-retired.json');
+  if (!fs.existsSync(file)) return;
+  const git = (...a) => execFileSync('git', a, { cwd: ROOT, encoding: 'utf8', timeout: 15000 }).trim();
+  let commonDir = git('rev-parse', '--git-common-dir');
+  if (!path.isAbsolute(commonDir)) commonDir = path.join(ROOT, commonDir);
+  const stateFile = path.join(commonDir, 'digest-autofix-last.json');
+  let last = null;
+  try { last = JSON.parse(fs.readFileSync(stateFile, 'utf8')); } catch { /* first run */ }
+  const d = sched.shouldRunAutofix({ config: rec.readConfig(file), last, now: new Date() });
+  if (!d.run) { log(`[digest-autofix] not running: ${d.reason}`); return; }
+  if (DRY) { log(`[digest-autofix] (dry-run) would run --autofix-only: ${d.reason}`); return; }
+  fs.writeFileSync(stateFile, JSON.stringify({ dayET: d.dayET, at: new Date().toISOString() }) + '\n');
+  const out = fs.openSync('/tmp/morning-digest-autofix.log', 'a');
+  const child = require('child_process').spawn(process.execPath, [path.join(ROOT, 'scripts', 'send-morning-digest.js'), '--autofix-only'], {
+    cwd: ROOT, detached: true, stdio: ['ignore', out, out], env: { ...process.env, BSC_RUNNER_DISABLED: '1' },
+  });
+  child.unref();
+  log(`[digest-autofix] started --autofix-only (pid ${child.pid}) for ${d.dayET}`);
+}
+
+for (const [name, fn] of [['reconcile', reconcile], ['heartbeat', heartbeat], ['autofix', autofix]]) {
   if (name === 'heartbeat' && args.has('--no-heartbeat')) continue;
   try { fn(); } catch (err) { log(`[checkout-sync-post] ${name} failed (non-fatal): ${err.message}`); }
 }

@@ -23,37 +23,77 @@ const cmp = require('../../scripts/morning-digest-compare.js');
 const WF = read('.github/workflows/morning-digest-action.yml');
 const steps = WF.split(/\n {6}- (?:name|uses):/).slice(1);
 
-test('digest workflow: dispatch only, no live schedule, schedule needs the repo variable', () => {
+const RETIRED = JSON.parse(read('config/mac-retired.json'));
+const MORNING = RETIRED.entries.find((e) => e.label === 'com.broadwayscore.morning-digest');
+const code = (t) => t.replace(/^\s*#.*$/gm, '');
+
+test('digest workflow: committed schedule behind a dated ENABLE_FROM gate, no repo variable (BRO-6764)', () => {
+  assert.match(WF, /^ {2}schedule:\n {4}- cron: '30 12 \* \* \*'/m, '07:30 EST first, later crons are retries');
   assert.match(WF, /^ {2}workflow_dispatch:/m);
-  assert.doesNotMatch(WF, /^ {2}schedule:/m, 'schedule must stay commented out until cutover');
-  assert.match(WF, /^ {4}if: github\.event_name == 'workflow_dispatch' \|\| vars\.MORNING_DIGEST_ACTION_ENABLED == 'true'$/m);
+  assert.doesNotMatch(code(WF), /vars\./, 'cloud sessions cannot set repo variables: every switch is committed');
+  assert.match(WF, /^ {2}ENABLE_FROM: '\d{4}-\d{2}-\d{2}'$/m);
+  assert.match(WF, /^ {2}digest:\n {4}needs: gate\n {4}if: needs\.gate\.outputs\.go == 'true'$/m);
+  assert.match(WF, /\[ "\$\{\{ github\.event_name \}\}" = "schedule" \] && \[\[ "\$today" < "\$ENABLE_FROM" \]\]/);
 });
 
-test('digest workflow: never sends, never publishes the digest', () => {
-  assert.doesNotMatch(WF, /--send-to/);
+test('digest workflow: ENABLE_FROM is not before the Mac job is booted out (retire grace), and not a day later than needed', () => {
+  const { RETIRE_GRACE_DAYS } = require('../../scripts/lib/mac-retired-reconciler.js');
+  assert.ok(MORNING, 'the morning-digest job must be on the retire list');
+  const enable = WF.match(/^ {2}ENABLE_FROM: '(\d{4}-\d{2}-\d{2})'$/m)[1];
+  const bootout = new Date(Date.parse(`${MORNING.retiredAt}T00:00:00Z`) + RETIRE_GRACE_DAYS * 86400000).toISOString().slice(0, 10);
+  assert.ok(enable >= bootout, `ENABLE_FROM ${enable} is before the Mac is booted out (${bootout}): two senders`);
+  assert.ok(enable <= bootout, `ENABLE_FROM ${enable} is after the bootout day ${bootout}: a day with no digest`);
+  assert.equal(MORNING.replacedBy[0], '.github/workflows/morning-digest-action.yml');
+});
+
+test('digest workflow: send mode is one transactional message to the owner, guarded, never a broadcast', () => {
+  const c = code(WF);
+  assert.match(c, /send-morning-digest\.js \$MODE --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
+  assert.match(c, /MODE="--send-to-owner"; else MODE="--dry-run"/);
+  assert.doesNotMatch(c, /broadcast/i);
+  assert.match(c, /SEND_MODE: \$\{\{ \(github\.event_name == 'schedule' \|\| inputs\.send\) && 'true' \|\| 'false' \}\}/);
+  // already-sent (exit 3) is a clean skip; cannot-tell (2) and failures stay red
+  assert.match(c, /if \[ "\$status" = "3" \]; then echo [^\n]*exit 0; fi\n\s+exit "\$status"/);
   assert.doesNotMatch(WF, /upload-artifact|GITHUB_STEP_SUMMARY/);
-  assert.match(WF, /send-morning-digest\.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   // The input reaches the shell through env only, never interpolated into run:.
   assert.equal(WF.match(/\$\{\{\s*inputs\.pubkey_b64\s*\}\}/g).length, 1);
   assert.match(WF, /PUBKEY_B64: \$\{\{ inputs\.pubkey_b64 \}\}/);
 });
 
+test('digest workflow: send mode skips the Mac fetch / snapshot pin / compare (the Mac is gone)', () => {
+  for (const name of ["Fetch today's Mac-sent digest from Resend", 'Pin snapshots to when the Mac sent']) {
+    assert.match(WF, new RegExp(`- name: ${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\n {8}if: env\\.SEND_MODE != 'true'`));
+  }
+  assert.match(WF, /- name: Compare with the Mac digest\n {8}if: always\(\) && env\.SEND_MODE != 'true'/);
+});
+
 test('digest workflow: read-only permissions, no npm install, notify-failure last (critical only when scheduled)', () => {
   assert.match(WF, /^permissions:\n {2}contents: read\n {2}statuses: read\n {2}actions: read\b/m);
-  assert.doesNotMatch(WF.replace(/^\s*#.*$/gm, ''), /: write\b/);
-  assert.doesNotMatch(WF.replace(/^\s*#.*$/gm, ''), /npm (ci|install)/);
+  assert.doesNotMatch(code(WF), /: write\b/);
+  assert.doesNotMatch(code(WF), /npm (ci|install)/);
   const last = steps[steps.length - 1];
   assert.match(last, /uses: \.\/\.github\/actions\/notify-failure/);
   assert.match(last, /severity: \$\{\{ github\.event_name == 'schedule' && 'critical' \|\| 'warning' \}\}/);
 });
 
-test('pager workflow: heartbeat step is report-only until MAC_ALIVE_SIGNAL=heartbeat, and then replaces the digest check', () => {
+test('pager: heartbeat and digest-arrived are both default signals, no repo variable (BRO-6764)', () => {
   const pager = read('.github/workflows/check-morning-digest-sent.yml');
-  assert.match(pager, /- name: Check morning digest was sent\n {8}if: vars\.MAC_ALIVE_SIGNAL != 'heartbeat'\n/);
-  assert.match(pager, /continue-on-error: \$\{\{ vars\.MAC_ALIVE_SIGNAL != 'heartbeat' \}\}/);
-  assert.match(pager, /LIVE: \$\{\{ vars\.MAC_ALIVE_SIGNAL == 'heartbeat' \}\}/);
-  assert.match(pager, /if \[ "\$LIVE" != "true" \] \|\| \[ "\$DRY_RUN" = "true" \]; then ARGS="\$ARGS --dry-run"; fi/);
+  assert.doesNotMatch(code(pager), /MAC_ALIVE_SIGNAL|vars\./);
   assert.match(pager, /^ {2}statuses: read$/m);
+  const src = read('scripts/check-morning-digest-sent.js');
+  assert.match(src, /: 'both';/, 'default signal is both');
+  assert.match(src, /if \(signal !== 'digest'\) await checkHeartbeat/);
+  assert.match(src, /if \(signal !== 'heartbeat'\) await checkDigest/);
+  // separate alert keys so one cannot re-arm the other
+  assert.match(src, /HEARTBEAT_CONDITION_KEY = 'mac:heartbeat-dead'/);
+  const { PAGE_WORTHY_CONDITION_KEYS, OWNER_ACTIONS } = require('../../scripts/lib/page-worthy-alerts.js');
+  for (const k of ['mac:heartbeat-dead', 'mac:morning-digest-missing']) {
+    assert.ok(OWNER_ACTIONS[k], `${k} needs an owner-facing line`);
+  }
+  for (const k of ['mac:heartbeat-dead', 'mac:morning-digest-missing']) assert.ok([...PAGE_WORTHY_CONDITION_KEYS].includes(k), `${k} must be page-worthy`);
+  // retiring the Mac job must not silence a dead Mac
+  const wk = MORNING.watchers.map((w) => w.conditionKey);
+  assert.ok(wk.includes('mac:heartbeat-dead') && wk.includes('mac:morning-digest-missing'));
 });
 
 // ── require graph: the workflow skips npm ci ────────────────────────────────
@@ -265,7 +305,10 @@ test('report-only email says no fix was started; the Mac email keeps its queued 
   assert.doesNotMatch(mac, /did not start any automatic fix/);
 });
 
-test('pager: heartbeat step runs even when the digest check went red', () => {
+test('pager: one signal going red cannot skip the other (exitCode, not exit)', () => {
+  const src = read('scripts/check-morning-digest-sent.js');
+  const body = src.slice(src.indexOf('async function checkHeartbeat'), src.indexOf('async function main'));
+  assert.doesNotMatch(body, /process\.exit\(/, 'checkHeartbeat must set process.exitCode so the digest check still runs');
   const pager = read('.github/workflows/check-morning-digest-sent.yml');
-  assert.match(pager, /name: Check the Mac heartbeat[^\n]*\n {8}if: always\(\)/);
+  assert.match(pager, /name: Check the Mac heartbeat and that the digest arrived/);
 });

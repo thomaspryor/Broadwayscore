@@ -43,7 +43,9 @@ function decideMorningDigest({ emails, ownerEmail, dateET, apiError }) {
     : { action: 'page', reason: `no morning digest to ${ownerEmail} on ${dateET} (ET)` };
 }
 
-const ALERT_TITLE = 'This morning\'s digest did not send. The Mac Studio is probably off or logged out';
-const ALERT_DESCRIPTION = 'Log in to the Mac Studio. Until then the opening-night monitor and daily jobs are not running.';
+// BRO-6764: the digest is sent by the GitHub Action (morning-digest-action.yml); the Mac's heartbeat has its
+// own page (mac:heartbeat-dead). A missing digest now means the Action failed or did not run.
+const ALERT_TITLE = 'This morning\'s digest did not send. The GitHub job that sends it failed or did not run';
+const ALERT_DESCRIPTION = 'The morning email is sent from GitHub now, not the Mac. Today\'s did not go out. The failed run is on the repository Actions page (Morning Digest).';
 
 module.exports = { decideMorningDigest, CONDITION_KEY, ALERT_TITLE, ALERT_DESCRIPTION };

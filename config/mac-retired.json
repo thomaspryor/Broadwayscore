@@ -113,6 +113,26 @@
           "note": "check-linear-drain-health.yml judges a silent Mac drain ledger (assessCloudCoverage, called from scripts/check-linear-drain-health.js) by cloud-worker coverage of the parked queue (BRO-5360), so a stopped Mac drain pages only when the cloud cannot reach the queue either."
         }
       ]
+    },
+    {
+      "label": "com.broadwayscore.morning-digest",
+      "retiredAt": "2026-11-01",
+      "replacedBy": [
+        ".github/workflows/morning-digest-action.yml"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "mac:heartbeat-dead",
+          "file": "scripts/check-morning-digest-sent.js",
+          "note": "Pages when the Mac stops checking in (commit status mac/checkout-sync-applied). It is a default signal of check-morning-digest-sent.yml now, so a dead Mac still pages after this job is gone (BRO-6764)."
+        },
+        {
+          "conditionKey": "mac:morning-digest-missing",
+          "file": "scripts/lib/morning-digest-liveness.js",
+          "note": "Pages at 14:30Z when today's digest is not in Resend. After the cutover that means the GitHub Action failed or did not run."
+        }
+      ],
+      "_rollback": "Delete this entry and land; on the Mac mv ~/Library/LaunchAgents/com.broadwayscore.morning-digest.plist.retired-<date> back and launchctl bootstrap it; remove the schedule block and ENABLE_FROM from .github/workflows/morning-digest-action.yml (or push ENABLE_FROM far out) so only one sender runs. The Action's sent-today guard and the Mac's soft guard keep a brief overlap to one email."
     }
   ]
 }

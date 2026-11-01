@@ -128,6 +128,10 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // when no morning digest reached the owner by ~9:30 ET, so it works while the
   // Mac is dead. It cannot go through the digest: the digest is what is missing.
   'mac:morning-digest-missing',
+  // BRO-6764: the Mac's checkout-sync heartbeat stopped. Once the digest is sent from GitHub a dead Mac no
+  // longer shows up as a missing digest, so this is the page that says the Mac (opening-night monitor,
+  // cookie renewal, deploy heartbeat) has stopped. Emitted from CI (check-morning-digest-sent.js).
+  'mac:heartbeat-dead',
 
   // Owner request 2026-10-05 (BRO-4719): "How will I ever know that they're
   // waiting on me for a decision? I didn't even know they existed!" and "don't
@@ -304,7 +308,8 @@ const OWNER_ACTIONS = {
   'alert-router:deadman': 'Nothing is needed from you. The part of the automation that starts fixes is failing, so problems are not being fixed on their own right now. It retries on every scheduled health check.',
   'e2e-canary:chain-broken': 'Nothing is needed from you. The daily test of the part of the automation that starts fixes failed, so problems may not be fixed on their own right now. The test runs again every day.',
   'alert-router:usage-limit-exceeded': 'Raise or reset the Linear plan limit (a billing decision only you can make).',
-  'mac:morning-digest-missing': 'Check the Mac is on, awake and signed in.',
+  'mac:morning-digest-missing': 'Nothing is needed from you. The morning email is sent from GitHub now and today\'s did not go out; the failed run is on the Morning Digest Actions page.',
+  'mac:heartbeat-dead': 'Check the Mac is on, awake and signed in.',
   'owner-decisions:new': 'Answer the decision.',
   // BRO-5542: test-ugc-roundtrip.yml starts a START-NOW fix card first and the
   // email says whether it did; the owner has nothing to do either way.

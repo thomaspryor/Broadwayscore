@@ -29,9 +29,16 @@ test('every retired entry names a replacement and watchers', () => {
 });
 
 test('Mac labels whose cloud replacement is unproven are not retired yet', () => {
-  for (const l of ['com.broadwayscore.morning-digest', 'com.broadwayscore.newsletter-sunday-review', 'com.bwsc.opening-night-backup-trigger']) {
+  for (const l of ['com.broadwayscore.newsletter-sunday-review', 'com.bwsc.opening-night-backup-trigger']) {
     assert.ok(!labels.includes(l), `${l} retired before its cloud routine was proven`);
   }
+});
+
+test('morning-digest is retired (BRO-6764) with the GitHub Action as its replacement and the dead-Mac pager as a watcher', () => {
+  const e = retired.entries.find((x) => x.label === 'com.broadwayscore.morning-digest');
+  assert.ok(e, 'retire entry');
+  assert.ok(e.replacedBy.some((r) => r.includes('.github/workflows/morning-digest-action.yml')));
+  assert.ok(e.watchers.some((w) => w.conditionKey === 'mac:heartbeat-dead'));
 });
 
 test('auth-health distinguishes plan usage cap from auth failure', () => {
