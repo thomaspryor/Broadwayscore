@@ -2844951,21 +2844951,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T02:49:53.360Z",
-    "completedAt": "2026-11-01T02:50:18.968Z",
-    "totalReviews": 7,
-    "processed": 5,
-    "skipped": 2,
+    "startedAt": "2026-11-01T02:50:42.751Z",
+    "completedAt": "2026-11-01T02:50:53.909Z",
+    "totalReviews": 3,
+    "processed": 2,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 32624,
-      "output": 1483,
-      "cacheRead": 19035,
+      "input": 12021,
+      "output": 519,
+      "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 79180
+      "total": 30141
     },
-    "costUsd": 0.1203581,
-    "runId": "41266339539",
+    "costUsd": 0.0446647,
+    "runId": "41266330237",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2850253,6 +2850253,16 @@
       },
       {
         "showId": "avenue-q-2003",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "avenue-q-regional-2022",
         "ourDistribution": {
           "up": 2,
           "flat": 0,
@@ -2868208,16 +2868218,6 @@
           "flat": 5,
           "down": 0,
           "total": 23
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "marie-antoinette-and-the-magical-negroes-regional-2022",
-        "ourDistribution": {
-          "up": 3,
-          "flat": 1,
-          "down": 1,
-          "total": 5
         },
         "hasDisagreement": false
       },
@@ -2891260,8 +2891260,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T02:55:15.616Z",
-    "completedAt": "2026-11-01T02:55:15.617Z",
+    "startedAt": "2026-11-01T02:55:50.914Z",
+    "completedAt": "2026-11-01T02:55:50.915Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2891274,7 +2891274,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41266339539",
+    "runId": "41266330237",
     "source": "comparative-rescore",
     "errorDetails": []
   }
