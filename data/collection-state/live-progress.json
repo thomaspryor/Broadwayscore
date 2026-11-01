@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-01T15:10:37.815Z",
-  "processed": 15,
-  "failed": 35,
-  "successRate": "30.0%",
+  "updatedAt": "2026-11-01T15:12:09.131Z",
+  "processed": 838,
+  "failed": 347,
+  "successRate": "70.7%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 536,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 16,
-    "archive": 0
+    "scrapingdog": 3,
+    "scrapingbee": 26,
+    "brightdata": 45,
+    "archiveToday": 147,
+    "archive": 246
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-11-01T14:41:16.633Z",
@@ -63,8 +63,31 @@
     {
       "t": "2026-11-01T15:08:46.944Z",
       "event": "bb-session",
-      "session": "d3091f57",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dua-lipa-amy-poehler-bowen-yang"
+      "session": "7aa15633",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch731.html"
+    },
+    {
+      "t": "2026-11-01T09:34:44.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T15:04:13.876Z",
+      "event": "bb-session",
+      "session": "c32389b9",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-01T15:05:28.028Z",
+      "event": "bb-session",
+      "session": "d16aa24a",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-01T15:06:36.496Z",
+      "event": "bb-session",
+      "session": "c48cfbf6",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
