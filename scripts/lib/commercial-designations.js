@@ -11,7 +11,7 @@
 const { ourRecoupRangePct } = require('./our-recoup-estimate');
 
 const VALID_DESIGNATIONS = [
-  'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
+  'Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Recouped',
   'TBD', 'Fizzle', 'Did Not Recoup', 'Flop', 'Nonprofit', 'Tour Stop',
   'Squeaker', 'Wait & See',
 ];
@@ -259,9 +259,29 @@ const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'To
  * one: six hand lists had to be found by hand when a label was proposed
  * (BRO-6446; tests/unit/recouped-designations.test.mjs).
  */
-const RECOUPED_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Squeaker']);
+const RECOUPED_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Recouped', 'Squeaker']);
+const RECOUPED_DESIGNATION_SET = new Set(RECOUPED_DESIGNATIONS);
+/** Whether a label says the show recouped (the win-side twin of isLossDesignation). */
+function isRecoupedDesignation(designation) {
+  return RECOUPED_DESIGNATION_SET.has(designation);
+}
 /** Recouped labels that need a reported recoupment (recouped:true): never our estimate. */
-const REPORTED_WIN_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Squeaker']);
+const REPORTED_WIN_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Recouped', 'Squeaker']);
+/**
+ * Recouped (owner 2026-10-31, BRO-5641, Option B): a reported recoupment of an
+ * open-ended run with no reported return multiple, the win-side twin of Did
+ * Not Recoup. Trickle and Windfall say how much came back, so they need a
+ * reported investorMultiple; without one the label is plain Recouped.
+ */
+const RECOUPED = 'Recouped';
+/**
+ * The open-ended recouped label a reported multiple supports: Trickle under
+ * TRICKLE_MAX_MULTIPLE, Windfall at or above, Recouped with no multiple.
+ */
+function recoupedDesignationFor(multiple) {
+  if (!Number.isFinite(multiple)) return RECOUPED;
+  return multiple < TRICKLE_MAX_MULTIPLE ? 'Trickle' : 'Windfall';
+}
 /** Recouped labels that mean returned under TRICKLE_MAX_MULTIPLE: watched for crossing it. */
 const MODEST_RETURN_DESIGNATIONS = Object.freeze(['Trickle']);
 
@@ -275,7 +295,7 @@ const MODEL_CONTRADICTION = { FAILED_ABOVE_PCT: 150, WINNER_BELOW_PCT: 0, TRICKL
 function modelContradictsDesignation(pct, designation) {
   const c = MODEL_CONTRADICTION;
   return (pct > c.FAILED_ABOVE_PCT && isLossDesignation(designation))
-    || (pct < c.WINNER_BELOW_PCT && (designation === 'Windfall' || designation === 'Miracle' || designation === 'Easy Winner'))
+    || (pct < c.WINNER_BELOW_PCT && (designation === 'Windfall' || designation === 'Miracle' || designation === 'Easy Winner' || designation === RECOUPED))
     || (pct > c.TRICKLE_ABOVE_PCT && designation === 'Trickle');
 }
 
@@ -321,7 +341,7 @@ module.exports = {
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, ownReturnedRangePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
   WAIT_AND_SEE, WAIT_AND_SEE_MIN_RETURNED_PCT, UNRECOUPED_DESIGNATIONS, isUnrecoupedDesignation, modelPctWithoutCredit,
-  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS, REPORTED_WIN_DESIGNATIONS, MODEST_RETURN_DESIGNATIONS, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
+  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS, isRecoupedDesignation, RECOUPED, recoupedDesignationFor, REPORTED_WIN_DESIGNATIONS, MODEST_RETURN_DESIGNATIONS, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
   estimatedDesignationForClosed, labelSizingPct,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,

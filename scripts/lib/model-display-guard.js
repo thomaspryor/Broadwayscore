@@ -107,6 +107,8 @@ function estimateFitsDesignation(range, designation, ownerEstimate = false) {
   const mid = range.length === 3 ? range[1] : (range[0] + range[1]) / 2;
   if (ownerEstimate && designation === 'Trickle') return mid >= 100 && mid < TRICKLE_MAX_MULTIPLE * 100;
   if (ownerEstimate && designation === 'Windfall') return mid >= TRICKLE_MAX_MULTIPLE * 100;
+  // Recouped (BRO-5641) names no multiple, so any owner figure past 100% fits it.
+  if (ownerEstimate && designation === 'Recouped') return mid >= 100;
   if (designation === 'Flop') return mid < FIZZLE_MIN_RETURNED_PCT;
   if (designation === 'Wait & See') return mid >= WAIT_AND_SEE_MIN_RETURNED_PCT && mid < 100;
   if (designation === 'Fizzle') return mid >= FIZZLE_MIN_RETURNED_PCT && mid < 100;

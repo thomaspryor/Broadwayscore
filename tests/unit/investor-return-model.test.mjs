@@ -75,11 +75,12 @@ describe('designation rule', () => {
     assert.strictEqual(r.changed, false);
   });
 
-  it('model-only moves are off by default: no change, not even a proposal', () => {
+  it('model-only moves are off by default: the model never sizes the win', () => {
     assert.strictEqual(MODEL_TIEBREAKER, false);
+    // No reported multiple: plain Recouped, whatever the model says (BRO-5641).
     const r = proposeDesignation({ record: { designation: 'Windfall', recouped: true }, show: running, model: model(1.1, 1.2, 1.3), now: NOW });
-    assert.strictEqual(r.changed, false);
-    assert.strictEqual(r.basis, 'no-evidence');
+    assert.strictEqual(r.designation, 'Recouped');
+    assert.strictEqual(r.basis, 'reported');
     const closedTbd = proposeDesignation({ record: { designation: 'TBD' }, show: { openingDate: '2019-01-01', closingDate: '2020-01-01' }, model: model(0, 0.2, 0.4, false), now: NOW });
     assert.strictEqual(closedTbd.changed, false);
   });
@@ -113,7 +114,8 @@ describe('designation rule', () => {
   it('a model with a sanity flag is not used', () => {
     const flagged = { ...model(80, 90, 100), sanityFlags: ['too big'] };
     const r = proposeDesignation({ record: { designation: 'Trickle', recouped: true }, show: running, model: flagged, now: NOW, ...on });
-    assert.strictEqual(r.changed, false);
+    assert.notStrictEqual(r.basis, 'model');
+    assert.strictEqual(r.designation, 'Recouped');
   });
 
   it('a running unrecouped show is never moved', () => {
