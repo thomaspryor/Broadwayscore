@@ -1,6 +1,3 @@
-{"ts":"2026-10-02T09:21:34.074Z","conditionKey":"backstop:burning-leaves-off-broadway-2026/theater-scene--victor-gluck.json","title":"T1/T2 review stuck >24h: Burning Leaves — theater-scene","ok":true,"error":null}
-{"ts":"2026-10-02T09:24:23.191Z","conditionKey":"uncollected-blackout:purpose-regional-2026","title":"Live show has ZERO critic reviews on site: Purpose","ok":true,"error":null}
-{"ts":"2026-10-02T09:24:27.995Z","conditionKey":"uncollected-blackout:the-visit-regional-2026","title":"Live show has ZERO critic reviews on site: The Visit","ok":true,"error":null}
 {"ts":"2026-10-02T10:29:50.830Z","conditionKey":"corpus-drift:critic-outlets","title":"Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)","ok":true,"error":null}
 {"ts":"2026-10-02T13:15:25.872Z","conditionKey":"e2e-canary:main","title":"[E2E Canary] alert chain check 2026-10-02T13:15:19.874Z","ok":true,"error":null}
 {"ts":"2026-10-02T13:15:31.703Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-10-02T13:15:26.086Z","ok":true,"error":null}
@@ -778,3 +775,4 @@
 {"ts":"2026-11-01T07:39:43.935Z","conditionKey":"test-yml:red:Unit Tests:ba804f4f","title":"main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"","ok":true,"error":null}
 {"ts":"2026-11-01T09:17:52.727Z","conditionKey":"e2e-canary:main","title":"[E2E Canary] alert chain check 2026-11-01T09:17:51.392Z","ok":true,"error":null}
 {"ts":"2026-11-01T09:17:54.169Z","conditionKey":"e2e-canary:dedup","title":"[E2E Canary] dedup check 2026-11-01T09:17:52.839Z","ok":true,"error":null}
+{"ts":"2026-11-01T09:51:42.309Z","conditionKey":"corpus-drift:sibling-title-misroute","title":"Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)","ok":true,"error":null}
