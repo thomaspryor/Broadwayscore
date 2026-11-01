@@ -86,6 +86,18 @@ function runAllowed({ enabled, preview }) {
   return preview === true || String(enabled).trim() === 'true';
 }
 
+/**
+ * On/off switch. The committed file scripts/config/money-welcome.json ({"enabled": true}) turns real
+ * runs on; the repo variable MONEY_WELCOME_ENABLED="false" is an emergency off-switch that wins over
+ * the file, and "true" also turns it on. Anything else defers to the file.
+ */
+function resolveEnabled({ envValue, fileEnabled }) {
+  const v = String(envValue == null ? '' : envValue).trim();
+  if (v === 'false') return 'false';
+  if (v === 'true') return 'true';
+  return fileEnabled === true ? 'true' : 'false';
+}
+
 const defaultSleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 /**
@@ -120,5 +132,5 @@ async function sendWelcomes(rows, { claim, release, send, cap = PER_RUN_CAP, now
 
 module.exports = {
   PER_RUN_CAP, FLOOD_LIMIT, MAX_AGE_DAYS, MAX_CONSECUTIVE_REJECTS, FROM, REPLY_TO, isProbeEmail, planWelcomes, buildWelcomeEmail, unsubscribeUrl,
-  idempotencyKey, resendOutcome, runAllowed, sendWelcomes,
+  idempotencyKey, resendOutcome, runAllowed, resolveEnabled, sendWelcomes,
 };

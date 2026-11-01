@@ -2,7 +2,7 @@ name: Money Welcome
 
 # BRO-6309: welcome email for new Profitability Scorecard sign-ups, one transactional
 # email each (never a broadcast, CLAUDE.md §17). Logic: scripts/lib/money-welcome.js.
-# ON/OFF: repo variable MONEY_WELCOME_ENABLED must be "true" for a real run; while it
+# ON/OFF: scripts/config/money-welcome.json enabled=true (repo variable MONEY_WELCOME_ENABLED=false overrides to off); while it
 # is not, scheduled runs exit in seconds. Sign-ups from before launch are marked
 # welcomed by the migration and never get this. Manual modes: dry-run (read-only) or
 # send_to (one [PREVIEW] email to that address, no database).

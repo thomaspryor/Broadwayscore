@@ -165,3 +165,11 @@ test('a claim that throws escapes so the run fails instead of sending', async ()
     claim: async () => { throw new Error('claim: HTTP 500'); },
   }), /claim/);
 });
+
+test('resolveEnabled: variable false wins, file turns it on, default off', () => {
+  assert.equal(w.resolveEnabled({ envValue: undefined, fileEnabled: false }), 'false');
+  assert.equal(w.resolveEnabled({ envValue: '', fileEnabled: true }), 'true');
+  assert.equal(w.resolveEnabled({ envValue: 'false', fileEnabled: true }), 'false');
+  assert.equal(w.resolveEnabled({ envValue: 'true', fileEnabled: false }), 'true');
+  assert.equal(w.resolveEnabled({ envValue: 'garbage', fileEnabled: false }), 'false');
+});
