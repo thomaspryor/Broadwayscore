@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6759-b",
   "planId": "0f8ce537-6f03-4201-b38f-8a88ef1f90ad",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T13:28:27.569Z",
   "submitter": {
     "name": null,
@@ -230,5 +230,129 @@
         "description": "BRO-6759 verified cross-outlet reprint"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T15:39:48.356Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/nyt-theater--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://newyorktheater.me/2018/04/26/harry-potter-and-the-cursed-child-on-broadway-review-pics/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-2021/nyt-theater--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-off-west-end-2026/theatre-south-east--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://theatresoutheast.com/heathers-the-musical-arts-at-marble-arch-review/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heathers-the-musical-off-west-end-2026/theatre-south-east--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-tour-2025/localnewsmatters--leslie-katz-bay-city-news.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://localnewsmatters.org/2026/05/08/review-alicia-keys-hells-kitchen-tour-is-on-fire-in-san-francisco/); the flagged primary sfgate--unknown.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hells-kitchen-tour-2025/localnewsmatters--leslie-katz-bay-city-news.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jews-in-their-own-words-west-end-2022/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/jews-in-their-own-words-royal-court/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "jews-in-their-own-words-west-end-2022/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lemons-lemons-lemons-lemons-lemons-west-end-2023/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/lemons-lemons-lemons-lemons-lemons-harold-pinter-theatre/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lemons-lemons-lemons-lemons-lemons-west-end-2023/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-movie-west-end-2019/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/midnight-movie-royal-court/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "midnight-movie-west-end-2019/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oleanna-west-end-2021/sierz-co-uk--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://sierz.co.uk/reviews/oleanna-arts-theatre/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oleanna-west-end-2021/sierz-co-uk--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-2021/theater-life--samuel-l-leiter.json crossOutletClearReason: null -> \"BRO-6759: this file's text is on its own URL (https://theaterlife.com/six-the-musical/); the flagged primary lighting-and-sound-america--david-barbour.json does not match its own URL, so this review is real and must not be hidden.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-2021/theater-life--samuel-l-leiter.json crossOutletDuplicate: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "repro-eco-tomorrow-is-now-off-broadway-2026/stagebuddy--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://stagebuddy.com/event/repro-eco-tomorrow-is-now), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "repro-eco-tomorrow-is-now-off-broadway-2026/stagebuddy--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-tour-2025/clevescene--gwendolyn-kochur.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://www.clevescene.com/arts/arts-stories-and-interviews/suffs-at-playhouse-square-encourages-audiences-to-keep-marching/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-tour-2025/clevescene--gwendolyn-kochur.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "slam-frank-off-broadway-2026/totaltheater1--unknown.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://totaltheater1.wordpress.com/2026/10/05/slam-frank/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "slam-frank-off-broadway-2026/totaltheater1--unknown.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-tour-2025/the-moderate-voice--doug-bursch.json crossOutletVerifiedNote: null -> \"Both files re-fetched BRO-6759: each file's text is found on its own outlet URL (https://themoderatevoice.com/review-of-the-north-american-tour-of-suffs-the-musical/), so this is a genuine reprint of the same article under another byline.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "suffs-tour-2025/the-moderate-voice--doug-bursch.json crossOutletVerified: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
