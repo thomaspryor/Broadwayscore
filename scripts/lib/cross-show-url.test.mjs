@@ -269,3 +269,33 @@ test('flags an inner-connector-dropped slug (exit-king) filed under The King and
   assert.equal(detectCrossShowUrlMismatch('bullets-over-broadway-2014',
     'https://www.thewrap.com/bullets-broadway-theater-review-woody-allen-takes-another-shot-gangland-guys-dolls/', { index: idx }), null);
 });
+
+test('BRO-6599: the same title under another production id or with a short credit is not a different show', () => {
+  const { sameTitleModuloCredit } = require('./cross-show-url.js');
+  const idx = buildShowSlugIndex([
+    { id: 'mike-birbiglia-the-old-man-and-the-pool-2022', title: 'Mike Birbiglia: The Old Man & The Pool' },
+    { id: 'the-old-man-and-the-pool-regional-2022', title: 'The Old Man and the Pool' },
+    { id: '4-48-psychosis-west-end-2025', title: '4.48 Psychosis' },
+    { id: '448-psychosis-off-west-end-2026', title: '448 Psychosis' },
+    { id: 'stephen-sondheims-old-friends-2025', title: "Stephen Sondheim's Old Friends" },
+    { id: 'old-friends-west-end-2023', title: 'Old Friends' },
+    { id: 'school-girls-2026', title: 'School Girls; Or, The African Mean Girls Play' },
+    { id: 'mean-girls-2018', title: 'Mean Girls' },
+  ]);
+  const cases = [
+    ['4-48-psychosis-west-end-2025', 'https://www.theguardian.com/stage/2025/jun/19/448-psychosis-review-royal-court-theatre'],
+  ];
+  for (const [id, url] of cases) assert.equal(detectCrossShowUrlMismatch(id, url, { index: idx }), null, id);
+  assert.equal(sameTitleModuloCredit('the-old-man-the-pool', 'the-old-man-and-the-pool'), true);
+  assert.equal(sameTitleModuloCredit('4-48-psychosis', '448-psychosis'), true);
+  // A one-word title never absorbs a longer one; a title buried in the middle of a longer one is a different show.
+  assert.equal(sameTitleModuloCredit('cabaret', 'cabaret-voltaire'), false);
+  // Different works that only share words must still be caught (reviewer regressions).
+  assert.equal(sameTitleModuloCredit('danny-and-the-deep-blue-sea', 'the-deep-blue-sea'), false);
+  assert.equal(sameTitleModuloCredit('maybe-happy-ending', 'happy-ending'), false);
+  assert.equal(sameTitleModuloCredit('on-the-twentieth-century', 'twentieth-century'), false);
+  assert.equal(sameTitleModuloCredit('mean-girls', 'school-girls-or-the-african-mean-girls-play'), false);
+  // The BRO-4267 catch still holds: a Mean Girls URL filed under School Girls.
+  assert.deepEqual(detectCrossShowUrlMismatch('school-girls-2026',
+    'https://www.example.com/reviews/mean-girls-high-school-edition-review/', { index: idx })?.matchedShowId, 'mean-girls-2018');
+});

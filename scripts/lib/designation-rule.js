@@ -11,6 +11,8 @@
  *   Easy Winner, Nonprofit, Tour Stop: unchanged
  *   Fizzle / Flop: closed without recouping, >= / < 30% returned
  *   Did Not Recoup: closed without recouping, no returned % (BRO-5636)
+ *   Recouped: recouped, open-ended, no reported multiple (owner 2026-10-31,
+ *             BRO-5641 Option B; the win-side twin of Did Not Recoup)
  *
  * Only REPORTED figures move a designation (recouped, investorMultiple,
  * estimatedRecoupmentPct). The model tiebreaker is OFF (review session,
@@ -25,7 +27,7 @@
 
 const {
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, DESIGNATIONS_OUTSIDE_RULE, ownReturnedEstimatePct,
-  lossDesignationFor,
+  lossDesignationFor, recoupedDesignationFor, RECOUPED,
 } = require('./commercial-designations');
 const UNCHANGED = new Set(DESIGNATIONS_OUTSIDE_RULE);
 /** Off until the model is explained against reported returns (see header). */
@@ -91,11 +93,16 @@ function proposeDesignation({ record, show, model, now = Date.now(), modelTiebre
       return keep('model-uncertain', `model range ${range[0]}x-${range[2]}x straddles ${TRICKLE_MAX_MULTIPLE}x; kept`);
     }
     multiple = range[1]; basis = 'model';
-  } else return keep('no-evidence', 'recouped, no reported return and no usable model');
+  } else {
+    // No multiple sizes the win: Recouped claims none (BRO-5641).
+    return current === RECOUPED
+      ? keep('recouped-unsized', 'Recouped kept (no reported return multiple to size it)')
+      : to(RECOUPED, recoupBasis, 'recouped, no reported return multiple');
+  }
 
   const src = basis === 'reported' ? `reported ${multiple}x` : `model ${range[0]}x-${range[2]}x (central ${multiple}x)`;
   const conf = multiple < 1.15 || Math.abs(multiple - TRICKLE_MAX_MULTIPLE) < 0.15 ? 'low' : 'normal';
-  if (multiple < TRICKLE_MAX_MULTIPLE) return to('Trickle', basis, `recouped, returned under ${TRICKLE_MAX_MULTIPLE}x (${src})`, conf);
+  if (recoupedDesignationFor(multiple) === 'Trickle') return to('Trickle', basis, `recouped, returned under ${TRICKLE_MAX_MULTIPLE}x (${src})`, conf);
   if (current === 'Miracle') return to('Windfall', basis, `Miracle under ${MIRACLE_MIN_YEARS} years (${years.toFixed(1)}), ${src}`, conf);
   return to('Windfall', basis, `recouped, returned ${TRICKLE_MAX_MULTIPLE}x or more (${src})`, conf);
 }

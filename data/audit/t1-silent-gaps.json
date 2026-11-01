@@ -1,8 +1,28 @@
 {
-  "generatedAt": "2026-11-01T04:06:25.120Z",
+  "generatedAt": "2026-11-01T07:09:15.915Z",
   "windowDays": 45,
   "showsScanned": 212,
   "gaps": [
+    {
+      "showId": "lincoln-in-the-bardo-off-broadway-2026",
+      "title": "Lincoln in the Bardo",
+      "openingDate": "2026-10-19",
+      "file": "hollywood-reporter--caitlin-huston.json",
+      "outletId": "hollywood-reporter",
+      "tier": 1,
+      "type": "rejected-unscoreable",
+      "recoverable": false,
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dua-lipa-amy-poehler-bowen-yang-lincoln-in-the-bardo-opera-1236736336/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=lincoln-in-the-bardo-off-broadway-2026 --url=https://www.hollywoodreporter.com/lifestyle/arts/dua-lipa-amy-poehler-bowen-yang-lincoln-in-the-bardo-opera-1236736336/ --outlet=hollywood-reporter --critic=\"Caitlin Huston\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-21T07:33:46.472Z",
+      "fileAgeHours": 263.59010555555557,
+      "gapSeenAt": "2026-11-01T04:55:58.847Z",
+      "nonTerminalAgeHours": 2.221407777777778,
+      "needsManualRecovery": false
+    },
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
       "title": "Lincoln in the Bardo",
@@ -19,9 +39,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 154.22959055555555,
+      "fileAgeHours": 157.27697916666668,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 139.68576472222222,
+      "nonTerminalAgeHours": 142.73320777777778,
       "needsManualRecovery": false
     },
     {
@@ -40,9 +60,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 182.7493002777778,
+      "fileAgeHours": 185.79669027777777,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 168.7976561111111,
+      "nonTerminalAgeHours": 171.84509916666667,
       "needsManualRecovery": true
     }
   ],

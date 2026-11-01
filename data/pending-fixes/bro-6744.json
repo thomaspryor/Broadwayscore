@@ -8,31 +8,17 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-6744: file three combined multi-show reviews under each show they review (La Voce EBT + Becky Shaw; La Voce Hate Radio + Coriolanus; Vulture Night Side Songs + Bigfoot!)",
+    "summary": "BRO-6744: file the La Voce di New York Hate Radio + Coriolanus column under each show it reviews (the EBT/Becky Shaw and Night Side Songs/Bigfoot! splits already landed through the header/caption strategies)",
     "steps": [
-      "Split the La Voce di New York column (Every Brilliant Thing + Becky Shaw) at the Becky Shaw listing header; Becky Shaw gets its own section, EBT keeps its own and is requeued for scoring",
-      "Split the La Voce di New York column (Hate Radio + The Tragedy of Coriolanus) at the Coriolanus listing header; Coriolanus gets its own section, Hate Radio keeps its own and is requeued for scoring",
-      "Re-ingest the Vulture Night Side Songs / Bigfoot! double review: the stored copy stops before the Bigfoot! review; the whole article now replaces it and the fan-out files the Bigfoot! section under bigfoot-off-broadway-2026"
+      "Split the La Voce di New York column (Hate Radio + The Tragedy of Coriolanus) at the Coriolanus listing header; Coriolanus gets its own section, Hate Radio keeps its own and is requeued for scoring"
     ],
     "riskLevel": "low",
     "actions": [
       {
         "type": "run-script",
-        "description": "Split the La Voce di New York column (Every Brilliant Thing + Becky Shaw) at the Becky Shaw listing header; Becky Shaw gets its own section, EBT keeps its own and is requeued for scoring",
-        "script": "scripts/split-multi-show-roundups.js",
-        "args": "--show=every-brilliant-thing-2026 --file=la-voce-di-new-york--jk-clarke.json --scan-all --apply"
-      },
-      {
-        "type": "run-script",
         "description": "Split the La Voce di New York column (Hate Radio + The Tragedy of Coriolanus) at the Coriolanus listing header; Coriolanus gets its own section, Hate Radio keeps its own and is requeued for scoring",
         "script": "scripts/split-multi-show-roundups.js",
         "args": "--show=hate-radio-off-broadway-2026 --file=la-voce-di-new-york--jk-clarke.json --scan-all --apply"
-      },
-      {
-        "type": "run-script",
-        "description": "Re-ingest the Vulture Night Side Songs / Bigfoot! double review: the stored copy stops before the Bigfoot! review; the whole article now replaces it and the fan-out files the Bigfoot! section under bigfoot-off-broadway-2026",
-        "script": "scripts/ingest-review-from-url.js",
-        "args": "--show=night-side-songs-off-broadway-2026 --url=https://www.vulture.com/article/theater-reviews-night-side-songs-bigfoot.html --outlet=vulture --critic=\"Jackson McHenry\""
       }
     ]
   }

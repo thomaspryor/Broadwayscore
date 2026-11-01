@@ -1040,20 +1040,6 @@
     "queuedAt": "2026-10-31T16:51:55.017Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:baby-off-west-end-2026",
-    "title": "Review gap — \"Baby\" missing 2 cited review(s)",
-    "description": "Baby (baby-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=baby-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:23:04.543Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:buffy-revamped-west-end-2026",
     "title": "Review gap — \"Buffy Revamped\" missing 6 cited review(s)",
     "description": "Buffy Revamped (buffy-revamped-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=buffy-revamped-west-end-2026 --checkpoint --ingest-missing",
@@ -1166,20 +1152,6 @@
     "queuedAt": "2026-10-31T18:23:05.044Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026",
-    "title": "Review gap — \"Larger Than Life: Starring Wallace & Gromit, Shaun and More\" missing 1 cited review(s)",
-    "description": "Larger Than Life: Starring Wallace & Gromit, Shaun and More (larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-31T18:23:05.058Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:memoirs-of-amorous-gentlemen-off-broadway-2026",
     "title": "Review gap — \"Memoirs of Amorous Gentlemen\" missing 2 cited review(s)",
     "description": "Memoirs of Amorous Gentlemen (memoirs-of-amorous-gentlemen-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=memoirs-of-amorous-gentlemen-off-broadway-2026 --checkpoint --ingest-missing",
@@ -1192,20 +1164,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-31T18:23:05.107Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:midnight-off-broadway-2026",
-    "title": "Review gap — \"Midnight\" missing 1 cited review(s) — already tracked at BRO-6731",
-    "description": "This condition already has an open tracker (BRO-6731); not filing a duplicate. It will go quiet in the digest from here.\n\nMidnight (midnight-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=midnight-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-6731",
-    "fields": [],
-    "queuedAt": "2026-10-31T18:23:05.835Z"
   },
   {
     "conditionKey": "review-gap:opening-window:mud-row-regional-2026",
@@ -1782,20 +1740,6 @@
     "queuedAt": "2026-10-31T23:35:22.967Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +11 more). Checked 2026-11-01.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T04:04:29.659Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:cirque-berserk-west-end-2026",
     "title": "Review gap — \"Cirque Berserk\" missing 2 cited review(s)",
     "description": "Cirque Berserk (cirque-berserk-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cirque-berserk-west-end-2026 --checkpoint --ingest-missing",
@@ -2067,6 +2011,175 @@
     "queuedAt": "2026-11-01T03:06:00.556Z"
   },
   {
+    "conditionKey": "land:land/bro-5641-recouped-label",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5641-recouped-label",
+    "description": "land.yml did not land land/bro-5641-recouped-label: the unit-tests-node gate went red at da3aab6479. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41272805864",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5641-recouped-label"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "da3aab6479dfb42a4d269f6c49d8a5213f32dcd8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41272805864"
+      }
+    ],
+    "queuedAt": "2026-11-01T04:47:34.930Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6745-mvxb0g79",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6745-mvxb0g79",
+    "description": "land.yml did not land land/job/linear-BRO-6745-mvxb0g79: the unit-tests-node gate went red at b29d6de1aa. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41273255156",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6745-mvxb0g79"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "b29d6de1aa7bed7ab2d997921c42a6f223c8475e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41273255156"
+      }
+    ],
+    "queuedAt": "2026-11-01T04:54:17.167Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +12 more). Checked 2026-11-01.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T05:51:30.859Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6233-cv-code-items",
+    "title": "Landing blocked: rebase red on land/bro-6233-cv-code-items",
+    "description": "land.yml did not land land/bro-6233-cv-code-items: the rebase gate went red at bdfddbf712. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41277755140",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6233-cv-code-items"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "bdfddbf7125763dfa006f1fa5016635039876f62"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41277755140"
+      }
+    ],
+    "queuedAt": "2026-11-01T05:41:43.171Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6661-press-night-autolog",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6661-press-night-autolog",
+    "description": "land.yml did not land land/bro-6661-press-night-autolog: the unit-tests-node gate went red at efa19dc772. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41279211456",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6661-press-night-autolog"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "efa19dc7727171d146f2d9b359f83a61b4fed192"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41279211456"
+      }
+    ],
+    "queuedAt": "2026-11-01T06:22:41.673Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6742-slot",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6742-slot",
+    "description": "land.yml did not land land/bro-6742-slot: the unit-tests-node gate went red at 72698dbc81. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41280227269",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6742-slot"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "72698dbc817a2329793770ee8015cb4e68a317ca"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41280227269"
+      }
+    ],
+    "queuedAt": "2026-11-01T06:43:42.601Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -2078,6 +2191,6 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-01T04:06:25.121Z"
+    "queuedAt": "2026-11-01T07:09:15.917Z"
   }
 ]

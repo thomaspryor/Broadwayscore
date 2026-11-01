@@ -28,6 +28,7 @@ const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits');
 const { planStatusAction } = require('./plan-status');
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./review-texts-dir');
 const { runScriptArgs } = require('./run-script-args');
+const { runScriptAllowProblem } = require('./run-script-allowlist');
 const { applyDataEdit, dataEditAllowProblem } = require('./data-edit-action');
 const { applyAddCommercialEntry, ALLOWED_ENTRY_FIELDS } = require('./commercial-entry-action');
 const { touchedRecordProblems } = require('./commercial-record-checks');
@@ -168,6 +169,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
         for (const f of orphanFilesAfterNulling(a)) log(`  WARN ${id}: ${f} is still on disk; pre-deploy-check re-attaches it, so git rm it in the same land`);
         // The executor refuses an arg shape it cannot run (BRO-5866); say so before the land.
         if (a.type === 'run-script') {
+          const notAllowed = runScriptAllowProblem(a.script);
+          if (notAllowed) { failed++; log(`  FAIL ${id} run-script: ${notAllowed}`); continue; }
           const parsed = runScriptArgs(a);
           if (!parsed.ok) { failed++; log(`  FAIL ${id} run-script ${a.script}: ${parsed.reason}`); continue; }
         }

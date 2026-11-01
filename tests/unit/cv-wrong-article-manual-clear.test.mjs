@@ -59,7 +59,9 @@ test('both breadcrumb fields are PROTECTED so a CI merge cannot drop the clear',
 
 test('wiring: both gates in review-guards.js call cvWrongArticleManuallyCleared', () => {
   const src = readFileSync(join(ROOT, 'scripts/lib/review-guards.js'), 'utf8');
-  const gate1 = src.indexOf("!cvWrongArticleManuallyCleared(data)\n  ) return 'cvWrongArticleHighConfidence'");
+  // BRO-6233: the explainExclusion gate calls the shared helper, which owns the hatch check.
+  const helper = src.slice(src.indexOf('function isCvWrongArticleHighConfidence'), src.indexOf('function isCvWrongArticleHighConfidence') + 400);
+  const gate1 = /isCvWrongArticleHighConfidence\(data, opts\)[^\n]*\) return 'cvWrongArticleHighConfidence'/.test(src) && helper.includes('!cvWrongArticleManuallyCleared(data)') ? 1 : -1;
   const gate2 = src.indexOf("cv.confidence === 'high' && !cvWrongArticleManuallyCleared(data)) return true");
   assert.ok(gate1 > 0, 'explainExclusion gate honours the hatch');
   assert.ok(gate2 > 0, 'isRejectedNonReview gate honours the hatch');

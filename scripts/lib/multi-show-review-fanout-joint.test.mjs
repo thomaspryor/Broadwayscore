@@ -443,7 +443,9 @@ test('listing headers open each show; the caption before a header goes with it (
   ].join(' ');
   const p = plan(ID.Midnight, text);
   assert.ok(p, 'expected a plan');
-  assert.equal(p.strategy, 'intro');
+  // The header strategy (BRO-6744, listing-line headers) or the intro
+  // strategy's listing-header start: either way the same two sections.
+  assert.ok(['header', 'intro'].includes(p.strategy), p.strategy);
   assert.deepEqual(ids(p), [ID.Midnight, ID['Two Girls']].sort());
   const m = section(p, ID.Midnight);
   const g = section(p, ID['Two Girls']);

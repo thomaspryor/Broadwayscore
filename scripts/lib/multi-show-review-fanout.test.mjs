@@ -520,9 +520,10 @@ test('ground truth audit is scheduled (audit-aggregator-gap.yml) with ingest + a
 });
 
 test('session-authored pending-fix plans can ingest a URL, re-split an article and re-read TR', () => {
-  const exec = fs.readFileSync(new URL('../execute-approved-fix.js', import.meta.url), 'utf8');
+  // The executor's allowlist lives in run-script-allowlist.js (BRO-6742); ask the real function.
+  const { runScriptAllowProblem } = require('./run-script-allowlist.js');
   for (const s of ['ingest-review-from-url.js', 'split-multi-show-roundups.js', 'scrape-theatre-reviews.js']) {
-    assert.match(exec, new RegExp(`'${s.replace(/\./g, '\\.')}'`), s);
+    assert.equal(runScriptAllowProblem(s), null, s);
   }
   const wf = fs.readFileSync(new URL('../../.github/workflows/execute-approved-fix.yml', import.meta.url), 'utf8');
   assert.match(wf, /BRIGHTDATA_TOKEN: \$\{\{ secrets\.BRIGHTDATA_TOKEN \}\}/);
@@ -824,4 +825,128 @@ test('a good stored half of a two-show article takes the whole article on ingest
   assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, nss, 'occupied sibling slot kept the stored body');
   _resetUrlOwnershipIndex();
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+});
+
+// ---- BRO-6744: "Title (c) Photographer / Kind: Title At Venue" columns --------
+const { rewriteParent, headerSections } = require('./multi-show-review-fanout.js');
+const HSHOWS = [
+  { id: 'chess-2025', title: 'Chess', category: 'broadway', openingDate: '2025-11-16' },
+  { id: 'dog-day-afternoon-2026', title: 'Dog Day Afternoon', category: 'broadway', openingDate: '2026-03-30' },
+  { id: 'cats-the-jellicle-ball-2026', title: 'Cats: The Jellicle Ball', category: 'broadway', openingDate: '2026-04-07' },
+  { id: 'cats-2016', title: 'Cats', category: 'broadway', openingDate: '2016-07-31' },
+];
+const bystander = (parts) => parts.map(([title, kind, body]) =>
+  `${title} (c) Some PhotographerPhoto ${kind}: ${title} At the Some Theatre ${body}`).join(' ');
+const FULL = bystander([
+  ['Initiative', 'Theater', filler('initiative', 8)],
+  ['Chess', 'Broadway', filler('chess', 8)],
+  ['Dog Day Afternoon', 'Broadway', filler('heist', 8)],
+  ['Cats: The Jellicle Ball', 'Broadway', filler('runway', 8)],
+]).replace(/Photo (Theater|Broadway):/g, '$1:');
+
+test('header: Bystander post flagged roundup/wrongProduction splits per show and retires the whole-post verdicts', () => {
+  const data = {
+    showId: 'dog-day-afternoon-2026', outletId: 'the-interested-bystander', fullText: null, wrongFullText: FULL,
+    contentTier: 'invalid', isRoundupArticle: true, wrongProduction: true, wrongShow: true,
+    wrongProductionReason: 'Collector LLM: reviews Chess', rejectedBy: 'ensemble-scoreability-check',
+    rejectionReason: 'not_a_review', rejectedAt: '2026-04-26T00:00:00Z', incompleteReason: 'wrong_content',
+    contentVerification: { isValid: false, wrongProduction: true, issues: ['wrong production'] },
+  };
+  const plan = planMultiShowFanout(data, HSHOWS);
+  assert.ok(plan, 'expected a header split');
+  assert.equal(plan.strategy, 'header');
+  assert.deepEqual([plan.ownSection, ...plan.otherSections].map((s) => s.showId).sort(),
+    ['chess-2025', 'cats-the-jellicle-ball-2026', 'dog-day-afternoon-2026'].sort());
+  // Each section holds only its own show's prose; the untracked "Initiative" column is not in any.
+  assert.ok(plan.ownSection.sectionText.startsWith('Dog Day Afternoon (c)'));
+  assert.ok(!/initiative sequence|chess sequence|runway sequence/.test(plan.ownSection.sectionText));
+  const out = rewriteParent({ ...data, fullText: plan.text }, plan.ownSection, plan.otherSections.map((s) => s.showId));
+  assert.equal(out.isRoundupArticle, false);
+  assert.ok(out.roundupArticleClearedNote, 'cleared note stops the rebuild re-flagging it');
+  for (const k of ['wrongProduction', 'wrongShow', 'wrongFullText', 'rejectionReason', 'incompleteReason']) {
+    assert.equal(out[k], undefined, k);
+  }
+  assert.equal(out.contentTier, 'complete');
+  assert.equal(out.contentVerification.wrongProduction, false);
+  assert.ok(out.fullText.length < FULL.length / 2);
+});
+
+test('header: untracked sibling header still trims the own section (trimOnly)', () => {
+  const text = bystander([['Initiative', 'Theater', filler('initiative', 8)], ['Chess', 'Broadway', filler('chess', 8)]])
+    .replace(/Photo (Theater|Broadway):/g, '$1:');
+  const plan = planMultiShowFanout({ showId: 'chess-2025', fullText: null, wrongFullText: text, isRoundupArticle: true, wrongProduction: true, contentTier: 'invalid' }, HSHOWS);
+  assert.ok(plan && plan.trimOnly, 'expected trimOnly');
+  assert.equal(plan.otherSections.length, 0);
+  assert.ok(!/initiative sequence/.test(plan.ownSection.sectionText));
+  assert.equal(fanoutMovesText({ applied: true, trimOnly: true, children: [] }), true);
+});
+
+test('header: a hand verdict, or a roundup with no per-show headers, is never split', () => {
+  const base = { showId: 'chess-2025', fullText: null, wrongFullText: FULL, isRoundupArticle: true, wrongProduction: true, contentTier: 'invalid' };
+  assert.equal(planMultiShowFanout({ ...base, wrongProductionManualClear: true }, HSHOWS), null);
+  assert.equal(planMultiShowFanout({ ...base, rejectedBy: 'human-admin' }, HSHOWS), null);
+  assert.equal(planMultiShowFanout({ ...base, humanReviewScore: 70 }, HSHOWS), null);
+  assert.equal(planMultiShowFanout({ ...base, humanReviewedWrongProduction: true }, HSHOWS), null);
+  // An article published long before the own production opened is a misfiled old piece.
+  assert.equal(planMultiShowFanout({ ...base, publishDate: '2019-01-05' }, HSHOWS), null);
+  const digest = 'Critics weigh in on Chess and Dog Day Afternoon this week. '.repeat(40);
+  assert.equal(planMultiShowFanout({ ...base, wrongFullText: digest }, HSHOWS), null);
+  assert.equal(headerSections(digest, HSHOWS, 'chess-2025', null).sections.length, 0);
+});
+
+test('header: a same-title revival outside the date window is not picked for a sibling', () => {
+  const plan = planMultiShowFanout({
+    showId: 'dog-day-afternoon-2026', fullText: null, wrongFullText: bystander([
+      ['Dog Day Afternoon', 'Broadway', filler('heist', 8)], ['Cats', 'Broadway', filler('old', 8)]]).replace(/Photo (Theater|Broadway):/g, '$1:'),
+    wrongProduction: true, contentTier: 'invalid',
+  }, HSHOWS);
+  // "Cats" 2016 is >300 days from the 2026 column: no tracked sibling, still trimmed.
+  assert.ok(plan && plan.trimOnly);
+  assert.equal(plan.otherSections.length, 0);
+});
+
+test('listing-line headers (La Voce) and "cast in Title" captions (Vulture double review) split per show', () => {
+  const shows = [
+    { id: 'every-brilliant-thing-2026', title: 'Every Brilliant Thing', category: 'broadway', openingDate: '2026-03-30' },
+    { id: 'becky-shaw-2026', title: 'Becky Shaw', category: 'broadway', openingDate: '2026-04-09' },
+  ];
+  const text = `Two plays treat grief differently. ${filler('intro', 3)} Every Brilliant Thing . Through June 28 at the Hudson Theatre (141 West 44th Street). *****/***** (five stars out of five) ${filler('brilliant', 12)} `
+    + `[caption id="a1" align="aligncenter" width="940"] Lauren Patten. Photo by Marc J. Franklin[/caption] Becky Shaw . Open run at Second Stage’s Hayes Theater (240 West 44th Street). ***½ /***** (3.5 stars out of five) ${filler('shaw', 12)}`;
+  const plan = planMultiShowFanout({ showId: 'every-brilliant-thing-2026', contentTier: 'complete', publishDate: '2026-04-14', fullText: text }, shows);
+  assert.ok(plan, 'expected a listing-header split');
+  assert.equal(plan.strategy, 'header');
+  assert.equal(plan.otherSections[0].showId, 'becky-shaw-2026');
+  assert.ok(plan.otherSections[0].sectionText.startsWith('[caption'), 'the photo caption travels with its section');
+  assert.ok(!/brilliant sequence/.test(plan.otherSections[0].sectionText));
+
+  const vshows = [
+    { id: 'night-side-songs-off-broadway-2026', title: 'Night Side Songs', category: 'off-broadway', openingDate: '2026-03-02' },
+    { id: 'bigfoot-off-broadway-2026', title: 'Bigfoot!', category: 'off-broadway', openingDate: '2026-03-12' },
+  ];
+  const v = `From Night Side Songs . Photo: Marc J. Franklin ${filler('night', 14)} Grey Henson and Katerina McCrimmon in Bigfoot! Photo: Marc J. Franklin `
+    + `Whereas sentiment is in abundance at Night Side Songs , it’s in short supply at Bigfoot! , a musical comedy. ${filler('sketch', 14)} Night Side Songs is at Lincoln Center Theater through March 29. Bigfoot! is at New York City Center through April 26. Tags: vulture theater review night side songs bigfoot! More Show Comment`;
+  const vp = planMultiShowFanout({ showId: 'night-side-songs-off-broadway-2026', contentTier: 'complete', fullText: v }, vshows);
+  assert.ok(vp, 'expected a caption split of the double review');
+  assert.equal(vp.otherSections[0].showId, 'bigfoot-off-broadway-2026');
+  assert.ok(vp.otherSections[0].sectionText.startsWith('Grey Henson'));
+  assert.ok(!/Tags:/.test(vp.otherSections[0].sectionText));
+  assert.ok(!/night sequence/.test(vp.otherSections[0].sectionText));
+});
+
+test('an interwoven essay still blocks the caption split (mentions beyond the hand-over lede)', () => {
+  const vshows = [
+    { id: 'night-side-songs-off-broadway-2026', title: 'Night Side Songs', category: 'off-broadway', openingDate: '2026-03-02' },
+    { id: 'bigfoot-off-broadway-2026', title: 'Bigfoot!', category: 'off-broadway', openingDate: '2026-03-12' },
+  ];
+  const v = `From Night Side Songs . Photo: Marc J. Franklin ${filler('night', 14)} Grey Henson in Bigfoot! Photo: Marc J. Franklin Whereas sentiment abounds at Night Side Songs , it is scarce at Bigfoot! ${filler('sketch', 6)} Compare the choir in Night Side Songs again here. ${filler('more', 6)}`;
+  assert.equal(planMultiShowFanout({ showId: 'night-side-songs-off-broadway-2026', contentTier: 'complete', fullText: v }, vshows), null);
+});
+
+test('caption sibling from a different year is not filed as a sibling (same-title production)', () => {
+  const vshows = [
+    { id: 'three-houses-off-broadway-2026', title: 'Three Houses', category: 'off-broadway', openingDate: '2026-02-01' },
+    { id: 'the-lonely-few-off-broadway-2024', title: 'The Lonely Few', category: 'off-broadway', openingDate: '2024-03-01' },
+  ];
+  const v = `From Three Houses . Photo: A Person ${filler('houses', 14)} Cast members in The Lonely Few . Photo: A Person ${filler('lonely', 14)}`;
+  assert.equal(planMultiShowFanout({ showId: 'three-houses-off-broadway-2026', contentTier: 'complete', fullText: v }, vshows), null);
 });

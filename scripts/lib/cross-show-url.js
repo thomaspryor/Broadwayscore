@@ -97,6 +97,18 @@ function stripBwwSection(hostname, urlPath) {
   return urlPath.replace(/^\/[^/]+\/article\//, '/article/');
 }
 
+// Slug with digit runs joined ("4-48" = "448"), connectors and a leading "the" dropped.
+function canonTitleSlug(slug) {
+  return slug.replace(/(\d)-(?=\d)/g, '$1').replace(/-s(?=-|$)/g, '').replace(/-(?:and|the|or)(?=-)/g, '').replace(/^the-/, '');
+}
+
+// True when two title slugs are the same title once canonicalised. Author credits
+// ("Mike Birbiglia: ...") are deliberately NOT absorbed: "Danny and the Deep Blue Sea"
+// vs "The Deep Blue Sea" are different works, and only the vouching rule below can tell.
+function sameTitleModuloCredit(a, b) {
+  return canonTitleSlug(a) === canonTitleSlug(b);
+}
+
 /**
  * Build the {id,title,slug} index from a shows array (pure, no IO).
  */
@@ -216,6 +228,10 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       // Skip if one show's slug is a prefix of the other (e.g., "kinky-boots" vs "kinky-boots-the-musical")
       if (thisShow.slug.startsWith(other.slug) || other.slug.startsWith(thisShow.slug)) continue;
       if (idSlug.startsWith(otherIdSlug) || otherIdSlug.startsWith(idSlug)) continue;
+      // BRO-6599: the same title spelled differently ("The Old Man & the Pool" vs "...and
+      // the Pool", "4.48" vs "448", a leading "The") is the same play under
+      // another production id, so its slug in the URL is not a different show.
+      if (sameTitleModuloCredit(thisShow.slug, other.slug)) continue;
       // Containment: the other show's title sits INSIDE this show's title ("Mean Girls" inside
       // "School Girls; Or, The African Mean Girls Play"), so a URL for this show naturally
       // carries the other show's slug. Only call it a mismatch when the URL carries none of
@@ -313,4 +329,5 @@ module.exports = {
   showRunYears,
   getShowSlugIndex,
   detectCrossShowUrlMismatch,
+  sameTitleModuloCredit,
 };

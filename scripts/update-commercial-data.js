@@ -54,7 +54,7 @@ const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard
 const { isOurRecoupField } = require('./lib/our-recoup-estimate');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { proposeDesignation } = require('./lib/designation-rule');
-const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./lib/commercial-designations');
+const { DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, lossDesignationFor, returnedEstimatePct, RECOUPED } = require('./lib/commercial-designations');
 const { recoupClaimDesignationAction } = require('./lib/commercial-apply-gate');
 const { retagCapitalizationBasis } = require('./lib/public-source-text');
 
@@ -1666,6 +1666,15 @@ function filterByConfidence(proposedChanges, commercialData) {
       // implied" (medium) goes to a person, like the stale-closure classifier.
       if (oldValue === 'TBD' && isLossDesignation(newValue) && effectiveConfidence !== 'high') {
         flagged.push({ ...change, flagReason: `TBD -> ${newValue} needs a cited loss source (high confidence); got ${effectiveConfidence}` });
+        continue;
+      }
+
+      // Trickle and Windfall size the return, so they need a reported
+      // investorMultiple; without one the label is Recouped (BRO-5641).
+      if ((newValue === 'Trickle' || newValue === 'Windfall')
+        && !Number.isFinite(commercialData?.shows?.[slug]?.investorMultiple)
+        && !proposedChanges.some((c) => c.slug === slug && c.field === 'investorMultiple' && c.newValue != null && Number.isFinite(Number(c.newValue)))) {
+        flagged.push({ ...change, flagReason: `${newValue} needs a reported investorMultiple; with none the label is "${RECOUPED}"` });
         continue;
       }
 

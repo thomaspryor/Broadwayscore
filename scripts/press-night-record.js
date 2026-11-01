@@ -19,6 +19,7 @@
  *   --rebuild-reference  recompute +2h and end coverage from the live timeline against a census
  *                        built now (backfill for a night whose census was missing).
  *   --finalize           mark the probe ended and print a summary.
+ *   --auto-log-manual    log hand fixes from review-texts commits in the night window (BRO-6661)
  *   --log-manual         log a hand fix made during the night (BRO-6652): --at=ISO [--outlet-id=ID]
  *                        [--outlet=Name] [--kind=hand-fix] --source="card or comment". The night then never
  *                        counts as passed on its own in the morning email.
@@ -355,6 +356,26 @@ async function main() {
     } catch (e) { console.error(`[press-night] ${e.message}`); return 2; }
     if (res.added) writeRecord(file, rec);
     console.log(`[press-night] manual action ${res.added ? 'logged' : 'already logged'}: ${JSON.stringify(res.entry)}`);
+    return 0;
+  }
+
+  if (has('auto-log-manual')) {
+    // BRO-6661: hand fixes from review-texts history (ingest-urls: commits, non-bot authors) inside the night window.
+    const pm = require('./lib/press-night-manual-actions');
+    const rtDir = path.resolve(ROOT, arg('review-texts-dir', 'data/review-texts'));
+    let raw;
+    try {
+      raw = arg('git-log-file')
+        ? fs.readFileSync(arg('git-log-file'), 'utf8')
+        : require('child_process').execFileSync('git', ['-C', rtDir, 'log', arg('git-ref', 'HEAD'), `--format=${pm.LOG_FORMAT}`, '--name-only', '--', `${showId}/`], { encoding: 'utf8', timeout: 60000, maxBuffer: 64 * 1024 * 1024 });
+    } catch (e) { console.error(`[press-night] cannot read review-texts history: ${e.message}`); return 2; }
+    const found = pm.manualActionsFromCommits(pm.parseGitLog(raw), { showId, embargoAt: rec.embargoAt });
+    let added = 0;
+    for (const a of found) {
+      try { if (!pm.alreadyLogged(rec, a) && lib.addManualAction(rec, a).added) added++; } catch (e) { console.error(`[press-night] ${e.message}`); }
+    }
+    if (added) writeRecord(file, rec);
+    console.log(`[press-night] auto-logged ${added} hand fix(es) from review-texts history (${found.length} candidate(s))`);
     return 0;
   }
 

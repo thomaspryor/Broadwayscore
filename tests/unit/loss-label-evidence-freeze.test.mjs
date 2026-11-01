@@ -27,9 +27,16 @@ describe('update-commercial-data loss-label freeze', () => {
       assert.equal(r.applied.length, 1);
     });
   }
-  it('still applies TBD -> Windfall at medium confidence (unchanged)', () => {
-    const r = filterByConfidence([change('Windfall', 'medium')], data);
+  it('applies TBD -> Windfall at medium confidence when a reported investorMultiple backs it', () => {
+    const withMultiple = { shows: { 'x-show': { designation: 'TBD', investorMultiple: 2.1 } } };
+    const r = filterByConfidence([change('Windfall', 'medium')], withMultiple);
     assert.equal(r.applied.length, 1);
+  });
+  it('flags TBD -> Windfall with no reported multiple (the label is Recouped, BRO-5641)', () => {
+    const r = filterByConfidence([change('Windfall', 'medium')], data);
+    assert.equal(r.applied.length, 0);
+    assert.equal(r.flagged.length, 1);
+    assert.match(r.flagged[0].flagReason, /investorMultiple/);
   });
 });
 

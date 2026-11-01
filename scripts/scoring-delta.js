@@ -207,6 +207,10 @@ const FLAG_FIELDS = new Set([
   'isSyndicatedDuplicate', 'crossOutletDuplicate', 'crossOutletPrimaryFile',
   'criticName', 'outletId', 'outlet',
   'publishDate', // A reference's pre-window exclusion can recover its copy.
+  // BRO-6233: decideInclusion's CV wrongArticle routing (cvWrongArticlePromotion)
+  // reads the ensemble score and the human clears of the verdict.
+  'llmScore', 'wrongArticleManualClear', 'humanReviewedWrongArticle',
+  'nonReviewManualClear', 'wrongShowManualClear', 'wrongShowOverride',
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from
@@ -1482,10 +1486,32 @@ function decideInclusion(review, show, guards, filePath) {
         }
       }
 
-      // Would cv.wrongArticle get promoted?
-      if (cv.wrongArticle === true && !review.allowEarlyDate && !review.allowCrossMarket) {
-        if (cv.confidence === 'high' || cv.confidence === 'medium') {
-          return { included: false, reason: 'cv-promoted wrongArticle' };
+      // Would cv.wrongArticle get promoted? BRO-6233: route it the way the
+      // rebuild's CV pre-pass does (cvWrongArticlePromotion: advisory once the
+      // ensemble scored it, head-of-article verdicts, human clears, London
+      // skip, lane holds), then the long-biographical deferral. Before this the
+      // replay excluded every high/medium wrongArticle row on both sides, so a
+      // change to that routing replayed as 0 flips. A baseline that predates
+      // the helper gets the working-tree one: the routing it extracted is
+      // unchanged (BRO-6233 moved it without changing it). The helper reads
+      // review.llmScore (hasHighConfidenceLlmScore), the human clears
+      // wrongArticleManualClear / humanReviewedWrongArticle /
+      // nonReviewManualClear and, for the wrongShow family, wrongShowManualClear /
+      // wrongShowOverride (wrongShowCleared); all are FLAG_FIELDS.
+      if (cv.wrongArticle === true) {
+        const promote = typeof guards.cvWrongArticlePromotion === 'function'
+          ? guards.cvWrongArticlePromotion
+          : require('./lib/review-guards').cvWrongArticlePromotion;
+        const cvLib = guards.__contentVerifier && typeof guards.__contentVerifier.shouldDeferCvWrongShow === 'function'
+          ? guards.__contentVerifier
+          : require('./lib/content-verifier');
+        const cvPartialWindow = typeof cvLib.isCvVerdictFromPartialWindow === 'function'
+          && cvLib.isCvVerdictFromPartialWindow(cv, review.fullText, review);
+        const skipLondon = isLondonMarket(show?.category) && !!review.url && isUkOutletUrl(review.url)
+          && (cv.confidence || 'medium') !== 'high';
+        const route = promote(review, cv, { cvPartialWindow, skipLondon, laneHolds: laneOk });
+        if ((route === 'nonReview' || route === 'wrongShow') && !cvLib.shouldDeferCvWrongShow(review)) {
+          return { included: false, reason: `cv-promoted wrongArticle (${route})` };
         }
       }
 
@@ -1820,6 +1846,15 @@ function main() {
         // content-verifier.js, which no other comparison here loads.
         && (baseline.isCvPartialWindowAdvisory?.toString() || '') === (working.isCvPartialWindowAdvisory?.toString() || '')
         && (baseline.ensembleScoredSinceCv?.toString() || '') === (working.ensembleScoredSinceCv?.toString() || '')
+        // BRO-6233: the CV wrongArticle routing decideInclusion replays, its
+        // helpers, the mirror's high-confidence rule and the deferral.
+        && (baseline.cvWrongArticlePromotion?.toString() || '') === (working.cvWrongArticlePromotion?.toString() || '')
+        && (baseline.cvWrongArticleFamily?.toString() || '') === (working.cvWrongArticleFamily?.toString() || '')
+        && (baseline.cvNonReviewHumanCleared?.toString() || '') === (working.cvNonReviewHumanCleared?.toString() || '')
+        && (baseline.cvWrongArticleManuallyCleared?.toString() || '') === (working.cvWrongArticleManuallyCleared?.toString() || '')
+        && (baseline.wrongShowCleared?.toString() || '') === (working.wrongShowCleared?.toString() || '')
+        && (baseline.isCvWrongArticleHighConfidence?.toString() || '') === (working.isCvWrongArticleHighConfidence?.toString() || '')
+        && (baseline.__contentVerifier?.shouldDeferCvWrongShow?.toString() || '') === (working.__contentVerifier?.shouldDeferCvWrongShow?.toString() || '')
         && (baseline.__contentVerifier?.isCvVerdictFromPartialWindow?.toString() || '') === (working.__contentVerifier?.isCvVerdictFromPartialWindow?.toString() || '')
         && (baseline.__contentVerifier?.isCvVerdictFromTruncatedFetch?.toString() || '') === (working.__contentVerifier?.isCvVerdictFromTruncatedFetch?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild

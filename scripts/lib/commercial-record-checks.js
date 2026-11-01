@@ -75,7 +75,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const { NP_VENUES, venueMatches } = require('./nonprofit-venues');
-const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, labelSizingPct, isLossDesignation, lossDesignationFor, REPORTED_WIN_DESIGNATIONS, WAIT_AND_SEE, WAIT_AND_SEE_MIN_RETURNED_PCT, modelPctWithoutCredit } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, labelSizingPct, isLossDesignation, lossDesignationFor, REPORTED_WIN_DESIGNATIONS, WAIT_AND_SEE, WAIT_AND_SEE_MIN_RETURNED_PCT, modelPctWithoutCredit, RECOUPED, recoupedDesignationFor, TRICKLE_MAX_MULTIPLE } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 const { CAPITALIZATION_BASES } = require('./public-source-text');
@@ -247,6 +247,10 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     if (!/tax credit/i.test(String(show.recoupedSource || ''))) {
       out.push(`commercial.json: "${showId}" is Squeaker but recoupedSource does not cite the NY State tax credit's part in the recoupment`);
     }
+  }
+  // Recouped (BRO-5641): a reported recoupment with no reported multiple, never our estimate.
+  if (show.designation === RECOUPED && modelEstimated) {
+    out.push(`commercial.json: "${showId}" is ${RECOUPED} on a model estimate (${RECOUPED} is a reported recoupment; an estimate is Trickle or Windfall)`);
   }
   // Wait & See (BRO-6499): closed without recouping, 50%+ back, later money may still recoup it.
   if (show.designation === WAIT_AND_SEE) {
@@ -433,6 +437,21 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     if (exCredit !== null && exCredit >= 100) {
       out.push(`commercial.json: "${showId}" is Squeaker but our model has it past 100% even without the NY tax credit (${Math.round(exCredit)}%); check the citation`);
     }
+  }
+  // Trickle and Windfall say how much came back, so a reported one needs a
+  // reported investorMultiple; without one it is Recouped, and a Recouped that
+  // gains one takes its size (owner 2026-10-31, BRO-5641, Option B). Advisory
+  // (§19). With ctx.priorRecord it counts only when the write changed the
+  // label or the multiple, so an unrelated edit is never blocked by it.
+  const sized = recoupedDesignationFor(show.investorMultiple);
+  const winInputsChanged = !ctx.priorRecord || ctx.priorRecord.designation !== show.designation
+    || ctx.priorRecord.investorMultiple !== show.investorMultiple;
+  if (winInputsChanged && show.recouped === true && show.designationBasis !== DESIGNATION_BASES.MODEL_ESTIMATE
+    && (show.designation === 'Trickle' || show.designation === 'Windfall' || show.designation === RECOUPED)
+    && sized !== show.designation) {
+    out.push(sized === RECOUPED
+      ? `commercial.json: "${showId}" is "${show.designation}" but reports no investorMultiple (Trickle is under ${TRICKLE_MAX_MULTIPLE}x, Windfall at or above; use "${RECOUPED}" until a source reports the multiple)`
+      : `commercial.json: "${showId}" is "${RECOUPED}" but reports investorMultiple ${show.investorMultiple} (that sizes it "${sized}")`);
   }
   // Every loss label says what it rests on (owner policy B, BRO-5020). Advisory (§19).
   if (isLossDesignation(show.designation) && show.designationBasis == null) {

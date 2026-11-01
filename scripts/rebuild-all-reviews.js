@@ -74,7 +74,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { displayedOriginalRating } = require('./lib/displayed-original-rating');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, isMisFamilyCvPromotedWrongShow, isStaleGenericHomepageWrongShow, computeCvIsStale, applyVenueClassificationCarveout, cvWrongProductionIsVenueCarveout, isVenueCarveoutPersistedWrongProduction, isOwnCastEvidencePersistedWrongProduction, isEnsembleCategoryQuibbleRejection, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, cvWrongArticlePromotion, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
@@ -87,7 +87,7 @@ const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { displayCriticName, isPlaceholderCritic } = require('./lib/critic-display-name');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
-const { isStaleScoreInput, markRescoreNeeded, needsRescoreForCvPartialWindow } = require('./lib/rescore-flagging');
+const { isStaleScoreInput, markRescoreNeeded, queueRescoreForCvPartialWindow } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isValidBroadwayCopy, shouldClearStaleObTransfer } = require('./lib/ob-transfer-guard');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -2490,17 +2490,18 @@ const crossShowFingerprints = new Map();
         // wrongShow when CV ALSO flagged wrongProduction (genuinely a review,
         // just of a different production) — pure non-review content routes to
         // the isNonReview/rejectionReason family instead.
-        const cvIsPureNonReview = cvWrongArticleFamily(cv) === 'nonReview';
+        // BRO-6233: routing (nonReview / wrongShow / advisory) is cvWrongArticlePromotion, shared with
+        // the upcoming-show pass below and scoring-delta.js's replay.
         // BRO-4429: verdict formed from the 2500-char head of a longer article is advisory.
         const cvPartialWindow = isCvVerdictFromPartialWindow(cv, d.fullText, d);
         if (cvPartialWindow && cv.wrongArticle === true) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
         // BRO-6225: an advisory verdict newer than the score holds the file out until the ensemble re-reads it.
-        if (cvPartialWindow && needsRescoreForCvPartialWindow(d, showById[sid], path.join(sDir, f))) {
-          markRescoreNeeded(d, 'CV not-a-review verdict from the head of a longer article is newer than the score (BRO-6225)');
+        if (cvPartialWindow && queueRescoreForCvPartialWindow(d, showById[sid], path.join(sDir, f))) {
           stats.cvPartialWindowRescoreQueued = (stats.cvPartialWindowRescoreQueued || 0) + 1;
           try { safeWriteReview(path.join(sDir, f), d); } catch {}
         }
-        if (cvIsPureNonReview && !cvPartialWindow && !ensembleSaysReview && d.isNonReview !== true && !cvNonReviewHumanCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'nonReview')) {
+        const cvRoute = cvWrongArticlePromotion(d, cv, { cvPartialWindow, skipLondon, laneHolds: (g) => laneHolds(d, g) });
+        if (cvRoute === 'nonReview') {
           // CV outlet-style override (S3-T5): defer for known long-biographical
           // outlets when the text is substantive + opinionated. The CV pass false-positives
           // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
@@ -2516,7 +2517,7 @@ const crossShowFingerprints = new Map();
             d.isNonReviewReason = d.isNonReviewReason || `CV-promoted (not a review): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
+        } else if (cvRoute === 'wrongShow') {
           // Both flags true: genuinely a review, just of a different production — wrongShow family.
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
@@ -2529,7 +2530,7 @@ const crossShowFingerprints = new Map();
             invalidateWrongShowAutoClear(d); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
             promoted = true;
           }
-        } else if (cv.wrongArticle === true && ensembleSaysReview) {
+        } else if (cvRoute === 'advisory') {
           stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
         }
         if (cv.isFilmTv === true && !ensembleSaysReview && !ppOwnShowEvidence && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
@@ -2607,8 +2608,16 @@ showDirs.forEach(showId => {
           }
           // #651: pure non-review (wrongArticle without wrongProduction) routes to
           // isNonReview, not wrongShow — see the matching non-upcoming pass above.
-          const uCvIsPureNonReview = cvWrongArticleFamily(ucv) === 'nonReview';
-          if (uCvIsPureNonReview && !isCvVerdictFromPartialWindow(ucv, ud.fullText, ud) && !uEnsembleSaysReview && ud.isNonReview !== true && !cvNonReviewHumanCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'nonReview')) {
+          // BRO-6233: same routing helper as the main pre-pass (this path never applied skipLondon).
+          const uCvPartialWindow = isCvVerdictFromPartialWindow(ucv, ud.fullText, ud);
+          // BRO-6233: the same BRO-6225 rescore hook as the main pre-pass. Files the main pass
+          // skipped (stale CV) reach this one, so the hook has to run here too.
+          if (uCvPartialWindow && queueRescoreForCvPartialWindow(ud, showById[showId], path.join(upcomingDir, uf))) {
+            stats.cvPartialWindowRescoreQueued = (stats.cvPartialWindowRescoreQueued || 0) + 1;
+            try { safeWriteReview(path.join(upcomingDir, uf), ud); } catch (e) {}
+          }
+          const uCvRoute = cvWrongArticlePromotion(ud, ucv, { cvPartialWindow: uCvPartialWindow, laneHolds: (g) => laneHolds(ud, g) });
+          if (uCvRoute === 'nonReview') {
             // CV outlet-style override (S3-T5 followup): defer for known long-biographical
             // outlets even on upcoming-show path. Long-biographical previews share the same
             // FP class as opening-day reviews (e.g., NY Sun biographical lead on an upcoming show).
@@ -2623,7 +2632,7 @@ showDirs.forEach(showId => {
               ud.isNonReviewReason = `CV-promoted (not a review): ${(ucv.reasoning || '').substring(0, 200)}`;
               promoted = true;
             }
-          } else if (ucv.wrongArticle === true && ucv.wrongProduction === true && !uEnsembleSaysReview && ud.wrongShow !== true && !wrongShowCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket && !laneHolds(ud, 'wrongProduction')) {
+          } else if (uCvRoute === 'wrongShow') {
             if (shouldDeferCvWrongShow(ud)) {
               ud.flaggedForReview = true;
               ud.flagReason = 'cv-promotion-deferred';
@@ -2635,7 +2644,7 @@ showDirs.forEach(showId => {
               invalidateWrongShowAutoClear(ud); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
               promoted = true;
             }
-          } else if (ucv.wrongArticle === true && uEnsembleSaysReview) {
+          } else if (uCvRoute === 'advisory') {
             stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
           }
           if (promoted) {

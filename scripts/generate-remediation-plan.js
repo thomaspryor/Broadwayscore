@@ -285,6 +285,9 @@ const EDITABLE_DATA_FIELDS = pickEditableFields([
   'shows.json', 'commercial.json', 'audience-buzz.json',
 ]);
 
+// The narrower set offered to the planner LLM. Each must also be in the
+// executor's allowlist, or the generated plan is refused at apply time (BRO-6742).
+const { ALLOWED_SCRIPTS: EXECUTOR_ALLOWED_SCRIPTS } = require('./lib/run-script-allowlist');
 const ALLOWED_SCRIPTS = [
   'rebuild-all-reviews.js',
   'gather-reviews.js',
@@ -292,7 +295,7 @@ const ALLOWED_SCRIPTS = [
   'generate-critic-consensus.js',
   'validate-data.js',
   'fetch-show-images-auto.js',
-];
+].filter((name) => EXECUTOR_ALLOWED_SCRIPTS.includes(name));
 
 // --- Show name extraction (mirrors diagnose-feedback-bug.js) ---
 

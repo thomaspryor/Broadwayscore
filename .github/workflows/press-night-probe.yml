@@ -247,8 +247,8 @@ jobs:
     # but not on bad inputs (inputs_ok) and not after a manual cancel.
     if: ${{ !cancelled() && needs.early.outputs.inputs_ok == 'true' && needs.early.outputs.finalized != 'true' }}
     runs-on: ubuntu-latest
-    # 350: probe step 270 + lane-shadow import 5 + two push-with-retry budgets (audit-push-retry-budgets.js).
-    timeout-minutes: 350
+    # 360: probe step 270 + lane-shadow import 5 + two push-with-retry budgets (audit-push-retry-budgets.js).
+    timeout-minutes: 360
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
@@ -349,6 +349,24 @@ jobs:
         uses: ./.github/actions/read-lane-only-vars
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      # BRO-6661: hand fixes made during the night (an ingest-urls: commit or any non-bot commit in review-texts) are
+      # logged into rec.manualActions from git history, so a hand ingest nobody wrote down no longer reads as "passed
+      # on its own". Advisory (rule 19): a failed fetch or parse leaves the record as it was. The record is the only
+      # file written. Window and parsing: scripts/lib/press-night-manual-actions.js.
+      - name: Auto-log hand fixes from review-texts history
+        if: always() && steps.rt_late.outcome == 'success'
+        continue-on-error: true
+        timeout-minutes: 5
+        run: |
+          F="data/audit/press-night/${SHOW_ID}-${NIGHT}.json"
+          if [ ! -f "$F" ]; then echo "No record; nothing to log against."; exit 0; fi
+          # 28h back: the oldest commit a shallow fetch keeps has no parent and lists every file, so keep a margin
+          # of boundary commits outside the 4h window (the parser filters by the exact window).
+          SINCE=$(F="$F" node -e "const r=require('./'+process.env.F);console.log(new Date(Date.parse(r.embargoAt)-28*3600000).toISOString())")
+          . scripts/lib/git-net-timeout.sh
+          git_net 120 -C data/review-texts fetch --shallow-since="$SINCE" origin main
+          node scripts/press-night-record.js --show="$SHOW_ID" --night="$NIGHT" --auto-log-manual --git-ref=FETCH_HEAD
 
       - name: Stamp census coverage at the end
         if: always()

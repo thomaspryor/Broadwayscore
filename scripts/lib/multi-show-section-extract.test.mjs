@@ -222,3 +222,29 @@ test('BRO-6742 quotedTitles reads straight, curly and single quotes, not apostro
   assert.deepEqual(quotedTitles('is for "The Other Place" at The Shed'), ['The Other Place']);
   assert.deepEqual(quotedTitles("reviewing Eddie Redmayne's West End Olivier-winning performance"), []);
 });
+
+// ---- BRO-6744: a rejection made on the whole post, text since cut to one section ----
+{
+  const { planIsolation } = (await import('node:module')).createRequire(import.meta.url)('./multi-show-isolation-plan.js');
+  const { test: t2 } = await import('node:test');
+  const assertMod = (await import('node:assert/strict')).default;
+  const jesa = {
+    url: 'https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html',
+    fullText: 'Jesa (c) Joan Marcus Theater: Jesa At the Public Theater ' + 'A patient family drama. '.repeat(60),
+    multiShowSectionIsolatedAt: '2026-09-29T22:55:53Z', rejectedAt: '2026-04-26T01:47:41Z', rejectedBy: 'ensemble-scoreability-check',
+    rejectionReason: 'not_a_review', rejectionReasoning: 'claude: This is a multi-show roundup covering three different productions',
+  };
+  t2('stale whole-post rejection is cleared once the text is one section', () => {
+    const plan = planIsolation(jesa, 'jesa-off-broadway-2026', '2026-11-01T00:00:00Z');
+    assertMod.ok(plan && plan.clearedFlags.includes('rejection'));
+    assertMod.equal(plan.data.rejectionReason, undefined);
+    assertMod.ok(plan.data.needsRescoreReason || plan.data.rescoreFlaggedAt);
+  });
+  t2('rejections made after the cut, by a human, or not about a multi-show post stand', () => {
+    const at = '2026-11-01T00:00:00Z';
+    assertMod.equal(planIsolation({ ...jesa, rejectedAt: '2026-10-05T00:00:00Z' }, 'x', at), null);
+    assertMod.equal(planIsolation({ ...jesa, rejectedBy: 'human-admin' }, 'x', at), null);
+    assertMod.equal(planIsolation({ ...jesa, rejectionReasoning: 'claude: the text is cookie boilerplate' }, 'x', at), null);
+    assertMod.equal(planIsolation({ ...jesa, humanReviewScore: 80 }, 'x', at), null);
+  });
+}

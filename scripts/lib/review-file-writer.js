@@ -2051,6 +2051,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // Decided BEFORE the swap: only a stale non-review slot's byline came from
   // the page being replaced (913); an ordinary url upgrade (amp->canonical,
   // round-up->direct) keeps the file's enriched byline.
+  // An interview slot's byline is the same critic's, so it is not reset (BRO-6742).
   const staleSlotMove = !!(input.url && isStaleNonReviewSlot(preMergeSnapshot, input.url));
   if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, {
     showTitle: _getShowTitle(showId),

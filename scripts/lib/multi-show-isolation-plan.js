@@ -88,6 +88,7 @@ function planIsolation(data, showId, at, { strict = false } = {}) {
   if (!data || !data.fullText || !isMultiShowPostUrl(data.url)) return null;
   const iso = isolateMultiShowSectionForShowId(data.url, data.fullText, showId);
   if (iso.action === 'refuse') return { refused: true };
+  if (iso.action === 'single-section') return planStaleWholePostRejection(data, at);
   if (iso.action !== 'isolated') return null;
   const out = { ...data };
   const from = data.fullText.length;
@@ -132,6 +133,39 @@ function planIsolation(data, showId, at, { strict = false } = {}) {
   return { data: out, clearedFlags, from, to: iso.text.length };
 }
 
+const WHOLE_POST_REASONING_RE = /multi[\s-]?show|round-?up|\b(?:two|three|four|five|several|multiple)\s+(?:different\s+|separate\s+)?(?:productions|shows|plays|reviews)\b/i;
+const AUTOMATED_REJECTER_RE = /^(?:ensemble|collector|llm|cv|content-verif|auto)/i;
+
+/**
+ * BRO-6744: the stored text is already ONE show's section (isolated or split
+ * earlier) but an automated rejection / roundup flag made BEFORE that cut still
+ * stands, and its reasoning describes the whole multi-show post (jesa-off-
+ * broadway-2026: "multi-show roundup covering three productions" rejected the
+ * file for good). Clear it and rescore. Never touches a human verdict, a
+ * rejection made after the cut, or one whose reasoning is not about a
+ * multi-show post.
+ * @returns {{ data: object, clearedFlags: string[], from: number, to: number } | null}
+ */
+function planStaleWholePostRejection(data, at) {
+  const cutAt = Date.parse(data.multiShowSectionIsolatedAt || data.multiShowSplitProcessed || '');
+  if (!cutAt) return null;
+  const rejected = !!(data.rejectionReason || data.rejectedAt);
+  if (!rejected) return null;
+  if (data.humanReviewScore != null || data.manualContentTier || data.wrongShowManualClear || data.wrongShowOverride || data.humanReviewedWrongProduction === true) return null;
+  const rejectedAt = Date.parse(data.rejectedAt || '');
+  if (!AUTOMATED_REJECTER_RE.test(String(data.rejectedBy || ''))) return null;
+  if (!rejectedAt || rejectedAt >= cutAt) return null;
+  if (!WHOLE_POST_REASONING_RE.test(String(data.rejectionReasoning || ''))) return null;
+  const out = { ...data };
+  const clearedFlags = [];
+  for (const k of ['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning']) delete out[k];
+  clearedFlags.push('rejection');
+  out.wholePostVerdictClearedAt = at;
+  markRescoreNeeded(out, 'multi-show post: verdict made on the whole post cleared; re-judge this show\'s section', at);
+  const len = String(data.fullText).length;
+  return { data: out, clearedFlags, from: len, to: len };
+}
+
 /**
  * BRO-6742: a file flagged wrongShow/wrongProduction by a verdict on the WHOLE
  * post whose stored text is now empty or already one section (so planIsolation
@@ -159,4 +193,4 @@ function needsRefetch(data) {
   return findSectionHeadings(String(data.fullText || '')).length < 2;
 }
 
-module.exports = { planIsolation, verdictCitesOtherSection, verdictReason, quotedTitles, planRefetchedIsolation, needsRefetch };
+module.exports = { planIsolation, planStaleWholePostRejection, verdictCitesOtherSection, verdictReason, quotedTitles, planRefetchedIsolation, needsRefetch };

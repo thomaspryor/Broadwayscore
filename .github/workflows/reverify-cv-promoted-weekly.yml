@@ -70,11 +70,18 @@ jobs:
           [ "$DRY_RUN" = "true" ] && EXTRA+=(--dry-run)
           node scripts/reverify-stale-cv-promoted.js --limit=$LIMIT "${EXTRA[@]}" 2>&1 | tee /tmp/reverify-stale.log
           node scripts/reverify-nulled-cv-promoted.js --limit=$LIMIT "${EXTRA[@]}" 2>&1 | tee /tmp/reverify-nulled.log
-          CLEARED=$(cat /tmp/reverify-stale.log /tmp/reverify-nulled.log | grep -c '>>> CLEARED' || true)
+          # BRO-6745: CV-promoted "not a review" labels on the last year's shows.
+          # Only manual dispatch reached them before, so labels formed on an old
+          # fetch (a cookie banner, a teaser) stayed on real reviews for months.
+          SINCE=$(date -u -d '365 days ago' +%F)
+          node scripts/reverify-stale-cv-promoted.js --cv-promoted-nonreview --opened-since=$SINCE --limit=$LIMIT "${EXTRA[@]}" 2>&1 | tee /tmp/reverify-nonreview.log
+          CLEARED=$(cat /tmp/reverify-stale.log /tmp/reverify-nulled.log /tmp/reverify-nonreview.log | grep -c '>>> CLEARED' || true)
           echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
 
       - name: Push to private repo
-        if: ${{ !inputs.dry_run }}
+        # always(): a later sweep failing must not drop verdicts already paid for
+        # (CLAUDE.md section 8, batch scripts checkpoint).
+        if: ${{ always() && !inputs.dry_run }}
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -88,6 +95,7 @@ jobs:
             echo "## Weekly CV-promoted re-verify"
             echo '### stale-hash'; echo '```'; tail -25 /tmp/reverify-stale.log 2>/dev/null; echo '```'
             echo '### nulled'; echo '```'; tail -25 /tmp/reverify-nulled.log 2>/dev/null; echo '```'
+            echo '### CV-promoted not-a-review (last 365 days)'; echo '```'; tail -25 /tmp/reverify-nonreview.log 2>/dev/null; echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Notify on failure

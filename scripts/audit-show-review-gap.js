@@ -66,9 +66,9 @@ const {
   resolveUrlEditionOutletId,
 } = require('./lib/outlet-canonicalize');
 const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
-const { isIncludableForRebuild, explainExclusion, isRoundupUrl } = require('./lib/review-guards');
+const { isIncludableForRebuild, explainExclusion, isRoundupUrl, canonicalizeUrlForDedup } = require('./lib/review-guards');
 // BRO-4971: human vs automated exclusion split + re-verify marking for flaggedMisses.
-const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed, makeHeldFileResolver, isCopyOfLiveReview, liveKeysFromReviews } = require('./lib/flagged-miss-basis');
+const { classifyFlaggedMiss, shouldReverify, countAutomatedExcludedListed, makeHeldFileResolver, isCopyOfLiveReview, liveKeysFromReviews, isLiveItself } = require('./lib/flagged-miss-basis');
 const { getSyndicationPrimaries } = require('./lib/syndication-pairs');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { ingestFailureReason } = require('./lib/ingest-failure-reason');
@@ -1380,6 +1380,8 @@ async function auditShow(show, opts = {}) {
   const showReviews = reviewsJson.filter(r => r.showId === show.id);
   result.inReviewsJson = showReviews.length;
   const showLiveKeys = liveKeysFromReviews(showReviews);
+  const liveUrlNorm = u => canonicalizeUrlForDedup(u) || u;
+  const showLiveUrls = new Set(showReviews.filter(r => r && r.url).map(r => liveUrlNorm(r.url)));
 
   // URLs of files we already hold AND count as covered for this show. Used by
   // the alias-variant check below; deliberately covered-only, so a flagged or
@@ -1510,6 +1512,7 @@ async function auditShow(show, opts = {}) {
           basis,
           ...(confirmedNonReview ? { confirmedNonReview: true, confirmedBasis } : {}),
           ...(copyOfLiveReview ? { copyOfLiveReview: true } : {}),
+          ...(isLiveItself(dirFiles, showLiveUrls, liveUrlNorm) ? { liveInReviews: true } : {}),
           // Stored flagged files dated before this run: permanent prior-run (see policy).
           ...(() => { const d = recoverableFile ? null : flaggedFilePriorRunDate(dirFiles, show); return d ? { priorRun: true, priorRunSource: `flagged-file-date:${d}` } : {}; })(),
         });
@@ -2159,7 +2162,7 @@ function computeResidualCounts(r, ingestMissing) {
   const uningested = ingestMissing ? 0 : currentRunCount(r.missing);
   const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
   // confirmedNonReview rows (BRO-5500): the exclusion is the correct outcome, not a gap.
-  const flaggedOut = Math.max(0, currentRunCount((r.flaggedMisses || []).filter(m => !(m && m.confirmedNonReview))) - recovered);
+  const flaggedOut = Math.max(0, currentRunCount((r.flaggedMisses || []).filter(m => !(m && (m.confirmedNonReview || m.liveInReviews)))) - recovered);
   const residual = failedIngest + capped + uningested + flaggedOut + conflictIngest + unclassifiedIngest;
   return { residual, failedIngest, noopIngest, conflictIngest, expectedIngest, unclassifiedIngest, capped, uningested, flaggedOut, recovered };
 }

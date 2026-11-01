@@ -44,6 +44,8 @@ const INVENTORY = {
   isRejectedByReasonExclusion: 'live',
   // BRO-6225: the rebuild reaches the head-of-article advisory through the CV-promoted nonReview demotion.
   isCvPartialWindowAdvisory: 'live-via:isNonReviewDemotedByFreshCV',
+  // BRO-6745: the rebuild reaches the stale-CV-verdict override through the CV-promoted nonReview demotion.
+  isStaleCvNonReviewVerdictOverruled: 'live-via:isNonReviewDemotedByFreshCV',
   isRoundupPageAsReview: 'live',
   isUnverifiableWebSearchRow: 'live',
   // BRO-5501: the rebuild decides duplicateOf inheritance through duplicateOfInheritedFlag, which runs this text test.
@@ -54,10 +56,12 @@ const INVENTORY = {
   duplicateOfCopyRefVerdict: 'live-via:duplicateOfRefIsCopy',
   wrongShowCleared: 'live',
   wrongShowExplicitlyCleared: 'live',
-  // The rebuild has no cvWrongArticle exclusion of its own: it promotes a
-  // high-confidence CV wrongArticle verdict to isNonReview, guarded by
-  // cvNonReviewHumanCleared, which honors the same manual clear.
-  cvWrongArticleManuallyCleared: 'live-via:cvNonReviewHumanCleared',
+  // BRO-6233: the rebuild has no cvWrongArticle exclusion of its own. Its CV
+  // pre-passes route the verdict through cvWrongArticlePromotion (isNonReview
+  // or wrongShow, honoring the same manual clear via cvNonReviewHumanCleared),
+  // and leave it advisory once the ensemble scored the text. Measured gap:
+  // MIRROR_ONLY_RULES.cvWrongArticleHighConfidence below.
+  isCvWrongArticleHighConfidence: 'mirror-only: the rebuild routes a CV wrongArticle verdict through cvWrongArticlePromotion (advisory once the ensemble scored it) instead of excluding on it; see MIRROR_ONLY_RULES.cvWrongArticleHighConfidence (BRO-6233, 2026-11-01)',
   // The rebuild's wrongProduction gate honors only the manual clears; it
   // writes its own auto-clears to disk as wrongProduction=false, so a file
   // still flagged true with a fresh auto-clear stamp was re-flagged after the

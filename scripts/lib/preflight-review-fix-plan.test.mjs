@@ -129,14 +129,14 @@ test('preflight() fails a run-script action whose args the executor would refuse
   fs.mkdirSync(path.join(tree, 'show-a'));
   const planPath = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pf-plan-')), 'p.json');
   fs.writeFileSync(planPath, JSON.stringify({ issueNumber: 'bro-y', status: 'pending', plan: { actions: [
-    { type: 'run-script', script: 'x.js', args: '--apply' },
-    { type: 'run-script', script: 'x.js', arguments: ['--apply'] },
-    { type: 'run-script', script: 'x.js', args: '--a', arguments: ['--b'] },
+    { type: 'run-script', script: 'validate-data.js', args: '--apply' },
+    { type: 'run-script', script: 'validate-data.js', arguments: ['--apply'] },
+    { type: 'run-script', script: 'validate-data.js', args: '--a', arguments: ['--b'] },
   ] } }));
   const lines = [];
   const { failed } = preflight([planPath], { reviewTextsDir: tree, log: (l) => lines.push(l) });
   assert.equal(failed, 1);
-  assert.ok(lines.some((l) => /FAIL bro-y run-script x\.js: .*both args and arguments/.test(l)));
+  assert.ok(lines.some((l) => /FAIL bro-y run-script validate-data\.js: .*both args and arguments/.test(l)));
 });
 
 // BRO-5892: data-edit actions used to print "skip data-edit (not replayed)", so a

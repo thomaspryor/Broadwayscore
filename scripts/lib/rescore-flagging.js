@@ -231,4 +231,18 @@ function markRescoreNeeded(fileData, reason, flaggedAt, { requeue = false } = {}
   return fileData;
 }
 
-module.exports = { isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow };
+const CV_PARTIAL_WINDOW_RESCORE_REASON = 'CV not-a-review verdict from the head of a longer article is newer than the score (BRO-6225)';
+
+/**
+ * BRO-6233: raise the rescore flag when needsRescoreForCvPartialWindow says
+ * so. Both rebuild CV pre-passes (main and upcoming-show) call this, so the
+ * hook cannot drift between them. Returns true when it flagged the file; the
+ * caller writes it.
+ */
+function queueRescoreForCvPartialWindow(data, show, filePath) {
+  if (!needsRescoreForCvPartialWindow(data, show, filePath)) return false;
+  markRescoreNeeded(data, CV_PARTIAL_WINDOW_RESCORE_REASON);
+  return true;
+}
+
+module.exports = { CV_PARTIAL_WINDOW_RESCORE_REASON, queueRescoreForCvPartialWindow, isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow };

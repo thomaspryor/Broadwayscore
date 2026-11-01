@@ -96,8 +96,26 @@ function planClear(data, result, clean) {
 
 // Files already re-verified from stored text keep isNonReview when refused; skip
 // them so a --limit batch moves on instead of re-paying for the same first N files.
+// BRO-6745: the skip holds only while that verdict is about the body the file
+// holds now. A refetch replaces fullText, so a verdict hashed on the old body
+// (or with no hash at all) says nothing about the new one: re-select it, or a
+// "not a review" label formed on a cookie banner outlives the real review.
+// verifyContent strips a leading consent layer before it hashes (content-verifier
+// verifyContent: stripConsentLayerPrefix then contentHash), so compare against
+// that text too, or every WhatsOnStage consent-prefixed file is re-paid weekly.
 function alreadyReverified(d) {
-  return d?.contentVerification?.reverifiedFrom === 'stored-fullText';
+  const cv = d?.contentVerification;
+  if (cv?.reverifiedFrom !== 'stored-fullText') return false;
+  if (typeof d.fullText !== 'string') return false;
+  const { stripConsentLayerPrefix } = require('./text-cleaning');
+  const judged = stripConsentLayerPrefix(d.fullText);
+  // verifyContent's skip-short verdict carries no hash; it stays done while the
+  // judged text is still too short to verify.
+  if (cv.verifiedBy === 'skip-short') return judged.length < MIN_TEXT_LENGTH;
+  if (!cv.contentHash) return false;
+  // lazy: content-verifier pulls in the LLM client
+  const { contentHash } = require('./content-verifier');
+  return contentHash(judged) === cv.contentHash || contentHash(d.fullText) === cv.contentHash;
 }
 
 module.exports = {

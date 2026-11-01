@@ -21,6 +21,7 @@ describe('designation thresholds (one definition)', () => {
     assert.ok(DESIGNATION_CRITERIA.includes(`roughly ${D.MIRACLE_MIN_YEARS}+ years`));
     assert.ok(DESIGNATION_CRITERIA.includes(`roughly ${D.FIZZLE_MIN_RETURNED_PCT}% or more`));
     assert.ok(DESIGNATION_CRITERIA.includes(`less than ${D.FIZZLE_MIN_RETURNED_PCT}% of`));
+    assert.ok(DESIGNATION_CRITERIA.includes(`under ${D.TRICKLE_MAX_MULTIPLE}x its capitalization`));
   });
 
   it('no file re-hard-codes the thresholds', () => {
@@ -43,9 +44,9 @@ describe('designation thresholds (one definition)', () => {
 
 describe('modelContradictsDesignation', () => {
   // The rule merge-model-recoupment.js used before BRO-4989 C, kept here as the fixture it must match,
-  // with Did Not Recoup counted among the failed labels (BRO-5636).
+  // with Did Not Recoup counted among the failed labels (BRO-5636) and Recouped among the winners (BRO-5641).
   const before = (pct, d) => (pct > 150 && ['Fizzle', 'Flop', 'Did Not Recoup'].includes(d))
-    || (pct < 0 && (d === 'Windfall' || d === 'Miracle' || d === 'Easy Winner'))
+    || (pct < 0 && (d === 'Windfall' || d === 'Miracle' || d === 'Easy Winner' || d === 'Recouped'))
     || (pct > 300 && d === 'Trickle');
   it('matches the previous inline rule on every designation and boundary', () => {
     for (const d of D.VALID_DESIGNATIONS) {
@@ -66,10 +67,10 @@ describe('shadowClassifier uses the approved rule', () => {
   it('reports only what proposeDesignation would change', () => {
     const commercial = { shows: {
       a: { designation: 'Windfall', recouped: true, investorMultiple: 1.06 }, // reported under 1.5x
-      b: { designation: 'Windfall', recouped: true }, // no reported multiple: no move
+      b: { designation: 'Windfall', recouped: true }, // no reported multiple: Recouped (BRO-5641)
       c: { designation: 'TBD', recouped: false }, // running
     } };
     const out = shadowClassifier(commercial, null, shows, NOW);
-    assert.deepStrictEqual(out.map((x) => [x.slug, x.current, x.predicted]), [['a', 'Windfall', 'Trickle']]);
+    assert.deepStrictEqual(out.map((x) => [x.slug, x.current, x.predicted]), [['a', 'Windfall', 'Trickle'], ['b', 'Windfall', 'Recouped']]);
   });
 });

@@ -257,9 +257,24 @@ function liveKeysFromReviews(reviews) {
   return keys;
 }
 
+/**
+ * BRO-6742: the flagged file's own url is already in reviews.json for this show.
+ * The audit's per-file predicate (isIncludableForRebuild) is a mirror of the
+ * rebuild with known gaps (e.g. a high-confidence CV not-a-review verdict that the
+ * rebuild treats as advisory because the ensemble scored it as a review), and
+ * where they disagree the rebuild wins. A review that is live is not a gap.
+ * @param {object[]} files - the show-dir files for the cited host
+ * @param {Set<string>} liveUrls - normalized urls of the show's reviews.json rows
+ * @param {(u:string)=>string} norm - the same normalizer liveUrls was built with
+ */
+function isLiveItself(files, liveUrls, norm) {
+  if (!liveUrls || !liveUrls.size || typeof norm !== 'function') return false;
+  return (Array.isArray(files) ? files : []).some(d => d && typeof d.url === 'string' && d.url && liveUrls.has(norm(d.url)));
+}
+
 /** Re-check an automated exclusion only when a current-run round-up lists it. */
 function shouldReverify(m) {
-  return !!m && m.exclusion === 'automatedExcluded' && !m.confirmedNonReview && !m.copyOfLiveReview
+  return !!m && m.exclusion === 'automatedExcluded' && !m.confirmedNonReview && !m.copyOfLiveReview && !m.liveInReviews
     && !isPriorProductionCitation(m);
 }
 
@@ -294,6 +309,7 @@ module.exports = {
   isConfirmedNonReviewFile,
   hasReviewShapedEvidence,
   shouldReverify,
+  isLiveItself,
   countAutomatedExcludedListed,
   isCopyOfLiveReview,
   liveKeysFromReviews,

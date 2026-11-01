@@ -960,12 +960,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          PAUSED=$(gh api "repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED" --jq '.value' 2>/dev/null) || PAUSED=""
-          if [ -n "$PAUSED" ]; then
-            echo "preempted=true" >> "$GITHUB_OUTPUT"
-            echo "::notice::ORCHESTRATOR_PAUSED=$PAUSED — treating this cancellation as an Express takeover, not a hang. Skipping alert."
+          # BRO-6643: a failed read is UNKNOWN, not "unset" (that sent false hang alerts on an
+          # Express takeover). Unknown after a retry -> preempted=true (suppress) with a warning.
+          if PAUSED=$(READ_ATTEMPTS=2 READ_RETRY_SLEEP=3 bash scripts/lib/read-actions-variable.sh ORCHESTRATOR_PAUSED); then
+            if [ -n "$PAUSED" ]; then
+              echo "preempted=true" >> "$GITHUB_OUTPUT"
+              echo "::notice::ORCHESTRATOR_PAUSED=$PAUSED — treating this cancellation as an Express takeover, not a hang. Skipping alert."
+            else
+              echo "preempted=false" >> "$GITHUB_OUTPUT"
+            fi
           else
-            echo "preempted=false" >> "$GITHUB_OUTPUT"
+            echo "preempted=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::ORCHESTRATOR_PAUSED could not be read (unknown) — assuming an Express takeover and skipping the hang alert."
           fi
 
       - name: Notify on failure

@@ -2037,6 +2037,20 @@ function cvWrongArticleManuallyCleared(data) {
 }
 
 /**
+ * explainExclusion's cvWrongArticleHighConfidence rule, minus the lane check
+ * (BRO-6233). The rebuild deliberately has no such gate: it routes the verdict
+ * through cvWrongArticlePromotion instead, which leaves it advisory once the
+ * ensemble scored the text (Balusters CLASS 1). The mirror stays strict so the
+ * scorer does not spend on CV-flagged non-reviews. That gap is classified in
+ * tests/unit/explain-exclusion-mirror-inventory.test.mjs.
+ */
+function isCvWrongArticleHighConfidence(data, opts) {
+  const cv = data && data.contentVerification;
+  return !!cv && cv.wrongArticle === true && cv.confidence === 'high'
+    && !isCvPartialWindowAdvisory(data, opts) && !cvWrongArticleManuallyCleared(data);
+}
+
+/**
  * A human already said this file IS a review (BRO-4429), so a content-verifier
  * "not a review" verdict must not be promoted over it. The rebuild's CV
  * promotion sites checked only `isNonReview !== true`, so a human clear
@@ -2056,6 +2070,38 @@ function cvNonReviewHumanCleared(data) {
 function cvWrongArticleFamily(cv) {
   if (!cv || cv.wrongArticle !== true) return null;
   return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
+}
+
+/**
+ * BRO-6233: where the rebuild's CV pre-passes (the main one and the upcoming-
+ * show one) route a contentVerification wrongArticle verdict. One predicate
+ * for both pre-passes and for scoring-delta.js's replay, so an edit to the
+ * routing replays instead of reporting 0 flips.
+ *   'nonReview' — promote to isNonReview (a not-a-review verdict)
+ *   'wrongShow' — promote to wrongShow (a review of a different production)
+ *   'advisory'  — the ensemble scored the text as a review; nothing promoted
+ *   null        — nothing to do
+ * The caller still applies the long-biographical deferral
+ * (content-verifier.js shouldDeferCvWrongShow) and does the write.
+ *
+ * @param {object} data review file
+ * @param {object} cv the verdict (data.contentVerification)
+ * @param {object} [ctx]
+ * @param {boolean} [ctx.cvPartialWindow] verdict formed on the head of a longer article (BRO-4429)
+ * @param {boolean} [ctx.skipLondon] UK outlet on a London show, below high confidence
+ * @param {(guard: string) => boolean} [ctx.laneHolds] opening-night lane hold (BRO-4806)
+ */
+function cvWrongArticlePromotion(data, cv, ctx = {}) {
+  const family = cvWrongArticleFamily(cv);
+  if (!data || !family) return null;
+  const { cvPartialWindow = false, skipLondon = false, laneHolds = () => false } = ctx;
+  const ensembleSaysReview = hasHighConfidenceLlmScore(data);
+  const blocked = ensembleSaysReview || skipLondon || data.allowEarlyDate || data.allowCrossMarket;
+  if (family === 'nonReview' && !blocked && !cvPartialWindow && data.isNonReview !== true
+      && !cvNonReviewHumanCleared(data) && !laneHolds('nonReview')) return 'nonReview';
+  if (family === 'wrongShow' && !blocked && data.wrongShow !== true
+      && !wrongShowCleared(data) && !laneHolds('wrongProduction')) return 'wrongShow';
+  return ensembleSaysReview ? 'advisory' : null;
 }
 
 /**
@@ -2860,6 +2906,38 @@ function ensembleScoredSinceCv(data) {
 }
 
 /**
+ * BRO-6745: a CV "not a review" verdict that describes a body the file no
+ * longer holds (refetch after the verdict, or contentHash != current fullText)
+ * is not evidence about the stored text, and a confident ensemble score of the
+ * stored text outranks it. Rebuild already refuses to promote on such a verdict;
+ * this keeps an already-set label / the cvWrongArticleHighConfidence rule from
+ * outliving it. Never for a person's or classifier's flag (callers gate that).
+ * Without an ensemble score the verdict keeps excluding until a re-check
+ * (reverify-stale-cv-promoted.js --cv-promoted-nonreview) re-reads the body.
+ */
+function isStaleCvNonReviewVerdictOverruled(data) {
+  if (!data || data.rejectedAt) return false;
+  if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy
+    || data.nonReviewOverride || data._locked === true || data.manualContentTier
+    || /^manual \(not a review\)/i.test(String(data.isNonReviewReason || ''))) return false;
+  const cv = data.contentVerification;
+  if (!cv || cv.wrongArticle !== true) return false;
+  // Only the "not a review" family: a "review of a different show" verdict is stable across a refetch
+  // (same URL, same wrong page), which is why rebuild keeps trustWrongArticleDespiteStale for it.
+  if (cvWrongArticleFamily(cv) !== 'nonReview' || hasStrongDifferentShowSignal(cv.issues, cv.reasoning)) return false;
+  if (!computeCvIsStale(data) || !hasHighConfidenceLlmScore(data)) return false;
+  // The score must be of the body the file holds: one made before the last refetch or before the verdict
+  // read a different page (ensembleScoredSinceCv's reasoning, BRO-6225). An undated score proves nothing.
+  const scored = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');
+  if (!Number.isFinite(scored)) return false;
+  const fetched = Date.parse(data.textFetchedAt || '');
+  if (Number.isFinite(fetched) && scored < fetched) return false;
+  const verified = Date.parse(cv.verifiedAt || '');
+  if (Number.isFinite(verified) && scored < verified) return false;
+  return true;
+}
+
+/**
  * Demote a stale isNonReview flag when a NEWER, high-confidence
  * contentVerification pass affirms the article IS a review — the Telegraph
  * class (task #1255, Notion 3b9637c5). isNonReview is set almost entirely by
@@ -2918,6 +2996,12 @@ function isNonReviewDemotedByFreshCV(data) {
   const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
     && /^CV-promoted \(not a review\):/.test(data.isNonReviewReason);
   if (isCvPartialWindowAdvisory(data)) return true;
+  // BRO-6745: a CV "not a review" label that describes a body since replaced (refetch after the verdict,
+  // or contentHash no longer matches fullText) is not evidence about the stored text. Rebuild already
+  // refuses to PROMOTE on such a verdict; this stops an already-set label outliving it. Same
+  // independent-corroboration bar as the other CV-promoted branch below (a confident ensemble score).
+  // Without one the label stays and reverify-stale-cv-promoted.js --cv-promoted-nonreview re-checks the body.
+  if (isCvPromotedProvenance && isStaleCvNonReviewVerdictOverruled(data)) return true;
   if (cv.articleType !== 'review') return false;
   if (cv.isValid === false) return false;
   if (cv.wrongArticle === true) return false;
@@ -5082,6 +5166,10 @@ function isRejectedByReasonExclusion(data, opts) {
   if (data.rejectionReason) {
     // BRO-6225: the not_a_review a head-of-article CV promotion wrote is as advisory as the flag.
     if (isCvPartialWindowAdvisory(data, opts)) return false;
+    // BRO-6745: same for the not_a_review a CV promotion wrote from a body the file has since replaced.
+    if (data.rejectionReason === 'not_a_review'
+      && /^CV-promoted \(not a review\):/.test(String(data.isNonReviewReason || ''))
+      && isStaleCvNonReviewVerdictOverruled(data)) return false;
     // BRO-5238: a human wrong-production clear (wrongProductionManualClear /
     // wrongProductionOverride / humanReviewedWrongProduction:false) overrides a
     // 'wrong_production' rejection, exactly as isRejectedAtExclusion already
@@ -5730,12 +5818,7 @@ function explainExclusion(data, show, filePath, opts) {
   // paragraphs). The same protected breadcrumb family that clears
   // wrongAttribution/wrongFullText (review-write-guard.js _wrongArticleCleared)
   // says a human read the article and it IS this show's review.
-  if (
-    data.contentVerification?.wrongArticle === true &&
-    data.contentVerification?.confidence === 'high' &&
-    !laneOk('nonReview') && !isCvPartialWindowAdvisory(data, opts) &&
-    !cvWrongArticleManuallyCleared(data)
-  ) return 'cvWrongArticleHighConfidence';
+  if (!laneOk('nonReview') && isCvWrongArticleHighConfidence(data, opts) && !isStaleCvNonReviewVerdictOverruled(data)) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
   // Exception: 'not_a_review' rejection fires on excerpt/promo text (ShowScore, LBO)
@@ -6698,11 +6781,14 @@ module.exports = {
   isStaleGenericHomepageWrongShow,
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
+  isStaleCvNonReviewVerdictOverruled,
   isCvPartialWindowAdvisory,
   ensembleScoredSinceCv,
   cvWrongArticleManuallyCleared,
+  isCvWrongArticleHighConfidence,
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
+  cvWrongArticlePromotion,
   wrongShowCleared,
   wrongShowExplicitlyCleared,
   invalidTierVerdict,
