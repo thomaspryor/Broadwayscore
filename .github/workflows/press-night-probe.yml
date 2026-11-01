@@ -248,7 +248,7 @@ jobs:
     if: ${{ !cancelled() && needs.early.outputs.inputs_ok == 'true' && needs.early.outputs.finalized != 'true' }}
     runs-on: ubuntu-latest
     # 350: probe step 270 + lane-shadow import 5 + two push-with-retry budgets (audit-push-retry-budgets.js).
-    timeout-minutes: 350
+    timeout-minutes: 360
     steps:
       - name: Checkout
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
