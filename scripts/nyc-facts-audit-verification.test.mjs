@@ -53,7 +53,9 @@ for (const [showId, field, status] of expected) {
 test('only the explicitly sourced Pizza type correction is planned', () => {
   const row = report.rows.find(r => r.status === 'correction-planned');
   assert.equal(plan.issueNumber, 'bro-6548');
-  assert.equal(plan.status, 'pending');
+  // The pending-fixes runner flips status to 'applied' once it lands the edit;
+  // the plan content (checked below) is what this test pins, not run state.
+  assert.ok(['pending', 'applied'].includes(plan.status), `unexpected plan status ${plan.status}`);
   assert.equal(actions.length, 1);
   const [action] = actions;
   assert.equal(action.type, 'data-edit');
