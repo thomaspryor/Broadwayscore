@@ -321,3 +321,6 @@ land-ref-prune.yml
 linear-decision-reply-drain.yml
 # BRO-6167: weekly advisory sweep of the Broadway Journal archive; a missed week only delays an owner-review alert, nothing user-facing. Failures go through notify-failure, and a week with no run is caught by the exempt-cron liveness sweep in the daily digest (health-check.js checkExemptCronLiveness, 192h limit); pinned by tests/unit/commercial-source-coverage.test.mjs.
 commercial-broadway-journal-sweep.yml
+
+# BRO-6763: 15-minute owner email per new Money Scorecard sign-up; a missed run only delays the email until the next one, the daily digest still counts sign-ups. Failures go through notify-failure.
+money-signup-notify.yml

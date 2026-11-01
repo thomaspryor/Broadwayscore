@@ -43,7 +43,9 @@ function decideMorningDigest({ emails, ownerEmail, dateET, apiError }) {
     : { action: 'page', reason: `no morning digest to ${ownerEmail} on ${dateET} (ET)` };
 }
 
-const ALERT_TITLE = 'This morning\'s digest did not send. The Mac Studio is probably off or logged out';
-const ALERT_DESCRIPTION = 'Log in to the Mac Studio. Until then the opening-night monitor and daily jobs are not running.';
+// BRO-6764: the digest is sent by the GitHub Action (morning-digest-action.yml), so a missing one is
+// an Action problem, not a Mac one; a dead Mac has its own page (mac:checkin-heartbeat-dead).
+const ALERT_TITLE = 'This morning\'s digest did not send';
+const ALERT_DESCRIPTION = 'The automatic morning email did not go out. Its GitHub run is red or did not start. Nothing else stopped.';
 
 module.exports = { decideMorningDigest, CONDITION_KEY, ALERT_TITLE, ALERT_DESCRIPTION };

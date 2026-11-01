@@ -80,4 +80,4 @@ async function readAdminMoneySignups({ url, serviceKey, fetchImpl = globalThis.f
   return { unavailable: true };
 }
 
-module.exports = { readAdminMoneySignups, summarizeMoneySignups };
+module.exports = { readAdminMoneySignups, summarizeMoneySignups, isOwnerTestEmail };

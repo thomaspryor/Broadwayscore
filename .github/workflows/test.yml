@@ -147,6 +147,8 @@ on:
       # BRO-2427: CLI over scripts/lib/timeout-pattern-audit.js; with-timeout.test.mjs runs its audit().
       - 'scripts/audit-timeout-patterns.js'
       - 'scripts/audit-exclusion-flags.js'
+      # BRO-6759: CLI covered by tests/unit/audit-cross-outlet-different-critic.test.mjs.
+      - 'scripts/audit-cross-outlet-different-critic.js'
       - 'scripts/audit-outlet-text-status.js'
       - 'scripts/audit-syndicated-critic-pairs.js'
       # BRO-6056: CLI over scripts/lib/default-critic-diversity.js (globbed); a solo edit would otherwise trigger ZERO CI.
@@ -2322,6 +2324,10 @@ on:
       # BRO-6230 cutover tooling (dry-run compare); tested by
       # tests/unit/morning-digest-action.test.mjs. Delete with the dry-run job.
       - 'scripts/morning-digest-compare.js'
+      # BRO-6764: the dead-Mac / missed-digest pager and the Action's schedule gate; tested by
+      # tests/unit/morning-digest-action.test.mjs.
+      - 'scripts/check-morning-digest-sent.js'
+      - 'scripts/lib/digest-enable-gate.js'
       # Close-time acceptance verify + trunk status (task #1003) — the decision
       # lib, the shared checkout/runner it leans on, the gh producer, and the
       # tests. Not covered by any broader glob (scripts/tests/ is not

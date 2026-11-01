@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-6759-e",
+  "planId": "d625b0a5-6f39-4f29-929b-cf5ecfa3356e",
+  "status": "pending",
+  "createdAt": "2026-11-01T13:28:27.569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6759: verify genuine cross-outlet reprints, clear wrongly hidden different-critic reviews (incl. appropriate-2023 Deadline) (part 5 of 5)",
+    "steps": [
+      "BRO-6759 clear stale different-critic flag",
+      "BRO-6759 clear stale different-critic flag",
+      "BRO-6759 appropriate-2023",
+      "BRO-6759 appropriate-2023"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "wit-2012/usatoday--elysa-gardner.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: stale flag. Primary wit-2012/bloomberg--jeremy-gerard.json no longer shares text with this file (0% shared 8-grams); different critics, no verified link.",
+        "description": "BRO-6759 clear stale different-critic flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wit-2012/usatoday--elysa-gardner.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 clear stale different-critic flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "appropriate-2023/deadline--greg-evans.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-6759: Deadline review by Greg Evans is the original; the Guardian row held Deadline text (the Guardian file quotes a Deadline editor note).",
+        "description": "BRO-6759 appropriate-2023"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "appropriate-2023/deadline--greg-evans.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6759 appropriate-2023"
+      }
+    ]
+  }
+}

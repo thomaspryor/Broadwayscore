@@ -13,17 +13,18 @@ const { foldDiacritics } = require('../lib/title-match');
 
 /** The set a show belongs to, or null for a category the system does not post. */
 function homeSet(show) {
+  if (C.marketOf(show) === 'opera') return C.MARKET_CHANNEL_SET[show.category] ? 'opera' : null; // opera: own accounts only (BRO-6770)
   return C.MARKET_CHANNEL_SET[show.category] || null;
 }
 
 /** True when the show has a transfer link to a show in the other channel set. */
 function hasCrossMarketTransfer(show, shows) {
   const home = homeSet(show);
-  if (!Array.isArray(shows)) return false;
+  if (home === 'opera' || !Array.isArray(shows)) return false;
   // Links count from either end: the London show may not name its Broadway transfer, nor the reverse.
   const linked = shows.filter(o => o.id !== show.id && ([show.transferOf, show.transferredTo].flat().includes(o.id)
     || [o.transferOf, o.transferredTo].flat().includes(show.id)));
-  return linked.some(o => homeSet(o) && homeSet(o) !== home);
+  return linked.some(o => homeSet(o) && homeSet(o) !== 'opera' && homeSet(o) !== home);
 }
 
 /** Lower-case title without punctuation or a leading "The", to match one production across markets. */
@@ -41,12 +42,12 @@ const directorsOf = show => new Set((show.creativeTeam || [])
  * of the same play (two Othellos), not one show crossing the Atlantic.
  */
 function hasCrossMarketTwin(show, shows, years) {
-  if (!MAIN_STAGE.has(show.category) || !show.openingDate || !Array.isArray(shows)) return false;
+  if (C.marketOf(show) === 'opera' || !MAIN_STAGE.has(show.category) || !show.openingDate || !Array.isArray(shows)) return false;
   const at = Date.parse(show.openingDate);
   const key = titleKey(show.title);
   const mine = directorsOf(show);
   return shows.some(o => {
-    if (o.id === show.id || !MAIN_STAGE.has(o.category) || homeSet(o) === homeSet(show) || !o.openingDate) return false;
+    if (o.id === show.id || C.marketOf(o) === 'opera' || !MAIN_STAGE.has(o.category) || homeSet(o) === homeSet(show) || !o.openingDate) return false;
     if (titleKey(o.title) !== key || !(Math.abs(Date.parse(o.openingDate) - at) <= years * 365.25 * 864e5)) return false;
     const theirs = directorsOf(o);
     return !mine.size || !theirs.size || [...mine].some(n => theirs.has(n));
@@ -66,6 +67,11 @@ function isHighProfile(show, showReviews, shows, rule = C.HIGH_PROFILE) {
   return !!(rule.transfer && hasCrossMarketTransfer(show, shows));
 }
 
+/** True when the opera set has every network the Broadway set has. */
+function operaConfigured(sets = C.CHANNEL_SETS) {
+  return Object.keys(sets.broadway || {}).every(svc => (sets.opera || {})[svc]);
+}
+
 /**
  * Channel sets this show posts to: [home] or [home, other] when high profile.
  * sets: config CHANNEL_SETS. A set with no channel ids is not configured yet; a show
@@ -77,6 +83,7 @@ function isHighProfile(show, showReviews, shows, rule = C.HIGH_PROFILE) {
 function targetSets(show, showReviews, sets = C.CHANNEL_SETS, shows = null) {
   const home = homeSet(show);
   if (!home) return [];
+  if (home === 'opera') return operaConfigured(sets) ? ['opera'] : []; // never cross-posted, never a fallback
   const configured = name => Object.keys(sets.broadway || {}).every(svc => (sets[name] || {})[svc]);
   if (!configured(home)) return ['broadway'];
   const other = home === 'broadway' ? 'west-end' : 'broadway';
@@ -105,4 +112,4 @@ function tagChannels(channels, sets = C.CHANNEL_SETS) {
   });
 }
 
-module.exports = { homeSet, isHighProfile, targetSets, channelKey, tagChannels, hasCrossMarketTransfer, hasCrossMarketTwin, titleKey };
+module.exports = { homeSet, operaConfigured, isHighProfile, targetSets, channelKey, tagChannels, hasCrossMarketTransfer, hasCrossMarketTwin, titleKey };

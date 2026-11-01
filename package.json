@@ -62,7 +62,8 @@
     "reviews:coverage": "node scripts/analyze-review-coverage.js",
     "consensus": "node scripts/generate-critic-consensus.js",
     "consensus:force": "node scripts/generate-critic-consensus.js --force",
-    "grosses:alltime": "npx tsx scripts/scrape-alltime.ts"
+    "grosses:alltime": "npx tsx scripts/scrape-alltime.ts",
+    "audit:cross-outlet-different-critic": "node scripts/audit-cross-outlet-different-critic.js --strict"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.134.0",

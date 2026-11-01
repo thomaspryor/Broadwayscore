@@ -1,89 +1,67 @@
 {
-  "updatedAt": "2026-11-01T14:34:53.712Z",
-  "processed": 821,
-  "failed": 337,
-  "successRate": "70.9%",
+  "updatedAt": "2026-11-01T15:17:11.432Z",
+  "processed": 848,
+  "failed": 352,
+  "successRate": "70.7%",
   "tierBreakdown": {
-    "playwright": 522,
+    "playwright": 542,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 2,
+    "scrapingdog": 4,
     "scrapingbee": 25,
-    "brightdata": 45,
-    "archiveToday": 144,
-    "archive": 245
+    "brightdata": 47,
+    "archiveToday": 157,
+    "archive": 248
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-01T04:08:37.792Z",
+      "t": "2026-11-01T14:41:16.633Z",
       "event": "bb-session",
-      "session": "7b3fb39d",
+      "session": "6999603b",
+      "url": "http://www.talkinbroadway.com/ob/12_15_15.html"
+    },
+    {
+      "t": "2026-11-01T14:41:17.069Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T14:54:53.751Z",
+      "event": "bb-session",
+      "session": "be9248e8",
+      "url": "http://www.nytimes.com/2015/08/25/theater/review-in-a-r-gurneys-love-money-a-gra"
+    },
+    {
+      "t": "2026-11-01T14:54:54.185Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-01T14:57:54.487Z",
+      "event": "bb-session",
+      "session": "d2f3290e",
+      "url": "http://www.talkinbroadway.com/ob/12_07_15.html"
+    },
+    {
+      "t": "2026-11-01T14:57:54.969Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T15:07:10.497Z",
+      "event": "bb-session",
+      "session": "ca4982fa",
       "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
     },
     {
-      "t": "2026-11-01T04:08:38.152Z",
+      "t": "2026-11-01T15:07:10.938Z",
       "event": "bb-cookie-inject",
       "domain": "bloomberg.com"
     },
     {
-      "t": "2026-11-01T04:10:21.572Z",
-      "event": "bb-session",
-      "session": "da20cc8a",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-01T04:10:21.810Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-01T06:08:20.672Z",
-      "event": "bb-session",
-      "session": "41cc40ba",
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch901.html"
-    },
-    {
-      "t": "2026-11-01T06:08:21.016Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-01T06:10:35.643Z",
-      "event": "bb-session",
-      "session": "39e8be57",
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch897.html"
-    },
-    {
-      "t": "2026-11-01T06:10:36.329Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-01T06:12:25.770Z",
-      "event": "bb-session",
-      "session": "faed93c5",
-      "url": "https://talkinbroadway.com/page/regional/chicago/ch895.html"
-    },
-    {
-      "t": "2026-11-01T06:12:26.046Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-01T06:15:56.563Z",
-      "event": "bb-session",
-      "session": "b11e2e02",
-      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch894.html"
-    },
-    {
-      "t": "2026-11-01T06:15:56.910Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-01T09:34:43.900Z",
+      "t": "2026-11-01T15:08:46.944Z",
       "event": "bb-session",
       "session": "7aa15633",
       "url": "https://www.talkinbroadway.com/page/regional/chicago/ch731.html"
@@ -92,6 +70,24 @@
       "t": "2026-11-01T09:34:44.477Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-01T15:04:13.876Z",
+      "event": "bb-session",
+      "session": "c32389b9",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-01T15:05:28.028Z",
+      "event": "bb-session",
+      "session": "d16aa24a",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-01T15:06:36.496Z",
+      "event": "bb-session",
+      "session": "c48cfbf6",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }

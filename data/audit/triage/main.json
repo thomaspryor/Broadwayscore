@@ -1,7 +1,7 @@
 {
   "system": "main",
   "status": "warn",
-  "lastChecked": "2026-11-01T09:17:26.414Z",
+  "lastChecked": "2026-11-01T14:12:17.013Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Main: red streak",
       "status": "pass",
-      "message": "Last run green"
+      "message": "1 red run(s), 0.6h since last green — under the 2h threshold"
     },
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 43.7% (green 261 / red 336, 597 runs, 1 hung (cancelled >= 10 min, counted red)), 7d trend from 41.5%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 44.7% (green 265 / red 328, 593 runs, 1 hung (cancelled >= 10 min, counted red)), 7d trend from 41.5%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Main: mid-setup cancels",
       "status": "pass",
-      "message": "0% of the last 19 test.yml main runs cancelled mid-setup (threshold 30%)"
+      "message": "0% of the last 18 test.yml main runs cancelled mid-setup (threshold 30%)"
     }
   ]
 }

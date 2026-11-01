@@ -6,7 +6,9 @@
  * a list separate from every other capture on the site (owner, 2026-10-25).
  * Sign-ups go to Supabase's money_scorecard_signups table through the
  * money_scorecard_signup() function (supabase/migrations/20261025_money_scorecard_signups.sql),
- * never to Formspree, Resend or the account system.
+ * never to Formspree, the Resend audience or the account system. The owner alone
+ * gets one transactional email per new sign-up (money-signup-notify.yml, BRO-6763);
+ * nobody on the list is ever emailed from it.
  *
  * Unlock state lives in the browser: localStorage with a cookie fallback, and
  * a `data-money-unlocked` attribute on <html> that CSS reads (globals.css

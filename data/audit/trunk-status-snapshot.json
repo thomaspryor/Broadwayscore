@@ -1,30 +1,63 @@
 {
-  "generatedAt": "2026-11-01T09:45:03.784Z",
+  "generatedAt": "2026-11-01T14:57:28.570Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "0f64c7f0fa295af1a7cdf0d784f4286c0052d58d",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 4,
-  "greenSince": "2026-11-01T09:17:10Z",
-  "greenForHours": 0.46494,
+  "latestRunHeadSha": "bf93833a4ac88b6590eacdb2aa14724947a20a4a",
+  "state": "RED",
+  "consecutiveFailures": 3,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-11-01T14:08:57Z",
+  "redForHours": 0.8087694444444444,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-11-01T09:39:53Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 99,
+  "lastSuccessAt": "2026-11-01T13:41:34Z",
+  "latestFailedRunId": "41315392149",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41315392149",
+  "decidedRuns": 97,
   "verdictLag": {
-    "verdictSha": "0f64c7f0fa295af1a7cdf0d784f4286c0052d58d",
-    "verdictAt": "2026-11-01T09:39:53Z",
-    "verdictAgeHours": 0.08632888888888889,
-    "newerHeads": 0,
-    "runsInFlight": 0,
+    "verdictSha": "bf93833a4ac88b6590eacdb2aa14724947a20a4a",
+    "verdictAt": "2026-11-01T14:16:44Z",
+    "verdictAgeHours": 0.6790472222222222,
+    "newerHeads": 3,
+    "runsInFlight": 3,
     "lagging": false
   },
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "failingJobs": [
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit review contamination",
+        "Audit outlet-registry gaps"
+      ]
+    },
+    {
+      "name": "E2E Tests",
+      "steps": [
+        "Run E2E tests"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "tests/e2e/show-hero-score-cards.spec.ts",
+      "job": "E2E Tests",
+      "step": "Run E2E tests",
+      "evidence": "##[error]  1) [chromium] › tests/e2e/show-hero-score-cards.spec.ts:20:9 › hero score cards at 320px › labels and counts stay inside both cards"
+    },
+    {
+      "path": "tests/e2e/show-pages.spec.ts",
+      "job": "E2E Tests",
+      "step": "Run E2E tests",
+      "evidence": "##[error]  2) [chromium] › tests/e2e/show-pages.spec.ts:59:7 › Show Detail Pages › show pages have no console errors"
+    }
+  ],
+  "topFailingJob": "E2E Tests"
 }

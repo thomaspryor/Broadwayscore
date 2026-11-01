@@ -2,21 +2,21 @@
 /**
  * check-morning-digest-sent.js — BRO-4373. CI-side dead-Mac detector.
  *
- * Reads Resend send history and pages the owner if today's (ET) morning digest
- * never arrived, i.e. the Mac Studio is off or sitting at the FileVault login
- * screen. Runs from GitHub Actions (check-morning-digest-sent.yml), so it does
- * not depend on the machine it is watching. Decision logic:
- * scripts/lib/morning-digest-liveness.js.
+ * Two independent signals, both run live by check-morning-digest-sent.yml on
+ * GitHub, so neither depends on the machine it watches (BRO-6764: the digest now
+ * sends from the GitHub Action, so it arrives even when the Mac is dead):
+ *   heartbeat (default): the Mac's checkout-sync commit status is fresh. Pages
+ *     'mac:checkin-heartbeat-dead' when the Mac stopped checking in (off or at
+ *     the FileVault login screen).
+ *   digest: Resend send history shows today's (ET) morning digest. Pages
+ *     'mac:morning-digest-missing' when the Action's digest never arrived.
+ * Own alert keys, so one signal re-arming never resolves the other's incident.
+ * Digest decision logic: scripts/lib/morning-digest-liveness.js.
  *
  * Usage:
- *   node scripts/check-morning-digest-sent.js                  live: page if missing, re-arm if found
+ *   node scripts/check-morning-digest-sent.js                  heartbeat signal, live
  *   node scripts/check-morning-digest-sent.js --dry-run        report only, never routeAlert
- *   node scripts/check-morning-digest-sent.js --date=YYYY-MM-DD  check a specific ET day
- *   node scripts/check-morning-digest-sent.js --signal=heartbeat [--dry-run]
- *       judge the Mac by its checkout-sync heartbeat instead of the digest
- *       (BRO-6230: once the digest sends from GitHub Actions it arrives even
- *       when the Mac is dead). Same alert key, so one incident either way;
- *       the workflow runs only one of the two signals live.
+ *   node scripts/check-morning-digest-sent.js --signal=digest [--date=YYYY-MM-DD]  the digest-arrived signal
  *
  * Exit: 0 digest found (or paged / would page), 2 could not tell (Resend error
  * or missing env: never pages, job goes red so a broken checker is not silent).
@@ -30,10 +30,11 @@ const { dayKeyET } = require('./lib/scheduled-email-count-rules.js');
 const { fetchOwnerEmailsSince } = require('./lib/resend-owner-emails.js');
 const { decideMorningDigest, CONDITION_KEY, ALERT_TITLE, ALERT_DESCRIPTION } = require('./lib/morning-digest-liveness.js');
 
+const HEARTBEAT_CONDITION_KEY = 'mac:checkin-heartbeat-dead';
 const HEARTBEAT_ALERT_TITLE = 'The Mac Studio has stopped checking in. It is probably off or logged out';
 const HEARTBEAT_ALERT_DESCRIPTION = 'Log in to the Mac Studio. If it is on and logged in, its code sync is stuck. Until then the Mac\'s jobs are not running.';
 
-// The heartbeat signal (BRO-6230). Same exits and alert key as the digest signal below.
+// The heartbeat signal (BRO-6230). Same exits as the digest signal below, its own alert key.
 async function checkHeartbeat({ dryRun }) {
   const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
   const r = await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN });
@@ -48,11 +49,11 @@ async function checkHeartbeat({ dryRun }) {
   }
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
   if (r.state === 'alive') {
-    if (resolveCondition(CONDITION_KEY)) console.log(`[mac-heartbeat] ${CONDITION_KEY} re-armed`);
+    if (resolveCondition('mac:checkin-heartbeat-dead')) console.log(`[mac-heartbeat] ${HEARTBEAT_CONDITION_KEY} re-armed`);
     return;
   }
   const result = await routeAlert({
-    conditionKey: CONDITION_KEY,
+    conditionKey: 'mac:checkin-heartbeat-dead',
     title: HEARTBEAT_ALERT_TITLE,
     description: HEARTBEAT_ALERT_DESCRIPTION,
     severity: 'critical',
@@ -69,12 +70,12 @@ async function checkHeartbeat({ dryRun }) {
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/check-morning-digest-sent.js [--dry-run] [--date=YYYY-MM-DD] [--signal=digest|heartbeat]');
+    console.log('Usage: node scripts/check-morning-digest-sent.js [--dry-run] [--signal=heartbeat|digest] [--date=YYYY-MM-DD (digest only)]');
     return;
   }
   const dryRun = argv.includes('--dry-run');
   const signalArg = argv.find((a) => a.startsWith('--signal='));
-  const signal = signalArg ? signalArg.split('=')[1] : 'digest';
+  const signal = signalArg ? signalArg.split('=')[1] : 'heartbeat';
   if (signal === 'heartbeat') return checkHeartbeat({ dryRun });
   if (signal !== 'digest') {
     console.error(`Bad --signal "${signal}" (want digest or heartbeat)`);
@@ -87,11 +88,11 @@ async function main() {
     process.exit(2);
   }
 
-  // The digest goes out 07:30 ET; a manual/early run before 09:00 ET would
+  // The Action sends ~07:50 ET (retries to ~08:50); a manual/early run before 09:00 ET would
   // page for a digest that simply has not been due yet.
   const etHour = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', hourCycle: 'h23' }).format(new Date()));
   if (!dateArg && etHour < 9) {
-    console.log(`[morning-digest] ${dateET}: only ${etHour}:xx ET, digest not due until 07:30 + margin. Nothing to check.`);
+    console.log(`[morning-digest] ${dateET}: only ${etHour}:xx ET, digest not due until 07:50 + margin. Nothing to check.`);
     return;
   }
 

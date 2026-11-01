@@ -1,15 +1,20 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-01T09:17:26.411Z",
+  "lastChecked": "2026-11-01T14:12:17.009Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Data: review-texts checkout coverage",
+      "status": "pass",
+      "message": "review-texts covers the shows in reviews.json"
+    },
+    {
       "name": "Data: UK regional opening dates",
-      "status": "warn",
-      "message": "1 UK regional show(s) have a review dated before the review-seeded opening date (e.g. the-new-real-royal-shakespeare-regional-2024)."
+      "status": "pass",
+      "message": "No UK regional opening date sits after its earliest review"
     },
     {
       "name": "Data: OB shows no closing signal can detect",
@@ -74,32 +79,32 @@
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "7 Linear card(s) carry an acceptance check that cannot tell done from not done (7 can never fail, 0 can never pass). First: BRO-6688 Delete stale failed land branch land/bro-6682-opening-night-leftovers"
+      "message": "6 Linear card(s) carry an acceptance check that cannot tell done from not done (6 can never fail, 0 can never pass). First: BRO-6688 Delete stale failed land branch land/bro-6682-opening-night-leftovers"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "8 of 414 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6704 Opening-night audit 2026-10-31"
+      "message": "11 of 393 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6755 BSC Daily: Commercial model drift"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-31"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-11-01"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "67 review(s) with no usable text, 62 rejected although verified as a review, 33 never scored, 31 with a blocked URL (0 published on the site), across 559 current shows"
+      "message": "81 review(s) with no usable text, 64 rejected although verified as a review, 36 never scored, 34 with a blocked URL (0 published on the site), across 562 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (1 more already queued for rescore), of 39451 checked"
+      "message": "19 published review score(s) contradict the critic's own rating or every model's verdict (6 more already queued for rescore), of 43110 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "263 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 125 more already attempted)"
+      "message": "475 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 165 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -109,7 +114,7 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 567 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 566 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",

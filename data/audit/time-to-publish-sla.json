@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T09:45:06.265Z",
+  "generatedAt": "2026-11-01T14:57:37.443Z",
   "scope": "2 opening window(s): tosca-off-broadway-2026 (2026-11-01), msblackforpresident-off-broadway-2026 (2026-11-01)",
   "degraded": null,
   "windows": [
@@ -17,14 +17,14 @@
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 154609,
+  "logEntryCount": 182281,
   "logOldestEntryAt": "2026-10-31T15:04:01.874Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 0,
+    "inFlight": 1,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,5 +35,17 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": []
+  "records": [
+    {
+      "showId": "tosca-off-broadway-2026",
+      "outletId": "guardian",
+      "reviewKey": "guardian:flora-willson:https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
+      "basis": null,
+      "firstSeenAt": "2026-11-01T14:29:20.997Z",
+      "liveAt": null,
+      "pipelineMinutes": null,
+      "publishedToLiveMinutes": null,
+      "stuckAtStage": "rebuilt"
+    }
+  ]
 }

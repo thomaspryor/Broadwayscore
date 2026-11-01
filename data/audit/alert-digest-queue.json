@@ -252,20 +252,6 @@
     "queuedAt": "2026-11-01T14:39:58.967Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (High School Musical (daily-mail)). Checked 2026-11-01.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T14:40:20.104Z"
-  },
-  {
     "conditionKey": "coverage-holes:tosca-off-broadway-2026",
     "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
     "description": "- rejected as not-a-review, verification says review: tosca-off-broadway-2026/broadwayworld--dc-felton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
@@ -323,6 +309,37 @@
       }
     ],
     "queuedAt": "2026-11-01T14:33:15.951Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 7 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41319631208",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41319631208)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41319512941)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "7"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "E2E Tests"
+      }
+    ],
+    "queuedAt": "2026-11-01T15:37:23.885Z"
   },
   {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
@@ -412,9 +429,85 @@
     "queuedAt": "2026-11-01T13:50:34.524Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:tristan-and-yseult-off-broadway-2026",
-    "title": "Review gap — \"Tristan & Yseult\" missing 5 cited review(s)",
-    "description": "Tristan & Yseult (tristan-and-yseult-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tristan-and-yseult-off-broadway-2026 --checkpoint --ingest-missing",
+    "conditionKey": "land:land/bro-6762-source-gaps",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6762-source-gaps",
+    "description": "land.yml did not land land/bro-6762-source-gaps: the scripts-lib-tests gate went red at 8382a48b25. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41316100961",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6762-source-gaps"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "8382a48b2597d0322ebc04e92acd4ae1db168efa"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41316100961"
+      }
+    ],
+    "queuedAt": "2026-11-01T14:46:33.494Z"
+  },
+  {
+    "conditionKey": "land:land/morning-digest-cutover",
+    "title": "Landing blocked: unit-tests-node red on land/morning-digest-cutover",
+    "description": "land.yml did not land land/morning-digest-cutover: the unit-tests-node gate went red at 4e2f90ad41. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41317297367",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/morning-digest-cutover"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4e2f90ad41fc61c4ae091aa253467591815ba007"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41317297367"
+      }
+    ],
+    "queuedAt": "2026-11-01T15:13:19.164Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-tosca-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on Tosca",
+    "description": "guardian/Flora Willson (guardian--flora-willson.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] This is a legitimate theater review of Tosca with str — https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:17:15.831Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:tosca-off-broadway-2026",
+    "title": "Shipped review missing publishDate on Tosca",
+    "description": "zeal-nyc/Herman Spencer SHIPPED with no publishDate — cannot confirm post-opening: http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
     "severity": "warning",
     "url": null,
     "decision": false,
@@ -423,6 +516,51 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-01T14:39:58.934Z"
+    "queuedAt": "2026-11-01T15:17:15.866Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:msblackforpresident-off-broadway-2026",
+    "title": "Review gap — \"Ms. Blakk for President\" missing 1 cited review(s)",
+    "description": "Ms. Blakk for President (msblackforpresident-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=msblackforpresident-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-01T15:28:44.401Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6769-gsc-opera",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6769-gsc-opera",
+    "description": "land.yml did not land land/bro-6769-gsc-opera: the unit-tests-node gate went red at 3f6fc00fba. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41318891205",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6769-gsc-opera"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3f6fc00fba5a2c0a4ff6fdb156cafc7fb710a0a4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41318891205"
+      }
+    ],
+    "queuedAt": "2026-11-01T15:22:45.284Z"
   }
 ]

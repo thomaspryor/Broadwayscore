@@ -7,18 +7,19 @@
  * as 23 characters; other networks use the full URL length.
  */
 
-const { MARKETS } = require('./config');
+const { MARKETS, marketOf, OPERA_HOUSE_TAGS } = require('./config');
 
 const LIMITS = { twitter: 280, bluesky: 300, threads: 500, instagram: 2196, facebook: 5000 };
 const SHORT_BUDGET = 270; // fits X and Bluesky with margin
 
 function showPath(show) {
+  if (marketOf(show) === 'opera') return `/opera/${String(show.slug || show.id).replace(/-off-broadway/, '')}`; // the site's opera page (getOperaTitleSlug)
   return `/show/${show.slug || show.id}`;
 }
 
 /** London shows live on westendscorecard.com (same host rule as scripts/lib/reddit-opening-post.js showUrl). */
 function showUrl(show, network, campaign = 'autopost') {
-  return `https://${MARKETS[show.category].domain}${showPath(show)}?utm_source=${network}&utm_medium=social&utm_campaign=${campaign}`;
+  return `https://${MARKETS[marketOf(show)].domain}${showPath(show)}?utm_source=${network}&utm_medium=social&utm_campaign=${campaign}`;
 }
 
 function escapeRe(s) {
@@ -53,7 +54,8 @@ const TIER_LEAD = {
 };
 
 function hashtagLine(show) {
-  return [...MARKETS[show.category].hashtags, 'Theatre'].map(t => `#${t}`).join(' ');
+  const house = marketOf(show) === 'opera' ? [OPERA_HOUSE_TAGS[show.category]].filter(Boolean) : [];
+  return [...MARKETS[marketOf(show)].hashtags, ...house, 'Theatre'].map(t => `#${t}`).join(' ');
 }
 
 function breakdownLine(b) {
@@ -153,7 +155,7 @@ function buildCaptions(p) {
     bluesky: fitShort('bluesky'),
     threads: withUrl(long.length + showUrl(show, 'threads').length + 2 <= LIMITS.threads ? long : `${sentence(title, false)}\n\n${q.short}`, 'threads'),
     // Instagram captions cannot carry live links; point at the site by name.
-    instagram: `${long}\n\nFull reviews: ${MARKETS[show.category].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
+    instagram: `${long}\n\nFull reviews: ${MARKETS[marketOf(show)].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
     facebook: withUrl(long, 'facebook'),
     altText: alt,
   };
@@ -438,7 +440,7 @@ function buildClosingCaptions(p) {
     twitter: fitShort('twitter'),
     bluesky: fitShort('bluesky'),
     threads: withUrl(long.length + showUrl(show, 'threads', 'closing').length + 2 <= LIMITS.threads ? long : `${sentence(show.title)}\n\n${cq.short}`, 'threads'),
-    instagram: `${long}\n\nFull reviews: ${MARKETS[show.category].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
+    instagram: `${long}\n\nFull reviews: ${MARKETS[marketOf(show)].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
     facebook: withUrl(long, 'facebook'),
     altText: `${show.title} poster with its Critic Score of ${p.score} out of 100, rated ${p.tierLabel}. Closing ${monthDay(p.closing)}.`,
   };

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- BRO-6764: the digest's auto-fix + end-to-end canary, kept on the Mac after the morning
+         email moved to the GitHub Action (morning-digest-action.yml sends with --no-autofix: no
+         dispatch fleet on a runner). Runs `send-morning-digest.js --autofix-only`: same snapshot
+         reads, runAutofix() + runAutofixCanary() live, NO email. The only callers of runAutofix
+         and runAutofixCanary are in that script.
+
+         The command refuses to run before 2026-11-04 (ET date): until the morning-digest label is
+         booted out (config/mac-retired.json, 3-day grace) its own run does the autofix, and two
+         runs a day would double-file. Same preamble / env as the retired digest plist, including SYNC_TAG=digest: send-morning-digest.js
+         (DIGEST_SYNC_TAG, autofixShouldDryRun) only trusts refusal snapshots under that tag.
+
+         Install:  cp scripts/launchd/com.broadwayscore.digest-autofix.plist ~/Library/LaunchAgents/
+                   launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.digest-autofix.plist
+         Manual run: launchctl kickstart -k gui/$(id -u)/com.broadwayscore.digest-autofix
+         Kill:     launchctl bootout gui/$(id -u)/com.broadwayscore.digest-autofix
+         Dead-Mac watch: check-morning-digest-sent.yml --signal=heartbeat (mac:checkin-heartbeat-dead). -->
+    <key>Label</key>
+    <string>com.broadwayscore.digest-autofix</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>-c</string>
+        <string>cd /Users/tompryor/Broadwayscore &amp;&amp; export SYNC_TAG=digest &amp;&amp; bash scripts/lib/sync-audit-checkout.sh; [ "$(TZ=America/New_York date +%F)" \&gt; "2026-11-03" ] || { echo "digest-autofix: before 2026-11-04, the old digest job still does autofix"; exit 0; }; exec node scripts/send-morning-digest.js --autofix-only</string>
+    </array>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>35</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/digest-autofix-launchd.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/digest-autofix-launchd.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>BSC_RUNNER_DISABLED</key>
+        <string>1</string>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/Users/tompryor/.local/bin</string>
+    </dict>
+</dict>
+</plist>

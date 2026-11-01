@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-01T14:40:46.455Z",
+  "generatedAt": "2026-11-01T15:29:29.363Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 298,
-  "clean": 298,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 297,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "title": "Operation Mincemeat",
+      "openingDate": "2023-05-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 89.1 vs local 89.2 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-01T15:29:22.154Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
