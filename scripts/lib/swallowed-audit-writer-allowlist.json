@@ -111,5 +111,11 @@
     "step": "Press-night morning grade (BRO-6645)",
     "script": "scripts/produce-press-night-digest-snapshot.js",
     "reason": "Advisory by design (CLAUDE.md rule 19): a lost write leaves yesterday's snapshot, which the morning email shows as 'not checked yet' (renderPressNightBlock night check) and digest-snapshots.js flags past 36h, so a failure is visible without failing the checklist job."
+  },
+  {
+    "workflow": "press-night-probe.yml",
+    "step": "Auto-log hand fixes from review-texts history",
+    "script": "scripts/press-night-record.js",
+    "reason": "BRO-6661 advisory auto-log: a failed git read leaves the record as it was, so the night can only read as passed on its own when no hand fix is logged, same as before the step existed. The record is rewritten by the probe's later steps and the finalize step."
   }
 ]

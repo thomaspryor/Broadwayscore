@@ -367,7 +367,7 @@ async function main() {
     try {
       raw = arg('git-log-file')
         ? fs.readFileSync(arg('git-log-file'), 'utf8')
-        : require('child_process').execFileSync('git', ['-C', rtDir, 'log', arg('git-ref', 'HEAD'), `--format=${pm.LOG_FORMAT}`, '--name-only', '--', `${showId}/`], { encoding: 'utf8', timeout: 60000 });
+        : require('child_process').execFileSync('git', ['-C', rtDir, 'log', arg('git-ref', 'HEAD'), `--format=${pm.LOG_FORMAT}`, '--name-only', '--', `${showId}/`], { encoding: 'utf8', timeout: 60000, maxBuffer: 64 * 1024 * 1024 });
     } catch (e) { console.error(`[press-night] cannot read review-texts history: ${e.message}`); return 2; }
     const found = pm.manualActionsFromCommits(pm.parseGitLog(raw), { showId, embargoAt: rec.embargoAt });
     let added = 0;
