@@ -534,7 +534,8 @@ async function findAggregatorArticles(show) {
     if (verbose) console.error(`  BWW section discovery error for ${id}: ${e.message}`);
   }
   const kept = dropRoundupsOwnedByOtherShows([...urls], id, roundupOwnerMap());
-  if (verbose && kept.length < urls.size) {
+  // Always logged (one line per drop, rare): a stale owner map must stay visible in the run log.
+  if (kept.length < urls.size) {
     for (const u of urls) if (!kept.includes(u)) console.error(`  roundup owned by another show, skipped for ${id}: ${u}`);
   }
   return kept;
