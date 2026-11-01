@@ -32,6 +32,9 @@
  *   node scripts/slow-market-grade.js --show=a,b --check    # exit 1 on any FAIL / STALE / missing row
  *   node scripts/slow-market-grade.js --show=a --max-age-hours=48
  *   node scripts/slow-market-grade.js --json                # machine-readable
+ *   node scripts/slow-market-grade.js --last-year --max-stale-pct=5
+ *       # BRO-6751: every show opened (or in previews) in the last 365 days;
+ *       # exit 1 when STALE is >= 5% of them (the gap audit's throughput check)
  */
 const fs = require('fs');
 const path = require('path');
@@ -124,11 +127,32 @@ function isOverdue(show, entry, nowMs, { freshnessMsFor, checkpointTs }, graceHo
   return age > freshnessMsFor(show, entry, { freshnessHours: 12, now: nowMs }) + graceHours * 3600000;
 }
 
+/** Pure (BRO-6751): ids of shows that opened, or began previews, within the last `days` days. */
+function lastYearIds(shows, nowMs, days = 365) {
+  return shows.filter((s) => {
+    const t = Date.parse(s.openingDate || s.previewsStartDate || '');
+    return Number.isFinite(t) && t <= nowMs && nowMs - t <= days * 86400000;
+  }).map((s) => s.id);
+}
+
+/** Pure (BRO-6751): true when STALE is at or above `maxPct` percent of `out`. Empty = breach (nothing graded proves nothing). */
+function staleBreach(out, maxPct) {
+  if (!out.length) return true;
+  return (100 * out.filter((s) => s.grade === 'STALE').length) / out.length >= maxPct;
+}
+
 function main(argv = process.argv.slice(2)) {
   const showArg = argv.find((a) => a.startsWith('--show='));
-  const ids = showArg ? showArg.split('=')[1].split(',').filter(Boolean) : [];
-  if (!ids.length) {
-    console.error('usage: node scripts/slow-market-grade.js --show=<id[,id...]> [--check] [--json]');
+  let ids = showArg ? showArg.split('=')[1].split(',').filter(Boolean) : [];
+  const lastYear = argv.includes('--last-year');
+  if (!ids.length && !lastYear) {
+    console.error('usage: node scripts/slow-market-grade.js --show=<id[,id...]> | --last-year [--check] [--max-stale-pct=N] [--json]');
+    return 2;
+  }
+  const maxStaleArg = argv.find((a) => a.startsWith('--max-stale-pct='));
+  const maxStalePct = maxStaleArg ? Number(maxStaleArg.split('=')[1]) : null;
+  if (maxStaleArg && !(Number.isFinite(maxStalePct) && maxStalePct > 0)) {
+    console.error(`--max-stale-pct must be a positive number (got ${maxStaleArg})`);
     return 2;
   }
   const maxAgeArg = argv.find((a) => a.startsWith('--max-age-hours='));
@@ -143,6 +167,7 @@ function main(argv = process.argv.slice(2)) {
   const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const shows = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
   const showById = new Map(shows.map((s) => [s.id, s]));
+  if (lastYear) ids = [...new Set([...ids, ...lastYearIds(shows, nowMs)])];
   let outletDomains = {};
   try {
     const reg = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
@@ -193,8 +218,15 @@ function main(argv = process.argv.slice(2)) {
     const count = (g) => out.filter((s) => s.grade === g).length;
     console.log(`summary: ${out.length} show(s): PASS ${count('PASS')}, STALE ${count('STALE')}, FAIL ${count('FAIL')}, NO-AUDIT ${count('NO-AUDIT')}; OVERDUE vs the scheduler's own recheck promise: ${sched ? overdueCount : 'unknown (no checkpoint)'}`);
   }
+  if (maxStalePct !== null) {
+    const stale = out.filter((s) => s.grade === 'STALE').length;
+    const pct = out.length ? Math.round((1000 * stale) / out.length) / 10 : 0;
+    const breach = staleBreach(out, maxStalePct);
+    console.error(`stale-pct: ${stale}/${out.length} = ${pct}% (limit < ${maxStalePct}%) ${breach ? 'FAIL' : 'OK'}`);
+    if (breach) return 1;
+  }
   return argv.includes('--check') && out.some((s) => s.grade !== 'PASS') ? 1 : 0;
 }
 
 if (require.main === module) process.exitCode = main();
-module.exports = { gradeShow, main, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, GRIND_WINDOW_DAYS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };
+module.exports = { gradeShow, main, lastYearIds, staleBreach, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, GRIND_WINDOW_DAYS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };

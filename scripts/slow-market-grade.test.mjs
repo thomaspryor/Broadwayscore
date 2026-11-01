@@ -87,3 +87,24 @@ test('isOverdue: never-audited show outside the grind window was promised nothin
   assert.equal(isOverdue({ id: 'old', category: 'broadway', status: 'closed', openingDate: '2019-01-01' }, undefined, N6751, F6751), null);
   assert.equal(isOverdue({ id: 'nodate', category: 'broadway', status: 'closed' }, undefined, N6751, F6751), null);
 });
+
+const { lastYearIds, staleBreach } = require('./slow-market-grade.js');
+
+test('BRO-6751 lastYearIds: opened or in previews within 365 days, future and undated excluded', () => {
+  const now = Date.parse('2026-11-01T00:00:00Z');
+  const shows = [
+    { id: 'recent', openingDate: '2026-06-01' },
+    { id: 'previews-only', previewsStartDate: '2026-10-20' },
+    { id: 'old', openingDate: '2025-10-01' },
+    { id: 'future', openingDate: '2026-12-01' },
+    { id: 'undated' },
+  ];
+  assert.deepEqual(lastYearIds(shows, now), ['recent', 'previews-only']);
+});
+
+test('BRO-6751 staleBreach: at-or-above the limit fails, below passes, empty fails', () => {
+  const rows = (stale, total) => Array.from({ length: total }, (_, i) => ({ grade: i < stale ? 'STALE' : 'PASS' }));
+  assert.equal(staleBreach(rows(4, 100), 5), false);
+  assert.equal(staleBreach(rows(5, 100), 5), true);
+  assert.equal(staleBreach([], 5), true);
+});
