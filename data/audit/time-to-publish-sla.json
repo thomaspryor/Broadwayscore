@@ -1,73 +1,39 @@
 {
-  "generatedAt": "2026-10-31T08:55:42.757Z",
-  "scope": "2 opening window(s): medea-off-broadway-2026 (2026-10-30), the-moth-off-west-end-2026 (2026-10-30)",
+  "generatedAt": "2026-11-01T09:45:06.265Z",
+  "scope": "2 opening window(s): tosca-off-broadway-2026 (2026-11-01), msblackforpresident-off-broadway-2026 (2026-11-01)",
   "degraded": null,
   "windows": [
     {
-      "showId": "medea-off-broadway-2026",
-      "openingDate": "2026-10-30",
-      "from": "2026-10-29T00:00:00.000Z",
-      "to": "2026-11-03T23:59:59.999Z"
+      "showId": "tosca-off-broadway-2026",
+      "openingDate": "2026-11-01",
+      "from": "2026-10-31T00:00:00.000Z",
+      "to": "2026-11-05T23:59:59.999Z"
     },
     {
-      "showId": "the-moth-off-west-end-2026",
-      "openingDate": "2026-10-30",
-      "from": "2026-10-29T00:00:00.000Z",
-      "to": "2026-11-03T23:59:59.999Z"
+      "showId": "msblackforpresident-off-broadway-2026",
+      "openingDate": "2026-11-01",
+      "from": "2026-10-31T00:00:00.000Z",
+      "to": "2026-11-05T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 235216,
-  "logOldestEntryAt": "2026-10-29T22:06:43.810Z",
+  "logEntryCount": 154609,
+  "logOldestEntryAt": "2026-10-31T15:04:01.874Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
-    "evaluated": 1,
+    "evaluated": 0,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": 0,
-    "p50Ms": 21798271,
-    "p90Ms": 21798271,
+    "compliancePct": null,
+    "p50Ms": null,
+    "p90Ms": null,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [
-      {
-        "showId": "the-moth-off-west-end-2026",
-        "reviewKey": "pinkprincetheatre:neill-kovacic-clarke:https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre",
-        "outletId": "pinkprincetheatre",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-10-30T15:59:49.729Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-10-30T16:07:35.092Z",
-        "liveAt": "2026-10-30T21:53:08.000Z",
-        "pipelineMs": 21198271,
-        "publishedToLiveMs": 21798271,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      }
-    ],
-    "byBasis": {
-      "poller-bounded": {
-        "evaluated": 1,
-        "compliant": 0
-      }
-    }
+    "breaches": [],
+    "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "outletId": "pinkprincetheatre",
-      "reviewKey": "pinkprincetheatre:neill-kovacic-clarke:https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-10-30T15:59:49.729Z",
-      "liveAt": "2026-10-30T21:53:08.000Z",
-      "pipelineMinutes": 353.3,
-      "publishedToLiveMinutes": 363.3,
-      "stuckAtStage": null
-    }
-  ]
+  "records": []
 }
