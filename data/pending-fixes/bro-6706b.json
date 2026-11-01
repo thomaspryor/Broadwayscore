@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-6706b",
+  "planId": "7432ab4e-545e-4adc-b264-b74a0d7e2280",
+  "status": "pending",
+  "createdAt": "2026-11-01T12:55:13.981Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6706: verify 48 unverified-revival flags from review text (24 revival, 24 original) (part 1 of 2)",
+    "steps": [
+      "shows.json: cabaret-at-the-kit-kat-club-west-end-2021.isRevival",
+      "shows.json: tosca-off-broadway-2026.isRevival",
+      "shows.json: high-school-musical-off-west-end-2026.isRevival",
+      "shows.json: phyl-off-broadway-2026.isRevival",
+      "shows.json: pre-existing-condition-off-broadway-2026.isRevival",
+      "shows.json: martin-guerre-west-end-2026.isRevival",
+      "shows.json: tru-off-west-end-2026.isRevival",
+      "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.isRevival",
+      "shows.json: the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026.isRevival",
+      "shows.json: tristan-and-yseult-royal-bath-regional-2026.isRevival",
+      "shows.json: east-is-east-octagon-regional-2026.isRevival",
+      "shows.json: a-christmas-carol-west-end-2026.isRevival",
+      "shows.json: king-lear-royal-exchange-regional-2026.isRevival",
+      "shows.json: a-midsummer-nights-dream-chichester-festival-regional-2026.isRevival",
+      "shows.json: fences-leeds-regional-2026.isRevival",
+      "shows.json: happy-days-pitlochry-festival-regional-2026.isRevival",
+      "shows.json: twelfth-night-crucible-regional-2026.isRevival",
+      "shows.json: the-penelopiad-york-royal-regional-2026.isRevival",
+      "shows.json: antigone-tron-regional-2026.isRevival",
+      "shows.json: the-39-steps-hull-truck-regional-2026.isRevival",
+      "shows.json: little-shop-of-horrors-hope-mill-regional-2026.isRevival",
+      "shows.json: death-of-a-salesman-liverpool-everyman-regional-2026.isRevival",
+      "shows.json: 1984-citizens-regional-2026.isRevival",
+      "shows.json: dial-m-for-murder-regional-2026.isRevival",
+      "shows.json: the-lost-boys-2026.revivalVerifiedNot"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: cabaret-at-the-kit-kat-club-west-end-2021.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tosca-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: tosca-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "high-school-musical-off-west-end-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: high-school-musical-off-west-end-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "phyl-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: phyl-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pre-existing-condition-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: pre-existing-condition-off-broadway-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "martin-guerre-west-end-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: martin-guerre-west-end-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tru-off-west-end-2026",
+        "field": "isRevival",
+        "oldValue": false,
+        "newValue": true,
+        "description": "shows.json: tru-off-west-end-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tristan-and-yseult-royal-bath-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: tristan-and-yseult-royal-bath-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "east-is-east-octagon-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: east-is-east-octagon-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-christmas-carol-west-end-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: a-christmas-carol-west-end-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "king-lear-royal-exchange-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: king-lear-royal-exchange-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-midsummer-nights-dream-chichester-festival-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: a-midsummer-nights-dream-chichester-festival-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fences-leeds-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: fences-leeds-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "happy-days-pitlochry-festival-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: happy-days-pitlochry-festival-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "twelfth-night-crucible-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: twelfth-night-crucible-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-penelopiad-york-royal-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-penelopiad-york-royal-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "antigone-tron-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: antigone-tron-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-39-steps-hull-truck-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-39-steps-hull-truck-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-shop-of-horrors-hope-mill-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: little-shop-of-horrors-hope-mill-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-of-a-salesman-liverpool-everyman-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: death-of-a-salesman-liverpool-everyman-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "1984-citizens-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: 1984-citizens-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dial-m-for-murder-regional-2026",
+        "field": "isRevival",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: dial-m-for-murder-regional-2026.isRevival"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-lost-boys-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-lost-boys-2026.revivalVerifiedNot"
+      }
+    ]
+  }
+}

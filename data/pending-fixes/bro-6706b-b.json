@@ -1,0 +1,248 @@
+{
+  "issueNumber": "bro-6706b-b",
+  "planId": "02574963-5d7f-4560-a116-f15df51937d1",
+  "status": "pending",
+  "createdAt": "2026-11-01T12:55:13.981Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6706: verify 48 unverified-revival flags from review text (24 revival, 24 original) (part 2 of 2)",
+    "steps": [
+      "shows.json: two-strangers-bway-2025.revivalVerifiedNot",
+      "shows.json: just-in-time-2025.revivalVerifiedNot",
+      "shows.json: buena-vista-social-club-2025.revivalVerifiedNot",
+      "shows.json: maybe-happy-ending-2024.revivalVerifiedNot",
+      "shows.json: the-great-gatsby-2024.revivalVerifiedNot",
+      "shows.json: the-outsiders-2024.revivalVerifiedNot",
+      "shows.json: and-juliet-2022.revivalVerifiedNot",
+      "shows.json: hadestown-2019.revivalVerifiedNot",
+      "shows.json: harry-potter-2021.revivalVerifiedNot",
+      "shows.json: hadestown-west-end-2024.revivalVerifiedNot",
+      "shows.json: hamilton-west-end-2021.revivalVerifiedNot",
+      "shows.json: the-play-that-goes-wrong-west-end-2021.revivalVerifiedNot",
+      "shows.json: my-neighbour-totoro-west-end-2025.revivalVerifiedNot",
+      "shows.json: the-mousetrap-west-end-2021.revivalVerifiedNot",
+      "shows.json: catarina-and-the-beauty-of-killing-fascists-west-end-2026.revivalVerifiedNot",
+      "shows.json: affluenza-off-west-end-2026.revivalVerifiedNot",
+      "shows.json: aftermath-art-new-york-off-broadway-2026.revivalVerifiedNot",
+      "shows.json: memoirs-of-amorous-gentlemen-off-broadway-2026.revivalVerifiedNot",
+      "shows.json: white-rabbit-red-rabbit-west-end-2026.revivalVerifiedNot",
+      "shows.json: christmas-carol-goes-wrong-west-end-2026.revivalVerifiedNot",
+      "shows.json: school-pictures-off-broadway-2026.revivalVerifiedNot",
+      "shows.json: going-bacharach-the-songs-of-an-icon-return-off-broadway-2026.revivalVerifiedNot",
+      "shows.json: dirty-dancing-west-end-2027.revivalVerifiedNot"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-strangers-bway-2025",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: two-strangers-bway-2025.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "just-in-time-2025",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: just-in-time-2025.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "buena-vista-social-club-2025",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: buena-vista-social-club-2025.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "maybe-happy-ending-2024",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: maybe-happy-ending-2024.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-great-gatsby-2024",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-great-gatsby-2024.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-outsiders-2024",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-outsiders-2024.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "and-juliet-2022",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: and-juliet-2022.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hadestown-2019",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: hadestown-2019.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "harry-potter-2021",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: harry-potter-2021.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hadestown-west-end-2024",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: hadestown-west-end-2024.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "hamilton-west-end-2021",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: hamilton-west-end-2021.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-play-that-goes-wrong-west-end-2021",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-play-that-goes-wrong-west-end-2021.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-neighbour-totoro-west-end-2025",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: my-neighbour-totoro-west-end-2025.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mousetrap-west-end-2021",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: the-mousetrap-west-end-2021.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: catarina-and-the-beauty-of-killing-fascists-west-end-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "affluenza-off-west-end-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: affluenza-off-west-end-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aftermath-art-new-york-off-broadway-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: aftermath-art-new-york-off-broadway-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: memoirs-of-amorous-gentlemen-off-broadway-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "white-rabbit-red-rabbit-west-end-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: white-rabbit-red-rabbit-west-end-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "christmas-carol-goes-wrong-west-end-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: christmas-carol-goes-wrong-west-end-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "school-pictures-off-broadway-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: school-pictures-off-broadway-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: going-bacharach-the-songs-of-an-icon-return-off-broadway-2026.revivalVerifiedNot"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dirty-dancing-west-end-2027",
+        "field": "revivalVerifiedNot",
+        "oldValue": null,
+        "newValue": true,
+        "description": "shows.json: dirty-dancing-west-end-2027.revivalVerifiedNot"
+      }
+    ]
+  }
+}
