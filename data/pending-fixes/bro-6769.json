@@ -1,0 +1,109 @@
+{
+  "issueNumber": "bro-6769",
+  "planId": "96b08ac6-e7ab-45c2-bde4-c6219a16dc7a",
+  "status": "pending",
+  "createdAt": "2026-11-01T16:37:25.588Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add verified Met Live in HD cinema dates (metopera.org In Cinemas schedule) to 7 current-season Met operas",
+    "steps": [
+      "Met Live in HD cinema date 2026-12-05, listed on metopera.org In Cinemas schedule (read 2026-11-01)",
+      "Met Live in HD cinema date 2027-01-23, listed on metopera.org In Cinemas schedule (read 2026-11-01)",
+      "Met Live in HD cinema date 2027-03-20, listed on metopera.org In Cinemas schedule (read 2026-11-01)",
+      "Met Live in HD cinema date 2027-04-03, listed on metopera.org In Cinemas schedule (read 2026-11-01)",
+      "Met Live in HD cinema date 2027-04-24, listed on metopera.org In Cinemas schedule (read 2026-11-01)",
+      "Met Live in HD cinema date 2027-05-08, listed on metopera.org In Cinemas schedule (read 2026-11-01)",
+      "Met Live in HD cinema date 2027-06-05, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "samson-et-dalila-off-broadway-2026",
+        "field": "liveInHd",
+        "oldValue": null,
+        "newValue": {
+          "date": "2026-12-05",
+          "sourceUrl": "https://www.metopera.org/season/in-cinemas/"
+        },
+        "description": "Met Live in HD cinema date 2026-12-05, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-fanciulla-del-west-off-broadway-2026",
+        "field": "liveInHd",
+        "oldValue": null,
+        "newValue": {
+          "date": "2027-01-23",
+          "sourceUrl": "https://www.metopera.org/season/in-cinemas/"
+        },
+        "description": "Met Live in HD cinema date 2027-01-23, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "silent-night-off-broadway-2027",
+        "field": "liveInHd",
+        "oldValue": null,
+        "newValue": {
+          "date": "2027-03-20",
+          "sourceUrl": "https://www.metopera.org/season/in-cinemas/"
+        },
+        "description": "Met Live in HD cinema date 2027-03-20, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "manon-off-broadway-2027",
+        "field": "liveInHd",
+        "oldValue": null,
+        "newValue": {
+          "date": "2027-04-03",
+          "sourceUrl": "https://www.metopera.org/season/in-cinemas/"
+        },
+        "description": "Met Live in HD cinema date 2027-04-03, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "otello-off-broadway-2027",
+        "field": "liveInHd",
+        "oldValue": null,
+        "newValue": {
+          "date": "2027-04-24",
+          "sourceUrl": "https://www.metopera.org/season/in-cinemas/"
+        },
+        "description": "Met Live in HD cinema date 2027-04-24, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tosca-off-broadway-2026",
+        "field": "liveInHd",
+        "oldValue": null,
+        "newValue": {
+          "date": "2027-05-08",
+          "sourceUrl": "https://www.metopera.org/season/in-cinemas/"
+        },
+        "description": "Met Live in HD cinema date 2027-05-08, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "parsifal-off-broadway-2027",
+        "field": "liveInHd",
+        "oldValue": null,
+        "newValue": {
+          "date": "2027-06-05",
+          "sourceUrl": "https://www.metopera.org/season/in-cinemas/"
+        },
+        "description": "Met Live in HD cinema date 2027-06-05, listed on metopera.org In Cinemas schedule (read 2026-11-01)"
+      }
+    ]
+  }
+}
