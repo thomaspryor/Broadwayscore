@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6548",
   "planId": "41ac35a7-b5e4-4efa-8699-73d059c031c7",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T15:01:45.148Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "NYU Skirball explicitly classifies this production as Chamber Opera: https://nyuskirball.org/performance/pizza/ (fetched 2026-11-01; BRO-6548 source-check report)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T16:20:23.162Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for nature-theater-of-oklahoma-pizza-or-a-door-in-the-dark-does-not-dance-off-broadway-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
