@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-01T12:45:30.098Z",
+  "generatedAt": "2026-11-01T13:47:54.164Z",
   "windowDays": 21,
-  "targets": 21,
-  "auditedThisRun": 21,
-  "carriedForward": 1550,
+  "targets": 19,
+  "auditedThisRun": 19,
+  "carriedForward": 1552,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 556,
-    "missingCurrentRun": 1183,
+    "withGap": 546,
+    "missingCurrentRun": 1182,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 727,
+    "totalFlaggedMisses": 713,
     "totalRecoverable": 51,
     "totalRecovered": 80,
     "humanExcluded": 19,
-    "automatedExcluded": 728,
-    "automatedExcludedListed": 518,
-    "priorProductionCitations": 5584
+    "automatedExcluded": 714,
+    "automatedExcludedListed": 504,
+    "priorProductionCitations": 5612
   },
   "results": [
     {
@@ -26491,8 +26491,8 @@
         "https://valentinedsides.com/2026/04/17/avenue-q/"
       ],
       "dirFiles": 63,
-      "dirClean": 37,
-      "inReviewsJson": 38,
+      "dirClean": 38,
+      "inReviewsJson": 39,
       "missing": [],
       "dirOnly": [
         {
@@ -26557,28 +26557,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--tom-wicker.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        },
         {
           "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
           "host": "express.co.uk",
@@ -26672,18 +26650,25 @@
           "reason": "same outlet \"independent\" already held at independent.co.uk; the-independent.com is a registered alias of it"
         }
       ],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 2,
       "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
+          "host": "thestage.co.uk",
+          "file": "thestage--tom-wicker.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london"
-          },
           {
             "outletId": "sunday-express",
             "outlet": "sunday-express",
@@ -26753,6 +26738,12 @@
           {
             "url": "https://www.whatsonstage.com/news/avenue-q-west-end-review-puerile-puppetry-perfection_1718652/",
             "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -26841,13 +26832,6 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/avenue-q-review-shaftesbury-theatre-london",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://www.express.co.uk/entertainment/theatre/2197440/avenue-q-reviews-tickets",
             "outletId": "sunday-express",
             "state": "GAP",
@@ -26870,10 +26854,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 22,
+        "liveCount": 23,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "babe-off-broadway-2024",
@@ -68204,23 +68188,35 @@
       "status": "open",
       "category": "tour",
       "aggregatorArticles": [
+        "https://playbill.com/article/what-do-tv-critics-think-of-the-dirty-dancing-remake",
         "https://www.broadwayworld.com/article/Review-Roundup-DIRTY-DANCING-Launches-North-American-Tour-20260923"
       ],
       "aggregatorListedUrls": [
+        "http://tvline.com/2017/04/30/dirty-dancing-review-remake-abc-abigail-breslin/",
+        "http://variety.com/2017/tv/reviews/tv-movie-review-dirty-dancing-abc-1202430883/",
         "https://www.newcitystage.com/2026/09/17/a-new-tour-delivers-a-dirty-dancing-makeover/",
         "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/",
         "https://www.chicagotribune.com/2026/09/13/review-dirty-dancing-musical-chicago/",
         "https://mdtheatreguide.com/2026/10/theatre-review-dirty-dancing-the-musical-at-the-national-theatre/",
         "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/"
       ],
-      "dirFiles": 28,
-      "dirClean": 12,
-      "inReviewsJson": 12,
+      "dirFiles": 27,
+      "dirClean": 15,
+      "inReviewsJson": 13,
       "missing": [
         {
-          "url": "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/",
-          "host": "theoaklandpress.com",
-          "knownOutletId": "the-oakland-press"
+          "url": "http://tvline.com/2017/04/30/dirty-dancing-review-remake-abc-abigail-breslin/",
+          "host": "tvline.com",
+          "knownOutletId": "tv-line",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2017/tv/reviews/tv-movie-review-dirty-dancing-abc-1202430883/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         }
       ],
       "dirOnly": [
@@ -68257,57 +68253,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newcitystage.com/2026/09/17/a-new-tour-delivers-a-dirty-dancing-makeover/",
-          "host": "newcitystage.com",
-          "knownOutletId": "new-city-stage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "new-city-stage--dennis-polkow.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newcitystage.com/2026/09/17/a-new-tour-delivers-a-dirty-dancing-makeover/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "around-the-town-chicago--frank-meccia.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/"
-            },
-            {
-              "file": "around-the-town-chicago--paul-lisnek-and-frank-meccia.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -68315,64 +68261,62 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 310,
+        "count": 428,
         "byReason": {
-          "aggregator-internal-nav": 210,
-          "not-http-url": 77,
-          "aggregator-section-root": 5,
-          "non-review-host": 15,
-          "podcast-episode": 1,
-          "roundup-page": 2
+          "aggregator-internal-nav": 283,
+          "not-http-url": 83,
+          "production-database-listing": 14,
+          "aggregator-section-root": 9,
+          "non-review-host": 35,
+          "non-stage-review": 1,
+          "roundup-page": 2,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
-      "unextractable": [],
-      "ingestResults": [
+      "priorRunArticles": [
         {
-          "url": "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/",
-          "host": "theoaklandpress.com",
-          "outletId": "the-oakland-press",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/dirty-dancing-tour-2026/the-oakland-press--gary-graff.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+          "url": "https://playbill.com/article/what-do-tv-critics-think-of-the-dirty-dancing-remake",
+          "publishDate": "2017-05-18"
         }
       ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://tvline.com/2017/04/30/dirty-dancing-review-remake-abc-abigail-breslin/",
+          "host": "tvline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2017/tv/reviews/tv-movie-review-dirty-dancing-abc-1202430883/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "the-oakland-press",
-            "outlet": "the-oakland-press",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/"
-          },
-          {
-            "outletId": "new-city-stage",
-            "outlet": "new-city-stage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newcitystage.com/2026/09/17/a-new-tour-delivers-a-dirty-dancing-makeover/"
-          },
-          {
-            "outletId": "around-the-town-chicago",
-            "outlet": "around-the-town-chicago",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.newcitystage.com/2026/09/17/a-new-tour-delivers-a-dirty-dancing-makeover/",
+            "outletId": "newcitystage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T21:47:22.687Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/",
+            "outletId": "aroundthetownchicago.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T21:47:22.687Z"
+          },
           {
             "url": "https://www.chicagotribune.com/2026/09/13/review-dirty-dancing-musical-chicago/",
             "outletId": "chicagotribune.com",
@@ -68387,31 +68331,16 @@
           },
           {
             "url": "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/",
-            "outletId": "the-oakland-press",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theoaklandpress.com",
+            "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.newcitystage.com/2026/09/17/a-new-tour-delivers-a-dirty-dancing-makeover/",
-            "outletId": "new-city-stage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/",
-            "outletId": "around-the-town-chicago",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
+        "liveCount": 5,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T12:45:30.098Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "dirty-laundry-off-broadway-2024",
@@ -80820,17 +80749,10 @@
         "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
         "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
       ],
-      "dirFiles": 67,
-      "dirClean": 40,
+      "dirFiles": 68,
+      "dirClean": 41,
       "inReviewsJson": 40,
-      "missing": [
-        {
-          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
-          "host": "open.substack.com",
-          "knownOutletId": "new-york-notebook",
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "frontmezzjunkies.com",
@@ -80838,6 +80760,10 @@
         },
         {
           "host": "independent.co.uk",
+          "count": 1
+        },
+        {
+          "host": "newyorknotebook.substack.com",
           "count": 1
         },
         {
@@ -80896,45 +80822,21 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 326,
+        "count": 322,
         "byReason": {
-          "aggregator-internal-nav": 212,
+          "aggregator-internal-nav": 208,
           "not-http-url": 91,
-          "aggregator-section-root": 6,
-          "non-review-host": 17
+          "aggregator-section-root": 5,
+          "non-review-host": 17,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
-          "host": "open.substack.com",
-          "outletId": "new-york-notebook",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "new-york-notebook",
-            "outlet": "new-york-notebook",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing"
-          },
           {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
@@ -81157,9 +81059,8 @@
           },
           {
             "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
-            "outletId": "new-york-notebook",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "open.substack.com",
+            "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
@@ -81171,10 +81072,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 33,
+        "liveCount": 34,
         "candidateCount": 35
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "everybody-off-broadway-2017",
@@ -85704,8 +85605,8 @@
         "https://festmag.com/2026/08/28/review-flamenc-oh/"
       ],
       "dirFiles": 25,
-      "dirClean": 10,
-      "inReviewsJson": 10,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [],
       "dirOnly": [
         {
@@ -85714,34 +85615,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreandtonic--penny-walshe.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre",
-          "reverify": true
-        },
         {
           "url": "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco",
           "host": "theguardian.com",
@@ -85900,7 +85773,7 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 11,
-        "corroborated": 9,
+        "corroborated": 10,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
@@ -85908,7 +85781,7 @@
           },
           "bestoftheatre": {
             "cited": 10,
-            "corroborated": 9
+            "corroborated": 10
           }
         }
       },
@@ -85921,18 +85794,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 6,
+      "automatedExcludedListed": 5,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review"
-          },
           {
             "outletId": "guardian",
             "outlet": "guardian",
@@ -86027,9 +85893,8 @@
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/flamenc-oh-at-sadlers-wells-review",
-            "outletId": "theatreandtonic",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-10-05T23:42:11.061Z"
           },
           {
@@ -86069,10 +85934,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
+        "liveCount": 10,
         "candidateCount": 15
       },
-      "computedAt": "2026-11-01T12:45:30.098Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "floyd-collins-2025",
@@ -91964,7 +91829,10 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-to-my-girls-off-broadway"
+        "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-to-my-girls-off-broadway",
+        "https://playbill.com/article/reviews-what-did-critics-think-of-for-colored-girls-broadway-revival",
+        "https://playbill.com/article/read-reviews-for-usual-girls-at-roundabout-underground",
+        "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413"
       ],
       "aggregatorListedUrls": [
         "https://www.thedailybeast.com/to-my-girls-is-a-weekend-of-gay-hell-in-palm-springs",
@@ -91973,18 +91841,47 @@
         "https://www.nytimes.com/2022/04/12/theater/to-my-girls-review.html",
         "https://www.theatrely.com/post/offensive-and-fabulous-to-my-girls-offers-searing-critique-of-gay-culture-review",
         "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
-        "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
-        "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
-        "https://everything-theatre.co.uk/2026/10/review-girls-young-vic/",
+        "https://cititour.com/NYC_Broadway/For-Colored-Girls/1072",
+        "https://www.amny.com/entertainment/broadway/review-half-a-century-on-for-colored-girls-shines-again/",
+        "https://broadwaynews.com/2022/04/20/review-the-breathtaking-beauty-of-for-colored-girls/",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-colored-girls-revival-20220421-wna26hhfyffcpkf5prr57qxpr4-story.html",
+        "https://www.thedailybeast.com/for-colored-girls-beautifully-raises-black-womens-voices-on-broadway",
+        "https://deadline.com/2022/04/for-colored-girls-broadway-review-ntozake-shange-1235004962/",
+        "https://www.harlemcommunitynews.com/for-colored-girls-is-a-clarion-call-to-black-women-on-broadway/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-for-colored-girls-revival-20220421-mqvnqonspjfeji3s5jyz3jk6v4-story.html",
+        "https://nypost.com/2022/04/20/for-colored-girls-review-broadway-play-has-lost-its-power/",
+        "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
+        "https://www.newyorktheatreguide.com/reviews/for-colored-girls-broadway-review",
+        "https://www.theatrely.com/post/for-colored-girls-returns-home-to-broadway-review",
+        "https://www.timeout.com/newyork/theater/for-colored-girls-who-have-considered-suicide-review-broadway-revival-2022",
+        "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
+        "https://www.vulture.com/2022/04/for-colored-girls-broadway-theater-review.html",
+        "http://www.thedailybeast.com/the-wild-world-of-usual-girls-sex-misogyny-racism-and-cuddly-toys",
+        "http://www.vulture.com/2018/11/the-indignity-and-glory-of-female-adolescence-in-usual-girls.html",
+        "http://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
+        "http://nystagereview.com/2018/11/05/usual-girls-aching-just-like-a-woman-and-breaking-too/",
+        "http://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
+        "http://www.timeout.com/newyork/theater/usual-girls",
         "https://www.allthatdazzles.co.uk/post/review-girls-the-maria-theatre-young-vic",
+        "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/",
         "https://www.britishtheatreguide.info/reviews/girls-young-vic-the-26166",
-        "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
         "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
+        "https://everything-theatre.co.uk/2026/10/review-girls-young-vic/",
+        "https://www.londontheatre.co.uk/reviews/girls-review-young-vic",
+        "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
+        "https://mancunion.com/theatre/review-the-girls",
+        "https://hollywrites.com/review-the-girls-phoenix-theatre/",
+        "https://www.britishtheatreguide.info/reviews/the-girls-phoenix-14042",
+        "https://www.mrcarlwoodward.com/review/the-girls-review-by-carl-woodward/",
+        "https://www.timeout.com/london/theatre/girls-1-review",
+        "https://fairypoweredproductions.com/the-girls-review/",
+        "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
+        "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
         "https://www.westendbestfriend.co.uk/news/review-girls-young-vic-theatre",
         "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
         "https://ayoungishperspective.co.uk/2026/10/29/review-girls/",
         "https://www.thestage.co.uk/reviews/girls-review-young-vic-theatre-london",
-        "https://www.timeout.com/london/theatre/girls-1-review",
         "https://www.thestage.co.uk/reviews/the-girls-musical-review-at-the-grand-theatre-leeds--brilliant",
         "https://www.whatsonstage.com/news/girls-at-the-young-vic-review_1736003/",
         "https://www.londontheatre1.com/reviews/girls-young-vic/",
@@ -91998,12 +91895,9 @@
         "https://www.thewrap.com/creative-content/theater/school-girls-broadway-review/",
         "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
         "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
-        "https://hollywrites.com/review-the-girls-phoenix-theatre/",
         "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-girls-phoenix-theatre-london-gary-barlow-take-that-tim-firth-a7591441.html",
-        "https://www.tntmagazine.com/leisure-entertainment/stage-shows/theatre-review-the-girls/",
         "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
-        "https://www.londontheatre.co.uk/reviews/girls-review-young-vic",
         "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
         "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
         "https://www.bestoftheatre.co.uk/blog/post/girls-young-vic-maria-casting",
@@ -92057,6 +91951,174 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://cititour.com/NYC_Broadway/For-Colored-Girls/1072",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-half-a-century-on-for-colored-girls-shines-again/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://broadwaynews.com/2022/04/20/review-the-breathtaking-beauty-of-for-colored-girls/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-colored-girls-revival-20220421-wna26hhfyffcpkf5prr57qxpr4-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/for-colored-girls-beautifully-raises-black-womens-voices-on-broadway",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2022/04/for-colored-girls-broadway-review-ntozake-shange-1235004962/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.harlemcommunitynews.com/for-colored-girls-is-a-clarion-call-to-black-women-on-broadway/",
+          "host": "harlemcommunitynews.com",
+          "knownOutletId": "harlem-community-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-for-colored-girls-revival-20220421-mqvnqonspjfeji3s5jyz3jk6v4-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2022/04/20/for-colored-girls-review-broadway-play-has-lost-its-power/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/for-colored-girls-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/for-colored-girls-returns-home-to-broadway-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2022/04/for-colored-girls-broadway-theater-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thedailybeast.com/the-wild-world-of-usual-girls-sex-misogyny-racism-and-cuddly-toys",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2018/11/the-indignity-and-glory-of-female-adolescence-in-usual-girls.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2018/11/05/usual-girls-aching-just-like-a-woman-and-breaking-too/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mancunion.com/theatre/review-the-girls",
+          "host": "mancunion.com",
+          "knownOutletId": "the-mancunion",
+          "serpCensus": true
+        },
+        {
+          "url": "https://hollywrites.com/review-the-girls-phoenix-theatre/",
+          "host": "hollywrites.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.mrcarlwoodward.com/review/the-girls-review-by-carl-woodward/",
+          "host": "mrcarlwoodward.com",
+          "knownOutletId": "mrcarlwoodward",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-02-22",
+          "serpCensus": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/the-girls-review/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-02-23",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
           "host": "londontheatre.co.uk",
           "knownOutletId": "london-theatre",
@@ -92093,12 +92155,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://hollywrites.com/review-the-girls-phoenix-theatre/",
-          "host": "hollywrites.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
           "host": "musicaltheatrereview.com",
           "knownOutletId": "musical-theatre-review",
@@ -92108,14 +92164,6 @@
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-girls-phoenix-theatre-london-gary-barlow-take-that-tim-firth-a7591441.html",
           "host": "independent.co.uk",
           "knownOutletId": "independent",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.tntmagazine.com/leisure-entertainment/stage-shows/theatre-review-the-girls/",
-          "host": "tntmagazine.com",
-          "knownOutletId": "tnt-magazine",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2017-03-08",
           "serpCensus": true
         },
         {
@@ -92136,6 +92184,31 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--matthew-plampton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Young Vic",
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.londontheatre.co.uk/reviews/girls-review-young-vic",
           "host": "londontheatre.co.uk",
@@ -92350,19 +92423,81 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Girls\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Girls\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Girls\" review maria",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Girls The Maria Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Girls The Maria Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Girls The Maria Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 149,
+        "count": 738,
         "byReason": {
-          "aggregator-internal-nav": 58,
-          "not-http-url": 7,
-          "production-database-listing": 11,
-          "aggregator-section-root": 4,
-          "non-review-host": 20,
-          "non-stage-review": 1,
-          "roundup-page": 48
+          "aggregator-internal-nav": 404,
+          "not-http-url": 84,
+          "production-database-listing": 49,
+          "aggregator-section-root": 16,
+          "non-review-host": 81,
+          "non-stage-review": 3,
+          "bare-host": 1,
+          "roundup-page": 96,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "show-hub": 1,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
@@ -92370,6 +92505,18 @@
         {
           "url": "https://playbill.com/article/reviews-see-what-critics-had-to-say-about-to-my-girls-off-broadway",
           "publishDate": "2022-04-12"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-for-colored-girls-broadway-revival",
+          "publishDate": "2022-04-20"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-usual-girls-at-roundabout-underground",
+          "publishDate": "2018-11-06"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413",
+          "publishDate": "2022-04-13"
         }
       ],
       "automatedExcludedListed": 1,
@@ -92418,6 +92565,146 @@
           "censusGateOn": true
         },
         {
+          "url": "https://cititour.com/NYC_Broadway/For-Colored-Girls/1072",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-half-a-century-on-for-colored-girls-shines-again/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://broadwaynews.com/2022/04/20/review-the-breathtaking-beauty-of-for-colored-girls/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-colored-girls-revival-20220421-wna26hhfyffcpkf5prr57qxpr4-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/for-colored-girls-beautifully-raises-black-womens-voices-on-broadway",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2022/04/for-colored-girls-broadway-review-ntozake-shange-1235004962/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.harlemcommunitynews.com/for-colored-girls-is-a-clarion-call-to-black-women-on-broadway/",
+          "host": "harlemcommunitynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-for-colored-girls-revival-20220421-mqvnqonspjfeji3s5jyz3jk6v4-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2022/04/20/for-colored-girls-review-broadway-play-has-lost-its-power/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/04/20/theater/for-colored-girls-review-ntozake-shange.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/for-colored-girls-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/for-colored-girls-returns-home-to-broadway-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/for-colored-girls-review-broadway-ntozake-shange-1235236902/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2022/04/for-colored-girls-broadway-theater-review.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thedailybeast.com/the-wild-world-of-usual-girls-sex-misogyny-racism-and-cuddly-toys",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2018/11/the-indignity-and-glory-of-female-adolescence-in-usual-girls.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2018/11/05/theater/ususal-girls-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2018/11/05/usual-girls-aching-just-like-a-woman-and-breaking-too/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/usual-girls-theater-1157966",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://hollywrites.com/review-the-girls-phoenix-theatre/",
           "host": "hollywrites.com",
           "priorRun": false,
@@ -92425,8 +92712,15 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.tntmagazine.com/leisure-entertainment/stage-shows/theatre-review-the-girls/",
-          "host": "tntmagazine.com",
+          "url": "https://www.mrcarlwoodward.com/review/the-girls-review-by-carl-woodward/",
+          "host": "mrcarlwoodward.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://fairypoweredproductions.com/the-girls-review/",
+          "host": "fairypoweredproductions.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -92434,101 +92728,106 @@
       ],
       "ingestResults": [
         {
-          "url": "https://cititour.com/NYC_Broadway/School-Girls/1396",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://cititour.com/NYC_Broadway/School-Girls/1396 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://www.thewrap.com/creative-content/theater/school-girls-broadway-review/",
-          "host": "thewrap.com",
-          "outletId": "thewrap",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "cross-market",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://www.thewrap.com/creative-content/theater/school-girls-broadway-review/ was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
-        },
-        {
-          "url": "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
-          "host": "vulture.com",
-          "outletId": "vulture",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "cross-market",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
-        },
-        {
-          "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
-          "host": "ew.com",
-          "outletId": "ew",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "cross-market",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983 was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://musicaltheatrereview.com/the-girls-phoenix-theatre/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
           "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
           "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "❌ Refusing to ingest — collision with london-theatre--anya-ryan.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.londontheatre.co.uk/reviews/girls-review-young-vic\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-10-28\",\n  \"incomingUrl\": \"https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre\",\n  \"incomingPublishDate\": \"2017-02-22\"\n}\n\nManual remediation required: rename or clear the existing file."
         },
         {
           "url": "https://1minutecritic.com/school-girls-broadway-review/",
           "host": "1minutecritic.com",
-          "outletId": "one-minute-critic"
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "cross-market",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "girls-off-west-end-2026: https://1minutecritic.com/school-girls-broadway-review/ was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
         },
         {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-girls-phoenix-theatre-london-gary-barlow-take-that-tim-firth-a7591441.html",
           "host": "independent.co.uk",
-          "outletId": "independent"
+          "outletId": "independent",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "girls-off-west-end-2026: https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-girls-phoenix-theatre-london-gary-barlow-take-that-tim-firth-a7591441.html is already owned by the-girls-west-end-2017 — one of the two is contaminated. Inspect data/review-texts/the-girls-west-end-2017/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
         },
         {
           "url": "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
           "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph"
+          "outletId": "sunday-telegraph",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=qa5-web-vercel.telegraph.co.uk): Scrapingdog HTTP 404: {\"message\":\"DNS resolution failed for hostname \\\"qa5-web-vercel.telegraph.co.uk\\\". The domain could not be translated to an IP address - it may be misspelled, expired, not registered, or its DNS may n\n⚠️  ScrapingBee failed (render_js=false, domain=qa5-web-vercel.telegraph.co.uk): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per r"
+        },
+        {
+          "url": "https://mancunion.com/theatre/review-the-girls",
+          "host": "mancunion.com",
+          "outletId": "the-mancunion",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "girls-off-west-end-2026: https://mancunion.com/theatre/review-the-girls dated 2016-01-25 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/School-Girls/1396",
+          "host": "cititour.com",
+          "outletId": "cititour"
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/school-girls-broadway-review/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        },
+        {
+          "url": "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
+          "host": "vulture.com",
+          "outletId": "vulture"
+        },
+        {
+          "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
+          "host": "ew.com",
+          "outletId": "ew"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
         }
       ],
       "recoveryResults": [],
@@ -92542,6 +92841,20 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "the-mancunion",
+            "outlet": "the-mancunion",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mancunion.com/theatre/review-the-girls"
+          },
+          {
+            "outletId": "hollywrites.com",
+            "outlet": "hollywrites.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://hollywrites.com/review-the-girls-phoenix-theatre/"
+          },
           {
             "outletId": "london-theatre",
             "outlet": "london-theatre",
@@ -92583,13 +92896,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983"
-          },
-          {
-            "outletId": "hollywrites.com",
-            "outlet": "hollywrites.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://hollywrites.com/review-the-girls-phoenix-theatre/"
           },
           {
             "outletId": "musical-theatre-review",
@@ -92658,22 +92964,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
-            "outletId": "afridiziak.com",
+            "url": "https://www.timeout.com/newyork/theater/for-colored-girls-who-have-considered-suicide-review-broadway-revival-2022",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+            "firstSeenAt": "2026-11-01T13:47:54.164Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
-            "outletId": "londonboxoffice.co.uk",
+            "url": "http://www.timeout.com/newyork/theater/usual-girls",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-10-28T08:10:37.431Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/10/review-girls-young-vic/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+            "firstSeenAt": "2026-11-01T13:47:54.164Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-girls-the-maria-theatre-young-vic",
@@ -92688,16 +92988,46 @@
             "firstSeenAt": "2026-10-30T16:58:09.613Z"
           },
           {
-            "url": "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T06:43:10.293Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/10/review-girls-young-vic/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/the-girls-phoenix-14042",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T13:47:54.164Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/girls-1-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T16:37:06.243Z"
+          },
+          {
+            "url": "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
+            "outletId": "afridiziak.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-girls-young-vic-theatre",
@@ -92720,12 +93050,6 @@
           {
             "url": "https://www.thestage.co.uk/reviews/girls-review-young-vic-theatre-london",
             "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T16:37:06.243Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/girls-1-review",
-            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-28T16:37:06.243Z"
           },
@@ -92772,6 +93096,20 @@
             "firstSeenAt": "2026-10-24T21:30:13.917Z"
           },
           {
+            "url": "https://mancunion.com/theatre/review-the-girls",
+            "outletId": "the-mancunion",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T13:47:54.164Z"
+          },
+          {
+            "url": "https://hollywrites.com/review-the-girls-phoenix-theatre/",
+            "outletId": "hollywrites.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-30T16:58:09.613Z"
+          },
+          {
             "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
             "outletId": "london-theatre",
             "state": "GAP",
@@ -92812,13 +93150,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://hollywrites.com/review-the-girls-phoenix-theatre/",
-            "outletId": "hollywrites.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-30T16:58:09.613Z"
           },
           {
             "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
@@ -92886,9 +93217,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 13,
-        "candidateCount": 27
+        "candidateCount": 28
       },
-      "computedAt": "2026-11-01T07:08:50.714Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -114569,8 +114900,8 @@
         "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east"
       ],
       "dirFiles": 32,
-      "dirClean": 9,
-      "inReviewsJson": 14,
+      "dirClean": 11,
+      "inReviewsJson": 15,
       "missing": [
         {
           "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
@@ -114634,52 +114965,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
-          "host": "thetimes.com",
-          "knownOutletId": "sunday-times",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "times-uk--dominic-maxwell.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -114702,7 +114988,7 @@
           "publishDate": "2024-05-14"
         }
       ],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
@@ -114744,25 +115030,16 @@
       "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html"
-          },
-          {
-            "outletId": "sunday-times",
-            "outlet": "sunday-times",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
           {
             "url": "https://www.theguardian.com/stage/2026/feb/13/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
             "outletId": "theguardian.com",
@@ -114776,31 +115053,23 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
+            "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/here-there-are-blueberries-review-stratford-london-0zrdrzlj3",
-            "outletId": "sunday-times",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://www.allthatdazzles.co.uk/post/review-here-there-are-blueberries-stratford-east",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 3,
+        "liveCount": 5,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T12:45:30.098Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "here-we-are-off-broadway-2023",
@@ -115747,13 +116016,13 @@
           "dirFlags": [
             {
               "file": "standard--nick-curtis.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         },
@@ -115888,7 +116157,7 @@
         "liveCount": 8,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "high-school-musical-off-west-end-2026",
@@ -127088,12 +127357,66 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ivy Day\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ivy Day\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ivy Day AMT Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ivy Day AMT Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ivy Day AMT Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 16,
+        "byReason": {
+          "aggregator-internal-nav": 7,
+          "non-review-host": 3,
+          "bare-host": 2,
+          "census-junk-host": 1,
+          "non-review-path": 2,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -127106,7 +127429,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-01T07:08:50.714Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "jack-and-the-beanstalk-dundee-rep-regional-2025",
@@ -133409,8 +133732,30 @@
       "openingDate": "2026-03-26",
       "status": "closed",
       "category": "west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414"
+      ],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
+        "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
+        "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
+        "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
+        "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
+        "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
+        "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
+        "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
+        "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
+        "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html",
+        "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
+        "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
+        "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446",
+        "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
+        "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
+        "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
+        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/",
+        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
+        "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/",
         "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
         "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
         "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
@@ -133427,9 +133772,17 @@
         "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review"
       ],
       "dirFiles": 66,
-      "dirClean": 32,
-      "inReviewsJson": 33,
-      "missing": [],
+      "dirClean": 33,
+      "inReviewsJson": 34,
+      "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "afridiziak.com",
@@ -133514,9 +133867,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -133524,16 +133877,450 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "clean",
-              "urlInDir": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/"
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "wrongProduction"
           ],
-          "reverify": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--christian-lewis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deadline--greg-evans.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--lovia-gyarkye.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--jesse-hassenger.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--juan-a-ramirez.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ew--emlyn-travis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "dailybeast--tim-teeman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "chicagotribune--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--frank-scheck.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--melissa-rose-bernardo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -133543,8 +134330,13 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 285,
+        "byReason": {
+          "aggregator-internal-nav": 223,
+          "not-http-url": 43,
+          "aggregator-section-root": 4,
+          "non-review-host": 15
+        }
       },
       "dedupedVariants": [
         {
@@ -133555,19 +134347,28 @@
           "reason": "same outlet \"independent\" already held at independent.co.uk; the-independent.com is a registered alias of it"
         }
       ],
-      "automatedExcludedListed": 1,
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414",
+          "publishDate": "2025-04-14"
+        }
+      ],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -133597,6 +134398,12 @@
           {
             "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
@@ -133647,20 +134454,13 @@
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
-            "outletId": "whatsonstage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
+        "liveCount": 14,
         "candidateCount": 14
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "joy-guidry-off-broadway-2026",
@@ -208613,26 +209413,26 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-PUBLIC-CHARGE-World-Premiere-Opens-at-The-Public-Theater-20260325"
+        "https://playbill.com/article/read-the-reviews-for-public-charge-by-former-u-s-ambassador-julissa-reynoso"
       ],
       "aggregatorListedUrls": [
-        "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
         "https://1minutecritic.com/public-charge-review-public-theater/",
         "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/public-charge-off-broadway-review",
-        "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
         "https://thefrontrowcenter.com/2026/03/public-charge/",
+        "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
+        "https://www.newyorktheatreguide.com/reviews/public-charge-off-broadway-review",
+        "https://www.nytimes.com/2026/03/26/theater/public-charge-review-julissa-reynoso.html",
         "https://stageandcinema.com/2026/03/25/public-charge-public-theater-review/",
         "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
+        "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=U6PAPY",
         "https://www.theaterscene.net/plays/offbway-plays/public-charge/victor-gluck/",
         "https://www.theatrereviews.com/off-broadway-review-public-charge-at-the-publics-newman-theater-through-sunday-april-12-2026/",
-        "https://www.offoffonline.com/offoffonline/2026/3/26/public-charge",
-        "https://www.nytimes.com/2026/03/26/theater/public-charge-review-julissa-reynoso.html"
+        "https://www.offoffonline.com/offoffonline/2026/3/26/public-charge"
       ],
       "dirFiles": 17,
-      "dirClean": 14,
-      "inReviewsJson": 14,
+      "dirClean": 15,
+      "inReviewsJson": 15,
       "missing": [],
       "dirOnly": [
         {
@@ -208644,30 +209444,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "clean",
-              "urlInDir": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -208675,42 +209452,48 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 293,
+        "count": 97,
         "byReason": {
-          "aggregator-internal-nav": 210,
-          "not-http-url": 60,
-          "aggregator-section-root": 6,
-          "non-review-host": 15,
-          "roundup-page": 2
+          "aggregator-internal-nav": 44,
+          "not-http-url": 20,
+          "production-database-listing": 6,
+          "aggregator-section-root": 5,
+          "non-review-host": 19,
+          "non-stage-review": 1,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "culturesauce",
-            "outlet": "culturesauce",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
           {
             "url": "https://1minutecritic.com/public-charge-review-public-theater/",
             "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/03/public-charge/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/public-charge-off-broadway-review",
@@ -208719,16 +209502,10 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
-            "outletId": "timeout.com",
+            "url": "https://www.nytimes.com/2026/03/26/theater/public-charge-review-julissa-reynoso.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/03/public-charge/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
             "url": "https://stageandcinema.com/2026/03/25/public-charge-public-theater-review/",
@@ -208741,6 +209518,12 @@
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=U6PAPY",
@@ -208765,26 +209548,13 @@
             "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/03/26/theater/public-charge-review-julissa-reynoso.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
-            "outletId": "culturesauce",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
+        "liveCount": 13,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -268853,12 +269623,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Infinite Fright\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Infinite Fright\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Infinite Fright\" review asylum",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Infinite Fright Asylum NYC review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Infinite Fright Asylum NYC review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Infinite Fright Asylum NYC review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "aggregator-internal-nav": 5,
+          "non-review-host": 12,
+          "bare-host": 2,
+          "show-listing-page": 1,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -268871,7 +269704,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-01T07:08:50.714Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "the-infinite-wrench-off-broadway-2026",
@@ -281922,28 +282755,30 @@
       "openingDate": "2026-01-30",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-the-other-place-off-broadway-starring-house-of-the-dragons-emma-darcy"
+      ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
+        "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
+        "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
+        "https://newyorktheater.me/2026/02/11/the-other-place-review/",
         "https://www.newyorktheatreguide.com/reviews/the-other-place-off-broadway-review",
+        "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
+        "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
         "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
+        "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
+        "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
         "https://www.vulture.com/article/theater-review-the-other-place-is-a-low-stakes-antigone.html",
         "https://www.wsj.com/articles/the-other-place-review-greek-roots-naturalistic-surface-fa64e3b9",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB",
-        "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
         "https://www.theaterscene.net/plays/offbway-plays/the-other-place/victor-gluck/",
         "https://www.theatrereviews.com/off-broadway-review-the-other-place-at-the-shed-through-sunday-march-1-2026/",
-        "https://newyorktheater.me/2026/02/11/the-other-place-review/",
         "https://twi-ny.com/2026/02/14/the-other-place-alexander-zeldin-the-shed/",
         "https://www.offoffonline.com/offoffonline/2026/2/12/the-other-place-g9ZK7",
-        "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-provides.html",
-        "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
-        "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
-        "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
-        "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/"
+        "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-provides.html"
       ],
       "dirFiles": 44,
-      "dirClean": 18,
+      "dirClean": 19,
       "inReviewsJson": 18,
       "missing": [],
       "dirOnly": [
@@ -281956,30 +282791,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -281987,28 +282799,39 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 95,
+        "byReason": {
+          "aggregator-internal-nav": 44,
+          "not-http-url": 20,
+          "production-database-listing": 6,
+          "aggregator-section-root": 5,
+          "non-review-host": 19,
+          "non-stage-review": 1
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
-            "outletId": "nytimes.com",
+            "url": "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/02/11/the-other-place-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -282019,8 +282842,32 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
+            "url": "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
             "url": "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:15:48.014Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/02/11/theater/other-place-review-zeldin-menzies-darcy.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -282037,8 +282884,8 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
-            "outletId": "nystagereview.com",
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB",
+            "outletId": "lightingandsoundamerica.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -282051,12 +282898,6 @@
           {
             "url": "https://www.theatrereviews.com/off-broadway-review-the-other-place-at-the-shed-through-sunday-march-1-2026/",
             "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/02/11/the-other-place-review/",
-            "outletId": "newyorktheater.me",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -282077,44 +282918,13 @@
             "outletId": "interestedbystander.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T06:15:48.014Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T06:15:48.014Z"
-          },
-          {
-            "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
-            "outletId": "theaterpizzazz.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T06:15:48.014Z"
-          },
-          {
-            "url": "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T06:15:48.014Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=H04WKB",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 16,
+        "liveCount": 17,
         "candidateCount": 17
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "the-outsiders-2024",
@@ -288643,8 +289453,8 @@
         "https://www.whatsonstage.com/news/the-playboy-of-the-western-world-at-the-national-theatre-review_1706313/"
       ],
       "dirFiles": 18,
-      "dirClean": 13,
-      "inReviewsJson": 17,
+      "dirClean": 14,
+      "inReviewsJson": 18,
       "missing": [],
       "dirOnly": [
         {
@@ -288676,30 +289486,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -288711,24 +289498,22 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.londontheatre.co.uk/reviews/the-playboy-of-the-western-world-review-national-theatre",
             "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
+            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -288761,20 +289546,13 @@
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-playboy-of-the-western-world-national-theatre-review-nicola-coughlan-b1262173.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 6,
+        "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "the-porch-on-windy-hill-off-broadway-2026",
@@ -298846,13 +299624,13 @@
           "dirFlags": [
             {
               "file": "standard--nick-curtis.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
           "reverify": true
         }
@@ -298919,7 +299697,7 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "the-unseen-regional-2025",
@@ -305719,7 +306497,7 @@
         "https://www.thewrap.com/titanique-off-broadway-review-celine-dion-titanic/"
       ],
       "dirFiles": 62,
-      "dirClean": 36,
+      "dirClean": 37,
       "inReviewsJson": 35,
       "missing": [],
       "dirOnly": [
@@ -305775,28 +306553,6 @@
           ],
           "copyOfLiveReview": true,
           "reverify": false
-        },
-        {
-          "url": "https://theaterscene.com/reviews/titanique/",
-          "host": "theaterscene.com",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--deirdre-donovan.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://theaterscene.com/reviews/titanique/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -305833,7 +306589,7 @@
           "publishDate": "2022-06-24"
         }
       ],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -305844,13 +306600,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nydailynews.com/2026/04/12/broadway-review-titanique-affectionately-parodies-1997-move-and-celine-dion/"
-          },
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterscene.com/reviews/titanique/"
           }
         ],
         "suppressedMissing": [],
@@ -306036,6 +306785,12 @@
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
           },
           {
+            "url": "https://theaterscene.com/reviews/titanique/",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T01:32:30.606Z"
+          },
+          {
             "url": "https://lavocedinewyork.com/en/new-york/2026/04/23/titanique-delivers-an-over-the-top-sendup-of-two-cultural-icons/",
             "outletId": "lavocedinewyork.com",
             "state": "live",
@@ -306059,20 +306814,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
-            "url": "https://theaterscene.com/reviews/titanique/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-29T01:32:30.606Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 30,
+        "liveCount": 31,
         "candidateCount": 32
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -310703,28 +311451,28 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
-        "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
-        "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
         "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
+        "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
+        "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+        "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
+        "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
+        "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
+        "https://monstagigz.com/tag/triumph/",
+        "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
         "https://playsinternational.org.uk/triumph-almeida-theatre/",
         "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
         "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
-        "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
-        "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
-        "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
-        "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
         "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
         "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
-        "https://www.timeout.com/london/theatre/triumph",
         "https://theqr.co.uk/2026/10/20/caryl-churchills-triumph-falters-at-the-almeida-theatre/",
-        "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida",
         "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
         "https://www.thetimes.com/culture/theatre-dance/article/triumph-review-is-this-theatre-for-the-tiktok-generation-srgrf0zz7",
         "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
-        "https://monstagigz.com/tag/triumph/",
         "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
+        "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
+        "https://www.timeout.com/london/theatre/triumph",
+        "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida",
         "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
         "https://shows.acast.com/mickeyjotheatre/episodes/triumph-almeida-theatre-london-review-of-caryl-churchills-17",
         "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd"
@@ -310938,8 +311686,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 7,
+            "results": 6,
+            "accepted": 1,
             "error": null
           },
           {
@@ -310949,7 +311697,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -310959,7 +311707,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 6,
             "error": null
           },
           {
@@ -310969,7 +311717,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -310979,23 +311727,25 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 19,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 19,
+        "count": 33,
         "byReason": {
-          "non-review-host": 10,
-          "roundup-page": 1,
-          "census-junk-host": 1,
-          "write-path-blocked": 2,
-          "aggregator-roundup": 3,
+          "non-review-host": 21,
+          "non-stage-review": 1,
+          "census-junk-host": 2,
+          "no-review-evidence": 3,
+          "static-asset": 2,
+          "write-path-blocked": 1,
+          "ticketing-listing": 1,
           "venue-listing-page": 2
         }
       },
@@ -311044,10 +311794,40 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
-            "outletId": "monstagigz.com",
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
+            "outletId": "fringereview.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "firstSeenAt": "2026-10-20T04:58:31.558Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T21:45:10.991Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
@@ -311056,10 +311836,16 @@
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
           },
           {
-            "url": "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://monstagigz.com/tag/triumph/",
+            "outletId": "monstagigz.com",
             "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
             "url": "https://playsinternational.org.uk/triumph-almeida-theatre/",
@@ -311078,36 +311864,6 @@
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T21:45:10.991Z"
-          },
-          {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
-            "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T04:58:31.558Z"
           },
           {
             "url": "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
@@ -311144,12 +311900,6 @@
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T05:36:08.000Z"
-          },
-          {
-            "url": "https://monstagigz.com/tag/triumph/",
-            "outletId": "monstagigz.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
             "url": "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
@@ -311203,7 +311953,7 @@
         "liveCount": 18,
         "candidateCount": 23
       },
-      "computedAt": "2026-11-01T12:45:30.098Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -311374,22 +312124,20 @@
       "openingDate": "2026-03-19",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-do-reviews-think-of-tru-off-broadway-starring-jesse-tyler-ferguson-as-truman-capote"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
         "https://www.newyorktheatreguide.com/reviews/tru-off-broadway-review-jesse-tyler-ferguson",
+        "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
+        "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
         "https://nystagereview.com/2026/03/19/tru-very-up-close-and-personal-with-truman-capote/",
         "https://nystagereview.com/2026/03/19/tru-gossipy-truman-capote-on-the-uproarious-warpath/",
         "https://www.nysun.com/article/jesse-tyler-ferguson-zings-tru-as-capote-in-a-poignant-revival",
-        "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.html",
-        "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD"
+        "https://www.nytimes.com/2026/03/20/theater/plays-tru-ferguson-the-fever-shawn.html"
       ],
       "dirFiles": 12,
-      "dirClean": 9,
-      "inReviewsJson": 9,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [],
       "dirOnly": [
         {
@@ -311401,30 +312149,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -311432,42 +312157,38 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 96,
-        "byReason": {
-          "aggregator-internal-nav": 44,
-          "not-http-url": 20,
-          "production-database-listing": 6,
-          "aggregator-section-root": 5,
-          "non-review-host": 19,
-          "non-stage-review": 1,
-          "bare-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
-            "outletId": "thewrap.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/tru-off-broadway-review-jesse-tyler-ferguson",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/tru-off-broadway-review-jesse-tyler-ferguson",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
+            "outletId": "thewrap.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -311494,26 +312215,13 @@
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:58:22.702Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 6,
+        "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "tru-off-west-end-2026",
@@ -314852,123 +315560,25 @@
       "openingDate": "2026-03-15",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-ulster-american-for-irish-rep",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-the-woody-harrelson-louisa-harland-andy-serkis-led-ulster-american-in-london",
-        "https://www.broadwayworld.com/article/Review-Roundup-Did-Woody-Harrelson-Hit-the-Mark-in-ULSTER-AMERICAN-20231214"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://cititour.com/NYC_News/Matthew-Broderick-Gives-His-Best-to-Ulster-American/10494",
-        "https://culturesauce.com/2026/03/15/matthew-broderick-ulster-american-off-broadway-review/",
-        "https://nystagereview.com/2026/03/15/ulster-american-satirical-savagery/",
-        "https://nystagereview.com/2026/03/15/ulster-american-irish-reps-scalding-satire-pulls-no-punches/",
-        "https://www.nysun.com/article/ulster-american-is-a-bawdy-send-up-of-progressive-pieties-and-an-irreverent-inquiry-into-irishness",
-        "https://www.thewrap.com/creative-content/theater/ulster-american-off-broadway-review-matthew-broderick/",
-        "https://www.broadwayworld.com/article/Review-ULSTER-AMERICAN-Riverside-Studios-20231214",
-        "https://www.cityam.com/ulster-american-review-woody-harrelson-charms-in-satire-on-privilege/",
-        "https://www.standard.co.uk/culture/theatre/ulster-american-riverside-studios-review-woody-harrelson-andy-serkis-louisa-harland-b1126086.html",
-        "https://www.theguardian.com/stage/2023/dec/14/ulster-american-review-woody-harrelson-andy-serkis-riverside-studios-london",
-        "https://inews.co.uk/culture/arts/ulster-american-review-harrelson-loses-plot-2808375",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/ulster-american-review-woody-harrelson-andy-serkis-b2463898.html",
-        "https://www.londontheatre.co.uk/reviews/ulster-american-review-riverside-studios",
-        "https://www.msn.com/en-us/movies/news/ulster-american-review-woody-harrelson-is-a-force-of-nature-but-this-play-loses-the-plot/ar-AA1luybC",
-        "https://www.thestage.co.uk/reviews/ulster-american-review-riverside-studios-london-louisa-harland-woody-harrelson-andy-serkis-jeremy-herrins-david-ireland",
-        "https://www.telegraph.co.uk/theatre/what-to-see/ulster-american-review-woody-harrelson/",
-        "https://www.timeout.com/london/theatre/ulster-american-review",
-        "https://www.thetimes.co.uk/article/ulster-american-review-an-exuberant-woody-harrelson-in-over-the-top-satire-lglr0bcnt",
-        "https://www.westendbestfriend.co.uk/news/review-ulster-american-riverside-studios",
-        "https://variety.com/2023/theater/global/woody-harrelson-andy-serkis-louisa-harland-david-ireland-ulster-american-1235743056/",
-        "https://www.theupcoming.co.uk/2023/12/14/ulster-american-at-riverside-studios-theatre-review/",
-        "https://www.whatsonstage.com/news/ulster-american-review-woody-harrelson-andy-serkis-and-louisa-harland-lead-a-five-star-revival_1558307/",
         "https://www.wsj.com/articles/ulster-american-review-matthew-brodericks-smug-star-5d44a11d",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN",
         "https://www.talkinbroadway.com/page/ob/03_15_26b.html",
+        "https://nystagereview.com/2026/03/15/ulster-american-satirical-savagery/",
+        "https://nystagereview.com/2026/03/15/ulster-american-irish-reps-scalding-satire-pulls-no-punches/",
+        "https://culturesauce.com/2026/03/15/matthew-broderick-ulster-american-off-broadway-review/",
         "https://pagesonstages.com/2026/04/26/ulster-american/",
         "https://lavocedinewyork.com/en/new-york/2026/03/16/ulster-american-how-making-a-play-became-first-rate-theater/",
-        "https://www.irishcentral.com/opinion/others/ulster-american-irish-rep"
+        "https://www.irishcentral.com/opinion/others/ulster-american-irish-rep",
+        "https://cititour.com/NYC_News/Matthew-Broderick-Gives-His-Best-to-Ulster-American/10494",
+        "https://www.nysun.com/article/ulster-american-is-a-bawdy-send-up-of-progressive-pieties-and-an-irreverent-inquiry-into-irishness",
+        "https://www.thewrap.com/creative-content/theater/ulster-american-off-broadway-review-matthew-broderick/"
       ],
       "dirFiles": 22,
-      "dirClean": 14,
-      "inReviewsJson": 14,
-      "missing": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-ULSTER-AMERICAN-Riverside-Studios-20231214",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cityam.com/ulster-american-review-woody-harrelson-charms-in-satire-on-privilege/",
-          "host": "cityam.com",
-          "knownOutletId": "city-am",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2023/dec/14/ulster-american-review-woody-harrelson-andy-serkis-riverside-studios-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/ulster-american-review-harrelson-loses-plot-2808375",
-          "host": "inews.co.uk",
-          "knownOutletId": "i-paper",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/ulster-american-review-woody-harrelson-andy-serkis-b2463898.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/ulster-american-review-riverside-studios",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.msn.com/en-us/movies/news/ulster-american-review-woody-harrelson-is-a-force-of-nature-but-this-play-loses-the-plot/ar-AA1luybC",
-          "host": "msn.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/ulster-american-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-ulster-american-riverside-studios",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2023/theater/global/woody-harrelson-andy-serkis-louisa-harland-david-ireland-ulster-american-1235743056/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2023/12/14/ulster-american-at-riverside-studios-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "knownOutletId": "theupcoming",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirClean": 15,
+      "inReviewsJson": 15,
+      "missing": [],
       "dirOnly": [
         {
           "host": "nytimes.com",
@@ -314983,150 +315593,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/ulster-american-riverside-studios-review-woody-harrelson-andy-serkis-louisa-harland-b1126086.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/ulster-american-riverside-studios-review-woody-harrelson-andy-serkis-louisa-harland-b1126086.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/ulster-american-review-riverside-studios-london-louisa-harland-woody-harrelson-andy-serkis-jeremy-herrins-david-ireland",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--dave-fargnoli.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestage.co.uk/reviews/ulster-american-review-riverside-studios-london-louisa-harland-woody-harrelson-andy-serkis-jeremy-herrins-david-ireland"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/ulster-american-review-woody-harrelson/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "telegraph--dominic-cavendish.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/ulster-american-review-woody-harrelson/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.thetimes.co.uk/article/ulster-american-review-an-exuberant-woody-harrelson-in-over-the-top-satire-lglr0bcnt",
-          "host": "thetimes.co.uk",
-          "knownOutletId": "sunday-times",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "times-uk--clive-davis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thetimes.co.uk/article/ulster-american-review-an-exuberant-woody-harrelson-in-over-the-top-satire-lglr0bcnt"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/ulster-american-review-woody-harrelson-andy-serkis-and-louisa-harland-lead-a-five-star-revival_1558307/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "whatsonstage--theo-bosanquet.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.whatsonstage.com/news/ulster-american-review-woody-harrelson-andy-serkis-and-louisa-harland-lead-a-five-star-revival_1558307/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -315134,133 +315601,32 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 482,
-        "byReason": {
-          "aggregator-internal-nav": 333,
-          "not-http-url": 61,
-          "production-database-listing": 17,
-          "aggregator-section-root": 13,
-          "non-review-host": 55,
-          "non-stage-review": 2,
-          "bare-host": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-the-woody-harrelson-louisa-harland-andy-serkis-led-ulster-american-in-london",
-          "publishDate": "2023-12-14"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-Woody-Harrelson-Hit-the-Mark-in-ULSTER-AMERICAN-20231214",
-          "publishDate": "2023-12-14"
-        }
-      ],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-ULSTER-AMERICAN-Riverside-Studios-20231214",
-          "host": "broadwayworld.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.cityam.com/ulster-american-review-woody-harrelson-charms-in-satire-on-privilege/",
-          "host": "cityam.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2023/dec/14/ulster-american-review-woody-harrelson-andy-serkis-riverside-studios-london",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://inews.co.uk/culture/arts/ulster-american-review-harrelson-loses-plot-2808375",
-          "host": "inews.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/ulster-american-review-woody-harrelson-andy-serkis-b2463898.html",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/ulster-american-review-riverside-studios",
-          "host": "londontheatre.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.msn.com/en-us/movies/news/ulster-american-review-woody-harrelson-is-a-force-of-nature-but-this-play-loses-the-plot/ar-AA1luybC",
-          "host": "msn.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/ulster-american-review",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-ulster-american-riverside-studios",
-          "host": "westendbestfriend.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://variety.com/2023/theater/global/woody-harrelson-andy-serkis-louisa-harland-david-ireland-ulster-american-1235743056/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2023/12/14/ulster-american-at-riverside-studios-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://cititour.com/NYC_News/Matthew-Broderick-Gives-His-Best-to-Ulster-American/10494",
-            "outletId": "cititour.com",
+            "url": "https://www.wsj.com/articles/ulster-american-review-matthew-brodericks-smug-star-5d44a11d",
+            "outletId": "wsj.com",
             "state": "live",
-            "firstSeenAt": "2026-10-20T04:58:31.558Z"
+            "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
           {
-            "url": "https://culturesauce.com/2026/03/15/matthew-broderick-ulster-american-off-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-02T22:17:45.717Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/03_15_26b.html",
+            "outletId": "talkinbroadway.com",
             "state": "live",
             "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
@@ -315277,26 +315643,8 @@
             "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
           {
-            "url": "https://www.nysun.com/article/ulster-american-is-a-bawdy-send-up-of-progressive-pieties-and-an-irreverent-inquiry-into-irishness",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T04:58:31.558Z"
-          },
-          {
-            "url": "https://www.thewrap.com/creative-content/theater/ulster-american-off-broadway-review-matthew-broderick/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T04:58:31.558Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/ulster-american-review-matthew-brodericks-smug-star-5d44a11d",
-            "outletId": "wsj.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-02T22:17:45.717Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/ob/03_15_26b.html",
-            "outletId": "talkinbroadway.com",
+            "url": "https://culturesauce.com/2026/03/15/matthew-broderick-ulster-american-off-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
@@ -315319,18 +315667,29 @@
             "firstSeenAt": "2026-09-02T22:17:45.717Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-02T22:17:45.717Z"
+            "url": "https://cititour.com/NYC_News/Matthew-Broderick-Gives-His-Best-to-Ulster-American/10494",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T04:58:31.558Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/ulster-american-is-a-bawdy-send-up-of-progressive-pieties-and-an-irreverent-inquiry-into-irishness",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T04:58:31.558Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/ulster-american-off-broadway-review-matthew-broderick/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T04:58:31.558Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
+        "liveCount": 11,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-01T12:45:30.098Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "ulysses-off-broadway-2026",
@@ -332761,8 +333120,8 @@
         "https://www.nytimes.com/2026/02/24/theater/you-got-older-review-shawkat-friedman-barron.html"
       ],
       "dirFiles": 28,
-      "dirClean": 16,
-      "inReviewsJson": 16,
+      "dirClean": 17,
+      "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
         {
@@ -332794,30 +333153,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -332834,19 +333170,11 @@
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "thewrap",
-            "outlet": "thewrap",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -332880,6 +333208,12 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
+            "url": "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
             "url": "https://culturesauce.com/2026/03/06/you-got-older-alia-shawkat-off-broadway-review/",
             "outletId": "culturesauce.com",
             "state": "live",
@@ -332902,20 +333236,13 @@
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.thewrap.com/creative-content/theater/you-got-older-off-broadway-review/",
-            "outletId": "thewrap",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
+        "liveCount": 10,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-01T12:15:42.242Z"
+      "computedAt": "2026-11-01T13:47:54.164Z"
     },
     {
       "showId": "your-own-personal-exegesis-off-broadway-2022",
