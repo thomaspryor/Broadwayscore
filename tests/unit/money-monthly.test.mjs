@@ -2,9 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const L = require('./lib.js');
-const { renderHtml } = require('./render.js');
-const { planAudienceSync } = require('./audience.js');
+const L = require('../../scripts/money-monthly/lib.js');
+const { renderHtml } = require('../../scripts/money-monthly/render.js');
+const { planAudienceSync } = require('../../scripts/money-monthly/audience.js');
 
 const show = (o) => ({ market: 'broadway', status: 'open', type: 'musical', ...o });
 const W = { start: '2026-10-01', end: '2026-10-31', label: 'October', monthKey: '2026-10', catchup: false };
@@ -93,4 +93,29 @@ test('audience sync plan: dedupes against General, existing contacts, owner test
   assert.deepEqual(plan.inGeneral, ['gen@x.com']);
   assert.deepEqual(plan.alreadyThere, ['have@x.com']);
   assert.equal(plan.skipped, 3);
+});
+
+test('catch-up window: a backfilled older recoupment does not ride in on firstAdded', () => {
+  const w = L.resolveWindow({ today: '2026-10-31', since: '2026-06-01' });
+  assert.equal(L.isRecoupmentNews({ recouped: true, recoupedDate: '2026-05', firstAdded: '2026-07-20' }, w), false);
+  assert.equal(L.isRecoupmentNews({ recouped: true, recoupedDate: '2026-07', firstAdded: '2026-07-20' }, w), true);
+  assert.equal(L.isRecoupmentNews({ recouped: true, recoupedDate: '2026-08', firstAdded: '2026-09-02' }, w), true); // middle month
+});
+
+test('subject counts every item even when the list is capped at 5', () => {
+  const commercial = {}; const shows = [];
+  for (let i = 0; i < 7; i++) {
+    commercial[`s${i}`] = { recouped: true, recoupedDate: '2026-09', firstAdded: `2026-09-0${i + 1}`, designation: 'Easy Winner' };
+    shows.push({ slug: `s${i}`, title: `Show ${i}`, market: 'broadway', status: 'open' });
+  }
+  const issue = L.buildIssue({ commercial, shows, snapshot: null, window: L.resolveWindow({ today: '2026-10-02', month: '2026-09' }) });
+  assert.equal(issue.sections.recoupments.length, 5);
+  assert.match(L.buildSubject(issue), /7 recoupments/);
+});
+
+test('with a baseline, a brand-new production with a disclosed capitalization counts as new', () => {
+  const commercial = { newshow: { capitalization: 12e6, capitalizationSource: 'SEC Form D', firstAdded: '2026-09-10' } };
+  const shows = [{ slug: 'newshow', title: 'New Show', market: 'broadway', status: 'open' }];
+  const issue = L.buildIssue({ commercial, shows, snapshot: {}, window: L.resolveWindow({ today: '2026-10-02', month: '2026-09' }) });
+  assert.equal(issue.sections.capitalization.length, 1);
 });

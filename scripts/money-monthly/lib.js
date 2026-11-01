@@ -1,7 +1,6 @@
 'use strict';
 // BRO-6773: pure logic for the monthly Profitability Scorecard email.
 // Preview-only: nothing here sends or creates a broadcast (CLAUDE.md §17).
-const { isFreshRecoupmentNews } = require('../lib/recoupment-news');
 
 const RECOUPED_DESIGNATIONS = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Recouped']);
 const LOSS_DESIGNATIONS = new Set(['Fizzle', 'Did Not Recoup', 'Flop']);
@@ -47,6 +46,19 @@ function usd(n) {
   return `$${Math.round(n / 1e3)}K`;
 }
 
+const monthBefore = (ym) => { const [y, m] = ym.split('-').map(Number); return m === 1 ? `${y - 1}-12` : `${y}-${String(m - 1).padStart(2, '0')}`; };
+
+// Recoupment is news when its month sits inside the window, or (monthly issues only)
+// is the month before and we learned it inside the window (ingest lag). Catch-up windows
+// get no grace, so a backfilled older recoupment cannot ride in on a long --since.
+function isRecoupmentNews(e, w) {
+  if (!e || !e.recouped || !/^\d{4}-\d{2}$/.test(e.recoupedDate || '')) return false;
+  const d = e.recoupedDate;
+  if (d >= w.start.slice(0, 7) && d <= w.end.slice(0, 7)) return !e.firstAdded || (String(e.firstAdded).slice(0, 10) >= w.start && String(e.firstAdded).slice(0, 10) <= w.end);
+  const fa = e.firstAdded ? String(e.firstAdded).slice(0, 10) : null;
+  return !w.catchup && !!fa && fa >= w.start && fa <= w.end && d === monthBefore(w.start.slice(0, 7));
+}
+
 function bulkDays(commercial) {
   const counts = {};
   for (const e of Object.values(commercial)) {
@@ -77,15 +89,16 @@ function buildIssue({ commercial, shows, snapshot, window: w }) {
   for (const [slug, e] of Object.entries(commercial)) {
     const show = bySlug.get(slug);
     if (!e || !show) continue;
-    if (isFreshRecoupmentNews(e, w.start, w.end) && !bulk.has(String(e.firstAdded || '').slice(0, 10))) {
+    if (isRecoupmentNews(e, w) && !bulk.has(String(e.firstAdded || '').slice(0, 10))) {
       recoupments.push({ slug, title: show.title, date: e.recoupedDate, designation: e.designation, url: link(slug) });
     }
     if (show.status === 'closed' && show.closingDate >= w.start && show.closingDate <= w.end && FINAL_DESIGNATIONS.has(e.designation) && !e.nonprofitOrg) {
-      closings.push({ slug, title: show.title, closed: show.closingDate, designation: e.designation, capitalization: e.capitalization || null, url: link(slug) });
+      closings.push({ slug, title: show.title, closed: show.closingDate, designation: e.designation, capitalization: e.modelCapitalizationEstimate ? null : (e.capitalization || null), url: link(slug) });
     }
     const fa = e.firstAdded ? String(e.firstAdded).slice(0, 10) : null;
     const prev = snapshot && snapshot[slug];
-    const newlyDisclosed = snapshot ? !!prev && prev.cap == null : !!fa && fa >= w.start && fa <= w.end && !bulk.has(fa);
+    const addedInWindow = !!fa && fa >= w.start && fa <= w.end && !bulk.has(fa);
+    const newlyDisclosed = snapshot && prev ? prev.cap == null && addedInWindow : addedInWindow;
     const current = show.status !== 'closed' || (show.closingDate >= w.start && show.closingDate <= w.end); // an old closed show added late is backfill, not news
     if (newlyDisclosed && current && Number.isFinite(e.capitalization) && e.capitalizationSource && !/^no verified/i.test(e.capitalizationSource) && !e.modelCapitalizationEstimate && !e.nonprofitOrg) {
       capitalization.push({ slug, title: show.title, capitalization: e.capitalization, source: e.capitalizationSource, url: link(slug) });
@@ -116,25 +129,27 @@ function buildIssue({ commercial, shows, snapshot, window: w }) {
   }
   const stat = rec + loss >= 20 ? { recouped: rec, total: rec + loss, pct: Math.round((100 * rec) / (rec + loss)) } : null;
 
+  const totals = { recoupments: recoupments.length, closings: closings.length, moves: moves.length, capitalization: capitalization.length };
   const sections = {
     recoupments: recoupments.slice(0, MAX_ITEMS),
     closings: closings.slice(0, MAX_ITEMS),
     moves: moves.slice(0, MAX_ITEMS),
     capitalization: capitalization.slice(0, MAX_ITEMS),
   };
-  const newsCount = Object.values(sections).reduce((n, a) => n + a.length, 0);
-  return { window: w, sections, stat, newsCount, quiet: newsCount === 0, hasBaseline: !!snapshot };
+  const newsCount = Object.values(totals).reduce((n, a) => n + a, 0);
+  return { window: w, sections, totals, stat, newsCount, quiet: newsCount === 0, hasBaseline: !!snapshot };
 }
 
 function buildSubject(issue) {
   const m = issue.window.catchup ? issue.window.label.replace('since ', 'Since ') : issue.window.label;
   const { recoupments, closings } = issue.sections;
+  const nRec = issue.totals.recoupments; const nClose = issue.totals.closings;
   if (issue.quiet) return `Money Scorecard, ${m}: a quiet month, nothing new to report`;
   const bits = [];
-  if (recoupments.length) bits.push(recoupments.length === 1 ? `${recoupments[0].title} recouped` : `${recoupments.length} recoupments`);
-  if (closings.length) bits.push(closings.length === 1 ? `${closings[0].title} closed as a ${closings[0].designation}` : `${closings.length} closings with final labels`);
+  if (nRec) bits.push(nRec === 1 ? `${recoupments[0].title} recouped` : `${nRec} recoupments`);
+  if (nClose) bits.push(nClose === 1 ? `${closings[0].title} closed as a ${closings[0].designation}` : `${nClose} closings with final labels`);
   if (!bits.length) bits.push('new money data');
   return `Money Scorecard, ${m}: ${bits.join(' and ')}`;
 }
 
-module.exports = { resolveWindow, bulkDays, snapshotOf, buildIssue, buildSubject, usd, fmtDay, midOf, BULK_DAY_THRESHOLD, FINAL_DESIGNATIONS };
+module.exports = { resolveWindow, isRecoupmentNews, bulkDays, snapshotOf, buildIssue, buildSubject, usd, fmtDay, midOf, BULK_DAY_THRESHOLD, FINAL_DESIGNATIONS };

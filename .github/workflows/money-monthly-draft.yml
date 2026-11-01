@@ -23,7 +23,7 @@ on:
         default: '[DRAFT]'
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: money-monthly-draft
@@ -60,6 +60,14 @@ jobs:
       - uses: ./.github/actions/setup-node
         if: steps.gate.outputs.run == 'true'
 
+      - name: Restore estimate baseline
+        if: steps.gate.outputs.run == 'true'
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: data/money-monthly/snapshot.json
+          key: money-monthly-baseline-none
+          restore-keys: money-monthly-baseline-
+
       - name: Generate preview
         shell: bash
         if: steps.gate.outputs.run == 'true'
@@ -92,17 +100,20 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/money-monthly/sync-audience.mjs | tee -a "$GITHUB_STEP_SUMMARY"
 
-      # Persist this month's estimate baseline so next month can report moves.
-      - name: Commit estimate baseline
-        if: success() && steps.gate.outputs.run == 'true'
-        run: |
-          node scripts/money-monthly/generate.mjs --write-snapshot --out="$RUNNER_TEMP/money-snap" >/dev/null
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/money-monthly/snapshot.json
-          if git diff --cached --quiet; then exit 0; fi
-          git commit -m "chore(money-monthly): update estimate baseline [skip ci]"
-          bash scripts/lib/push-with-retry.sh 5 main || { echo "::warning::snapshot push failed"; exit 1; }
+      # Estimate baseline lives in the Actions cache (private-data derived, so it is
+      # never committed to this public repo). Only the scheduled run advances it;
+      # manual re-runs and workflow_dispatch read it but cannot overwrite it.
+      - name: Write estimate baseline
+        shell: bash
+        if: success() && steps.gate.outputs.run == 'true' && github.event_name == 'schedule'
+        run: node scripts/money-monthly/generate.mjs --write-snapshot --out="$RUNNER_TEMP/money-snap" >/dev/null
+
+      - name: Save estimate baseline
+        if: success() && steps.gate.outputs.run == 'true' && github.event_name == 'schedule'
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
+        with:
+          path: data/money-monthly/snapshot.json
+          key: money-monthly-baseline-${{ github.run_id }}
 
       - name: Notify on failure
         if: failure()

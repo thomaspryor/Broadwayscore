@@ -13,9 +13,12 @@ const section = (title, body) => `<tr><td style="padding:0 24px 24px 24px">
 <div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:${T.brand};padding-bottom:8px;border-bottom:1px solid ${T.border};margin-bottom:12px">${esc(title)}</div>${body}</td></tr>`;
 const row = (url, title, detail) => `<div style="padding:8px 0;border-bottom:1px solid ${T.borderSubtle}"><a href="${esc(url)}" style="color:${T.text};text-decoration:none;font-weight:600;font-size:16px">${esc(title)}</a><div style="color:${T.textMuted};font-size:14px;line-height:1.5;margin-top:2px">${detail}</div></div>`;
 
+const MN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const monthName = (ym) => { const m = /^(\d{4})-(\d{2})$/.exec(ym || ''); return m ? `${MN[Number(m[2]) - 1]} ${m[1]}` : String(ym || ''); };
+
 function intro(issue) {
   const w = issue.window;
-  if (issue.quiet) return `Nothing crossed our bar for ${w.catchup ? w.label : w.label}: no new recoupments, no closings with a final label, and no big estimate moves.`;
+  if (issue.quiet) return `Nothing crossed our bar ${w.catchup ? w.label : `in ${w.label}`}: no new recoupments, no closings with a final label, and no big estimate moves.`;
   return w.catchup ? `Here is what moved in the money data ${w.label}.` : `Here is what moved in the money data in ${w.label}.`;
 }
 
@@ -23,7 +26,7 @@ function renderHtml(issue, { unsubscribeUrl = '{{{RESEND_UNSUBSCRIBE_URL}}}', ca
   const s = issue.sections;
   const parts = [];
   if (s.recoupments.length) {
-    parts.push(section('Recouped', s.recoupments.map((r) => row(r.url, r.title, `Recouped in ${esc(r.date)}${r.designation ? `, labeled ${esc(r.designation)}` : ''}.`)).join('')));
+    parts.push(section('Recouped', s.recoupments.map((r) => row(r.url, r.title, `Recouped in ${esc(monthName(r.date))}${r.designation ? `, labeled ${esc(r.designation)}` : ''}.`)).join('')));
   }
   if (s.closings.length) {
     parts.push(section('Closed, with a final label', s.closings.map((c) => row(c.url, c.title, `Closed ${esc(fmtDay(c.closed))}. Final label: ${sitePill(c.designation)}${c.capitalization ? ` Capitalization ${esc(usd(c.capitalization))}.` : ''}`)).join('')));
