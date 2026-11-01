@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-01T11:42:33.394Z",
+    "generatedAt": "2026-11-01T12:49:05.366Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -17,27 +17,27 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 88
+      "churn": 81
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 43
+      "churn": 35
     }
   ],
   "covered": [
-    {
-      "path": "data/audit/stage-latency.jsonl",
-      "churn": 68,
-      "mergeAttr": "union"
-    },
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
       "churn": 63,
       "mergeAttr": "union"
     },
     {
+      "path": "data/audit/stage-latency.jsonl",
+      "churn": 60,
+      "mergeAttr": "union"
+    },
+    {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 43,
+      "churn": 36,
       "mergeAttr": "ours"
     },
     {
@@ -46,17 +46,17 @@
       "mergeAttr": "ours"
     },
     {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 30,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/needs-human-review.json",
-      "churn": 30,
+      "churn": 31,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
+      "churn": 31,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
       "churn": 30,
       "mergeAttr": "ours"
     },
