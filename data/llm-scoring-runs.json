@@ -1,24 +1,5 @@
 [
   {
-    "startedAt": "2026-10-31T17:54:40.824Z",
-    "completedAt": "2026-10-31T17:54:47.340Z",
-    "totalReviews": 18,
-    "processed": 1,
-    "skipped": 17,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 6261,
-      "output": 327,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 15428
-    },
-    "costUsd": 0.0237692,
-    "runId": "41226225052",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-31T17:59:43.173Z",
     "completedAt": "2026-10-31T17:59:43.176Z",
     "totalReviews": 0,
@@ -3023094,21 +3023075,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T17:49:31.243Z",
-    "completedAt": "2026-11-01T17:49:36.356Z",
-    "totalReviews": 1,
+    "startedAt": "2026-11-01T17:49:55.105Z",
+    "completedAt": "2026-11-01T17:50:00.841Z",
+    "totalReviews": 2,
     "processed": 1,
-    "skipped": 0,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 5852,
-      "output": 318,
+      "input": 6014,
+      "output": 251,
       "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 14901
+      "total": 15029
     },
-    "costUsd": 0.022381199999999997,
-    "runId": "41332777952",
+    "costUsd": 0.0221835,
+    "runId": "41332959151",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3069588,6 +3069569,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "what-became-of-us-regional-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "what-happened-was-off-broadway-2026",
         "ourDistribution": {
           "up": 7,
@@ -3070718,8 +3070709,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T17:54:33.737Z",
-    "completedAt": "2026-11-01T17:54:33.739Z",
+    "startedAt": "2026-11-01T17:54:56.759Z",
+    "completedAt": "2026-11-01T17:54:56.760Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3070732,7 +3070723,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41332777952",
+    "runId": "41332959151",
     "source": "comparative-rescore",
     "errorDetails": []
   }
