@@ -46,24 +46,26 @@ export default function ShowtimeSegmented({
     genericFallback ? resolveShowtimeDefault(showId, date, s) : scheduledShowtime(showId, date, s);
 
   // A new date invalidates the old performance: re-pick (single-show day) or clear.
-  // If the parent set a new value in the same update as the date (a plan's
-  // date + time arriving together), that value wins.
-  const firstRun = useRef(true);
+  // Keyed on the previous date, not a first-run flag, so React's dev double
+  // effect run is a no-op. If the parent set a new value in the same update as
+  // the date (a plan's date + time arriving together), that value wins.
+  const prevDate = useRef<string | null>(null);
   const valueAtLastDate = useRef(value);
   useEffect(() => {
-    const isFirst = firstRun.current;
-    firstRun.current = false;
-    const parentSetBoth = !isFirst && (valueAtLastDate.current.time_slot !== value.time_slot
+    const isMount = prevDate.current === null || prevDate.current === date;
+    const dateChanged = prevDate.current !== null && prevDate.current !== date;
+    prevDate.current = date;
+    const parentSetBoth = dateChanged && (valueAtLastDate.current.time_slot !== value.time_slot
       || valueAtLastDate.current.curtain_time !== value.curtain_time);
     valueAtLastDate.current = value;
     if (parentSetBoth) return;
-    if (isFirst && (!autoSelectOnMount || value.time_slot)) return;
+    if (isMount && (!autoSelectOnMount || value.time_slot)) return;
     const only = date ? onlyPerformanceSlot(showId, date) : null;
     const next: Value = only
       ? { time_slot: only, curtain_time: toDbTime(timeFor(only)) }
       : { time_slot: null, curtain_time: null };
     if (next.time_slot !== value.time_slot || next.curtain_time !== value.curtain_time) onChange(next);
-    if (!isFirst) setMoreOpen(false);
+    if (dateChanged) setMoreOpen(false);
     // Only a date change should re-run this; value/onChange are read fresh.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [date, showId]);
@@ -100,7 +102,7 @@ export default function ShowtimeSegmented({
     );
   };
 
-  const caption = captionFor(showId, date, value);
+  const caption = captionFor(showId, date, value, genericFallback);
 
   return (
     <div data-testid="showtime-segmented">
@@ -142,13 +144,15 @@ function toDbTime(hhmm: string | null): string | null {
   return hhmm ? `${hhmm}:00` : null;
 }
 
-function captionFor(showId: string, date: string, v: Value): string {
+function captionFor(showId: string, date: string, v: Value, genericFallback: boolean): string {
   const time = v.curtain_time ? formatTime(v.curtain_time.slice(0, 5)) : null;
   if (v.time_slot === 'custom') return time ? `Curtain ${time}` : 'Pick a time';
   if (v.time_slot === 'matinee' || v.time_slot === 'evening') {
     const fromSchedule = !!date && scheduledShowtime(showId, date, v.time_slot) === v.curtain_time?.slice(0, 5);
     if (!time) return 'Time not listed for that date';
-    return fromSchedule ? `Curtain ${time}, from the schedule` : `Curtain ${time} (usual time)`;
+    if (fromSchedule) return `Curtain ${time}, from the schedule`;
+    // Only a plan ever fills in the generic 2:00 / 7:00 PM; say so.
+    return genericFallback ? `Curtain ${time} (usual time)` : `Curtain ${time}`;
   }
   const darkM = !!date && isKnownDarkForSlot(showId, date, 'matinee');
   const darkE = !!date && isKnownDarkForSlot(showId, date, 'evening');

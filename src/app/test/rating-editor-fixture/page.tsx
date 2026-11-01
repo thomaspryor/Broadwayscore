@@ -39,6 +39,14 @@ function RatingEditorFixtureInner() {
   // in production while mount-order fixtures stayed green (2026-07-11).
   const authGate = sp.get('authgate') === '1';
   const isEdit = state === 'edit';
+  // BRO-6783 time + seat: ?showId=<id> shows the Time row (schedule defaults);
+  // ?plan=YYYY-MM-DD&planSlot=evening&planTime=19:00 mimics rating a planned show;
+  // state=edit with ?withTime=1 opens an entry that already has a time + seat.
+  const showId = sp.get('showId') || undefined;
+  const plan = sp.get('plan');
+  const planSlot = sp.get('planSlot') as 'matinee' | 'evening' | 'custom' | null;
+  const planTime = sp.get('planTime');
+  const withTime = sp.get('withTime') === '1';
 
   const [open, setOpen] = useState(true);
   const [stackOpen, setStackOpen] = useState(stack);
@@ -78,7 +86,12 @@ function RatingEditorFixtureInner() {
               initialRating={isEdit ? 4.5 : starsParam ? parseFloat(starsParam) : 0}
               initialReviewText={isEdit ? 'Incredible show!' : null}
               initialDateSeen={isEdit ? '2024-11-15' : null}
-              suggestedDateSeen={suggestedDateSeen}
+              suggestedDateSeen={plan || suggestedDateSeen}
+              showId={showId}
+              initialTimeSlot={isEdit && withTime ? 'evening' : null}
+              initialCurtainTime={isEdit && withTime ? '19:00:00' : null}
+              initialSeat={isEdit && withTime ? 'Mezzanine C-14' : null}
+              suggestedShowtime={planSlot ? { time_slot: planSlot, curtain_time: planTime ? `${planTime}:00` : null } : null}
               mode={isEdit ? 'edit' : 'new'}
               onSave={handleSave}
               onSaved={() => setOpen(false)}
