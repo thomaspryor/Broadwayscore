@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T04:55:45.004Z",
+  "generatedAt": "2026-11-01T05:07:49.778Z",
   "windowDays": 21,
   "targets": 20,
   "auditedThisRun": 20,
@@ -7,15 +7,15 @@
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 585,
+    "withGap": 577,
     "missingCurrentRun": 1235,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 770,
+    "totalFlaggedMisses": 751,
     "totalRecoverable": 51,
     "totalRecovered": 80,
     "humanExcluded": 18,
-    "automatedExcluded": 764,
-    "automatedExcludedListed": 562,
+    "automatedExcluded": 744,
+    "automatedExcludedListed": 543,
     "priorProductionCitations": 5570
   },
   "results": [
@@ -60,13 +60,11 @@
       "openingDate": "2026-02-11",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
-        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
-        "https://www.theatermania.com/news/review-in-11-to-midnight-cost-n-mayor-bring-new-years-resolutions-to-viral-tiktok-trends_1823729/"
+        "https://www.theatermania.com/news/review-in-11-to-midnight-cost-n-mayor-bring-new-years-resolutions-to-viral-tiktok-trends_1823729/",
+        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/"
       ],
       "dirFiles": 5,
       "dirClean": 4,
@@ -113,13 +111,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 288,
-        "byReason": {
-          "aggregator-internal-nav": 211,
-          "not-http-url": 56,
-          "aggregator-section-root": 6,
-          "non-review-host": 15
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -161,7 +154,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "12-ophelias-regional-2026",
@@ -13529,8 +13522,8 @@
         "https://1minutecritic.com/ian-mckellen-an-ark-shed-review/"
       ],
       "dirFiles": 22,
-      "dirClean": 14,
-      "inReviewsJson": 15,
+      "dirClean": 16,
+      "inReviewsJson": 16,
       "missing": [],
       "dirOnly": [
         {
@@ -13558,52 +13551,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://theaterscene.com/reviews/an-ark/",
-          "host": "theaterscene.com",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--deirdre-donovan.json",
-              "flag": "clean",
-              "urlInDir": "https://theaterscene.com/reviews/an-ark/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.interestedbystander.com/2026/01/theater-review-concept-of-theater.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.interestedbystander.com/2026/01/theater-review-concept-of-theater.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -13615,26 +13563,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterscene.com/reviews/an-ark/"
-          },
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/01/theater-review-concept-of-theater.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -13668,6 +13601,18 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
+            "url": "https://theaterscene.com/reviews/an-ark/",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2026/01/theater-review-concept-of-theater.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
             "url": "https://nystagereview.com/2026/01/18/an-ark-mixed-reality-theater-provides-mixed-results/",
             "outletId": "nystagereview.com",
             "state": "live",
@@ -13684,27 +13629,13 @@
             "outletId": "1minutecritic.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://theaterscene.com/reviews/an-ark/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/01/theater-review-concept-of-theater.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 7,
+        "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "an-enemy-of-the-people-2024",
@@ -20669,7 +20600,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "another-shot-off-broadway-2024",
@@ -33282,7 +33213,7 @@
         "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "billy-crystal-860-2026",
@@ -51532,7 +51463,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-01T00:22:16.175Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "clinamen-off-broadway-2026",
@@ -77300,7 +77231,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "end-of-the-rainbow-west-end-2026",
@@ -87247,12 +87178,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 19,
         "byReason": {
           "non-review-host": 11,
+          "roundup-page": 1,
           "event-listing": 2,
-          "write-path-blocked": 3,
-          "ticketing-listing": 1
+          "review-hub-page": 1,
+          "census-junk-host": 1,
+          "write-path-blocked": 1,
+          "ticketing-listing": 1,
+          "no-review-evidence": 1
         }
       },
       "dedupedVariants": [],
@@ -87266,7 +87201,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-01T00:55:24.723Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "franz-and-marie-west-end-2026",
@@ -111649,7 +111584,7 @@
         "https://lavocedinewyork.com/en/new-york/2026/02/21/two-plays-in-brooklyn-examine-the-horrors-of-war-and-politics/"
       ],
       "dirFiles": 8,
-      "dirClean": 3,
+      "dirClean": 5,
       "inReviewsJson": 7,
       "missing": [],
       "dirOnly": [
@@ -111659,28 +111594,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        },
         {
           "url": "https://thefrontrowcenter.com/2026/02/hate-radio/",
           "host": "thefrontrowcenter.com",
@@ -111702,28 +111615,6 @@
             "cvWrongArticleHighConfidence"
           ],
           "reverify": true
-        },
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--deirdre-donovan.json",
-              "flag": "clean",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -111737,38 +111628,36 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/"
-          },
           {
             "outletId": "front-row-center",
             "outlet": "front-row-center",
             "critic": "Unknown",
             "stars": null,
             "url": "https://thefrontrowcenter.com/2026/02/hate-radio/"
-          },
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://www.theaterscene.net/plays/offbway-plays/hate-radio/tony-marinelli/",
             "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio",
+            "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -111779,32 +111668,18 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-hate-radio-the-rwandan-genocide-podcast_1824526/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "https://thefrontrowcenter.com/2026/02/hate-radio/",
             "outletId": "front-row-center",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.offoffonline.com/offoffonline/2026/2/15/hate-radio",
-            "outletId": "off-off-online",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
+        "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "hay-fever-west-end-2026",
@@ -130387,56 +130262,11 @@
         "https://www.vulture.com/article/theater-review-jeena-yi-jesa-public-theater.html"
       ],
       "dirFiles": 13,
-      "dirClean": 9,
-      "inReviewsJson": 10,
+      "dirClean": 11,
+      "inReviewsJson": 11,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/",
-          "host": "theaterscene.net",
-          "knownOutletId": "theater-scene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-scene--victor-gluck.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "clean",
-              "urlInDir": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -130448,26 +130278,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theater-scene",
-            "outlet": "theater-scene",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/"
-          },
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -130489,8 +130304,20 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://culturesauce.com/2026/03/20/jesa-jeena-yi-off-broadway-review/",
             "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
+            "outletId": "interestedbystander.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -130523,27 +130350,13 @@
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://www.theaterscene.net/plays/offbway-plays/jesa/victor-gluck/",
-            "outletId": "theater-scene",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2026/03/theater-reviews-jesa-uniquely-focuses.html",
-            "outletId": "the-interested-bystander",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
+        "liveCount": 11,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "jest-to-impress-off-broadway-2026",
@@ -159781,30 +159594,34 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-are-reviews-saying-about-marcel-on-the-train-starring-ethan-slater"
+        "https://www.broadwayworld.com/article/Review-Roundup-Ethan-Slater-Leads-MARCEL-ON-THE-TRAIN-atClassic-Stage-Company-20260223"
       ],
       "aggregatorListedUrls": [
-        "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
-        "https://cititour.com/NYC_Broadway/Marcel-on-the-Train/1353",
-        "https://www.vulture.com/article/theater-reviews-marcel-on-the-train-twelve-minor-prophets.html",
-        "https://www.nysun.com/article/marcel-on-the-train-considers-how-an-iconic-artist-was-shaped-by-dark-times",
-        "https://newyorktheater.me/2026/02/23/marcel-on-the-train-review/",
-        "https://www.newyorktheatreguide.com/reviews/marcel-on-the-train-off-broadway-review-ethan-slater",
         "https://www.nytimes.com/2026/02/22/theater/marcel-on-the-train-review-marceau-ethan-slater.html",
-        "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/",
+        "https://forward.com/culture/theater/806722/marcel-on-the-train-ethan-slater-review-marceau-mime-holocaust/",
+        "https://www.newyorktheatreguide.com/reviews/marcel-on-the-train-off-broadway-review-ethan-slater",
+        "https://newyorktheater.me/2026/02/23/marcel-on-the-train-review/",
         "https://www.timeout.com/newyork/theater/marcel-on-the-train-pla-review-ethan-slater-marcel-marceau",
-        "https://www.thewrap.com/creative-content/reviews/marcel-on-the-train-off-broadway-review-ethan-slater/",
+        "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
+        "https://www.vulture.com/article/theater-reviews-marcel-on-the-train-twelve-minor-prophets.html",
+        "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TBI2X8",
         "https://www.talkinbroadway.com/page/ob/02_22_26.html",
         "https://www.theaterscene.net/plays/offbway-plays/marcel-on-the-train/tony-marinelli/",
         "https://www.theatrereviews.com/off-broadway-review-marcel-on-the-train-at-classic-stage-company-through-sunday-march-22-2026/",
-        "https://forward.com/culture/theater/806722/marcel-on-the-train-ethan-slater-review-marceau-mime-holocaust/"
+        "https://cititour.com/NYC_Broadway/Marcel-on-the-Train/1353",
+        "https://www.nysun.com/article/marcel-on-the-train-considers-how-an-iconic-artist-was-shaped-by-dark-times",
+        "https://www.thewrap.com/creative-content/reviews/marcel-on-the-train-off-broadway-review-ethan-slater/"
       ],
       "dirFiles": 20,
-      "dirClean": 17,
-      "inReviewsJson": 19,
+      "dirClean": 20,
+      "inReviewsJson": 20,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "dctheaterarts.org",
+          "count": 1
+        },
         {
           "host": "thefrontrowcenter.com",
           "count": 1
@@ -159822,52 +159639,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "amny--matt-windman.json",
-              "flag": "clean",
-              "urlInDir": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -159875,60 +159647,31 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 97,
+        "count": 294,
         "byReason": {
-          "aggregator-internal-nav": 44,
-          "not-http-url": 20,
-          "production-database-listing": 6,
-          "aggregator-section-root": 5,
-          "non-review-host": 21,
-          "non-stage-review": 1
+          "aggregator-internal-nav": 204,
+          "not-http-url": 69,
+          "aggregator-section-root": 6,
+          "non-review-host": 15
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "amny",
-            "outlet": "amny",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://cititour.com/NYC_Broadway/Marcel-on-the-Train/1353",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-reviews-marcel-on-the-train-twelve-minor-prophets.html",
-            "outletId": "vulture.com",
+            "url": "https://www.nytimes.com/2026/02/22/theater/marcel-on-the-train-review-marceau-ethan-slater.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://www.nysun.com/article/marcel-on-the-train-considers-how-an-iconic-artist-was-shaped-by-dark-times",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/02/23/marcel-on-the-train-review/",
-            "outletId": "newyorktheater.me",
+            "url": "https://forward.com/culture/theater/806722/marcel-on-the-train-ethan-slater-review-marceau-mime-holocaust/",
+            "outletId": "forward.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
@@ -159939,10 +159682,10 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/02/22/theater/marcel-on-the-train-review-marceau-ethan-slater.html",
-            "outletId": "nytimes.com",
+            "url": "https://newyorktheater.me/2026/02/23/marcel-on-the-train-review/",
+            "outletId": "newyorktheater.me",
             "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/marcel-on-the-train-pla-review-ethan-slater-marcel-marceau",
@@ -159951,10 +159694,22 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://www.thewrap.com/creative-content/reviews/marcel-on-the-train-off-broadway-review-ethan-slater/",
-            "outletId": "thewrap.com",
+            "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
+            "outletId": "amny.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-reviews-marcel-on-the-train-twelve-minor-prophets.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TBI2X8",
@@ -159981,31 +159736,29 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://forward.com/culture/theater/806722/marcel-on-the-train-ethan-slater-review-marceau-mime-holocaust/",
-            "outletId": "forward.com",
+            "url": "https://cititour.com/NYC_Broadway/Marcel-on-the-Train/1353",
+            "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "https://www.amny.com/news/review-marcel-on-the-train-finds-bravery/",
-            "outletId": "amny",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://www.nysun.com/article/marcel-on-the-train-considers-how-an-iconic-artist-was-shaped-by-dark-times",
+            "outletId": "nysun.com",
+            "state": "live",
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-marcel-on-the-train-ethan-slater-land-mimes-the-nazis_1824970/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+            "url": "https://www.thewrap.com/creative-content/reviews/marcel-on-the-train-off-broadway-review-ethan-slater/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
+        "liveCount": 15,
         "candidateCount": 15
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "maria-bamford-soundly-unstable-off-broadway-2026",
@@ -166948,8 +166701,8 @@
         "https://www.offoffonline.com/offoffonline/2026/2/24/meat-suit-or-the-shitshow-of-motherhood"
       ],
       "dirFiles": 9,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [],
       "dirOnly": [
         {
@@ -166957,30 +166710,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--kyle-turner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -166992,24 +166722,22 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.nytimes.com/2026/02/26/theater/meat-suit-review-motherhood-aya-ogawa.html",
             "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -167048,20 +166776,13 @@
             "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/meat-suit-or-the-shitshow-of-motherhood-off-broadway-review",
-            "outletId": "nytg",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 7,
+        "liveCount": 8,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "medea-off-broadway-2026",
@@ -170577,8 +170298,8 @@
         "https://www.whatsonstage.com/news/middlemarch-at-the-rscs-swan-theatre-review_1736116/",
         "https://www.telegraph.co.uk/theatre/what-to-see/rsc-middlemarch-review/",
         "https://www.britishtheatreguide.info/reviews/middlemarch-par-swan-theatre-s-26160",
-        "https://www.thetimes.com/culture/theatre-dance/article/middlemarch-review-rsc-5pvrgw963",
         "https://theartsdesk.com/theatre/george-adapting-middlemarch",
+        "https://www.thetimes.com/culture/theatre-dance/article/middlemarch-review-rsc-5pvrgw963",
         "https://www.thetimes.com/culture/theatre-dance/article/middlemarch-rsc-swan-theatre-fkp3vwxtn",
         "https://www.aol.com/articles/rsc-middlemarch-marathon-one-fatal-140726000.html"
       ],
@@ -170649,8 +170370,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -170660,7 +170381,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -170670,25 +170391,24 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 29,
         "byReason": {
-          "aggregator-internal-nav": 4,
-          "non-review-host": 18,
-          "non-stage-review": 1,
-          "write-path-blocked": 1,
-          "census-junk-host": 1,
-          "no-review-evidence": 4,
-          "ugc-platform": 1
+          "aggregator-internal-nav": 6,
+          "non-review-host": 16,
+          "non-stage-review": 2,
+          "census-junk-host": 2,
+          "no-review-evidence": 1,
+          "ugc-platform": 2
         }
       },
       "dedupedVariants": [],
@@ -170721,20 +170441,6 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.thestage.co.uk/long-reviews/middlemarch-parts-1-2-review-swan-theatre-stratford-upon-avon-royal-shakespeare-company",
-          "host": "thestage.co.uk",
-          "file": "thestage--alexandra-coghlan.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -170808,7 +170514,7 @@
         "liveCount": 7,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-01T00:55:24.723Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "midnight-a-new-original-musical-by-todrick-hall-off-west-end-2026",
@@ -175579,29 +175285,31 @@
       "openingDate": "2026-02-23",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-are-out-for-lauren-yees-mother-russia"
+      ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html",
-        "https://www.newyorktheatreguide.com/reviews/mother-russia-off-broadway-review",
+        "https://cititour.com/NYC_Broadway/Mother-Russia/1354",
         "https://www.vulture.com/article/theater-review-mother-russia-lauren-yee-signature.html",
-        "https://www.theatermania.com/news/review-mother-russia-a-comedy-adventure-of-gangster-capitalism_1824988/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX",
         "https://nystagereview.com/2026/02/23/mother-russia-finding-comedy-in-a-countrys-dark-history/",
+        "https://www.nysun.com/article/mother-russia-is-intoxicatingly-enjoyable-but-its-message-is-sober",
+        "https://newyorktheater.me/2026/02/23/mother-russia-review/",
+        "https://www.newyorktheatreguide.com/reviews/mother-russia-off-broadway-review",
+        "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html",
+        "https://www.theatermania.com/news/review-mother-russia-a-comedy-adventure-of-gangster-capitalism_1824988/",
+        "https://www.theatrely.com/post/lauren-yees-back-with-mother-russia-review",
+        "https://www.thewrap.com/creative-content/theater/mother-russia-off-broadway-review/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX",
         "https://www.theaterscene.net/plays/offbway-plays/mother-russia/tony-marinelli/",
         "https://exeuntnyc.com/reviews/review-mother-russia-at-signature-theatre/",
-        "https://newyorktheater.me/2026/02/23/mother-russia-review/",
         "https://theaterlife.com/mother-russia-1-2/",
         "https://pagesonstages.com/2026/02/28/mother-russia/",
         "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-        "https://cititour.com/NYC_Broadway/Mother-Russia/1354",
-        "https://www.nysun.com/article/mother-russia-is-intoxicatingly-enjoyable-but-its-message-is-sober",
-        "https://www.theatrely.com/post/lauren-yees-back-with-mother-russia-review",
-        "https://www.thewrap.com/creative-content/theater/mother-russia-off-broadway-review/",
         "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/"
       ],
       "dirFiles": 26,
-      "dirClean": 17,
-      "inReviewsJson": 18,
+      "dirClean": 19,
+      "inReviewsJson": 19,
       "missing": [],
       "dirOnly": [
         {
@@ -175618,50 +175326,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "clean",
-              "urlInDir": "https://newyorktheater.me/2026/02/23/mother-russia-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        },
-        {
-          "url": "https://theaterlife.com/mother-russia-1-2/",
-          "host": "theaterlife.com",
-          "knownOutletId": "theater-life",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-life--samuel-l-leiter.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theaterlife.com/mother-russia-1-2/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "reverify": true
-        },
         {
           "url": "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/",
           "host": "theaterpizzazz.com",
@@ -175693,29 +175357,22 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 95,
+        "byReason": {
+          "aggregator-internal-nav": 44,
+          "not-http-url": 20,
+          "production-database-listing": 6,
+          "aggregator-section-root": 5,
+          "non-review-host": 19,
+          "non-stage-review": 1
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "nyt-theater",
-            "outlet": "nyt-theater",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/"
-          },
-          {
-            "outletId": "theater-life",
-            "outlet": "theater-life",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theaterlife.com/mother-russia-1-2/"
-          },
           {
             "outletId": "theater-pizzazz",
             "outlet": "theater-pizzazz",
@@ -175727,10 +175384,34 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html",
-            "outletId": "nytimes.com",
+            "url": "https://cititour.com/NYC_Broadway/Mother-Russia/1354",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-mother-russia-lauren-yee-signature.html",
+            "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/02/23/mother-russia-finding-comedy-in-a-countrys-dark-history/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/mother-russia-is-intoxicatingly-enjoyable-but-its-message-is-sober",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/mother-russia-off-broadway-review",
@@ -175739,8 +175420,8 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-mother-russia-lauren-yee-signature.html",
-            "outletId": "vulture.com",
+            "url": "https://www.nytimes.com/2026/02/23/theater/mother-russia-review.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -175751,14 +175432,20 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX",
-            "outletId": "lightingandsoundamerica.com",
+            "url": "https://www.theatrely.com/post/lauren-yees-back-with-mother-russia-review",
+            "outletId": "theatrely.com",
             "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "https://nystagereview.com/2026/02/23/mother-russia-finding-comedy-in-a-countrys-dark-history/",
-            "outletId": "nystagereview.com",
+            "url": "https://www.thewrap.com/creative-content/theater/mother-russia-off-broadway-review/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX",
+            "outletId": "lightingandsoundamerica.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -175775,6 +175462,12 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "https://theaterlife.com/mother-russia-1-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
             "url": "https://pagesonstages.com/2026/02/28/mother-russia/",
             "outletId": "pagesonstages.com",
             "state": "live",
@@ -175787,44 +175480,6 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://cititour.com/NYC_Broadway/Mother-Russia/1354",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/mother-russia-is-intoxicatingly-enjoyable-but-its-message-is-sober",
-            "outletId": "nysun.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/lauren-yees-back-with-mother-russia-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://www.thewrap.com/creative-content/theater/mother-russia-off-broadway-review/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2026/02/23/mother-russia-review/",
-            "outletId": "nyt-theater",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://theaterlife.com/mother-russia-1-2/",
-            "outletId": "theater-life",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://theaterpizzazz.com/mother-russia-an-unsuccessful-notch-in-the-borscht-belt/",
             "outletId": "theater-pizzazz",
             "state": "GAP",
@@ -175833,10 +175488,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 14,
+        "liveCount": 16,
         "candidateCount": 17
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "motherfucker-off-broadway-2026",
@@ -210105,25 +209760,27 @@
       "openingDate": "2026-03-25",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-PUBLIC-CHARGE-World-Premiere-Opens-at-The-Public-Theater-20260325"
+      ],
       "aggregatorListedUrls": [
+        "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
+        "https://1minutecritic.com/public-charge-review-public-theater/",
+        "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
         "https://www.newyorktheatreguide.com/reviews/public-charge-off-broadway-review",
+        "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
+        "https://thefrontrowcenter.com/2026/03/public-charge/",
+        "https://stageandcinema.com/2026/03/25/public-charge-public-theater-review/",
         "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=U6PAPY",
-        "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
         "https://www.theaterscene.net/plays/offbway-plays/public-charge/victor-gluck/",
-        "https://thefrontrowcenter.com/2026/03/public-charge/",
         "https://www.theatrereviews.com/off-broadway-review-public-charge-at-the-publics-newman-theater-through-sunday-april-12-2026/",
-        "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
         "https://www.offoffonline.com/offoffonline/2026/3/26/public-charge",
-        "https://www.nytimes.com/2026/03/26/theater/public-charge-review-julissa-reynoso.html",
-        "https://stageandcinema.com/2026/03/25/public-charge-public-theater-review/",
-        "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
-        "https://1minutecritic.com/public-charge-review-public-theater/"
+        "https://www.nytimes.com/2026/03/26/theater/public-charge-review-julissa-reynoso.html"
       ],
       "dirFiles": 17,
-      "dirClean": 12,
-      "inReviewsJson": 13,
+      "dirClean": 14,
+      "inReviewsJson": 14,
       "missing": [],
       "dirOnly": [
         {
@@ -210137,28 +209794,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "clean",
-              "urlInDir": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        },
-        {
           "url": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
           "host": "culturesauce.com",
           "knownOutletId": "culturesauce",
@@ -210170,37 +209805,14 @@
           "dirFlags": [
             {
               "file": "culturesauce--thom-geier.json",
-              "flag": "nonReview",
+              "flag": "clean",
               "urlInDir": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "nonReview"
+            "rejectionReason"
           ],
-          "reverify": true
-        },
-        {
-          "url": "https://1minutecritic.com/public-charge-review-public-theater/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "one-minute-critic--jerry-portwood.json",
-              "flag": "nonReview",
-              "urlInDir": "https://1minutecritic.com/public-charge-review-public-theater/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "serpCensus": true,
           "reverify": true
         }
       ],
@@ -210211,42 +209823,70 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 293,
+        "byReason": {
+          "aggregator-internal-nav": 210,
+          "not-http-url": 60,
+          "aggregator-section-root": 6,
+          "non-review-host": 15,
+          "roundup-page": 2
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/"
-          },
           {
             "outletId": "culturesauce",
             "outlet": "culturesauce",
             "critic": "Unknown",
             "stars": null,
             "url": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/"
-          },
-          {
-            "outletId": "one-minute-critic",
-            "outlet": "one-minute-critic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://1minutecritic.com/public-charge-review-public-theater/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://1minutecritic.com/public-charge-review-public-theater/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
             "url": "https://www.newyorktheatreguide.com/reviews/public-charge-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/03/public-charge/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
+            "url": "https://stageandcinema.com/2026/03/25/public-charge-public-theater-review/",
+            "outletId": "stageandcinema.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -210257,20 +209897,8 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
-            "url": "https://nystagereview.com/2026/03/25/public-charge-mixed-grades-translating-textbook-history-to-the-stage/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "https://www.theaterscene.net/plays/offbway-plays/public-charge/victor-gluck/",
             "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/03/public-charge/",
-            "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
@@ -210293,44 +209921,18 @@
             "firstSeenAt": "2026-09-05T17:16:12.711Z"
           },
           {
-            "url": "https://stageandcinema.com/2026/03/25/public-charge-public-theater-review/",
-            "outletId": "stageandcinema.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/public-charge-theater-review-julissa-reynoso",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-public-charge-a-diplomat-recalls-hillary-clintons-state-department_1829739/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
             "url": "https://culturesauce.com/2026/03/25/public-charge-off-broadway-review/",
             "outletId": "culturesauce",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://1minutecritic.com/public-charge-review-public-theater/",
-            "outletId": "one-minute-critic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
+        "liveCount": 12,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "pulman-and-stilgoe-hooray-for-hollywood-west-end-2026",
@@ -223343,23 +222945,25 @@
       "openingDate": "2026-03-30",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-SEAGULL-TRUE-STORY-at-the-Public-Theater-20260331"
+      ],
       "aggregatorListedUrls": [
+        "https://1minutecritic.com/seagull-true-story-review/",
         "https://www.newyorktheatreguide.com/reviews/seagull-true-story-off-broadway-review",
+        "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/",
+        "https://thefrontrowcenter.com/2026/04/seagull-true-story/",
+        "https://stageandcinema.com/2026/03/31/seagull-true-story-review-public-theater/",
+        "https://stagezine.com/seagull-true-story-war-art-censorship/",
         "https://www.timeout.com/newyork/theater/seagull-true-story-review-off-broadway",
         "https://www.vulture.com/article/theater-review-chekhov-seagull-vanya-molochnikov-krymov.html",
         "https://www.theatermania.com/news/review-seagull-true-story-measures-the-distance-between-moscow-and-brooklyn_1830988/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCTIFM",
-        "https://newyorktheater.me/2026/04/04/seagull-true-story-review/",
-        "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/",
-        "https://thefrontrowcenter.com/2026/04/seagull-true-story/",
-        "https://stageandcinema.com/2026/03/31/seagull-true-story-review-public-theater/",
-        "https://1minutecritic.com/seagull-true-story-review/",
-        "https://stagezine.com/seagull-true-story-war-art-censorship/"
+        "https://newyorktheater.me/2026/04/04/seagull-true-story-review/"
       ],
       "dirFiles": 30,
-      "dirClean": 10,
-      "inReviewsJson": 11,
+      "dirClean": 12,
+      "inReviewsJson": 13,
       "missing": [],
       "dirOnly": [
         {
@@ -223372,28 +222976,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "nonReview",
-              "urlInDir": "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "reverify": true
-        },
         {
           "url": "https://1minutecritic.com/seagull-true-story-review/",
           "host": "1minutecritic.com",
@@ -223421,34 +223003,6 @@
             "rejectionReason"
           ],
           "copyOfLiveReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://stagezine.com/seagull-true-story-war-art-censorship/",
-          "host": "stagezine.com",
-          "knownOutletId": "stagezine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "stagezine--scott-harrah.json",
-              "flag": "nonReview",
-              "urlInDir": "https://stagezine.com/seagull-true-story-war-art-censorship/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "serpCensus": true,
           "reverify": false
         }
       ],
@@ -223459,35 +223013,27 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 304,
+        "byReason": {
+          "aggregator-internal-nav": 206,
+          "not-http-url": 75,
+          "aggregator-section-root": 6,
+          "non-review-host": 15,
+          "roundup-page": 2
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "culturesauce",
-            "outlet": "culturesauce",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/"
-          },
           {
             "outletId": "one-minute-critic",
             "outlet": "one-minute-critic",
             "critic": "Unknown",
             "stars": null,
             "url": "https://1minutecritic.com/seagull-true-story-review/"
-          },
-          {
-            "outletId": "stagezine",
-            "outlet": "stagezine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://stagezine.com/seagull-true-story-war-art-censorship/"
           }
         ],
         "suppressedMissing": [],
@@ -223495,6 +223041,30 @@
           {
             "url": "https://www.newyorktheatreguide.com/reviews/seagull-true-story-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/04/seagull-true-story/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://stageandcinema.com/2026/03/31/seagull-true-story-review-public-theater/",
+            "outletId": "stageandcinema.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://stagezine.com/seagull-true-story-war-art-censorship/",
+            "outletId": "stagezine.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -223529,44 +223099,18 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/04/seagull-true-story/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://stageandcinema.com/2026/03/31/seagull-true-story-review-public-theater/",
-            "outletId": "stageandcinema.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://culturesauce.com/2026/03/31/seagull-true-story-off-broadway-review/",
-            "outletId": "culturesauce",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
             "url": "https://1minutecritic.com/seagull-true-story-review/",
             "outletId": "one-minute-critic",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://stagezine.com/seagull-true-story-war-art-censorship/",
-            "outletId": "stagezine",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 8,
+        "liveCount": 10,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
@@ -226945,34 +226489,11 @@
         "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/"
       ],
       "dirFiles": 8,
-      "dirClean": 4,
+      "dirClean": 5,
       "inReviewsJson": 5,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/3/1/silver-manhattan",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--charles-wright.json",
-              "flag": "clean",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/3/1/silver-manhattan"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -226984,19 +226505,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/3/1/silver-manhattan"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -227018,24 +226531,23 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/",
-            "outletId": "lavocedinewyork.com",
+            "url": "https://www.offoffonline.com/offoffonline/2026/3/1/silver-manhattan",
+            "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://www.offoffonline.com/offoffonline/2026/3/1/silver-manhattan",
-            "outletId": "off-off-online",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://lavocedinewyork.com/en/new-york/2026/03/12/lower-manhattan-theater-provides-some-hits-and-misses/",
+            "outletId": "lavocedinewyork.com",
+            "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 4,
+        "liveCount": 5,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "silverback-mountain-off-broadway-2026",
@@ -251897,34 +251409,11 @@
         "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits"
       ],
       "dirFiles": 4,
-      "dirClean": 2,
+      "dirClean": 3,
       "inReviewsJson": 3,
       "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--walter-murphy.json",
-              "flag": "clean",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -251936,19 +251425,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -251965,17 +251446,16 @@
           },
           {
             "url": "https://www.offoffonline.com/offoffonline/2026/3/6/the-amazing-sex-life-of-rabbits",
-            "outletId": "off-off-online",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "offoffonline.com",
+            "state": "live",
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
+        "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "the-antiquities-off-broadway-2025",
@@ -262510,8 +261990,8 @@
         "https://theaterlife.com/the-dinosaurs-1-2/"
       ],
       "dirFiles": 18,
-      "dirClean": 14,
-      "inReviewsJson": 16,
+      "dirClean": 16,
+      "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
         {
@@ -262535,34 +262015,15 @@
           "count": 1
         },
         {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
           "host": "stageandcinema.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-dinosaurs-review-off-broadway-play-alcoholism-jacob-perkins",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timeout.com/newyork/theater/the-dinosaurs-review-off-broadway-play-alcoholism-jacob-perkins"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -262574,19 +262035,11 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "timeout",
-            "outlet": "timeout",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/the-dinosaurs-review-off-broadway-play-alcoholism-jacob-perkins"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -262598,6 +262051,12 @@
           {
             "url": "https://www.newyorktheatreguide.com/reviews/the-dinosaurs-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-dinosaurs-review-off-broadway-play-alcoholism-jacob-perkins",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -262636,20 +262095,13 @@
             "outletId": "theaterlife.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/the-dinosaurs-review-off-broadway-play-alcoholism-jacob-perkins",
-            "outletId": "timeout",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "the-disappear-off-broadway-2026",
@@ -281288,8 +280740,8 @@
         "https://theaterpizzazz.com/fighting-it-out-with-the-monsters/"
       ],
       "dirFiles": 24,
-      "dirClean": 20,
-      "inReviewsJson": 19,
+      "dirClean": 21,
+      "inReviewsJson": 20,
       "missing": [],
       "dirOnly": [
         {
@@ -281337,28 +280789,6 @@
           "reverify": true
         },
         {
-          "url": "https://www.theatermania.com/news/review-the-family-that-fights-together-stays-together-in-ngozi-anyanwus-the-monsters_1823878/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--pete-hempstead.json",
-              "flag": "nonReview",
-              "urlInDir": "https://www.theatermania.com/news/review-the-family-that-fights-together-stays-together-in-ngozi-anyanwus-the-monsters_1823878/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "nonReview"
-          ],
-          "reverify": true
-        },
-        {
           "url": "https://theaterpizzazz.com/fighting-it-out-with-the-monsters/",
           "host": "theaterpizzazz.com",
           "knownOutletId": "theater-pizzazz",
@@ -281395,7 +280825,7 @@
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -281406,13 +280836,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.vulture.com/article/theater-review-dinosaurs-monsters-perkins-anyanwu.html"
-          },
-          {
-            "outletId": "theatermania",
-            "outlet": "theatermania",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermania.com/news/review-the-family-that-fights-together-stays-together-in-ngozi-anyanwus-the-monsters_1823878/"
           },
           {
             "outletId": "theater-pizzazz",
@@ -281433,6 +280856,12 @@
           {
             "url": "https://www.newyorktheatreguide.com/reviews/the-monsters-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-family-that-fights-together-stays-together-in-ngozi-anyanwus-the-monsters_1823878/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -281510,13 +280939,6 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-the-family-that-fights-together-stays-together-in-ngozi-anyanwus-the-monsters_1823878/",
-            "outletId": "theatermania",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
             "url": "https://theaterpizzazz.com/fighting-it-out-with-the-monsters/",
             "outletId": "theater-pizzazz",
             "state": "GAP",
@@ -281525,10 +280947,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 13,
+        "liveCount": 14,
         "candidateCount": 16
       },
-      "computedAt": "2026-11-01T02:38:06.751Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "the-moors-off-broadway-2017",
@@ -318270,26 +317692,24 @@
       "openingDate": "2026-01-25",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-elevator-repair-services-ulysses"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/",
-        "https://1minutecritic.com/elevator-repair-service-ulysses-public-theater-review/",
-        "https://thefrontrowcenter.com/2026/01/ulysses/",
-        "https://nystagereview.com/2026/01/25/from-under-the-radar-ulysses/",
         "https://www.newyorktheatreguide.com/reviews/ulysses-off-broadway-review",
         "https://www.theatermania.com/news/review-leopold-bloom-for-rookies-and-pros-in-a-hilarious-ulysses_1821592/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=L0HOZ0",
         "https://www.talkinbroadway.com/page/ob/01_25_26.html",
+        "https://nystagereview.com/2026/01/25/from-under-the-radar-ulysses/",
         "https://www.theaterscene.net/plays/offbway-plays/ulysses/victor-gluck/",
         "https://www.theatrereviews.com/off-broadway-review-ulysses-at-the-public-theaters-martinson-hall-through-sunday-march-1-2026/",
+        "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/",
         "https://twi-ny.com/2026/02/09/ulysses-james-joyce-elevator-repair-service-public-theater/",
         "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses",
-        "https://pagesonstages.com/2026/01/25/ulysses/"
+        "https://pagesonstages.com/2026/01/25/ulysses/",
+        "https://1minutecritic.com/elevator-repair-service-ulysses-public-theater-review/",
+        "https://thefrontrowcenter.com/2026/01/ulysses/"
       ],
       "dirFiles": 16,
-      "dirClean": 14,
+      "dirClean": 15,
       "inReviewsJson": 15,
       "missing": [],
       "dirOnly": [
@@ -318302,30 +317722,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses",
-          "host": "offoffonline.com",
-          "knownOutletId": "off-off-online",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "off-off-online--charles-wright.json",
-              "flag": "clean",
-              "urlInDir": "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -318333,56 +317730,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 116,
-        "byReason": {
-          "aggregator-internal-nav": 71,
-          "not-http-url": 6,
-          "production-database-listing": 11,
-          "aggregator-section-root": 4,
-          "non-review-host": 21,
-          "non-stage-review": 3
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "off-off-online",
-            "outlet": "off-off-online",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
-          {
-            "url": "https://1minutecritic.com/elevator-repair-service-ulysses-public-theater-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://thefrontrowcenter.com/2026/01/ulysses/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-05T17:16:12.711Z"
-          },
-          {
-            "url": "https://nystagereview.com/2026/01/25/from-under-the-radar-ulysses/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T23:13:35.325Z"
-          },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/ulysses-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
@@ -318408,6 +317766,12 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "https://nystagereview.com/2026/01/25/from-under-the-radar-ulysses/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://www.theaterscene.net/plays/offbway-plays/ulysses/victor-gluck/",
             "outletId": "theaterscene.net",
             "state": "live",
@@ -318420,8 +317784,20 @@
             "firstSeenAt": "2026-08-16T23:13:35.325Z"
           },
           {
+            "url": "https://culturesauce.com/2026/01/25/elevator-repair-service-deconstructs-joyces-ulysses-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T23:13:35.325Z"
+          },
+          {
             "url": "https://twi-ny.com/2026/02/09/ulysses-james-joyce-elevator-repair-service-public-theater/",
             "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses",
+            "outletId": "offoffonline.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -318432,18 +317808,23 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://www.offoffonline.com/offoffonline/2026/1/24/ulysses",
-            "outletId": "off-off-online",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+            "url": "https://1minutecritic.com/elevator-repair-service-ulysses-public-theater-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/01/ulysses/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-05T17:16:12.711Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 12,
+        "liveCount": 13,
         "candidateCount": 13
       },
-      "computedAt": "2026-11-01T02:25:54.906Z"
+      "computedAt": "2026-11-01T05:07:49.778Z"
     },
     {
       "showId": "uncensored-no-need-to-overthink-it-off-broadway-2026",
