@@ -811,6 +811,17 @@ test('a good stored half of a two-show article takes the whole article on ingest
   _resetUrlOwnershipIndex();
   createOrMergeReviewFile(NSS, { ...input, fields: { fullText: `${nss} ${filler('epilogue', 12)}` } }, { reviewTextsDir: dir });
   assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, nss);
+  // Control: a page that quotes only the stored lede (a later roundup) never replaces it.
+  const quoted = `${nss.split('. ')[0]}. ${filler('roundup', 10)} Whereas patience is in abundance at Night Side Songs, it is in short supply at Bigfoot! ${filler('trapeze', 7)} On TV, Bigfoot! would fit right in. Night Side Songs is at Lincoln Center Theater through March 29. Bigfoot! is at New York City Center through April 26.`;
+  _resetUrlOwnershipIndex();
+  createOrMergeReviewFile(NSS, { ...input, fields: { fullText: quoted } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, nss, 'lede-only match kept the stored body');
+  // Control: the other show's slot already holds a different review, so the
+  // fan-out could not trim this file: the stored half stays.
+  fs.writeFileSync(path.join(dir, BF, 'vulture--jackson-mchenry.json'), JSON.stringify({ showId: BF, outletId: 'vulture', criticName: 'Jackson McHenry', url: 'https://www.vulture.com/article/another-bigfoot-review.html', contentTier: 'complete', fullText: filler('other', 10) }, null, 2));
+  _resetUrlOwnershipIndex();
+  createOrMergeReviewFile(NSS, { ...input, fields: { fullText: whole } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, nss, 'occupied sibling slot kept the stored body');
   _resetUrlOwnershipIndex();
   fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });

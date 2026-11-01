@@ -504,3 +504,28 @@ test('photo captions travel with their own show; "Bigtop! is at ..." is a listin
   assert.match(b, /Bigtop! is at New York City Center through April 26\.$/);
   assert.doesNotMatch(b, /newsletter/);
 });
+
+// BRO-6744 review: prose that only looks like a listing header never opens a
+// capsule, and a comparison review that keeps naming the first show after the
+// join sentence stays whole.
+test('a sentence opening "<Title>, through ..." or "<Title> closes ..." is not a listing header', () => {
+  const single = (tailSentence) => [
+    `School Pictures is a tender new musical. ${filler('classroom', 8)} School Pictures earns its ending.`,
+    tailSentence,
+  ].join(' ');
+  for (const s of [
+    `Two Girls, through its sheer wit, set a high bar at the Public last season. ${filler('memory', 6)} Two Girls lingers.`,
+    `Two Girls closes in January at the Public, and its shadow hangs over this one. ${filler('memory', 6)} Two Girls lingers.`,
+    `Two Girls. Through its sheer wit it set a high bar at the Public. ${filler('memory', 6)} Two Girls lingers.`,
+  ]) assert.equal(plan(ID['School Pictures'], single(s)), null, s.slice(0, 40));
+});
+
+test('transition join: the first show named again in the second stretch is one comparison review', () => {
+  const text = [
+    `Before the performance begins at Midnight, the actors wander the aisles. ${filler('aisle', 6)} The patience of Midnight never flags. ${filler('lantern', 6)} By the curtain call, Midnight has earned every minute.`,
+    `Whereas patience is in abundance at Midnight, it is in short supply at Two Girls! ${filler('roommate', 3)} Unlike Midnight, the show rushes. ${filler('roommate', 3)} Two Girls would fit right in on TV.`,
+    'Midnight is at the Daryl Roth Theater through January 3.',
+    'Two Girls is at the Public Theater through December 6.',
+  ].join(' ');
+  assert.equal(plan(ID.Midnight, text), null);
+});

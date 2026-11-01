@@ -118,8 +118,12 @@ function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   // multi-show article the fan-out can split, so a good stored body that is
   // one show's half of it (a Vulture double cut off before the second
   // review) is treated like a split parent.
-  const splitParent = existing.multiShowSplitParent === true || opts.multiShowWhole === true;
-  if (!splitParent && !isPreExistingContentBad({ data: existing })) return false;
+  // A whole-article take of a good stored body must pass BOTH tests below:
+  // the stored opening AND most of the stored body appear in the incoming
+  // text, so a later roundup that quotes the lede never replaces it.
+  const multiShowWhole = existing.multiShowSplitParent !== true && opts.multiShowWhole === true;
+  const splitParent = existing.multiShowSplitParent === true;
+  if (!splitParent && !multiShowWhole && !isPreExistingContentBad({ data: existing })) return false;
   const next = incomingText.trim();
   if (next.length < before.length + 200 || next.length < before.length * 1.25) return false;
   const oldWords = _words(before);
@@ -128,15 +132,17 @@ function isSameArticleBodyUpgrade(existing, incomingText, opts = {}) {
   // wall) found in the incoming text is the same article.
   if (oldWords.length >= 15) {
     const lede = oldWords.slice(0, 15).join(' ');
-    if ((' ' + newWords.join(' ') + ' ').includes(' ' + lede + ' ')) return true;
-  }
+    const ledeFound = (' ' + newWords.join(' ') + ' ').includes(' ' + lede + ' ');
+    if (ledeFound && !multiShowWhole) return true;
+    if (!ledeFound && multiShowWhole) return false;
+  } else if (multiShowWhole) return false;
   if (splitParent) return false;
   const oldShingles = _shingles(oldWords, 5);
   if (oldShingles.size < 8) return false;
   const newShingles = _shingles(newWords, 5);
   let shared = 0;
   for (const s of oldShingles) if (newShingles.has(s)) shared++;
-  return shared / oldShingles.size >= 0.5;
+  return shared / oldShingles.size >= (multiShowWhole ? 0.8 : 0.5);
 }
 
 module.exports = { findStaleMergeFields, findStaleFieldsAfterUpdate, isPreExistingContentBad, isSameArticleBodyUpgrade };

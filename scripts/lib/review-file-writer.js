@@ -1897,7 +1897,26 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       const { loadShows } = require('./multi-show-splitter');
       const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
       if (!r || r.contentTier !== 'complete') return false;
-      return !!fan.planMultiShowFanout({ ...existing, fullText: fields.fullText }, loadShows(), { ownShowId: showId });
+      const plan = fan.planMultiShowFanout({ ...existing, fullText: fields.fullText }, loadShows(), { ownShowId: showId });
+      if (!plan) return false;
+      // The fan-out only trims this file when some other section lands
+      // somewhere; when every sibling slot is blocked or holds a different
+      // review it leaves the article whole, and this file would then carry
+      // the other show's review too. Take the whole article only when a
+      // sibling slot will take its section.
+      const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
+      const root = path.dirname(path.dirname(filepath));
+      const url = existing.url || fields.url;
+      return plan.otherSections.some((sec) => {
+        const childDir = path.join(root, sec.showId);
+        if (url && findBlockedEntry(loadBlocklist(childDir), url)) return false;
+        const childPath = path.join(childDir, path.basename(filepath));
+        let child = null;
+        if (fs.existsSync(childPath)) {
+          try { child = JSON.parse(fs.readFileSync(childPath, 'utf8')); } catch { return false; }
+        }
+        return fan.childWriteDecision(child, { ...existing, url }) !== 'skip';
+      });
     } catch { return false; }
   };
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'

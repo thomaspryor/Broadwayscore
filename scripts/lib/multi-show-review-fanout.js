@@ -155,7 +155,10 @@ function isParenthetical(text, at) {
 // What follows a show's title in a capsule's run-listing header: "Through
 // June 28 at the Hudson Theatre", "Open run at Second Stage's Hayes Theater".
 const PHOTO_CREDIT_AFTER_RE = /^[\s.!?”"’,]{0,4}(?:Photo(?:graph)?s?|Credit)\s*(?::|by\b)/i;
-const LISTING_HEADER_AFTER_RE = /^\s*[.:,–—-]?\s*(?:(?:Now )?through|until|open(?:-ended)? run|in previews|extended through|closes|closing)\b/i;
+// Case-sensitive, with a separator after the title, and a date or a venue
+// ("at the ...") right after the keyword: prose such as "Two Girls, through
+// its sheer wit, ..." or "Two Girls closes in January" is not a header.
+const LISTING_HEADER_AFTER_RE = /^\s*[.:–—-]\s*(?:(?:Now )?Through|Until|Open(?:-ended)? run|In previews|Extended through|Closes|Closing)\b[^.,\n]{0,12}?(?:\b(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)[a-z]*\.?\s+\d|\bat\s+(?:the\s+)?\p{Lu})/u;
 // A capsule header sits at a unit start: the text start, a new line, a
 // sentence end, or the close of a WordPress photo caption.
 const UNIT_END_BEFORE_RE = /(?:^|\n|[.!?][”"’]?|\[\/caption\])\s*$/;
@@ -169,7 +172,7 @@ function listingHeaderAt(m, text) {
   let x;
   while ((x = m.any.exec(text))) {
     const end = x.index + x[0].length;
-    if (!LISTING_HEADER_AFTER_RE.test(text.slice(end, end + 40))) continue;
+    if (!LISTING_HEADER_AFTER_RE.test(text.slice(end, end + 80))) continue;
     if (!UNIT_END_BEFORE_RE.test(text.slice(Math.max(0, x.index - 40), x.index))) continue;
     return x.index;
   }
@@ -702,7 +705,10 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     if (!cap) continue;
     const prevEnd = Math.max(cuts[i - 1], ...mentions.filter((mn) => mn.at < cap.at).map((mn) => mn.end));
     const capStart = sentenceStart(text, cap.at);
-    if (capStart >= prevEnd) cuts[i] = capStart;
+    // A caption is a short credit line ("Ann Actor and Bo Player in X!"):
+    // a sentence start further back is the end of the previous section's
+    // prose, which never moves.
+    if (capStart >= prevEnd && cap.at - capStart <= 120) cuts[i] = capStart;
   }
   if (cuts[0] > text.length * FIRST_INTRO_MAX_SHARE) return [];
   const bodyEnd = tail.length ? cutAt(lastBody + 1) : text.length;
