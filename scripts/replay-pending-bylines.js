@@ -417,7 +417,7 @@ async function processShow(showId, deps = {}) {
           data.rssIdentityRejected = true;
           data.rssIdentityRejectedReason = 'no title/slug match to show at replay (BRO-6321)';
           data.rssIdentityRejectedAt = now().toISOString();
-          try { fs.writeFileSync(filepath, JSON.stringify(data, null, 2)); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
+          try { require('./lib/review-write-guard').safeWriteReview(filepath, data); } catch (e) { console.log(`  [${file}] could not tag: ${e.message}`); }
         }
         kept++;
         continue;
