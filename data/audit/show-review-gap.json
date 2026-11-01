@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T06:15:48.014Z",
+  "generatedAt": "2026-11-01T06:34:49.647Z",
   "windowDays": 21,
   "targets": 20,
   "auditedThisRun": 20,
@@ -8,15 +8,15 @@
   "retentionDays": 395,
   "counts": {
     "withGap": 559,
-    "missingCurrentRun": 1225,
+    "missingCurrentRun": 1224,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 733,
+    "totalFlaggedMisses": 732,
     "totalRecoverable": 51,
-    "totalRecovered": 81,
+    "totalRecovered": 80,
     "humanExcluded": 18,
-    "automatedExcluded": 726,
-    "automatedExcludedListed": 526,
-    "priorProductionCitations": 5505
+    "automatedExcluded": 725,
+    "automatedExcludedListed": 525,
+    "priorProductionCitations": 5590
   },
   "results": [
     {
@@ -67908,9 +67908,12 @@
       "status": "open",
       "category": "tour",
       "aggregatorArticles": [
+        "https://playbill.com/article/what-do-tv-critics-think-of-the-dirty-dancing-remake",
         "https://www.broadwayworld.com/article/Review-Roundup-DIRTY-DANCING-Launches-North-American-Tour-20260923"
       ],
       "aggregatorListedUrls": [
+        "http://tvline.com/2017/04/30/dirty-dancing-review-remake-abc-abigail-breslin/",
+        "http://variety.com/2017/tv/reviews/tv-movie-review-dirty-dancing-abc-1202430883/",
         "https://www.newcitystage.com/2026/09/17/a-new-tour-delivers-a-dirty-dancing-makeover/",
         "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/",
         "https://www.chicagotribune.com/2026/09/13/review-dirty-dancing-musical-chicago/",
@@ -67921,6 +67924,20 @@
       "dirClean": 12,
       "inReviewsJson": 12,
       "missing": [
+        {
+          "url": "http://tvline.com/2017/04/30/dirty-dancing-review-remake-abc-abigail-breslin/",
+          "host": "tvline.com",
+          "knownOutletId": "tv-line",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2017/tv/reviews/tv-movie-review-dirty-dancing-abc-1202430883/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/",
           "host": "theoaklandpress.com",
@@ -68019,19 +68036,43 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 310,
+        "count": 428,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 210,
-          "not-http-url": 77,
-          "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "roundup-page": 2
+          "aggregator-internal-nav": 283,
+          "not-http-url": 83,
+          "production-database-listing": 14,
+          "aggregator-section-root": 9,
+          "non-review-host": 35,
+          "non-stage-review": 1,
+          "roundup-page": 2,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-do-tv-critics-think-of-the-dirty-dancing-remake",
+          "publishDate": "2017-05-18"
+        }
+      ],
       "automatedExcludedListed": 2,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://tvline.com/2017/04/30/dirty-dancing-review-remake-abc-abigail-breslin/",
+          "host": "tvline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2017/tv/reviews/tv-movie-review-dirty-dancing-abc-1202430883/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.theoaklandpress.com/2026/10/15/dirty-dancing-brings-iconic-film-to-stage-life-at-the-fisher-theatre/",
@@ -68115,7 +68156,7 @@
         "liveCount": 2,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "dirty-laundry-off-broadway-2024",
@@ -69870,7 +69911,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 1,
             "accepted": 0,
             "error": null
           },
@@ -69911,28 +69952,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 4,
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 21,
         "byReason": {
-          "non-review-host": 13,
-          "write-path-blocked": 1,
-          "venue-production-page": 2,
-          "aggregator-internal-nav": 1,
-          "census-junk-host": 1,
-          "no-review-evidence": 3,
-          "ticketing-listing": 5,
-          "non-review-path": 2,
-          "non-stage-review": 1,
-          "ticketing-reseller": 1
+          "non-review-host": 11,
+          "venue-production-page": 4,
+          "no-review-evidence": 1,
+          "non-review-path": 1,
+          "ticketing-listing": 3,
+          "tag-index-page": 1
         }
       },
       "dedupedVariants": [],
@@ -70053,7 +70090,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T03:04:45.363Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -83706,7 +83743,7 @@
         "liveCount": 14,
         "candidateCount": 20
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "finians-rainbow-off-broadway-2016",
@@ -85722,7 +85759,7 @@
         "liveCount": 9,
         "candidateCount": 15
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "floyd-collins-2025",
@@ -114144,14 +114181,23 @@
       "status": "closed",
       "category": "off-west-end",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-At-New-York-Theater-Workshop-20240514"
+        "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries",
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries"
       ],
       "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232",
+        "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
+        "https://www.nysun.com/article/centered-on-everyday-nazi-life-at-auschwitz-here-there-are-blueberries-plumbs-the-depths-of-the-banality-of-evil",
+        "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+        "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review",
         "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
         "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/",
-        "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
-        "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+        "https://www.theatermania.com/news/review-here-there-are-blueberries-depicts-nazis-at-play-in-auschwitz_1740241/",
         "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
+        "https://www.latimes.com/entertainment-arts/story/2022-08-09/review-moises-kaufman-here-there-are-blueberries-play",
+        "https://sandiegostory.com/here-there-are-blueberries-explores-the-chilling-layers-of-the-perpetrators-of-auschwitz/",
+        "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-08-01/review-la-jolla-playhouses-here-there-are-blueberries-a-chilling-examination-of-the-roots-of-human-cruelty",
+        "https://timesofsandiego.com/arts/2022/08/08/here-there-are-blueberries-chronicles-the-terrifying-banality-of-holocaust-evil/",
         "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
         "https://www.theguardian.com/stage/2026/feb/13/here-there-are-blueberries-review-theatre-royal-stratford-east-london",
         "https://www.timeout.com/london/theatre/here-there-are-blueberries-review",
@@ -114162,6 +114208,41 @@
       "dirClean": 9,
       "inReviewsJson": 14,
       "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/centered-on-everyday-nazi-life-at-auschwitz-here-there-are-blueberries-plumbs-the-depths-of-the-banality-of-evil",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
           "host": "nytimes.com",
@@ -114177,16 +114258,9 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
+          "url": "https://www.theatermania.com/news/review-here-there-are-blueberries-depicts-nazis-at-play-in-auschwitz_1740241/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -114194,6 +114268,13 @@
           "url": "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
           "host": "thewrap.com",
           "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://timesofsandiego.com/arts/2022/08/08/here-there-are-blueberries-chronicles-the-terrifying-banality-of-holocaust-evil/",
+          "host": "timesofsandiego.com",
+          "knownOutletId": "timesofsandiego",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -114225,6 +114306,78 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2022-08-09/review-moises-kaufman-here-there-are-blueberries-play",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "latimes--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.latimes.com/entertainment-arts/story/2022-08-09/review-moises-kaufman-here-there-are-blueberries-play"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://sandiegostory.com/here-there-are-blueberries-explores-the-chilling-layers-of-the-perpetrators-of-auschwitz/",
+          "host": "sandiegostory.com",
+          "knownOutletId": "san-diego-story",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "san-diego-story--cassiopeia-guthrie.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://sandiegostory.com/here-there-are-blueberries-explores-the-chilling-layers-of-the-perpetrators-of-auschwitz/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-08-01/review-la-jolla-playhouses-here-there-are-blueberries-a-chilling-examination-of-the-roots-of-human-cruelty",
+          "host": "sandiegouniontribune.com",
+          "knownOutletId": "san-diego-union-tribune",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "san-diego-union-tribune--pam-kragen.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.sandiegouniontribune.com/entertainment/theater/story/2022-08-01/review-la-jolla-playhouses-here-there-are-blueberries-a-chilling-examination-of-the-roots-of-human-cruelty"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "https://www.standard.co.uk/culture/theatre/here-there-are-blueberries-stratford-east-review-b1270724.html",
           "host": "standard.co.uk",
@@ -114277,24 +114430,66 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 279,
+        "count": 248,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 199,
-          "not-http-url": 61,
-          "aggregator-section-root": 4
+          "aggregator-internal-nav": 116,
+          "not-http-url": 12,
+          "production-database-listing": 21,
+          "aggregator-section-root": 8,
+          "non-review-host": 41,
+          "non-stage-review": 2,
+          "roundup-page": 48
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-HERE-THERE-ARE-BLUEBERRIES-Opens-At-New-York-Theater-Workshop-20240514",
+          "url": "https://playbill.com/article/reviews-were-critics-moved-by-here-there-are-blueberries",
           "publishDate": "2024-05-14"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-here-there-are-blueberries",
+          "publishDate": "2022-08-03"
         }
       ],
       "automatedExcludedListed": 2,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Here-There-Are-Blueberries/1232",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/centered-on-everyday-nazi-life-at-auschwitz-here-there-are-blueberries-plumbs-the-depths-of-the-banality-of-evil",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/here-there-are-blueberries-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
           "host": "nytimes.com",
@@ -114310,15 +114505,8 @@
           "censusGateOn": true
         },
         {
-          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
-          "host": "newyorktheater.me",
+          "url": "https://www.theatermania.com/news/review-here-there-are-blueberries-depicts-nazis-at-play-in-auschwitz_1740241/",
+          "host": "theatermania.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -114326,6 +114514,13 @@
         {
           "url": "https://www.thewrap.com/here-there-are-blueberries-off-broadway-review/",
           "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://timesofsandiego.com/arts/2022/08/08/here-there-are-blueberries-chronicles-the-terrifying-banality-of-holocaust-evil/",
+          "host": "timesofsandiego.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -114390,7 +114585,7 @@
         "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "here-we-are-off-broadway-2023",
@@ -115477,7 +115672,7 @@
         "liveCount": 8,
         "candidateCount": 10
       },
-      "computedAt": "2026-11-01T05:58:27.218Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "high-school-musical-off-west-end-2026",
@@ -133405,43 +133600,50 @@
       "status": "closed",
       "category": "west-end",
       "aggregatorArticles": [
+        "https://playbill.com/article/what-do-london-critics-think-of-john-proctor-is-the-villain",
+        "https://playbill.com/article/reviews-are-out-for-john-proctor-is-the-villain-starring-sadie-sink",
         "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414"
       ],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
-        "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
-        "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
-        "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
-        "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
-        "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
-        "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
-        "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
-        "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
-        "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
-        "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html",
-        "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
-        "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
-        "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446",
-        "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
-        "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
-        "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
-        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/",
-        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
-        "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/",
-        "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
-        "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
-        "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
         "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
-        "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
-        "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
-        "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
-        "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
         "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
         "https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible",
         "https://therecs.co.uk/john-proctor-is-the-villain/",
+        "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+        "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
+        "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
         "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
-        "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review"
+        "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
+        "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
+        "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
+        "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
+        "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
+        "https://culturesauce.com/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+        "https://ew.com/john-proctor-is-the-villain-sadie-sink-broadway-play-review-11714446",
+        "https://www.thedailybeast.com/john-proctor-is-the-villain-review-the-crucible-gets-a-fiery-metoo-rewrite/",
+        "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
+        "https://www.digitaljournal.com/entertainment/review-john-proctor-is-the-villain-starring-sadie-sink-is-a-new-original-comedy-on-broadway/article",
+        "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
+        "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
+        "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html",
+        "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
+        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-metoo-conversation-with-the-crucible/",
+        "https://nystagereview.com/2025/04/14/john-proctor-is-the-villain-a-fearless-gen-z-look-at-the-crucible/",
+        "https://www.nysun.com/article/set-at-the-peak-of-the-metoo-movement-john-proctor-is-the-villain-touches-on-territory-laid-out-in-arthur-millers-the-crucible",
+        "https://newyorktheater.me/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
+        "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
+        "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
+        "https://www.theatermania.com/news/review-john-proctor-is-the-villain-is-a-broadway-stunner_1770362/",
+        "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
+        "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
+        "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
+        "https://www.washingtonpost.com/entertainment/theater/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+        "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
+        "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
+        "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html"
       ],
       "dirFiles": 66,
       "dirClean": 32,
@@ -133451,6 +133653,27 @@
           "url": "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
           "host": "cititour.com",
           "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-john-proctor-is-the-villain-starring-sadie-sink-is-a-new-original-comedy-on-broadway/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/set-at-the-peak-of-the-metoo-movement-john-proctor-is-the-villain-touches-on-territory-laid-out-in-arthur-millers-the-crucible",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -133539,9 +133762,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -133549,186 +133772,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html"
+              "file": "whatsonstage--sarah-crompton.json",
+              "flag": "clean",
+              "urlInDir": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "rejectionReason"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--raven-snook.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--christian-lewis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--greg-evans.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--lovia-gyarkye.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--jesse-hassenger.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--gillian-russo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
+          "reverify": true
         },
         {
           "url": "https://www.amny.com/entertainment/theater/review-john-proctor-is-the-villain/",
@@ -133755,9 +133808,9 @@
           "reverify": false
         },
         {
-          "url": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
+          "url": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -133765,81 +133818,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatrely--juan-a-ramirez.json",
+              "file": "chicagotribune--chris-jones.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--sara-holdren.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nypost--johnny-oleksinski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/"
+              "urlInDir": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -133899,9 +133880,9 @@
           "reverify": false
         },
         {
-          "url": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
+          "url": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -133909,9 +133890,105 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "chicagotribune--chris-jones.json",
+              "file": "deadline--greg-evans.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.chicagotribune.com/2025/04/14/review-john-proctor-is-the-villain-on-broadway-reinvents-the-crucible-for-today/"
+              "urlInDir": "https://deadline.com/2025/04/john-proctor-is-the-villain-broadway-review-sadie-sink-1236367854/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "guardian--jesse-hassenger.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theguardian.com/stage/2025/apr/14/john-proctor-is-the-villain-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--lovia-gyarkye.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/john-proctor-is-the-villain-review-sadie-sink-broadway-1236190543/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/theater-review-john-proctor-villain-belflower.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2025/04/14/entertainment/john-proctor-is-the-villain-review-stranger-things-star-sadie-sink-leads-likable-long-metoo-drama/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -133995,9 +134072,9 @@
           "reverify": false
         },
         {
-          "url": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
+          "url": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -134005,16 +134082,210 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "whatsonstage--sarah-crompton.json",
-              "flag": "clean",
-              "urlInDir": "https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/"
+              "file": "nytg--gillian-russo.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/reviews/john-proctor-is-the-villain-broadway-review-sadie-sink"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "wrongProduction"
           ],
-          "reverify": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2025/04/14/theater/john-proctor-is-the-villain-review-sink.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://observer.com/2025/04/review-high-schoolers-tell-truth-and-shame-the-devil-in-john-proctor-is-the-villain/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-john-proctor-is-the-villain-is-a-broadway-stunner_1770362/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--rachel-graham.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatermania.com/news/review-john-proctor-is-the-villain-is-a-broadway-stunner_1770362/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--juan-a-ramirez.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/a-heady-sex-education-in-john-proctor-is-the-villain-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/john-proctor-is-the-villain-broadway-review-sadie-sink-crucible-metoo"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "variety--christian-lewis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://variety.com/2025/legit/reviews/john-proctor-is-the-villain-review-broadway-sadie-sink-1236368941/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "washpost--naveen-kumar.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.washingtonpost.com/entertainment/theater/2025/04/14/john-proctor-is-the-villain-broadway-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/john-proctor-is-the-villain-broadway-review-sadie-sink/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -134024,12 +134295,16 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 285,
+        "count": 500,
         "byReason": {
-          "not-http-url": 43,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 223,
-          "aggregator-section-root": 4
+          "aggregator-internal-nav": 342,
+          "not-http-url": 69,
+          "production-database-listing": 17,
+          "aggregator-section-root": 13,
+          "non-review-host": 55,
+          "non-stage-review": 2,
+          "venue-production-page": 1,
+          "bare-host": 1
         }
       },
       "dedupedVariants": [
@@ -134043,6 +134318,10 @@
       ],
       "priorRunArticles": [
         {
+          "url": "https://playbill.com/article/reviews-are-out-for-john-proctor-is-the-villain-starring-sadie-sink",
+          "publishDate": "2025-04-14"
+        },
+        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-JOHN-PROCTOR-IS-THE-VILLAIN-Opens-On-Broadway-20250414",
           "publishDate": "2025-04-14"
         }
@@ -134053,6 +134332,27 @@
         {
           "url": "https://cititour.com/NYC_Broadway/John-Proctor-is-the-Villain/1296",
           "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2025/04/14/john-proctor-is-the-villain-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-john-proctor-is-the-villain-starring-sadie-sink-is-a-new-original-comedy-on-broadway/article",
+          "host": "digitaljournal.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/set-at-the-peak-of-the-metoo-movement-john-proctor-is-the-villain-touches-on-territory-laid-out-in-arthur-millers-the-crucible",
+          "host": "nysun.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -134074,50 +134374,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
             "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
-            "outletId": "independent.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T23:26:20.886Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
-            "outletId": "telegraph.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
@@ -134140,6 +134398,30 @@
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/royal-court-theatre-john-proctor-is-the-villain-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
             "outletId": "thetimes.com",
             "state": "live",
@@ -134148,6 +134430,24 @@
           {
             "url": "https://theatreandtonic.co.uk/blog/john-proctor-is-the-villain-royal-court-theatre-review",
             "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/john-proctor-is-the-villain-review-royal-court",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-JOHN-PROCTOR-IS-THE-VILLAIN-Royal-Court-Theatre-20260327",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T23:26:20.886Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/john-proctor-is-the-villain-review-royal-court-b2946888.html",
+            "outletId": "independent.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T23:26:20.886Z"
           },
@@ -134163,7 +134463,7 @@
         "liveCount": 13,
         "candidateCount": 14
       },
-      "computedAt": "2026-11-01T05:58:27.218Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "joy-guidry-off-broadway-2026",
@@ -158674,7 +158974,7 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "manual-cinema-the-4th-witch-off-broadway-2026",
@@ -166813,21 +167113,21 @@
         "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
         "https://uktheatrenetwork.com/2026/10/27/memoriam-southwark-theatre-london/",
         "https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough",
-        "https://onin.london/memoriam-at-southwark-playhouse-review/",
-        "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
-        "https://www.thestage.co.uk/reviews/memoriam-review-southwark-playhouse-borough-london",
-        "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
         "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/",
+        "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
         "https://thespyinthestalls.com/2026/10/memoriam/",
-        "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
         "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
-        "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
-        "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
-        "https://playstosee.com/reviews/uk-reviews/london/memoriam/",
-        "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
-        "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
+        "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
+        "https://www.thestage.co.uk/reviews/memoriam-review-southwark-playhouse-borough-london",
         "https://www.adventuresintheatreland.com/post/memoriam-southwark-playhouse-borough",
         "https://www.westendbestfriend.co.uk/news/review-memoriam-southwark-playhouse",
+        "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+        "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
+        "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
+        "https://onin.london/memoriam-at-southwark-playhouse-review/",
+        "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
+        "https://playstosee.com/reviews/uk-reviews/london/memoriam/",
+        "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
         "https://www.londonbornandbred.co.uk/post/memoriam",
         "https://everything-theatre.co.uk/tag/memoriam/",
         "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-playhouse",
@@ -167069,7 +167369,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 0,
             "error": null
           },
           {
@@ -167079,7 +167379,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           },
           {
@@ -167089,7 +167389,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           },
           {
@@ -167105,15 +167405,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 20,
+        "resultCount": 18,
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 23,
         "byReason": {
-          "non-review-host": 12,
-          "census-junk-host": 1,
-          "roundup-page": 2
+          "non-review-host": 17,
+          "roundup-page": 2,
+          "no-review-evidence": 1,
+          "census-junk-host": 2,
+          "event-listings-page": 1
         }
       },
       "dedupedVariants": [],
@@ -167228,26 +167530,8 @@
             "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
-            "url": "https://onin.london/memoriam-at-southwark-playhouse-review/",
-            "outletId": "onin.london",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T20:58:21.689Z"
-          },
-          {
             "url": "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
             "outletId": "jewishnews.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/memoriam-review-southwark-playhouse-borough-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T20:58:21.689Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
-            "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
@@ -167258,38 +167542,20 @@
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
-            "outletId": "reviewsgate.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T13:54:34.822Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
-            "url": "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
-            "outletId": "ratedreviewed.co.uk",
+            "url": "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
+            "outletId": "reviewsgate.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-30T23:31:22.664Z"
+            "firstSeenAt": "2026-10-30T13:54:34.822Z"
           },
           {
-            "url": "https://playstosee.com/reviews/uk-reviews/london/memoriam/",
-            "outletId": "playstosee.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T13:27:09.994Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T15:02:52.339Z"
-          },
-          {
-            "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
-            "outletId": "revstanstheatreblog.co.uk",
+            "url": "https://www.thestage.co.uk/reviews/memoriam-review-southwark-playhouse-borough-london",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-29T20:58:21.689Z"
           },
@@ -167304,6 +167570,42 @@
             "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
+            "outletId": "ratedreviewed.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T23:31:22.664Z"
+          },
+          {
+            "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
+            "outletId": "revstanstheatreblog.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T20:58:21.689Z"
+          },
+          {
+            "url": "https://onin.london/memoriam-at-southwark-playhouse-review/",
+            "outletId": "onin.london",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T20:58:21.689Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
+            "url": "https://playstosee.com/reviews/uk-reviews/london/memoriam/",
+            "outletId": "playstosee.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T13:27:09.994Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T15:02:52.339Z"
           },
           {
             "url": "https://www.londonbornandbred.co.uk/post/memoriam",
@@ -167400,7 +167702,7 @@
         "liveCount": 26,
         "candidateCount": 31
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "menopause-the-musical-tour-2026",
@@ -187682,9 +187984,77 @@
       "status": "open",
       "category": "tour",
       "aggregatorArticles": [
+        "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
+        "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
         "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-National-Tour-20261007"
       ],
       "aggregatorListedUrls": [
+        "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+        "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+        "https://thefrontrowcenter.com/2024/02/oh-mary/",
+        "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+        "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+        "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+        "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+        "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+        "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
+        "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+        "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
+        "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
+        "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
+        "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
+        "https://londonist.com/london/on-stage/oh-mary-west-end-review",
+        "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
+        "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
+        "https://www.londontheatredirect.com/news/oh-mary-review",
+        "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
+        "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
+        "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
+        "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
+        "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
+        "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
+        "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
+        "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
+        "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
+        "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
+        "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
+        "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+        "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+        "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
+        "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
+        "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+        "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+        "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+        "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
+        "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
+        "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+        "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
+        "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+        "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+        "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
+        "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
+        "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+        "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+        "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+        "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
+        "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+        "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+        "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+        "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+        "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+        "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+        "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+        "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+        "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
         "https://www.courant.com/2026/09/21/theater-review-tour-premiere-of-freaky-farce-oh-mary-lives-up-to-the-hype-at-the-bushnell/",
         "https://www.sdjewishworld.com/2026/10/01/oh-mary-is-a-blue-funny-farce-about-mary-and-abe-lincoln/",
         "https://timesofsandiego.com/arts/2026/10/01/oh-mary-san-diego-national-tour/",
@@ -187694,9 +188064,394 @@
         "https://destinationcompass.travel.blog/2026/02/24/review-is-oh-mary-on-broadway-a-must-see-cole-e/"
       ],
       "dirFiles": 30,
-      "dirClean": 14,
+      "dirClean": 15,
       "inReviewsJson": 14,
       "missing": [
+        {
+          "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2024/02/oh-mary/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
+          "host": "liamodell.com",
+          "knownOutletId": "liamodell",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
+          "host": "huffingtonpost.co.uk",
+          "knownOutletId": "huffpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
+          "host": "the-independent.com",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
+          "host": "jonathanbaz.com",
+          "knownOutletId": "jonathan-baz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
+          "host": "lbc.co.uk",
+          "knownOutletId": "lbc",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
+          "host": "londonist.com",
+          "knownOutletId": "londonist",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
+          "host": "loureviews.blog",
+          "knownOutletId": "loureviews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
+          "host": "readaboutstuff.com",
+          "knownOutletId": "readaboutstuff",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.marinij.com/2026/10/16/review-oh-mary-in-sf/",
           "host": "marinij.com",
@@ -187710,10 +188465,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "broadwayworld.com",
-          "count": 3
-        },
         {
           "host": "dailyactor.com",
           "count": 1
@@ -187739,7 +188490,204 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nypost--johnny-oleksinski.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nysr--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--joshua-barone.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--laura-collins-hughes.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Laura Collins-Hughes",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.nytimes.com/2026/09/09/theater/liberation-purpose-oh-mary-mexodus-shows-in-us-2026.html?eafs_enabled=false"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--laura-collins-hughes.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Laura Collins-Hughes",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--laura-collins-hughes.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.nytimes.com/2026/09/09/theater/liberation-purpose-oh-mary-mexodus-shows-in-us-2026.html?eafs_enabled=false"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -187747,19 +188695,422 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 286,
+        "count": 640,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 207,
-          "not-http-url": 57,
-          "aggregator-section-root": 5,
-          "roundup-page": 2
+          "aggregator-internal-nav": 418,
+          "not-http-url": 75,
+          "production-database-listing": 33,
+          "aggregator-section-root": 17,
+          "non-review-host": 76,
+          "non-stage-review": 5,
+          "bare-host": 3,
+          "roundup-page": 3,
+          "podcast-episode": 10
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
+          "publishDate": "2024-02-09"
+        },
+        {
+          "url": "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
+          "publishDate": "2025-12-19"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
+          "publishDate": "2024-07-11"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2024/02/oh-mary/",
+          "host": "thefrontrowcenter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
+          "host": "allthatdazzles.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
+          "host": "liamodell.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
+          "host": "huffingtonpost.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
+          "host": "the-independent.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
+          "host": "jonathanbaz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
+          "host": "lbc.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
+          "host": "londonist.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/oh-mary-review",
+          "host": "londontheatredirect.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
+          "host": "loureviews.blog",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
+          "host": "musicaltheatrereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
+          "host": "readaboutstuff.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
+          "host": "theatreandtonic.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
+          "host": "theatreweekly.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
+          "host": "westendbestfriend.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/2024/07/11/cole-escola-oh-mary-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
+          "host": "digitaljournal.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-oh-mary-cole-escolas-riotous-broadway-debut_1744785/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://destinationcompass.travel.blog/2026/02/24/review-is-oh-mary-on-broadway-a-must-see-cole-e/",
           "host": "travel.blog",
@@ -187782,24 +189133,10 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed"
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.theatrely.com/post/review-roundup-pre-existing-condition-the-body-of-mary",
-          "host": "theatrely.com",
-          "file": "theatrely--juan-a-ramirez.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -187820,6 +189157,18 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:34:49.647Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:34:49.647Z"
+          },
           {
             "url": "https://www.courant.com/2026/09/21/theater-review-tour-premiere-of-freaky-farce-oh-mary-lives-up-to-the-hype-at-the-bushnell/",
             "outletId": "courant.com",
@@ -187866,10 +189215,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
-        "candidateCount": 7
+        "liveCount": 7,
+        "candidateCount": 9
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "oh-mary-west-end-2025",
@@ -212761,10 +214110,7 @@
       "category": "west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/critics-sound-off-on-london-rent-revival-starring-stranger-things-gaten-matarazzo",
-        "https://playbill.com/article/read-the-reviews-for-foxs-rent",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-Of-Gaten-Matarazzo-in-RENT-20261009",
-        "https://www.broadwayworld.com/article/Review-Roundup-Were-the-Critics-Over-the-Moon-With-RENT-on-FOX-20190128",
-        "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-RENT-Updating-Live-20200127"
+        "https://playbill.com/article/read-the-reviews-for-foxs-rent"
       ],
       "aggregatorListedUrls": [
         "https://www.allthatdazzles.co.uk/post/review-rent-tom-stoppard-theatre",
@@ -212798,11 +214144,9 @@
         "https://www.usatoday.com/story/life/tv/2019/01/27/rent-live-fox-review-more-season-lousy-than-love-pre-recorded/2680003002/",
         "https://variety.com/2019/tv/news/rent-live-review-fox-1203120196/",
         "https://www.washingtonpost.com/arts-entertainment/2019/01/28/best-part-rent-live-was-vanessa-hudgens-worst-part-it-wasnt-live/",
+        "https://theartsdesk.com/theatre/rent-tom-stoppard-theatre-review-roof-raising-reappraisal",
         "https://www.thestage.co.uk/reviews/rent-review-tom-stoppard-theatre-jonathan-larson-luke-sheppard-gaten-matarazzo",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/rent-review-west-end-gaten-matarazzo-b3063561.html",
-        "https://www.encoremichigan.com/2019/01/rent-rolls-into-fisher-for-anniversary-tour/",
-        "https://www.theoaklandpress.com/entertainment/rent-remains-joyous-and-relevant-in-its-return-to-fisher/article_be39f090-140a-11e9-9583-bf12ec2f3981.html",
-        "https://theartsdesk.com/theatre/rent-tom-stoppard-theatre-review-roof-raising-reappraisal",
         "https://monstagigz.com/2026/10/01/theatre-review-rent-the-musical-starring-gaten-matarazzo-at-tom-stoppards-theatre/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/rent-duke-of-york-s-london-397086.html",
         "https://www.cityam.com/rent-musical-review-this-dated-show-is-admittedly-full-of-bangers/",
@@ -212930,20 +214274,6 @@
           "url": "https://www.washingtonpost.com/arts-entertainment/2019/01/28/best-part-rent-live-was-vanessa-hudgens-worst-part-it-wasnt-live/",
           "host": "washingtonpost.com",
           "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.encoremichigan.com/2019/01/rent-rolls-into-fisher-for-anniversary-tour/",
-          "host": "encoremichigan.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theoaklandpress.com/entertainment/rent-remains-joyous-and-relevant-in-its-return-to-fisher/article_be39f090-140a-11e9-9583-bf12ec2f3981.html",
-          "host": "theoaklandpress.com",
-          "knownOutletId": "the-oakland-press",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         }
@@ -213116,17 +214446,15 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1094,
+        "count": 215,
         "byReason": {
-          "not-http-url": 189,
-          "non-review-host": 85,
-          "aggregator-internal-nav": 760,
-          "aggregator-section-root": 23,
-          "roundup-page": 2,
+          "aggregator-internal-nav": 119,
+          "not-http-url": 26,
           "production-database-listing": 19,
+          "aggregator-section-root": 9,
+          "non-review-host": 39,
           "non-stage-review": 2,
-          "bare-host": 1,
-          "podcast-episode": 13
+          "bare-host": 1
         }
       },
       "dedupedVariants": [
@@ -213149,14 +214477,6 @@
         {
           "url": "https://playbill.com/article/read-the-reviews-for-foxs-rent",
           "publishDate": "2019-01-28"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Were-the-Critics-Over-the-Moon-With-RENT-on-FOX-20190128",
-          "publishDate": "2019-01-28"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-The-National-Tour-of-RENT-Updating-Live-20200127",
-          "publishDate": "2020-01-27"
         }
       ],
       "automatedExcludedListed": 2,
@@ -213263,20 +214583,6 @@
         {
           "url": "https://www.washingtonpost.com/arts-entertainment/2019/01/28/best-part-rent-live-was-vanessa-hudgens-worst-part-it-wasnt-live/",
           "host": "washingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.encoremichigan.com/2019/01/rent-rolls-into-fisher-for-anniversary-tour/",
-          "host": "encoremichigan.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theoaklandpress.com/entertainment/rent-remains-joyous-and-relevant-in-its-return-to-fisher/article_be39f090-140a-11e9-9583-bf12ec2f3981.html",
-          "host": "theoaklandpress.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -213408,6 +214714,12 @@
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
           },
           {
+            "url": "https://theartsdesk.com/theatre/rent-tom-stoppard-theatre-review-roof-raising-reappraisal",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-09T21:34:59.683Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/rent-review-tom-stoppard-theatre-jonathan-larson-luke-sheppard-gaten-matarazzo",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -213416,12 +214728,6 @@
           {
             "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/rent-review-west-end-gaten-matarazzo-b3063561.html",
             "outletId": "independent.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-09T21:34:59.683Z"
-          },
-          {
-            "url": "https://theartsdesk.com/theatre/rent-tom-stoppard-theatre-review-roof-raising-reappraisal",
-            "outletId": "theartsdesk.com",
             "state": "live",
             "firstSeenAt": "2026-10-09T21:34:59.683Z"
           },
@@ -213553,7 +214859,7 @@
         "liveCount": 34,
         "candidateCount": 37
       },
-      "computedAt": "2026-11-01T05:58:27.218Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
@@ -231638,11 +232944,11 @@
       "candidatesRejected": {
         "count": 379,
         "byReason": {
-          "not-http-url": 68,
-          "non-review-host": 34,
           "aggregator-internal-nav": 255,
-          "aggregator-section-root": 11,
+          "not-http-url": 68,
           "production-database-listing": 9,
+          "aggregator-section-root": 11,
+          "non-review-host": 34,
           "non-stage-review": 1,
           "non-review-path": 1
         }
@@ -231725,7 +233031,7 @@
         "liveCount": 6,
         "candidateCount": 8
       },
-      "computedAt": "2026-11-01T05:20:32.260Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "sorry-for-your-loss-off-broadway-2023",
@@ -251432,21 +252738,20 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://corrblimey.uk/2026/10/17/review-the-banalities-of-evil-hannah-arendt-france-1940-the-arcola-theatre-london/",
-        "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
-        "https://www.reviewsgate.co.uk/all-reviews/the-banality-of-evil-hannah-arendt-france-1940-written-and-directed-by-julia-pascal-the-arcola-theatre-studio-2-london-until-07-november-2026",
+        "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940",
+        "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
         "https://www.thestage.co.uk/reviews/the-banality-of-evil-hannah-arendt-france-1940-review-arcola-theatre-london",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/the-banality-of-evil-hannah-arendt-france-1940/",
+        "https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
         "https://khambayswordswordswords.blog/2026/10/13/the-banality-of-evil-hannah-arendt-france-1940-at-arcola-theatre-2026-review/",
         "https://www.thereviewshub.com/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre-london/",
-        "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940",
-        "https://viewfromthegods.co.uk/2026/10/17/the-banality-of-evil-hannah-arendt-france-1940/",
-        "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
+        "https://www.broadwayworld.com/westend/article/Review-THE-BANALITY-OF-EVIL-HANNAH-ARENDT-FRANCE-1940-Arcola-Theatre-20261013",
+        "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
+        "https://www.reviewsgate.co.uk/all-reviews/the-banality-of-evil-hannah-arendt-france-1940-written-and-directed-by-julia-pascal-the-arcola-theatre-studio-2-london-until-07-november-2026",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/the-banality-of-evil-hannah-arendt-france-1940/",
         "https://www.londontheatre1.com/reviews/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
         "https://www.thejc.com/life/theatre/the-banality-of-evil-hannah-arendt-france-1940-review-her-brilliant-mind-and-humiliated-body-k5pkgnsx",
-        "https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
-        "https://www.broadwayworld.com/westend/article/Review-THE-BANALITY-OF-EVIL-HANNAH-ARENDT-FRANCE-1940-Arcola-Theatre-20261013",
         "https://ayoungishperspective.co.uk/2026/10/13/the-banality-of-evil-hannah-arendt-france-1940/",
+        "https://viewfromthegods.co.uk/2026/10/17/the-banality-of-evil-hannah-arendt-france-1940/",
         "https://www.lbilondon.ac.uk/events/external-events/banality-evil-hannah-arendt-france-1940-arcola-theatre",
         "https://www.looge.co.uk/event/the-banality-of-evil-hannah-arendt-france-1940-b222f3bf",
         "https://thespyinthestalls.com/2026/10/the-banality-of-evil/",
@@ -251470,9 +252775,9 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://corrblimey.uk/2026/10/17/review-the-banalities-of-evil-hannah-arendt-france-1940-the-arcola-theatre-london/",
-          "host": "corrblimey.uk",
-          "knownOutletId": "corrblimey",
+          "url": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -251480,17 +252785,21 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "corrblimey--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://corrblimey.uk/2026/10/17/review-the-banalities-of-evil-hannah-arendt-france-1940-the-arcola-theatre-london/"
+              "file": "timeout-london--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
           ],
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://viewfromthegods.co.uk/2026/10/17/the-banality-of-evil-hannah-arendt-france-1940/",
@@ -251523,33 +252832,6 @@
           ],
           "weRefStars": 4,
           "weRefStarsSource": "bestoftheatre",
-          "reverify": false
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "serpCensus": true,
           "reverify": false
         },
         {
@@ -251691,7 +252973,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 7,
+            "accepted": 0,
             "error": null
           },
           {
@@ -251721,7 +253003,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 5,
             "error": null
           },
           {
@@ -251731,40 +253013,36 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 12,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 39,
         "byReason": {
           "non-review-host": 11,
-          "write-path-blocked": 2,
-          "roundup-page": 1,
-          "no-review-evidence": 3,
-          "ticket-seller-product-page": 1,
-          "ticketing-reseller": 9,
-          "event-listings-page": 1,
-          "ugc-platform": 1
+          "no-review-evidence": 1,
+          "ticketing-reseller": 25,
+          "show-listing-page": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 3,
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "corrblimey",
-            "outlet": "corrblimey",
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://corrblimey.uk/2026/10/17/review-the-banalities-of-evil-hannah-arendt-france-1940-the-arcola-theatre-london/"
+            "url": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940"
           },
           {
             "outletId": "viewfromthegods",
@@ -251772,13 +253050,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://viewfromthegods.co.uk/2026/10/17/the-banality-of-evil-hannah-arendt-france-1940/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940"
           },
           {
             "outletId": "lbilondon.ac.uk",
@@ -251805,16 +253076,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
-            "outletId": "londonpubtheatres.com",
+            "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940",
+            "outletId": "ground.news",
             "state": "live",
-            "firstSeenAt": "2026-10-13T23:45:26.813Z"
-          },
-          {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/the-banality-of-evil-hannah-arendt-france-1940-written-and-directed-by-julia-pascal-the-arcola-theatre-studio-2-london-until-07-november-2026",
-            "outletId": "reviewsgate.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-15T04:30:21.497Z"
+            "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/the-banality-of-evil-hannah-arendt-france-1940-review-arcola-theatre-london",
@@ -251823,10 +253088,10 @@
             "firstSeenAt": "2026-10-13T17:02:51.141Z"
           },
           {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-banality-of-evil-hannah-arendt-france-1940/",
-            "outletId": "fringereview.co.uk",
+            "url": "https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
+            "outletId": "playsinternational.org.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-01T00:08:34.874Z"
+            "firstSeenAt": "2026-10-16T23:20:29.893Z"
           },
           {
             "url": "https://khambayswordswordswords.blog/2026/10/13/the-banality-of-evil-hannah-arendt-france-1940-at-arcola-theatre-2026-review/",
@@ -251841,8 +253106,26 @@
             "firstSeenAt": "2026-10-13T17:02:51.141Z"
           },
           {
-            "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940",
-            "outletId": "ground.news",
+            "url": "https://www.broadwayworld.com/westend/article/Review-THE-BANALITY-OF-EVIL-HANNAH-ARENDT-FRANCE-1940-Arcola-Theatre-20261013",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-13T17:02:51.141Z"
+          },
+          {
+            "url": "https://www.londonpubtheatres.com/review-the-banality-of-evil-hannah-arendt-france-1940-by-julia-pascal-at-the-arcola-theatre-8-october-7-november-2026",
+            "outletId": "londonpubtheatres.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-13T23:45:26.813Z"
+          },
+          {
+            "url": "https://www.reviewsgate.co.uk/all-reviews/the-banality-of-evil-hannah-arendt-france-1940-written-and-directed-by-julia-pascal-the-arcola-theatre-studio-2-london-until-07-november-2026",
+            "outletId": "reviewsgate.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-15T04:30:21.497Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-banality-of-evil-hannah-arendt-france-1940/",
+            "outletId": "fringereview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
@@ -251857,18 +253140,6 @@
             "outletId": "thejc.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T05:36:08.000Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/the-banality-of-evil-hannah-arendt-france-1940-arcola-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-16T23:20:29.893Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-THE-BANALITY-OF-EVIL-HANNAH-ARENDT-FRANCE-1940-Arcola-Theatre-20261013",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-13T17:02:51.141Z"
           },
           {
             "url": "https://ayoungishperspective.co.uk/2026/10/13/the-banality-of-evil-hannah-arendt-france-1940/",
@@ -251895,11 +253166,11 @@
             "firstSeenAt": "2026-10-15T12:23:26.665Z"
           },
           {
-            "url": "https://corrblimey.uk/2026/10/17/review-the-banalities-of-evil-hannah-arendt-france-1940-the-arcola-theatre-london/",
-            "outletId": "corrblimey",
+            "url": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-17T14:50:53.502Z"
+            "firstSeenAt": "2026-10-15T23:35:34.762Z"
           },
           {
             "url": "https://viewfromthegods.co.uk/2026/10/17/the-banality-of-evil-hannah-arendt-france-1940/",
@@ -251907,13 +253178,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-18T05:25:47.776Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-banality-of-evil-hannah-arendt-france-1940",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-15T23:35:34.762Z"
           },
           {
             "url": "https://www.lbilondon.ac.uk/events/external-events/banality-evil-hannah-arendt-france-1940-arcola-theatre",
@@ -251939,9 +253203,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 15,
-        "candidateCount": 21
+        "candidateCount": 20
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "the-bands-visit-off-broadway-2016",
@@ -265237,10 +266501,10 @@
         "https://1minutecritic.com/the-heart-musical-roundabout-review/",
         "https://cititour.com/NYC_Broadway/The-Heart/1405",
         "https://www.vulture.com/article/new-musicals-reviewed-the-heart-midnight-and-i-became-we.html",
-        "https://www.boothhistory.com/shows/the-heart/news",
         "https://www.theatermania.com/news/review-the-heart-an-electronic-musical-about-an-organ-transplant_1858325/",
         "https://www.theatermania.com/news/joaquina-kalukango-heidi-blickenstaff-and-more-cast-in-the-heart-off-broadway_1850552/",
         "https://www.timeout.com/newyork/theater/the-heart",
+        "https://www.boothhistory.com/shows/the-heart/news",
         "https://www.picturethispost.com/roundabout-theatre-company-presents-the-heart-preview/"
       ],
       "dirFiles": 42,
@@ -265359,7 +266623,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -265369,8 +266633,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 0,
             "error": null
           },
           {
@@ -265380,7 +266644,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -265390,33 +266654,30 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 411,
+        "count": 413,
         "byReason": {
-          "aggregator-internal-nav": 257,
+          "aggregator-internal-nav": 261,
           "not-http-url": 64,
-          "production-database-listing": 9,
+          "production-database-listing": 10,
           "aggregator-section-root": 10,
-          "non-review-host": 57,
-          "non-stage-review": 3,
+          "non-review-host": 59,
+          "non-stage-review": 1,
           "bare-host": 1,
+          "roundup-page": 3,
           "podcast-episode": 1,
           "census-junk-host": 1,
-          "no-review-evidence": 1,
-          "ticketing-listing": 1,
-          "roundup-page": 2,
-          "ticketing-reseller": 2,
           "show-listing-page": 1,
-          "non-review-path": 1
+          "news-article": 1
         }
       },
       "dedupedVariants": [],
@@ -265553,7 +266814,7 @@
         "liveCount": 9,
         "candidateCount": 12
       },
-      "computedAt": "2026-11-01T02:53:08.620Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "the-hen-night-oran-mor-regional-2026",
@@ -289695,7 +290956,7 @@
         "liveCount": 6,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-01T05:58:27.218Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "the-porch-on-windy-hill-off-broadway-2026",
@@ -304161,12 +305422,12 @@
       "candidatesRejected": {
         "count": 293,
         "byReason": {
-          "non-review-host": 15,
           "aggregator-internal-nav": 211,
           "not-http-url": 60,
           "aggregator-section-root": 5,
-          "podcast-episode": 1,
-          "roundup-page": 1
+          "non-review-host": 15,
+          "roundup-page": 1,
+          "podcast-episode": 1
         }
       },
       "dedupedVariants": [],
@@ -304305,7 +305566,7 @@
         "liveCount": 18,
         "candidateCount": 19
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "these-are-our-neighbours-citizens-regional-2026",
@@ -309140,9 +310401,10 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
+        "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
+        "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
         "https://www.london-unattached.com/tosca-english-national-opera-review/",
         "https://www.classicalsource.com/concert/english-national-opera-tosca/",
-        "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
         "https://www.express.co.uk/entertainment/theatre/717588/Opera-review-Tosca-English-National-Opera-puccini",
         "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum",
         "https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum",
@@ -309154,6 +310416,18 @@
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
+        {
+          "url": "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "serpCensus": true
+        },
         {
           "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
           "host": "london-unattached.com",
@@ -309170,6 +310444,8 @@
           "url": "https://www.express.co.uk/entertainment/theatre/717588/Opera-review-Tosca-English-National-Opera-puccini",
           "host": "express.co.uk",
           "knownOutletId": "sunday-express",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-10-04",
           "serpCensus": true
         },
         {
@@ -309188,12 +310464,16 @@
           "url": "https://www.independent.co.uk/arts-entertainment/music/reviews/tosca-english-national-opera-coliseum-london-daniel-barenboim-royal-festival-hall-london-musica-secreta-the-priory-church-of-st-bartholemew-the-great-london-134314.html",
           "host": "independent.co.uk",
           "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2002-12-01",
           "serpCensus": true
         },
         {
           "url": "https://www.britishtheatre.com/da/shows/tosca-english-national-opera-at-the-london-coliseum",
           "host": "britishtheatre.com",
           "knownOutletId": "britishtheatrecom",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-02-06",
           "serpCensus": true
         },
         {
@@ -309271,7 +310551,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 7,
+            "results": 6,
             "accepted": 0,
             "error": null
           },
@@ -309282,7 +310562,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -309302,91 +310582,60 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 32,
         "byReason": {
-          "non-review-host": 13,
-          "write-path-blocked": 1,
-          "aggregator-internal-nav": 1,
-          "census-junk-host": 1,
-          "event-listing": 2,
-          "no-review-evidence": 4,
-          "ticket-seller-product-page": 1,
-          "ticketing-listing": 2,
+          "aggregator-internal-nav": 2,
+          "non-review-host": 17,
           "roundup-page": 1,
+          "no-review-evidence": 6,
+          "census-junk-host": 1,
+          "event-listing": 1,
+          "ticket-seller-product-page": 2,
+          "ticketing-listing": 1,
           "show-hub": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
-      "unextractable": [
-        {
-          "url": "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "serpCensus": true,
-          "zeroCharAttempts": 4
-        }
-      ],
-      "ingestResults": [
+      "unextractable": [],
+      "weIngestBlocked": [
         {
           "url": "https://www.express.co.uk/entertainment/theatre/717588/Opera-review-Tosca-English-National-Opera-puccini",
           "host": "express.co.uk",
-          "outletId": "sunday-express",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tosca-english-national-opera-west-end-2026: https://www.express.co.uk/entertainment/theatre/717588/Opera-review-Tosca-English-National-Opera-puccini dated 2016-10-04 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum",
-          "host": "britishtheatre.com",
-          "outletId": "britishtheatrecom",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tosca-english-national-opera-west-end-2026: https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum dated 2025-02-06 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.independent.co.uk/arts-entertainment/music/reviews/tosca-english-national-opera-coliseum-london-daniel-barenboim-royal-festival-hall-london-musica-secreta-the-priory-church-of-st-bartholemew-the-great-london-134314.html",
           "host": "independent.co.uk",
-          "outletId": "independent",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tosca-english-national-opera-west-end-2026: https://www.independent.co.uk/arts-entertainment/music/reviews/tosca-english-national-opera-coliseum-london-daniel-barenboim-royal-festival-hall-london-musica-secreta-the-priory-church-of-st-bartholemew-the-great-london-134314.html dated 2002-12-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
-          "url": "https://theatreweekly.com/english-national-opera-unveils-new-staging-of-tosca-at-the-london-coliseum/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
+          "url": "https://www.britishtheatre.com/da/shows/tosca-english-national-opera-at-the-london-coliseum",
+          "host": "britishtheatre.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.indiependent.co.uk/english-national-opera-to-present-uk-premiere-of-puccinis-tosca/",
+          "host": "indiependent.co.uk",
+          "outletId": "indiependent",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -309395,11 +310644,41 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "zeroChar": false,
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=indiependent.co.uk): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=indiependent.co.uk): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"su"
         },
         {
-          "url": "https://www.britishtheatre.com/da/shows/tosca-english-national-opera-at-the-london-coliseum",
+          "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
+          "host": "london-unattached.com",
+          "outletId": "london-unattached",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "tosca-english-national-opera-west-end-2026: https://www.london-unattached.com/tosca-english-national-opera-review/ dated 2022-10-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
+          "host": "classicalsource.com",
+          "outletId": "classical-source",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "tosca-english-national-opera-west-end-2026: https://www.classicalsource.com/concert/english-national-opera-tosca/ dated 2010-05-18 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum",
           "host": "britishtheatre.com",
           "outletId": "britishtheatrecom",
           "provisional": false,
@@ -309411,27 +310690,32 @@
           "expectedReason": "prior-production-quarantined",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "tosca-english-national-opera-west-end-2026: https://www.britishtheatre.com/da/shows/tosca-english-national-opera-at-the-london-coliseum dated 2025-02-06 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "reason": "tosca-english-national-opera-west-end-2026: https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum dated 2025-02-06 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "tosca-english-national-opera-west-end-2026: https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras dated 2022-10-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.indiependent.co.uk/english-national-opera-to-present-uk-premiere-of-puccinis-tosca/",
-          "host": "indiependent.co.uk",
-          "outletId": "indiependent"
+          "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack"
         },
         {
-          "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
-          "host": "london-unattached.com",
-          "outletId": "london-unattached"
-        },
-        {
-          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
-          "host": "classicalsource.com",
-          "outletId": "classical-source"
-        },
-        {
-          "url": "https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum",
+          "url": "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum",
           "host": "britishtheatre.com",
           "outletId": "britishtheatrecom"
         }
@@ -309439,6 +310723,20 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
+          },
           {
             "outletId": "london-unattached",
             "outlet": "london-unattached",
@@ -309454,13 +310752,6 @@
             "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/"
           },
           {
-            "outletId": "sunday-express",
-            "outlet": "sunday-express",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.express.co.uk/entertainment/theatre/717588/Opera-review-Tosca-English-National-Opera-puccini"
-          },
-          {
             "outletId": "britishtheatrecom",
             "outlet": "britishtheatrecom",
             "critic": "Unknown",
@@ -309473,20 +310764,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum"
-          },
-          {
-            "outletId": "independent",
-            "outlet": "independent",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.independent.co.uk/arts-entertainment/music/reviews/tosca-english-national-opera-coliseum-london-daniel-barenboim-royal-festival-hall-london-musica-secreta-the-priory-church-of-st-bartholemew-the-great-london-134314.html"
-          },
-          {
-            "outletId": "britishtheatrecom",
-            "outlet": "britishtheatrecom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatre.com/da/shows/tosca-english-national-opera-at-the-london-coliseum"
           },
           {
             "outletId": "indiependent",
@@ -309505,6 +310782,20 @@
             "firstSeenAt": "2026-10-31T23:09:19.251Z"
           },
           {
+            "url": "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
+            "outletId": "artsdesk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T06:34:49.647Z"
+          },
+          {
+            "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+            "outletId": "bachtrack",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T06:34:49.647Z"
+          },
+          {
             "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
             "outletId": "london-unattached",
             "state": "IN_FLIGHT",
@@ -309514,13 +310805,6 @@
           {
             "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
             "outletId": "classical-source",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-31T23:09:19.251Z"
-          },
-          {
-            "url": "https://www.express.co.uk/entertainment/theatre/717588/Opera-review-Tosca-English-National-Opera-puccini",
-            "outletId": "sunday-express",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-31T23:09:19.251Z"
@@ -309540,20 +310824,6 @@
             "firstSeenAt": "2026-10-31T23:09:19.251Z"
           },
           {
-            "url": "https://www.independent.co.uk/arts-entertainment/music/reviews/tosca-english-national-opera-coliseum-london-daniel-barenboim-royal-festival-hall-london-musica-secreta-the-priory-church-of-st-bartholemew-the-great-london-134314.html",
-            "outletId": "independent",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-31T23:09:19.251Z"
-          },
-          {
-            "url": "https://www.britishtheatre.com/da/shows/tosca-english-national-opera-at-the-london-coliseum",
-            "outletId": "britishtheatrecom",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-30T16:58:09.613Z"
-          },
-          {
             "url": "https://www.indiependent.co.uk/english-national-opera-to-present-uk-premiere-of-puccinis-tosca/",
             "outletId": "indiependent",
             "state": "IN_FLIGHT",
@@ -309565,7 +310835,7 @@
         "liveCount": 1,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-01T03:04:45.363Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -311478,27 +312748,28 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
+        "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
+        "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
+        "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
+        "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
+        "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+        "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
+        "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
+        "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
         "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
-        "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
-        "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
-        "https://playsinternational.org.uk/triumph-almeida-theatre/",
-        "https://monstagigz.com/tag/triumph/",
+        "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
+        "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
+        "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
         "https://www.timeout.com/london/theatre/triumph",
         "https://theqr.co.uk/2026/10/20/caryl-churchills-triumph-falters-at-the-almeida-theatre/",
+        "https://playsinternational.org.uk/triumph-almeida-theatre/",
         "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida",
         "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
         "https://www.thetimes.com/culture/theatre-dance/article/triumph-review-is-this-theatre-for-the-tiktok-generation-srgrf0zz7",
-        "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
-        "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
-        "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
-        "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
-        "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
-        "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
-        "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
-        "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+        "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
+        "https://monstagigz.com/tag/triumph/",
         "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
-        "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
-        "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
+        "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
         "https://shows.acast.com/mickeyjotheatre/episodes/triumph-almeida-theatre-london-review-of-caryl-churchills-17",
         "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd"
       ],
@@ -311508,19 +312779,15 @@
       "missing": [],
       "dirOnly": [
         {
-          "host": "theartsdesk.com",
-          "count": 1
-        },
-        {
           "host": "travelbeginsat40.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
-          "host": "viewfromthegods.co.uk",
-          "knownOutletId": "viewfromthegods",
+          "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -311528,27 +312795,20 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "viewfromthegods--simon-jenner.json",
+              "file": "british-theatre--keith-mckenna.json",
               "flag": "clean",
-              "urlInDir": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=triumph-almeida-islington"
+              "urlInDir": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "isSyndicatedDuplicate"
+            "rejectionReason"
           ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "copyOfLiveReview": true,
           "weRef": true,
           "weRefSources": [
             "bestoftheatre"
           ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre",
-          "reverify": false
+          "reverify": true
         },
         {
           "url": "https://www.timeout.com/london/theatre/triumph",
@@ -311601,9 +312861,9 @@
           "reverify": false
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
+          "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -311611,20 +312871,27 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "british-theatre--keith-mckenna.json",
+              "file": "viewfromthegods--simon-jenner.json",
               "flag": "clean",
-              "urlInDir": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141"
+              "urlInDir": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=triumph-almeida-islington"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "isSyndicatedDuplicate"
           ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "copyOfLiveReview": true,
           "weRef": true,
           "weRefSources": [
             "bestoftheatre"
           ],
-          "reverify": true
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": false
         },
         {
           "url": "https://shows.acast.com/mickeyjotheatre/episodes/triumph-almeida-theatre-london-review-of-caryl-churchills-17",
@@ -311715,7 +312982,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 6,
+            "results": 4,
             "accepted": 1,
             "error": null
           },
@@ -311726,7 +312993,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 6,
             "error": null
           },
           {
@@ -311736,7 +313003,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 1,
             "error": null
           },
           {
@@ -311746,7 +313013,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 5,
             "error": null
           },
           {
@@ -311756,24 +313023,23 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 6,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 19,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 18,
         "byReason": {
-          "non-review-host": 18,
+          "non-review-host": 10,
+          "no-review-evidence": 1,
+          "census-junk-host": 1,
+          "aggregator-roundup": 2,
           "write-path-blocked": 2,
-          "census-junk-host": 3,
-          "no-review-evidence": 3,
-          "static-asset": 2,
-          "non-stage-review": 2,
           "venue-listing-page": 2
         }
       },
@@ -311784,11 +313050,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "viewfromthegods",
-            "outlet": "viewfromthegods",
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/"
+            "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141"
           },
           {
             "outletId": "timeout-london",
@@ -311805,11 +313071,11 @@
             "url": "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida"
           },
           {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
+            "outletId": "viewfromthegods",
+            "outlet": "viewfromthegods",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141"
+            "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/"
           },
           {
             "outletId": "acast.com",
@@ -311828,34 +313094,82 @@
             "firstSeenAt": "2026-10-20T04:58:31.558Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T21:45:10.991Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T21:45:10.991Z"
+          },
+          {
             "url": "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
             "outletId": "theartsdispatch.substack.com",
             "state": "live",
             "firstSeenAt": "2026-10-19T21:45:10.991Z"
           },
           {
-            "url": "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T05:36:08.000Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/triumph-almeida-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T12:25:09.398Z"
-          },
-          {
-            "url": "https://monstagigz.com/tag/triumph/",
+            "url": "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
             "outletId": "monstagigz.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T06:34:49.647Z"
           },
           {
             "url": "https://theqr.co.uk/2026/10/20/caryl-churchills-triumph-falters-at-the-almeida-theatre/",
             "outletId": "theqr.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T15:55:40.470Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/triumph-almeida-theatre/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T12:25:09.398Z"
           },
           {
             "url": "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
@@ -311870,52 +313184,16 @@
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
+            "url": "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
             "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+            "firstSeenAt": "2026-11-01T05:36:08.000Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://monstagigz.com/tag/triumph/",
+            "outletId": "monstagigz.com",
             "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T21:45:10.991Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T21:45:10.991Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
             "url": "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
@@ -311924,23 +313202,17 @@
             "firstSeenAt": "2026-10-24T14:59:13.348Z"
           },
           {
-            "url": "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
-            "outletId": "monstagigz.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd",
             "outletId": "ft.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T15:55:40.470Z"
           },
           {
-            "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
-            "outletId": "viewfromthegods",
+            "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
+            "outletId": "british-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+            "firstSeenAt": "2026-10-21T00:49:57.456Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/triumph",
@@ -311957,11 +313229,11 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
-            "outletId": "british-theatre",
+            "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
+            "outletId": "viewfromthegods",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-21T00:49:57.456Z"
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
           },
           {
             "url": "https://shows.acast.com/mickeyjotheatre/episodes/triumph-almeida-theatre-london-review-of-caryl-churchills-17",
@@ -311972,10 +313244,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 17,
-        "candidateCount": 22
+        "liveCount": 18,
+        "candidateCount": 23
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -315638,8 +316910,16 @@
       "openingDate": "2026-03-15",
       "status": "closed",
       "category": "off-broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Did-Woody-Harrelson-Hit-the-Mark-in-ULSTER-AMERICAN-20231214"
+      ],
       "aggregatorListedUrls": [
+        "https://www.telegraph.co.uk/theatre/what-to-see/ulster-american-review-woody-harrelson/",
+        "https://www.thestage.co.uk/reviews/ulster-american-review-riverside-studios-london-louisa-harland-woody-harrelson-andy-serkis-jeremy-herrins-david-ireland",
+        "https://www.whatsonstage.com/news/ulster-american-review-woody-harrelson-andy-serkis-and-louisa-harland-lead-a-five-star-revival_1558307/",
+        "https://www.standard.co.uk/culture/theatre/ulster-american-riverside-studios-review-woody-harrelson-andy-serkis-louisa-harland-b1126086.html",
+        "https://www.thetimes.co.uk/article/ulster-american-review-an-exuberant-woody-harrelson-in-over-the-top-satire-lglr0bcnt",
+        "https://www.londontheatre.co.uk/reviews/ulster-american-review-riverside-studios",
         "https://www.wsj.com/articles/ulster-american-review-matthew-brodericks-smug-star-5d44a11d",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN",
         "https://www.talkinbroadway.com/page/ob/03_15_26b.html",
@@ -315656,7 +316936,15 @@
       "dirFiles": 22,
       "dirClean": 14,
       "inReviewsJson": 14,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/ulster-american-review-riverside-studios",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "nytimes.com",
@@ -315672,6 +316960,126 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/ulster-american-review-woody-harrelson/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "telegraph--dominic-cavendish.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/ulster-american-review-woody-harrelson/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/ulster-american-review-riverside-studios-london-louisa-harland-woody-harrelson-andy-serkis-jeremy-herrins-david-ireland",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/ulster-american-review-riverside-studios-london-louisa-harland-woody-harrelson-andy-serkis-jeremy-herrins-david-ireland"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/ulster-american-review-woody-harrelson-andy-serkis-and-louisa-harland-lead-a-five-star-revival_1558307/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--theo-bosanquet.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/ulster-american-review-woody-harrelson-andy-serkis-and-louisa-harland-lead-a-five-star-revival_1558307/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/ulster-american-riverside-studios-review-woody-harrelson-andy-serkis-louisa-harland-b1126086.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "standard--nick-curtis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.standard.co.uk/culture/theatre/ulster-american-riverside-studios-review-woody-harrelson-andy-serkis-louisa-harland-b1126086.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/ulster-american-review-an-exuberant-woody-harrelson-in-over-the-top-satire-lglr0bcnt",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--clive-davis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.co.uk/article/ulster-american-review-an-exuberant-woody-harrelson-in-over-the-top-satire-lglr0bcnt"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=NFG9BN",
           "host": "lightingandsoundamerica.com",
@@ -315702,12 +317110,34 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 281,
+        "byReason": {
+          "aggregator-internal-nav": 226,
+          "not-http-url": 36,
+          "aggregator-section-root": 4,
+          "non-review-host": 15
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Did-Woody-Harrelson-Hit-the-Mark-in-ULSTER-AMERICAN-20231214",
+          "publishDate": "2023-12-14"
+        }
+      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/ulster-american-review-riverside-studios",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -315799,7 +317229,7 @@
         "liveCount": 10,
         "candidateCount": 11
       },
-      "computedAt": "2026-11-01T05:20:32.260Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "ulysses-off-broadway-2026",
@@ -332327,7 +333757,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -332368,13 +333798,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 34,
         "byReason": {
-          "non-review-host": 22,
-          "write-path-blocked": 1,
-          "venue-production-page": 1,
-          "aggregator-internal-nav": 2,
-          "census-junk-host": 1
+          "aggregator-internal-nav": 4,
+          "non-review-host": 23,
+          "venue-production-page": 3,
+          "write-path-blocked": 3,
+          "feature-not-review": 1
         }
       },
       "dedupedVariants": [],
@@ -332405,7 +333835,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-01T05:36:08.000Z"
+      "computedAt": "2026-11-01T06:34:49.647Z"
     },
     {
       "showId": "wonder-regional-2026",
