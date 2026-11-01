@@ -1826,7 +1826,10 @@ async function fetchFromGoogleImages(show) {
   }
 
   // Save thumbnail (prefer square, fall back to poster)
-  const finalThumbnailBuffer = await compressImage(thumbnailBuffer || posterBuffer, 'thumbnail');
+  // A tall promo (h/w > 1.70) used as the thumbnail would be quarantined by the aspect
+  // gate (check-image-aspect.js) and leave the show imageless: crop it first (BRO-6771).
+  const thumbSource = thumbnailBuffer || await ensureThumbnailAspect(posterBuffer);
+  const finalThumbnailBuffer = await compressImage(thumbSource, 'thumbnail');
   const thumbHash = crypto.createHash('md5').update(finalThumbnailBuffer).digest('hex');
   if (PLACEHOLDER_FILE_HASHES.has(thumbHash)) {
     console.log(`   ✗ Downloaded thumbnail is a "Coming Soon" placeholder — rejecting`);
