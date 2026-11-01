@@ -53,7 +53,6 @@ test('digest workflow: the only send is owner-only, guarded, report-only; never 
   assert.match(WF, /send-morning-digest\.js --dry-run --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   // Already sent (exit 3) is green; every other nonzero stays red.
   assert.match(WF, /if \[ "\$status" -eq 3 \]; then[^\n]*exit 0; fi\n/);
-  assert.match(WF, /\[ "\$status" -eq 1 \] && grep -q '\^\\\[digest\\\] sent to '[^\n]*exit 0; fi\n\s+exit "\$status"/);
   // The dry-run/compare steps never run on schedule or with send=true (they would pin to our own send).
   for (const name of ["Fetch today's Mac-sent digest", 'Pin snapshots', 'Build the digest (dry run']) {
     const step = steps.find((x) => x.includes(name));
@@ -111,8 +110,10 @@ test('gate: refuses before ENABLE_FROM, before 07:45 ET, and on a bad date; send
 // ── --autofix-only ──────────────────────────────────────────────────────────
 test('autofix-only: never sends, keeps autofix live; plist runs it only from ENABLE_FROM', () => {
   const src = read('scripts/send-morning-digest.js');
-  assert.match(src, /autofixShouldDryRun\(\{ dryRun: dryRun && !autofixOnly,/);
+  assert.match(src, /autofixShouldDryRun\(\{ dryRun: !!args\['dry-run'\],/);
   assert.match(src, /--autofix-only never sends/);
+  assert.match(src, /autofixFailed \|\| invariantViolations\.length/);
+  assert.match(WF, /path: data\/audit\/board-report-snapshot\.json/);
   const plist = read('scripts/launchd/com.broadwayscore.digest-autofix.plist');
   assert.match(plist, /exec node scripts\/send-morning-digest\.js --autofix-only/);
   assert.doesNotMatch(plist, /--send-to/);

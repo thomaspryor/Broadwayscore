@@ -948,7 +948,7 @@ async function main() {
   // like a dry run, sends nothing, and leaves autofix live (the Action's send is report-only).
   const autofixOnly = !!args['autofix-only'];
   if (autofixOnly && (args['send-to'] || args['send-to-owner'])) { console.error('[digest] --autofix-only never sends; drop --send-to/--send-to-owner'); process.exit(1); }
-  const dryRun = !!args['dry-run'] || autofixOnly;
+  const dryRun = !!args['dry-run'] || autofixOnly; // --autofix-only --dry-run stays a dry run for autofix too
   if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
   const noAutofix = !!args['no-autofix'];
   const skipMacLocal = !!args['skip-mac-local'];
@@ -1139,7 +1139,7 @@ async function main() {
     sections.syncRefused = SYNC_REFUSED_READ_FAILED;
   }
 
-  const autofixDryRun = autofixShouldDryRun({ dryRun: dryRun && !autofixOnly, syncRefused: sections.syncRefused });
+  const autofixDryRun = autofixShouldDryRun({ dryRun: !!args['dry-run'], syncRefused: sections.syncRefused });
 
   // "Needs You" tab triage (card #870) — cmux tabs with a pending owner
   // decision (❓-prefixed by ~/.claude/hooks/lib/workspace-mark-done.js).
@@ -1456,6 +1456,7 @@ async function main() {
   // or stuck signals only this machine can see), never as a duplicate.
   // Fail-soft: any error here degrades to un-annotated rows, never blocks the send.
   let autofixRows = null;
+  let autofixFailed = false; // --autofix-only exits nonzero on it (a launchd job nobody reads would hide it)
   // --no-autofix (BRO-6230, the Action): plan only, no card filing or
   // dispatch, and no Mac task dir. Rows with an open Linear card read
   // 'tracked' so the email matches the Mac's "already has a fix ticket".
@@ -1545,6 +1546,7 @@ async function main() {
     const infos = autofixRows.filter(r => r.state === 'info').length;
     console.log(`[digest] autofix: ${autofixRows.length - infos} issue(s) — ${d} being worked, ${autofixRows.length - infos - d - decisions} queued, ${decisions} decision(s) left for the owner, ${infos} receipt(s)`);
   } catch (err) {
+    autofixFailed = true;
     console.error(`[digest] WARN autofix failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }
 
@@ -1558,6 +1560,7 @@ async function main() {
     const { runAutofixCanary } = require('./lib/autofix-canary.js');
     runAutofixCanary({ dryRun: autofixDryRun, log: (m) => console.log(m) });
   } catch (err) {
+    autofixFailed = true;
     console.error(`[digest] WARN autofix canary failed (email still sends): ${String(err.message).slice(0, 160)}`);
   }
 
@@ -1641,8 +1644,8 @@ async function main() {
   }
 
   if (autofixOnly) {
-    console.log('[digest] --autofix-only: autofix + canary done, nothing sent');
-    if (invariantViolations.length) process.exitCode = 1;
+    console.log(`[digest] --autofix-only: autofix + canary ${autofixFailed ? 'FAILED (see WARN above)' : 'done'}, nothing sent`);
+    if (autofixFailed || invariantViolations.length) process.exitCode = 1;
     return;
   }
 
