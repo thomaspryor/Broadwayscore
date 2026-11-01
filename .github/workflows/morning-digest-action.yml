@@ -45,6 +45,11 @@ on:
         required: false
         default: false
         type: boolean
+      test:
+        description: "One labelled TEST email to the owner. Ignores the sent-today guards and leaves tomorrow's real send untouched. Dispatch once."
+        required: false
+        default: false
+        type: boolean
       pubkey_b64:
         description: 'Dry run only: one-time public key (base64 PEM) to seal the full diff + run output to'
         required: false
@@ -88,7 +93,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      SEND_MODE: ${{ (github.event_name == 'schedule' || inputs.send) && 'true' || 'false' }}
+      IS_TEST: ${{ inputs.test && 'true' || 'false' }}
+      SEND_MODE: ${{ (github.event_name == 'schedule' || inputs.send || inputs.test) && 'true' || 'false' }}
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
@@ -131,8 +137,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           status=0
-          if [ "$SEND_MODE" = "true" ]; then MODE="--send-to-owner"; else MODE="--dry-run"; fi
-          node scripts/send-morning-digest.js $MODE --no-autofix --skip-mac-local --resend-sent-guard \
+          GUARD="--resend-sent-guard"
+          if [ "$IS_TEST" = "true" ]; then MODE="--send-to-owner --test-send"; GUARD=""
+          elif [ "$SEND_MODE" = "true" ]; then MODE="--send-to-owner"; else MODE="--dry-run"; fi
+          node scripts/send-morning-digest.js $MODE --no-autofix --skip-mac-local $GUARD \
             > "$RUNNER_TEMP/digest.log" 2>&1 || status=$?
           echo "digest ${MODE#--} exit: $status ($(wc -l < "$RUNNER_TEMP/digest.log") log lines, kept off the public log)"
           grep -E '^\[digest\] (Resend sent-today guard|DRY RUN|sent to|send failed|fatal)' "$RUNNER_TEMP/digest.log" \

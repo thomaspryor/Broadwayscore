@@ -95,10 +95,11 @@ test('retire entry is housekeeping: it is acted on no earlier than the handoff d
 
 test('digest workflow: send mode is one transactional message to the owner, guarded, never a broadcast', () => {
   const c = code(WF);
-  assert.match(c, /send-morning-digest\.js \$MODE --no-autofix --skip-mac-local --resend-sent-guard \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
+  assert.match(c, /send-morning-digest\.js \$MODE --no-autofix --skip-mac-local \$GUARD \\\n\s+> "\$RUNNER_TEMP\/digest\.log" 2>&1/);
   assert.match(c, /MODE="--send-to-owner"; else MODE="--dry-run"/);
+  assert.match(c, /GUARD="--resend-sent-guard"/);
   assert.doesNotMatch(c, /broadcast/i);
-  assert.match(c, /SEND_MODE: \$\{\{ \(github\.event_name == 'schedule' \|\| inputs\.send\) && 'true' \|\| 'false' \}\}/);
+  assert.match(c, /SEND_MODE: \$\{\{ \(github\.event_name == 'schedule' \|\| inputs\.send \|\| inputs\.test\) && 'true' \|\| 'false' \}\}/);
   // already-sent (exit 3) is a clean skip; cannot-tell (2) and failures stay red
   assert.match(c, /if \[ "\$status" = "3" \]; then echo [^\n]*exit 0; fi\n\s+exit "\$status"/);
   assert.doesNotMatch(WF, /upload-artifact|GITHUB_STEP_SUMMARY/);
@@ -385,4 +386,21 @@ test('pager: one signal going red cannot skip the other (exitCode, not exit)', (
   assert.doesNotMatch(body, /process\.exit\(/, 'checkHeartbeat must set process.exitCode so the digest check still runs');
   const pager = read('.github/workflows/check-morning-digest-sent.yml');
   assert.match(pager, /name: Check the Mac heartbeat and that the digest arrived/);
+});
+
+test('test send: a labelled TEST email that skips both guards and writes no state (BRO-6764)', () => {
+  const src = read('scripts/send-morning-digest.js');
+  assert.match(src, /const testSend = !!args\['test-send'\]/);
+  assert.match(src, /const resendSentGuard = !!args\['resend-sent-guard'\] && !testSend/);
+  assert.match(src, /softResendGuard = [^;]*&& !testSend/);
+  assert.match(src, /if \(!args\.force && !testSend\) \{\s*\n\s*const prev = sentState/);
+  assert.match(src, /subject: testSend \? `TEST: \$\{subject\}` : subject/);
+  // the early return sits before the board-snapshot and sent-state writes
+  assert.ok(src.indexOf('if (testSend) { console.log') < src.indexOf('saveBoardTableSnapshot(boardTable.report);\n  try'));
+  // a TEST subject is invisible to the pager and counters
+  assert.doesNotMatch('TEST: Morning digest', /^Morning digest/);
+  const wf = read('.github/workflows/morning-digest-action.yml');
+  assert.match(wf, /test:\s*\n\s*description:[^\n]*TEST email/);
+  assert.match(wf, /MODE="--send-to-owner --test-send"; GUARD=""/);
+  assert.match(wf, /GUARD="--resend-sent-guard"/);
 });

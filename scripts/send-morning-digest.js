@@ -954,7 +954,11 @@ async function main() {
   if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
   const noAutofix = !!args['no-autofix'];
   const skipMacLocal = !!args['skip-mac-local'];
-  const resendSentGuard = !!args['resend-sent-guard'];
+  // --test-send (BRO-6764): one labelled "TEST: " email to the recipient that touches NO sent-state: it skips both
+  // sent-today guards (so it can go out after the day's real digest), writes no ~/.broadwayscore-state stamp and no
+  // board snapshot. "TEST: Morning digest" does not match /^Morning digest/, so the pager and counters ignore it.
+  const testSend = !!args['test-send'];
+  const resendSentGuard = !!args['resend-sent-guard'] && !testSend;
   const autofixOnly = !!args['autofix-only'];
   let sendTo = args['send-to'] && args['send-to'] !== true ? String(args['send-to']) : null;
   if (!sendTo && args['send-to-owner']) {
@@ -1659,7 +1663,7 @@ async function main() {
   // BRO-6764: a real send always asks Resend, so the Mac cannot send after the Action did (a Mac that
   // sleeps through the handoff wakes and fires its launchd job). Without the flag this is SOFT: only a
   // confirmed 'already-sent' refuses; an unreadable Resend (e.g. a send-only key) still sends.
-  const softResendGuard = !resendSentGuard && !dryRun && !!sendTo && !args.force;
+  const softResendGuard = !resendSentGuard && !dryRun && !!sendTo && !args.force && !testSend;
   let resendGuard = null;
   if (resendSentGuard || softResendGuard) {
     const recipient = sendTo || process.env.OWNER_EMAIL || null;
@@ -1703,7 +1707,7 @@ async function main() {
         : (parsed.to ? { [parsed.to]: parsed } : {});
     }
   } catch { /* no state yet */ }
-  if (!args.force) {
+  if (!args.force && !testSend) {
     const prev = sentState[sendTo];
     if (prev && prev.dayET === todayET) {
       console.error(`[digest] already sent to ${sendTo} today (ET ${todayET}, Resend id ${prev.id || '?'}) — refusing duplicate send. Use --dry-run to preview, or --force for a deliberate re-send.`);
@@ -1724,7 +1728,7 @@ async function main() {
     // (plan-review user-impact finding).
     from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
     to: [sendTo],
-    subject,
+    subject: testSend ? `TEST: ${subject}` : subject,
     html,
   });
   if (res.status < 200 || res.status >= 300) {
@@ -1735,6 +1739,7 @@ async function main() {
   // Tomorrow's "change since yesterday" reads this; a dry run never writes it.
   // The snapshot is the owner's baseline for the (+N) deltas: a test send to
   // another address must not move it.
+  if (testSend) { console.log('[digest] test send: sent-state and board snapshot left untouched'); if (invariantViolations.length) process.exitCode = 1; return; }
   if (process.env.OWNER_EMAIL && sendTo === process.env.OWNER_EMAIL) saveBoardTableSnapshot(boardTable.report);
   try {
     sentState[sendTo] = { dayET: todayET, id: res.json?.id || null, at: new Date().toISOString() };
