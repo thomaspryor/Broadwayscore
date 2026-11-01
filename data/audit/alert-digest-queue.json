@@ -311,6 +311,37 @@
     "queuedAt": "2026-11-01T14:33:15.951Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: unknown (job-set lookup unavailable). Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41317135217",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41317135217)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41318671234)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "6"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "unknown (job-set lookup unavailable)"
+      }
+    ],
+    "queuedAt": "2026-11-01T15:34:09.621Z"
+  },
+  {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
     "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
@@ -427,37 +458,6 @@
       }
     ],
     "queuedAt": "2026-11-01T14:46:33.494Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41319512941",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41319512941)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41318671234)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "6"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "E2E Tests"
-      }
-    ],
-    "queuedAt": "2026-11-01T15:33:56.870Z"
   },
   {
     "conditionKey": "land:land/morning-digest-cutover",
