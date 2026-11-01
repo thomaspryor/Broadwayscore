@@ -79,7 +79,9 @@ jobs:
           echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
 
       - name: Push to private repo
-        if: ${{ !inputs.dry_run }}
+        # always(): a later sweep failing must not drop verdicts already paid for
+        # (CLAUDE.md section 8, batch scripts checkpoint).
+        if: ${{ always() && !inputs.dry_run }}
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

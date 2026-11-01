@@ -100,12 +100,22 @@ function planClear(data, result, clean) {
 // holds now. A refetch replaces fullText, so a verdict hashed on the old body
 // (or with no hash at all) says nothing about the new one: re-select it, or a
 // "not a review" label formed on a cookie banner outlives the real review.
+// verifyContent strips a leading consent layer before it hashes (content-verifier
+// verifyContent: stripConsentLayerPrefix then contentHash), so compare against
+// that text too, or every WhatsOnStage consent-prefixed file is re-paid weekly.
 function alreadyReverified(d) {
   const cv = d?.contentVerification;
   if (cv?.reverifiedFrom !== 'stored-fullText') return false;
-  if (!cv.contentHash || typeof d.fullText !== 'string') return false;
+  if (typeof d.fullText !== 'string') return false;
+  const { stripConsentLayerPrefix } = require('./text-cleaning');
+  const judged = stripConsentLayerPrefix(d.fullText);
+  // verifyContent's skip-short verdict carries no hash; it stays done while the
+  // judged text is still too short to verify.
+  if (cv.verifiedBy === 'skip-short') return judged.length < MIN_TEXT_LENGTH;
+  if (!cv.contentHash) return false;
   // lazy: content-verifier pulls in the LLM client
-  return require('./content-verifier').contentHash(d.fullText) === cv.contentHash;
+  const { contentHash } = require('./content-verifier');
+  return contentHash(judged) === cv.contentHash || contentHash(d.fullText) === cv.contentHash;
 }
 
 module.exports = {

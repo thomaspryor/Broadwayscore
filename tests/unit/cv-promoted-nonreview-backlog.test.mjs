@@ -90,7 +90,6 @@ test('selector skips files already re-verified from stored text', () => {
     JSON.stringify({ ...base, contentVerification: { reverifiedFrom: 'stored-fullText', contentHash: contentHash(TEXT) } }));
   assert.equal(alreadyReverified({ fullText: TEXT, contentVerification: { reverifiedFrom: 'stored-fullText', contentHash: contentHash(TEXT) } }), true);
   const got = selectCvPromotedNonReview(dir, shows, { openedSince: '2026-07-01' }).map(f => f.file);
-  assert.ok(!got.includes('a--b.json') || !got.some(f => f === 'a--b.json' && false));
   assert.deepEqual(got, ['wrongshow.json']);
 });
 
@@ -126,4 +125,28 @@ test('BRO-6745: evaluative review re-verified clean is cleared by planClear', ()
   const plan = planClear(d, verdict, true);
   assert.equal(plan.clearNonReview, true);
   assert.equal(plan.heldBack, false);
+});
+
+// BRO-6745 review: verifyContent hashes the text after stripping a consent layer,
+// so a consent-prefixed body re-verified once must not be re-selected every week.
+const { stripConsentLayerPrefix } = require('../../scripts/lib/text-cleaning.js');
+const CONSENT = 'Please note that your choices apply across all our subdomains. Once you give consent, a floating button will appear at the bottom of your screen, allowing you to change or withdraw your consent at any time. '
+  + 'Number of Vendors seeking consent or relying on legitimate interest: 777 '.repeat(20)
+  + 'With your acceptance, certain characteristics specific to your device might be requested and used to distinguish it from other devices (such as the installed fonts or plugins, the resolution of your screen) in support of the purposes explained in this notice. ';
+
+test('BRO-6745: consent-prefixed body stamped with the verifier hash counts as done', () => {
+  const body = CONSENT + REVIEW_BODY;
+  assert.notEqual(stripConsentLayerPrefix(body), body, 'fixture must carry a strippable consent layer');
+  const stamp = { reverifiedFrom: 'stored-fullText', contentHash: contentHash(stripConsentLayerPrefix(body)) };
+  assert.equal(alreadyReverified({ fullText: body, contentVerification: stamp }), true);
+});
+
+test('BRO-6745: verifyContent skip-short verdict stays done only while the text is still short', async () => {
+  const { verifyContent } = require('../../scripts/lib/content-verifier.js');
+  const body = CONSENT + 'Short teaser.';
+  const cv = await verifyContent({ scrapedText: body, showTitle: 'X', outletName: 'Y' });
+  assert.equal(cv.verifiedBy, 'skip-short');
+  const stamp = { ...cv, reverifiedFrom: 'stored-fullText' };
+  assert.equal(alreadyReverified({ fullText: body, contentVerification: stamp }), true);
+  assert.equal(alreadyReverified({ fullText: REVIEW_BODY, contentVerification: stamp }), false);
 });
