@@ -857,7 +857,8 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Sauce "How Shakespeare Saved My Life", 2026-09-30). No-op the whole merge,
   // like the cross-outlet guard below: incoming.fullText came from that URL.
   if (urlChanged && incoming.urlManualOverride !== true && incoming.allowMergedDuplicateUrl !== true
-      && require('./merged-duplicate-urls').isMergedDuplicateUrl(existing, incoming.url)) {
+      && require('./merged-duplicate-urls').isMergedDuplicateUrl(existing, incoming.url)
+      && !require('./review-slot-guards').isInterviewSlotSupersededBy(existing, incoming.url)) {
     console.warn(`[mergeReviews] refused merged-away url for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
     logExclusion({
       script: context.script || 'unknown-caller',
@@ -980,6 +981,9 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
       });
       merged.urlUpdatedFrom = existing.url;
       merged.urlUpdatedAt = new Date().toISOString();
+      // BRO-6742: the review that replaced an interview slot is no longer a
+      // merged-away duplicate of the record; it is the record's own url.
+      require('./merged-duplicate-urls').forgetMergedDuplicateUrl(merged, merged.url);
     }
   }
 
@@ -2788,7 +2792,13 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) return false;
   if (isProfileUrl(newUrl)) return false;
   // BRO-4414: never adopt a URL an earlier merge folded into this record.
-  if (require('./merged-duplicate-urls').isMergedDuplicateUrl(existingData, newUrl)) return false;
+  // BRO-6742: an interview holding the slot is a different article, so its
+  // review is not a merged duplicate of it even when an earlier write folded
+  // the review url into this file (Memoriam, The Moth). That review's own
+  // stars came with that fold, so the score-loss guard below gives way too.
+  const interviewMove = require('./review-slot-guards')
+    .isInterviewSlotSupersededBy(opts.preMergeSnapshot || existingData, newUrl);
+  if (!interviewMove && require('./merged-duplicate-urls').isMergedDuplicateUrl(existingData, newUrl)) return false;
   // Manual URL decisions win — mirrors review-write-guard.js's own
   // locked/urlVerified/urlManualOverride check. Without this, a manually
   // verified URL could get silently swapped here.
@@ -2838,7 +2848,7 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
     || corroboratedOverAutoPin
     // BRO-6742: an interview holding the critic's slot is complete text, but
     // not this review; the same outlet's review url takes the slot.
-    || require('./review-slot-guards').isInterviewSlotSupersededBy(contentState, newUrl);
+    || interviewMove;
   if (!badContent) return false;
 
   // Roundup-page guard (BRO-4128): a candidate that is itself a roundup/
@@ -2883,7 +2893,7 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // behavior.
   const { hasPreservableAggregatorScore } = require('./aggregator-domains');
   const scoreState = opts.preMergeScore || existingData;
-  if (hasPreservableAggregatorScore(scoreState)
+  if (!interviewMove && hasPreservableAggregatorScore(scoreState)
     && !existingData.wrongProduction && !existingData.wrongShow && !existingData.duplicateOf) {
     console.warn(`[maybeUpgradeUrl] refused swap for ${existingData.outletId || source || '?'}: would discard score (originalScore=${JSON.stringify(scoreState.originalScore)}, aggregatorStars=${JSON.stringify(scoreState.aggregatorStars)})`);
     return false;
@@ -2982,6 +2992,7 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
     fileLabel: existingData.outletId || source || '?',
     force: true,
   });
+  if (interviewMove) require('./merged-duplicate-urls').forgetMergedDuplicateUrl(existingData, newUrl);
 
   return true;
 }

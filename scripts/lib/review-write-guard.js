@@ -1059,6 +1059,17 @@ const CLEAR_BREADCRUMBS = {
   crossOutletMethod: (d) => !_isEmptyValue(d.crossOutletClearReason),
   crossOutletFlaggedAt: (d) => !_isEmptyValue(d.crossOutletClearReason),
   isNotReview: _isNotReviewCleared,
+  // BRO-6742: a tombstoned url the record has since adopted as its own (an
+  // interview slot giving way to the same critic's review) is no longer a
+  // merged-away duplicate. Only that exact url's removal counts as intended.
+  mergedDuplicateUrls: (d, c) => {
+    if (!d || !d.url || !c || !Array.isArray(c.mergedDuplicateUrls)) return false;
+    const m = require('./merged-duplicate-urls');
+    if (!m.isMergedDuplicateUrl(c, d.url)) return false;
+    const rest = c.mergedDuplicateUrls.filter((u) => !m.isMergedDuplicateUrl({ mergedDuplicateUrls: [d.url] }, u));
+    const kept = Array.isArray(d.mergedDuplicateUrls) ? d.mergedDuplicateUrls : [];
+    return rest.every((u) => m.isMergedDuplicateUrl({ mergedDuplicateUrls: kept }, u));
+  },
   isNotReviewReason: _isNotReviewCleared,
   isNonReview: _isNonReviewCleared,
   isNonReviewReason: _isNonReviewCleared,
