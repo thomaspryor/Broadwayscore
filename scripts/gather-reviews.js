@@ -6138,7 +6138,9 @@ async function main() {
   const leaseSplit = leaseGuard.partitionLeased(flags.showIds);
   for (const { lease } of leaseSplit.skipped) console.log(`Opening-night lease: ${leaseGuard.describe(lease)}. Skipping in gather-reviews.`);
   const showIds = leaseSplit.kept;
-  if (!showIds.length && leaseSplit.skipped.length) { console.log('All requested shows are leased; nothing to gather.'); return; }
+  if (!showIds.length && leaseSplit.skipped.length) { console.log('All requested shows are leased; nothing to gather.');
+    recordDeferredShows([]); // BRO-6743: a clean exit still reports to the follow-up job
+    return; }
   const aggregatorsOnly = flags.aggregatorsOnly;
   const validateUrls = flags.validateUrls;
   const openingNight = flags.openingNight;

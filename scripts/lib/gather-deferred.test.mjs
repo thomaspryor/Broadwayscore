@@ -70,7 +70,7 @@ test('follow-up merges partial shards and clears a completed checkpoint', () => 
     const file = join(dir, 'deferred-shows.txt');
     assert.equal(recordDeferredShows(assigned, file), true);
     assert.equal(recordDeferredShows([], file), false);
-    assert.equal(readFileSync(file, 'utf8'), '');
+    assert.equal(readFileSync(file, 'utf8'), '# done\n');
     const deferred = collectDeferredShows([
       readFileSync(file, 'utf8'),
       'the-lost-boys-2026\nhadestown-west-end-2024\n',
