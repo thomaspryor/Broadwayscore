@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6716-d",
   "planId": "31879b09-86aa-4c54-b5d0-024aaa1b11b9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T12:18:13.434Z",
   "submitter": {
     "name": null,
@@ -53,5 +53,34 @@
         "args": "--show=triumph-off-west-end-2026 --url=https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141 --outlet=british-theatre --critic=\"Keith McKenna\""
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T13:21:11.508Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-off-broadway-2026/lighting-and-sound-america--david-barbour.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-other-place-off-broadway-2026/lighting-and-sound-america--david-barbour.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
