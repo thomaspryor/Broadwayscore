@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-01T00:55:24.723Z",
+  "generatedAt": "2026-11-01T02:12:48.530Z",
   "windowDays": 21,
-  "targets": 8,
-  "auditedThisRun": 8,
-  "carriedForward": 1557,
+  "targets": 16,
+  "auditedThisRun": 16,
+  "carriedForward": 1549,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 607,
-    "missingCurrentRun": 1286,
+    "withGap": 608,
+    "missingCurrentRun": 1292,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 812,
+    "totalFlaggedMisses": 811,
     "totalRecoverable": 56,
     "totalRecovered": 78,
     "humanExcluded": 18,
-    "automatedExcluded": 804,
-    "automatedExcludedListed": 603,
-    "priorProductionCitations": 5630
+    "automatedExcluded": 803,
+    "automatedExcludedListed": 602,
+    "priorProductionCitations": 5620
   },
   "results": [
     {
@@ -30555,7 +30555,7 @@
       ],
       "dirFiles": 40,
       "dirClean": 31,
-      "inReviewsJson": 31,
+      "inReviewsJson": 32,
       "missing": [
         {
           "url": "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
@@ -30881,7 +30881,7 @@
         "liveCount": 23,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-01T00:55:24.723Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "becoming-eve-off-broadway-2025",
@@ -42872,15 +42872,9 @@
         "https://www.newyorker.com/magazine/2026/01/19/bug-theatre-review"
       ],
       "dirFiles": 56,
-      "dirClean": 39,
+      "dirClean": 40,
       "inReviewsJson": 40,
-      "missing": [
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-JKUFFH",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "4columns.org",
@@ -42948,16 +42942,8 @@
       "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-JKUFFH"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -43011,6 +42997,12 @@
           {
             "url": "https://www.theatermania.com/news/review-carrie-coon-and-namir-smallwood-as-paranoid-crackheads-in-love-in-bug_1816676/",
             "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-JKUFFH",
+            "outletId": "lightingandsoundamerica.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
@@ -43115,20 +43107,13 @@
             "outletId": "newyorker.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-JKUFFH",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 25,
+        "liveCount": 26,
         "candidateCount": 26
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "bughouse-off-broadway-2026",
@@ -48812,8 +48797,20 @@
       "openingDate": "2026-04-07",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620"
+      ],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
+        "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html",
+        "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+        "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
+        "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
+        "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
+        "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
+        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
+        "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
+        "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
         "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
         "https://www.timeout.com/newyork/news/broadway-review-paris-is-purring-in-cats-the-jellicle-ball-040826",
         "https://www.vulture.com/article/cats-the-jellicle-ball-is-the-real-thing.html",
@@ -48830,9 +48827,6 @@
         "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
         "https://lavocedinewyork.com/en/new-york/2026/04/17/the-jellicle-ball-reimagines-cats-through-ballroom-culture/",
         "https://pagesonstages.com/2026/04/08/cats-the-jellicle-ball/",
-        "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
-        "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
-        "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
         "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
         "https://cititour.com/NYC_Broadway/CATS-The-Jellicle-Ball/1367",
         "https://www.chicagotribune.com/2026/04/07/review-cats-jellicle-ball-broadway/",
@@ -48852,8 +48846,16 @@
       ],
       "dirFiles": 74,
       "dirClean": 42,
-      "inReviewsJson": 39,
-      "missing": [],
+      "inReviewsJson": 40,
+      "missing": [
+        {
+          "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "artsfuse.org",
@@ -48898,6 +48900,59 @@
       ],
       "flaggedMisses": [
         {
+          "url": "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--sara-holdren.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/article/theater-review-drag-cats-jellicle-ball-good.html?utm_campaign=vulture&utm_medium=s1&utm_source=tw#/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newyorker--helen-shaw-2024-bway.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+            },
+            {
+              "file": "newyorker--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorker.com/magazine/2024/07/08/cats-the-jellicle-ball-theatre-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
           "url": "https://www.nydailynews.com/2026/04/07/broadway-review-cats-jellicle-ball/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -48934,12 +48989,34 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 274,
+        "byReason": {
+          "not-http-url": 38,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 215,
+          "aggregator-section-root": 6
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-CATS-THE-JELLICLE-BALL-Opens-Off-Broadway-20240620",
+          "publishDate": "2024-06-20"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.whatsonstage.com/news/cats-the-jellicle-ball-review-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1608111/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -48953,6 +49030,48 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.nytimes.com/2024/06/20/theater/cats-the-jellicle-ball-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2024/06/20/review-cats-the-jellicle-ball-in-new-york-gives-this-musical-a-whole-new-ballroom-life/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T08:19:38.269Z"
+          },
+          {
+            "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T08:19:38.269Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://nypost.com/2024/06/20/entertainment/cats-the-jellicle-ball-review-the-most-fun-youll-have-this-summer/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T08:19:38.269Z"
+          },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-broadway-review",
             "outletId": "newyorktheatreguide.com",
@@ -49042,24 +49161,6 @@
             "outletId": "pagesonstages.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/cats-the-jellicle-ball-musical-review-andrew-lloyd-webber-ballroom",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/cats-the-jellicle-ball-off-broadway-review-andrew-lloyd-webber",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T08:19:38.269Z"
           },
           {
             "url": "https://1minutecritic.com/cats-jellicle-ball-broadway-review/",
@@ -49169,7 +49270,7 @@
         "liveCount": 29,
         "candidateCount": 30
       },
-      "computedAt": "2026-11-01T00:55:24.723Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
@@ -51328,35 +51429,17 @@
       "openingDate": "2025-11-16",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-CHESS-Revival-Officially-Opens-on-Broadway-20251116",
-        "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CHESS-at-The-Kennedy-Center-20180218"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.html",
+        "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
         "https://www.timeout.com/newyork/theater/chess-broadway-musical-revival-review-aaron-tveit-lea-michele-nicholas-christopher",
-        "https://www.amny.com/entertainment/broadway/review-chess-the-musical/",
-        "https://1minutecritic.com/chess-broadway-review-aaron-tveit-lea-michele/",
-        "https://nystagereview.com/2025/11/16/chess-just-another-bored-game/",
-        "https://nystagereview.com/2025/11/16/chess-thank-you-for-the-music/",
-        "https://www.thewrap.com/chess-broadway-review-abba-musical-lea-michele/",
-        "https://www.chicagotribune.com/2025/11/16/review-chess-broadway/",
+        "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9",
+        "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/",
         "https://variety.com/2025/legit/reviews/chess-review-musical-broadway-lea-michele-1236583104/",
         "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michele-aaron-tveit-abba-musical-1236427952/",
-        "https://www.usatoday.com/story/entertainment/music/2025/11/16/chess-2025-broadway-review/87305495007/",
-        "https://www.vulture.com/article/theater-review-chess-musical-broadway-tveit-michele.html",
-        "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
         "https://www.washingtonpost.com/entertainment/theater/2025/11/16/chess-broadway-review/",
-        "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9",
-        "https://cititour.com/NYC_Broadway/Chess/1341",
-        "https://www.thedailybeast.com/obsessed/chess-review-theaters-most-notorious-strange-beast-finally-returns/",
-        "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
-        "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
-        "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/",
-        "http://variety.com/2018/legit/reviews/chess-review-kennedy-center-1202703667/",
-        "https://www.washingtonpost.com/lifestyle/chess-has-the-best-cast-of-any-musical-this-season-but-the-show-itself-has-issues/2018/02/16/f66ebb10-12d2-11e8-827c-5150c6f3dc79_story.html",
-        "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/",
         "https://nypost.com/2025/11/16/entertainment/chess-review-lea-michele-leaves-you-cold-in-cold-war-musical-revival-on-broadway/",
+        "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
         "https://www.theaterscene.net/musicals/broadway/chess/samuel-l-leiter/",
         "https://www.theatrereviews.com/broadway-review-chess-at-the-imperial-theatre-through-sunday-may-3-2026/",
@@ -51364,6 +51447,17 @@
         "https://pagesonstages.com/2025/11/22/chess/",
         "https://theaterscene.com/reviews/chess/",
         "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html",
+        "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.html",
+        "https://www.amny.com/entertainment/broadway/review-chess-the-musical/",
+        "https://1minutecritic.com/chess-broadway-review-aaron-tveit-lea-michele/",
+        "https://nystagereview.com/2025/11/16/chess-just-another-bored-game/",
+        "https://nystagereview.com/2025/11/16/chess-thank-you-for-the-music/",
+        "https://www.thewrap.com/chess-broadway-review-abba-musical-lea-michele/",
+        "https://www.chicagotribune.com/2025/11/16/review-chess-broadway/",
+        "https://www.usatoday.com/story/entertainment/music/2025/11/16/chess-2025-broadway-review/87305495007/",
+        "https://www.vulture.com/article/theater-review-chess-musical-broadway-tveit-michele.html",
+        "https://cititour.com/NYC_Broadway/Chess/1341",
+        "https://www.thedailybeast.com/obsessed/chess-review-theaters-most-notorious-strange-beast-finally-returns/",
         "https://www.theguardian.com/stage/2025/nov/17/chess-review-broadway-abba",
         "https://people.com/broadway-chess-revival-scores-lea-michele-aaron-tveit-and-nicholas-christopher-review-11850544",
         "http://www.theatrely.com/post/this-chess-is-a-blast-review",
@@ -51372,17 +51466,9 @@
         "https://www.hollywoodreporter.com/review/chess-theater-1107878"
       ],
       "dirFiles": 66,
-      "dirClean": 37,
-      "inReviewsJson": 36,
-      "missing": [
-        {
-          "url": "https://dcmetrotheaterarts.com/2018/02/16/review-chess-kennedy-center/",
-          "host": "dcmetrotheaterarts.com",
-          "knownOutletId": "dc-theater-arts",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirClean": 38,
+      "inReviewsJson": 37,
+      "missing": [],
       "dirOnly": [
         {
           "host": "artsfuse.org",
@@ -51423,30 +51509,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/",
-          "host": "dctheatrescene.com",
-          "knownOutletId": "dctheatrescene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dctheatrescene--jeffrey-walker.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://dctheatrescene.com/2018/02/18/chess-proves-its-next-move-should-be-to-broadway-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
           "url": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/",
           "host": "nydailynews.com",
           "knownOutletId": "nydailynews",
@@ -51472,28 +51534,6 @@
           ],
           "copyOfLiveReview": true,
           "reverify": false
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongShow",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "reverify": true
         },
         {
           "url": "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html",
@@ -51525,24 +51565,11 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 588,
-        "byReason": {
-          "not-http-url": 117,
-          "non-review-host": 34,
-          "aggregator-internal-nav": 424,
-          "aggregator-section-root": 9,
-          "non-stage-review": 2,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-the-Critics-Think-of-CHESS-at-The-Kennedy-Center-20180218",
-          "publishDate": "2018-02-18"
-        }
-      ],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
@@ -51555,13 +51582,6 @@
             "url": "https://www.nydailynews.com/2025/11/16/chess-broadway-review-lea-michele-aaron-tveit/"
           },
           {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP"
-          },
-          {
             "outletId": "the-interested-bystander",
             "outlet": "the-interested-bystander",
             "critic": "Unknown",
@@ -51572,14 +51592,92 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.html",
-            "outletId": "nytimes.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/chess-broadway-musical-revival-review-aaron-tveit-lea-michele-nicholas-christopher",
             "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://variety.com/2025/legit/reviews/chess-review-musical-broadway-lea-michele-1236583104/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michele-aaron-tveit-abba-musical-1236427952/",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/16/chess-broadway-review/",
+            "outletId": "washingtonpost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://nypost.com/2025/11/16/entertainment/chess-review-lea-michele-leaves-you-cold-in-cold-war-musical-revival-on-broadway/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-17T09:42:27.329Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/broadway/chess/samuel-l-leiter/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-review-chess-at-the-imperial-theatre-through-sunday-may-3-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/11/23/chess-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2025/11/22/chess/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://theaterscene.com/reviews/chess/",
+            "outletId": "theaterscene.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/11/16/theater/chess-review-lea-michele-broadway.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -51620,18 +51718,6 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "https://variety.com/2025/legit/reviews/chess-review-musical-broadway-lea-michele-1236583104/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/lifestyle/arts/chess-theater-review-lea-michele-aaron-tveit-abba-musical-1236427952/",
-            "outletId": "hollywoodreporter.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
             "url": "https://www.usatoday.com/story/entertainment/music/2025/11/16/chess-2025-broadway-review/87305495007/",
             "outletId": "usatoday.com",
             "state": "live",
@@ -51640,24 +51726,6 @@
           {
             "url": "https://www.vulture.com/article/theater-review-chess-musical-broadway-tveit-michele.html",
             "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://ew.com/chess-review-infamous-broadway-flop-returns-with-lea-michele-aaron-tveit-11850388",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.washingtonpost.com/entertainment/theater/2025/11/16/chess-broadway-review/",
-            "outletId": "washingtonpost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.wsj.com/articles/chess-review-a-broadway-musical-blunder-1d9062e9",
-            "outletId": "wsj.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
@@ -51672,60 +51740,6 @@
             "outletId": "thedailybeast.com",
             "state": "live",
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/chess-broadway-review-aaron-tveit-lea-michele-nicholas-christopher",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "http://variety.com/2018/legit/reviews/chess-review-kennedy-center-1202703667/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.washingtonpost.com/lifestyle/chess-has-the-best-cast-of-any-musical-this-season-but-the-show-itself-has-issues/2018/02/16/f66ebb10-12d2-11e8-827c-5150c6f3dc79_story.html",
-            "outletId": "washingtonpost.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://nypost.com/2025/11/16/entertainment/chess-review-lea-michele-leaves-you-cold-in-cold-war-musical-revival-on-broadway/",
-            "outletId": "nypost.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-17T09:42:27.329Z"
-          },
-          {
-            "url": "https://www.theaterscene.net/musicals/broadway/chess/samuel-l-leiter/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/broadway-review-chess-at-the-imperial-theatre-through-sunday-may-3-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://newyorktheater.me/2025/11/23/chess-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2025/11/22/chess/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://theaterscene.com/reviews/chess/",
-            "outletId": "theaterscene.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
             "url": "https://www.theguardian.com/stage/2025/nov/17/chess-review-broadway-abba",
@@ -51771,13 +51785,6 @@
             "firstSeenAt": "2026-08-17T09:42:27.329Z"
           },
           {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KLTGLP",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://www.interestedbystander.com/2025/11/theater-reviews-5-hour-initiative-at.html",
             "outletId": "the-interested-bystander",
             "state": "GAP",
@@ -51786,10 +51793,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 27,
+        "liveCount": 28,
         "candidateCount": 30
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "chester-bailey-off-broadway-2022",
@@ -71694,44 +71701,42 @@
       "openingDate": "2026-03-30",
       "status": "closed",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-DOG-DAY-AFTERNOON-Starring-Jon-Bernthal-and-Ebon-Moss-Bachrach-20260330"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/03/30/theater/dog-day-afternoon-review-bernthal-moss-bachrach.html",
-        "https://www.amny.com/entertainment/review-dog-day-afternoon/",
+        "https://www.newyorktheatreguide.com/reviews/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach",
         "https://www.timeout.com/newyork/news/broadway-review-a-heist-and-a-play-go-wrong-in-dog-day-afternoon-033126",
-        "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
-        "https://newyorktheater.me/2026/03/30/dog-day-afternoon-broadway-review/",
-        "https://www.usatoday.com/story/entertainment/movies/2026/03/31/dog-day-afternoon-broadway-review/89360614007/",
+        "https://www.vulture.com/article/theater-review-dog-day-afternoon-broadway-bernthal-guirgis.html",
+        "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
+        "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
+        "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theater-jon-bernthal-broadway-1236551286/",
         "https://nypost.com/2026/03/31/entertainment/dog-day-afternoon-review-jon-bernthals-broadway-play-turns-classic-ny-movie-into-a-silly-sitcom/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=LSZ019",
+        "https://www.talkinbroadway.com/page/world/DogDayAfternoon.html",
+        "https://www.theatrereviews.com/broadway-mini-review-dog-day-afternoon-at-the-august-wilson-theatre-through-sunday-july-12-2026/",
+        "https://newyorktheater.me/2026/03/30/dog-day-afternoon-broadway-review/",
+        "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
+        "https://pagesonstages.com/2026/04/12/dog-day-afternoon/",
+        "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+        "https://www.amny.com/entertainment/review-dog-day-afternoon/",
+        "https://www.usatoday.com/story/entertainment/movies/2026/03/31/dog-day-afternoon-broadway-review/89360614007/",
         "https://ew.com/dog-day-afternoon-review-jon-bernthal-takes-on-famous-al-pacino-role-11937173",
         "https://nystagereview.com/2026/03/31/dog-day-afternoon-now-you-too-can-chant-attica-attica/",
         "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
-        "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
-        "https://www.newyorktheatreguide.com/reviews/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach",
-        "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theater-jon-bernthal-broadway-1236551286/",
         "https://www.wsj.com/articles/dog-day-afternoon-review-a-robbery-revisited-on-broadway-28341eb0",
-        "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
         "https://www.thewrap.com/creative-content/theater/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
         "https://cititour.com/NYC_Broadway/Dog-Day-Afternoon/1365",
         "https://www.nysun.com/article/dog-day-afternoon-unleashes-on-broadway-with-a-loud-contemporary-bark",
         "https://yaledailynews.com/articles/lend-me-your-ears-broadway-s-dog-day-afternoon-is-a-doggone-mess",
-        "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
         "https://www.slantmagazine.com/theater/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach/",
         "https://www.theguardian.com/stage/2026/mar/31/dog-day-afternoon-review-jon-bernthal-ebon-moss-bachrach",
-        "https://www.vulture.com/article/theater-review-dog-day-afternoon-broadway-bernthal-guirgis.html",
-        "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal",
         "https://thecontending.com/dog-day-afternoon-not-your-fathers-take-but-thats-not-a-bad-thing/",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=LSZ019",
-        "https://www.talkinbroadway.com/page/world/DogDayAfternoon.html",
-        "https://www.theatrereviews.com/broadway-mini-review-dog-day-afternoon-at-the-august-wilson-theatre-through-sunday-july-12-2026/",
-        "https://pagesonstages.com/2026/04/12/dog-day-afternoon/",
-        "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html"
+        "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
+        "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal"
       ],
       "dirFiles": 58,
       "dirClean": 38,
-      "inReviewsJson": 39,
+      "inReviewsJson": 40,
       "missing": [],
       "dirOnly": [
         {
@@ -71785,6 +71790,51 @@
       ],
       "flaggedMisses": [
         {
+          "url": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "isSyndicatedDuplicate"
+          ],
+          "copyOfLiveReview": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "the-interested-bystander--cary-wong.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
+        },
+        {
           "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
@@ -71811,29 +71861,7 @@
             "duplicateOf"
           ],
           "copyOfLiveReview": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "isSyndicatedDuplicate"
-          ],
-          "copyOfLiveReview": true,
+          "serpCensus": true,
           "reverify": false
         },
         {
@@ -71848,36 +71876,15 @@
           "dirFlags": [
             {
               "file": "mashable--kristy-puchko.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "cvWrongArticleHighConfidence"
           ],
-          "reverify": true
-        },
-        {
-          "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-interested-bystander--cary-wong.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
+          "serpCensus": true,
           "reverify": true
         }
       ],
@@ -71888,14 +71895,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 301,
-        "byReason": {
-          "not-http-url": 69,
-          "non-review-host": 15,
-          "aggregator-internal-nav": 210,
-          "aggregator-section-root": 5,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
@@ -71904,13 +71905,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "theatrely",
-            "outlet": "theatrely",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review"
-          },
-          {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
             "critic": "Unknown",
@@ -71918,18 +71912,25 @@
             "url": "https://www.nydailynews.com/2026/03/31/broadway-review-dog-day-afternoon-struggles-to-stand-apart-from-film/"
           },
           {
-            "outletId": "mashable",
-            "outlet": "mashable",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal"
-          },
-          {
             "outletId": "the-interested-bystander",
             "outlet": "the-interested-bystander",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review"
+          },
+          {
+            "outletId": "mashable",
+            "outlet": "mashable",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal"
           }
         ],
         "suppressedMissing": [],
@@ -71941,8 +71942,8 @@
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
-            "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/",
-            "outletId": "amny.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
@@ -71953,10 +71954,46 @@
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
-            "url": "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
-            "outletId": "culturesauce.com",
+            "url": "https://www.vulture.com/article/theater-review-dog-day-afternoon-broadway-bernthal-guirgis.html",
+            "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
+            "url": "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theater-jon-bernthal-broadway-1236551286/",
+            "outletId": "hollywoodreporter.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
+            "url": "https://nypost.com/2026/03/31/entertainment/dog-day-afternoon-review-jon-bernthals-broadway-play-turns-classic-ny-movie-into-a-silly-sitcom/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LSZ019",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T19:16:41.144Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/world/DogDayAfternoon.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T19:16:41.144Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/broadway-mini-review-dog-day-afternoon-at-the-august-wilson-theatre-through-sunday-july-12-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T19:16:41.144Z"
           },
           {
             "url": "https://newyorktheater.me/2026/03/30/dog-day-afternoon-broadway-review/",
@@ -71965,14 +72002,26 @@
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
-            "url": "https://www.usatoday.com/story/entertainment/movies/2026/03/31/dog-day-afternoon-broadway-review/89360614007/",
-            "outletId": "usatoday.com",
+            "url": "https://culturesauce.com/2026/03/31/dog-day-afternoon-jon-bernthal-broadway-review/",
+            "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
-            "url": "https://nypost.com/2026/03/31/entertainment/dog-day-afternoon-review-jon-bernthals-broadway-play-turns-classic-ny-movie-into-a-silly-sitcom/",
-            "outletId": "nypost.com",
+            "url": "https://pagesonstages.com/2026/04/12/dog-day-afternoon/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T19:16:41.144Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/review-dog-day-afternoon/",
+            "outletId": "amny.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
+            "url": "https://www.usatoday.com/story/entertainment/movies/2026/03/31/dog-day-afternoon-broadway-review/89360614007/",
+            "outletId": "usatoday.com",
             "state": "live",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
@@ -71991,24 +72040,6 @@
           {
             "url": "https://nystagereview.com/2026/03/31/dog-day-afternoon-more-punchlines-than-peril/",
             "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "https://variety.com/2026/legit/reviews/dog-day-afternoon-broadway-review-jon-bernthal-1236702501/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/dog-day-afternoon-broadway-review-jon-bernthal-ebon-moss-bachrach",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "https://www.hollywoodreporter.com/lifestyle/arts/dog-day-afternoon-review-theater-jon-bernthal-broadway-1236551286/",
-            "outletId": "hollywoodreporter.com",
             "state": "live",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
@@ -72055,46 +72086,9 @@
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-dog-day-afternoon-broadway-bernthal-guirgis.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
             "url": "https://thecontending.com/dog-day-afternoon-not-your-fathers-take-but-thats-not-a-bad-thing/",
             "outletId": "thecontending.com",
             "state": "live",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=LSZ019",
-            "outletId": "lightingandsoundamerica.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T19:16:41.144Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/world/DogDayAfternoon.html",
-            "outletId": "talkinbroadway.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T19:16:41.144Z"
-          },
-          {
-            "url": "https://www.theatrereviews.com/broadway-mini-review-dog-day-afternoon-at-the-august-wilson-theatre-through-sunday-july-12-2026/",
-            "outletId": "theatrereviews.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T19:16:41.144Z"
-          },
-          {
-            "url": "https://pagesonstages.com/2026/04/12/dog-day-afternoon/",
-            "outletId": "pagesonstages.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T19:16:41.144Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
-            "outletId": "theatrely",
-            "state": "GAP",
-            "reason": "sla-breach",
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
@@ -72105,25 +72099,32 @@
             "firstSeenAt": "2026-08-08T11:19:34.086Z"
           },
           {
-            "url": "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal",
-            "outletId": "mashable",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-08T11:19:34.086Z"
-          },
-          {
             "url": "https://www.interestedbystander.com/2026/04/broadway-reviews-ips-on-broadway-get.html",
             "outletId": "the-interested-bystander",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T19:16:41.144Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/dog-day-afternoon-does-disney-for-dads-review",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
+          },
+          {
+            "url": "https://mashable.com/article/dog-day-afternoon-broadway-review-jon-bernthal",
+            "outletId": "mashable",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-08T11:19:34.086Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 25,
         "candidateCount": 29
       },
-      "computedAt": "2026-10-31T17:07:08.919Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "dog-man-the-musical-off-broadway-2023",
@@ -83583,47 +83584,46 @@
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-do-the-critics-think-of-every-brilliant-thing-starring-daniel-radcliffe",
         "https://www.broadwayworld.com/article/Review-Roundup-Tony-Winner-Daniel-Radcliffe-Stars-in-EVERY-BRILLIANT-THING-on-Broadway-20260312"
       ],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
+        "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater",
+        "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+        "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
+        "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+        "https://www.theguardian.com/stage/2026/mar/12/every-brilliant-thing-daniel-radcliffe-broadway",
+        "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
         "https://1minutecritic.com/every-brilliant-thing-review-daniel-radcliffe/",
         "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
-        "https://cititour.com/NYC_Broadway/Every-Brilliant-Thing/1359",
         "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review/",
-        "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
-        "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
-        "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
-        "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre/",
-        "https://www.theguardian.com/stage/2026/mar/12/every-brilliant-thing-daniel-radcliffe-broadway",
-        "https://www.latimes.com/entertainment-arts/story/2026-03-12/every-brilliant-thing-review-daniel-radcliffe-broadway-theater",
-        "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
-        "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-radcliffe-schmoozes-with-the-audience-in-sweet-one-man-show/",
+        "https://www.newyorktheatreguide.com/reviews/every-brilliant-thing-broadway-review-daniel-radcliffe",
         "https://nystagereview.com/2026/03/12/every-brilliant-thing-a-lustrous-evening-with-daniel-radcliffe/",
         "https://nystagereview.com/2026/03/12/every-brilliant-thing-daniel-radcliffe-performs-magic-of-an-emotional-kind/",
-        "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
-        "https://www.newyorktheatreguide.com/reviews/every-brilliant-thing-broadway-review-daniel-radcliffe",
-        "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
-        "https://therecs.co.uk/every-brilliant-thing/",
-        "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
         "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
-        "https://theaterpizzazz.com/daniel-radcliffe-shines-brightly-in-every-brilliant-thing/",
-        "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
-        "https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.chicagotribune.com/2026/03/12/review-every-brilliant-thing-daniel-radcliffe/",
+        "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre/",
+        "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
+        "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-radcliffe-schmoozes-with-the-audience-in-sweet-one-man-show/",
         "https://www.vulture.com/article/daniel-radcliffe-every-brilliant-thing-review.html",
         "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spirited-solo-show-107f4d40",
-        "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
-        "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
-        "https://www.chicagotribune.com/2026/03/12/review-every-brilliant-thing-daniel-radcliffe/",
         "https://www.nysun.com/article/daniel-radcliffe-returns-to-broadway-exploring-depression-while-celebrating-life-in-every-brilliant-thing",
         "https://thecontending.com/a-breathless-daniel-radcliffe-enchants-in-every-brilliant-thing-on-broadway/",
+        "https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+        "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=TXVWEL",
         "https://www.theaterscene.net/plays/broadway-plays/every-brilliant-thing-2/joseph-pisano/",
         "https://www.theatrereviews.com/broadway-review-every-brilliant-thing-at-the-hudson-theatre-through-sunday-may-24-2026/",
         "https://theaterlife.com/every-brilliant-thing-1-2/",
         "https://pagesonstages.com/2026/03/19/every-brilliant-thing/",
         "https://lavocedinewyork.com/en/new-york/2026/04/14/two-new-broadway-productions-confront-grief-and-its-aftermath-in-divergent-ways/",
-        "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html"
+        "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html",
+        "https://cititour.com/NYC_Broadway/Every-Brilliant-Thing/1359",
+        "https://therecs.co.uk/every-brilliant-thing/",
+        "https://theaterpizzazz.com/daniel-radcliffe-shines-brightly-in-every-brilliant-thing/",
+        "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
+        "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
       ],
       "dirFiles": 67,
       "dirClean": 37,
@@ -83632,7 +83632,8 @@
         {
           "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
           "host": "open.substack.com",
-          "knownOutletId": "new-york-notebook"
+          "knownOutletId": "new-york-notebook",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -83685,35 +83686,6 @@
           "reverify": true
         },
         {
-          "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nydailynews--chris-jones.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
-            },
-            {
-              "file": "nydailynews--joe-dziemianowicz.json",
-              "flag": "duplicate",
-              "urlInDir": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "isSyndicatedDuplicate",
-            "duplicateOf"
-          ],
-          "copyOfLiveReview": true,
-          "reverify": false
-        },
-        {
           "url": "https://www.theatrereviews.com/broadway-review-every-brilliant-thing-at-the-hudson-theatre-through-sunday-may-24-2026/",
           "host": "theatrereviews.com",
           "knownOutletId": "theatre-reviews-limited",
@@ -83756,6 +83728,36 @@
             "wrongProduction"
           ],
           "reverify": true
+        },
+        {
+          "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--chris-jones.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
+            },
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "isSyndicatedDuplicate",
+            "duplicateOf"
+          ],
+          "copyOfLiveReview": true,
+          "serpCensus": true,
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -83765,14 +83767,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 419,
+        "count": 326,
         "byReason": {
-          "aggregator-internal-nav": 255,
-          "not-http-url": 111,
-          "production-database-listing": 6,
-          "aggregator-section-root": 10,
-          "non-review-host": 36,
-          "non-stage-review": 1
+          "not-http-url": 91,
+          "non-review-host": 17,
+          "aggregator-internal-nav": 212,
+          "aggregator-section-root": 6
         }
       },
       "dedupedVariants": [],
@@ -83814,13 +83814,6 @@
             "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/"
           },
           {
-            "outletId": "nydailynews",
-            "outlet": "nydailynews",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
-          },
-          {
             "outletId": "theatre-reviews-limited",
             "outlet": "theatre-reviews-limited",
             "critic": "Unknown",
@@ -83833,49 +83826,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html"
+          },
+          {
+            "outletId": "nydailynews",
+            "outlet": "nydailynews",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://1minutecritic.com/every-brilliant-thing-review-daniel-radcliffe/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Every-Brilliant-Thing/1359",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
-            "outletId": "deadline.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
-            "outletId": "ew.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre/",
-            "outletId": "exeuntnyc.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/mar/12/every-brilliant-thing-daniel-radcliffe-broadway",
-            "outletId": "theguardian.com",
+            "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
+            "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -83886,8 +83850,56 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-radcliffe-schmoozes-with-the-audience-in-sweet-one-man-show/",
-            "outletId": "nypost.com",
+            "url": "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://deadline.com/2026/03/every-brilliant-thing-broadway-review-daniel-radcliffe-1236750131/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/mar/12/every-brilliant-thing-daniel-radcliffe-broadway",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://ew.com/every-brilliant-thing-review-daniel-radcliffe-casts-spell-on-broadway-11921829",
+            "outletId": "ew.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://1minutecritic.com/every-brilliant-thing-review-daniel-radcliffe/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://culturesauce.com/2026/03/12/daniel-radcliffe-every-brilliant-thing-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/every-brilliant-thing-broadway-review-daniel-radcliffe",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -83904,56 +83916,32 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/every-brilliant-thing-broadway-review-daniel-radcliffe",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/03/12/theater/every-brilliant-thing-review-daniel-radcliffe.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://therecs.co.uk/every-brilliant-thing/",
-            "outletId": "therecs.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://www.theatrely.com/post/daniel-radcliffe-crowd-sources-community-in-every-brilliant-thing-review",
             "outletId": "theatrely.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://theaterpizzazz.com/daniel-radcliffe-shines-brightly-in-every-brilliant-thing/",
-            "outletId": "theaterpizzazz.com",
+            "url": "https://www.chicagotribune.com/2026/03/12/review-every-brilliant-thing-daniel-radcliffe/",
+            "outletId": "chicagotribune.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/news/broadway-review-daniel-radcliffe-brings-his-shine-to-every-brilliant-thing-031326",
-            "outletId": "timeout.com",
+            "url": "https://exeuntnyc.com/reviews/review-every-brilliant-thing-at-the-hudson-theatre/",
+            "outletId": "exeuntnyc.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
-            "outletId": "variety.com",
+            "url": "https://newyorktheater.me/2026/03/12/every-brilliant-thing-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://nypost.com/2026/03/12/entertainment/every-brilliant-thing-review-daniel-radcliffe-schmoozes-with-the-audience-in-sweet-one-man-show/",
+            "outletId": "nypost.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -83970,24 +83958,6 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.thewrap.com/creative-content/theater/every-brilliant-thing-broadway-review-daniel-radcliffe/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://variety.com/2026/tv/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.chicagotribune.com/2026/03/12/review-every-brilliant-thing-daniel-radcliffe/",
-            "outletId": "chicagotribune.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
             "url": "https://www.nysun.com/article/daniel-radcliffe-returns-to-broadway-exploring-depression-while-celebrating-life-in-every-brilliant-thing",
             "outletId": "nysun.com",
             "state": "live",
@@ -83996,6 +83966,18 @@
           {
             "url": "https://thecontending.com/a-breathless-daniel-radcliffe-enchants-in-every-brilliant-thing-on-broadway/",
             "outletId": "thecontending.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://variety.com/2026/legit/reviews/daniel-radcliffe-every-brilliant-thing-broadway-review-1236685975/",
+            "outletId": "variety.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-daniel-radcliffe-invites-us-to-cherish-every-brilliant-thing_1827748/",
+            "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
@@ -84030,6 +84012,24 @@
             "firstSeenAt": "2026-10-27T23:33:33.656Z"
           },
           {
+            "url": "https://cititour.com/NYC_Broadway/Every-Brilliant-Thing/1359",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://therecs.co.uk/every-brilliant-thing/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/daniel-radcliffe-shines-brightly-in-every-brilliant-thing/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
             "url": "https://open.substack.com/pub/newyorknotebook/p/every-brilliant-thing",
             "outletId": "new-york-notebook",
             "state": "GAP",
@@ -84039,13 +84039,6 @@
           {
             "url": "https://www.amny.com/entertainment/review-daniel-radcliffe-every-brilliant-thing/",
             "outletId": "amny",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
-            "outletId": "nydailynews",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
@@ -84063,13 +84056,20 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T23:33:33.656Z"
+          },
+          {
+            "url": "https://www.nydailynews.com/2026/03/12/broadway-review-radcliffe-brilliantly-cast-in-every-brilliant-thing/",
+            "outletId": "nydailynews",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T10:14:58.194Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 30,
         "candidateCount": 35
       },
-      "computedAt": "2026-11-01T00:55:24.723Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "everybody-off-broadway-2017",
@@ -93856,7 +93856,7 @@
       ],
       "dirFiles": 59,
       "dirClean": 32,
-      "inReviewsJson": 31,
+      "inReviewsJson": 32,
       "missing": [
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TCKSKA",
@@ -94178,7 +94178,7 @@
         "liveCount": 22,
         "candidateCount": 25
       },
-      "computedAt": "2026-11-01T00:55:24.723Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "giant-royal-court-off-west-end-2024",
@@ -138559,14 +138559,20 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.uktw.co.uk/news/Kelly-McCaughan-Catholic-Guilt/7140.html",
-        "https://broadwaybaby.com/shows/kelly-mccaughan-catholic-guilt/808297",
-        "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286"
+        "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt",
+        "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
+        "https://broadwaybaby.com/shows/kelly-mccaughan-catholic-guilt/808297"
       ],
       "dirFiles": 2,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt",
+          "host": "broadstreetreview.com",
+          "knownOutletId": "broadstreetreview",
+          "serpCensus": true
+        },
         {
           "url": "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
           "host": "list.co.uk",
@@ -138576,31 +138582,6 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.uktw.co.uk/news/Kelly-McCaughan-Catholic-Guilt/7140.html",
-          "host": "uktw.co.uk",
-          "knownOutletId": "uktw",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "uktw--uk-theatre-web.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.uktw.co.uk/news/Kelly-McCaughan-Catholic-Guilt/7140.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2024-08-20",
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://broadwaybaby.com/shows/kelly-mccaughan-catholic-guilt/808297",
           "host": "broadwaybaby.com",
@@ -138642,7 +138623,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 7,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -138652,7 +138633,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 6,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -138693,28 +138674,49 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 2,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 42,
         "byReason": {
-          "aggregator-internal-nav": 7,
-          "non-review-host": 22,
+          "non-review-host": 26,
+          "aggregator-internal-nav": 8,
           "bare-host": 1,
-          "event-listing": 1
+          "ticketing-reseller": 1,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "venue-production-page": 1,
+          "non-review-path": 1,
+          "event-listing": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt",
+          "host": "broadstreetreview.com",
+          "outletId": "broadstreetreview",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "kelly-mccaughan-catholic-guilt-off-broadway-2026: https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt dated 2017-12-15 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
         {
           "url": "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
           "host": "list.co.uk",
@@ -138736,6 +138738,13 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "broadstreetreview",
+            "outlet": "broadstreetreview",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt"
+          },
+          {
             "outletId": "the-list",
             "outlet": "the-list",
             "critic": "Unknown",
@@ -138753,6 +138762,13 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.broadstreetreview.com/articles/kelly-mccaughan-presents-catholic-guilt",
+            "outletId": "broadstreetreview",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
             "url": "https://list.co.uk/news/kelly-mccaughan-catholic-guilt-comedy-review-wild-ride-about-religious-dogma-45286",
             "outletId": "the-list",
             "state": "GAP",
@@ -138769,9 +138785,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "kenrex-off-broadway-2026",
@@ -163938,7 +163954,7 @@
         "liveCount": 22,
         "candidateCount": 26
       },
-      "computedAt": "2026-11-01T00:55:24.723Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "marlise-off-broadway-2026",
@@ -182150,7 +182166,10 @@
       "aggregatorListedUrls": [
         "https://www.chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/Content",
         "https://chicago.suntimes.com/2019/6/4/18652634/ms-blakk-for-president-review-steppenwolf-chicago-powerfully-moving-and-fun",
-        "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html"
+        "https://www.nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
+        "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
+        "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
+        "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/"
       ],
       "dirFiles": 4,
       "dirClean": 0,
@@ -182162,6 +182181,24 @@
           "knownOutletId": "chicago-sun-times",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "serpCensus": true
+        },
+        {
+          "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
+          "host": "storefrontrebellion.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
+          "host": "aroundthetownchicago.com",
+          "knownOutletId": "around-the-town-chicago",
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -182218,18 +182255,90 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ms. Blakk for President\" review vineyard",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Ms. Blakk for President\" Landau review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ms. Blakk for President Vineyard Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ms. Blakk for President Vineyard Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ms. Blakk for President Vineyard Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 108,
+        "count": 159,
         "byReason": {
-          "non-review-host": 20,
-          "aggregator-internal-nav": 67,
           "not-http-url": 5,
+          "non-review-host": 49,
+          "aggregator-internal-nav": 79,
           "aggregator-section-root": 4,
-          "production-database-listing": 11,
-          "non-stage-review": 1
+          "production-database-listing": 12,
+          "non-stage-review": 2,
+          "ticketing-reseller": 1,
+          "no-review-evidence": 1,
+          "write-path-blocked": 3,
+          "venue-production-page": 1,
+          "news-article": 2
         }
       },
       "dedupedVariants": [],
@@ -182248,20 +182357,102 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
+        },
+        {
+          "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
+          "host": "storefrontrebellion.substack.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
+          "host": "variety.com",
+          "outletId": "variety",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "pre-opening-non-review",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "msblackforpresident-off-broadway-2026: https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/ is dated before this show's opening on a review outlet and its URL has no review/critic word, so it was read as a pre-opening news, feature or interview page (BRO-6588, non-review-url-patterns.js preOpeningNonReviewReason). Expected rejection; if it IS an early-published review, ingest it with --allow-non-review-url."
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "msblackforpresident-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "variety",
+            "outlet": "variety",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/"
+          },
+          {
+            "outletId": "storefrontrebellion.substack.com",
+            "outlet": "storefrontrebellion.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president"
+          },
+          {
+            "outletId": "around-the-town-chicago",
+            "outlet": "around-the-town-chicago",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
+            "outletId": "variety",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
+            "outletId": "storefrontrebellion.substack.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
+            "outletId": "around-the-town-chicago",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 3
       },
-      "computedAt": "2026-10-31T20:57:30.162Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -188781,60 +188972,46 @@
       "status": "closed",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-oedipus-el-rey-at-the-public-theater"
+        "https://www.broadwayworld.com/article/Review-Roundup-Mark-Strong-and-Lesley-Manville-Star-in-OEDIPUS-on-Broadway-20251113"
       ],
       "aggregatorListedUrls": [
-        "http://www.nj.com/entertainment/index.ssf/2017/10/oedipus_el_rey_the_last_match_jesus_hopped_reviews.html",
-        "http://www.timeout.com/newyork/theater/oedipus-el-rey",
-        "http://www.vulture.com/2017/10/theater-review-in-oedipus-el-rey-fate-falls-a-tad-flat.html",
-        "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
-        "http://www.thewrap.com/oedipus-el-rey-theater-review-happens-sophocles-takes-viagra/",
         "https://www.nytimes.com/2025/11/13/theater/oedipus-review-strong-manville.html",
-        "https://www.newyorktheatreguide.com/reviews/oedipus-broadway-review-mark-strong-lesley-manville",
-        "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
-        "https://www.vulture.com/article/theater-review-robert-icke-sophocles-oedipus-broadway.html",
         "https://www.wsj.com/articles/oedipus-review-brilliantly-reimagining-sophocles-on-broadway-b9416144",
+        "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
+        "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
+        "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
+        "https://nystagereview.com/2025/11/13/oedipus-fate-comes-for-us-all/",
+        "https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/",
+        "https://www.thewrap.com/oedipus-broadway-review-mark-strong-lesley-manville/",
+        "https://nypost.com/2025/11/13/entertainment/oedipus-review-mark-strong-lesley-manville-are-ferocious-in-pulse-pounding-broadway-tragedy/",
+        "https://cititour.com/NYC_Broadway/Oedipus/1340",
+        "https://culturesauce.com/2025/11/13/oedipus-the-mother-of-all-tragedies-gets-a-mesmerizing-update-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/oedipus-broadway-review-mark-strong-lesley-manville",
+        "https://www.vulture.com/article/theater-review-robert-icke-sophocles-oedipus-broadway.html",
+        "https://www.theatrely.com/post/f-cked-up-families-oedipus-the-burning-cauldron-of-fiery-fire-review",
         "https://www.nydailynews.com/2025/11/13/broadway-review-oedipus-blends-greek-tragedy-and-modern-political-intrigue/",
         "https://www.washingtonpost.com/entertainment/theater/2025/11/14/oedipus-broadway-review-lesley-manville-mark-strong/",
-        "https://nypost.com/2025/11/13/entertainment/oedipus-review-mark-strong-lesley-manville-are-ferocious-in-pulse-pounding-broadway-tragedy/",
         "https://www.theatermania.com/news/review-mark-strong-and-lesley-manville-captivate-as-a-dysfunctional-power-couple-in-oedipus_1811952/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU",
         "https://www.talkinbroadway.com/page/world/Oedipus.html",
         "https://www.theaterscene.net/plays/broadway-plays/oedipus/victor-gluck/",
         "https://newyorktheater.me/2025/11/16/oedipus-broadway-review/",
-        "https://culturesauce.com/2025/11/13/oedipus-the-mother-of-all-tragedies-gets-a-mesmerizing-update-broadway-review/",
         "https://pagesonstages.com/2025/11/29/oedipus/",
         "https://theaterscene.com/reviews/oedipus/",
         "https://lavocedinewyork.com/en/new-york/2025/11/22/oedipus-on-broadway-the-modern-take-on-the-classic-hits-a-home-run/",
         "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
-        "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
-        "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
-        "https://nystagereview.com/2025/11/13/oedipus-fate-comes-for-us-all/",
-        "https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/",
-        "https://www.thewrap.com/oedipus-broadway-review-mark-strong-lesley-manville/",
-        "https://cititour.com/NYC_Broadway/Oedipus/1340",
-        "https://www.theatrely.com/post/f-cked-up-families-oedipus-the-burning-cauldron-of-fiery-fire-review"
+        "http://www.timeout.com/newyork/theater/oedipus-el-rey",
+        "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
+        "http://www.thewrap.com/oedipus-el-rey-theater-review-happens-sophocles-takes-viagra/"
       ],
-      "dirFiles": 49,
-      "dirClean": 30,
-      "inReviewsJson": 31,
+      "dirFiles": 50,
+      "dirClean": 31,
+      "inReviewsJson": 32,
       "missing": [
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2017/10/oedipus_el_rey_the_last_match_jesus_hopped_reviews.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU",
           "host": "lightingandsoundamerica.com",
           "knownOutletId": "lighting-and-sound-america"
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
-          "host": "interestedbystander.com",
-          "knownOutletId": "the-interested-bystander"
         }
       ],
       "dirOnly": [
@@ -188928,34 +189105,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 109,
+        "count": 365,
         "byReason": {
-          "aggregator-internal-nav": 67,
-          "not-http-url": 6,
-          "production-database-listing": 10,
-          "aggregator-section-root": 4,
-          "non-review-host": 21,
-          "non-stage-review": 1
+          "not-http-url": 134,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 210,
+          "aggregator-section-root": 6
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-reviews-for-oedipus-el-rey-at-the-public-theater",
-          "publishDate": "2017-10-25"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "http://www.nj.com/entertainment/index.ssf/2017/10/oedipus_el_rey_the_last_match_jesus_hopped_reviews.html",
-          "host": "nj.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
       "ingestResults": [
         {
           "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU",
@@ -188971,21 +189131,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "oedipus-2025: http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
-          "host": "interestedbystander.com",
-          "outletId": "the-interested-bystander",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -188998,13 +189143,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU"
-          },
-          {
-            "outletId": "the-interested-bystander",
-            "outlet": "the-interested-bystander",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
           },
           {
             "outletId": "nydailynews",
@@ -189024,50 +189162,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "http://www.timeout.com/newyork/theater/oedipus-el-rey",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "http://www.vulture.com/2017/10/theater-review-in-oedipus-el-rey-fate-falls-a-tad-flat.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
-            "url": "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
-            "outletId": "t2conline.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
-            "url": "http://www.thewrap.com/oedipus-el-rey-theater-review-happens-sophocles-takes-viagra/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
             "url": "https://www.nytimes.com/2025/11/13/theater/oedipus-review-strong-manville.html",
             "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/oedipus-broadway-review-mark-strong-lesley-manville",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-robert-icke-sophocles-oedipus-broadway.html",
-            "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
@@ -189078,8 +189174,74 @@
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
+            "url": "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
+            "outletId": "latimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
+            "outletId": "chicagotribune.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/oedipus-broadway-review-mark-strong-lesley-manville-robert-icke",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/13/oedipus-fate-comes-for-us-all/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://www.thewrap.com/oedipus-broadway-review-mark-strong-lesley-manville/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
             "url": "https://nypost.com/2025/11/13/entertainment/oedipus-review-mark-strong-lesley-manville-are-ferocious-in-pulse-pounding-broadway-tragedy/",
             "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Oedipus/1340",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/11/13/oedipus-the-mother-of-all-tragedies-gets-a-mesmerizing-update-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/oedipus-broadway-review-mark-strong-lesley-manville",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-robert-icke-sophocles-oedipus-broadway.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/f-cked-up-families-oedipus-the-burning-cauldron-of-fiery-fire-review",
+            "outletId": "theatrely.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
@@ -189108,12 +189270,6 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://culturesauce.com/2025/11/13/oedipus-the-mother-of-all-tragedies-gets-a-mesmerizing-update-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
             "url": "https://pagesonstages.com/2025/11/29/oedipus/",
             "outletId": "pagesonstages.com",
             "state": "live",
@@ -189132,57 +189288,32 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://www.latimes.com/entertainment-arts/story/2025-11-13/review-theater-mark-strong-lesley-manville-robert-ickes-sophocles-oedipus-broadway",
-            "outletId": "latimes.com",
+            "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "http://www.timeout.com/newyork/theater/oedipus-el-rey",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
-            "url": "https://www.chicagotribune.com/2025/11/13/review-oedipus-broadway/",
-            "outletId": "chicagotribune.com",
+            "url": "http://t2conline.com/oedipus-el-rey-an-exciting-bare-assed-re-focusing-of-greek-destino-y-amor-maternal/",
+            "outletId": "t2conline.com",
             "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
+            "firstSeenAt": "2026-10-31T21:21:46.538Z"
           },
           {
-            "url": "https://nystagereview.com/2025/11/13/oedipus-fate-comes-for-us-all/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://nystagereview.com/2025/11/13/oedipus-all-about-my-mother/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://www.thewrap.com/oedipus-broadway-review-mark-strong-lesley-manville/",
+            "url": "http://www.thewrap.com/oedipus-el-rey-theater-review-happens-sophocles-takes-viagra/",
             "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Oedipus/1340",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-16T12:14:10.381Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/f-cked-up-families-oedipus-the-burning-cauldron-of-fiery-fire-review",
-            "outletId": "theatrely.com",
             "state": "live",
             "firstSeenAt": "2026-08-16T12:14:10.381Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-CYSJJU",
             "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
-            "outletId": "the-interested-bystander",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
@@ -189203,10 +189334,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 21,
+        "liveCount": 22,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "oedipus-west-end-2024",
@@ -215080,7 +215211,7 @@
         "liveCount": 23,
         "candidateCount": 27
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
@@ -224816,9 +224947,7 @@
       "status": "open",
       "category": "broadway",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-Opens-on-Broadway-20260420",
-        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
-        "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706"
+        "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-Opens-on-Broadway-20260420"
       ],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2026/04/20/theater/schmigadoon-review-brightman-broadway.html",
@@ -224847,26 +224976,6 @@
         "https://www.avclub.com/schmigadoon-broadway-musical-reaction",
         "https://www.purewow.com/entertainment/schmigadoon-broadway-review",
         "https://www.washingtonpost.com/entertainment/theater/2026/05/06/lost-boys-schmigadoon-beaches-broadway-review/",
-        "https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720",
-        "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep257-isabelle-mccalla-swing-in-mccalla-s-1998-cats-emma-tate-in-schmigadoon/295",
-        "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/schmigadoon-on-broadway-a-deeper-dive-into-the-golden-age-parody-at-the-nederlander-theatre/360",
-        "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/159-ana-gasteyer-live-from-ny-it-s-schmigadoon/166",
-        "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/schmigadoon-the-musical-cast-crew-share-kindness-tips-backstage-joy/151",
-        "https://broadwaypodcastnetwork.com/podcasts/the-theatre-podcast-with-alan-seales/ep163-barry-sonnenfeld-schmigadoon-big-men-in-black-addams-family-values-when-harry-met-sally-and-so-many-more/180",
-        "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
-        "https://www.vulture.com/article/theater-review-schmigadoon-onstage-at-the-kennedy-center.html",
-        "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
-        "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-        "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
-        "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html",
-        "https://variety.com/2021/tv/reviews/schmigadoon-apple-tv-plus-1235003459/",
-        "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-        "https://mashable.com/article/schmigadoon-review-apple-tv-plus",
-        "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
-        "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway",
-        "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-        "https://www.theguardian.com/tv-and-radio/2021/jul/16/schmigadoon-review-a-one-note-musical-and-even-that-falls-too-flat",
-        "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
         "https://www.theatermania.com/news/review-schmigadoon-is-a-real-nice-clambake-im-mighty-glad-i-came_1833573/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=XDBXNM",
         "https://www.theaterscene.net/musicals/broadway/schmigadoon/victor-gluck/",
@@ -224874,78 +224983,13 @@
         "https://theaterlife.com/the-fear-of-13-schmigadoon/",
         "https://pagesonstages.com/2026/04/25/schmigadoon/",
         "https://lavocedinewyork.com/en/new-york/2026/05/01/schmigadoon-wears-its-heart-on-its-sleeve-and-keeps-its-tongue-in-its-cheek/",
+        "https://www.vulture.com/article/theater-review-schmigadoon-onstage-at-the-kennedy-center.html",
         "https://www.vulture.com/article/schmigadoon-series-review.html "
       ],
-      "dirFiles": 82,
+      "dirFiles": 83,
       "dirClean": 46,
       "inReviewsJson": 45,
-      "missing": [
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep257-isabelle-mccalla-swing-in-mccalla-s-1998-cats-emma-tate-in-schmigadoon/295",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/schmigadoon-on-broadway-a-deeper-dive-into-the-golden-age-parody-at-the-nederlander-theatre/360",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/159-ana-gasteyer-live-from-ny-it-s-schmigadoon/166",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/schmigadoon-the-musical-cast-crew-share-kindness-tips-backstage-joy/151",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-theatre-podcast-with-alan-seales/ep163-barry-sonnenfeld-schmigadoon-big-men-in-black-addams-family-values-when-harry-met-sally-and-so-many-more/180",
-          "host": "broadwaypodcastnetwork.com",
-          "knownOutletId": "broadwaypodcastnetwork"
-        },
-        {
-          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "knownOutletId": "maryland-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
-          "host": "tvline.com",
-          "knownOutletId": "tv-line",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-          "host": "entertainmentdaily.co.uk",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mashable.com/article/schmigadoon-review-apple-tv-plus",
-          "host": "mashable.com",
-          "knownOutletId": "mashable",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-          "host": "cnet.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "chicagotribune.com",
@@ -225015,78 +225059,6 @@
           ],
           "copyOfLiveReview": true,
           "reverify": false
-        },
-        {
-          "url": "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html",
-          "host": "slate.com",
-          "knownOutletId": "slate",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "slate--karen-han.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://slate.com/culture/2021/07/schmigadoon-apple-tv-review-keegan-michael-key.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--daniel-fienberg.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/tv/tv-reviews/schmigadoon-1234982706/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway",
-          "host": "npr.org",
-          "knownOutletId": "npr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "npr--linda-holmes.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.npr.org/2021/07/15/1015663545/schmigadoon-review-keegan-michael-key-cecily-strong-broadway"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -225096,194 +225068,22 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 943,
+        "count": 411,
         "byReason": {
-          "aggregator-internal-nav": 635,
-          "not-http-url": 243,
-          "aggregator-section-root": 16,
-          "non-review-host": 45,
-          "roundup-page": 4
+          "not-http-url": 161,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 210,
+          "aggregator-section-root": 5,
+          "roundup-page": 2,
+          "podcast-episode": 18
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-SCHMIGADOON-World-Premiere-at-the-Kennedy-Center-20250203",
-          "publishDate": "2025-02-03"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/REVIEW-ROUNDUP-What-Are-Critics-Saying-About-SCHMIGADOON-20210706",
-          "publishDate": "2021-07-06"
-        }
-      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://mdtheatreguide.com/2025/02/theatre-review-schmigadoon-at-the-kennedy-center/",
-          "host": "mdtheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://tvline.com/2021/07/06/schmigadoon-review-apple-tv-plus-musical-cecily-strong/",
-          "host": "tvline.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.entertainmentdaily.co.uk/tv/schmigadoon-review-apple-tv-musical-cecily-strong-keegan-michael-key/",
-          "host": "entertainmentdaily.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://mashable.com/article/schmigadoon-review-apple-tv-plus",
-          "host": "mashable.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.cnet.com/news/schmigadoon-review-modern-love-meets-musical-in-cheerful-star-packed-comedy/",
-          "host": "cnet.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep257-isabelle-mccalla-swing-in-mccalla-s-1998-cats-emma-tate-in-schmigadoon/295",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/schmigadoon-2026/broadwaypodcastnetwork--broadway-podcast-network.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/schmigadoon-on-broadway-a-deeper-dive-into-the-golden-age-parody-at-the-nederlander-theatre/360",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/schmigadoon-2026/broadwaypodcastnetwork--broadway-podcast-network.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/159-ana-gasteyer-live-from-ny-it-s-schmigadoon/166",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/schmigadoon-2026/broadwaypodcastnetwork--broadway-podcast-network.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
-        },
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/schmigadoon-the-musical-cast-crew-share-kindness-tips-backstage-joy/151",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with broadwaypodcastnetwork--broadway-podcast-network.json\n   reason: publish-date-gap-exceeds-365-days\n   detail: {\n  \"existingPublishDate\": \"2026-07-30\",\n  \"incomingPublishDate\": \"2025-01-23\",\n  \"diffDays\": 553,\n  \"existingUrl\": \"https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720\",\n  \"incomingUrl\": \"https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/schmigadoon-the-musical-cast-crew-share-kindness-tips-backstage-joy/151\"\n}\n\nManual remediation required: rename or clear the existing file."
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://broadwaypodcastnetwork.com/podcasts/the-theatre-podcast-with-alan-seales/ep163-barry-sonnenfeld-schmigadoon-big-men-in-black-addams-family-values-when-harry-met-sally-and-so-many-more/180",
-          "host": "broadwaypodcastnetwork.com",
-          "outletId": "broadwaypodcastnetwork"
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep257-isabelle-mccalla-swing-in-mccalla-s-1998-cats-emma-tate-in-schmigadoon/295"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/schmigadoon-on-broadway-a-deeper-dive-into-the-golden-age-parody-at-the-nederlander-theatre/360"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/159-ana-gasteyer-live-from-ny-it-s-schmigadoon/166"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/schmigadoon-the-musical-cast-crew-share-kindness-tips-backstage-joy/151"
-          },
-          {
-            "outletId": "broadwaypodcastnetwork",
-            "outlet": "broadwaypodcastnetwork",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-theatre-podcast-with-alan-seales/ep163-barry-sonnenfeld-schmigadoon-big-men-in-black-addams-family-values-when-harry-met-sally-and-so-many-more/180"
-          },
           {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
@@ -225445,42 +225245,6 @@
             "firstSeenAt": "2026-08-13T10:04:16.783Z"
           },
           {
-            "url": "https://www.nytimes.com/2025/02/03/theater/schmigadoon-review-kennedy-center.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
-            "url": "https://www.vulture.com/article/theater-review-schmigadoon-onstage-at-the-kennedy-center.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-13T10:04:16.783Z"
-          },
-          {
-            "url": "https://www.washingtonpost.com/entertainment/theater/2025/02/03/schmigadoon-kennedy-center-world-premiere/",
-            "outletId": "washingtonpost.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
-            "url": "https://variety.com/2021/tv/reviews/schmigadoon-apple-tv-plus-1235003459/",
-            "outletId": "variety.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
-            "url": "https://www.theguardian.com/tv-and-radio/2021/jul/16/schmigadoon-review-a-one-note-musical-and-even-that-falls-too-flat",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2021/07/15/arts/television/review-schmigadoon.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/review-schmigadoon-is-a-real-nice-clambake-im-mighty-glad-i-came_1833573/",
             "outletId": "theatermania.com",
             "state": "live",
@@ -225523,52 +225287,16 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
+            "url": "https://www.vulture.com/article/theater-review-schmigadoon-onstage-at-the-kennedy-center.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-13T10:04:16.783Z"
+          },
+          {
             "url": "https://www.vulture.com/article/schmigadoon-series-review.html ",
             "outletId": "vulture.com",
             "state": "live",
             "firstSeenAt": "2026-10-12T02:07:28.826Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-cheese-wheel-podcast/schmigadoon/720",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-wrong-cat-died/ep257-isabelle-mccalla-swing-in-mccalla-s-1998-cats-emma-tate-in-schmigadoon/295",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/half-hour-with-jeff-richie-post-show-broadway-discussions-and-interviews/schmigadoon-on-broadway-a-deeper-dive-into-the-golden-age-parody-at-the-nederlander-theatre/360",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/behind-the-awards-with-eila-mell-bruce-gotlieb/159-ana-gasteyer-live-from-ny-it-s-schmigadoon/166",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-art-of-kindness-with-robert-peterpaul/schmigadoon-the-musical-cast-crew-share-kindness-tips-backstage-joy/151",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
-            "url": "https://broadwaypodcastnetwork.com/podcasts/the-theatre-podcast-with-alan-seales/ep163-barry-sonnenfeld-schmigadoon-big-men-in-black-addams-family-values-when-harry-met-sally-and-so-many-more/180",
-            "outletId": "broadwaypodcastnetwork",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
             "url": "https://www.nydailynews.com/2026/04/20/broadway-review-schmigadoon-is-sweet-simple-fun/",
@@ -225580,9 +225308,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 31,
-        "candidateCount": 33
+        "candidateCount": 32
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
@@ -311238,15 +310966,9 @@
         "https://pagesonstages.com/2026/04/12/titanique/"
       ],
       "dirFiles": 62,
-      "dirClean": 34,
-      "inReviewsJson": 34,
-      "missing": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Titanique/1369",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        }
-      ],
+      "dirClean": 35,
+      "inReviewsJson": 35,
+      "missing": [],
       "dirOnly": [
         {
           "host": "digitaljournal.com",
@@ -311274,30 +310996,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cititour--brian-scott-lipton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
         {
           "url": "https://www.wsj.com/articles/titanique-little-shop-of-horrors-reviews-off-broadway-celine-dion-ashman-menken-11673567675",
           "host": "wsj.com",
@@ -311427,13 +311125,13 @@
       "candidatesRejected": {
         "count": 771,
         "byReason": {
-          "aggregator-internal-nav": 463,
           "not-http-url": 178,
-          "production-database-listing": 10,
-          "aggregator-section-root": 14,
           "non-review-host": 54,
-          "non-stage-review": 3,
+          "aggregator-internal-nav": 463,
+          "aggregator-section-root": 14,
           "roundup-page": 48,
+          "production-database-listing": 10,
+          "non-stage-review": 3,
           "bare-host": 1
         }
       },
@@ -311458,34 +311156,9 @@
       ],
       "automatedExcludedListed": 2,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://cititour.com/NYC_Broadway/Titanique/1369",
-          "host": "cititour.com",
-          "outletId": "cititour",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "cititour",
-            "outlet": "cititour",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://cititour.com/NYC_Broadway/Titanique/1369"
-          },
           {
             "outletId": "nydailynews",
             "outlet": "nydailynews",
@@ -311510,6 +311183,12 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://cititour.com/NYC_News/Review-Titanique-Floats-a-Fun-lovers-Boat/6520",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
           {
             "url": "https://www.newyorktheatreguide.com/reviews/titanique-off-broadway-review",
             "outletId": "newyorktheatreguide.com",
@@ -311585,6 +311264,12 @@
           {
             "url": "https://nystagereview.com/2026/04/12/titanique-what-did-i-miss/",
             "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T06:06:54.246Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Titanique/1369",
+            "outletId": "cititour.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T06:06:54.246Z"
           },
@@ -311703,13 +311388,6 @@
             "firstSeenAt": "2026-10-29T01:32:30.606Z"
           },
           {
-            "url": "https://cititour.com/NYC_Broadway/Titanique/1369",
-            "outletId": "cititour",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T06:06:54.246Z"
-          },
-          {
             "url": "https://www.nydailynews.com/2026/04/12/broadway-review-titanique-affectionately-parodies-1997-move-and-celine-dion/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -311732,10 +311410,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 28,
+        "liveCount": 29,
         "candidateCount": 32
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "titanique-west-end-2024",
@@ -314521,12 +314199,90 @@
         "https://www.nytimes.com/2021/12/03/arts/music/met-opera-tosca.html",
         "https://newyorkclassicalreview.com/2022/10/kurzak-provides-the-spark-in-mets-simmering-tosca/",
         "https://operawire.com/metropolitan-opera-2022-23-review-tosca/",
+        "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
+        "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+        "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+        "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/",
+        "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+        "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
+        "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+        "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
+        "https://operacanada.ca/metropolitan-opera-tosca-review/",
+        "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review",
         "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/"
       ],
       "dirFiles": 9,
       "dirClean": 1,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+          "host": "musicomh.com",
+          "knownOutletId": "musicomh",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
+          "host": "viewlogue.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+          "host": "aatmanvakil.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
+          "host": "classicalsource.com",
+          "knownOutletId": "classical-source",
+          "serpCensus": true
+        },
+        {
+          "url": "https://operacanada.ca/metropolitan-opera-tosca-review/",
+          "host": "operacanada.ca",
+          "knownOutletId": "operacanada",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -314629,33 +314385,366 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tosca\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tosca\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tosca\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 17,
+        "byReason": {
+          "non-review-host": 12,
+          "non-stage-review": 2,
+          "ticketing-reseller": 2,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
+          "host": "viewlogue.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+          "host": "aatmanvakil.substack.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+          "host": "musicomh.com",
+          "outletId": "musicomh",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Article extraction returned 124 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly"
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
+          "host": "classicalsource.com",
+          "outletId": "classical-source"
+        },
+        {
+          "url": "https://operacanada.ca/metropolitan-opera-tosca-review/",
+          "host": "operacanada.ca",
+          "outletId": "operacanada"
+        },
+        {
+          "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review",
+          "host": "newyorker.com",
+          "outletId": "newyorker"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
-        "suppressedMissing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031"
+          },
+          {
+            "outletId": "musicomh",
+            "outlet": "musicomh",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum"
+          },
+          {
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/"
+          },
+          {
+            "outletId": "viewlogue.com",
+            "outlet": "viewlogue.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca"
+          },
+          {
+            "outletId": "aatmanvakil.substack.com",
+            "outlet": "aatmanvakil.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan"
+          },
+          {
+            "outletId": "classical-source",
+            "outlet": "classical-source",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/"
+          },
+          {
+            "outletId": "operacanada",
+            "outlet": "operacanada",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://operacanada.ca/metropolitan-opera-tosca-review/"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "newyorker",
+            "outlet": "newyorker",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review"
+          }
+        ],
         "candidates": [
           {
             "url": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
             "outletId": "zealnyc.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T03:22:12.044Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
+            "outletId": "broadwayworld",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+            "outletId": "musicomh",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+            "outletId": "london-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+            "outletId": "bachtrack",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/",
+            "outletId": "sunday-telegraph",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
+            "outletId": "viewlogue.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+            "outletId": "aatmanvakil.substack.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca-sondra-radvanovsky-marcelo-alvarez-falk-struckmann/",
+            "outletId": "classical-source",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://operacanada.ca/metropolitan-opera-tosca-review/",
+            "outletId": "operacanada",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
+          },
+          {
+            "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review",
+            "outletId": "newyorker",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-11-01T02:12:48.530Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 1
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-31T20:57:30.162Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -319062,43 +319151,42 @@
       "openingDate": "2025-11-20",
       "status": "open",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-Opens-On-Broadway-20251120",
-        "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.nytimes.com/2025/11/20/theater/two-strangers-carry-cake-review.html",
-        "https://www.vulture.com/article/theater-review-two-strangers-carry-a-cake-across-new-york-barne-buchan-broadway.html",
-        "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
-        "https://www.thedailybeast.com/obsessed/two-strangers-carry-a-cake-across-new-yorkand-onto-broadway/",
-        "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
-        "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
-        "https://newyorktheater.me/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
-        "https://1minutecritic.com/two-strangers-carry-cake-broadway-review/",
-        "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
-        "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
-        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
-        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-a-tasty-slice-of-cake/",
         "https://www.newyorktheatreguide.com/reviews/two-strangers-carry-a-cake-across-new-york-broadway-review",
-        "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
-        "https://therecs.co.uk/two-strangers-carry-a-cake-across-new-york/",
-        "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
-        "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
+        "https://www.vulture.com/article/theater-review-two-strangers-carry-a-cake-across-new-york-barne-buchan-broadway.html",
+        "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
+        "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
+        "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
         "https://www.theatermania.com/news/review-broadway-transfer-of-west-end-hit-two-strangers-doesnt-quite-take-the-cake_1812663/",
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=T634J3",
         "https://www.talkinbroadway.com/page/world/TwoStrangers.html",
         "https://www.theaterscene.net/musicals/broadway/two-strangers-carry-a-cake-across-new-york/joseph-pisano/",
         "https://www.theatrereviews.com/broadway-review-two-strangers-carry-a-cake-across-new-york-currently-on/",
+        "https://newyorktheater.me/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
         "https://theaterlife.com/two-strangers-carry-a-cake-across-new-york/",
+        "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
         "https://twi-ny.com/2025/11/21/two-strangers-carry-a-cake-across-new-york-longacre-theatre/",
         "https://pagesonstages.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
-        "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html"
+        "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html",
+        "https://www.thedailybeast.com/obsessed/two-strangers-carry-a-cake-across-new-yorkand-onto-broadway/",
+        "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
+        "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-a-tasty-slice-of-cake/",
+        "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
+        "https://therecs.co.uk/two-strangers-carry-a-cake-across-new-york/",
+        "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/"
       ],
       "dirFiles": 61,
       "dirClean": 31,
       "inReviewsJson": 30,
       "missing": [],
       "dirOnly": [
+        {
+          "host": "bostonglobe.com",
+          "count": 1
+        },
         {
           "host": "chicagotribune.com",
           "count": 1
@@ -319109,6 +319197,10 @@
         },
         {
           "host": "jitneybooks.com",
+          "count": 1
+        },
+        {
+          "host": "1minutecritic.com",
           "count": 1
         },
         {
@@ -319186,21 +319278,10 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 553,
-        "byReason": {
-          "aggregator-internal-nav": 426,
-          "not-http-url": 84,
-          "aggregator-section-root": 10,
-          "non-review-host": 33
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-TWO-STRANGERS-CARRY-A-CAKE-ACROSS-NEW-YORK-at-ART-20250602",
-          "publishDate": "2025-06-02"
-        }
-      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "censusVerdict": {
@@ -319230,22 +319311,16 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-two-strangers-carry-a-cake-across-new-york-barne-buchan-broadway.html",
-            "outletId": "vulture.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-07T12:45:54.489Z"
-          },
-          {
-            "url": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
-            "outletId": "ew.com",
+            "url": "https://www.newyorktheatreguide.com/reviews/two-strangers-carry-a-cake-across-new-york-broadway-review",
+            "outletId": "newyorktheatreguide.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://www.thedailybeast.com/obsessed/two-strangers-carry-a-cake-across-new-yorkand-onto-broadway/",
-            "outletId": "thedailybeast.com",
+            "url": "https://www.vulture.com/article/theater-review-two-strangers-carry-a-cake-across-new-york-barne-buchan-broadway.html",
+            "outletId": "vulture.com",
             "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+            "firstSeenAt": "2026-08-07T12:45:54.489Z"
           },
           {
             "url": "https://nypost.com/2025/11/20/entertainment/two-strangers-carry-a-cake-across-new-york-review-a-hilarious-new-star-bursts-onto-broadway/",
@@ -319254,70 +319329,10 @@
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
           },
           {
-            "url": "https://newyorktheater.me/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
-            "outletId": "newyorktheater.me",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://1minutecritic.com/two-strangers-carry-cake-broadway-review/",
-            "outletId": "1minutecritic.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-a-tasty-slice-of-cake/",
-            "outletId": "nystagereview.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/two-strangers-carry-a-cake-across-new-york-broadway-review",
-            "outletId": "newyorktheatreguide.com",
+            "url": "https://ew.com/two-strangers-carry-a-cake-across-new-york-review-delightful-rom-com-musical-broadway-11850800",
+            "outletId": "ew.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
-          },
-          {
-            "url": "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
-            "outletId": "theatrely.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://therecs.co.uk/two-strangers-carry-a-cake-across-new-york/",
-            "outletId": "therecs.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
-            "outletId": "frontmezzjunkies.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-24T15:42:00.225Z"
-          },
-          {
-            "url": "https://www.bostonglobe.com/2025/05/30/arts/two-strangers-carry-a-cake/",
-            "outletId": "bostonglobe.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T21:21:46.538Z"
           },
           {
             "url": "https://www.theatermania.com/news/review-broadway-transfer-of-west-end-hit-two-strangers-doesnt-quite-take-the-cake_1812663/",
@@ -319344,10 +319359,22 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
+            "url": "https://newyorktheater.me/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
             "url": "https://theaterlife.com/two-strangers-carry-a-cake-across-new-york/",
             "outletId": "theaterlife.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
           },
           {
             "url": "https://twi-ny.com/2025/11/21/two-strangers-carry-a-cake-across-new-york-longacre-theatre/",
@@ -319368,6 +319395,48 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
+            "url": "https://www.thedailybeast.com/obsessed/two-strangers-carry-a-cake-across-new-yorkand-onto-broadway/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Two-Strangers-Carry-a-Cake-Across-New-York/1344",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-a-tasty-slice-of-cake/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/two-strangers-carry-a-cake-across-new-york-the-great-british-millennial-off-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://therecs.co.uk/two-strangers-carry-a-cake-across-new-york/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
+            "url": "https://frontmezzjunkies.com/2025/11/20/two-strangers-carry-a-cake-across-new-york/",
+            "outletId": "frontmezzjunkies.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-24T15:42:00.225Z"
+          },
+          {
             "url": "https://www.nydailynews.com/2025/11/20/broadway-review-two-strangers-carry-a-cake-across-ny-is-cute-but-too-long/",
             "outletId": "nydailynews",
             "state": "GAP",
@@ -319383,10 +319452,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 23,
-        "candidateCount": 25
+        "liveCount": 21,
+        "candidateCount": 23
       },
-      "computedAt": "2026-10-31T21:21:46.538Z"
+      "computedAt": "2026-11-01T02:12:48.530Z"
     },
     {
       "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
