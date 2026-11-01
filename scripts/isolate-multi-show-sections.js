@@ -32,6 +32,7 @@ const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { planIsolation, planRefetchedIsolation, needsRefetch } = require('./lib/multi-show-isolation-plan');
+const { findSectionHeadings } = require('./lib/multi-show-section-extract');
 const { safeWriteReview } = require('./lib/review-write-guard');
 
 const USAGE = 'Usage: node scripts/isolate-multi-show-sections.js [--apply] [--refetch] [--dir=PATH] [--show=ID]';
@@ -61,7 +62,13 @@ async function main() {
       if (!plan && refetch && needsRefetch(data)) {
         const post = await fetchPostText(data.url, postCache);
         plan = post ? planRefetchedIsolation(data, showId, post, at) : null;
-        if (!plan) { console.log(`  keep    ${showId}/${file} (refetched: ${post ? 'verdict does not name another section' : 'fetch failed'})`); continue; }
+        if (!plan) {
+          const why = !post ? 'fetch failed'
+            : findSectionHeadings(post).length < 2 ? 'refetched post has no section headings'
+              : 'no unique section, or verdict does not quote another section\'s title';
+          console.log(`  keep    ${showId}/${file} (refetched: ${why})`);
+          continue;
+        }
       }
       if (!plan) continue;
       if (plan.refused) { refused++; console.log(`  refuse  ${showId}/${file} (no unique section for this show — left as is)`); continue; }
@@ -73,7 +80,12 @@ async function main() {
   console.log(`[isolate-multi-show-sections] ${changed} file(s) ${apply ? 'rewritten' : 'would be rewritten'}, ${refused} left (no unique section)${apply ? '' : ' (dry run)'}`);
 }
 
-/** The post as the collector stores it before isolation (extractor + preCleanForStorage). */
+/**
+ * The post as plain text, run through the same storage pre-clean the collector
+ * applies (extractor + preCleanForStorage). Not byte-identical to the
+ * collector's Playwright path; isolation only needs the photo-credit headings,
+ * and a post where they are lost is kept unchanged (logged).
+ */
 async function fetchPostText(url, cache) {
   const key = String(url).split('?')[0];
   if (cache.has(key)) return cache.get(key);
@@ -83,7 +95,7 @@ async function fetchPostText(url, cache) {
     const { extractArticleText } = require('./lib/article-extractor');
     const { preCleanForStorage } = require('./lib/stored-text-form');
     const res = await fetchPage(key);
-    const raw = res && res.format === 'html' ? extractArticleText(res.content, key) : (res && res.content);
+    const raw = res && res.format === 'html' ? extractArticleText(res.content, new URL(key).hostname) : (res && res.content);
     text = typeof raw === 'string' && raw.trim() ? preCleanForStorage(raw) : null;
   } catch (e) { console.log(`  fetch failed ${key}: ${e.message}`); }
   cache.set(key, text);

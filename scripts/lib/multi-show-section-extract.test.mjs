@@ -175,13 +175,14 @@ const { planRefetchedIsolation, needsRefetch } = require('./multi-show-isolation
 const AT = '2026-11-01T00:00:00.000Z';
 test('BRO-6742 planRefetchedIsolation: empty-text file judged on another section is cleared from the refetched post', () => {
   const data = { url: 'https://www.interestedbystander.com/2024/11/capsule.html', fullText: '',
-    wrongProduction: true, incompleteDetail: 'CV-promoted: The scraped content reviews "DRAG: The Musical", not Sunset Blvd' };
+    wrongProduction: true, incompleteReason: 'wrong_content', incompleteDetail: 'CV-promoted: The scraped content reviews "DRAG: The Musical", not Sunset Blvd' };
   assert.equal(needsRefetch(data), true);
   const p = planRefetchedIsolation(data, 'sunset-boulevard-2024', SB_POST, AT);
   assert.ok(p);
   assert.match(p.data.fullText, /^Sunset Blvd \(c\)/);
   assert.equal(p.data.wrongProduction, false);
   assert.equal(p.data.multiShowRefetchedAt, AT);
+  assert.equal(p.data.incompleteReason, undefined);
   assert.equal(p.data.needsRescore, true);
   const retro = { ...data, incompleteDetail: undefined, wrongProductionReason: "Retroactive LLM verify: a review of 'DRAG: The Musical' at New World Stages" };
   assert.deepEqual(planRefetchedIsolation(retro, 'sunset-boulevard-2024', SB_POST, AT).clearedFlags, ['wrongProduction']);
@@ -197,4 +198,27 @@ test('BRO-6742 planRefetchedIsolation: a verdict not naming another section, an 
   assert.equal(needsRefetch({ ...base, fullText: SB_POST, wrongShow: true }), false);
   // the show has no section in the post: refused, never another show's text
   assert.equal(planRefetchedIsolation({ ...base, wrongShow: true, wrongShowReason: 'CV-promoted: reviews "DRAG: The Musical"' }, 'hamilton-2015', SB_POST, AT), null);
+});
+
+test('BRO-6742 second opinion: the refetch path and fallback reasons clear only on a QUOTED other-section title', () => {
+  const base = { url: 'https://www.interestedbystander.com/x.html', fullText: '' };
+  // cabaret-2024 shape: names words of another heading in passing, unquoted. Must stand.
+  const loose = { ...base, wrongProduction: true, wrongProductionReason: 'CV-promoted: the review is about the drag the musical cast in London, not Broadway' };
+  assert.equal(planRefetchedIsolation(loose, 'sunset-boulevard-2024', SB_POST, AT), null);
+  // the same unquoted mention via the incompleteDetail fallback is not enough on the daily sweep either
+  const fallback = { url: base.url, fullText: SB_POST, wrongProduction: true, incompleteDetail: 'CV-promoted: the review is about the drag the musical cast in London' };
+  const p = planIsolation(fallback, 'sunset-boulevard-2024', AT);
+  assert.ok(p && !p.refused);
+  assert.deepEqual(p.clearedFlags, []);
+  assert.equal(p.data.wrongProduction, true);
+  // quoted title clears
+  const quoted = { ...base, wrongShow: true, wrongShowReason: 'CV-promoted: The review is for “DRAG: The Musical” at New World Stages' };
+  assert.deepEqual(planRefetchedIsolation(quoted, 'sunset-boulevard-2024', SB_POST, AT).clearedFlags, ['wrongShow']);
+});
+
+test('BRO-6742 quotedTitles reads straight, curly and single quotes, not apostrophes', () => {
+  const { quotedTitles } = require('./multi-show-isolation-plan.js');
+  assert.deepEqual(quotedTitles("a play called 'Initiative' at The Public, not 'Chess' on Broadway"), ['Initiative', 'Chess']);
+  assert.deepEqual(quotedTitles('is for "The Other Place" at The Shed'), ['The Other Place']);
+  assert.deepEqual(quotedTitles("reviewing Eddie Redmayne's West End Olivier-winning performance"), []);
 });

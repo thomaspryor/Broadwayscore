@@ -21,13 +21,18 @@ function countWords(t) { return (t.match(/\S+/g) || []).length; }
  * Musical"'. A reason about venue/production (two-strangers regional page vs
  * the Broadway Lyceum review) names no other section and is left standing.
  */
-function verdictCitesOtherSection(reason, fullPost, ownSectionText) {
+function verdictCitesOtherSection(reason, fullPost, ownSectionText, { requireQuoted = false } = {}) {
   // Automated verdicts only (content verifier, collector LLM); a human reason stands.
   // Cross-show URL collision: the same post URL sits under several shows.
   // BRO-6742: 'Retroactive LLM verify' is the same automated verifier run later (chess-2025
   // read the post's 'Initiative' section).
   if (!/^(CV-promoted|Collector LLM|Cross-show URL collision|Retroactive LLM verify)/.test(String(reason || ''))) return false;
-  const r = ` ${normSectionText(reason)} `;
+  // requireQuoted (BRO-6742 second opinion): match only inside a quoted title
+  // ('Initiative', "Giant"), so a reason that merely mentions a heading's word
+  // in passing (cabaret-2024's West End verdict) never clears.
+  const r = requireQuoted
+    ? ` ${quotedTitles(reason).map(normSectionText).join(' | ')} `
+    : ` ${normSectionText(reason)} `;
   return findSectionHeadings(fullPost)
     .filter((h) => !ownSectionText.startsWith(fullPost.slice(h.start, h.start + 40)))
     .some((h) => {
@@ -39,20 +44,47 @@ function verdictCitesOtherSection(reason, fullPost, ownSectionText) {
     });
 }
 
+/** Quoted spans in a verdict reason: "X", 'X', “X”, ‘X’. */
+function quotedTitles(reason) {
+  const out = [];
+  const re = /"([^"]{2,80})"|“([^”]{2,80})”|(?:^|[\s(])'([^']{2,80})'(?=[\s.,;:)]|$)|‘([^’]{2,80})’/g;
+  let m;
+  while ((m = re.exec(String(reason || '')))) out.push(m[1] || m[2] || m[3] || m[4]);
+  return out;
+}
+
 /**
  * The verdict's reason text. BRO-6742: some writers kept it only in
  * incompleteDetail (data-off-broadway-2026, pen-pals: wrongProductionReason absent),
  * so the sweep could never see that it named another section's show.
  */
 function verdictReason(data, flag) {
-  return data[`${flag}Reason`] || data.incompleteDetail || '';
+  return verdictReasonSource(data, flag).reason;
+}
+
+/** { reason, own }: own=false when the text came from the incompleteDetail fallback. */
+function verdictReasonSource(data, flag) {
+  const ownReason = data[`${flag}Reason`];
+  if (ownReason) return { reason: ownReason, own: true };
+  return { reason: data.incompleteDetail || '', own: false };
+}
+
+/**
+ * Looser evidence (the incompleteDetail fallback, which can carry the other
+ * flag's reason; the later 'Retroactive LLM verify' verdicts; any refetched
+ * post) must quote the other section's title, not just mention its words.
+ */
+function citesOtherSection(data, flag, fullPost, ownSectionText, strict) {
+  const { reason, own } = verdictReasonSource(data, flag);
+  const requireQuoted = strict || !own || /^Retroactive LLM verify/.test(reason);
+  return verdictCitesOtherSection(reason, fullPost, ownSectionText, { requireQuoted });
 }
 
 /**
  * Pure decision + mutation for one record. Returns null when nothing to do.
  * @returns {{ data: object, clearedFlags: string[], from: number, to: number } | { refused: true } | null}
  */
-function planIsolation(data, showId, at) {
+function planIsolation(data, showId, at, { strict = false } = {}) {
   if (!data || !data.fullText || !isMultiShowPostUrl(data.url)) return null;
   const iso = isolateMultiShowSectionForShowId(data.url, data.fullText, showId);
   if (iso.action === 'refuse') return { refused: true };
@@ -64,17 +96,23 @@ function planIsolation(data, showId, at) {
   out.isFullReview = iso.text.length > 1500;
   const clearedFlags = [];
   const why = `isolate-multi-show-sections ${at.slice(0, 10)}: verdict was made on the whole multi-show post; re-judge on this show's section`;
-  if (out.wrongShow === true && verdictCitesOtherSection(verdictReason(out, 'wrongShow'), data.fullText, iso.text)) {
+  if (out.wrongShow === true && citesOtherSection(out, 'wrongShow', data.fullText, iso.text, strict)) {
     out.wrongShow = false;
     out.wrongShowAutoCleared = why;
     out.wrongShowAutoClearedAt = at;
     clearedFlags.push('wrongShow');
   }
-  if (out.wrongProduction === true && verdictCitesOtherSection(verdictReason(out, 'wrongProduction'), data.fullText, iso.text)) {
+  if (out.wrongProduction === true && citesOtherSection(out, 'wrongProduction', data.fullText, iso.text, strict)) {
     out.wrongProduction = false;
     out.wrongProductionAutoCleared = why;
     out.wrongProductionAutoClearedAt = at;
     clearedFlags.push('wrongProduction');
+  }
+  if (clearedFlags.length && out.wrongShow !== true && out.wrongProduction !== true && out.incompleteReason === 'wrong_content') {
+    // Same as rebuild's legacy wrongShow heal (BRO-6716): the wrong_content
+    // reason described the cleared verdict. The *AutoCleared fields keep the trail.
+    delete out.incompleteReason;
+    delete out.incompleteDetail;
   }
   if (clearedFlags.length && out.contentVerification) {
     // The CV verdict object describes the whole post. Keep it (never delete
@@ -108,7 +146,7 @@ function planIsolation(data, showId, at) {
  */
 function planRefetchedIsolation(data, showId, fetchedPost, at) {
   if (!needsRefetch(data)) return null;
-  const plan = planIsolation({ ...data, fullText: fetchedPost }, showId, at);
+  const plan = planIsolation({ ...data, fullText: fetchedPost }, showId, at, { strict: true });
   if (!plan || plan.refused || plan.clearedFlags.length === 0) return null;
   plan.data.multiShowRefetchedAt = at;
   return plan;
@@ -121,4 +159,4 @@ function needsRefetch(data) {
   return findSectionHeadings(String(data.fullText || '')).length < 2;
 }
 
-module.exports = { planIsolation, verdictCitesOtherSection, verdictReason, planRefetchedIsolation, needsRefetch };
+module.exports = { planIsolation, verdictCitesOtherSection, verdictReason, quotedTitles, planRefetchedIsolation, needsRefetch };

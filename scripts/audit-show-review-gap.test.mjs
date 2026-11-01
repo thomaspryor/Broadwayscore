@@ -1302,7 +1302,7 @@ test('BRO-6742: a roundup recorded as another show\'s is dropped; its owner and 
   const owners = roundupOwnerMap([
     { id: 'the-heart-off-broadway-2026', bwwRoundupUrl: rr },
     { id: 'from-the-heart-west-end-2026' },
-  ]);
+  ], {});
   assert.deepEqual(dropRoundupsOwnedByOtherShows([rr], 'from-the-heart-west-end-2026', owners), []);
   assert.deepEqual(dropRoundupsOwnedByOtherShows([rr + '?x=1'], 'from-the-heart-west-end-2026', owners), []);
   assert.deepEqual(dropRoundupsOwnedByOtherShows([rr], 'the-heart-off-broadway-2026', owners), [rr]);

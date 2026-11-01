@@ -533,7 +533,11 @@ async function findAggregatorArticles(show) {
   } catch (e) {
     if (verbose) console.error(`  BWW section discovery error for ${id}: ${e.message}`);
   }
-  return dropRoundupsOwnedByOtherShows([...urls], id, roundupOwnerMap());
+  const kept = dropRoundupsOwnedByOtherShows([...urls], id, roundupOwnerMap());
+  if (verbose && kept.length < urls.size) {
+    for (const u of urls) if (!kept.includes(u)) console.error(`  roundup owned by another show, skipped for ${id}: ${u}`);
+  }
+  return kept;
 }
 
 // BRO-6742: a roundup already recorded as another show's (shows.json bwwRoundupUrl or
@@ -542,8 +546,9 @@ async function findAggregatorArticles(show) {
 // (off-Broadway, Laura Pels): one title token "heart" matched its slug, and six
 // NYC reviews were cited as missing for the London show.
 let _roundupOwners = null;
-function roundupOwnerMap(shows = null) {
-  if (_roundupOwners && !shows) return _roundupOwners;
+function roundupOwnerMap(shows = null, persistedRoundups = null) {
+  const cacheable = !shows && !persistedRoundups;
+  if (_roundupOwners && cacheable) return _roundupOwners;
   const map = new Map();
   const add = (u, owner) => {
     if (typeof u !== 'string' || !u || !owner) return;
@@ -551,11 +556,9 @@ function roundupOwnerMap(shows = null) {
     if (!map.has(k)) map.set(k, new Set());
     map.get(k).add(owner);
   };
-  let list = shows;
-  if (!list) { try { list = loadShows(); } catch { list = []; } }
-  for (const s of list) add(s && s.bwwRoundupUrl, s && s.id);
-  for (const [owner, u] of Object.entries(getBwwRoundupUrlMap())) if (!owner.startsWith('_')) add(u, owner);
-  if (!shows) _roundupOwners = map;
+  for (const s of shows || getAllShowsForShowScore()) add(s && s.bwwRoundupUrl, s && s.id);
+  for (const [owner, u] of Object.entries(persistedRoundups || getBwwRoundupUrlMap())) if (!owner.startsWith('_')) add(u, owner);
+  if (cacheable) _roundupOwners = map;
   return map;
 }
 
