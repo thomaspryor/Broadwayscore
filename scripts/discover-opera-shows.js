@@ -37,6 +37,8 @@ Usage:
   node scripts/discover-opera-shows.js [options]
   --house=met|roh|all   which house to scan (default all; BRO-6766 added roh)
   --dry-run             print what would be added, write nothing
+  --max-add=N           refuse to write if more than N new shows were found
+  --skip-prefix-write   do not edit src/lib/opera-show-ids.ts (CI)
   node scripts/discover-opera-shows.js --help, -h    print this usage and exit
 `;
 // hygiene-help-flag-ok: audit-help-flag-safety.js's risky-call regex matches this file's own local saveShows(data) wrapper DECLARATION (`function saveShows(data) {`), not a call — the wrapper is only invoked from inside main(), well after the --help guard. Verified: node <this file> --help exits immediately with no fs/network side effects.
@@ -58,7 +60,18 @@ const RUN_ROH = houseArg === 'roh' || houseArg === 'all';
 
 // Which seasons to scan (default: current + next)
 const seasonArgs = process.argv.filter(a => a.startsWith('--season=')).map(a => a.split('=')[1]);
-const SEASONS = seasonArgs.length > 0 ? seasonArgs : ['2025-26', '2026-27'];
+// Default: the current Met season (starts Aug/Sep) and the next one, derived from today's date.
+function defaultSeasons(now = new Date()) {
+  const first = now.getUTCMonth() >= 7 ? now.getUTCFullYear() : now.getUTCFullYear() - 1;
+  const label = y => `${y}-${String((y + 1) % 100).padStart(2, '0')}`;
+  return [label(first), label(first + 1)];
+}
+const SEASONS = seasonArgs.length > 0 ? seasonArgs : defaultSeasons();
+// CI safety: refuse to write more than N new shows in one run (a parser regression must not mint dozens of rows).
+const maxAddArg = process.argv.find(a => a.startsWith('--max-add='));
+const MAX_ADD = maxAddArg ? parseInt(maxAddArg.split('=')[1], 10) : Infinity;
+// CI must not edit src/ (opera-show-ids.ts changes go through a landed PR); print the prefixes instead.
+const SKIP_PREFIX_WRITE = process.argv.includes('--skip-prefix-write');
 
 // ─── Non-opera filters ──────────────────────────────────────────────────────
 // Met Opera season pages include concerts, symphonies, and special events
@@ -376,6 +389,12 @@ async function main() {
     return;
   }
 
+  if (toAdd.length > MAX_ADD) {
+    console.error(`\n✗ ${toAdd.length} new shows exceeds --max-add=${MAX_ADD}; refusing to write (likely a parser regression). Review the list above.`);
+    process.exitCode = 1;
+    return;
+  }
+
   // Write shows
   const updatedShows = [...shows, ...toAdd.map(t => t.showEntry)];
   saveShows(meta, updatedShows);
@@ -384,6 +403,10 @@ async function main() {
   // Update opera-show-ids.ts
   let newPrefixCount = 0;
   for (const { idPrefix } of toAdd) {
+    if (SKIP_PREFIX_WRITE) {
+      if (!existingPrefixes.has(idPrefix)) console.log(`  NEEDS PREFIX in src/lib/opera-show-ids.ts: ${idPrefix}`);
+      continue;
+    }
     if (!existingPrefixes.has(idPrefix)) {
       addOperaIdPrefix(idPrefix);
       existingPrefixes.add(idPrefix);
@@ -413,6 +436,7 @@ if (require.main === module) {
 // — isNonOpera() gates which Met season-page titles ever reach shows.json, so
 // it gets the same 0-hit-default FP audit as discover-new-shows.js's arrays.
 module.exports = {
+  defaultSeasons,
   NON_OPERA_TITLE_PATTERNS,
   isNonOpera,
 };

@@ -138,3 +138,14 @@ test('dailyMailHeadlineMatches: unrelated or non-review headlines do not match',
   assert.equal(dailyMailHeadlineMatches('Spider-Man', 'Spider-Man crowds pack Times Square'), false, 'no review/theatre cue');
   assert.equal(dailyMailHeadlineMatches('', 'anything review'), false);
 });
+
+test('BRO-6766: Royal Opera House (west-end market) opera shows get every opera outlet', () => {
+  const show = { id: 'hercules-off-west-end-2027', type: 'opera', venue: 'Royal Opera House', market: 'west-end' };
+  const ids = selectApplicableSiteSearchOutlets('west-end', show, new Set());
+  for (const want of ['bachtrack', 'operawire', 'seen-and-heard-international', 'artsdesk', 'guardian', 'times-uk']) {
+    assert.ok(ids.includes(want), `ROH opera show must search ${want}; got ${ids.join(',')}`);
+  }
+  // a West End play must not pick up the opera-only outlets
+  const play = selectApplicableSiteSearchOutlets('west-end', { id: 'x', type: 'play' }, new Set());
+  assert.ok(!play.includes('operawire'));
+});

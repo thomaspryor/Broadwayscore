@@ -1,0 +1,144 @@
+name: Discover Opera Shows
+
+# BRO-6766. Weekly look at the Met Opera season pages and the Royal Opera House
+# (rbo.org.uk) for NEW productions / premieres we do not track yet.
+#
+# Scheduled runs are DRY RUNS: they list candidates in the step summary and
+# change nothing (an unattended writer needs more guards than a weekly scan
+# justifies; second-opinion review 2026-11-01). To add shows, dispatch with
+# dry_run=false: that writes data/shows.json only (capped by max_add, provisional
+# rows, validate-data gate). New id prefixes for src/lib/opera-show-ids.ts are
+# printed ("NEEDS PREFIX") and must land through a normal PR, never a bot push.
+
+on:
+  schedule:
+    - cron: '17 11 * * 1'  # Mondays 11:17 UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (list candidates, write nothing)'
+        required: false
+        default: 'true'
+      house:
+        description: 'met | roh | all'
+        required: false
+        default: 'all'
+      max_add:
+        description: 'Refuse to write more than this many new shows'
+        required: false
+        default: '6'
+
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
+      - name: Discover opera shows
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          INPUT_DRY_RUN: ${{ github.event.inputs.dry_run }}
+          INPUT_HOUSE: ${{ github.event.inputs.house }}
+          INPUT_MAX_ADD: ${{ github.event.inputs.max_add }}
+        shell: bash
+        run: |
+          # Scheduled runs have no inputs: default to a dry run.
+          DRY="${INPUT_DRY_RUN:-true}"
+          HOUSE="${INPUT_HOUSE:-all}"
+          MAX="${INPUT_MAX_ADD:-6}"
+          case "$HOUSE" in met|roh|all) ;; *) echo "::error::bad house"; exit 1;; esac
+          case "$MAX" in ''|*[!0-9]*) echo "::error::bad max_add"; exit 1;; esac
+          FLAGS="--house=$HOUSE --max-add=$MAX --skip-prefix-write"
+          if [ "$DRY" != "false" ]; then FLAGS="$FLAGS --dry-run"; fi
+          node scripts/discover-opera-shows.js $FLAGS 2>&1 | tee /tmp/opera-discovery.log
+          {
+            echo "## Opera discovery ($HOUSE, dry_run=$DRY)"
+            echo '```'
+            grep -E '^\s+\+ |NEEDS PREFIX|already in DB|Found|No new' /tmp/opera-discovery.log | head -60
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if grep -qE '^\s+\+ ' /tmp/opera-discovery.log; then
+            echo "::warning::New opera productions found (see summary). Dispatch this workflow with dry_run=false to add them."
+          fi
+
+      - name: Validate shows.json before write-back (rollback on failure)
+        if: github.event.inputs.dry_run == 'false'
+        run: |
+          if ! node scripts/validate-data.js 2>&1 | tail -30; then
+            echo "::error::validate-data.js failed after discovery, reverting shows.json"
+            if [ -f /tmp/core-data-checkout/shows.json ]; then
+              cp -f /tmp/core-data-checkout/shows.json data/shows.json
+            fi
+            exit 1
+          fi
+
+      - name: Push core data to private repo
+        if: success() && github.event.inputs.dry_run == 'false'
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from discover-opera-shows'
+
+      - name: Dispatch deploy
+        if: success() && github.event.inputs.dry_run == 'false'
+        uses: ./.github/actions/dispatch-deploy
+
+      # fetchPage() writes attribution rows to the scraper-spend ledger on the
+      # runner's disk; stage it so the spend is recorded (lint-workflow-guards).
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes to commit"
+          else
+            git commit -m "chore: Record scraper-spend ledger (discover-opera-shows)"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Discover Opera Shows Failed'
+          severity: 'warning'
