@@ -16,7 +16,7 @@ const { foldDiacritics } = require('./title-match');
 const LABEL = '(?:Theat(?:er|re)|Off[- ]Off[- ]Broadway|Off[- ]Broadway|Broadway|Musical|Play|Opera|Dance|Cabaret|Concert|Film|Comedy)';
 // photographer runs straight into the label with no space: "(c) Rachel Louise BrownTheater: "
 // BRO-6716: newer posts head sections "Theater Review: <Title>" as well as "Theater: <Title>".
-const HEADING_RE = new RegExp(`\\(c\\)\\s(?:(?!\\(c\\))[^:\\n]){1,80}?(${LABEL})(?: Reviews?)?:\\s+`, 'g');
+const HEADING_RE = new RegExp(`\\(c\\)\\s(?:(?!\\(c\\))[^:\\n]){1,80}?\\s*(${LABEL})(?: Reviews?)?:\\s+`, 'g');
 
 function norm(s) {
   return foldDiacritics(String(s || '')).toLowerCase().replace(/[‘’']/g, '').replace(/[^a-z0-9]+/g, ' ').trim()

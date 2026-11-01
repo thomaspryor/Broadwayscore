@@ -810,6 +810,11 @@ const HEADER_RE = /(?:Broadway|Off[- ]Broadway|Theat(?:er|re)|West End|Opera|Dan
 // "Becky Shaw . Open run at Second Stage's Hayes Theater (...). ***½" : La Voce
 // di New York's per-show line, a title then a run note after a spaced period.
 const LISTING_HEAD_RE = /([A-Z][\w'’:&,\- ]{1,80}?)\s\.\s+(?:Through|Open run|Limited run|Now playing|Extended through|Closes|Closing)\b/g;
+// "Bughouse **/***** (two stars out of five)": La Voce di New York's per-show
+// heading in a multi-play column (BRO-6736). The "Title . Through <date>" lines
+// of that column CLOSE a section, so when these headings exist they are the
+// only ones used.
+const RATING_HEAD_RE = /([A-Z][\w'’:&,!\- ]{1,80}?)\s+\*{1,5}(?:½)?\/\*{5}\s*\([\w\- ]+stars? out of five\)/g;
 const HEADER_REF_WINDOW_DAYS = 300;
 
 /**
@@ -823,14 +828,22 @@ function headerSections(text, shows, ownShowId, publishDate) {
   const none = { sections: [], headerCount: 0 };
   const ownShow = shows.find((s) => s.id === ownShowId) || null;
   if (!ownShow) return none;
-  const heads = [];
-  for (const re of [HEADER_RE, LISTING_HEAD_RE]) {
-    re.lastIndex = 0;
-    let hm;
-    while ((hm = re.exec(text))) heads.push({ at: hm.index, end: hm.index + hm[0].length, title: hm[1].trim(), listing: re === LISTING_HEAD_RE });
+  let heads = [];
+  const ratingHeads = [];
+  RATING_HEAD_RE.lastIndex = 0;
+  let rm;
+  while ((rm = RATING_HEAD_RE.exec(text))) ratingHeads.push({ at: rm.index, end: rm.index + rm[0].length, title: rm[1].trim(), listing: false, rating: true });
+  if (ratingHeads.length >= 2) {
+    heads = ratingHeads;
+  } else {
+    for (const re of [HEADER_RE, LISTING_HEAD_RE]) {
+      re.lastIndex = 0;
+      let hm;
+      while ((hm = re.exec(text))) heads.push({ at: hm.index, end: hm.index + hm[0].length, title: hm[1].trim(), listing: re === LISTING_HEAD_RE });
+    }
+    // One header style per article: a post mixing both is not a column we can cut.
+    if (new Set(heads.map((h) => h.listing)).size > 1) return none;
   }
-  // One header style per article: a post mixing both is not a column we can cut.
-  if (new Set(heads.map((h) => h.listing)).size > 1) return none;
   heads.sort((a, b) => a.at - b.at);
   if (heads.length < 2) return none;
   // Pull each header back over the photo that opens its section: a
@@ -876,6 +889,21 @@ function headerSections(text, shows, ownShowId, publishDate) {
     byTitle.set(normalizeTitle(s.title), s);
     for (const v of titleVariants(s.title)) if (!byTitle.has(normalizeTitle(v))) byTitle.set(normalizeTitle(v), s);
   }
+  // A rating heading's captured title can run back over the previous sentence's
+  // words; the heading is the longest trailing run of words that is a tracked title.
+  for (const h of heads) {
+    if (!h.rating) continue;
+    const words = h.title.split(/\s+/);
+    for (let k = 0; k < words.length; k++) {
+      const cand = words.slice(k).join(' ');
+      if (byTitle.has(normalizeTitle(cand))) {
+        h.at += h.title.lastIndexOf(cand);
+        h.start = h.at;
+        h.title = cand;
+        break;
+      }
+    }
+  }
   const sections = [];
   const seen = new Set();
   heads.forEach((h, i) => {
@@ -907,6 +935,28 @@ function jointEnabled(opts, data) {
  * Returns null when the text is not a multi-show article, else
  * { ownSection, otherSections, strategy }.
  */
+function isHumanJudged(data) {
+  return !!(data.wrongShowManualClear || data.wrongShowOverride || data.wrongProductionManualClear
+    || data.wrongProductionOverride || data.manualContentTier || data.humanReviewedWrongProduction === true
+    || data.humanReviewScore != null || /manual|human|owner|admin/i.test(String(data.roundupFlagNote || data.roundupNote || ''))
+    || /manual|human|owner|admin/i.test(`${data.rejectedBy || ''} ${data.wrongShowSource || ''}`));
+}
+
+/**
+ * Did an automated verdict on this file name another planned section's show?
+ * ('The scraped content is a review of "The Dinosaurs", not "The Monsters"'):
+ * the proof the verdict was read off the WHOLE joint article, so trimming to
+ * the file's own section retires it (BRO-6736).
+ */
+function verdictNamesOtherSection(data, otherSections) {
+  const cv = data.contentVerification || {};
+  const reason = ` ${normalizeTitle([data.wrongShowReason, data.wrongProductionReason, data.incompleteDetail, data.rejectionReason, cv.reasoning].filter(Boolean).join(' '))} `;
+  return otherSections.some((o) => {
+    const t = normalizeTitle(o.showTitle || '');
+    return t.length >= 4 && reason.includes(` ${t} `);
+  });
+}
+
 function planMultiShowFanout(data, shows, opts = {}) {
   if (!data || typeof data !== 'object') return null;
   if (data.multiShowSplitChild) return null;
@@ -923,10 +973,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
     if (!retrimmed) return null;
   }
   // A critic's own verdict (hand clear or reject) is never overridden here.
-  const humanJudged = !!(data.wrongShowManualClear || data.wrongShowOverride || data.wrongProductionManualClear
-    || data.wrongProductionOverride || data.manualContentTier || data.humanReviewedWrongProduction === true
-    || data.humanReviewScore != null || /manual|human|owner|admin/i.test(String(data.roundupFlagNote || data.roundupNote || ''))
-    || /manual|human|owner|admin/i.test(`${data.rejectedBy || ''} ${data.wrongShowSource || ''}`));
+  const humanJudged = isHumanJudged(data);
   // Aggregator round-ups quote many critics; they are not one critic's review.
   // An automated roundup / wrong-production flag on a column that reviews each
   // show under its own header is the one exception (header strategy only,
@@ -979,9 +1026,14 @@ function planMultiShowFanout(data, shows, opts = {}) {
     strategy = 'intro';
     sections = introSections(text, shows, ownShowId, data.publishDate);
   }
-  if (!headerOnly && !trimOnly && sections.length < 2 && !interwoven && jointEnabled(opts, data)) {
+  // A file an automated check rejected off the WHOLE joint article may use the
+  // joint strategy when that verdict names another section's show (BRO-6736:
+  // the-monsters held the Dinosaurs+Monsters column flagged "review of The Dinosaurs").
+  const wholePostVerdict = autoExcluded && !humanJudged && !fromRejected;
+  if ((!headerOnly || wholePostVerdict) && !trimOnly && sections.length < 2 && !interwoven && jointEnabled(opts, data)) {
     strategy = 'joint';
     sections = jointSections(text, shows, ownShowId, data.publishDate || data.firstSeenAt, { dateIsFirstSeen: !data.publishDate });
+    if (headerOnly && !verdictNamesOtherSection(data, sections.filter((x) => x.showId !== ownShowId))) sections = [];
   }
   if (sections.length < 2 && !trimOnly) return null;
   // The last section carries the page footer (newsletter/subscribe chrome).
@@ -1037,7 +1089,7 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   // wrong-content verdicts were read off the WHOLE multi-show post. The file
   // now holds only its own section, so retire them. The content check's own
   // verdict is rewritten too, or the rebuild would promote it straight back.
-  if (ownSection.anchorKind === 'header') {
+  if (ownSection.anchorKind === 'header' || ownSection.anchorKind === 'joint') {
     const hadFlag = out.isRoundupArticle === true || out.wrongProduction === true || out.wrongShow === true;
     if (out.isRoundupArticle === true) {
       out.isRoundupArticle = false;
@@ -1140,6 +1192,20 @@ function urlKey(u) {
     .replace(/^https?:\/\/(?:www\.)?/i, '').replace(/^[^/]+/, (h) => h.toLowerCase());
 }
 
+/**
+ * A held sibling (same article already filed under that show) still holds the
+ * whole article when its text is well past its section and opens with it.
+ * Never a record a person or another verdict owns.
+ */
+function heldSiblingNeedsTrim(existing, sec) {
+  if (!existing || existing.unreadable || typeof existing.fullText !== 'string') return false;
+  if (existing.multiShowSplitProcessed || existing.multiShowUnsplitAt) return false;
+  if (existing._locked === true || isHumanJudged(existing) || existing.duplicateOf || existing.isNonReview) return false;
+  if (existing.fullText.length < sec.sectionText.length + 200) return false;
+  const key = (t) => normalizeTitle(String(t).slice(0, 200)).slice(0, 80);
+  return normalizeTitle(existing.fullText).includes(key(sec.sectionText));
+}
+
 function childWriteDecision(existing, parentData) {
   if (!existing) return 'create';
   const sameUrl = existing.url && parentData.url && urlKey(existing.url) === urlKey(parentData.url);
@@ -1203,7 +1269,21 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
     // An operator-deleted URL (poller-blocklist, BRO-3247 class) stays deleted.
     let decision = data.url && findBlockedEntry(loadBlocklist(childDir), data.url) ? 'blocked' : childWriteDecision(existing, data);
     result.children.push({ showId: sec.showId, action: decision, chars: sec.sectionText.length });
-    if (decision === 'held') { held++; continue; }
+    if (decision === 'held') {
+      held++;
+      // BRO-6736: the sibling already holds this URL, but possibly as the WHOLE
+      // article (stored before any split); leaving it whole scores the other
+      // sections into it and keeps a "review of <other show>" verdict alive.
+      if (heldSiblingNeedsTrim(existing, sec)) {
+        result.children[result.children.length - 1].action = 'held-trim';
+        if (!dryRun) {
+          const trimmed = rewriteParent(existing, sec, [ownShowId, ...plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId)], now);
+          trimmed.multiShowSplitAnchorKind = sec.anchorKind;
+          safeWriteReview(childPath, trimmed, { merge: false, force: true });
+        }
+      }
+      continue;
+    }
     if (dryRun || decision === 'skip' || decision === 'blocked') continue;
     const child = buildChild(data, sec, ownShowId, now);
     // A 3-show article's children name each other, so the URL-ownership guard
@@ -1317,6 +1397,8 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
 
 module.exports = {
   fanoutMovesText,
+  heldSiblingNeedsTrim,
+  verdictNamesOtherSection,
   urlKey,
   planMultiShowFanout,
   headerSections,
