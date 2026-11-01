@@ -1,0 +1,228 @@
+{
+  "issueNumber": "bro-6782",
+  "planId": "c8de1655-61f9-4db1-81b7-ce46205036fa",
+  "status": "pending",
+  "createdAt": "2026-11-01T20:13:45.475Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add San Francisco Opera premieres/new productions (Monkey King, Simon Boccanegra, Mary Queen of Scots) and reclassify four ENO 2026-27 new productions from special to opera",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "shows.json: tosca-english-national-opera-west-end-2026.type",
+      "shows.json: tosca-english-national-opera-west-end-2026.openingDate",
+      "shows.json: iphigenie-en-tauride-english-national-opera-west-end-2026.type",
+      "shows.json: iphigenie-en-tauride-english-national-opera-west-end-2026.openingDate",
+      "shows.json: adriana-mater-english-national-opera-west-end-2026.type",
+      "shows.json: adriana-mater-english-national-opera-west-end-2026.openingDate",
+      "shows.json: breaking-the-waves-english-national-opera-west-end-2026.type",
+      "shows.json: breaking-the-waves-english-national-opera-west-end-2026.openingDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-monkey-king-off-broadway-2025",
+          "title": "The Monkey King",
+          "slug": "the-monkey-king-off-broadway-2025",
+          "venue": "War Memorial Opera House",
+          "openingDate": "2025-11-14",
+          "closingDate": "2025-11-30",
+          "previewsStartDate": "2025-11-14",
+          "status": "closed",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [],
+          "synopsis": "World premiere of Huang Ruo and David Henry Hwang's opera based on the Journey to the West legend, commissioned by San Francisco Opera.",
+          "openingDateSource": "sfopera.com",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "301 Van Ness Avenue, San Francisco, CA 94102",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Huang Ruo",
+              "role": "Composer"
+            },
+            {
+              "name": "David Henry Hwang",
+              "role": "Librettist"
+            }
+          ],
+          "statusSource": "BRO-6782 2026-11-01: San Francisco Opera 2025-26 world premiere, 2025-11-14 to 2025-11-30 (KQED review; SFO 2026-27 season announcement lists it as a recent commission)",
+          "evidenceUrls": [
+            "https://www.kqed.org/arts/13983779/monkey-king-review-san-francisco-opera-world-premiere",
+            "https://www.sfopera.com/globalassets/press/san-francisco-opera-2026-27-season-announcement.pdf"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "simon-boccanegra-off-broadway-2026",
+          "title": "Simon Boccanegra",
+          "slug": "simon-boccanegra-off-broadway-2026",
+          "venue": "War Memorial Opera House",
+          "openingDate": "2026-09-12",
+          "closingDate": "2026-09-27",
+          "previewsStartDate": "2026-09-12",
+          "status": "closed",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [],
+          "synopsis": "Verdi's political drama in Claus Guth's production, new to San Francisco Opera, opening the 104th season under Eun Sun Kim.",
+          "openingDateSource": "sfopera.com",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "301 Van Ness Avenue, San Francisco, CA 94102",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Giuseppe Verdi",
+              "role": "Composer"
+            },
+            {
+              "name": "Claus Guth",
+              "role": "Director"
+            },
+            {
+              "name": "Eun Sun Kim",
+              "role": "Conductor"
+            }
+          ],
+          "statusSource": "BRO-6782 2026-11-01: San Francisco Opera 2026-27 season announcement, new-to-SFO production, 2026-09-12 to 2026-09-27",
+          "evidenceUrls": [
+            "https://www.sfopera.com/globalassets/press/san-francisco-opera-2026-27-season-announcement.pdf",
+            "https://localnewsmatters.org/2026/09/24/review-san-francisco-opera-opens-season-late-with-well-sung-simon-boccanegra/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "mary-queen-of-scots-off-broadway-2026",
+          "title": "Mary, Queen of Scots",
+          "slug": "mary-queen-of-scots-off-broadway-2026",
+          "venue": "War Memorial Opera House",
+          "openingDate": "2026-09-20",
+          "closingDate": "2026-10-04",
+          "previewsStartDate": "2026-09-20",
+          "status": "closed",
+          "type": "opera",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [],
+          "synopsis": "Thea Musgrave's 1977 opera, San Francisco Opera's first by a female composer, in Stewart Laing's staging (co-production with English National Opera), its mainstage premiere at the company.",
+          "openingDateSource": "sfopera.com",
+          "discoverySource": "manual-user-request",
+          "provisional": true,
+          "theaterAddress": "301 Van Ness Avenue, San Francisco, CA 94102",
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": [
+            {
+              "name": "Thea Musgrave",
+              "role": "Composer"
+            },
+            {
+              "name": "Stewart Laing",
+              "role": "Director"
+            },
+            {
+              "name": "Clelia Cafiero",
+              "role": "Conductor"
+            }
+          ],
+          "statusSource": "BRO-6782 2026-11-01: San Francisco Opera 2026-27 season announcement, new co-production and mainstage premiere, 2026-09-20 to 2026-10-04",
+          "evidenceUrls": [
+            "https://www.sfopera.com/globalassets/press/san-francisco-opera-2026-27-season-announcement.pdf"
+          ]
+        }
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tosca-english-national-opera-west-end-2026",
+        "field": "type",
+        "oldValue": "special",
+        "newValue": "opera",
+        "description": "shows.json: tosca-english-national-opera-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "tosca-english-national-opera-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-10-30",
+        "description": "shows.json: tosca-english-national-opera-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+        "field": "type",
+        "oldValue": "special",
+        "newValue": "opera",
+        "description": "shows.json: iphigenie-en-tauride-english-national-opera-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "iphigenie-en-tauride-english-national-opera-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-11-06",
+        "description": "shows.json: iphigenie-en-tauride-english-national-opera-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adriana-mater-english-national-opera-west-end-2026",
+        "field": "type",
+        "oldValue": "special",
+        "newValue": "opera",
+        "description": "shows.json: adriana-mater-english-national-opera-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "adriana-mater-english-national-opera-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-11-28",
+        "description": "shows.json: adriana-mater-english-national-opera-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "breaking-the-waves-english-national-opera-west-end-2026",
+        "field": "type",
+        "oldValue": "special",
+        "newValue": "opera",
+        "description": "shows.json: breaking-the-waves-english-national-opera-west-end-2026.type"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "breaking-the-waves-english-national-opera-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2027-02-13",
+        "description": "shows.json: breaking-the-waves-english-national-opera-west-end-2026.openingDate"
+      }
+    ]
+  }
+}

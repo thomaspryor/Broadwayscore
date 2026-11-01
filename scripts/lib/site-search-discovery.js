@@ -23,7 +23,7 @@ const { passesGenericTitleIdentity } = require('./generic-title-guard');
 const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
 const { namedNonReviewReason } = require('./non-review-url-patterns');
-const { hasNonMetOperaUrlMarker, isUrlYearOutsideWindow } = require('./content-filters');
+const { hasNonMetOperaUrlMarker, operaHouseForVenue, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
 const { recordSbCall } = require('./provider-telemetry');
 
@@ -64,8 +64,23 @@ function _safeJsonArray(body, outletId) {
  * @param {string|null} openingDate - Show's opening date (year-window filter only fires when present)
  * @returns {string[]} Filtered URLs
  */
-function filterOperaUrls(urls, outletId, showId, openingDate) {
+let _showVenueById = null;
+/** Venue for a show id from data/shows.json (cached; '' when unknown). */
+function operaVenueForShowId(showId) {
+  if (!showId) return '';
+  try {
+    if (!_showVenueById) {
+      const rows = require('../../data/shows.json').shows || [];
+      _showVenueById = new Map(rows.map(r => [r.id, r.venue || '']));
+    }
+    return _showVenueById.get(showId) || '';
+  } catch { return ''; }
+}
+
+function filterOperaUrls(urls, outletId, showId, openingDate, venue) {
   if (!Array.isArray(urls)) return [];
+  // BRO-6782: a show at ROH/ENO/SFO keeps its own house's URL markers.
+  const house = operaHouseForVenue(venue || operaVenueForShowId(showId));
 
   // Stopgap day-window gate. Sprint 3 will add a per-endpoint
   // daysSinceOpening<21 gate plus a 24h filesystem cache; in the meantime
@@ -86,7 +101,7 @@ function filterOperaUrls(urls, outletId, showId, openingDate) {
   const openingYear = openingDate ? new Date(openingDate).getFullYear() : null;
 
   const filtered = urls.filter(url => {
-    if (hasNonMetOperaUrlMarker(url).rejected) return false;
+    if (hasNonMetOperaUrlMarker(url, house).rejected) return false;
     // Tight ±1-year window for opera (vs the shared helper's ±3 year window).
     // Opera revivals are different productions worth disambiguating.
     if (openingYear) {
