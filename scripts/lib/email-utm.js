@@ -18,6 +18,10 @@ const FIRST_PARTY_HOSTS = new Set([
   'www.broadwayscorecard.com',
 ]);
 
+// Mirrors MONEY_LIST_LINK_PARAM in src/lib/money-gate.ts (pinned by
+// tests/unit/money-gate.test.mjs so the two cannot drift).
+const LIST_LINK_PARAM = 'list';
+
 // Never tag these paths — list-management links must stay clean (UTMs on an
 // unsubscribe link pollute attribution and can break one-click unsubscribe
 // matching). Compared case-insensitively against the URL pathname.
@@ -54,6 +58,10 @@ function tagUrl(rawUrl, { source, medium, campaign }) {
   u.searchParams.set('utm_source', source);
   u.searchParams.set('utm_medium', medium);
   u.searchParams.set('utm_campaign', campaign);
+  // Everyone who gets these emails is on the owner's list, so the link also
+  // opens the Profitability Scorecard without its email sign-up (`?list=1`,
+  // src/lib/money-gate.ts MONEY_LIST_LINK_PARAM; owner, 2026-11-01).
+  u.searchParams.set(LIST_LINK_PARAM, '1');
   return u.toString().replace(/&/g, '&amp;');
 }
 
@@ -80,4 +88,4 @@ function applyUtm(html, opts) {
   });
 }
 
-module.exports = { applyUtm };
+module.exports = { LIST_LINK_PARAM, applyUtm };
