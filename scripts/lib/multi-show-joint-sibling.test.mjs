@@ -93,6 +93,7 @@ test('apply trims a sibling that already holds the whole article (held), and cle
     assert.doesNotMatch(silver.fullText, /Bughouse \*\*|Burnout Paradise \*\*\*/);
     assert.ok(!silver.wrongProduction, 'whole-post verdict retired');
     assert.ok(silver.multiShowSplitProcessed);
+    assert.equal(silver.multiShowWholeArticleText, sib.fullText, 'whole article kept on the trimmed sibling');
     assert.doesNotMatch(read('burnout-paradise-x').fullText, /Silver Manhattan \*\*\*\*/);
     assert.doesNotMatch(read('bughouse-x').fullText, /Silver Manhattan \*\*\*\*/);
     // idempotent: a second pass moves nothing
@@ -110,6 +111,8 @@ test('heldSiblingNeedsTrim: only a whole-article copy no person owns', () => {
   assert.equal(heldSiblingNeedsTrim({ fullText: sec.sectionText }, sec), false, 'already just the section');
   assert.equal(heldSiblingNeedsTrim({ ...whole, humanReviewScore: 80 }, sec), false);
   assert.equal(heldSiblingNeedsTrim({ ...whole, _locked: true }, sec), false);
+  assert.equal(heldSiblingNeedsTrim({ ...whole, wrongProductionOverride: true }, sec), false, 'a person\'s reject blocks');
+  assert.equal(heldSiblingNeedsTrim({ ...whole, wrongProductionManualClear: true }, sec), true, 'a manual clear does not');
   assert.equal(heldSiblingNeedsTrim({ ...whole, multiShowSplitProcessed: 'x' }, sec), false);
   assert.equal(heldSiblingNeedsTrim({ fullText: `Unrelated ${filler('z', 12)}` }, sec), false, 'different text');
 });

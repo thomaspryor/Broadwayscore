@@ -641,7 +641,7 @@ function jointSections(text, shows, ownShowId, publishDate, opts = {}) {
     // when every stretch names its show at least three times and holds a third
     // of the piece. The first stretch opens the article, so there is no lede
     // to compare against.
-    const sideBySide = head.length === 0 && bodyIdx.length >= 2
+    const sideBySide = !opts.strictLede && head.length === 0 && bodyIdx.length >= 2
       && bodyIdx.every((i) => runs[i].count >= 3 && runs[i].extent / text.length >= SIDE_BY_SIDE_MIN_SHARE);
     if (order.join() !== bodyIdx.map((i) => runs[i].id).join() && !sideBySide) return [];
     // The last stretch runs to the end of the piece with nothing after it to
@@ -1040,7 +1040,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
   const wholePostVerdict = autoExcluded && !humanJudged && !fromRejected;
   if ((!headerOnly || wholePostVerdict) && !trimOnly && sections.length < 2 && !interwoven && jointEnabled(opts, data)) {
     strategy = 'joint';
-    sections = jointSections(text, shows, ownShowId, data.publishDate || data.firstSeenAt, { dateIsFirstSeen: !data.publishDate });
+    sections = jointSections(text, shows, ownShowId, data.publishDate || data.firstSeenAt, { dateIsFirstSeen: !data.publishDate, strictLede: headerOnly });
     if (headerOnly && !verdictNamesOtherSection(data, sections.filter((x) => x.showId !== ownShowId))) sections = [];
   }
   if (sections.length < 2 && !trimOnly) return null;
@@ -1212,6 +1212,10 @@ function heldSiblingNeedsTrim(existing, sec) {
   // about the production, not the text, and survives rewriteParent.
   if (existing._locked === true || existing.humanReviewScore != null || existing.manualContentTier
     || existing.duplicateOf || existing.isNonReview === true) return false;
+  // A person's REJECT (override, owner note, human-reviewed wrong production) blocks the trim;
+  // only the manual-clear flags are let through.
+  const { wrongShowManualClear, wrongProductionManualClear, ...rest } = existing; // eslint-disable-line no-unused-vars
+  if (isHumanJudged(rest)) return false;
   if (existing.fullText.length < sec.sectionText.length + 200) return false;
   const squash = (t) => String(t).replace(/\s+/g, ' ').trim();
   return squash(existing.fullText).includes(squash(sec.sectionText).slice(0, 60));
@@ -1290,6 +1294,8 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
         if (!dryRun) {
           const trimmed = rewriteParent(existing, sec, [ownShowId, ...plan.otherSections.map((o) => o.showId).filter((id) => id !== sec.showId)], now);
           trimmed.multiShowSplitAnchorKind = sec.anchorKind;
+          // The trim replaces the sibling's text; keep what it held so nothing is lost or unsplit-able.
+          trimmed.multiShowWholeArticleText = existing.fullText;
           safeWriteReview(childPath, trimmed, { merge: false, force: true });
         }
       }
