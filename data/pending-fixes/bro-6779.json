@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6779",
+  "planId": "4eb8907f-261f-4e6c-bc25-a8cb3d635d2b",
+  "status": "pending",
+  "createdAt": "2026-11-01T17:25:00.843Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6779: New York Theater (Mandell) Confederates review has originalScore A taken from a classroom-grade scene in the play, not a rating; clear it so the score comes from the text (LLM 49).",
+    "steps": [
+      "confederates-off-broadway-2022/nyt-theater--jonathan-mandell.json: originalScore"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "confederates-off-broadway-2022/nyt-theater--jonathan-mandell.json",
+        "field": "originalScore",
+        "oldValue": "A",
+        "newValue": null,
+        "description": "confederates-off-broadway-2022/nyt-theater--jonathan-mandell.json: originalScore"
+      }
+    ]
+  }
+}
