@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6742-h",
   "planId": "3f6c53e2-78b6-4257-be41-92d33220c148",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-01T06:17:56.000Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "args": "--show=the-moth-off-west-end-2026 --url=https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/ --outlet=readaboutstuff --critic=\"Dan English\""
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-01T07:19:51.585Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
