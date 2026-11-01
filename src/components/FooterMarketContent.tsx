@@ -100,6 +100,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               {featureFlags.tours && <li><Link href="/browse/broadway-national-tours" className="hover:text-white transition-colors">National Tours</Link></li>}
               {featureFlags.regional && <li><Link href="/browse/beyond-london" className="hover:text-white transition-colors">UK Regional Theatre</Link></li>}
               {featureFlags.regional && <li><Link href="/tours/chicago-il" className="hover:text-white transition-colors">Chicago Theater</Link></li>}
+              {featureFlags.regional && <li><Link href="/tours/washington-dc" className="hover:text-white transition-colors">Washington DC Theater</Link></li>}
             </ul>
           </div>
           <div>

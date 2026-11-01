@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import { isCategoryEnabled } from '@/lib/markets';
-import { HUB_CITIES } from '@/lib/city-hub';
+import { HUB_CITIES, hubVenue } from '@/lib/city-hub';
 import { getCityHubShows } from '@/lib/data-city-hub';
 import { formatShowDate } from '@/lib/date-utils';
 import { BASE_URL } from '@/lib/seo';
@@ -53,7 +53,7 @@ export default async function CityArchivePage(props: { params: Promise<{ city: s
             <div className="min-w-0">
               <Link href={`/show/${s.slug}`} className="text-white hover:text-brand font-medium">{s.title}</Link>
               <p className="text-xs text-fg-muted truncate">
-                {s.venue?.replace(/,\s*Chicago,\s*IL$/, '')}
+                {hubVenue(s.venue, city)}
                 {s.closingDate || s.openingDate ? ` · ${formatShowDate((s.closingDate || s.openingDate)!, year)}` : ''}
               </p>
             </div>

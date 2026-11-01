@@ -3,7 +3,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sectionHubShows, hubPhase, CLOSED_LIMIT, RECENT_DAYS } from '../../src/lib/city-hub';
+import { sectionHubShows, hubPhase, hubVenue, CLOSED_LIMIT, RECENT_DAYS } from '../../src/lib/city-hub';
 import { outletMetro, localCriticStat } from '../../src/lib/outlet-metro';
 import { citySlug } from '../../src/lib/tour-cities';
 
@@ -87,4 +87,11 @@ test('getCityHubShows draws from getAllShows via hubCandidates, not getRegionalS
   assert.match(src, /hubCandidates\(getAllShows\(\)/);
   assert.doesNotMatch(src, /getRegionalShows\(/);
   assert.match(src, /isUkRegionalShow/);
+});
+
+test('hubVenue strips only the hub home city', () => {
+  assert.equal(hubVenue('Steppenwolf Theatre, Chicago, IL', 'chicago-il'), 'Steppenwolf Theatre');
+  assert.equal(hubVenue('Arena Stage, Washington, DC', 'washington-dc'), 'Arena Stage');
+  assert.equal(hubVenue('Olney Theatre Center, Olney, MD', 'washington-dc'), 'Olney Theatre Center, Olney, MD');
+  assert.equal(hubVenue(null, 'washington-dc'), '');
 });

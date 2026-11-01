@@ -18,6 +18,8 @@ interface MarketStats {
   ukRegional?: { shows: number; openShows: number };
   /** Chicago city hub (BRO-6498): local productions in the metro. */
   chicago?: { shows: number; openShows: number };
+  /** Washington DC city hub (BRO-6771): local productions, short history from 2026-05-01. */
+  washingtonDc?: { shows: number; openShows: number };
 }
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
@@ -36,6 +38,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
 
   const isUkRegional = marketId === 'uk-regional';
   const isChicagoHub = pathname === '/tours/chicago-il' || pathname.startsWith('/tours/chicago-il/');
+  const isDcHub = pathname === '/tours/washington-dc' || pathname.startsWith('/tours/washington-dc/');
   const isWestEnd = marketId === 'west-end' || isUkRegional;
   const isOffWestEnd = marketId === 'off-west-end';
   // Treat opera show pages as NOT off-broadway for the pill label, even though
@@ -315,6 +318,32 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                   </div>
                 </div>
                 {isChicagoHub && (
+                  <svg className="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </Link>
+            </>
+          )}
+          {featureFlags.regional && stats.washingtonDc && stats.washingtonDc.shows > 0 && (
+            <>
+              <div className="h-px bg-white/[0.06] mx-2 my-1" />
+              <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Washington DC</div>
+              <Link
+                href="/tours/washington-dc"
+                className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                  isDcHub ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                <div className="flex items-center gap-2">
+                  <span className={`w-1.5 h-1.5 rounded-full ${isDcHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
+                  <div>
+                    <div className={`text-sm font-semibold ${isDcHub ? 'text-sky-200' : 'text-white'}`}>Washington DC Theater</div>
+                    <div className="text-[11px] text-fg-muted">{stats.washingtonDc.openShows} playing now · reviews since May 2026</div>
+                  </div>
+                </div>
+                {isDcHub && (
                   <svg className="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
