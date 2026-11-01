@@ -1,24 +1,5 @@
 [
   {
-    "startedAt": "2026-10-31T15:14:42.349Z",
-    "completedAt": "2026-10-31T15:14:42.376Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41212963370",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-31T15:36:44.462Z",
     "completedAt": "2026-10-31T15:37:23.846Z",
     "totalReviews": 7,
@@ -3191290,8 +3191271,27 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T15:11:17.426Z",
-    "completedAt": "2026-11-01T15:11:17.427Z",
+    "startedAt": "2026-11-01T15:12:42.450Z",
+    "completedAt": "2026-11-01T15:12:50.938Z",
+    "totalReviews": 4,
+    "processed": 0,
+    "skipped": 1,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 16294,
+      "output": 528,
+      "cacheRead": 0,
+      "cacheWrite": 11328,
+      "total": 41899
+    },
+    "costUsd": 0.0963512,
+    "runId": "41319427615",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-01T15:17:49.622Z",
+    "completedAt": "2026-11-01T15:17:49.623Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3191304,7 +3191304,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41319424086",
+    "runId": "41319427615",
     "source": "comparative-rescore",
     "errorDetails": []
   }
