@@ -1,4 +1,4 @@
 {
-  "_comment": "BRO-6764. The ONE date the owner's morning email moves from the Mac launchd job to the GitHub Action (.github/workflows/morning-digest-action.yml). Both sides read it: on or after handoffDate (ET day) the Mac's send-morning-digest.js exits 0 without sending the owner's email, and the Action's scheduled run sends. Before it the Action's scheduled runs do nothing. Rollback: set handoffDate far in the future (or revert this file) and land; the Mac sends again from the next run (it syncs to main first).",
+  "_comment": "BRO-6764. The ONE date the owner's morning email moves from the Mac launchd job to the GitHub Action (.github/workflows/morning-digest-action.yml). Both sides read it: on or after handoffDate (ET day) the Mac's morning-digest job (still invoked with --send-to-owner) switches to the autofix + canary path and sends no email, and the Action's scheduled run sends. Before it the Action's scheduled runs do nothing. Rollback: set handoffDate far in the future (or revert this file) and land; the Mac sends again from the next run (it syncs to main first).",
   "handoffDate": "2026-11-02"
 }

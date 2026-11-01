@@ -34,6 +34,8 @@ end with `morning email already sent today`.
 
     node scripts/send-morning-digest.js --send-to-owner 2>&1 | tail -20
 
+From the handoff date in `config/morning-digest-handoff.json` the GitHub Action (`morning-digest-action.yml`) sends the owner's email, and this command runs autofix + canary only, sending nothing. Dispatch that workflow with `send=true` instead.
+
 Run it once. If it fails, do not retry: the CI zero-send floor
 (`monitor-scheduled-email-count.js`) is the alarm for a missed day.
 
