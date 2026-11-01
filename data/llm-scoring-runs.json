@@ -3421759,21 +3421759,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T06:50:54.494Z",
-    "completedAt": "2026-11-01T06:51:08.450Z",
-    "totalReviews": 6,
-    "processed": 3,
-    "skipped": 3,
+    "startedAt": "2026-11-01T06:50:36.453Z",
+    "completedAt": "2026-11-01T06:51:00.693Z",
+    "totalReviews": 5,
+    "processed": 5,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 17945,
-      "output": 946,
-      "cacheRead": 11421,
+      "input": 30384,
+      "output": 1451,
+      "cacheRead": 19035,
       "cacheWrite": 0,
-      "total": 45182
+      "total": 75936
     },
-    "costUsd": 0.0679364,
-    "runId": "41282088607",
+    "costUsd": 0.11339650000000001,
+    "runId": "41281990452",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -3429576,6 +3429576,16 @@
           "flat": 1,
           "down": 0,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "brother-sister-cyborg-space-regional-2024",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 1,
+          "total": 5
         },
         "hasDisagreement": false
       },
@@ -3446813,16 +3446823,6 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "BWW: Up thumbs differ by 27% (ours: 77%, theirs: 50%)"
-      },
-      {
-        "showId": "motherfreakinghood-regional-2023",
-        "ourDistribution": {
-          "up": 3,
-          "flat": 0,
-          "down": 0,
-          "total": 3
-        },
-        "hasDisagreement": false
       },
       {
         "showId": "motherhouse-regional-2023",
@@ -3468727,8 +3468727,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T06:56:05.074Z",
-    "completedAt": "2026-11-01T06:56:05.075Z",
+    "startedAt": "2026-11-01T06:55:56.980Z",
+    "completedAt": "2026-11-01T06:55:56.981Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -3468741,7 +3468741,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41282088607",
+    "runId": "41281990452",
     "source": "comparative-rescore",
     "errorDetails": []
   }
