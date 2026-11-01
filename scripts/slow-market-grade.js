@@ -33,8 +33,8 @@
  *   node scripts/slow-market-grade.js --show=a --max-age-hours=48
  *   node scripts/slow-market-grade.js --json                # machine-readable
  *   node scripts/slow-market-grade.js --last-year --max-stale-pct=5
- *       # BRO-6751: every show opened (or in previews) in the last 365 days;
- *       # exit 1 when STALE is >= 5% of them (the gap audit's throughput check)
+ *       # BRO-6751: the scheduler's last-year shows (gap-audit-freshness inLastYear);
+ *       # exit 1 when stale (any grade) or never-audited rows are >= 5% of them
  */
 const fs = require('fs');
 const path = require('path');
@@ -127,19 +127,22 @@ function isOverdue(show, entry, nowMs, { freshnessMsFor, checkpointTs }, graceHo
   return age > freshnessMsFor(show, entry, { freshnessHours: 12, now: nowMs }) + graceHours * 3600000;
 }
 
-/** Pure (BRO-6751): ids of shows that opened, or began previews, within the last `days` days. */
-function lastYearIds(shows, nowMs, days = 365) {
-  return shows.filter((s) => {
-    const t = Date.parse(s.openingDate || s.previewsStartDate || '');
-    return Number.isFinite(t) && t <= nowMs && nowMs - t <= days * 86400000;
-  }).map((s) => s.id);
+/** Pure (BRO-6751): the scheduler's own last-year set (gap-audit-freshness inLastYear), so the grade and the audit agree. */
+function lastYearIds(shows, nowMs) {
+  const { inLastYear } = require('./lib/gap-audit-freshness');
+  return shows.filter((s) => inLastYear(s, nowMs)).map((s) => s.id);
 }
 
-/** Pure (BRO-6751): true when STALE is at or above `maxPct` percent of `out`. Empty = breach (nothing graded proves nothing). */
+/**
+ * Pure (BRO-6751): true when rows with nothing fresh to show (any stale grade,
+ * FAIL (stale) included, or never audited) reach `maxPct` percent of `out`.
+ * Empty = breach: nothing graded proves nothing.
+ */
 function staleBreach(out, maxPct) {
   if (!out.length) return true;
-  return (100 * out.filter((s) => s.grade === 'STALE').length) / out.length >= maxPct;
+  return (100 * out.filter(notFresh).length) / out.length >= maxPct;
 }
+function notFresh(s) { return s.stale || s.grade === 'NO-AUDIT'; }
 
 function main(argv = process.argv.slice(2)) {
   const showArg = argv.find((a) => a.startsWith('--show='));
@@ -159,7 +162,7 @@ function main(argv = process.argv.slice(2)) {
   const maxAgeHours = maxAgeArg ? Number(maxAgeArg.split('=')[1]) : DEFAULT_MAX_AGE_HOURS;
   if (!Number.isFinite(maxAgeHours) || maxAgeHours <= 0) {
     console.error(`--max-age-hours must be a positive number (got ${maxAgeArg})`);
-    process.exit(2);
+    return 2;
   }
   const nowMs = Date.now();
   const audit = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', 'show-review-gap.json'), 'utf8'));
@@ -219,10 +222,10 @@ function main(argv = process.argv.slice(2)) {
     console.log(`summary: ${out.length} show(s): PASS ${count('PASS')}, STALE ${count('STALE')}, FAIL ${count('FAIL')}, NO-AUDIT ${count('NO-AUDIT')}; OVERDUE vs the scheduler's own recheck promise: ${sched ? overdueCount : 'unknown (no checkpoint)'}`);
   }
   if (maxStalePct !== null) {
-    const stale = out.filter((s) => s.grade === 'STALE').length;
+    const stale = out.filter(notFresh).length;
     const pct = out.length ? Math.round((1000 * stale) / out.length) / 10 : 0;
     const breach = staleBreach(out, maxStalePct);
-    console.error(`stale-pct: ${stale}/${out.length} = ${pct}% (limit < ${maxStalePct}%) ${breach ? 'FAIL' : 'OK'}`);
+    console.error(`stale-pct: ${stale}/${out.length} = ${pct}% stale or never audited (limit < ${maxStalePct}%) ${breach ? 'FAIL' : 'OK'}`);
     if (breach) return 1;
   }
   return argv.includes('--check') && out.some((s) => s.grade !== 'PASS') ? 1 : 0;

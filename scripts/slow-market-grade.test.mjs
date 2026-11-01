@@ -90,21 +90,24 @@ test('isOverdue: never-audited show outside the grind window was promised nothin
 
 const { lastYearIds, staleBreach } = require('./slow-market-grade.js');
 
-test('BRO-6751 lastYearIds: opened or in previews within 365 days, future and undated excluded', () => {
+test('BRO-6751 lastYearIds: matches the scheduler (previews date anchors only live shows)', () => {
   const now = Date.parse('2026-11-01T00:00:00Z');
   const shows = [
-    { id: 'recent', openingDate: '2026-06-01' },
-    { id: 'previews-only', previewsStartDate: '2026-10-20' },
-    { id: 'old', openingDate: '2025-10-01' },
-    { id: 'future', openingDate: '2026-12-01' },
-    { id: 'undated' },
+    { id: 'recent', status: 'closed', openingDate: '2026-06-01' },
+    { id: 'previews-only', status: 'previews', previewsStartDate: '2026-10-20' },
+    { id: 'closed-no-opening', status: 'closed', previewsStartDate: '2026-10-01' },
+    { id: 'old', status: 'closed', openingDate: '2025-10-01' },
+    { id: 'future', status: 'previews', openingDate: '2026-12-01' },
+    { id: 'undated', status: 'open' },
   ];
   assert.deepEqual(lastYearIds(shows, now), ['recent', 'previews-only']);
 });
 
-test('BRO-6751 staleBreach: at-or-above the limit fails, below passes, empty fails', () => {
-  const rows = (stale, total) => Array.from({ length: total }, (_, i) => ({ grade: i < stale ? 'STALE' : 'PASS' }));
+test('BRO-6751 staleBreach: stale FAIL and NO-AUDIT count; at-or-above fails, below passes, empty fails', () => {
+  const rows = (bad, total, row = { grade: 'STALE', stale: true }) => Array.from({ length: total }, (_, i) => (i < bad ? row : { grade: 'PASS', stale: false }));
   assert.equal(staleBreach(rows(4, 100), 5), false);
   assert.equal(staleBreach(rows(5, 100), 5), true);
+  assert.equal(staleBreach(rows(5, 100, { grade: 'FAIL', stale: true }), 5), true);
+  assert.equal(staleBreach(rows(5, 100, { grade: 'NO-AUDIT', stale: false }), 5), true);
   assert.equal(staleBreach([], 5), true);
 });
