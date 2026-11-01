@@ -1,16 +1,18 @@
 import fs from 'fs';
 import path from 'path';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { getShowById } from '@/lib/data-core';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import { BASE_URL } from '@/lib/seo';
-import { ShowListCard } from '@/components/show-cards';
+import featuredVideo from '../../../data/links-featured.json';
+import LinksPageClient from './LinksPageClient';
 
 // Link-in-bio page for the Instagram, TikTok and Threads profiles (BRO-6377).
 // Lists the shows our social accounts posted most recently, newest first, read
 // at build time from the autopost ledger (scripts/social-autopost/run.js). A
 // new post lands in the ledger and redeploys via should-deploy-gate.js.
+// Videos are posted separately. Update links-featured.json when a new show
+// video goes live, so its subject stays above the image-post ledger.
 
 const MAX_SHOWS = 12;
 
@@ -46,37 +48,14 @@ function latestPostedShowIds(): string[] {
 }
 
 export default function LinksPage() {
+  const featuredShow = getShowById(featuredVideo.showId);
+  const featured = featuredShow ? { ...serializeShowForClient(featuredShow), ticketLinks: [] } : null;
   const shows = latestPostedShowIds()
+    .filter((id) => id !== featured?.id)
     .map((id) => getShowById(id))
     .filter((s): s is NonNullable<typeof s> => Boolean(s))
     .slice(0, MAX_SHOWS)
     .map((s) => ({ ...serializeShowForClient(s), ticketLinks: [] }));
 
-  return (
-    <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
-      <header className="text-center mb-8">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-3">Latest From Our Socials</h1>
-        <p className="text-gray-300">
-          The shows we just posted about. Tap one for every critic review and its Critic Score.
-        </p>
-      </header>
-
-      {shows.length > 0 ? (
-        <ol className="space-y-3">
-          {shows.map((show, i) => (
-            <li key={show.id}>
-              <ShowListCard show={show} index={i} priorityFirstImage scoreMode="critics" variant="compact" showReviewCount showCategoryBadge isMixedStatus />
-            </li>
-          ))}
-        </ol>
-      ) : (
-        <div className="card p-6 text-center text-gray-300">No posts yet. See what&apos;s scoring now on the homepage.</div>
-      )}
-
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <Link href="/" className="btn-primary text-center">Broadway shows</Link>
-        <Link href="/west-end" className="btn-secondary text-center">West End shows</Link>
-      </div>
-    </div>
-  );
+  return <LinksPageClient featured={featured} label={featuredVideo.label} shows={shows} />;
 }

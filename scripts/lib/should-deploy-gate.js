@@ -102,6 +102,7 @@ const SITE_DATA_FILES = [
   'data/fantasy-league.json',
   'data/fantasy-scores.json',
   'data/gold-lists-computed.json',
+  'data/links-featured.json',
   'data/lottery-rush.json',
   'data/nyt-critics-picks.json',
   'data/outlet-registry.json',
