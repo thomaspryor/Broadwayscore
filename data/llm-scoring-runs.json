@@ -2563867,21 +2563867,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-01T01:48:22.807Z",
-    "completedAt": "2026-11-01T01:48:27.215Z",
-    "totalReviews": 1,
-    "processed": 1,
-    "skipped": 0,
+    "startedAt": "2026-11-01T01:48:00.318Z",
+    "completedAt": "2026-11-01T01:48:35.259Z",
+    "totalReviews": 9,
+    "processed": 7,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 5155,
-      "output": 314,
-      "cacheRead": 3807,
+      "input": 39480,
+      "output": 2257,
+      "cacheRead": 26649,
       "cacheWrite": 0,
-      "total": 13856
+      "total": 102284
     },
-    "costUsd": 0.020290100000000002,
-    "runId": "41262076142",
+    "costUsd": 0.152742,
+    "runId": "41262047583",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2596353,6 +2596353,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "stand-up-if-youre-here-tonight-regional-2022",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 0,
+          "down": 0,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "standing-at-the-skys-edge-west-end-2023",
         "ourDistribution": {
           "up": 25,
@@ -2610016,8 +2610026,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-01T01:53:25.231Z",
-    "completedAt": "2026-11-01T01:53:25.232Z",
+    "startedAt": "2026-11-01T01:53:33.469Z",
+    "completedAt": "2026-11-01T01:53:33.470Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2610030,7 +2610040,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41262076142",
+    "runId": "41262047583",
     "source": "comparative-rescore",
     "errorDetails": []
   }
