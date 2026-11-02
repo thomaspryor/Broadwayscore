@@ -112,3 +112,11 @@ test('BRO-6751 staleBreach: stale FAIL and NO-AUDIT count; at-or-above fails, be
   assert.equal(staleBreach(rows(5, 100, { grade: 'NO-AUDIT', stale: false }), 5), true);
   assert.equal(staleBreach([], 5), true);
 });
+
+test('gradeShow census count leaves out syndication-portal noise (BRO-6804)', () => {
+  const row = { showId: 's', title: 'Hadestown', computedAt: '2026-11-01T00:00:00Z', missing: [
+    { url: 'https://www.headtopics.com/a-review', serpCensus: true },
+    { url: 'https://realoutlet.com/2026/10/hadestown-review', serpCensus: true },
+  ], flaggedMisses: [] };
+  assert.equal(gradeShow(row, 3).census, 1);
+});
