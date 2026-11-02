@@ -936,7 +936,7 @@ async function fetchBoardTable({ now = new Date(), graphql = null, snapshotPath 
     const bc = require('./lib/board-categories.js');
     const gql = graphql || require('./lib/linear-client.js').graphql;
     const issues = await withTimeout(bc.fetchOpenBoard({ graphql: gql }), 60_000, { message: 'timed out after 60000ms' });
-    return { report: bc.categorizeBoard(issues, { now, secret: process.env.APPROVAL_HMAC_SECRET || null }), prev };
+    return { report: bc.categorizeBoard(issues, { now, secret: process.env.APPROVAL_HMAC_SECRET || null, lastRecheckStatusById: bc.readRecheckLedgerStatuses() }), prev };
   } catch (err) {
     console.error(`[digest] WARN board category table failed: ${String(err.message).slice(0, 120)}`);
     return { report: null, prev };

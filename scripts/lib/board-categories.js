@@ -32,7 +32,9 @@ const CATEGORIES = [
   { key: 'being-worked', label: 'Being worked now' },
   { key: 'started-idle', label: 'Started, no update for 2+ days' },
   { key: 'dated-future', label: 'Waiting on a future date' },
-  { key: 'dated-past', label: 'Date passed, check still failing' },
+  // BRO-6853: split by the recheck ledger's last verdict. Without a ledger every past-dated card is "waiting".
+  { key: 'dated-past-failed', label: 'Date passed, its check failed' },
+  { key: 'dated-past', label: 'Date passed, waiting for a recheck or a real test' },
   { key: 'parked-real-block', label: 'Parked: real block' },
   { key: 'parked-automatic', label: 'Parked: automatic alert or estimate check' },
   { key: 'parked-owner-wording', label: 'Parked: says it needs you but has no real question' },
@@ -100,7 +102,7 @@ function waitsOnOwner(issue, bodies, { secret, nowMs }) {
  * PURE. Every trait one card has, and why it is in "Other" when it lands there.
  * -> { traits: Set<key>, reason }
  */
-function cardTraits(issue, { nowMs, secret = null } = {}) {
+function cardTraits(issue, { nowMs, secret = null, lastRecheckStatus = null } = {}) {
   const traits = new Set(['other']);
   const comments = sortedComments(issue);
   const bodies = comments.map((c) => String(c.body || ''));
@@ -120,7 +122,10 @@ function cardTraits(issue, { nowMs, secret = null } = {}) {
   // card back in Todo or In Progress is history, not a date it waits on.
   const stamp = (stateName === 'Paused' || stateName === 'Backlog')
     ? parseRecheckAfterFromCard({ comments: bodies, notes: description }) : null;
-  if (stamp != null) traits.add(stamp >= utcDayStart(nowMs) ? 'dated-future' : 'dated-past');
+  if (stamp != null) {
+    if (stamp >= utcDayStart(nowMs)) traits.add('dated-future');
+    else traits.add(lastRecheckStatus === 'fail' ? 'dated-past-failed' : 'dated-past');
+  }
 
   const reasons = parkReasons(description);
   const parked = reasons.length > 0 || stateName === 'Backlog';
@@ -158,7 +163,7 @@ function emptyPriorities() { return { urgent: 0, high: 0, medium: 0, low: 0, non
  * only see the ANSWERED line the answer path writes, so answeredCheck says so.
  * Throws when the exclusive counts do not add up to the open count.
  */
-function categorizeBoard(issues, { now = new Date(), secret = null } = {}) {
+function categorizeBoard(issues, { now = new Date(), secret = null, lastRecheckStatusById = null } = {}) {
   const nowMs = now.getTime();
   const rows = new Map(CATEGORIES.map((c) => [c.key, { ...c, exclusive: 0, overlap: 0, byPriority: emptyPriorities() }]));
   const cards = [];
@@ -167,7 +172,7 @@ function categorizeBoard(issues, { now = new Date(), secret = null } = {}) {
     let traits;
     let reason;
     try {
-      ({ traits, reason } = cardTraits(issue, { nowMs, secret }));
+      ({ traits, reason } = cardTraits(issue, { nowMs, secret, lastRecheckStatus: lastRecheckStatusById && lastRecheckStatusById.get(issue.identifier) || null }));
     } catch (err) {
       // One malformed card must not blank the whole report.
       traits = new Set(['other']);
@@ -214,7 +219,7 @@ function ownerGatedNoQuestion(report) {
     || (c.category === 'other' && OWNER_GATED_REASONS.has(c.reason))).length;
 }
 
-const NOT_STUCK = new Set(['waiting-owner', 'dated-future', 'dated-past']);
+const NOT_STUCK = new Set(['waiting-owner', 'dated-future', 'dated-past', 'dated-past-failed']);
 
 /**
  * Urgent or High cards nobody is on: not being worked, not dated, not waiting on
@@ -265,6 +270,35 @@ function compareReports(prev, cur) {
       return { key: c.key, label: c.label, before: b ? b.exclusive : null, after: c.exclusive, delta: b ? c.exclusive - b.exclusive : null };
     }),
   };
+}
+
+/**
+ * PURE. Last real verdict per card from the recheck ledger rows (BRO-6853). Only cards keyed
+ * "BRO-N" count (older rows are Notion ids); a skipped row (status null) says nothing about the
+ * check, so it never overwrites an earlier verdict. Rows are read oldest first.
+ * -> Map<identifier, 'pass'|'fail'|'unverifiable'|...>
+ */
+function lastRecheckStatuses(entries) {
+  const out = new Map();
+  // Sorted by ts so an appended retry of an older run cannot overwrite a newer verdict.
+  const rows = (entries || []).filter(Boolean).slice().sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
+  for (const e of rows) {
+    if (!e || e.event !== 'recheck' || !/^BRO-\d+$/.test(String(e.cardId || '')) || !e.status) continue;
+    out.set(e.cardId, e.status);
+  }
+  return out;
+}
+
+/** Ledger entries for the board report; [] when the file is missing (every past-dated card then reads "waiting"). */
+function readRecheckLedgerStatuses(ledgerPath) {
+  const fs = require('fs');
+  const path = require('path');
+  const file = ledgerPath || path.join(__dirname, '..', '..', 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
+  let text = '';
+  try { text = fs.readFileSync(file, 'utf8'); } catch { return new Map(); }
+  const entries = [];
+  for (const line of text.split('\n')) { if (!line.trim()) continue; try { entries.push(JSON.parse(line)); } catch { /* skip a torn line */ } }
+  return lastRecheckStatuses(entries);
 }
 
 const plural = (n, one, many = `${one}s`) => `${n} ${n === 1 ? one : many}`;
@@ -374,7 +408,7 @@ function parseReportArgs(argv) {
 }
 
 module.exports = {
-  CATEGORIES, REAL_BLOCK_RE,
+  CATEGORIES, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses,
   cardTraits, categorizeBoard, importantAndStuck, ownerGatedNoQuestion, flowFromInflow, snapshotOf, compareReports,
   flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,
   fetchOpenBoard, fetchFlow24h,

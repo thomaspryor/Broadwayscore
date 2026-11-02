@@ -40,6 +40,7 @@ const { RECHECK_AFTER_RE, parseRecheckAfter, parseRecheckAfterFromCard } = requi
 // are a TRUNCATED PREVIEW" instead of silently judging a card on 1800 chars
 // of it — see needsOverflowHydration below.
 const { cardHasOverflow } = require('./overflow-marker.js');
+const { isFilerRefreshComment } = require('./filer-refresh-marker.js');
 
 /**
  * Corrections must postdate the winning dispatch and preserve its coverage.
@@ -521,6 +522,17 @@ const AUTOCLOSE_STRONG_FORMS = Object.freeze([
   /^node scripts\/check-attribution-gap-clear\.js\b/,
 ]);
 
+// BRO-6853: the recheck's own hand-off comment starts with this marker.
+const RECHECK_HANDOFF_MARKER = '<!-- recheck-handoff -->';
+// Script-written comments that say nothing about the card being worked.
+// Exact markers only (BRO-6853 review): a generic [tag-with-hyphen] pattern also matches
+// reopen/park/follow-up notes that mean the card was worked.
+const IGNORABLE_COMMENT_RE = /^(?:\*\*Re-arm \(auto\b|Auto-closed by the nightly acceptance re-check|\[auto-fix-attempted:)/;
+function isRecheckIgnorableComment(body) {
+  const text = String(body || '').trimStart();
+  return text.startsWith(RECHECK_HANDOFF_MARKER) || IGNORABLE_COMMENT_RE.test(text) || isFilerRefreshComment(text);
+}
+
 function isStrongAutoCloseCommand(cmd) {
   const c = String(cmd || '').trim();
   return !!c && isSafeCheckCommand(c) && AUTOCLOSE_STRONG_FORMS.some((re) => re.test(c));
@@ -541,10 +553,13 @@ function decideAutoClose({ card, target, result, now = new Date() } = {}) {
   if (stamp > now.getTime()) return no('RECHECK-AFTER date has not arrived yet');
   // A stamp comment followed by newer comments means the card was worked or
   // reopened after the pause, so the old stamp no longer vouches for it.
+  // BRO-6853: comments that only a script writes (filer refresh, re-arm, tag
+  // markers, the recheck's own handoff) are not work. Dispatch and claim
+  // receipts stay out of the allowlist on purpose: they mean someone took it.
   if (Array.isArray(card.comments)) {
     let last = -1;
     for (let i = card.comments.length - 1; i >= 0; i--) { if (parseRecheckAfter(card.comments[i]) != null) { last = i; break; } }
-    if (last >= 0 && last < card.comments.length - 1) return no('comments were added after the RECHECK-AFTER stamp comment');
+    if (last >= 0 && card.comments.slice(last + 1).some((c) => !isRecheckIgnorableComment(c))) return no('comments were added after the RECHECK-AFTER stamp comment');
   }
   if (!AUTOCLOSE_STATE_TYPES.includes(card.stateType)) return no(`card state type is ${card.stateType || 'unknown'}, not an open backlog/unstarted card`);
   if (!isStrongAutoCloseCommand(target.verifyCmd)) return no('command is not a real test (file-exists or generic check)');
@@ -567,6 +582,8 @@ function buildAutoCloseComment({ cmd, sha, runUrl, now = new Date() } = {}) {
 module.exports = {
   DEFAULT_WINDOW_HOURS,
   AUTOCLOSE_STATE_TYPES,
+  RECHECK_HANDOFF_MARKER,
+  isRecheckIgnorableComment,
   isStrongAutoCloseCommand,
   decideAutoClose,
   buildAutoCloseComment,
