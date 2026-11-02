@@ -1,0 +1,42 @@
+{
+  "issueNumber": "bro-6799",
+  "planId": "20056251-6ad7-4b2f-98ea-03c310222029",
+  "status": "pending",
+  "createdAt": "2026-11-02T02:40:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Retire the three closed San Francisco Opera rows added under BRO-6782. Brief rule: skip a house averaging under 3 scored reviews per premiere. All three still show CriticScore TBD after a gather run, and a closed run will not gain coverage. SFO stays out until a premiere has 3+ scored reviews.",
+    "steps": [
+      "Retire the-monkey-king-off-broadway-2025 (The Monkey King)",
+      "Retire simon-boccanegra-off-broadway-2026 (Simon Boccanegra)",
+      "Retire mary-queen-of-scots-off-broadway-2026 (Mary, Queen of Scots)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "retire-show",
+        "id": "the-monkey-king-off-broadway-2025",
+        "expectTitle": "The Monkey King",
+        "reason": "Closed SFO run with zero scored reviews after gather; below the 3-review-per-premiere bar (BRO-6782 follow-up)",
+        "description": "Retire The Monkey King (SFO)"
+      },
+      {
+        "type": "retire-show",
+        "id": "simon-boccanegra-off-broadway-2026",
+        "expectTitle": "Simon Boccanegra",
+        "reason": "Closed SFO run with zero scored reviews after gather; below the 3-review-per-premiere bar (BRO-6782 follow-up)",
+        "description": "Retire Simon Boccanegra (SFO)"
+      },
+      {
+        "type": "retire-show",
+        "id": "mary-queen-of-scots-off-broadway-2026",
+        "expectTitle": "Mary, Queen of Scots",
+        "reason": "Closed SFO run with zero scored reviews after gather; below the 3-review-per-premiere bar (BRO-6782 follow-up)",
+        "description": "Retire Mary, Queen of Scots (SFO)"
+      }
+    ]
+  }
+}
