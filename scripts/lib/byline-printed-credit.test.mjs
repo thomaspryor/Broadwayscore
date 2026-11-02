@@ -132,3 +132,10 @@ test('The Arts Desk HTML: the class="author" link beats a prose "</a>by Name" in
   // the prose form alone is not read as a byline
   assert.notEqual(html.extractByline('<p>Splendidly <a href="/x">designed </a>by Hildegard Bechtler, the set.</p>', {}), 'Hildegard Bechtler');
 });
+
+test('class="author" link is read only on The Arts Desk; prose "</a>by X" does not hide a later real byline', () => {
+  const teaser = '<span class="author"><a href="/u/1">Other Writer</a></span><p>By Mark Shenton</p>';
+  assert.equal(html.extractByline(teaser, { outletId: 'someblog' }), 'Mark Shenton');
+  const prose = '<p>Splendidly <a href="/x">designed </a>by Hildegard Bechtler.</p><p>By Mark Shenton</p>';
+  assert.equal(html.extractByline(prose, {}), 'Mark Shenton');
+});

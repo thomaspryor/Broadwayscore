@@ -138,6 +138,18 @@ function extractJsonLdAuthor(html) {
   return null;
 }
 
+// BRO-6716: a lowercase "by" right after an inline closing tag is body prose
+// ("Splendidly <a>designed </a>by Hildegard Bechtler"), not a byline; skip it and
+// keep looking, so a real "By Name" later in the page still counts.
+function firstInlineByline(html) {
+  const re = new RegExp(INLINE_BY_RE.source, INLINE_BY_RE.flags.replace('g', '') + 'g');
+  for (const m of html.matchAll(re)) {
+    const prose = /^>by\b/.test(m[0]) && /<\/(?:a|em|strong|i|b)\s*$/i.test(html.slice(Math.max(0, m.index - 12), m.index));
+    if (!prose) return m;
+  }
+  return null;
+}
+
 function extractByline(html, { outletId, text } = {}) {
   if (!html) return null;
   const reviewer = extractReviewerLine(html) || extractReviewedByLine(html) || extractSignOffBeforeShare(html);
@@ -158,7 +170,8 @@ function extractByline(html, { outletId, text } = {}) {
     /<p[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+?)\s*(?:<br\s*\/?>\s*)*<\/p>/i,
     // A class="author" wrapper holding "by&nbsp;<a href=/user/N>Name</a>" (The Arts Desk,
     // BRO-6716). Before INLINE_BY_RE, which read "designed </a>by Hildegard Bechtler" in the body.
-    /<(?:span|div|p)[^>]+class=["'](?:[^"']*\s)?author(?:\s[^"']*)?["'][^>]*>\s*(?:by(?:&nbsp;|\s|\u00a0)+)?<a[^>]*>([^<]+)<\/a>/i,
+    // Arts Desk only: elsewhere a bare class="author" link can be a teaser list or a comment.
+    outletId === 'artsdesk' && /<(?:span|div|p)[^>]+class=["'](?:[^"']*\s)?author(?:\s[^"']*)?["'][^>]*>\s*(?:by(?:&nbsp;|\s|\u00a0)+)?<a[^>]*>([^<]+)<\/a>/i,
     // Condé Nast (verso) bylines: <span>By </span><a class="byline__name-link">
     // Name</a>. Its meta author is the publisher (BRO-3414).
     /<a[^>]+class=["'][^"']*byline__name-link[^"']*["'][^>]*>([^<]+)<\/a>/i,
@@ -188,9 +201,9 @@ function extractByline(html, { outletId, text } = {}) {
     // outrank a real .byline/rel=author match earlier in the same page
     // (2026-09-16 adversarial review, BRO-3658 follow-up).
     /<[a-z]+[^>]+class=["'][^"']*author-name[^"']*["'][^>]*>\s*<a[^>]*(?:rel=["']author["']|(?:id|class)=["'][^"']*author[^"']*["'])[^>]*>([^<]+)<\/a>/i,
-  ];
+  ].filter(Boolean);
   for (const re of candidates) {
-    const m = html.match(re);
+    const m = re === INLINE_BY_RE ? firstInlineByline(html) : html.match(re);
     if (m && m[1]) {
       let name = decodeHtmlEntities(m[1]).trim();
       // Strip Jetpack-style "View all posts by X" prefix that leaks through
@@ -212,9 +225,6 @@ function extractByline(html, { outletId, text } = {}) {
       // A bare "By" preamble span read as the name (BRO-3414).
       if (/^by:?$/i.test(name)) continue;
       if (re === INLINE_BY_RE) {
-        // BRO-6716: a lowercase "by" right after an inline closing tag is body prose
-        // ("Splendidly <a>designed </a>by Hildegard Bechtler"), not a byline.
-        if (/<\/(?:a|em|strong|i|b)\s*$/i.test(html.slice(Math.max(0, m.index - 12), m.index)) && /^>by\b/.test(m[0])) continue;
         name = name.split(/\s+and\s+/)[0].trim();
         // A one-word capture that stopped at ',' / '&' is a sort or filter
         // widget ("By Relevance, Date", "By Newest, Oldest"), not a co-author list.
