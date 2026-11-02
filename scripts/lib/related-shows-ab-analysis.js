@@ -44,7 +44,11 @@ GROUP BY variant
 LIMIT 100`;
 
 const MAX_MISSING_SHARE = 0.10; // either arm
-const MAX_MISSING_SHARE_GAP = 0.05; // difference between arms
+// Missing people count as non-converters, so a gap between arms biases the
+// arm difference by roughly gap x baseline (~19%). The test is sized to detect
+// ~2.85pp, so keep the allowed gap small (BRO-6868 review).
+const MAX_MISSING_SHARE_GAP = 0.02; // difference between arms
+const JOIN_GAP_PROBLEM = 'exposed people without a usable first-session pageview join';
 
 function summarizeRelatedShows(rows, flagHealth, now = new Date()) {
   const problems = [];
@@ -72,9 +76,12 @@ function summarizeRelatedShows(rows, flagHealth, now = new Date()) {
   // result unreadable (BRO-6868).
   const share = v => (v.n > 0 ? v.missingSession / v.n : 0);
   const shares = variants.map(share);
-  if (Math.max(...shares) > MAX_MISSING_SHARE
-    || Math.abs(shares[0] - shares[1]) > MAX_MISSING_SHARE_GAP) {
-    problems.push('exposed people without a usable first-session pageview join');
+  // An absent arm is reported as degenerate below, not as a join gap. Epsilon
+  // guards float edges such as 0.07 - 0.05 > 0.02.
+  const EPS = 1e-9;
+  if (ARMS.every(name => seen.has(name)) && (Math.max(...shares) > MAX_MISSING_SHARE + EPS
+    || Math.abs(shares[0] - shares[1]) > MAX_MISSING_SHARE_GAP + EPS)) {
+    problems.push(JOIN_GAP_PROBLEM);
   }
   const primary = {
     metric: 'person-level first-exposed-session search show landing and second pageview / exposed people',
@@ -113,4 +120,4 @@ async function analyzeRelatedShows({ query = phQuery, fetchFlag, now } = {}) {
   return summarizeRelatedShows(await query(READOUT_QUERY), flagHealth, now);
 }
 
-module.exports = { MAX_MISSING_SHARE, MAX_MISSING_SHARE_GAP, ARMS, CUTOVER, STOPPING_N, FLOOR_N, READOUT_QUERY, summarizeRelatedShows, analyzeRelatedShows };
+module.exports = { JOIN_GAP_PROBLEM, MAX_MISSING_SHARE, MAX_MISSING_SHARE_GAP, ARMS, CUTOVER, STOPPING_N, FLOOR_N, READOUT_QUERY, summarizeRelatedShows, analyzeRelatedShows };

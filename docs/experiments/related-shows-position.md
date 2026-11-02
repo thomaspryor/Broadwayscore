@@ -52,10 +52,14 @@ guarded commit loop). Advisory only; it must not become a blocking gate.
 **Alert policy (BRO-6868):** a few percent of exposed people never have a
 first-session pageview (blockers, dropped events). They stay in the
 denominator as non-converters in both arms, so the result is suppressed only
-when either arm exceeds 10% or the arms differ by more than 5 points
-(`MAX_MISSING_SHARE`, `MAX_MISSING_SHARE_GAP`). A data problem below the
-planned sample is log-only (nobody is waiting on a readout). It emails, with
-the subject tag `ACTION NEEDED`, only once both arms reach 3,140.
+when either arm exceeds 10% or the arms differ by more than 2 points
+(`MAX_MISSING_SHARE`, `MAX_MISSING_SHARE_GAP`; a gap biases the arm difference
+by about gap x 19%, and the test is sized for ~2.85 points). A join-gap-only
+problem below the planned sample is log-only (nobody is waiting on a readout).
+Anything else (people in both arms, an unhealthy flag, a missing arm, no new
+exposed people in 5+ days) emails right away with the subject tag
+`ACTION NEEDED`, at most once per six days. Join-gap problems email only once
+both arms reach 3,140.
 
 Cost per run: one read-only PostHog flag GET and one cumulative HogQL query
 (the shared query helper can retry three times). No scraper or LLM calls.

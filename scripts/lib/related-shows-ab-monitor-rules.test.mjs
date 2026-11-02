@@ -183,3 +183,43 @@ test('a problem quoted inside a longer one is only shown once in the email', () 
   const [a] = decideRelatedShowsAlerts(s, {}, NOW).alerts;
   assert.equal((a.description.match(/flag health failed/g) || []).length, 1);
 });
+
+// Review follow-ups (BRO-6868): tighter gap, early email for real breakage, stall check.
+test('join-gap boundaries: 10% per arm and 2pp between arms', () => {
+  assert.equal(live(1000, 100, 1000, 100).primary.suppressed, null);
+  assert.match(live(1000, 101, 1000, 101).primary.suppressed, /pageview join/);
+  assert.equal(live(1000, 50, 1000, 70).primary.suppressed, null);            // 2.0pp apart
+  assert.match(live(1000, 40, 1000, 70).primary.suppressed, /pageview join/); // 3pp apart
+  assert.equal(live(3140, 170, 3140, 126).primary.suppressed, null);          // full sample, 1.4pp
+});
+
+test('contamination, a missing arm and an unhealthy flag email immediately, even below the sample', () => {
+  const crossed = summarizeRelatedShows([
+    ['control', 900, 90, 400, 0, 5], ['compact-after-reviews', 950, 110, 420, 0, 0]], { ok: true, problem: null });
+  const noArm = summarizeRelatedShows([['control', 900, 90, 400, 0, 0]], { ok: true, problem: null });
+  const sick = summarizeRelatedShows([
+    ['control', 900, 90, 400, 0, 0], ['compact-after-reviews', 950, 110, 420, 0, 0]], { ok: false, problem: 'flag inactive' });
+  for (const s of [crossed, noArm, sick]) {
+    const [a] = decideRelatedShowsAlerts(s, {}, NOW).alerts;
+    assert.equal(a.email, true);
+    assert.equal(a.title, 'Related shows test: the data has a problem');
+    assert.match(a.description, /still collecting people/);
+  }
+  assert.ok(noArm.primary.degenerate);
+  assert.doesNotMatch(String(noArm.primary.suppressed), /pageview join/);
+});
+
+test('stalled exposure is flagged after five days, not before, and never at the planned sample', () => {
+  const s = live(900, 20, 950, 20);
+  const first = decideRelatedShowsAlerts(s, {}, NOW);
+  assert.deepEqual(kinds(first), []);
+  assert.equal(first.state.lastMinN, 900);
+  const day = 24 * 60 * 60 * 1000;
+  assert.deepEqual(kinds(decideRelatedShowsAlerts(s, first.state, NOW + 2 * day)), []);
+  const grown = decideRelatedShowsAlerts(live(1100, 20, 1150, 20), first.state, NOW + 7 * day);
+  assert.deepEqual(kinds(grown), []);
+  const stalled = decideRelatedShowsAlerts(s, first.state, NOW + 7 * day);
+  assert.deepEqual(kinds(stalled), ['data-problem']);
+  assert.match(stalled.alerts[0].description, /exposure may have stopped/);
+  assert.deepEqual(kinds(decideRelatedShowsAlerts(summary(), { lastMinN: 3140, lastMinNAt: NOW - 9 * day }, NOW)), ['ready-to-judge']);
+});
