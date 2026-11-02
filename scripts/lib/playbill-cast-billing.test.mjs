@@ -92,8 +92,41 @@ __test('BRO-6678 review: hand-corrected stamped billing is kept', () => {
   __assert.deepEqual(show.castBilling, ['B', 'A', 'C', 'D']);
 });
 __test('BRO-6678 review: implausible shrink needs force', () => {
-  const show = { status: 'open', castBilling: ['A', 'B', 'C', 'D', 'E', 'F'] };
-  __lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A', 'B', 'C', 'D', 'E', 'F'] }, __url);
+  const show = { status: 'open', castBilling: ['F', 'B', 'E', 'D', 'C', 'A'] };
+  __lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['F', 'B', 'E', 'D', 'C', 'A'] }, __url);
   __assert.equal(__lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A'] }, __url), false);
-  __assert.equal(__lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['A', 'B', 'C', 'X', 'E', 'F'] }, __url), true);
+  __assert.equal(__lib.enrichCastBillingFromSnapshot(show, { sourceUrl: __url, names: ['F', 'B', 'E', 'X', 'C', 'A'] }, __url), true);
+});
+
+// BRO-6746: Playbill lists some long-runners' current cast alphabetically by surname.
+const { isAlphabeticalBySurname } = require('./playbill-cast-billing.js');
+const alpha = ['Zoe Adams', 'Ben Brown', 'Cy Clark', 'Di Young'];
+
+test('alphabetical-by-surname cast is not billing order', () => {
+  assert.equal(isAlphabeticalBySurname(alpha), true);
+  assert.equal(isAlphabeticalBySurname(['Di Young', 'Zoe Adams', 'Cy Clark', 'Ben Brown']), false);
+  assert.equal(isAlphabeticalBySurname(['Zoe Adams', 'Ben Brown']), false); // too short to tell
+});
+
+test('alphabetical snapshot is refused; billed order still copies', () => {
+  const show = { status: 'open' };
+  assert.equal(enrichCastBillingFromSnapshot(show, snap(alpha), URL), false);
+  assert.equal(show.castBilling, undefined);
+  assert.equal(enrichCastBillingFromSnapshot(show, snap(['Di Young', 'Zoe Adams', 'Cy Clark', 'Ben Brown']), URL), true);
+});
+
+test('extractor returns [] for an alphabetical Cast Current tab', () => {
+  const page = names => `<div data-nav-title="Cast Current">${names.map(n => `<div class="bsp-list-promo-title"><a>${n}</a></div>`).join('')}</div>`;
+  assert.deepEqual(extractPlaybillCastBilling(page(alpha)), []);
+  assert.deepEqual(extractPlaybillCastBilling(page(['Di Young', 'Zoe Adams', 'Cy Clark', 'Ben Brown'])).length, 4);
+});
+
+test('stamped alphabetical billing from this source is cleared; hand-entered is kept', () => {
+  const stamped = { status: 'open', castBilling: [...alpha], castBillingSource: URL, castBillingHash: 'x' };
+  assert.equal(enrichCastBillingFromSnapshot(stamped, snap(alpha), URL), true);
+  assert.equal(stamped.castBilling, undefined);
+  assert.equal(stamped.castBillingSource, undefined);
+  const hand = { status: 'open', castBilling: [...alpha] };
+  assert.equal(enrichCastBillingFromSnapshot(hand, snap(alpha), URL), false);
+  assert.deepEqual(hand.castBilling, alpha);
 });

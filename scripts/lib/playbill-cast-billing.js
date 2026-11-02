@@ -2,6 +2,20 @@
 
 const cheerio = require('cheerio');
 
+const surname = (n) => n.trim().split(/\s+/).pop().toLowerCase();
+
+/**
+ * Long-runners' Playbill 'Cast Current' tab lists everyone alphabetically by
+ * surname, not in billing order (hamilton-2015, book-of-mormon-2011, ...; BRO-6746).
+ * Four or more names already sorted by surname are treated as unbilled so a
+ * Reddit post never names an alphabetical "first four".
+ */
+function isAlphabeticalBySurname(names) {
+  if (!Array.isArray(names) || names.length < 4) return false;
+  const keys = names.map(surname);
+  return keys.every((k, i) => i === 0 || keys[i - 1].localeCompare(k, 'en') <= 0);
+}
+
 /**
  * Preserve Playbill's displayed current-cast order. Opening-night cast,
  * production credits, related articles and headshot links are separate lists.
@@ -25,7 +39,7 @@ function extractPlaybillCastBilling(html) {
       names.push(name);
     }
   });
-  return names;
+  return isAlphabeticalBySurname(names) ? [] : names;
 }
 
 /**
@@ -66,6 +80,17 @@ function enrichCastBillingFromSnapshot(show, snapshot, playbillUrl, { force = fa
   if (!playbillUrl || snapshot?.sourceUrl !== playbillUrl) return false;
   const names = snapshot.names;
   if (!Array.isArray(names) || !names.length || names.some(name => typeof name !== 'string' || !name.trim())) return false;
+  if (isAlphabeticalBySurname(names)) {
+    // Self-heal billing this pipeline copied before the guard existed (stamped
+    // with this Playbill URL); never touch hand-entered billing.
+    if (show.castBillingSource === playbillUrl && isAlphabeticalBySurname(show.castBilling)) {
+      delete show.castBilling;
+      delete show.castBillingSource;
+      delete show.castBillingHash;
+      return true;
+    }
+    return false;
+  }
   const hasBilling = Array.isArray(show.castBilling) && show.castBilling.length > 0;
   const same = JSON.stringify(names) === JSON.stringify(show.castBilling);
   const fromThisSnapshot = show.castBillingSource === playbillUrl;
@@ -94,4 +119,4 @@ function enrichCastBillingFromSnapshot(show, snapshot, playbillUrl, { force = fa
   return true;
 }
 
-module.exports = { extractPlaybillCastBilling, enrichCastBilling, enrichCastBillingFromSnapshot };
+module.exports = { isAlphabeticalBySurname, extractPlaybillCastBilling, enrichCastBilling, enrichCastBillingFromSnapshot };
