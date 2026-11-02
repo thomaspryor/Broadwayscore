@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6795-b",
   "planId": "441cb405-b6f2-4c62-9e25-a2b647b5a987",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T03:54:05Z",
   "submitter": {
     "name": null,
@@ -160,5 +160,99 @@
         "description": "Date read from the article page"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T04:11:14.687Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Aidan O'Connor\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-regional-2026/thegeorgetowndish--unknown.json criticName: \"Unknown\" -> \"Peter Rosenstein\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sally-and-tom-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Teniola Ayoola\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "some-like-it-hot-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Susan Brall\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "somewhere-over-the-border-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Aidan O'Connor\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-flying-lovers-of-vitebsk-regional-2026/thegeorgetowndish--unknown.json criticName: \"Unknown\" -> \"Peter Rosenstein\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-fruits-of-our-labor-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Anne Valentino\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-legend-of-sleepy-hollow-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Carolyn Kelemen\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-motion-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Jeanie Casison\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-score-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Unknown\" -> \"Peter Orvetti\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "venus-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Anne Valentino\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "wish-you-were-here-regional-2026/maryland-theatre-guide--unknown.json criticName: \"Posted By\" -> \"Aidan O'Connor\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-regional-2026/thebeacon--lynda-lantz.json publishDate: null -> \"2026-07-01\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-regional-2026/thebeacon--lynda-lantz.json dateSource: null -> \"html-archive\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-regional-2026/thebeacon--lynda-lantz.json publishDate: null -> \"2026-06-16\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-regional-2026/thebeacon--lynda-lantz.json dateSource: null -> \"html-archive\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-regional-2026/thegeorgetowndish--unknown.json publishDate: null -> \"2026-05-11\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "purlie-victorious-regional-2026/thegeorgetowndish--unknown.json dateSource: null -> \"html-archive\""
+    }
+  ],
+  "executedIn": "ci"
 }
