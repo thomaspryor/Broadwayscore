@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-02T03:09:33.449Z",
-    "endedAt": null,
+    "endedAt": "2026-11-02T09:00:29.460Z",
     "intervalMin": 5,
-    "samples": 23,
+    "samples": 70,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-02T04:59:37.903Z",
-    "lastOkSampleAt": "2026-11-02T04:59:37.903Z"
+    "lastSampleAt": "2026-11-02T08:57:12.368Z",
+    "lastOkSampleAt": "2026-11-02T08:57:12.368Z"
   },
   "firstLiveAt": null,
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 0,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 0,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-02T04:04:35.627Z",
-    "2h": null,
+    "2h": "2026-11-02T05:07:04.262Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -47,6 +47,17 @@
       "liveCount": 0,
       "fetchedAt": "2026-11-02T05:00:23.224Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-02T09:00:25.726Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -59,11 +70,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-02T09:00:25.811Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-02T05:00:29.189Z",
+    "capturedAt": "2026-11-02T09:00:29.399Z",
     "files": [
       {
         "file": "theatermania--david-gordon.json",
