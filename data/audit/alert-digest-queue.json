@@ -367,20 +367,6 @@
     "queuedAt": "2026-11-01T14:15:28.863Z"
   },
   {
-    "conditionKey": "llm-scoring:daily-cost-breach",
-    "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
-    "description": "Still firing after 16 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $28.87 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-6732",
-    "fields": [],
-    "queuedAt": "2026-11-01T14:33:50.234Z"
-  },
-  {
     "conditionKey": "land:land/bro-6737-video-clean",
     "title": "Landing blocked: unit-tests-node red on land/bro-6737-video-clean",
     "description": "land.yml did not land land/bro-6737-video-clean: the unit-tests-node gate went red at 6e9085f88d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41314426596",
@@ -2105,5 +2091,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T10:13:20.755Z"
+  },
+  {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
+    "description": "Still firing after 17 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $18.33 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6732",
+    "fields": [],
+    "queuedAt": "2026-11-02T10:36:47.437Z"
   }
 ]
