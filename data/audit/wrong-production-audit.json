@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T12:25:52.319Z",
+  "timestamp": "2026-11-02T14:14:04.442Z",
   "stats": {
-    "totalReviews": 79188,
-    "alreadyFlagged": 21948,
+    "totalReviews": 79198,
+    "alreadyFlagged": 21949,
     "dateGuardCatches": 222,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
     "londonSignals": 3581,
     "offBroadwaySignals": 740,
     "yearMismatch": 346,
-    "noPublishDate": 8375
+    "noPublishDate": 8377
   },
   "findings": [
     {
@@ -114782,6 +114782,19 @@
       ]
     },
     {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "publishDate": "2016-03-24",
+      "url": "http://www.whatsonstage.com/london-theatre/reviews/people-places-and-things-wyndhams-theatre_40032.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "people-places-and-things-west-end-2024",
       "file": "guardian--susannah-clapp.json",
       "publishDate": "2024-06-02",
@@ -128145,19 +128158,6 @@
       "score": 82,
       "publishDate": "2026-11-02",
       "url": "https://www.londontheatre.co.uk/reviews/the-lives-of-others-review-adelphi-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "file": "londontheatredirect--jose-izcue-gana.json",
-      "publishDate": null,
-      "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
