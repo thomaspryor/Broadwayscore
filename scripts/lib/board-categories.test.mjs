@@ -31,7 +31,8 @@ const categoryOf = (issue) => bc.categorizeBoard([issue], { now: NOW }).cards[0]
 // One fixture per category, in table order.
 const FIXTURES = {
   'waiting-owner': () => withDesc('DECISION NEEDED: Ship the new homepage or keep the old one?'),
-  'being-worked': () => card({ state: { name: 'In Progress', type: 'started' } }),
+  'being-worked': () => card({ state: { name: 'In Progress', type: 'started' }, updatedAt: '2026-10-27T10:00:00Z' }),
+  'started-idle': () => card({ state: { name: 'In Progress', type: 'started' } }),
   'dated-future': () => withDesc('RECHECK-AFTER: 2026-11-05', { state: { name: 'Paused', type: 'backlog' } }),
   'dated-past': () => withDesc('RECHECK-AFTER: 2026-10-20', { state: { name: 'Paused', type: 'backlog' } }),
   'parked-real-block': () => withDesc('PARKED: needs an API key from the vendor'),
@@ -44,6 +45,8 @@ const FIXTURES = {
   'cooling-off': () => card({ updatedAt: '2026-10-27T11:00:00Z' }),
   'codex-bounced': () => card({ comments: { nodes: [{ body: '<!-- codex-runner-bounced -->\nCodex could not finish this.', createdAt: '2026-10-26T00:00:00Z' }] } }),
   'owner-gated-no-question': () => withDesc('Owner must decide whether to keep this.'),
+  'app-repo': () => card({ title: 'iOS app: fix the share sheet' }),
+  'needs-safe-check': () => card({ description: 'No check written yet.' }),
   other: () => card({ priority: 0 }),
 };
 
@@ -118,7 +121,7 @@ test('answeredCheck says whether the answer-link secret was available', () => {
 
 test('important and stuck: Urgent or High that nobody is on', () => {
   const stuck = card({ priority: 1, title: 'Prod is down' });
-  const worked = card({ priority: 1, state: { name: 'In Progress', type: 'started' } });
+  const worked = card({ priority: 1, state: { name: 'In Progress', type: 'started' }, updatedAt: '2026-10-27T10:00:00Z' });
   const dated = withDesc('RECHECK-AFTER: 2026-11-05', { priority: 2, state: { name: 'Paused', type: 'backlog' } });
   const low = card({ priority: 4 });
   const r = bc.categorizeBoard([low, dated, worked, stuck], { now: NOW });
@@ -157,7 +160,7 @@ test('formatMarkdown: plain table with every row, totals, no card ids', () => {
   board.push(card({ priority: 1, title: 'Prod is down' }));
   const md = bc.formatMarkdown(bc.categorizeBoard(board, { now: NOW }), { flow: null });
   for (const c of bc.CATEGORIES) assert.ok(md.includes(`| ${c.label} |`), c.label);
-  assert.match(md, /\| \*\*Total\*\* \| \*\*16\*\* \|/);
+  assert.match(md, /\| \*\*Total\*\* \| \*\*19\*\* \|/);
   assert.match(md, /- Urgent: Prod is down \(Ready for a worker or Codex\)/);
   assert.doesNotMatch(md, /BRO-\d/);
   assert.match(md, /recognised from the card text only/);
@@ -180,9 +183,9 @@ test('Other overlap counts only the cards that land in Other', () => {
 
 test('important and stuck: an Urgent In Review card still counts as stuck; In Progress does not', () => {
   const review = card({ priority: 1, title: 'Idle review', state: { name: 'In Review', type: 'started' } });
-  const working = card({ priority: 1, title: 'Being fixed', state: { name: 'In Progress', type: 'started' } });
+  const working = card({ priority: 1, title: 'Being fixed', state: { name: 'In Progress', type: 'started' }, updatedAt: '2026-10-27T10:00:00Z' });
   const r = bc.categorizeBoard([review, working], { now: NOW });
-  assert.equal(r.cards[0].category, 'being-worked');
+  assert.equal(r.cards[1].category, 'being-worked');
   assert.deepEqual(r.importantStuck.map((c) => c.title), ['Idle review']);
 });
 
@@ -240,4 +243,27 @@ test('an old RECHECK stamp on a Todo card is history: an Urgent one still shows 
   const r = bc.categorizeBoard([issue], { now: NOW });
   assert.ok(!r.cards[0].traits.includes('dated-past'));
   assert.equal(r.importantStuck.length, 1);
+});
+
+test('started with no update for 2+ days is its own row and counts as stuck when Urgent', () => {
+  const idle = card({ priority: 1, title: 'Idle claim', state: { name: 'In Progress', type: 'started' }, updatedAt: '2026-10-24T00:00:00Z' });
+  const r = bc.categorizeBoard([idle], { now: NOW });
+  assert.equal(r.cards[0].category, 'started-idle');
+  assert.deepEqual(r.importantStuck.map((c) => c.title), ['Idle claim']);
+});
+
+test('a recent comment keeps a started card in Being worked; a full comment page cannot prove idle', () => {
+  const base = { state: { name: 'In Progress', type: 'started' }, updatedAt: '2026-10-24T00:00:00Z' };
+  const commented = card({ ...base, comments: { nodes: [{ body: 'working', createdAt: '2026-10-27T09:00:00Z' }] } });
+  assert.equal(categoryOf(commented), 'being-worked');
+  const full = card({ ...base, comments: { nodes: Array.from({ length: 100 }, () => ({ body: 'x', createdAt: '2026-10-20T00:00:00Z' })) } });
+  assert.equal(categoryOf(full), 'being-worked');
+});
+
+test('digest tile: waiting falls back to the board table count, n/a only when the table is missing', () => {
+  const { boardWaitingFallback } = require('../send-morning-digest.js');
+  const r = bc.categorizeBoard([withDesc('DECISION NEEDED: Ship the new homepage or keep the old one?')], { now: NOW });
+  assert.equal(boardWaitingFallback(r), 1);
+  assert.equal(boardWaitingFallback(null), null);
+  assert.equal(boardWaitingFallback(undefined), null);
 });

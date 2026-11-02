@@ -561,6 +561,12 @@ function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount =
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
+/** BRO-6856: when the awaiting-owner read failed, the board table's own Waiting-on-your-answer count beats "n/a". null when the table is missing too. */
+function boardWaitingFallback(report) {
+  const row = report && Array.isArray(report.categories) && report.categories.find((c) => c.key === 'waiting-owner');
+  return row && Number.isFinite(row.exclusive) ? row.exclusive : null;
+}
+
 function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
@@ -661,7 +667,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (boardNumbersData) {
     try {
       const bn = require('./lib/board-numbers.js');
-      const m = bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? null : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount });
+      const m = bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? boardWaitingFallback(boardReport) : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount });
       // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
       // full numbers table moves under Technical details.
       boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);
@@ -1804,4 +1810,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, saveBoardTableSnapshot };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, boardWaitingFallback, saveBoardTableSnapshot };

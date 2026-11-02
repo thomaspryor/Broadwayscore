@@ -30,6 +30,7 @@ const { codexBouncedRecently } = require('./codex-runner.js');
 const CATEGORIES = [
   { key: 'waiting-owner', label: 'Waiting on your answer' },
   { key: 'being-worked', label: 'Being worked now' },
+  { key: 'started-idle', label: 'Started, no update for 2+ days (reclaim keeps it: blocked, in review or has a land branch)' },
   { key: 'dated-future', label: 'Waiting on a future date' },
   { key: 'dated-past', label: 'Date passed, check still failing' },
   { key: 'parked-real-block', label: 'Parked: real block' },
@@ -42,8 +43,14 @@ const CATEGORIES = [
   { key: 'cooling-off', label: 'Cooling off' },
   { key: 'codex-bounced', label: 'Codex rejected it, short cooldown' },
   { key: 'owner-gated-no-question', label: 'Held for you, but no question written (needs a real question or release)' },
+  { key: 'app-repo', label: 'iPhone-app card (cloud workers cannot open the app repo)' },
+  { key: 'needs-safe-check', label: 'No safe check written yet (needs a VERIFY line; a daily job drafts these)' },
   { key: 'other', label: 'Other' },
 ];
+// Same idle window as linear-reclaim-abandoned.js RECLAIM_IDLE_MS.
+const STARTED_IDLE_MS = 48 * 60 * 60 * 1000;
+const COMMENT_FETCH_CAP = 100;
+const NEEDS_SAFE_CHECK_REASONS = new Set(['no-safe-verify', 'verify-not-cloud-runnable']);
 
 const PRIORITY_KEYS = { 1: 'urgent', 2: 'high', 3: 'medium', 4: 'low', 0: 'none' };
 // Same priority-to-lane map as check-linear-drain-health.js tierOf.
@@ -102,7 +109,12 @@ function cardTraits(issue, { nowMs, secret = null } = {}) {
   const stateType = String(issue.state && issue.state.type || '');
 
   if (waitsOnOwner(issue, bodies, { secret, nowMs })) traits.add('waiting-owner');
-  if (stateType === 'started') traits.add('being-worked');
+  if (stateType === 'started') {
+    // Newest touch = card edit or newest comment. A full comment page may hide a newer one: count it active.
+    const touched = Math.max(Date.parse(issue.updatedAt) || 0, ...comments.map((c) => Date.parse(c.createdAt) || 0));
+    const idle = touched > 0 && comments.length < COMMENT_FETCH_CAP && nowMs - touched >= STARTED_IDLE_MS;
+    traits.add(idle ? 'started-idle' : 'being-worked');
+  }
 
   // The recheck only reads paused (Paused/Backlog) cards, so an old stamp on a
   // card back in Todo or In Progress is history, not a date it waits on.
@@ -128,6 +140,10 @@ function cardTraits(issue, { nowMs, secret = null } = {}) {
   if (bounced) traits.add('codex-bounced');
   // Last so every other row wins first; a real question already landed in waiting-owner above.
   if (OWNER_GATED_REASONS.has(skip) || OWNER_GATED_REASONS.has(history)) traits.add('owner-gated-no-question');
+
+  const why = skip || history;
+  if (why === 'ios-app-repo') traits.add('app-repo');
+  if (NEEDS_SAFE_CHECK_REASONS.has(why)) traits.add('needs-safe-check');
 
   const reason = skip || history || (bounced ? 'codex-bounced' : null) || `state-${stateType || 'unknown'}`;
   return { traits, reason };
