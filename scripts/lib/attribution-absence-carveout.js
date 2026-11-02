@@ -37,7 +37,7 @@ const AFTER_NOT = new Set([
   'be', 'been', 'credited', 'credit', 'named', 'name', 'names', 'mentioned', 'mention', 'mentions', 'visible',
   'present', 'found', 'find', 'identified', 'identify', 'identifies', 'verified', 'verify', 'verifiable',
   'shown', 'listed', 'included', 'include', 'includes', 'provided', 'provide', 'given', 'stated',
-  'displayed', 'available', 'confirmed', 'confirm', 'appear', 'appears', 'contain', 'contains',
+  'displayed', 'available', 'confirmed', 'confirm', 'appear', 'appears',
   'specified', 'indicated', 'anywhere', 'clearly', 'explicitly',
 ]);
 
@@ -45,10 +45,20 @@ const FILLER = new Set([
   ...AFTER_NOT,
   'name', 'names', 'expected', 'stated', 'the', 'a', 'an', 'in', 'of', 'from', 'to', 'is', 'are', 'was', 'were',
   'be', 'been', 'any', 'this', 'that', 'it', 'its', 'for', 'on', 'with', 'by', 'or', 'and', 'either',
-  'scraped', 'text', 'content', 'page', 'article', 'review', 'sample', 'body', 'only', 'as', 'there',
+  'as', 'there',
   'does', 'do', 'did', 'can', 'could', 'so', 'but', 'information', 'line', 'visible', 'verification', 'confirmation',
   'confirmable', 'attributed', 'attribute', 'appearing', 'present', 'here', 'also', 'same',
 ]);
+
+// Where the byline is missing FROM: "in the scraped text", "from the provided
+// content", "scraped content does not name ...". Only these phrases may carry
+// the words text/content/article/review/page/body: on their own those words
+// describe the article ("no review content, only the byline") and keep the issue.
+const LOCATION_PHRASE = new RegExp(
+  '\\b(?:(?:in|from|within|on|of)\\s+(?:the\\s+|this\\s+|any\\s+)?(?:(?:scraped|provided|extracted|fetched|review|article)\\s+)*'
+  + '|(?:the\\s+)?(?:scraped|provided|extracted|fetched)\\s+)(?:text|content|page|article|review|body|sample|copy)\\b',
+  'g'
+);
 
 function tokens(s) {
   return String(s || '')
@@ -76,17 +86,23 @@ function editDistance(a, b) {
 /** Tokens of the expected critic / outlet names (a typo of one, like "Kalsall", still matches). */
 function nameMatcher(names) {
   const known = [...new Set(names.flatMap(tokens).filter((t) => t.length >= 3 && !/^\d+$/.test(t)))];
-  return (t) => !/^\d+$/.test(t) && known.some((k) => k === t || (t.length >= 5 && editDistance(k, t) <= 1));
+  return (t, exact) => !/^\d+$/.test(t) && known.some((k) => k === t || (!exact && t.length >= 5 && editDistance(k, t) <= 1));
 }
+
+const IDENTITY = new Set(['by', 'is', 'was', 'are', 'were']);
 
 /**
  * Whether the whole issue string only says the expected byline / outlet is not
  * shown in the scraped text.
  */
-function isAttributionAbsenceIssue(issue, { criticName, outletName } = {}) {
-  const toks = tokens(issue);
-  if (!toks.length) return false;
+function isAttributionAbsenceIssue(issue, names) {
+  const { criticName, outletName } = names || {};
+  if (!tokens(issue).length) return false;
+  const toks = tokens(String(issue).toLowerCase().replace(LOCATION_PHRASE, ' '));
   const isName = nameMatcher([criticName, outletName].filter(Boolean));
+  // A near-spelling ("Greer" for "Green") is only a typo when nothing names
+  // someone as the author: with "by" in the issue, or right after "is", exact only.
+  const strictNames = toks.includes('by');
   let subject = false;
   let absence = false;
   for (let i = 0; i < toks.length; i++) {
@@ -94,7 +110,7 @@ function isAttributionAbsenceIssue(issue, { criticName, outletName } = {}) {
     if (t === 'not' && !AFTER_NOT.has(toks[i + 1])) return false;
     if (SUBJECT.has(t)) { subject = true; continue; }
     if (ABSENCE.has(t)) { absence = true; continue; }
-    if (FILLER.has(t) || isName(t)) continue;
+    if (FILLER.has(t) || isName(t, strictNames || IDENTITY.has(toks[i - 1]))) continue;
     return false;
   }
   return subject && absence;
@@ -104,14 +120,14 @@ function isAttributionAbsenceIssue(issue, { criticName, outletName } = {}) {
  * Restore a verifier verdict rejected only for missing byline/outlet.
  * Returns { applied, isValid, issues, dropped }.
  */
-function applyAttributionAbsenceCarveout(v, names = {}) {
+function applyAttributionAbsenceCarveout(v, names) {
   const issues = Array.isArray(v && v.issues) ? v.issues.map(String) : [];
   const isValid = (v && v.isValid) ?? true;
   const unchanged = { applied: false, isValid, issues, dropped: [] };
   if (isValid || !issues.length) return unchanged;
-  if (v.wrongArticle === true || v.wrongProduction === true || v.isFilmTv === true || v.truncated === true) return unchanged;
+  if (v.wrongArticle || v.wrongProduction || v.isFilmTv || v.truncated) return unchanged;
   if (v.articleType && v.articleType !== 'review') return unchanged;
-  if (!issues.every((i) => isAttributionAbsenceIssue(i, names))) return unchanged;
+  if (!issues.every((i) => isAttributionAbsenceIssue(i, names || {}))) return unchanged;
   return { applied: true, isValid: true, issues: [], dropped: issues };
 }
 

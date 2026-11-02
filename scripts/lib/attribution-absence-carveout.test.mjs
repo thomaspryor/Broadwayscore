@@ -43,6 +43,16 @@ const NOT_ABSENCE = [
   'Cannot verify match to expected critic (Cameron Kelsall) or outlet (Exeunt Magazine) from provided excerpt',
   'Review publish date (2025-03-10) cannot be verified from the scraped text',
   'Venue not named in scraped text',
+  // stub / no-body pages that do carry the byline (review finding on 7b9a00e76)
+  'No review content; only the byline and outlet name',
+  'Text is only the byline, no article body',
+  'Page does not contain the review, only author byline',
+  'No review text, author missing',
+  'Text only contains the critic name and outlet, no review',
+  // a near-spelling named as the author is a different critic
+  'Author not credited; review is by Jesse Greer',
+  'Byline not found; written by Cameron Kelsel',
+  'The critic is Cameron Kelsel',
   '',
 ];
 
