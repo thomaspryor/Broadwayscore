@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T18:32:09.868Z",
+  "timestamp": "2026-11-02T18:51:26.242Z",
   "stats": {
-    "totalReviews": 79215,
-    "alreadyFlagged": 21959,
+    "totalReviews": 79217,
+    "alreadyFlagged": 21962,
     "dateGuardCatches": 221,
     "directorMismatch": 3423,
     "tvFilmSignals": 2251,
-    "londonSignals": 3579,
+    "londonSignals": 3581,
     "offBroadwaySignals": 739,
     "yearMismatch": 346,
-    "noPublishDate": 8383
+    "noPublishDate": 8363
   },
   "findings": [
     {
@@ -92296,6 +92296,33 @@
       "score": 85,
       "publishDate": "October 12, 2012",
       "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html?ref=theater",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2012-10-12",
+      "url": "https://exeuntnyc.com/reviews/cyrano-de-bergerac/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "2012-10-11",
+      "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html?pagewanted=2",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

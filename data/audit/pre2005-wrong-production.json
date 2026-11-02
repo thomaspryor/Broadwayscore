@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-02T18:18:40.433Z",
+    "generatedAt": "2026-11-02T18:37:56.324Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 149,
+    "totalFlagged": 150,
     "highConfidence": 9,
-    "mediumConfidence": 140,
+    "mediumConfidence": 141,
     "lowConfidence": 0,
-    "reassignable": 49
+    "reassignable": 50
   },
   "results": [
     {
@@ -1994,6 +1994,22 @@
         "no publishDate + revival signals + revivals exist"
       ],
       "textSnippet": "Judging by the ubiquitous ads, Denzel Washington is the star attraction of “A Raisin in the Sun,” which has just opened for a 14-week run at the Barrymore Theatre. Perhaps so, but it’s the performance"
+    },
+    {
+      "showId": "a-raisin-in-the-sun-2004",
+      "showTitle": "A Raisin in the Sun",
+      "showYear": 2004,
+      "file": "variety--charles-isherwood.json",
+      "outlet": "Variety",
+      "criticName": "Charles Isherwood",
+      "publishDate": "2004-04-27",
+      "confidence": "medium",
+      "suggestedShowId": "a-raisin-in-the-sun-2014",
+      "signals": [
+        "revival director match for a-raisin-in-the-sun-2014: Kenny Leon",
+        "revival text signals: revival, this production"
+      ],
+      "textSnippet": "For proof that star quality doesn't necessarily translate from one business to the next, look no further than the Royale Theater, where Sean Combs, otherwise known as rap mogul and fashion impresario "
     },
     {
       "showId": "bombay-dreams-2004",
