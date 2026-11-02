@@ -31,7 +31,7 @@
 const { parseDate, toDateMs } = require('./date-utils');
 const { pickRerouteTarget, urlYearFromPath, isLikelyTourReview, shouldSkipWrongProductionAudit } = require('./review-guards');
 const { pickTourForDate } = require('./tour-family');
-const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
+const { isBroadwayUrl, isLondonMarket, getShowMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
 const { VENUE_STOPWORDS } = require('./production-match-gate');
 
 const DAY = 86400000;
@@ -517,12 +517,12 @@ function classifyMarketRouting(args) {
     if (reviewDate && sibData.openingDate) {
       const distToCurrent = Math.abs(reviewDate - sibData.openingDate) / DAY;
       let best = null;
-      const currentPool = getMarketPool(sibData.category || '');
+      const currentPool = getShowMarketPool(sibData); // BRO-6716: UK regional = london
       for (const sib of sibData.siblings) {
         if (!sib.openingDate || visitedSet.has(sib.id)) continue;
         const distToSib = Math.abs(reviewDate - sib.openingDate) / DAY;
         const isCrossMarketSib = sibData.category != null && sib.category != null
-          && getMarketPool(sib.category) !== currentPool;
+          && getShowMarketPool(sib) !== currentPool;
         const threshold = isCrossMarketSib ? CROSS_MARKET_SIBLING_CLOSE_DAYS : SIBLING_CLOSE_DAYS;
         if (distToSib <= threshold && distToCurrent > CURRENT_FAR_DAYS) {
           if (!best || distToSib < best.dist) {
@@ -598,10 +598,10 @@ function classifyMarketRouting(args) {
   if (process.env.DISABLE_PRODUCTION_DISAMBIG !== 'true' && !categoryUnknown
       && sibData && sibData.siblings.length && sibData.title) {
     const currentTitleNorm = normalizeTitle(sibData.title);
-    const currentPool = getMarketPool(sibData.category);
+    const currentPool = getShowMarketPool(sibData); // BRO-6716: UK regional = london
     const sameMarketSiblings = sibData.siblings.filter(s =>
       normalizeTitle(s.title) === currentTitleNorm &&
-      getMarketPool(s.category) === currentPool &&
+      getShowMarketPool(s) === currentPool &&
       !visitedSet.has(s.id)
     );
     if (sameMarketSiblings.length >= 1) {
