@@ -38,7 +38,10 @@ function movePlanWarnings(a, actions, { readJson, listFolder }) {
   const srcFolder = src.split('/')[0];
   const crossFolder = srcFolder !== dest.split('/')[0];
   const stale = crossFolder ? locationFlagsStaleAfterMove(data, srcFolder) : {};
-  const planClears = (field) => actions.some((x) => x && x.type === 'review-field-edit' && norm(x.file) === dest
+  // BRO-6716: a clear on the SOURCE path before the move counts too (edit-then-move, as plans f/g do).
+  const moveAt = actions.indexOf(a);
+  const planClears = (field) => actions.some((x, i) => x && x.type === 'review-field-edit'
+    && (norm(x.file) === dest || (norm(x.file) === src && (moveAt < 0 || i < moveAt)))
     && x.field === MANUAL_CLEAR[field] && x.newValue);
   // A same-folder rename keeps its flags by design; only a cross-folder move
   // is meant to land the review somewhere it counts.
