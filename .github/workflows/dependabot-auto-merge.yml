@@ -51,6 +51,8 @@ jobs:
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           PRS_JSON: ${{ runner.temp }}/dependabot-prs.json
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: node scripts/route-dependabot-pr-cards.js
 
       - name: Commit alert-router ledger changes
