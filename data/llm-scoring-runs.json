@@ -1,5 +1,24 @@
 [
   {
+    "startedAt": "2026-11-01T18:12:49.168Z",
+    "completedAt": "2026-11-01T18:12:49.169Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "41334368447",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-11-01T18:21:48.193Z",
     "completedAt": "2026-11-01T18:22:11.912Z",
     "totalReviews": 5,
@@ -1163090,21 +1163109,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-02T23:32:17.622Z",
-    "completedAt": "2026-11-02T23:32:22.608Z",
-    "totalReviews": 1,
-    "processed": 1,
+    "startedAt": "2026-11-02T23:35:33.206Z",
+    "completedAt": "2026-11-02T23:36:13.780Z",
+    "totalReviews": 8,
+    "processed": 8,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 5828,
-      "output": 326,
-      "cacheRead": 3807,
+      "input": 51098,
+      "output": 2588,
+      "cacheRead": 30456,
       "cacheWrite": 0,
-      "total": 14886
+      "total": 125381
     },
-    "costUsd": 0.0225301,
-    "runId": "41545253194",
+    "costUsd": 0.19219669999999997,
+    "runId": "41545539722",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1179536,6 +1179555,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "grangeville-regional-2026",
+        "ourDistribution": {
+          "up": 8,
+          "flat": 0,
+          "down": 0,
+          "total": 8
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "grease-2007",
         "ourDistribution": {
           "up": 10,
@@ -1183159,20 +1183188,10 @@
       {
         "showId": "ironbound-regional-2024",
         "ourDistribution": {
-          "up": 7,
+          "up": 6,
           "flat": 0,
           "down": 0,
-          "total": 7
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "ironbound-regional-2026",
-        "ourDistribution": {
-          "up": 7,
-          "flat": 0,
-          "down": 0,
-          "total": 7
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -1184517,6 +1184536,16 @@
           "flat": 0,
           "down": 0,
           "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "king-hedley-ii-regional-2026",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -1211940,8 +1211969,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-02T23:37:19.600Z",
-    "completedAt": "2026-11-02T23:37:19.601Z",
+    "startedAt": "2026-11-02T23:41:10.802Z",
+    "completedAt": "2026-11-02T23:41:10.804Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1211954,7 +1211983,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41545253194",
+    "runId": "41545539722",
     "source": "comparative-rescore",
     "errorDetails": []
   }
