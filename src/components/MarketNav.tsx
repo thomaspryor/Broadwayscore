@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { Fragment, useState, useRef, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useClickOutside } from '@/hooks/useClickOutside';
@@ -8,6 +8,7 @@ import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
 import { isOperaShowPath } from '@/lib/opera-show-ids';
 import { featureFlags } from '@/config/feature-flags';
+import { HUB_CITIES } from '@/lib/city-hub';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -16,10 +17,8 @@ interface MarketStats {
   offWestEnd?: { openShows: number };
   /** UK regional theatre (Beyond London). `shows` = scored productions listed on the page. */
   ukRegional?: { shows: number; openShows: number };
-  /** Chicago city hub (BRO-6498): local productions in the metro. */
-  chicago?: { shows: number; openShows: number };
-  /** Washington DC city hub (BRO-6771): local productions, short history from 2026-05-01. */
-  washingtonDc?: { shows: number; openShows: number };
+  /** City hubs keyed by registry slug (data/city-hubs.json, BRO-6833): local productions in the metro. */
+  hubs?: Record<string, { shows: number; openShows: number }>;
 }
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
@@ -37,8 +36,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isUkRegional = marketId === 'uk-regional';
-  const isChicagoHub = pathname === '/tours/chicago-il' || pathname.startsWith('/tours/chicago-il/');
-  const isDcHub = pathname === '/tours/washington-dc' || pathname.startsWith('/tours/washington-dc/');
+  const isHubPath = (slug: string) => pathname === `/tours/${slug}` || pathname.startsWith(`/tours/${slug}/`);
   const isWestEnd = marketId === 'west-end' || isUkRegional;
   const isOffWestEnd = marketId === 'off-west-end';
   // Treat opera show pages as NOT off-broadway for the pill label, even though
@@ -299,58 +297,37 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
               )}
             </Link>
           )}
-          {featureFlags.regional && stats.chicago && stats.chicago.shows > 0 && (
-            <>
-              <div className="h-px bg-white/[0.06] mx-2 my-1" />
-              <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Chicago</div>
-              <Link
-                href="/tours/chicago-il"
-                className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
-                  isChicagoHub ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                <div className="flex items-center gap-2">
-                  <span className={`w-1.5 h-1.5 rounded-full ${isChicagoHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
-                  <div>
-                    <div className={`text-sm font-semibold ${isChicagoHub ? 'text-sky-200' : 'text-white'}`}>Chicago Theater</div>
-                    <div className="text-[11px] text-fg-muted">{stats.chicago.openShows} playing now · reviews since 2021</div>
+          {featureFlags.regional && Object.entries(HUB_CITIES).map(([slug, hub]) => {
+            const hubStats = stats.hubs?.[slug];
+            if (!hubStats || hubStats.shows <= 0) return null;
+            const isHub = isHubPath(slug);
+            return (
+              <Fragment key={slug}>
+                <div className="h-px bg-white/[0.06] mx-2 my-1" />
+                <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">{hub.short}</div>
+                <Link
+                  href={`/tours/${slug}`}
+                  className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
+                    isHub ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
+                  }`}
+                  onClick={() => setIsOpen(false)}
+                >
+                  <div className="flex items-center gap-2">
+                    <span className={`w-1.5 h-1.5 rounded-full ${isHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
+                    <div>
+                      <div className={`text-sm font-semibold ${isHub ? 'text-sky-200' : 'text-white'}`}>{hub.short} Theater</div>
+                      <div className="text-[11px] text-fg-muted">{hubStats.openShows} playing now · {hub.menuSub}</div>
+                    </div>
                   </div>
-                </div>
-                {isChicagoHub && (
-                  <svg className="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-              </Link>
-            </>
-          )}
-          {featureFlags.regional && stats.washingtonDc && stats.washingtonDc.shows > 0 && (
-            <>
-              <div className="h-px bg-white/[0.06] mx-2 my-1" />
-              <div className="px-3.5 pt-1 pb-1 text-[10px] font-bold uppercase tracking-wider text-fg-muted">Washington DC</div>
-              <Link
-                href="/tours/washington-dc"
-                className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
-                  isDcHub ? 'bg-sky-500/[0.10]' : 'hover:bg-white/[0.04]'
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                <div className="flex items-center gap-2">
-                  <span className={`w-1.5 h-1.5 rounded-full ${isDcHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
-                  <div>
-                    <div className={`text-sm font-semibold ${isDcHub ? 'text-sky-200' : 'text-white'}`}>Washington DC Theater</div>
-                    <div className="text-[11px] text-fg-muted">{stats.washingtonDc.openShows} playing now · reviews since May 2026</div>
-                  </div>
-                </div>
-                {isDcHub && (
-                  <svg className="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                )}
-              </Link>
-            </>
-          )}
+                  {isHub && (
+                    <svg className="w-4 h-4 text-sky-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </Link>
+              </Fragment>
+            );
+          })}
         </div>
       )}
     </div>

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import EmailTomLink from '@/components/EmailTomLink';
+import { HUB_CITIES } from '@/lib/city-hub';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 interface FooterMarketContentProps {
@@ -99,8 +100,7 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               <li><Link href="/browse/longest-running-broadway-shows" className="hover:text-white transition-colors">Longest-Running</Link></li>
               {featureFlags.tours && <li><Link href="/browse/broadway-national-tours" className="hover:text-white transition-colors">National Tours</Link></li>}
               {featureFlags.regional && <li><Link href="/browse/beyond-london" className="hover:text-white transition-colors">UK Regional Theatre</Link></li>}
-              {featureFlags.regional && <li><Link href="/tours/chicago-il" className="hover:text-white transition-colors">Chicago Theater</Link></li>}
-              {featureFlags.regional && <li><Link href="/tours/washington-dc" className="hover:text-white transition-colors">Washington DC Theater</Link></li>}
+              {featureFlags.regional && Object.entries(HUB_CITIES).map(([slug, hub]) => <li key={slug}><Link href={`/tours/${slug}`} className="hover:text-white transition-colors">{hub.short} Theater</Link></li>)}
             </ul>
           </div>
           <div>

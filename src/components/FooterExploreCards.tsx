@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { featureFlags } from '@/config/feature-flags';
+import { HUB_CITIES } from '@/lib/city-hub';
 
 /**
  * "Explore More Theatre" footer cards — reordered by current market.
@@ -80,7 +81,7 @@ export default function FooterExploreCards() {
     <div className="mb-8 pb-8 border-b border-white/5">
       <h4 className="text-xs font-bold text-fg-muted uppercase tracking-wider mb-3">Explore More Theatre</h4>
       <div className="flex gap-2 sm:gap-3 flex-wrap">
-        {isLondon ? <>{weCard}{oweCard}{featureFlags.regional && ukCard}{obCard}{featureFlags.regional && chicagoCard}{featureFlags.regional && dcCard}{operaCard}</> : <>{obCard}{weCard}{oweCard}{featureFlags.regional && ukCard}{featureFlags.regional && chicagoCard}{featureFlags.regional && dcCard}{operaCard}</>}
+        {isLondon ? <>{weCard}{oweCard}{featureFlags.regional && ukCard}{obCard}{featureFlags.regional && cityCards}{operaCard}</> : <>{obCard}{weCard}{oweCard}{featureFlags.regional && ukCard}{featureFlags.regional && cityCards}{operaCard}</>}
       </div>
     </div>
   );
