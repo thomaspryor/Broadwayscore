@@ -40,10 +40,22 @@ const ANSWERED_RE = /^\s*(?:[-*]\s+)?(?:\*\*)?(?:ANSWERED by the owner|owner dec
 const OWNER_WORDS_RE = /\b(?:owner'?s?|human|manual\w*|by hand)\b/gi;
 // A wait on an event or date the park line names ("blocked until the first import has run"): not the owner's, not a worker's yet.
 const EVENT_WAIT_RE = /\b(?:blocked|waits?|waiting|held|hold)\b[^.;]{0,40}\b(?:until|on|for)\b|\buntil\b/i;
+// Calls that are the owner's even when the park line does not use the owner-only words: taste, naming,
+// pricing, spending, brand, sign-off. An unknown owner-worded reason goes to "needs a question", never to a worker.
+const TASTE_MONEY_RE = /\b(?:pric\w*|pay\w*|buy\w*|purchas\w*|domain|budget|cost\w*|subscri\w*|licen[cs]e\w*|pick|choose|colou?rs?|logo|brand\w*|design|taste|tier)\b/i;
+const AWAITING_LINE_RE = /owner-judgment|awaiting (?:the )?owner|needs the owner|owner (?:call|decision|sign-?off)/i;
 const HOLD_TRAITS = ['parked-owner-wording', 'owner-gated-no-question'];
 
 const commentBodies = (issue) => ((issue && issue.comments && issue.comments.nodes) || []).filter(Boolean)
   .slice().sort((a, b) => (Date.parse(a.createdAt) || 0) - (Date.parse(b.createdAt) || 0));
+
+/** Owner-worded lines of a card with no PARKED line, plus the line after each (the ask usually follows the marker). */
+function ownerLines(description) {
+  const lines = String(description || '').split('\n');
+  const out = [];
+  lines.forEach((l, i) => { if (hd.OWNER_HOLD_PARK_RE.test(l) || AWAITING_LINE_RE.test(l)) out.push(l, lines[i + 1] || ''); });
+  return out.join(' ; ');
+}
 
 function parkReasons(description) {
   return [...String(description || '').matchAll(PARK_LINES_RE)].map((m) => m[1].trim()).filter(Boolean);
@@ -95,12 +107,13 @@ function classifyHold(issue, { now = new Date(), secret = null } = {}) {
   }
   // An owner answer on the card ends the wait the park line names (the answer path writes these lines).
   const answered = ANSWERED_RE.test(String(issue.description || '')) || commentBodies(issue).some((c) => ANSWERED_RE.test(String(c.body || '')));
-  if (text && !answered) {
-    if (hd.isAutomationParked(`PARKED: ${text}`)) return { action: 'leave', why: 'machine-park' };
-    const owner = text.match(hd.OWNER_ONLY_PARK_RE);
+  // No PARKED line (a gate from the notes alone): read the owner-worded lines of the card itself.
+  const body = text || ownerLines(issue.description);
+  if (body && !answered) {
+    if (text && hd.isAutomationParked(`PARKED: ${text}`)) return { action: 'leave', why: 'machine-park' };
+    const owner = body.match(hd.OWNER_ONLY_PARK_RE) || body.match(TASTE_MONEY_RE);
     if (owner) return { action: 'owner-question', why: `owner-only: "${owner[0]}"` };
-    // RISKY_ACTION_PARK_RE also lists the owner-wording words this sweep exists to clear; take those out first.
-    const real = text.match(hd.REAL_BLOCK_PARK_RE) || text.match(EVENT_WAIT_RE) || text.replace(OWNER_WORDS_RE, ' ').match(hd.RISKY_ACTION_PARK_RE);
+    const real = body.match(hd.REAL_BLOCK_PARK_RE) || body.match(EVENT_WAIT_RE) || body.replace(OWNER_WORDS_RE, ' ').match(hd.RISKY_ACTION_PARK_RE);
     if (real) return { action: 'leave', why: `real-block: "${real[0]}"` };
   }
   // The real picker decides whether a worker could take it once released.

@@ -325,3 +325,12 @@ test('a park that waits on an event is left, not released', () => {
   const r = sweep.classifyHold(heldCard('needs a real recorded night to curate the file; blocked until the first import has run'), { now: NOW });
   assert.equal(r.action, 'leave');
 });
+
+test('taste, money and naming holds are asked about, never released (park line or notes only)', () => {
+  const V = '\n## Acceptance criteria\nVERIFY: node --test scripts/lib/foo.test.mjs';
+  const card = (d) => ({ identifier: 'BRO-1', title: 't', priority: 3, state: { name: 'Backlog', type: 'backlog' }, labels: { nodes: [] }, comments: { nodes: [] }, createdAt: '2026-10-01T00:00:00Z', updatedAt: '2026-10-01T00:00:00Z', description: d + V });
+  for (const d of ['PARKED: owner decision on the homepage color scheme', 'PARKED: owner sign-off on which pricing tier to offer',
+    'PARKED: awaiting owner: pick the new logo', 'PARKED: owner approval to buy the domain', 'owner-judgment\nDecide the homepage color scheme']) {
+    assert.equal(sweep.classifyHold(card(d), { now: NOW }).action, 'owner-question', d);
+  }
+});
