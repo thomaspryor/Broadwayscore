@@ -1872,5 +1872,36 @@
       }
     ],
     "queuedAt": "2026-11-02T05:23:31.977Z"
+  },
+  {
+    "conditionKey": "land:land/bro-hub-menu-count",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-hub-menu-count",
+    "description": "land.yml did not land land/bro-hub-menu-count: the unit-tests-tsx gate went red at c6e9028843. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41392463609",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-hub-menu-count"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "c6e9028843dced6811954ec732e4a895868f49f6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41392463609"
+      }
+    ],
+    "queuedAt": "2026-11-02T05:27:05.580Z"
   }
 ]
