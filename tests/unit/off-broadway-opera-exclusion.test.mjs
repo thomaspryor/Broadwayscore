@@ -112,7 +112,7 @@ test('opera query and At the Met still include the real opera productions', () =
   const { isOperaShow } = require('../../src/lib/show-market');
   assert.deepEqual(core.getOperaShows(), core.getAllShows().filter(isOperaShow));
   const { buildHomepageExtra } = require('../../src/lib/homepage-extra');
-  const met = buildHomepageExtra().featuredRows.find(s => s.title === 'Opera: Met and Royal Opera House');
+  const met = buildHomepageExtra().featuredRows.find(s => s.title === 'Opera: New York and London');
   assert.ok(met?.shows.length, 'Opera shelf has real shows');
   for (const show of met.shows) {
     assert.equal(show.type, 'opera');

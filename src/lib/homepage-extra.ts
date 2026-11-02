@@ -231,7 +231,7 @@ export function buildHomepageExtra(): HomepageExtra {
     // Opera shelf \u2014 Met universe is small (3-4 productions running), so minCount 2.
     // Positioned right after Off-Broadway so opera coverage is visible without
     // scrolling past 3 sections (acceptance criterion on Notion 362637c5-416f-8183).
-    { title: 'Opera: Met and Royal Opera House', shows: bestOperaList, viewAllHref: '/opera', minCount: 2 },
+    { title: 'Opera: New York and London', shows: bestOperaList, viewAllHref: '/opera', minCount: 2 },
     ...(nytCriticsPicksList.length > 0 ? [{ title: "New York Times Critic\u2019s Picks", shows: nytCriticsPicksList, viewAllHref: '/critics/outlets/the-new-york-times' }] : []),
     { title: 'Broadway Lotteries', shows: lotteryShowsList, viewAllHref: '/lotteries' },
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
