@@ -211,7 +211,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
@@ -600,43 +600,8 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
   });
 }
 
-function titleTokens(title) {
-  // Significant tokens (3+ chars, not stopwords) from the show title.
-  // Used to filter aggregator-article links to URLs actually about THIS show
-  // (vs sidebar/related-article links).
-  const STOPWORDS = new Set([
-    'the','and','for','off','broadway','musical','play','theater','theatre',
-    'review','reviews','what','are','is','of','to','in','on','at','a','an',
-    'with','by','from','presents','starring','new','york','nyc','show',
-  ]);
-  // Fold diacritics BEFORE stripping non-alphanumerics. Without the NFD
-  // decomposition the `[^a-z0-9 ]` strip turns each accented letter into a
-  // SPACE, shredding one word into fragments that can never match an ASCII URL
-  // slug: "Les Misérables" became ["les","mis","rables"] instead of
-  // ["les","miserables"]. Because urlMatchesShow requires n-1 of n tokens, the
-  // two phantom fragments made every real review URL for that show unmatchable
-  // — the census reported "0 gaps" for Les Misérables: The Arena Concert
-  // Spectacular on 2026-07-30 while amNewYork and New York Theatre Guide were
-  // both live and missing. 28 corpus shows are affected; the worst are operas
-  // where the fragment count collapses to 1-2 tokens and the `tokens.length<=2`
-  // branch then demands a 100% match: "La Bohème" → ["boh"], "Jenůfa" → ["jen"].
-  // Same fold as title-normalization.js:29 / show-matching.js:1078.
-  const words = (title || '').toLowerCase()
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .replace(/[^a-z0-9 ]+/g, ' ')
-    .split(/\s+/)
-    .filter(Boolean);
-  const significant = words.filter(t => t.length >= 3 && !STOPWORDS.has(t));
-  if (significant.length) return significant;
-  // BRO-6629: a title made only of short or stopword tokens ("44", "Oz",
-  // "The Play") used to yield [], and urlMatchesShow accepts EVERY link on an
-  // empty token set, so a BWW/Playbill roundup sidebar for another show (the
-  // Merrily URLs on "44") was booked as a missing review. Fall back to the
-  // numeric / 2-char words, then to every word, so a token set exists.
-  const short = words.filter(t => /^\d+$/.test(t) || (t.length >= 2 && !STOPWORDS.has(t)));
-  return short.length ? short : words;
-}
+const { titleTokens } = require('./lib/show-title-tokens');
+const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
 function urlMatchesShow(href, tokens) {
   if (tokens.length === 0) return true; // no tokens → accept everything
@@ -849,6 +814,10 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   // check — a second, drifted copy is how a dash-form URL trips one guard
   // while staying invisible to the priorRuns escape hatch in the other.
   if (isUrlYearOutOfWindow(u, show)) return null;
+  // BRO-6804: same year, earlier month (Fringe August run, UK tour leg).
+  if (isUrlMonthBeforeRun(u, show)) return null;
+  // BRO-6804: a slug reading as a longer title (The Girls / School Girls vs Girls).
+  if (titleExtendedInUrl(u, show, titleTokens)) return null;
   // Same-title production elsewhere (BRO-4190): the URL or SERP title names
   // another market's edition or a London house on a New York show.
   if (otherProductionUrlSignal(u, show, sr.title, { census: true }) || edinburghFringeUrlSignal(u, show) || phillyFringeUrlSignal(u, show)) return null;
@@ -1038,6 +1007,10 @@ async function auditShow(show, opts = {}) {
     openingDate: show.openingDate,
     status: show.status,
     category: show.category,
+    // BRO-6804: the census adapter re-derives run-window noise from the stored row.
+    ...(show.previewsStartDate ? { previewsStartDate: show.previewsStartDate } : {}),
+    ...(show.category === 'tour' && show.venue ? { venue: show.venue, market: show.market } : {}),
+    ...(Array.isArray(show.priorRuns) && show.priorRuns.length ? { priorRuns: show.priorRuns } : {}),
     aggregatorArticles: [],
     aggregatorListedUrls: [],
     dirFiles: 0,
@@ -1540,6 +1513,24 @@ async function auditShow(show, opts = {}) {
       result.dirOnly.push({ host: h, count: clean.length });
     }
   }
+
+  // BRO-6804: a Time Out page at the listing URL shape that is a pre-opening
+  // listing blurb (no critic, dated before the opening) is not a review. The URL
+  // alone cannot tell (407 real reviews share the shape); the page can. Recorded
+  // in result.nonReviewCandidates, never silently dropped; a failed or
+  // inconclusive fetch keeps the URL in `missing`.
+  try {
+    const vetted = await vetTimeoutListingCandidates(result.missing, show, {
+      fetchPage: opts.fetchPageForVetting || ((u) => fetchPage(u, { skipVerify: true })),
+    });
+    const fp = opts.fetchPageForVetting || ((u) => fetchPage(u, { skipVerify: true }));
+    const tourVetted = await vetTourCandidatesByPageDate(vetted.missing, show, { fetchPage: fp });
+    const nonReview = [...vetted.nonReview, ...tourVetted.nonReview];
+    if (nonReview.length) {
+      result.missing = tourVetted.missing;
+      result.nonReviewCandidates = nonReview;
+    }
+  } catch { /* vetting is best-effort: missing stays as computed */ }
 
   // BRO-4190: a missing URL whose review the pipeline already fetched, dated and
   // parked in _pending/ (write guard: date-implausible) is a prior production

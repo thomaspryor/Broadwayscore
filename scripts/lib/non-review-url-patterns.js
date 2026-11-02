@@ -524,6 +524,16 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)(?:vulture|nymag)\.com$/, path: /cast-(?:recording|album)/i, reason: 'cast-album-review', allSources: true },
   { host: /(^|\.)musicaltheatrereview\.com$/, path: /cast-(?:recording|album)|^\/(?:cd|music)-review-/i, reason: 'cast-album-review', allSources: true },
   { host: /(^|\.)playbill\.com$/, path: /^\/(?:news\/)?article\/on-the-record-/i, reason: 'cast-album-review', allSources: true },
+  // BRO-6804: sites the SERP census returned for a show that publish no review
+  // of the production. Each host/path was checked against every reviews.json URL
+  // (zero hits, except goldderby: its one stored review is a "-revival-reviews"
+  // slug, so only the non-review shapes are named).
+  { host: /(^|\.)arielpa\.nyc$/, reason: 'real-estate-blog', allSources: true },
+  { host: /(^|\.)frombroadway\.com$/, reason: 'news-roundup-site', allSources: true },
+  { host: /(^|\.)rockstarmedia\.com\.my$/, reason: 'news-aggregator', allSources: true },
+  { host: /(^|\.)cnn\.com$/, path: /\/video\//i, reason: 'tv-video-segment', allSources: true },
+  { host: /(^|\.)goldderby\.com$/, path: /^\/theater\/\d{4}\/(?!.*review)/i, reason: 'awards-news-not-review', allSources: true },
+  { host: /(^|\.)a2view\.com$/, path: /^\/tags?\//i, reason: 'tag-index-page', allSources: true },
   { host: /(^|\.)londontheatredirect\.com$/, path: /^\/(?:[a-z]{2}\/)?(?:play|musical|dance|opera|concert|comedy|experience|booking|show|event)s?\//i, reason: 'ticket-seller-product-page', allSources: true },
 ];
 
