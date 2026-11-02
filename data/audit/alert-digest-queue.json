@@ -557,5 +557,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T21:02:52.421Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6852-owner-hold-sweep",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6852-owner-hold-sweep",
+    "description": "land.yml did not land land/bro-6852-owner-hold-sweep: the unit-tests-node gate went red at eec9ac686f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41521866088",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6852-owner-hold-sweep"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "eec9ac686fea6f1276745299d8f9b8f6819e2831"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41521866088"
+      }
+    ],
+    "queuedAt": "2026-11-02T21:10:41.882Z"
   }
 ]
