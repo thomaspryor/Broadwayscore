@@ -58,7 +58,7 @@ function isRawHtmlBody(text) {
 // text of a failed embedded audio-player frame, "The webpage at https://trinitymedia.ai/...
 // might be temporarily down..."). 38 stored bodies carry such a sentence, but in 28 it
 // is an iframe inside a real review, so only a body with almost nothing else counts.
-const BROWSER_ERROR_RE = /(?:the webpage at \S+ )?might be temporarily down or it may have moved permanently to a new web address\.?|this site can[’']t be reached[^.]*\.?|\bERR_[A-Z_]{4,}\b/gi;
+const BROWSER_ERROR_RE = /(?:the webpage at \S+ )?might be temporarily down or it may have moved permanently to a new web address\.?|this site can[’']t be reached[^.\n]{0,120}\.?|\bERR_[A-Z_]{4,}\b/gi;
 const BROWSER_ERROR_ANCHOR_RE = /might be temporarily down or it may have moved permanently to a new web address/i;
 const BROWSER_ERROR_MAX_REST = 300;
 function isBrowserErrorBody(text) {

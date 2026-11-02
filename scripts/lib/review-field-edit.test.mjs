@@ -974,6 +974,8 @@ test('fullTextWrongAuthor: clear-only, and only when the detected author is gone
   assert.equal(applyReviewFieldEdit(rec, clear, stamp).ok, true);
   // The flagged author still in the text: the flag stands.
   assert.equal(applyReviewFieldEdit({ ...rec, fullText: body + ' By Sally Rooney' }, clear, stamp).ok, false);
+  // A non-breaking space or other case still names her.
+  assert.equal(applyReviewFieldEdit({ ...rec, fullText: body + ' BY SALLY\u00a0ROONEY' }, clear, stamp).ok, false);
   // No real body (the flagger deleted it, nothing refetched): the flag stands.
   assert.equal(applyReviewFieldEdit({ ...rec, fullText: 'short' }, clear, stamp).ok, false);
   // AP-wire flags name no author: never cleared this way.
