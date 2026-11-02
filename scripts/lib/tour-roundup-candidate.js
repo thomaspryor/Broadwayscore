@@ -300,7 +300,7 @@ function resolveRetiredTourCandidates(rows, shows, router, options) {
  * retired tours, so a settled candidate's ledger row and "Needs you" digest
  * line stayed open forever (BRO-6208).
  */
-function resolveStaleTourCandidateConditions(openKeys, ledger, router) {
+function resolveStaleTourCandidateConditions(openKeys, ledger, router, candidates = []) {
   const open = new Set(openKeys);
   let n = 0;
   for (const [key, cond] of Object.entries((ledger && ledger.conditions) || {})) {
@@ -310,9 +310,14 @@ function resolveStaleTourCandidateConditions(openKeys, ledger, router) {
     // A legacy key without the segment-start suffix (tour-candidate:<parent>) is
     // still live while any open candidate of that parent exists (Come From Away).
     if ([...open].some(o => o.startsWith(id + ':'))) continue;
+    const rejected = candidates.find(c => c.createOutcome === 'skip-duplicate-schedule'
+      && (candidateKey(c) === id || candidateBaseKey(c) === id));
+    const reason = rejected
+      ? `Tour candidate rejected: ${rejected.createReason || 'schedule duplicates another tour'}`
+      : 'Tour candidate is settled: a tour entry now exists';
     const keys = [key, `digest-needs-you:${cond.title}`];
-    router.resolveCondition(key, { reason: 'Tour candidate is settled: a tour entry now exists' });
-    if (cond.title) router.resolveCondition(keys[1], { reason: 'Tour candidate is settled: a tour entry now exists' });
+    router.resolveCondition(key, { reason });
+    if (cond.title) router.resolveCondition(keys[1], { reason });
     router.removeDigestLines(keys);
     n++;
   }
@@ -361,14 +366,42 @@ function openTourCandidates(rows, shows, options) {
 const TOUR_CANDIDATE_ROUTING = 'fix-row-2026-10-30';
 
 /**
+ * Carry create-tour-entries.js's decisions onto their exact candidate rows.
+ * Unprocessed rows retain their last decision across partial/time-budgeted
+ * runs. A later result replaces it, including early exits without an outcome.
+ * Returns whether the candidate ledger needs saving. Mutates rows.
+ */
+function applyTourCreationResults(rows, results) {
+  const byKey = new Map(results.map(r => [r.candidate, r]));
+  let changed = false;
+  for (const c of rows) {
+    const result = byKey.get(candidateKey(c));
+    if (!result) continue;
+    const outcome = result.outcome || 'suggest';
+    const reason = result.skip || '';
+    if (c.createOutcome === outcome && c.createReason === reason) continue;
+    if (c.createOutcome === 'skip-duplicate-schedule' && outcome !== c.createOutcome) {
+      delete c.notifiedAt;
+    }
+    c.createOutcome = outcome;
+    c.createReason = reason;
+    changed = true;
+  }
+  return changed;
+}
+
+/**
  * Does this open candidate go to the digest at all? A tour that has already
  * ended (and is not one of two companies to choose between) does not:
  * create-tour-entries.js keeps re-checking it and creates it once a closing is
  * confirmed, and leaving a closed tour untracked is safe. Asking anyone about
- * it only added noise (77 of the 90 rows in the 2026-10-30 digest). Pure.
+ * it only added noise (77 of the 90 rows in the 2026-10-30 digest). A schedule
+ * rejected as a copy of another tour's table is also not an add-tour task.
+ * The create step keeps re-checking it, so corrected evidence can route again.
+ * Pure.
  */
 function shouldRouteTourCandidate(c) {
-  return !!c && !(c.ended && !c.ambiguous);
+  return !!c && c.createOutcome !== 'skip-duplicate-schedule' && !(c.ended && !c.ambiguous);
 }
 
 /**
@@ -382,4 +415,4 @@ function sortForCreate(candidates) {
   return [...candidates].sort((a, b) => rank(a) - rank(b));
 }
 
-module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates, retiredTourCandidateId, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING };
+module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates, retiredTourCandidateId, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, applyTourCreationResults, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING };

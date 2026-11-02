@@ -15,6 +15,66 @@ import { execFileSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const { isNationalTourRoundupSlug, tourCandidateFor } = require('../../scripts/lib/tour-roundup-candidate.js');
 
+test('duplicate schedules are not routed, while ordinary suggestions still are (BRO-6637)', () => {
+  const { shouldRouteTourCandidate } = require('../../scripts/lib/tour-roundup-candidate');
+  assert.equal(shouldRouteTourCandidate({ createOutcome: 'skip-duplicate-schedule' }), false);
+  assert.equal(shouldRouteTourCandidate({ createOutcome: 'skip-duplicate-schedule', ambiguous: 'a / b' }), false);
+  assert.equal(shouldRouteTourCandidate({ createOutcome: 'suggest' }), true);
+});
+
+test('creation outcomes stay on their exact candidate segment and a later decision replaces them (BRO-6637)', t => {
+  const { applyTourCreationResults, recordTourCandidates, shouldRouteTourCandidate } = require('../../scripts/lib/tour-roundup-candidate');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'tour-creation-results-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const row = { parentId: 'come-from-away-2017', source: 'tourstoyou', segmentStart: '2026-09-20' };
+  const rows = [{ ...row }, { ...row, segmentStart: '2021-10-05' }, { parentId: 'other-2026' }];
+  const result = { candidate: 'come-from-away-2017:2026-09-20', outcome: 'skip-duplicate-schedule', skip: 'schedule duplicates operation-mincemeat-tour-2026' };
+  assert.equal(applyTourCreationResults(rows, [result]), true);
+  assert.equal(rows[0].createOutcome, result.outcome);
+  assert.equal(rows[0].createReason, result.skip);
+  assert.equal(rows[1].createOutcome, undefined, 'earlier segment is untouched');
+  assert.equal(rows[2].createOutcome, undefined, 'unprocessed candidate is untouched');
+  assert.equal(applyTourCreationResults(rows, [result]), false, 'unchanged results need no rewrite');
+  assert.equal(applyTourCreationResults(rows, []), false, 'partial and off runs retain previous decisions');
+  const file = path.join(dir, 'candidates.json');
+  fs.writeFileSync(file, JSON.stringify(rows));
+  recordTourCandidates(file, [row]);
+  const rediscovered = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(shouldRouteTourCandidate(rediscovered.find(c => c.segmentStart === row.segmentStart)), false);
+  rows[0].notifiedAt = '2026-10-30T15:01:19Z';
+  assert.equal(applyTourCreationResults(rows, [{ ...result, outcome: 'suggest', skip: 'launch unconfirmed' }]), true);
+  assert.equal(rows[0].createReason, 'launch unconfirmed');
+  assert.equal(shouldRouteTourCandidate(rows[0]), true, 'corrected schedule is eligible again');
+  assert.equal(rows[0].notifiedAt, undefined, 'a resolved false alarm cannot suppress a later valid suggestion');
+  applyTourCreationResults(rows, [result]);
+  applyTourCreationResults(rows, [{ candidate: result.candidate, skip: 'two tours running at once' }]);
+  assert.equal(shouldRouteTourCandidate(rows[0]), true, 'an early create-step exit also replaces an old rejection');
+});
+
+test('duplicate-schedule conditions and digest mirrors resolve with the rejection reason (BRO-6637)', () => {
+  const { resolveStaleTourCandidateConditions } = require('../../scripts/lib/tour-roundup-candidate');
+  const rejected = { parentId: 'come-from-away-2017', segmentStart: '2026-09-20', createOutcome: 'skip-duplicate-schedule', createReason: 'schedule duplicates operation-mincemeat-tour-2026' };
+  const key = 'tour-candidate:come-from-away-2017:2026-09-20';
+  const legacy = 'tour-candidate:come-from-away-2017';
+  const live = 'tour-candidate:other-2026:2026-09-20';
+  const title = 'Tour candidate: Come From Away national tour';
+  const ledger = { conditions: {
+    [key]: { status: 'open', title }, [legacy]: { status: 'open', title },
+    [live]: { status: 'open', title: 'Other' },
+  } };
+  const resolved = [];
+  const removed = [];
+  const router = { resolveCondition: (k, opts) => resolved.push({ key: k, reason: opts.reason }), removeDigestLines: keys => removed.push(...keys) };
+  assert.equal(resolveStaleTourCandidateConditions(['other-2026:2026-09-20'], ledger, router, [rejected]), 2);
+  assert.ok(resolved.every(r => r.reason.includes(rejected.createReason)));
+  assert.ok(resolved.some(r => r.key === `digest-needs-you:${title}`));
+  assert.ok(removed.includes(key));
+  assert.ok(!removed.includes(live));
+  resolved.length = 0;
+  resolveStaleTourCandidateConditions(['come-from-away-2017:2027-01-01'], ledger, router, [rejected]);
+  assert.ok(!resolved.some(r => r.key === legacy), 'a later routable segment keeps the legacy parent key live');
+});
+
 test('retired tour ids settle candidates without hiding other launch years or undated roundups', t => {
   const { openTourCandidates, retiredTourCandidateId } = require('../../scripts/lib/tour-roundup-candidate.js');
   const { isRetiredId } = require('../../scripts/lib/retired-show-ids.js');

@@ -21,7 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { openTourCandidates, candidateParentId, candidateKey, candidateBaseKey, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, candidateParentId, candidateKey, candidateBaseKey, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle, applyTourCreationResults, shouldRouteTourCandidate, TOUR_CANDIDATE_ROUTING } = require('./lib/tour-roundup-candidate');
 const { routeAlert, resolveCondition, removeDigestLines, loadLedger } = require('./lib/owner-alert-router');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -40,6 +40,14 @@ async function main() {
   const dryRun = process.argv.includes('--dry-run');
   if (!fs.existsSync(FILE)) { console.log('No tour candidates recorded.'); return; }
   const rows = JSON.parse(fs.readFileSync(FILE, 'utf8'));
+  // Backfill decisions recorded before the create step carried them on rows.
+  // Missing audits are normal before the first create run. Malformed ones fail
+  // closed, rather than sending tasks whose evidence we cannot read.
+  let results = [];
+  try { results = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', 'tour-autocreate.json'), 'utf8')).results || []; }
+  catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const decisionsChanged = applyTourCreationResults(rows.filter(c => !c.createOutcome),
+    results.filter(r => r.outcome === 'skip-duplicate-schedule'));
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const shows = Array.isArray(raw) ? raw : raw.shows;
   if (!dryRun) resolveRetiredTourCandidates(rows, shows, { resolveCondition, removeDigestLines });
@@ -58,6 +66,9 @@ async function main() {
     }
   }
   for (const c of open) {
+    if (dryRun && c.createOutcome === 'skip-duplicate-schedule') {
+      console.log(`[dry-run] not suggesting: ${c.title} (${candidateKey(c)}): ${c.createReason}`);
+    }
     if (c.notifiedAt) continue;
     if (!shouldRouteTourCandidate(c)) continue;
     // A tour found running on Tours To You (BRO-4325) gets two weeks for
@@ -102,9 +113,9 @@ async function main() {
   // Roundup-only rows (no show to suggest a tour for) wait for the Tours To You
   // pairing step; they are not suggestions here but must survive the rewrite (BRO-4931).
   const keep = rows.filter(r => (!r.broadwayShowId && !r.key) || String(r.key || '').startsWith('roundup:') || open.includes(r));
-  // An ended tour is not asked about, so its old owner-decision row closes too.
-  if (!dryRun) resolveStaleTourCandidateConditions(open.filter(shouldRouteTourCandidate).map(candidateKey), loadLedger(), { resolveCondition, removeDigestLines });
-  if (!dryRun && (sent > 0 || keep.length !== rows.length)) {
+  // Rejected duplicate schedules and ended tours also close old conditions.
+  if (!dryRun) resolveStaleTourCandidateConditions(open.filter(shouldRouteTourCandidate).map(candidateKey), loadLedger(), { resolveCondition, removeDigestLines }, open);
+  if (!dryRun && (sent > 0 || decisionsChanged || keep.length !== rows.length)) {
     fs.writeFileSync(FILE, JSON.stringify(keep, null, 2) + '\n');
     if (keep.length !== rows.length) console.log(`Dropped ${rows.length - keep.length} candidate(s) with tracked or retired tours, or no longer eligible.`);
   }

@@ -51,7 +51,7 @@ const { reopenBlocker, candidateKey } = require('./lib/tour-discovery');
 const { toursOfTitle } = require('./lib/tour-family');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { openTourCandidates, recordTourCandidates, candidateParentId, sortForCreate } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, recordTourCandidates, candidateParentId, sortForCreate, applyTourCreationResults } = require('./lib/tour-roundup-candidate');
 const { buildTourEntry } = require('./lib/tour-entry');
 const { newRowDuplicate } = require('./lib/add-show-action');
 const { decideTourCreation, candidateRoundupUrl } = require('./lib/tour-create-decision');
@@ -219,6 +219,9 @@ async function main() {
     record({ roundupUrl, scheduleUrl, notes: d.decision.notes, wikiEvidence: d.decision.wikiEvidence || null, launchSource: d.decision.launchSource || null, knownEnds: d.knownEnds, skip: built.skip || null, entry: built.entry || null, outcome: d.outcome, type: d.candidate.type || null });
   }
 
+  // Keep routing decisions even when a later time-budgeted run does not
+  // reach this candidate. A corrected schedule replaces an earlier rejection.
+  if (applyTourCreationResults(rows, results)) ledgerChanged = true;
   if (ledgerChanged) fs.writeFileSync(CANDIDATES, JSON.stringify(rows, null, 2) + '\n');
   const created = [];
   const reopened = [];
