@@ -62,6 +62,11 @@ const HOUR_MS = 60 * 60 * 1000;
 const RECLAIM_IDLE_MS = 48 * HOUR_MS;
 const LIVE_LAND_REF_MS = ABANDONED_AFTER_DAYS * 24 * HOUR_MS;
 const MAX_RECLAIMS = 2;
+// BRO-6864: a `blocked` report keeps a card In Progress (a worker would hit the same
+// blocker), but a blocker nobody has touched for this long is stale. The card goes to
+// Backlog with the written reason, never to Todo. In Review cards are out of scope:
+// they are often finished work that only lacks a PR-EVIDENCE line (the closer's job).
+const STALE_BLOCKED_MS = 7 * 24 * HOUR_MS;
 const MAX_PER_RUN = 40;
 const COMMENT_CAP = 250;
 const RECLAIM_MARKER = 'RECLAIMED-ABANDONED:';
@@ -163,7 +168,9 @@ function reclaimDecision({ issue, comments, landRefs, nowMs }) {
     const why = inReviewSkipReason(issue, list);
     if (why) return { action: 'skip', reason: why };
   }
-  if (latestSessionReportStatus(list) === 'blocked') return { action: 'skip', reason: 'blocked-report' };
+  const blocked = latestSessionReportStatus(list) === 'blocked';
+  const staleBlocked = blocked && !isInReview && nowMs - lastActivityMs >= STALE_BLOCKED_MS;
+  if (blocked && !staleBlocked) return { action: 'skip', reason: 'blocked-report' };
   const refs = Array.isArray(landRefs) ? landRefs : [];
   const live = refs.filter((r) => {
     const ms = Date.parse(r && r.lastActivityAt);
@@ -172,7 +179,8 @@ function reclaimDecision({ issue, comments, landRefs, nowMs }) {
   if (live.length) return { action: 'skip', reason: 'live-land-ref' };
   const reclaims = reclaimCount(list);
   return {
-    action: reclaims >= MAX_RECLAIMS ? 'backlog' : 'todo',
+    action: staleBlocked || reclaims >= MAX_RECLAIMS ? 'backlog' : 'todo',
+    staleBlocked,
     reclaims,
     staleRefs: refs.map((r) => r.ref),
     idleHours: Math.floor((nowMs - lastActivityMs) / HOUR_MS),
@@ -181,7 +189,7 @@ function reclaimDecision({ issue, comments, landRefs, nowMs }) {
 }
 
 /** The comment posted with a reclaim. Carries RECLAIM_MARKER, which reclaimCount counts. */
-function buildReclaimComment({ action, reclaims, staleRefs, idleHours, priorState }, nowMs) {
+function buildReclaimComment({ action, reclaims, staleRefs, idleHours, priorState, staleBlocked }, nowMs) {
   const day = new Date(nowMs).toISOString().slice(0, 10);
   const lines = [
     `${RECLAIM_MARKER} ${day} (BRO-5100 hourly sweep)`,
@@ -191,7 +199,9 @@ function buildReclaimComment({ action, reclaims, staleRefs, idleHours, priorStat
   if (staleRefs && staleRefs.length) {
     lines.push(`Land branches older than ${ABANDONED_AFTER_DAYS} days still name it (not landed, nothing retries them): ${staleRefs.join(', ')}.`);
   }
-  if (action === 'backlog') {
+  if (staleBlocked) {
+    lines.push(`Its latest session report says it is blocked and nothing has touched it for ${idleHours}h, so it goes to Backlog instead of Todo: a worker would hit the same blocker. Read the blocked report above; to resume, fix the blocker and comment on the card (a person's comment brings it back to the board).`);
+  } else if (action === 'backlog') {
     lines.push(`It has been reclaimed ${reclaims} times already, so it goes to Backlog instead of Todo: the sessions that take it keep dying. Someone should read the history before it is retried.`);
   } else {
     lines.push('Moved back to Todo so the board workers can take it again.');
@@ -201,7 +211,7 @@ function buildReclaimComment({ action, reclaims, staleRefs, idleHours, priorStat
 }
 
 module.exports = {
-  RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, MAX_PER_RUN, COMMENT_CAP, RECLAIM_MARKER,
+  RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, STALE_BLOCKED_MS, MAX_PER_RUN, COMMENT_CAP, RECLAIM_MARKER,
   DISPATCH_BLOCKED_WINDOW_MS, OWNER_CARD_RE, NO_RECLAIM_RE, isDispatchTimeBlocked,
   reclaimListSkipReason, findReclaimCandidates, reclaimDecision, buildReclaimComment,
 };

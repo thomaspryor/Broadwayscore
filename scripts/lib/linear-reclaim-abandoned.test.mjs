@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, COMMENT_CAP, RECLAIM_MARKER,
+  RECLAIM_IDLE_MS, LIVE_LAND_REF_MS, MAX_RECLAIMS, STALE_BLOCKED_MS, COMMENT_CAP, RECLAIM_MARKER,
   DISPATCH_BLOCKED_WINDOW_MS, isDispatchTimeBlocked,
   reclaimListSkipReason, findReclaimCandidates, reclaimDecision, buildReclaimComment,
 } = require('./linear-reclaim-abandoned.js');
@@ -60,6 +60,25 @@ test('latest session report blocked keeps the card; an older blocked report does
   assert.equal(decide({ comments: [blocked] }).reason, 'blocked-report');
   const later = { body: buildOutcomeCommentBody({ summary: 'tried again', status: 'in-review' }), createdAt: ago(49 * H) };
   assert.equal(decide({ comments: [blocked, later] }).action, 'todo');
+});
+
+test('BRO-6864: a blocked In Progress card idle past STALE_BLOCKED_MS goes to Backlog with the Backlog marker; In Review never does', () => {
+  const report = (age) => ({ body: buildOutcomeCommentBody({ summary: 'needs creds', status: 'blocked' }), createdAt: ago(age) });
+  const old = STALE_BLOCKED_MS + H;
+  const issue = { updatedAt: ago(old) };
+  const d = decide({ issue, comments: [report(old)] });
+  assert.equal(d.action, 'backlog');
+  assert.equal(d.staleBlocked, true);
+  assert.match(buildReclaimComment(d, NOW), /^RECLAIMED-ABANDONED:[\s\S]*goes to Backlog instead of Todo/);
+  // not yet stale: still held
+  assert.equal(decide({ issue: { updatedAt: ago(STALE_BLOCKED_MS - H) }, comments: [report(STALE_BLOCKED_MS - H)] }).reason, 'blocked-report');
+  // a live land ref still wins
+  assert.equal(decide({ issue, comments: [report(old)], landRefs: [{ ref: 'land/x-bro-100', lastActivityAt: ago(H) }] }).reason, 'live-land-ref');
+  // owner marker / opt-out still win
+  assert.equal(decide({ issue: { ...issue, description: 'NO-RECLAIM: tracker' }, comments: [report(old)] }).reason, 'opted-out');
+  // In Review card with a blocked report is never released here
+  const review = decide({ issue: { ...issue, state: { name: 'In Review', type: 'started' } }, comments: [report(old)] });
+  assert.equal(review.action, 'skip');
 });
 
 test('a truncated comment thread is skipped', () => {
