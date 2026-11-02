@@ -14,13 +14,16 @@
  * show names the id it will create. So only a near miss is reported, an
  * unknown id whose title words begin a real show's title words (optionally
  * after "the"), opening within a year. A new production of an existing title
- * (same words, another year) stays allowed.
+ * (same words, another year) stays allowed. An id with no "-YYYY" segment
+ * (`cats`, `all`, `broadway`) is never a show id (every id carries its year),
+ * so it is always reported, with same-title ids as suggestions.
  */
 
 const fs = require('fs');
 const path = require('path');
 
 const FORM_RE = /^node scripts\/lib\/verify-data-backfill\.js --show=([a-z0-9,-]+)/;
+const HAS_YEAR_RE = /-\d{4}(?:-|$)/;
 const MARKET_SUFFIX_RE = /-(?:off-off-broadway|off-broadway|off-west-end|west-end|regional|tour|bway)$/;
 
 /** { core: ['laowang'], year: 2026 } from an id; the year is null when absent. */
@@ -46,12 +49,13 @@ function startsWithTokens(longer, prefix) {
 function nearMissIds(id, knownIds) {
   const want = idCore(id);
   if (!want.core.length) return [];
+  const bare = !HAS_YEAR_RE.test(String(id));
   const out = [];
   for (const k of knownIds) {
     const have = idCore(k);
     if (want.year && have.year && Math.abs(want.year - have.year) > 1) continue;
     const words = have.core[0] === 'the' && want.core[0] !== 'the' ? have.core.slice(1) : have.core;
-    if (words.join('-') === want.core.join('-') && words.length === have.core.length) continue; // same title: new production
+    if (!bare && words.join('-') === want.core.join('-') && words.length === have.core.length) continue; // same title: new production
     if (startsWithTokens(words, want.core)) out.push(k);
   }
   return out.slice(0, 5);
@@ -81,12 +85,12 @@ function backfillShowIdNearMisses(cmd, opts = {}) {
   for (const id of new Set(m[1].split(',').filter(Boolean))) {
     if (knownSet.has(id)) continue;
     const suggestions = nearMissIds(id, known);
-    if (suggestions.length) misses.push({ id, suggestions });
+    if (suggestions.length || !HAS_YEAR_RE.test(id)) misses.push({ id, suggestions });
   }
   if (!misses.length) return null;
   return {
     misses,
-    reason: `verify-data-backfill names show id(s) that do not exist but look like a real show: ${misses.map((x) => `${x.id} (did you mean ${x.suggestions.join(' or ')}?)`).join('; ')}`,
+    reason: `verify-data-backfill names show id(s) that do not exist: ${misses.map((x) => (x.suggestions.length ? `${x.id} (did you mean ${x.suggestions.join(' or ')}?)` : `${x.id} (not a show id: ids end in their year)`)).join('; ')}`,
   };
 }
 

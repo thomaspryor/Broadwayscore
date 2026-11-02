@@ -58,3 +58,16 @@ test('resolveCheckPaths refuses a near-miss id and fails open without shows.json
   assert.equal(r.ok, false);
   assert.match(r.reason, /the-dinosaurs-off-broadway-2026/);
 });
+
+// BRO-6396 / BRO-6716 / BRO-6794 shapes: titles, market names and "all" in place of ids.
+test('an id with no year is never a show id: reported, with same-title ids', () => {
+  const known = [...KNOWN, 'photograph-51-west-end-2015', 'cats-west-end-2015'];
+  const r = backfillShowIdNearMisses('node scripts/lib/verify-data-backfill.js --show=photograph-51,cats,all,1984 --reviews=1', { showIds: known });
+  assert.deepEqual(r.misses.map((m) => [m.id, m.suggestions]), [
+    ['photograph-51', ['photograph-51-west-end-2015']],
+    ['cats', ['cats-west-end-2015']],
+    ['all', []],
+    ['1984', []],
+  ]);
+  assert.match(r.reason, /all \(not a show id/);
+});
