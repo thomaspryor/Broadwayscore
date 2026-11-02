@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6716-h",
   "planId": "bd432281-2874-48e3-a8b8-3d8b58d358ae",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T22:17:13.278Z",
   "submitter": {
     "name": null,
@@ -72,5 +72,44 @@
         "description": "BRO-6716: the stored TheWrap body is a browser error page (\"might be temporarily down\"); refetch the review. junk-body now reads that body as junk, so a clean fetch replaces it and lifts the garbage_text rejection."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T23:41:00.439Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json rejectedBy: \"ensemble-scoreability-check\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json rejectedAt: \"2026-11-02T02:48:56.248Z\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json rejectionReasoning: \"openai: The text provided is primarily promotional and does not contain evaluative content about the production.; gemini: The review text is truncated and ends mid-sentence, preventing a complete assessment of the critic's verdict on the show. It also contains navigation and subscription prompts.\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json criticName: \"Hildegard Bechtler\" -> \"Helen Hawkins\""
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
