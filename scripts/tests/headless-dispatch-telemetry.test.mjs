@@ -119,7 +119,7 @@ function fixtureEntries() {
     { ts: '2026-08-10T02:00:00.000Z', event: 'launch', taskId: 't-orphaned', workspaceRef: 'headless:t-orphaned' },
     { ts: '2026-08-10T02:01:00.000Z', event: JOB_EVENTS.SPAWNED, taskId: 't-orphaned', jobId: 'j-orphaned' },
     { ts: '2026-08-10T02:10:00.000Z', event: JOB_EVENTS.ORPHANED, taskId: 't-orphaned', jobId: 'j-orphaned' },
-    // 4: failed via job-abandoned (lease-held, never spawned)
+    // 4: job-abandoned (lease-held, never spawned) — no worker, no verdict (BRO-6430)
     { ts: '2026-08-10T03:00:00.000Z', event: 'launch', taskId: 't-abandoned', workspaceRef: 'headless:t-abandoned' },
     { ts: '2026-08-10T03:00:01.000Z', event: JOB_EVENTS.ABANDONED, taskId: 't-abandoned', jobId: 'j-abandoned', reason: 'lease-held' },
     // 5: in-flight (spawned, no terminal event yet)
@@ -145,14 +145,18 @@ test('computeJobLaneOutcomeRate: classifies every outcome shape correctly', () =
   // failed" — measured live, orphaned rows include jobs whose work had
   // already merged successfully. It gets its own bucket, excluded from
   // resolved/failed, same treatment as inFlight/none.
-  assert.equal(stats.failed, 2, 'job-failed + job-abandoned count as failed; job-orphaned no longer does');
+  // BRO-6430: job-abandoned is a pre-spawn refusal (disk floor / lease held)
+  // — the attempt never ran, so it has no verdict either.
+  assert.equal(stats.failed, 1, 'job-failed counts as failed; job-orphaned and job-abandoned do not');
   assert.equal(stats.orphaned, 1);
+  assert.equal(stats.abandoned, 1);
   assert.equal(stats.inFlight, 1);
   assert.equal(stats.none, 1);
-  assert.equal(stats.resolved, 3, 'done + failed only — in-flight/none/orphaned have no verdict yet');
-  assert.equal(stats.successRate, 1 / 3);
-  assert.equal(stats.failureRate, 2 / 3);
-  assert.deepEqual(new Set(stats.failedTaskIds), new Set(['t-failed', 't-abandoned']));
+  assert.equal(stats.resolved, 2, 'done + failed only — in-flight/none/orphaned/abandoned have no verdict yet');
+  assert.equal(stats.successRate, 1 / 2);
+  assert.equal(stats.failureRate, 1 / 2);
+  assert.deepEqual(new Set(stats.failedTaskIds), new Set(['t-failed']));
+  assert.deepEqual(new Set(stats.abandonedTaskIds), new Set(['t-abandoned']));
   assert.deepEqual(new Set(stats.orphanedTaskIds), new Set(['t-orphaned']));
 });
 
