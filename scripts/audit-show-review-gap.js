@@ -281,7 +281,7 @@ const { classifyReviewUrl, classifyGapCandidateUrl, registrableHost, hostOf, pub
 const { hasReviewEvidence } = require('./lib/serp-review-evidence');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { syndicatedReprintOf } = require('./lib/syndicated-reprint-match'); // BRO-5489
-const { isSyndicationHost } = require('./lib/syndication-canonical');
+const { isSyndicationHost, isSisterSiteHost } = require('./lib/syndication-canonical');
 const { parseHistoricalDate } = require('./lib/date-utils');
 
 // provisionalOutletIdFromHost lives in scripts/lib/outlet-canonicalize.js so the
@@ -2026,7 +2026,8 @@ function stillCollectable(m, blocklist, row) {
   if (findBlockedEntry(blocklist, m.url)) return false;
   // BRO-5489: same reprint dedupe auditShow applies, re-run at read time so a
   // carried-forward row stops alerting on a portal copy of a held review.
-  return !(row && isSyndicationHost(m.url) && isHeldReprint(row, m.url));
+  // BRO-6716: sister-site same-path copies (marinij.com of mercurynews.com) too.
+  return !(row && (isSyndicationHost(m.url) || isSisterSiteHost(m.url)) && isHeldReprint(row, m.url));
 }
 
 // Read-time reprint check. Only clean files with text vouch (classifyShowFile,

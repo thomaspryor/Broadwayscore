@@ -25,7 +25,7 @@
  * { dup, matchedUrl, reason } and the caller records the dedupe.
  */
 
-const { isSyndicationHost } = require('./syndication-canonical');
+const { isSyndicationHost, sisterGroupOf } = require('./syndication-canonical');
 
 const MIN_SLUG_TOKENS = 4;
 const MIN_DISTINCTIVE = 2;
@@ -83,8 +83,33 @@ function orderedWithinSpan(hay, needle, maxSpan) {
  */
 const MIN_HELD_FOR_RARITY = 3;
 
+function hostPath(url) {
+  try {
+    const u = new URL(url);
+    return { host: u.hostname.toLowerCase().replace(/^www\./, ''), path: u.pathname.replace(/\/+$/, '') };
+  } catch { return null; }
+}
+
+/**
+ * BRO-6716: the URL on a sister site (syndication-canonical SAME_PATH_SISTER_GROUPS)
+ * of a held file with the identical path, or null. Needs a real article path.
+ */
+function sisterSiteCopyOf(candidateUrl, heldFiles) {
+  const group = sisterGroupOf(candidateUrl);
+  const c = group && hostPath(candidateUrl);
+  if (!c || c.path.split('/').filter(Boolean).length === 0) return null;
+  for (const f of heldFiles || []) {
+    const h = f && f.url ? hostPath(f.url) : null;
+    if (h && h.host !== c.host && group.includes(h.host) && h.path === c.path) return f.url;
+  }
+  return null;
+}
+
 function syndicatedReprintOf({ candidateUrl, heldFiles, showTitle, venue }) {
-  if (!candidateUrl || !isSyndicationHost(candidateUrl)) return { dup: false };
+  if (!candidateUrl) return { dup: false };
+  const sister = sisterSiteCopyOf(candidateUrl, heldFiles);
+  if (sister) return { dup: true, matchedUrl: sister, reason: 'sister-site-same-path' };
+  if (!isSyndicationHost(candidateUrl)) return { dup: false };
   const slug = slugTokens(candidateUrl);
   if (slug.length < MIN_SLUG_TOKENS) return { dup: false };
   const held = (heldFiles || [])
@@ -124,4 +149,4 @@ function syndicatedReprintOf({ candidateUrl, heldFiles, showTitle, venue }) {
   return { dup: false };
 }
 
-module.exports = { syndicatedReprintOf, slugTokens };
+module.exports = { syndicatedReprintOf, sisterSiteCopyOf, slugTokens };

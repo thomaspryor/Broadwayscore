@@ -68,3 +68,26 @@ test('small corpus (under 3 held files) never dedupes: a reprint of an unheld ou
   const v2 = syndicatedReprintOf({ candidateUrl: 'https://www.yahoo.com/review-king-lear-royal-exchange-170000344.html', heldFiles: [lear], showTitle: 'King Lear' });
   assert.equal(v2.dup, false);
 });
+
+// BRO-6716: same-path copies on a sister masthead (one CMS, many sites) are the held review.
+test('sister-site same-path copy dedupes against the held original (Oh, Mary! marinij = mercurynews)', () => {
+  const merc = { url: 'https://www.mercurynews.com/2026/10/16/review-oh-mary-in-sf/', fullText: 'x' };
+  const v = syndicatedReprintOf({ candidateUrl: 'https://www.marinij.com/2026/10/16/review-oh-mary-in-sf/', heldFiles: [merc], showTitle: 'Oh, Mary!' });
+  assert.deepEqual(v, { dup: true, matchedUrl: merc.url, reason: 'sister-site-same-path' });
+  // A held file with no text still vouches by URL (the held file is the counted copy).
+  const tribune = { url: 'https://islingtontribune.co.uk/article/review-stuffed-at-new-diorama-theatre' };
+  assert.equal(syndicatedReprintOf({ candidateUrl: 'http://www.westminsterextra.co.uk/article/review-stuffed-at-new-diorama-theatre', heldFiles: [tribune] }).dup, true);
+});
+
+test('sister-site match needs the same group AND the identical path', () => {
+  const merc = { url: 'https://www.mercurynews.com/2026/10/16/review-oh-mary-in-sf/' };
+  // Different path on a sister site: a different article.
+  assert.equal(syndicatedReprintOf({ candidateUrl: 'https://www.marinij.com/2026/10/17/review-oh-mary-in-sf/', heldFiles: [merc] }).dup, false);
+  // Same path on an unrelated host: coincidence (towleroad vs thefrontrowcenter, /2016/04/american-psycho/).
+  const frc = { url: 'http://thefrontrowcenter.com/2016/04/american-psycho/' };
+  assert.equal(syndicatedReprintOf({ candidateUrl: 'http://www.towleroad.com/2016/04/american-psycho/', heldFiles: [frc] }).dup, false);
+  // Different groups never pair.
+  assert.equal(syndicatedReprintOf({ candidateUrl: 'https://www.nwaonline.com/2026/10/16/review-oh-mary-in-sf/', heldFiles: [merc] }).dup, false);
+  // A bare homepage never matches.
+  assert.equal(syndicatedReprintOf({ candidateUrl: 'https://www.marinij.com/', heldFiles: [{ url: 'https://www.mercurynews.com/' }] }).dup, false);
+});
