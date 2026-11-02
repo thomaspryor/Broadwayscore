@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-02T04:31:19.067Z",
+    "generatedAt": "2026-11-02T11:39:24.863Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -9,70 +9,51 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 0,
-    "exemptCount": 2,
-    "coveredCount": 10,
-    "highChurnTracked": 12
+    "exemptCount": 1,
+    "coveredCount": 7,
+    "highChurnTracked": 8
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 97
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 41
+      "churn": 93
     }
   ],
   "covered": [
     {
-      "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 77,
-      "mergeAttr": "union"
-    },
-    {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 70,
+      "churn": 48,
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 42,
-      "mergeAttr": "ours"
+      "path": "data/audit/scraper-spend-ledger.jsonl",
+      "churn": 46,
+      "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 42,
+      "churn": 40,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/cross-show-fingerprint-collisions.json",
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 42,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 42,
+      "churn": 39,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 42,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/collection-state/scoring-progress.json",
-      "churn": 42,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 36,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 31,
+      "churn": 39,
       "mergeAttr": "ours"
     }
   ]
