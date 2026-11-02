@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-02T04:35:34.085Z",
-  "processed": 15,
-  "failed": 13,
-  "successRate": "53.6%",
+  "updatedAt": "2026-11-02T05:46:50.419Z",
+  "processed": 19,
+  "failed": 32,
+  "successRate": "37.3%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 13,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 1,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 5,
-    "archive": 1
+    "archiveToday": 9,
+    "archive": 3
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-11-02T04:26:46.905Z",
@@ -45,6 +45,28 @@
       "event": "bb-session",
       "session": "daf8aa0f",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-02T05:38:27.228Z",
+      "event": "bb-session",
+      "session": "1eae3c95",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-02T05:38:27.916Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-02T05:40:14.966Z",
+      "event": "bb-session",
+      "session": "aa8a358a",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T05:40:15.631Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
