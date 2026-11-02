@@ -28640,7 +28640,7 @@
       "linearIdentifier": null
     },
     "time-bomb-tests:unit:scripts/backlog-drain.test.mjs::main: tick lock releases on empty tasks and errors; help never acquires it": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/backlog-drain.test.mjs — main: tick lock releases on empty tasks and errors; help never acquires it",
       "firstSeen": "2026-10-26T20:28:49.823Z",
@@ -28650,10 +28650,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6381"
+      "linearIdentifier": "BRO-6381",
+      "resolvedAt": "2026-11-02T23:23:08.873Z"
     },
     "time-bomb-tests:unit:scripts/backlog-drain.test.mjs::reconcileAndAppend: lock busy skips the tick instead of appending": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: scripts/backlog-drain.test.mjs — reconcileAndAppend: lock busy skips the tick instead of appending",
       "firstSeen": "2026-10-26T20:28:52.137Z",
@@ -28663,10 +28664,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6382"
+      "linearIdentifier": "BRO-6382",
+      "resolvedAt": "2026-11-02T23:23:08.891Z"
     },
     "time-bomb-tests:unit-tsx:tests/unit/fantasy-roster-privacy.test.ts::roster privacy": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — roster privacy",
       "firstSeen": "2026-10-26T20:28:53.861Z",
@@ -28676,10 +28678,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6383"
+      "linearIdentifier": "BRO-6383",
+      "resolvedAt": "2026-11-02T23:23:08.905Z"
     },
     "time-bomb-tests:unit-tsx:tests/unit/fantasy-roster-privacy.test.ts::teams the database hid still count": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — teams the database hid still count",
       "firstSeen": "2026-10-26T20:28:55.914Z",
@@ -28689,10 +28692,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6384"
+      "linearIdentifier": "BRO-6384",
+      "resolvedAt": "2026-11-02T23:23:08.921Z"
     },
     "time-bomb-tests:unit-tsx:tests/unit/fantasy-roster-privacy.test.ts::the standings code keeps team names and counts for hidden rosters": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — the standings code keeps team names and counts for hidden rosters",
       "firstSeen": "2026-10-26T20:28:57.549Z",
@@ -28702,10 +28706,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6385"
+      "linearIdentifier": "BRO-6385",
+      "resolvedAt": "2026-11-02T23:23:08.934Z"
     },
     "time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::an earlier all-market run started 5h ago does not cover us": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — an earlier all-market run started 5h ago does not cover us",
       "firstSeen": "2026-10-26T20:28:59.136Z",
@@ -28715,10 +28720,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6386"
+      "linearIdentifier": "BRO-6386",
+      "resolvedAt": "2026-11-02T23:23:08.959Z"
     },
     "time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::cutoff boundary: just under counts, just over does not": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — cutoff boundary: just under counts, just over does not",
       "firstSeen": "2026-10-26T20:29:00.820Z",
@@ -28728,10 +28734,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6387"
+      "linearIdentifier": "BRO-6387",
+      "resolvedAt": "2026-11-02T23:23:08.973Z"
     },
     "time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::Redundancy guard ignores earlier runs near their loop deadline (BRO-6037)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — Redundancy guard ignores earlier runs near their loop deadline (BRO-6037)",
       "firstSeen": "2026-10-26T20:29:02.345Z",
@@ -28741,10 +28748,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6388"
+      "linearIdentifier": "BRO-6388",
+      "resolvedAt": "2026-11-02T23:23:08.988Z"
     },
     "time-bomb-tests:unit:tests/unit/pre-push-hook.test.mjs::reapStaleTempWorktrees: reaps stale fixture debris, keeps fresh fixtures and session worktrees": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/pre-push-hook.test.mjs — reapStaleTempWorktrees: reaps stale fixture debris, keeps fresh fixtures and session worktrees",
       "firstSeen": "2026-10-26T20:29:03.817Z",
@@ -28754,7 +28762,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6389"
+      "linearIdentifier": "BRO-6389",
+      "resolvedAt": "2026-11-02T23:23:09.002Z"
     },
     "time-bomb-tests:unit:tests/unit/pre-push-visual-gate.test.mjs::a hung Linear request times out and the actual hook still blocks": {
       "status": "resolved",
@@ -35591,6 +35600,32 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "time-bomb-tests:unit:tests/unit/digest-inline-answers.test.mjs::label plus decision block: one awaiting row with its options and a button per option": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/digest-inline-answers.test.mjs — label plus decision block: one awaiting row with its options and a button per option",
+      "firstSeen": "2026-11-02T23:23:09.016Z",
+      "incidentOpenedAt": "2026-11-02T23:23:09.016Z",
+      "lastSeen": "2026-11-02T23:23:09.016Z",
+      "lastNotifiedAt": "2026-11-02T23:23:09.016Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6873"
+    },
+    "time-bomb-tests:unit:tests/unit/owner-decision-notify.test.mjs::reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/owner-decision-notify.test.mjs — reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once",
+      "firstSeen": "2026-11-02T23:23:10.750Z",
+      "incidentOpenedAt": "2026-11-02T23:23:10.750Z",
+      "lastSeen": "2026-11-02T23:23:10.750Z",
+      "lastNotifiedAt": "2026-11-02T23:23:10.750Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6874"
     },
     "land:land/job/linear-BRO-6716-mvzso4yj": {
       "status": "open",
