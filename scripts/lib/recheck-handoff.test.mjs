@@ -25,7 +25,7 @@ test('autoclose: script-written comments after the stamp do not block a close', 
 });
 
 test('autoclose: a person, a dispatch receipt or a claim after the stamp still blocks the close', () => {
-  for (const c of ['looks wrong to me', 'Dispatched abc123 to worker-1', 'Claimed by https://claude.ai/code/session_x']) {
+  for (const c of ['[follow-up] still broken', '[red-first follow-up] x', 'looks wrong to me', 'Dispatched abc123 to worker-1', 'Claimed by https://claude.ai/code/session_x']) {
     const v = core.decideAutoClose({ card: card([stamp, c]), target: target(), result: pass, now: NOW });
     assert.equal(v.close, false, c);
     assert.match(v.reason, /comments were added after/);
@@ -65,4 +65,11 @@ test('handoffCard: one linear-brain update to Todo with the marker comment; exit
   assert.match(moved.error, /In Progress/);
   assert.equal(bad.handedOff, false);
   assert.equal(process.exit, realExit, 'process.exit is restored');
+});
+
+test('handoff: a refused auto-close goes to a worker; a parked or owner-held card does not', () => {
+  const ok = core.decideAutoClose({ card: card(), target: target(), result: pass, now: NOW });
+  assert.equal(decideHandoff({ card: card(), target: target(), result: pass, closeVerdict: ok, closeRefused: 'exit 5' }).reason, 'close-refused');
+  assert.equal(decideHandoff({ card: card([stamp], { notes: 'PARKED: needs an API key' }), target: target(), result: { status: 'fail' } }).handoff, false);
+  assert.equal(decideHandoff({ card: card([stamp], { notes: 'DECISION NEEDED: x' }), target: target(), result: { status: 'fail' } }).handoff, false);
 });

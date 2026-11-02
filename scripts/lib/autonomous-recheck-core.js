@@ -525,7 +525,9 @@ const AUTOCLOSE_STRONG_FORMS = Object.freeze([
 // BRO-6853: the recheck's own hand-off comment starts with this marker.
 const RECHECK_HANDOFF_MARKER = '<!-- recheck-handoff -->';
 // Script-written comments that say nothing about the card being worked.
-const IGNORABLE_COMMENT_RE = /^(?:\*\*Re-arm \(auto\b|Auto-closed by the nightly acceptance re-check|\[[a-z][a-z0-9 ]*-[a-z0-9 -]*(?::[a-z0-9-]+)?\](?!\())/;
+// Exact markers only (BRO-6853 review): a generic [tag-with-hyphen] pattern also matches
+// reopen/park/follow-up notes that mean the card was worked.
+const IGNORABLE_COMMENT_RE = /^(?:\*\*Re-arm \(auto\b|Auto-closed by the nightly acceptance re-check|\[auto-fix-attempted:)/;
 function isRecheckIgnorableComment(body) {
   const text = String(body || '').trimStart();
   return text.startsWith(RECHECK_HANDOFF_MARKER) || IGNORABLE_COMMENT_RE.test(text) || isFilerRefreshComment(text);

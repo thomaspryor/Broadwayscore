@@ -31,14 +31,17 @@ function lastStampIndex(comments) {
  * @param {{card?:object, target?:object, result?:object, closeVerdict?:{close:boolean,reason:string}|null}} o
  * @returns {{handoff:boolean, reason:string, why?:string}} reason is a ledger-safe code; why is the plain sentence for the comment
  */
-function decideHandoff({ card, target, result, closeVerdict = null } = {}) {
+function decideHandoff({ card, target, result, closeVerdict = null, closeRefused = null } = {}) {
   const no = (reason) => ({ handoff: false, reason });
   if (!card || !target) return no('missing card or target');
   if (target.skip) return no('skipped: someone is working it');
   if (!HANDOFF_STATE_NAMES.includes(card.status)) return no(`card is ${card.status || 'unknown'}, not Paused/Backlog`);
+  // A card parked on a real block or waiting on the owner is not a worker's to take.
+  if (/^\s*PARKED\s*:/im.test(String(card.notes || '')) || /DECISION NEEDED/.test(String(card.notes || ''))) return no('parked or waiting on the owner');
   const comments = Array.isArray(card.comments) ? card.comments : [];
   const stamp = lastStampIndex(comments);
   if (comments.slice(stamp + 1).some((c) => String(c || '').trimStart().startsWith(RECHECK_HANDOFF_MARKER))) return no('already handed off');
+  if (closeRefused) return { handoff: true, reason: 'close-refused', why: `Its test passed (\`${target.verifyCmd}\`) but the automatic close was refused (${closeRefused}).` };
   if (!target.verifyCmd) return { handoff: true, reason: 'no-runnable-test', why: `The RECHECK-AFTER date has passed and the card has no runnable test (${target.reason || 'no safe-form VERIFY command'}).` };
   const status = result && result.status;
   if (status === 'fail') return { handoff: true, reason: 'test-failed', why: `The RECHECK-AFTER date has passed and its test failed on fresh main: \`${target.verifyCmd}\`.` };
@@ -74,7 +77,11 @@ async function handoffCard({ identifier, why, linearBrainMain, now, getIssue } =
       const name = issue && issue.state && issue.state.name;
       if (!HANDOFF_STATE_NAMES.includes(name)) return { handedOff: false, error: `card is ${name || 'unknown'} now, not Paused/Backlog`, comment };
     }
-    await main(['update', identifier, '--state', 'Todo', '--comment', comment]);
+    // Bounded: a stalled Linear call must not hold the CI step until the hard kill drops the summary row.
+    await Promise.race([
+      main(['update', identifier, '--state', 'Todo', '--comment', comment]),
+      new Promise((_, rej) => setTimeout(() => rej(new Error('handoff timed out after 30s')), 30000).unref()),
+    ]);
     return { handedOff: true, error: null, comment };
   } catch (err) {
     if (err instanceof ExitTrap) return { handedOff: err.exitCode === 0, error: err.exitCode === 0 ? null : `linear-brain update exited ${err.exitCode}`, comment };

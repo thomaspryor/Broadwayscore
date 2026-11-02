@@ -353,6 +353,8 @@ async function main(argv = process.argv.slice(2)) {
     targets.push(t);
   }
 
+  // Free (no-test) targets first: they cost no checkout, so a spent budget must never be what drops them.
+  targets.sort((a, b) => (a.skip || a.verifyCmd ? 1 : 0) - (b.skip || b.verifyCmd ? 1 : 0));
   console.error(`[recheck] ${targets.length} card(s) marked Done in the last ${windowHours}h have a dispatch record`);
   if (dropped.length) {
     console.error(`[recheck] ${dropped.length} card(s) in the window had no RECHECK-AFTER stamp and no runnable acceptance criteria — counted, not checked`);
@@ -413,12 +415,13 @@ async function main(argv = process.argv.slice(2)) {
       // without one would recreate exactly the silent drop this file's big
       // comment says was already fixed once.
       const remainingMs = deadline - Date.now();
-      if (!t.skip && remainingMs < MIN_REMAINING_MS_TO_START) {
+      if (!t.skip && t.verifyCmd && remainingMs < MIN_REMAINING_MS_TO_START) {
         const deferred = targets.slice(targets.indexOf(t)).length;
         console.error(`[recheck] ${timeBudgetMinLabel}min budget spent — deferring ${deferred} card(s) to tomorrow so the morning email is not held up`);
         ledger.appendEntry({ event: 'recheck-deferred', runId, note: `${deferred} card(s) not re-checked: the run hit its ${timeBudgetMinLabel}min budget` }, RECHECK_LEDGER_PATH);
         break;
       }
+      let closeRefused = null;
       if (t.skip) r = { ...t, status: null };
       else if (!t.verifyCmd) r = { ...t, status: 'unverifiable', detail: t.reason };
       // Halve the remaining budget so BOTH attempts fit inside it. The retry
@@ -454,17 +457,17 @@ async function main(argv = process.argv.slice(2)) {
           console.error(`[recheck] ${t.cardId} stays open: ${verdict.reason}`);
         } else {
           const out = await closeCardAfterPass({ identifier: t.cardId, expectStateType: (cardsById.get(t.cardId) || {}).stateType, cmd: t.verifyCmd, sha: checkout && checkout.sha, runUrl });
-          if (out.closed) closed.push(t.cardId); else keptOpen.push({ cardId: t.cardId, reason: out.error });
+          if (out.closed) closed.push(t.cardId); else { keptOpen.push({ cardId: t.cardId, reason: out.error }); closeRefused = out.error; }
           ledger.appendEntry({ event: 'recheck-autoclose', runId, cardId: t.cardId, name: t.name, closed: out.closed, verifyCmd: t.verifyCmd, sha: (checkout && checkout.sha) || null, runUrl, note: out.closed ? 'closed on a passing real test' : `close refused: ${out.error}` }, RECHECK_LEDGER_PATH);
           console.error(`[recheck] ${t.cardId} ${out.closed ? 'CLOSED' : `close refused (${out.error})`}`);
         }
       }
 
       // BRO-6853: a due card nothing above closed goes to a worker (decideHandoff is idempotent).
-      if (handoffOn && handedOff.length < MAX_HANDOFFS && deadline - Date.now() >= MIN_REMAINING_MS_TO_START) {
+      if (handoffOn && handedOff.length < MAX_HANDOFFS && (!t.verifyCmd || deadline - Date.now() >= MIN_REMAINING_MS_TO_START)) {
         const card = cardsById.get(t.cardId);
         const closeVerdict = !r.skip && r.status === 'pass' ? decideAutoClose({ card, target: t, result: r }) : null;
-        const h = decideHandoff({ card, target: t, result: r, closeVerdict });
+        const h = decideHandoff({ card, target: t, result: r, closeVerdict, closeRefused });
         if (h.handoff) {
           const out = await handoffCard({ identifier: t.cardId, why: h.why });
           if (out.handedOff) handedOff.push(t.cardId);
