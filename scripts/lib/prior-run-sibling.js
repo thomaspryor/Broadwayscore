@@ -235,17 +235,33 @@ function buildMultiProdDirectorGuard(shows) {
 }
 
 /**
- * Does a priorRuns link carry the earlier run's reviews onto `show`?
- * An explicit boolean on the link wins. Otherwise everything carries (a transfer or
- * return is the same production) EXCEPT opera: owner decision 2026-11-01 (BRO-6767,
- * enforced BRO-6811) is that an opera's earlier staging is a separate past-run entry,
- * because opera critics review casts and a 2018 Tosca review is not about the 2026
- * revival. Without this the add-show crossLinkFrom link (no flag) pulled 2015-2022 Met
- * reviews into live Tosca, Samson et Dalila, Medea and Otello scores.
+ * Does a priorRuns link carry the earlier run's reviews onto the newer show?
+ * An explicit boolean on the link wins; otherwise a transfer or return carries (same production).
+ * Opera is handled at WRITE time, not here (owner decision 2026-11-01, BRO-6767; BRO-6811):
+ * add-show-action stamps `inheritReviews:false` on every opera link, because opera critics review casts
+ * and a 2018 Tosca review is not about the 2026 revival. Changing this default would also flip older
+ * unflagged opera links (e.g. Akhnaten 2022) and disagree with the other `=== false` readers
+ * (wrong-production-autoclear, market-routing, ...), so it stays a pure explicit-flag predicate.
  */
+/**
+ * Opera priorRuns links that point at a sibling entry but leave `inheritReviews` unset: they carry
+ * the earlier staging's reviews by default, which the owner ruled out for opera (BRO-6767/6811).
+ * Returns [{showId, runId}]. Advisory in validate-data until the existing ones are decided.
+ */
+function operaLinksMissingFlag(shows) {
+  const out = [];
+  for (const show of shows || []) {
+    if (!show || show.type !== 'opera' || !Array.isArray(show.priorRuns)) continue;
+    for (const run of show.priorRuns) {
+      if (run && typeof run === 'object' && run.id && typeof run.inheritReviews !== 'boolean') out.push({ showId: show.id, runId: run.id });
+    }
+  }
+  return out;
+}
+
 function linkCarriesReviews(show, run) {
   if (run && typeof run === 'object' && typeof run.inheritReviews === 'boolean') return run.inheritReviews;
-  return !(show && show.type === 'opera');
+  return true;
 }
 
 function isExplicitLink(run, older) {
@@ -635,6 +651,7 @@ module.exports = {
   buildPriorProductionDirectors,
   findPriorRunSiblings,
   linkCarriesReviews,
+  operaLinksMissingFlag,
   preWindowExemptPriorRuns,
   inheritPriorRunReviews,
   reReviewedByManyOutlets,

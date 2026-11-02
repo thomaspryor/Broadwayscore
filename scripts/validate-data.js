@@ -1054,6 +1054,12 @@ function validateTourLegs(shows) {
   }
 }
 
+/** BRO-6811: advisory. An opera priorRuns link with no inheritReviews flag pulls the earlier staging's reviews onto the newer entry. */
+function validateOperaPriorRunFlags(shows) {
+  const bad = require('./lib/prior-run-sibling').operaLinksMissingFlag(shows);
+  for (const b of bad) warn(`Opera ${b.showId}: priorRuns link to ${b.runId} has no inheritReviews flag (unflagged links carry the earlier staging's reviews; owner rule BRO-6767 says opera past runs stay separate)`);
+}
+
 function validateSlugs(shows) {
   info('Checking slug formats...');
   const slugRegex = /^[a-z0-9-]+$/;
@@ -5554,6 +5560,7 @@ function runValidation() {
   validateIdYearDrift(shows);
   validateCastRolePlaceholders(shows);
   validateTourLegs(shows);
+  validateOperaPriorRunFlags(shows);
   validateReviewEmbargoAt(shows);
   validateSlugs(shows);
   validateImageUrls(shows);

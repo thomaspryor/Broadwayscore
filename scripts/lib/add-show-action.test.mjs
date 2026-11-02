@@ -234,3 +234,9 @@ test('BRO-6811: crossLinkFrom / priorRunOf on an opera write inheritReviews:fals
   assert.equal(applyAddShow(shows2, { show: { ...op, openingDate: '2027-01-01' }, priorRunOf: 'otello-off-broadway-2015' }).ok, true);
   assert.equal(shows2[1].priorRuns[0].inheritReviews, false);
 });
+
+test('BRO-6811: action.inheritReviews:false is honored on a non-opera crossLinkFrom', () => {
+  const play = [{ id: 'cur', slug: 'cur', type: 'play' }];
+  assert.equal(applyAddShow(play, { show: base(), crossLinkFrom: 'cur', inheritReviews: false }).ok, true);
+  assert.equal(play[0].priorRuns[0].inheritReviews, false);
+});

@@ -471,19 +471,27 @@ test('collectSameTitleProductionFiles: later-run boundaries, category and three 
 
 // BRO-6811 / owner decision BRO-6767 (2026-11-01): an opera's earlier staging is a separate
 // past-run entry. A priorRuns link with no flag used to carry its reviews onto the revival.
-test('BRO-6811: opera revival does not inherit the earlier staging reviews unless inheritReviews:true', async () => {
+test('BRO-6811: an opera link flagged inheritReviews:false does not carry; unflagged links still do (flag is written by add-show)', async () => {
   const lib = (await import('node:module')).createRequire(import.meta.url)('./prior-run-sibling.js');
   const old = { id: 'tosca-off-broadway-2017', title: 'Tosca', category: 'off-broadway', type: 'opera', openingDate: '2017-12-31', closingDate: '2018-05-01' };
   const mk = (extra, type = 'opera') => ({ id: 'tosca-off-broadway-2026', title: 'Tosca', category: 'off-broadway', type, openingDate: '2026-11-01',
     priorRuns: [{ id: old.id, openingDate: old.openingDate, closingDate: old.closingDate, ...extra }] });
   const reviews = [{ showId: old.id, outletId: 'nytimes', criticName: 'Anthony Tommasini', url: 'https://nytimes.com/a', publishDate: '2018-01-01' }];
   const carried = (show) => lib.inheritPriorRunReviews(reviews, [old, show]).inherited.length;
-  assert.equal(carried(mk({})), 0, 'unflagged opera link must not carry');
+  assert.equal(carried(mk({})), 1, 'unflagged link keeps the long-standing default; add-show stamps the flag on opera links');
   assert.equal(carried(mk({ inheritReviews: false })), 0);
   assert.equal(carried(mk({ inheritReviews: true })), 1, 'explicit true still carries');
   assert.equal(carried(mk({}, 'play')), 1, 'non-opera transfers are unchanged');
-  assert.equal(lib.linkCarriesReviews({ type: 'opera' }, {}), false);
+  assert.equal(lib.linkCarriesReviews({ type: 'opera' }, { inheritReviews: false }), false);
   assert.equal(lib.linkCarriesReviews({ type: 'play' }, {}), true);
-  // the pre-opening exemption window for the revival no longer covers the earlier staging
-  assert.equal((lib.preWindowExemptPriorRuns(mk({}), [old, mk({})]) || []).length, 0);
+  assert.equal((lib.preWindowExemptPriorRuns(mk({ inheritReviews: false }), [old, mk({ inheritReviews: false })]) || []).length, 0);
+});
+
+test('BRO-6811: operaLinksMissingFlag lists unflagged opera links only', () => {
+  const lib = createRequire(import.meta.url)('./prior-run-sibling.js');
+  const shows = [
+    { id: 'a', type: 'opera', priorRuns: [{ id: 'a-old' }, { id: 'a-older', inheritReviews: false }, { openingDate: '2000-01-01' }] },
+    { id: 'b', type: 'play', priorRuns: [{ id: 'b-old' }] },
+  ];
+  assert.deepEqual(lib.operaLinksMissingFlag(shows), [{ showId: 'a', runId: 'a-old' }]);
 });
