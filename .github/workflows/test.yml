@@ -34,6 +34,7 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      - 'scripts/route-dependabot-pr-cards.js'
       - 'scripts/read-theater-newsletters.js'
       # BRO-3497: scripts/re_extract_talkin_broadway_reviews.test.mjs covers this script.
       - 'scripts/re-extract-talkin-broadway-reviews.js'
