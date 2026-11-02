@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-11-02T03:06:08.204Z",
+  "generatedAt": "2026-11-02T03:50:00.501Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 310,
-  "clean": 310,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 307,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "openingDate": "2026-10-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 56.16 vs local 55.06 (Δ1.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-02T03:49:55.403Z"
+    },
+    {
+      "showId": "are-you-now-or-have-you-ever-been-regional-2026",
+      "title": "Are You Now or Have You Ever Been?",
+      "openingDate": "2026-10-24",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 80.54 vs local 82.94 (Δ2.4)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-02T03:49:55.403Z"
+    },
+    {
+      "showId": "the-bodyguard-tour-2026",
+      "title": "The Bodyguard",
+      "openingDate": "2026-10-15",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.37 vs local 79.68 (Δ0.31)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 4,
+      "firstDefectAt": "2026-11-02T03:49:55.403Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

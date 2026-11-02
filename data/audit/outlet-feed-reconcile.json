@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T03:06:08.580Z",
+  "generatedAt": "2026-11-02T03:50:00.756Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -146,6 +146,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "theupcoming",
+      "error": "Timeout fetching https://www.theupcoming.co.uk/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -158,9 +162,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 777,
-  "matchedGaps": 10,
-  "possibleGaps": 12,
+  "itemsScanned": 766,
+  "matchedGaps": 9,
+  "possibleGaps": 11,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -188,15 +192,6 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
-      "outletId": "theatre-weekly",
-      "url": "https://theatreweekly.com/review-the-lives-of-others-at-adelphi-theatre/",
-      "headline": "Review: The Lives of Others at Adelphi Theatre",
-      "publishDate": "2026-11-01"
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
@@ -341,15 +336,6 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-birmingham-royal-ballets-swan-lake-sadlers-wells",
       "headline": "Review: Birmingham Royal Ballet’s SWAN LAKE, Sadler’s Wells",
       "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "possible",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html",
-      "headline": "The Lives of Others review: Keira Knightley&#x27;s return is revolutionary",
-      "publishDate": null
     },
     {
       "showId": "the-moth-off-west-end-2026",
