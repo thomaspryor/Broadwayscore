@@ -131,6 +131,29 @@ function loadTourTickets() {
   }
 }
 
+function loadTourSchedules() {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'tour-schedules.json'), 'utf8')).tours || {};
+  } catch (e) {
+    console.warn(`WARN: could not read data/tour-schedules.json (${e.code || e.message}); tours without on-sale stop links will be flagged missing_tickets`);
+    return {};
+  }
+}
+
+// BRO-5455: a tour with a published stop schedule sells through each stop's
+// local venue; the only link source (fetch-tour-tickets.js, TodayTix) fills
+// the button when a stop goes on sale there. Until then no pipeline can fill
+// it, so it is reported as medium 'tour_tickets_not_on_sale', not the
+// high-severity 'missing_tickets' that reddens the digest every day.
+// Only a schedule with a stop still to play counts: a tour whose every listed
+// stop has ended is a stale schedule or a stale 'open', both real gaps.
+function hasTourSchedule(show, tourSchedules, today = new Date().toISOString().slice(0, 10)) {
+  if (show.category !== 'tour') return false;
+  const entry = tourSchedules && tourSchedules[show.id];
+  if (!entry || !Array.isArray(entry.stops)) return false;
+  return entry.stops.some(s => s && typeof (s.end || s.start) === 'string' && (s.end || s.start) >= today);
+}
+
 function hasTourTickets(show, tourTickets) {
   // Mirror the site (data-tour-schedule.ts getTourStopTickets): only an
   // on-sale row becomes a ticket link, so onSale:false rows do not cover a tour.
@@ -139,7 +162,7 @@ function hasTourTickets(show, tourTickets) {
   return Array.isArray(links) && links.some(l => l && l.onSale && l.url);
 }
 
-function checkShowCompleteness(show, tourTickets = {}) {
+function checkShowCompleteness(show, tourTickets = {}, tourSchedules = {}) {
   const issues = [];
   const isOpen = show.status === 'open';
 
@@ -171,7 +194,11 @@ function checkShowCompleteness(show, tourTickets = {}) {
 
   // Ticket links (only for open shows)
   if (isOpen && (!show.ticketLinks || show.ticketLinks.length === 0) && !hasTourTickets(show, tourTickets)) {
-    issues.push({ type: 'missing_tickets', severity: 'high' });
+    if (hasTourSchedule(show, tourSchedules)) {
+      issues.push({ type: 'tour_tickets_not_on_sale', severity: 'medium' });
+    } else {
+      issues.push({ type: 'missing_tickets', severity: 'high' });
+    }
   }
 
   // Cast & Creative
@@ -270,8 +297,9 @@ function checkFreshness() {
 
   // Check data completeness for open shows
   const tourTickets = loadTourTickets();
+  const tourSchedules = loadTourSchedules();
   for (const show of openShows) {
-    const issues = checkShowCompleteness(show, tourTickets);
+    const issues = checkShowCompleteness(show, tourTickets, tourSchedules);
     const significantIssues = issues.filter(i => i.severity !== 'info');
 
     if (significantIssues.length === 0) {
@@ -363,7 +391,7 @@ function printReport(report) {
     console.log('DATA QUALITY ISSUES (open shows):');
     console.log('-'.repeat(40));
 
-    const severityOrder = ['missing_poster', 'missing_synopsis', 'placeholder_synopsis', 'stale_synopsis', 'missing_tickets', 'missing_hero', 'missing_cast', 'missing_creative', 'missing_thumbnail', 'missing_runtime', 'missing_age_rec', 'no_closing_date'];
+    const severityOrder = ['missing_poster', 'missing_synopsis', 'placeholder_synopsis', 'stale_synopsis', 'missing_tickets', 'tour_tickets_not_on_sale', 'missing_hero', 'missing_cast', 'missing_creative', 'missing_thumbnail', 'missing_runtime', 'missing_age_rec', 'no_closing_date'];
     const sortedTypes = issueTypes.sort((a, b) => severityOrder.indexOf(a) - severityOrder.indexOf(b));
 
     for (const type of sortedTypes) {
@@ -395,7 +423,7 @@ function printReport(report) {
   console.log(`Open shows with issues: ${report.dataQuality.hasIssues.length}`);
 }
 
-module.exports = { checkShowCompleteness, hasTourTickets };
+module.exports = { checkShowCompleteness, hasTourTickets, hasTourSchedule };
 
 // Run
 if (require.main === module) checkFreshness();

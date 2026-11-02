@@ -434,3 +434,29 @@ test('checkDailyStability passes a normal run and aborts a mass rewrite', () => 
   assert.equal(forced.ok, true);
   assert.equal(forced.bypass, 'force');
 });
+
+// BRO-5455: the all-or-nothing stability guard discarded every daily run once
+// 25+ shows were fixable, so the backlog never drained.
+test('dailyFixBudget never exceeds either stability-guard threshold', () => {
+  const { dailyFixBudget, checkDailyStability, DAILY_FIX_BUDGET, STABILITY_THRESHOLDS } = require('./auto-fix-show-data.js');
+  assert.ok(DAILY_FIX_BUDGET <= STABILITY_THRESHOLDS.absoluteChanges);
+  for (const n of [0, 1, 3, 10, 49, 50, 304, 5000]) {
+    const b = dailyFixBudget(n);
+    assert.ok(b >= 0 && b <= DAILY_FIX_BUDGET, `budget ${b} for ${n}`);
+    if (b > 0) {
+      const ids = new Set(Array.from({ length: b }, (_, i) => `s${i}`));
+      const guard = checkDailyStability(ids, n, { snapshotPath: null, log: { log() {}, warn() {}, error() {} } });
+      assert.equal(guard.ok, true, `a full budget of ${b} on ${n} candidates must pass the guard`);
+    }
+  }
+  assert.equal(dailyFixBudget(304), DAILY_FIX_BUDGET);
+});
+
+test('prioritizeDailyTargets puts bad/missing synopsis first, keeping source order', () => {
+  const { prioritizeDailyTargets } = require('./auto-fix-show-data.js');
+  const good = (id) => ({ id, title: id, synopsis: 'A widowed baker in 1950s Naples takes in a runaway, and the two of them rebuild the family shop while the town gossips about where the boy came from.' });
+  const bad = (id) => ({ id, title: id, synopsis: '' });
+  const out = prioritizeDailyTargets([good('a'), bad('b'), good('c'), bad('d')]).map(s => s.id);
+  assert.deepEqual(out, ['b', 'd', 'a', 'c']);
+  assert.deepEqual(prioritizeDailyTargets(undefined), []);
+});

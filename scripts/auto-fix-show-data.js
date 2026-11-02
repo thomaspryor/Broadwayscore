@@ -751,6 +751,37 @@ function selectDailyTargets(shows) {
 }
 
 /**
+ * BRO-5455: the daily run's per-run fix budget. The stability guard below is
+ * all-or-nothing: once the backlog of fixable shows passed its 25-show
+ * threshold (46-49 shows/day from 2026-10-30), every daily run generated the
+ * fixes, then threw ALL of them away, so the backlog could never drain and
+ * the freshness digest's "missing synopsis" row stayed red. The daily run now
+ * stops fixing once this many shows have changed, and the next day's run
+ * picks up the rest. The guard stays as the backstop for a run that somehow
+ * exceeds the budget; the budget caps a classifier regression to this many
+ * shows a day instead of the whole board.
+ */
+const DAILY_FIX_BUDGET = 20;
+
+/** Shows the daily run may change: never enough to trip the stability guard. */
+function dailyFixBudget(candidateCount, thresholds = STABILITY_THRESHOLDS, budget = DAILY_FIX_BUDGET) {
+  const byPercent = Math.floor(Math.max(0, candidateCount) * thresholds.changePercent);
+  return Math.max(0, Math.min(budget, thresholds.absoluteChanges, byPercent));
+}
+
+/**
+ * Bad/missing synopsis first (it is the high-severity freshness gap the
+ * morning digest reports; creative team is medium), source order otherwise,
+ * so the budget is spent on the gap that matters before it runs out.
+ */
+function prioritizeDailyTargets(targets) {
+  const bad = [];
+  const rest = [];
+  for (const s of targets || []) (classifyBadSynopsis(s).bad ? bad : rest).push(s);
+  return bad.concat(rest);
+}
+
+/**
  * A not-yet-open tour gets only the synopsis step, in every mode (daily and
  * --show): tours have their own art pipeline, and the LLM creative-team path
  * would credit a tour with another production's director.
@@ -800,9 +831,13 @@ async function main() {
     }
     console.log(`Found ${targetShows.length} shows with missing/bad synopsis${limit > 0 ? ` (limited to ${limit})` : ''}...\n`);
   } else {
-    targetShows = selectDailyTargets(data.shows);
+    targetShows = prioritizeDailyTargets(selectDailyTargets(data.shows));
     console.log(`Checking ${targetShows.length} open/preview shows (+ standalone tours missing a synopsis)...\n`);
   }
+
+  const dailyMode = !backfillHistorical && !showIds;
+  const fixBudget = dailyMode ? dailyFixBudget(targetShows.length) : Infinity;
+  let budgetDeferred = 0;
 
   let showsWithMissingImages = [];
   let changesMade = false;
@@ -815,6 +850,15 @@ async function main() {
       console.log(`[${i + 1}/${targetShows.length}] ${show.title} (${show.id})`);
     } else {
       console.log(`Checking: ${show.title}`);
+    }
+
+    // BRO-5455: budget spent, so leave this show's fixes to tomorrow's run
+    // (the image check below still runs: it only reports, never writes).
+    if (changedShowIds.size >= fixBudget) {
+      budgetDeferred++;
+      const missingImages = checkMissingImages(show);
+      if (missingImages.length > 0) showsWithMissingImages.push({ id: show.id, title: show.title, missing: missingImages });
+      continue;
     }
 
     // 1. Fix synopsis
@@ -907,6 +951,10 @@ async function main() {
   console.log('SUMMARY');
   console.log('='.repeat(60));
   console.log(`Auto-fixed: ${results.fixed.length} issues`);
+  if (budgetDeferred > 0) {
+    console.log(`Deferred to the next run: ${budgetDeferred} shows (daily fix budget of ${fixBudget} shows reached)`);
+    console.log(`::notice::auto-fix-show-data: daily fix budget (${fixBudget}) reached, ${budgetDeferred} shows deferred to the next run`);
+  }
   if (!backfillHistorical) {
     console.log(`Needs images: ${showsWithMissingImages.length} shows`);
     console.log(`Workflows to trigger: ${results.triggeredWorkflows.join(', ') || 'none'}`);
@@ -957,6 +1005,9 @@ module.exports = {
   generateSynopsisWithLLM,
   buildSynopsisPrompt,
   selectDailyTargets,
+  prioritizeDailyTargets,
+  dailyFixBudget,
+  DAILY_FIX_BUDGET,
   isSynopsisOnlyTarget,
   checkDailyStability,
   STABILITY_THRESHOLDS,
