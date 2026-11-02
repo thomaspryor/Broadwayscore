@@ -1,0 +1,72 @@
+{
+  "processed": [
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+  ],
+  "failed": [
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
+    ],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [
+      "data/review-texts/msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json"
+    ],
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
+  },
+  "startTime": "2026-11-02T11:58:51.442Z",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+  "log": [
+    {
+      "t": "2026-11-02T12:01:41.149Z",
+      "event": "bb-session",
+      "session": "b21fa80d",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-02T12:01:41.985Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-02T12:03:32.652Z",
+      "event": "bb-session",
+      "session": "a15d8226",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T12:03:33.470Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
+}
