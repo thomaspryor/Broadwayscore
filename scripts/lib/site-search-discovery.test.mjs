@@ -149,3 +149,16 @@ test('BRO-6766: Royal Opera House (west-end market) opera shows get every opera 
   const play = selectApplicableSiteSearchOutlets('west-end', { id: 'x', type: 'play' }, new Set());
   assert.ok(!play.includes('operawire'));
 });
+
+test('BRO-6766: Opera Today is an opera-only, title-validated endpoint that rejects regional-house URLs', async () => {
+  const { SITE_SEARCH_ENDPOINTS } = require('./site-search-discovery.js');
+  const { hasNonMetOperaUrlMarker } = require('./content-filters.js');
+  const ep = SITE_SEARCH_ENDPOINTS['opera-today'];
+  assert.ok(ep, 'opera-today endpoint registered');
+  assert.equal(ep.applies({ type: 'opera' }), true);
+  assert.equal(ep.applies({ type: 'play' }), false);
+  for (const slug of ['tosca-at-glimmerglass', 'tosca-at-garsington', 'tosca-at-opera-holland-park']) {
+    assert.equal(hasNonMetOperaUrlMarker(`https://operatoday.com/2026/07/${slug}/`, 'eno').rejected, true, slug);
+  }
+  assert.equal(hasNonMetOperaUrlMarker('https://operatoday.com/2026/11/cosi-fan-tutte-review/', 'eno').rejected, false);
+});

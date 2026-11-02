@@ -839,6 +839,7 @@ const SITE_SEARCH_ENDPOINTS = {
     name: 'Opera Today',
     domain: 'operatoday.com',
     requiresJs: false,
+    skipUrlFilter: true, // editorial slugs; wpPostMatchesShow below already validates the post title
     applies: (show) => show.type === 'opera',
     // Opera Today (BRO-6766) — UK/US opera reviews incl. Royal Opera House. WP REST is
     // unauthenticated; same title-validation + house/year filters as the other WP opera outlets.
