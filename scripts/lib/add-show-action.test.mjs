@@ -218,3 +218,19 @@ test('BRO-6629: execute-approved-fix wires added shows to a capped gather dispat
   assert.match(wf, /capped-workflow-dispatch\.js --workflow=gather-reviews\.yml/);
   assert.match(wf, /actions: write/);
 });
+
+// BRO-6811: the link an add-show writes between an opera revival and its earlier staging must not opt in to review carry.
+test('BRO-6811: crossLinkFrom / priorRunOf on an opera write inheritReviews:false; plays stay unflagged', () => {
+  const rev = { id: 'tosca-off-broadway-2026', slug: 'tosca-off-broadway-2026', type: 'opera' };
+  const shows = [rev];
+  const past = { ...base(), id: 'tosca-off-broadway-2017', slug: 'tosca-off-broadway-2017', title: 'Tosca', type: 'opera', openingDate: '2017-12-31' };
+  assert.equal(applyAddShow(shows, { show: past, crossLinkFrom: rev.id }).ok, true);
+  assert.equal(rev.priorRuns[0].inheritReviews, false);
+  const play = [{ id: 'cur', slug: 'cur', type: 'play' }];
+  applyAddShow(play, { show: base(), crossLinkFrom: 'cur' });
+  assert.equal(play[0].priorRuns[0].inheritReviews, undefined);
+  const op = { ...past, id: 'otello-off-broadway-2027', slug: 'otello-off-broadway-2027', title: 'Otello' };
+  const shows2 = [{ id: 'otello-off-broadway-2015', slug: 'o15', openingDate: '2015-10-01', type: 'opera' }];
+  assert.equal(applyAddShow(shows2, { show: { ...op, openingDate: '2027-01-01' }, priorRunOf: 'otello-off-broadway-2015' }).ok, true);
+  assert.equal(shows2[1].priorRuns[0].inheritReviews, false);
+});

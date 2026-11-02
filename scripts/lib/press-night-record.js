@@ -353,6 +353,19 @@ function outletIdOf(name) {
 }
 
 /**
+ * Outlets whose only review files the rebuild excludes (wrong-show / wrong-production / syndicated copy),
+ * proven by the file snapshot. An outlet with any includable file is not excluded. BRO-6811: the same view
+ * serves the stability gate and first-live, so a review the rebuild drops cannot grade either.
+ */
+function excludedOutletSet(rec) {
+  const files = (rec.fileState && rec.fileState.files) || [];
+  const out = new Set();
+  for (const f of files) if (!f.includable && f.outletId) out.add(f.outletId);
+  for (const f of files) if (f.includable && f.outletId) out.delete(f.outletId);
+  return out;
+}
+
+/**
  * When the first review of the night went live, merging the probe's per-review series with
  * the lane shadow's finer (2 min) site-live times. Returns {at, lowerAt, outlet, source, baseline} or null.
  * lowerAt is the previous poll: the review went live in (lowerAt, at].
@@ -360,7 +373,9 @@ function outletIdOf(name) {
 function firstNightLive(rec) {
   const intervalMs = (rec.probe && rec.probe.intervalMin ? rec.probe.intervalMin : 5) * MIN;
   const embMs = toMs(rec.embargoAt);
-  const night = rec.perReview.filter((p) => isNightReview(p, rec.night));
+  const excludedOutlets = excludedOutletSet(rec);
+  const notExcluded = (name) => !excludedOutlets.has(outletIdOf(name));
+  const night = rec.perReview.filter((p) => isNightReview(p, rec.night) && notExcluded(p.outlet));
   const nightOutlets = new Set(night.map((p) => outletIdOf(p.outlet)).filter(Boolean));
   const previewOutlets = new Set(rec.perReview.filter((p) => !isNightReview(p, rec.night)).map((p) => outletIdOf(p.outlet)).filter(Boolean));
   const cands = [];
@@ -382,6 +397,7 @@ function firstNightLive(rec) {
       const ms = toMs(r.at);
       if (ms == null) continue;
       const oid = outletIdOf(r.outlet);
+      if (oid && excludedOutlets.has(oid)) continue;
       // A shadow row is a night review if the probe knows it as one; otherwise only if it appeared after the
       // embargo and is not a preview-period outlet the probe already saw.
       const isNight = (oid && nightOutlets.has(oid)) || (embMs != null && ms >= embMs && !(oid && previewOutlets.has(oid)));
@@ -859,8 +875,8 @@ function gradeNight(rec, g) {
   } else {
     // A drop of a review the rebuild correctly excludes (a syndicated copy that went live first, a wrong-production
     // file) is the exclusion working, not instability (BRO-6070). Only with the file snapshot to prove it.
-    const excl = new Set(((rec.fileState && rec.fileState.files) || []).filter((f) => !f.includable && f.outletId).map((f) => f.outletId));
-    const isExcluded = (d) => excl.has(outletIdOf(d.outlet)) && !((rec.fileState.files).some((f) => f.includable && f.outletId === outletIdOf(d.outlet)));
+    const excl = excludedOutletSet(rec);
+    const isExcluded = (d) => excl.has(outletIdOf(d.outlet));
     const open = rec.dropped.filter((d) => !d.restoredAt);
     const excused = open.filter(isExcluded);
     const stuck = open.filter((d) => !isExcluded(d));

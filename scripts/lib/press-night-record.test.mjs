@@ -825,3 +825,29 @@ test('censusExclusions: wrong-production URL exclusion never excuses an outlet t
   // tracking params and www/http variants still match
   assert.equal(stateLib.censusExclusions({ entries: [{ outletId: 'a-younger-theatre', url: 'https://ayoungertheatre.com/review-medea-2013/?utm_source=x' }] }, [wrong], opts).length, 1);
 });
+
+// BRO-6811: tosca's 11-01 first-live PASS (9 min) came from an ENO London Guardian review the rebuild later dropped as wrong-show.
+test('first-live: a review whose only file is excluded cannot be the first live; the next included review is', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  lib.applySample(rec, { at: at(9), reviews: [rv('The Guardian', 'Wrong Show')] });
+  lib.applySample(rec, { at: at(70), reviews: [rv('The Guardian', 'Wrong Show'), rv('The New York Times', 'A')] });
+  assert.equal(lib.firstNightLive(rec).at, at(9)); // no file snapshot: unchanged behaviour
+  rec.fileState = { files: [
+    { outletId: 'guardian', includable: false, reason: 'wrong-production' },
+    { outletId: 'nytimes', includable: true },
+  ] };
+  const fl = lib.firstNightLive(rec);
+  assert.equal(fl.at, at(70));
+  assert.match(String(fl.outlet), /New York Times/);
+});
+
+test('first-live: with only excluded reviews live there is no first-live (null), and an included file for the outlet keeps it eligible', () => {
+  const rec = fresh();
+  lib.applySample(rec, { at: at(-5), reviews: [] });
+  lib.applySample(rec, { at: at(9), reviews: [rv('The Guardian', 'Wrong Show')] });
+  rec.fileState = { files: [{ outletId: 'guardian', includable: false }] };
+  assert.equal(lib.firstNightLive(rec), null);
+  rec.fileState.files.push({ outletId: 'guardian', includable: true });
+  assert.equal(lib.firstNightLive(rec).at, at(9));
+});

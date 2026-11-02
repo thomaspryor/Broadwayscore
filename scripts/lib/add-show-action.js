@@ -167,6 +167,8 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   if (prior) {
     const run = { id: prior.id, venue: sanitizeVenueForWrite(prior.venue), openingDate: prior.openingDate || null };
     if (prior.closingDate) run.closingDate = prior.closingDate;
+    // Opera (or an explicit action.inheritReviews:false): the earlier run is a separate past-run entry (BRO-6811).
+    if (action.inheritReviews === false || added.type === 'opera') run.inheritReviews = false;
     added.priorRuns = [run];
   }
   shows.push(added);
@@ -176,6 +178,10 @@ function applyAddShow(shows, action, { isRetired } = {}) {
       const run = { id: show.id, openingDate: show.openingDate };
       if (show.closingDate) run.closingDate = show.closingDate;
       run.venue = venueTbd ? null : sanitizeVenueForWrite(show.venue);
+      // The new entry is the EARLIER run linked from a later one. For an opera revival it must stay a
+      // separate past run: without inheritReviews:false the rebuild copies its reviews onto the revival
+      // (Tosca 2026 scored on 2018 reviews, BRO-6811).
+      if (action.inheritReviews === false || from.type === 'opera' || show.type === 'opera') run.inheritReviews = false;
       from.priorRuns.push(run);
     }
   }

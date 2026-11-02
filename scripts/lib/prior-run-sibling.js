@@ -234,6 +234,20 @@ function buildMultiProdDirectorGuard(shows) {
   return guard;
 }
 
+/**
+ * Does a priorRuns link carry the earlier run's reviews onto `show`?
+ * An explicit boolean on the link wins. Otherwise everything carries (a transfer or
+ * return is the same production) EXCEPT opera: owner decision 2026-11-01 (BRO-6767,
+ * enforced BRO-6811) is that an opera's earlier staging is a separate past-run entry,
+ * because opera critics review casts and a 2018 Tosca review is not about the 2026
+ * revival. Without this the add-show crossLinkFrom link (no flag) pulled 2015-2022 Met
+ * reviews into live Tosca, Samson et Dalila, Medea and Otello scores.
+ */
+function linkCarriesReviews(show, run) {
+  if (run && typeof run === 'object' && typeof run.inheritReviews === 'boolean') return run.inheritReviews;
+  return !(show && show.type === 'opera');
+}
+
 function isExplicitLink(run, older) {
   if (typeof run === 'string') return run === older.id;
   return !!run && typeof run === 'object'
@@ -268,7 +282,7 @@ function findPriorRunSiblings(show, shows) {
       sibling: other, run, window: windowRunFor(run, other), explicit,
       // `inheritReviews: false` on a priorRuns entry keeps the link (director-guard exemption,
       // dedup cross-link) but stops that run's reviews being carried onto this entry.
-      carryReviews: !(run && typeof run === 'object' && run.inheritReviews === false),
+      carryReviews: linkCarriesReviews(show, run),
     });
   }
   return out;
@@ -620,6 +634,7 @@ module.exports = {
   buildMultiProdDirectorGuard,
   buildPriorProductionDirectors,
   findPriorRunSiblings,
+  linkCarriesReviews,
   preWindowExemptPriorRuns,
   inheritPriorRunReviews,
   reReviewedByManyOutlets,
