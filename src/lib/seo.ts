@@ -597,7 +597,7 @@ export function describeDiscountTickets(title: string, lr: ShowLotteryRush, curr
   };
   if (lr.lottery) add(`a ${lr.lottery.type === 'digital' ? 'digital ' : ''}lottery${lr.lottery.platform ? ` (${lr.lottery.platform})` : ''}`, lr.lottery.price);
   if (lr.specialLottery) add(`a special lottery${lr.specialLottery.name ? ` (${lr.specialLottery.name})` : ''}`, lr.specialLottery.price);
-  if (lr.rush) add(`${lr.rush.type === 'student' ? 'student' : 'general'} rush${lr.rush.location ? ' at the box office' : ''}`, lr.rush.price);
+  if (lr.rush) add(lr.rush.type === 'digital' ? `digital rush${lr.rush.platform ? ` (${lr.rush.platform})` : ''}` : `${lr.rush.type === 'student' ? 'student' : 'general'} rush${lr.rush.location ? ' at the box office' : ''}`, lr.rush.price);
   if (lr.digitalRush) add(`digital rush${lr.digitalRush.platform ? ` (${lr.digitalRush.platform})` : ''}`, lr.digitalRush.price);
   if (lr.studentRush) add('student rush', lr.studentRush.price);
   if (lr.standingRoom) add('standing room', lr.standingRoom.price);

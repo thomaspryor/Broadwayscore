@@ -69,6 +69,12 @@ test('London shows quote pounds; options with no price are dropped', () => {
   assert.match(t!.answer, /£49/);
 });
 
+test('a rush typed digital is called digital rush, not general rush', () => {
+  const t = describeDiscountTickets('X', { lottery: null, rush: { type: 'digital', platform: 'TodayTix', price: 40, time: '', instructions: '' }, standingRoom: null }, '$');
+  assert.match(t!, /digital rush \(TodayTix\) for \$40/);
+  assert.doesNotMatch(t!, /general/);
+});
+
 test('FAQPage JSON-LD matches the visible FAQ one to one', () => {
   const extras = { audience, lotteryRush: lr };
   const visible = getShowFAQs(show(), null, null, extras);
