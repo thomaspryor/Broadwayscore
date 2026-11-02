@@ -1,5 +1,10 @@
-const { test } = require('node:test');
-const assert = require('node:assert/strict');
+// .mjs (BRO-6507): CI runs only the scripts/lib/*.test.mjs glob; as .test.js
+// this file never ran there.
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
 const { parseSeasonRange, classifyShow, buildCoverage } = require('./we-historical-tr-coverage.js');
 
 const show = (id, season = '2018-2019') => ({ id, season, discoverySource: 'we-historical:wos' });
@@ -32,6 +37,18 @@ test('listed-but-not-held and parser-zero are unexplained', () => {
   assert.equal(classifyShow(show('a'), probe({ a: picked({ saved: 5, skippedExisting: 3 }) }), 3).reason, '5-listed-not-held');
   const z = classifyShow(show('a'), probe({ a: picked({ listed: 0, skippedExisting: 0 }) }), 1);
   assert.equal(z.reason, 'parser-yielded-zero');
+});
+
+test('BRO-6507: no review header anywhere in the issue text is explained', () => {
+  const pdf = (reviewHeaders) => ({ layoutChars: 996330, reviewHeaders });
+  const c = (h) => classifyShow(show('a'), probe({ a: picked({ listed: 0, skippedExisting: 0, saved: 0, pdf: pdf(h) }) }), 2);
+  assert.deepEqual([c({ raw: 0, default: 0 }).status, c({ raw: 0, default: 0 }).reason], ['explained', 'no-review-text']);
+  // Headers exist but none were ours: a real parser gap.
+  assert.equal(c({ raw: 0, default: 14 }).reason, 'parser-yielded-zero');
+  assert.equal(c({ raw: 9, default: 0 }).reason, 'parser-yielded-zero');
+  // Default text missing (null) or an old probe without the count proves nothing.
+  assert.equal(c({ raw: 0, default: null }).reason, 'parser-yielded-zero');
+  assert.equal(c(undefined).reason, 'parser-yielded-zero');
 });
 
 test('errors and pdf failures are unexplained', () => {

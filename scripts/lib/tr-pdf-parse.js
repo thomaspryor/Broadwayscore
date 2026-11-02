@@ -525,8 +525,8 @@ function mentionsTitle(fullText, showTitle) {
   return words.filter(w => count(w) > 0).length >= Math.ceil(words.length * 0.7);
 }
 
-function parseDefaultPdfReviews(text, showTitle, venue) {
-  const lines = splitPdfLines(text).map(l => l.trim());
+// Review headers: a known outlet line with a date line within the window.
+function reviewHeaderMarkers(lines) {
   const markers = [];
   for (let i = 0; i < lines.length; i++) {
     if (!isKnownOutletLine(lines[i])) continue;
@@ -535,6 +535,32 @@ function parseDefaultPdfReviews(text, showTitle, venue) {
       if (isDateLine(lines[k])) { markers.push({ start: i, dateIdx: k }); break; }
     }
   }
+  return markers;
+}
+
+/**
+ * BRO-6507: review headers anywhere in an issue's text, title-blind. Zero
+ * across a whole issue means its text layer carries no review at all (the
+ * review pages are images; only front matter and listings have text), so no
+ * parser fix can yield one. Non-zero with nothing for our show is a real
+ * parser gap.
+ */
+function countReviewHeaders(text) {
+  const lines = splitPdfLines(text).map(l => l.trim());
+  const starts = new Set(reviewHeaderMarkers(lines).map(m => m.start));
+  // parseRawPdfReviews' shape too: any caps line directly above a date. And
+  // any bare "04.04.17" line, whatever sits above it: TR prints only review
+  // dates that way, so a mixed-case or unknown masthead still counts.
+  lines.forEach((l, i) => {
+    if (l.length > 3 && /^[A-Z]/.test(l) && l === l.toUpperCase() && isDateLine(lines[i + 1] || '')) starts.add(i);
+    else if (DATE_SHORT.test(l)) starts.add(i);
+  });
+  return starts.size;
+}
+
+function parseDefaultPdfReviews(text, showTitle, venue) {
+  const lines = splitPdfLines(text).map(l => l.trim());
+  const markers = reviewHeaderMarkers(lines);
 
   const all = [];
   const runs = productionRuns(lines);
@@ -872,6 +898,7 @@ function skeletonKeepLines(lines, title, { maxHits = 8, radius = 110 } = {}) {
 }
 
 module.exports = {
+  countReviewHeaders,
   skeletonKeepLines,
   productionRuns,
   sharesTitleWord,
