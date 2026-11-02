@@ -495,5 +495,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T19:37:02.953Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6445-dependabot-resolve",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6445-dependabot-resolve",
+    "description": "land.yml did not land land/bro-6445-dependabot-resolve: the unit-tests-node gate went red at 5ddeed1e4e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41511334733",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6445-dependabot-resolve"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "5ddeed1e4e69eee5d9fbb67f741361a4adbe9489"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41511334733"
+      }
+    ],
+    "queuedAt": "2026-11-02T20:01:36.340Z"
   }
 ]
