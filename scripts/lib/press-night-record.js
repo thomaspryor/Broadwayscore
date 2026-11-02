@@ -887,7 +887,9 @@ function gradeNight(rec, g) {
     // file) is the exclusion working, not instability (BRO-6070). Only with the file snapshot to prove it.
     const excl = excludedOutletSet(rec);
     const priorRun = new Set((rec.perReview || []).filter((p) => isPriorRunReview(p, rec.night)).map((p) => p.key));
-    const isExcluded = (d) => excl.has(outletIdOf(d.outlet)) || priorRun.has(d.key);
+    // The date alone never excuses an outlet that has an includable file: that review is the current production's.
+    const includableOutlets = new Set(((rec.fileState && rec.fileState.files) || []).filter((f) => f.includable && f.outletId).map((f) => f.outletId));
+    const isExcluded = (d) => excl.has(outletIdOf(d.outlet)) || (priorRun.has(d.key) && !includableOutlets.has(outletIdOf(d.outlet)));
     const open = rec.dropped.filter((d) => !d.restoredAt);
     const excused = open.filter(isExcluded);
     const stuck = open.filter((d) => !isExcluded(d));

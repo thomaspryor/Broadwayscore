@@ -517,6 +517,8 @@ test('stability excuses the purge of a prior-run review (published >1y before th
   assert.equal(stab(r).status, 'pass');
   lib.applySample(r, { at: at(15), reviews: [] }); // a night review dropping still fails
   assert.equal(stab(r).status, 'fail');
+  r.fileState = { files: [file('huffpost', 0)] }; // an includable file for the outlet: the old date is not trusted
+  assert.equal(stab(r).status, 'fail');
 });
 
 test('the committed 2026-10-22 record: exclusions applied, same-night gate names Talkin\' Broadway and Vulture', () => {
