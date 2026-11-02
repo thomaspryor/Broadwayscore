@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-11-02T10:39:46.230Z",
+  "timestamp": "2026-11-02T11:21:25.257Z",
   "stats": {
     "totalReviews": 79181,
-    "alreadyFlagged": 21943,
-    "dateGuardCatches": 227,
+    "alreadyFlagged": 21946,
+    "dateGuardCatches": 223,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
     "londonSignals": 3580,
@@ -5186,20 +5186,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2024 (2x) more than 2026 (0x). 2024 matches production: an-enemy-of-the-people-2024"
-        }
-      ]
-    },
-    {
-      "showId": "an-evening-with-an-immigrant-off-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 82,
-      "publishDate": "2020-09-25",
-      "url": "https://theartsdesk.com/theatre/evening-immigrant-bridge-theatre-review-poetic-and-engaging",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2202d before show (2020-09-25 vs 2026-10-06)"
         }
       ]
     },
@@ -23302,20 +23288,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "gang-of-three-off-west-end-2026",
-      "file": "artsdesk--unknown.json",
-      "score": 96,
-      "publishDate": "2025-05-08",
-      "url": "https://theartsdesk.com/theatre/gang-three-kings-head-theatre-three-old-labour-ghosts-resurrected-entertain-and-educate",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 511d before show (2025-05-08 vs 2026-10-01)"
         }
       ]
     },
@@ -66636,34 +66608,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-gruffalo-west-end-2026",
-      "file": "curtain-call-reviews--unknown.json",
-      "score": 78,
-      "publishDate": "2024-07-20",
-      "url": "https://www.curtaincallreviews.co.uk/the-gruffalo",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 727d before show (2024-07-20 vs 2026-07-17)"
-        }
-      ]
-    },
-    {
-      "showId": "the-gruffalo-west-end-2026",
-      "file": "musical-theatre-review--scarlett-maxwell.json",
-      "score": 83,
-      "publishDate": "2019-08-01",
-      "url": "https://musicaltheatrereview.com/the-gruffalo-lyric-theatre/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2542d before show (2019-08-01 vs 2026-07-17)"
         }
       ]
     },
