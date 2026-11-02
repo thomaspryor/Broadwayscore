@@ -264,6 +264,7 @@ test('digest tile: waiting falls back to the board table count, n/a only when th
   const { boardWaitingFallback } = require('../send-morning-digest.js');
   const r = bc.categorizeBoard([withDesc('DECISION NEEDED: Ship the new homepage or keep the old one?')], { now: NOW });
   assert.equal(boardWaitingFallback(r), 1);
+  assert.equal(boardWaitingFallback(r, 3), 3);
   assert.equal(boardWaitingFallback(null), null);
   assert.equal(boardWaitingFallback(undefined), null);
 });

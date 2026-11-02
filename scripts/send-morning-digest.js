@@ -562,9 +562,10 @@ function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount =
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
 /** BRO-6856: when the awaiting-owner read failed, the board table's own Waiting-on-your-answer count beats "n/a". null when the table is missing too. */
-function boardWaitingFallback(report) {
+function boardWaitingFallback(report, decisions = 0) {
   const row = report && Array.isArray(report.categories) && report.categories.find((c) => c.key === 'waiting-owner');
-  return row && Number.isFinite(row.exclusive) ? row.exclusive : null;
+  // Never below the headline decisions count the other sections already loaded.
+  return row && Number.isFinite(row.exclusive) ? Math.max(row.exclusive, Number(decisions) || 0) : null;
 }
 
 function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, skipMacLocal = false, now = new Date() } = {}) {
@@ -667,7 +668,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (boardNumbersData) {
     try {
       const bn = require('./lib/board-numbers.js');
-      const m = bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? boardWaitingFallback(boardReport) : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount });
+      const m = bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? boardWaitingFallback(boardReport, view.decisions) : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount });
       // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
       // full numbers table moves under Technical details.
       boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);

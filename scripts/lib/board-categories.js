@@ -30,7 +30,7 @@ const { codexBouncedRecently } = require('./codex-runner.js');
 const CATEGORIES = [
   { key: 'waiting-owner', label: 'Waiting on your answer' },
   { key: 'being-worked', label: 'Being worked now' },
-  { key: 'started-idle', label: 'Started, no update for 2+ days (reclaim keeps it: blocked, in review or has a land branch)' },
+  { key: 'started-idle', label: 'Started, no update for 2+ days' },
   { key: 'dated-future', label: 'Waiting on a future date' },
   { key: 'dated-past', label: 'Date passed, check still failing' },
   { key: 'parked-real-block', label: 'Parked: real block' },
