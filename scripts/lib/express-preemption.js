@@ -35,7 +35,11 @@ function scopedShowId(displayTitle) {
 }
 
 function shouldCancel(workflow, displayTitle, ownShowId) {
-  if (workflow === ORCH) return true;
+  if (workflow === ORCH) {
+    // BRO-6802: a run targeted at one other show is not this show's competitor.
+    const t = String(displayTitle || '').match(/Orchestrator targeted (\S+) /);
+    return !(t && ownShowId && t[1] !== ownShowId);
+  }
   const scoped = scopedShowId(displayTitle);
   if (!scoped || !ownShowId) return true;
   // A scoring run may carry a comma-separated list (BRO-5851); GitHub
@@ -50,7 +54,10 @@ function planRedispatch(workflow, displayTitle) {
   if (workflow === ORCH) {
     const m = title.match(/\(([a-z-]+)\)\s*$/);
     const market = m && m[1] !== 'auto' ? m[1] : '';
-    return { workflow, fields: market ? { market } : {} };
+    const t = title.match(/Orchestrator targeted (\S+) /);
+    const fields = market ? { market } : {};
+    if (t) fields.show_id = t[1];
+    return { workflow, fields };
   }
   if (workflow === POLLER) {
     const m = title.match(/—\s*(\S+)\s*$/);
