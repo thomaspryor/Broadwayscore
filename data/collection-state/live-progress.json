@@ -1,61 +1,21 @@
 {
-  "updatedAt": "2026-11-02T13:49:19.503Z",
-  "processed": 143,
-  "failed": 76,
-  "successRate": "65.3%",
+  "updatedAt": "2026-11-02T14:18:12.286Z",
+  "processed": 205,
+  "failed": 114,
+  "successRate": "64.3%",
   "tierBreakdown": {
-    "playwright": 72,
+    "playwright": 95,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 4,
+    "scrapingdog": 15,
+    "scrapingbee": 10,
     "brightdata": 1,
-    "archiveToday": 22,
-    "archive": 33
+    "archiveToday": 28,
+    "archive": 60
   },
-  "browserbaseSessions": 7,
+  "browserbaseSessions": 16,
   "recentActivity": [
-    {
-      "t": "2026-11-02T12:01:41.149Z",
-      "event": "bb-session",
-      "session": "b21fa80d",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
-    },
-    {
-      "t": "2026-11-02T12:01:41.985Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-11-02T12:03:32.652Z",
-      "event": "bb-session",
-      "session": "a15d8226",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-02T12:03:33.470Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-02T12:56:48.254Z",
-      "event": "bb-session",
-      "session": "66b90f66",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-11-02T12:58:40.195Z",
-      "event": "bb-session",
-      "session": "c56755d1",
-      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
-    },
-    {
-      "t": "2026-11-02T13:15:40.049Z",
-      "event": "bb-session",
-      "session": "bdea1bec",
-      "url": "https://www.myguidelondon.com/events/larger-than-life-starring-wallace-gromit-sh"
-    },
     {
       "t": "2026-11-02T13:18:06.933Z",
       "event": "bb-session",
@@ -89,6 +49,85 @@
       "t": "2026-11-02T13:48:04.200Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-02T13:50:44.073Z",
+      "event": "bb-session",
+      "session": "6772c92d",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-02T13:50:44.670Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-02T14:05:47.147Z",
+      "event": "bb-session",
+      "session": "dc0e8066",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-02T14:05:47.772Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-02T14:06:45.854Z",
+      "event": "bb-session",
+      "session": "b661eda8",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2024/12/20/juliet-musical-t"
+    },
+    {
+      "t": "2026-11-02T14:06:46.497Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-02T14:08:20.175Z",
+      "event": "bb-session",
+      "session": "2648f8c4",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-02T14:08:28.775Z",
+      "event": "bb-session",
+      "session": "10dad0d7",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-02T14:09:12.196Z",
+      "event": "bb-session",
+      "session": "837fd599",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-02T14:09:21.117Z",
+      "event": "bb-session",
+      "session": "058d1e20",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-02T14:14:40.654Z",
+      "event": "bb-session",
+      "session": "239f4994",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-02T14:14:41.357Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-02T14:14:51.834Z",
+      "event": "bb-session",
+      "session": "d9cdf65a",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-02T14:14:52.383Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
