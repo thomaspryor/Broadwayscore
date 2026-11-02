@@ -6,6 +6,7 @@
  *   node scripts/resize-show-images.js --check    # list oversized files, exit 1 if any
  *   node scripts/resize-show-images.js --dry-run  # report what would change
  *   node scripts/resize-show-images.js --variants        # also write missing/stale <show>/sm/ list variants (BRO-6277)
+ *   node scripts/resize-show-images.js --variants --missing-only  # CI sweep: create only absent variants (sweep-image-variants.yml)
  *   node scripts/resize-show-images.js --check-variants  # list originals without a variant, exit 1 if any (advisory)
  *
  * Widths come from scripts/lib/show-image-caps.js. A file is only rewritten when
@@ -62,6 +63,7 @@ async function main() {
     // check-image-aspect --quarantine so rejected art never gets a variant, then
     // stage the variants next to them.
     const staged = process.argv.includes('--staged');
+    const missingOnly = process.argv.includes('--missing-only');
     let files = listImageFiles();
     if (staged) {
       const { execFileSync } = require('child_process');
@@ -72,6 +74,8 @@ async function main() {
     const written = [];
     for (const f of files) {
       if (f.role === 'hero' || !variantPathFor(f.abs)) continue;
+      // --missing-only (CI sweep): fresh-checkout mtimes are meaningless, so only create absent variants.
+      if (missingOnly && fs.existsSync(variantPathFor(f.abs))) { tally.skipped = (tally.skipped || 0) + 1; continue; }
       const r = await writeVariant(f.abs, { force: staged });
       tally[r] = (tally[r] || 0) + 1;
       if (r === 'written') written.push(variantPathFor(f.abs));

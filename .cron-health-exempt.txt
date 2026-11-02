@@ -328,3 +328,4 @@ money-monthly-draft.yml  # monthly owner-only [DRAFT] preview; nothing sends wit
 
 # BRO-6309: hourly welcome email for new Profitability Scorecard sign-ups; a missed run only delays the welcome. Failures go through notify-failure
 money-welcome.yml
+sweep-image-variants.yml  # BRO-6808: self-healing daily sweep; a missing sm/ variant is a perf-only defect
