@@ -52,7 +52,8 @@ test('a long lead title falls back to a shorter subject instead of cutting mid-w
   assert.equal(v.subject, 'School Girls; Or, The African Mean Girls Play opens on Broadway this week');
   assert.ok(v.subject.length <= 80);
   assert.match(plain(v.sentences[0]), /^A busy week in New York, with six openings\.$/);
-  assert.match(plain(v.sentences.at(-1)), /^Off Broadway, five shows opened, led by OB 1 \(79\)\.$/);
+  // Owner, 2026-11-02: the OB sentence names its highlights, not just the lead.
+  assert.match(plain(v.sentences.at(-1)), /^Off Broadway, five shows opened\. OB 1 opens to strong reviews \(79\)\. OB 2 earned the strongest reviews \(78\)\.$/);
 });
 
 test('calendar counts keep "slow week" / "N other shows" true when some openings are too thinly reviewed to name', () => {
@@ -127,4 +128,37 @@ test('packed week: calendar count stays, and the lede says how many got a Critic
   const text = plain(v.sentences.join(' '));
   assert.match(text, /^A packed week Off Broadway, with 12 openings\. 7 got enough reviews for a Critic Score, and Show G scored the highest with a 66\./);
   assert.doesNotMatch(text, /most reviews/);
+});
+
+// Oct 26 2026 (owner, 2026-11-02): A Few Good Men already had its own
+// opening-night email, so the weekly leads with Off Broadway and names the
+// owner's three picks: most-reviewed (The Heart), best-reviewed with 5+
+// reviews (I Became We, not 3-review Hospital Hour), and the famous revival
+// (In the Heights at City Center).
+const oct26 = () => {
+  const ob = (t, s, c) => o(t, s, c, { category: 'off-broadway' });
+  return {
+    bw: [o('A Few Good Men', 61.22, 27)],
+    ob: [ob('The Heart', 77.24, 17), ob('I Became We', 80.69, 8), ob('In the Heights', 75.25, 4), ob('Hospital Hour', 83.53, 3)],
+    counts: { bw: 1, ob: 9 },
+    notableIds: new Set(['in-the-heights']),
+  };
+};
+
+test('Oct 26: already-announced Broadway opening never leads the subject or lede', () => {
+  const v = composeWeekVoice({ ...oct26(), announcedIds: new Set(['a-few-good-men']) });
+  assert.equal(v.subject, '9 off-Broadway shows + A Few Good Men opened this week');
+  assert.ok(!/^A Few Good Men/.test(v.subject));
+  assert.equal(plain(v.sentences.join(' ')),
+    'A busy week Off Broadway, with nine openings. The Heart opens to strong reviews (77). I Became We earned the strongest reviews (81) and the In the Heights revival scored 75. On Broadway, A Few Good Men opened to mixed reviews (61).');
+  assert.equal(v.lead.title, 'The Heart');
+  assert.deepEqual(v.showRefs.map(r => r.title).sort(), ['A Few Good Men', 'I Became We', 'In the Heights', 'The Heart']);
+});
+
+test('Oct 26: a Broadway opening NOT yet announced still leads, with the three OB highlights', () => {
+  const v = composeWeekVoice({ ...oct26(), announcedIds: new Set() });
+  assert.match(v.subject, /^A Few Good Men opens on Broadway/);
+  const lede = plain(v.sentences.join(' '));
+  assert.match(lede, /Off Broadway, nine shows opened\. The Heart opens to strong reviews \(77\)\. I Became We earned the strongest reviews \(81\) and the In the Heights revival scored 75\./);
+  assert.ok(!lede.includes('Hospital Hour'));
 });
