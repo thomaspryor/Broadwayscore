@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T17:02:11.402Z",
+  "generatedAt": "2026-11-02T18:07:58.512Z",
   "windowDays": 45,
   "showsScanned": 224,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 191.1520686111111,
+      "fileAgeHours": 192.24805361111112,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 176.61528722222224,
+      "nonTerminalAgeHours": 177.71170694444444,
       "needsManualRecovery": true
     },
     {
@@ -41,13 +41,13 @@
         "ok": false,
         "reason": "[review-write-guard] date-implausible: an-evening-with-an-immigrant-off-west-end-2026/times-uk--clive-davis.json → quarantined to _pending/an-evening-with-an-immigrant-off-west-end-2026/times-uk--clive-davis.json (2202d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/an-evening-with-an-immigrant-off-west-end-2026/times-uk--clive-davis.json"
       },
-      "recoveryCount": 0,
+      "recoveryCount": 1,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 3.381553333333333,
+      "fileAgeHours": 4.478148333333333,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 1.8526394444444445,
+      "nonTerminalAgeHours": 2.949059166666667,
       "needsManualRecovery": false
     }
   ],
