@@ -31,6 +31,7 @@ for (const [slug, hub] of Object.entries(registry.hubs)) {
     host: t.host,
     discoverySource: hub.discoverySource,
     metro: slug,
+    launched: hub.launched !== false,
     files: t.files,
     since: t.since || null,
     // null = no extra rules (Chicago keeps its original tour-house and IL/IN city logic in tic-stage.js).
@@ -54,4 +55,9 @@ function cityForUrl(url) {
   return Object.values(CITIES).find((c) => u.includes(c.host)) || null;
 }
 
-module.exports = { CITIES, getCity, cityForUrl };
+/** A staged city (launched:false) may only be dry-run; a real run would write its shows into shows.json. */
+function assertRunnable(city, dryRun) {
+  if (!city.launched && !dryRun) throw new Error(`city "${city.key}" is staged (launched:false in data/city-hubs.json): use --dry-run, or launch it first`);
+}
+
+module.exports = { CITIES, getCity, cityForUrl, assertRunnable };

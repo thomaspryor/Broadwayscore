@@ -98,6 +98,7 @@ const SITE_DATA_FILES = [
   'data/blog-reviews-for-scoring.json',
   'data/buzz.json',
   'data/cast-changes.json',
+  'data/city-hubs.json', // BRO-6833: city-hub registry drives menu/footer/stats
   'data/curated-historical-shows.json',
   'data/fantasy-league.json',
   'data/fantasy-scores.json',

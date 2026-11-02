@@ -87,3 +87,18 @@ test('app: every launched web hub slug has a CITY_MARKETS entry (skipped without
     assert.match(app, new RegExp(`${hub.appMarket}:\\s*\\{\\s*slug:\\s*'${slug}'`), `${slug}: app CITY_MARKETS.${hub.appMarket}`);
   }
 });
+
+test('a staged city can only be dry-run (a real tic-daily run would write its shows)', () => {
+  const { assertRunnable } = require('../../scripts/lib/tic-cities.js');
+  const staged = Object.entries(registry).find(([, h]) => h.launched === false && h.tic);
+  if (!staged) return;
+  const city = getCity(staged[1].tic.key);
+  assert.throws(() => assertRunnable(city, false), /staged/);
+  assert.doesNotThrow(() => assertRunnable(city, true));
+  assert.doesNotThrow(() => assertRunnable(getCity('chicago'), false));
+});
+
+test('deploy gate and CI watch the registry file', () => {
+  assert.match(read('scripts/lib/should-deploy-gate.js'), /data\/city-hubs\.json/);
+  assert.match(read('.github/workflows/test.yml'), /data\/city-hubs\.json/);
+});

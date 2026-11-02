@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'src/**'
+      - 'data/city-hubs.json' # BRO-6833: city-hub-wiring.test.ts
       - 'tests/**'
       # BRO-6639: orchestrator-pause-read.test.mjs shape-checks pause-variable token use.
       - '.github/workflows/opening-night-orchestrator.yml'

@@ -21,7 +21,7 @@ const path = require('path');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const tic = require('./lib/theatreinchicago');
 const { runDaily } = require('./lib/tic-daily');
-const { getCity } = require('./lib/tic-cities');
+const { getCity, assertRunnable } = require('./lib/tic-cities');
 const { openingDateFor } = require('./tic-stage-shows');
 
 const ROOT = path.join(__dirname, '..');
@@ -34,6 +34,7 @@ function arg(name, def) {
   return hit ? hit.split('=').slice(1).join('=') : def;
 }
 const CITY = getCity(arg('city', 'chicago'));
+assertRunnable(CITY, flag('dry-run'));
 const SEEN = path.join(ROOT, CITY.files.seen);
 const ADDED = path.join(ROOT, CITY.files.added);
 const readJson = (f, def) => { try { return JSON.parse(fs.readFileSync(f, 'utf8')); } catch { return def; } };
