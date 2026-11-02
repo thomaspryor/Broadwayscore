@@ -38,6 +38,8 @@ const SWEPT_COMMENT_RE = /OWNER-CLEARED\s*:[^\n]*BRO-6852 owner-hold sweep/i;
 const PARK_LINES_RE = /^\s*PARKED\s*:(.*)$/gim;
 const ANSWERED_RE = /^\s*(?:[-*]\s+)?(?:\*\*)?(?:ANSWERED by the owner|owner decision(?:\*\*)?\s*\(answered by the owner)/im;
 const OWNER_WORDS_RE = /\b(?:owner'?s?|human|manual\w*|by hand)\b/gi;
+// A wait on an event or date the park line names ("blocked until the first import has run"): not the owner's, not a worker's yet.
+const EVENT_WAIT_RE = /\b(?:blocked|waits?|waiting|held|hold)\b[^.;]{0,40}\b(?:until|on|for)\b|\buntil\b/i;
 const HOLD_TRAITS = ['parked-owner-wording', 'owner-gated-no-question'];
 
 const commentBodies = (issue) => ((issue && issue.comments && issue.comments.nodes) || []).filter(Boolean)
@@ -98,7 +100,7 @@ function classifyHold(issue, { now = new Date(), secret = null } = {}) {
     const owner = text.match(hd.OWNER_ONLY_PARK_RE);
     if (owner) return { action: 'owner-question', why: `owner-only: "${owner[0]}"` };
     // RISKY_ACTION_PARK_RE also lists the owner-wording words this sweep exists to clear; take those out first.
-    const real = text.match(hd.REAL_BLOCK_PARK_RE) || text.replace(OWNER_WORDS_RE, ' ').match(hd.RISKY_ACTION_PARK_RE);
+    const real = text.match(hd.REAL_BLOCK_PARK_RE) || text.match(EVENT_WAIT_RE) || text.replace(OWNER_WORDS_RE, ' ').match(hd.RISKY_ACTION_PARK_RE);
     if (real) return { action: 'leave', why: `real-block: "${real[0]}"` };
   }
   // The real picker decides whether a worker could take it once released.

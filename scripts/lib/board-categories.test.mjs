@@ -320,3 +320,8 @@ test('planSweep caps releases and questions, and only accepts real DECISION NEED
     questions: { [login.identifier]: q } });
   assert.equal(cap.questions.length, 1);
 });
+
+test('a park that waits on an event is left, not released', () => {
+  const r = sweep.classifyHold(heldCard('needs a real recorded night to curate the file; blocked until the first import has run'), { now: NOW });
+  assert.equal(r.action, 'leave');
+});
