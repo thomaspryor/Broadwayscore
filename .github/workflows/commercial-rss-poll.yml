@@ -203,7 +203,6 @@ jobs:
         # hygiene-run-budget-ok: 2 bounded billing API reads (one per zone), each
         # with an AbortSignal timeout — no per-item fetch loop to budget.
         if: always() && inputs.dry_run != true
-        continue-on-error: true
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
@@ -214,7 +213,14 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: node scripts/check-bd-breaker.js
+        # BRO-6261: rc captured (step stays green, failure surfaced as a warning).
+        run: |
+          rc=0
+          node scripts/check-bd-breaker.js || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::check-bd-breaker.js exited $rc (non-blocking: no new BD breaker decision this hour)"
+            echo "- WARNING: \`check-bd-breaker.js\` exited $rc (non-blocking: no new BD breaker decision this hour)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: ScrapingDog daily circuit-breaker check
         # Card #1252 — same rationale as the Bright Data step above: hosted
@@ -228,7 +234,6 @@ jobs:
         # hygiene-run-budget-ok: 1 bounded /account API read with an
         # AbortSignal timeout (provider-billing.js) — no per-item fetch loop.
         if: always() && inputs.dry_run != true
-        continue-on-error: true
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
@@ -241,7 +246,14 @@ jobs:
           SD_BREAKER_BURST_FACTOR: ${{ vars.SD_BREAKER_BURST_FACTOR }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: node scripts/check-sd-breaker.js
+        # BRO-6261: rc captured (step stays green, failure surfaced as a warning).
+        run: |
+          rc=0
+          node scripts/check-sd-breaker.js || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::check-sd-breaker.js exited $rc (non-blocking: no new ScrapingDog breaker decision this hour)"
+            echo "- WARNING: \`check-sd-breaker.js\` exited $rc (non-blocking: no new ScrapingDog breaker decision this hour)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: ScrapingBee daily circuit-breaker check
         # BRO-3010 — the SB twin of the ScrapingDog step above, same hosting

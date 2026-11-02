@@ -467,7 +467,8 @@ jobs:
           path: /tmp/gap-data/
 
       - name: Scrape Playbill Verdict
-        continue-on-error: true
+        # BRO-6261: best-effort scraper, later steps commit whatever it found;
+        # a failure is surfaced as a warning instead of swallowed.
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -478,10 +479,15 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
-          node scripts/scrape-playbill-verdict.js --shows="$SHOWS" --no-date-filter || true
+          rc=0
+          node scripts/scrape-playbill-verdict.js --shows="$SHOWS" --no-date-filter || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::scrape-playbill-verdict.js exited $rc (non-blocking best-effort scrape)"
+            echo "- WARNING: \`scrape-playbill-verdict.js\` exited $rc (non-blocking best-effort scrape)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Scrape NYC Theatre
-        continue-on-error: true
+        # BRO-6261: best-effort scraper, surfaced instead of swallowed.
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -490,7 +496,12 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
         run: |
           SHOWS=$(cat /tmp/gap-data/gap-shows.txt)
-          node scripts/scrape-nyc-theatre-roundups.js --shows="$SHOWS" || true
+          rc=0
+          node scripts/scrape-nyc-theatre-roundups.js --shows="$SHOWS" || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::scrape-nyc-theatre-roundups.js exited $rc (non-blocking best-effort scrape)"
+            echo "- WARNING: \`scrape-nyc-theatre-roundups.js\` exited $rc (non-blocking best-effort scrape)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
 
       - name: Push review-texts to private repo

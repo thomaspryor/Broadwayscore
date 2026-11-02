@@ -299,8 +299,10 @@ jobs:
         if: always() && steps.push.outputs.has_changes == 'true'
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        # BRO-6261: no continue-on-error. A failed rebuild now fails the job
+        # (Notify on failure fires); every later step is if: always() and the
+        # commit/push steps already skip on steps.rebuild.outcome == 'failure'.
         run: node scripts/rebuild-all-reviews.js
-        continue-on-error: true
 
       # Stale-checkout race guard, post-rebuild (BRO-3162): advisory first
       # (CLAUDE.md rule 19), so it flags a dropped show without blocking.

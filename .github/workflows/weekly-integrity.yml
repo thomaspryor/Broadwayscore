@@ -252,11 +252,17 @@ jobs:
         # visible in the run log. continue-on-error so it can never fail the
         # integrity run; an empty review-texts checkout exits 2 (not "0 found").
         # Baseline: data/audit/score-vs-models-baseline.json (--write-baseline).
-        continue-on-error: true
+        # BRO-6261: rc captured instead of continue-on-error; the inner shell
+        # timeout sits under the step backstop so a hang is a warning too.
         timeout-minutes: 10
         run: |
           set -o pipefail
-          node scripts/audit-score-vs-models.js 2>&1 | tee /tmp/score-vs-models.txt
+          rc=0
+          timeout -k 10 560 node scripts/audit-score-vs-models.js 2>&1 | tee /tmp/score-vs-models.txt || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::audit-score-vs-models.js exited $rc (report only; 2 = empty review-texts checkout, 124 = timed out)"
+            echo "- WARNING: \`audit-score-vs-models.js\` exited $rc (report only; 2 = empty review-texts checkout, 124 = timed out)" >> "$GITHUB_STEP_SUMMARY"
+          fi
           { echo '### Published score vs model reading'; echo '```'; head -45 /tmp/score-vs-models.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Tier-skip drift audit (scraping cost v3, S1-T4)
@@ -264,14 +270,19 @@ jobs:
         # recovery probes against external domains — a single SD outage or
         # timeout must not skip the rest of this workflow's unconditional
         # steps (integrity report, history commit, issue creation).
-        continue-on-error: true
+        # BRO-6261: rc captured instead of continue-on-error (same guarantee).
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
-          node scripts/audit-tier-skip-drift.js
+          rc=0
+          node scripts/audit-tier-skip-drift.js || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::audit-tier-skip-drift.js exited $rc (non-blocking: tier-skip drift not audited this week)"
+            echo "- WARNING: \`audit-tier-skip-drift.js\` exited $rc (non-blocking: tier-skip drift not audited this week)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Commit tier-skip drift alert state (only if a verdict alerted)
         if: always()

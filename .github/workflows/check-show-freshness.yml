@@ -76,7 +76,6 @@ jobs:
       - name: Auto-fix show data
         id: autofix
         if: inputs.skip_auto_fix != true
-        continue-on-error: true
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
@@ -85,7 +84,15 @@ jobs:
         run: |
           # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)
           # blanket-sweep-audit-ok: data/audit/auto-fix-show-data-aborted.json written only when the BRO-3574 stability guard aborts a run; single-writer, and a run that aborted has no shows.json change, so this step accepts losing only the last-resort Git Data API push fallback for that commit
-          node scripts/auto-fix-show-data.js
+          # BRO-6261: exit 1 = stability-guard abort (shows.json left untouched)
+          # or a fatal error. Non-blocking so status changes still commit and the
+          # downstream image job still runs, but surfaced instead of swallowed.
+          rc=0
+          node scripts/auto-fix-show-data.js || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::auto-fix-show-data.js exited $rc (non-blocking: stability-guard abort or fatal error, see log; shows.json fixes from this run were not saved)"
+            echo "- WARNING: \`auto-fix-show-data.js\` exited $rc (non-blocking: stability-guard abort or fatal error, see log; shows.json fixes from this run were not saved)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       # Step 4: Closing dates handled by audit-closing-dates.yml (daily 14:00 UTC)
 

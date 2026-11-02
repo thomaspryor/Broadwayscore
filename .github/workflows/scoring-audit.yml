@@ -93,7 +93,17 @@ jobs:
       - name: Generate scoring audit
         id: audit
         run: |
-          node scripts/generate-scoring-audit.js || true
+          # BRO-6261: exit 1 is the designed "flags exceed 10%" verdict and the
+          # report is still written; any other exit, or a report this run did
+          # not rewrite (crash before the write), fails the step.
+          touch /tmp/scoring-audit-start
+          rc=0
+          node scripts/generate-scoring-audit.js || rc=$?
+          if [ "$rc" -gt 1 ] || [ ! data/audit/scoring-audit.json -nt /tmp/scoring-audit-start ]; then
+            echo "::error::generate-scoring-audit.js exited $rc without writing a fresh data/audit/scoring-audit.json"
+            exit 1
+          fi
+          if [ "$rc" -eq 1 ]; then echo "::warning::Scoring audit flags exceed the 10% threshold (see report)"; fi
           echo "flagged=$(cat data/audit/scoring-audit.json | jq '.flags.total')" >> $GITHUB_OUTPUT
           echo "flag_pct=$(cat data/audit/scoring-audit.json | jq '.flagPctOfTotal')" >> $GITHUB_OUTPUT
           echo "total=$(cat data/audit/scoring-audit.json | jq '.summary.totalReviews')" >> $GITHUB_OUTPUT

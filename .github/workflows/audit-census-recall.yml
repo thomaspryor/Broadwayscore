@@ -128,10 +128,17 @@ jobs:
         env:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        continue-on-error: true
+        # BRO-6261: report-only, so a crash must not fail the census commit
+        # below, but it is surfaced as a warning instead of swallowed.
         run: |
-          set -o pipefail
-          { echo '### Review URLs on unregistered domains'; echo '```'; node scripts/outlet-registry-census-reconciler.js --all; echo '```'; } | tee -a "$GITHUB_STEP_SUMMARY"
+          rc=0
+          node scripts/outlet-registry-census-reconciler.js --all > /tmp/unregistered-domains.txt 2>&1 || rc=$?
+          cat /tmp/unregistered-domains.txt
+          { echo '### Review URLs on unregistered domains'; echo '```'; cat /tmp/unregistered-domains.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::outlet-registry-census-reconciler.js exited $rc (non-blocking: the unregistered-domain report above is incomplete)"
+            echo "- WARNING: \`outlet-registry-census-reconciler.js\` exited $rc (non-blocking: the unregistered-domain report above is incomplete)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       # The ledger IS the detector's memory — a run that measures and does not
       # commit leaves the next run with the same two data points and the same

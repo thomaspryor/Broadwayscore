@@ -371,13 +371,20 @@ jobs:
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           echo "Running cross-show URL collision audit with auto-fix..."
-          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
+          # BRO-6261: non-blocking (collection must continue), but a crash is
+          # surfaced instead of swallowed by continue-on-error.
+          rc=0
+          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::audit-cross-show-url-collisions.js exited $rc (non-blocking: URL collisions not auto-fixed this run)"
+            echo "- WARNING: \`audit-cross-show-url-collisions.js\` exited $rc (non-blocking: URL collisions not auto-fixed this run)" >> "$GITHUB_STEP_SUMMARY"
+          fi
           FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "0")
           if [ "$FIXED" -gt 0 ] 2>/dev/null; then
             echo "Collision auto-fix applied ($FIXED files modified)"
             # Review-texts changes flow through push-review-texts action below.
             # Only stage the audit report for the public repo commit.
-            git add data/audit/url-collision-report.json || true
+            if [ -f data/audit/url-collision-report.json ]; then git add data/audit/url-collision-report.json; fi
             if ! git diff --staged --quiet; then
               git commit -m "data: Auto-fix $FIXED URL collisions
 
@@ -386,7 +393,6 @@ jobs:
           else
             echo "No collisions to fix"
           fi
-        continue-on-error: true
 
 
       # always-commit-ok: private-repo checkpoint push; partial scrape/collection progress must be kept even when the soft validate step fails. validate-data.js is not a publication gate for review-texts today (the deploy gate is pre-deploy-check.js count floors) (BRO-5591)
@@ -797,11 +803,18 @@ jobs:
         shell: bash # -eo pipefail: a failing node script must not be masked by tee (BRO-5046)
         run: |
           echo "Running cross-show URL collision audit with auto-fix..."
-          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt
+          # BRO-6261: non-blocking (collection must continue), but a crash is
+          # surfaced instead of swallowed by continue-on-error.
+          rc=0
+          node scripts/audit-cross-show-url-collisions.js --apply 2>&1 | tee /tmp/collision-output.txt || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::audit-cross-show-url-collisions.js exited $rc (non-blocking: URL collisions not auto-fixed this run)"
+            echo "- WARNING: \`audit-cross-show-url-collisions.js\` exited $rc (non-blocking: URL collisions not auto-fixed this run)" >> "$GITHUB_STEP_SUMMARY"
+          fi
           FIXED=$(grep 'Total files modified' /tmp/collision-output.txt | grep -o '[0-9]*$' || echo "0")
           if [ "$FIXED" -gt 0 ] 2>/dev/null; then
             echo "Collision auto-fix applied ($FIXED files modified)"
-            git add data/audit/url-collision-report.json || true
+            if [ -f data/audit/url-collision-report.json ]; then git add data/audit/url-collision-report.json; fi
             if ! git diff --staged --quiet; then
               git commit -m "data: Auto-fix $FIXED URL collisions — ${{ matrix.outlet_tier }}
 
@@ -810,7 +823,6 @@ jobs:
           else
             echo "No collisions to fix"
           fi
-        continue-on-error: true
 
       # always-commit-ok: private-repo checkpoint push; partial scrape/collection progress must be kept even when the soft validate step fails. validate-data.js is not a publication gate for review-texts today (the deploy gate is pre-deploy-check.js count floors) (BRO-5591)
       - name: Push review-texts to private repo

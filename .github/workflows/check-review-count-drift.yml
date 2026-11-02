@@ -210,7 +210,13 @@ jobs:
               }
             " >> $GITHUB_STEP_SUMMARY
             # BRO-4767: older shows hiding scored reviews (table + how to resolve), rendered by the script
-            node scripts/check-review-count-drift.js --render-offenders-summary >> $GITHUB_STEP_SUMMARY || true
+            # BRO-6261: summary rendering must not fail the job, but a crash is surfaced.
+            rc=0
+            node scripts/check-review-count-drift.js --render-offenders-summary >> $GITHUB_STEP_SUMMARY || rc=$?
+            if [ "$rc" -ne 0 ]; then
+              echo "::warning::check-review-count-drift.js --render-offenders-summary exited $rc (non-blocking: offenders table missing from this summary)"
+              echo "- WARNING: \`check-review-count-drift.js --render-offenders-summary\` exited $rc (non-blocking: offenders table missing from this summary)" >> "$GITHUB_STEP_SUMMARY"
+            fi
           fi
 
       - name: Notify on failure

@@ -117,5 +117,11 @@
     "step": "Auto-log hand fixes from review-texts history",
     "script": "scripts/press-night-record.js",
     "reason": "BRO-6661 advisory auto-log: a failed git read leaves the record as it was, so the night can only read as passed on its own when no hand fix is logged, same as before the step existed. The record is rewritten by the probe's later steps and the finalize step."
+  },
+  {
+    "workflow": "check-cron-health.yml",
+    "step": "Check critical crons ran recently",
+    "script": "scripts/update-cron-health-state.js",
+    "reason": "False positive (BRO-6261): the step's only '|| true' are on 'grep -c . || true' count lines (grep exits 1 on zero matches). update-cron-health-state.js itself runs under the default bash -e with no swallow, so its failure fails the step."
   }
 ]

@@ -104,10 +104,16 @@ jobs:
           eval node scripts/generate-theater-tips.js $ARGS
 
       - name: Validate restaurant names (optional, needs GOOGLE_PLACES_API_KEY)
-        continue-on-error: true
+        # BRO-6261: optional, so non-blocking, but surfaced instead of swallowed.
         env:
           GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
-        run: node scripts/validate-restaurant-names.js --sample 10
+        run: |
+          rc=0
+          node scripts/validate-restaurant-names.js --sample 10 || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::validate-restaurant-names.js exited $rc (non-blocking optional validation)"
+            echo "- WARNING: \`validate-restaurant-names.js\` exited $rc (non-blocking optional validation)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Merge tips into theater metadata
         id: merge

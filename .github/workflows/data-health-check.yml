@@ -227,7 +227,8 @@ jobs:
       # Kill switch: `gh variable set AFFILIATE_MONITOR_DISABLED --body true`.
       # Shadow burn-in until 2026-08-17 is enforced inside the script.
       - name: Affiliate health monitor
-        continue-on-error: true
+        # BRO-6261: non-blocking, surfaced. The shell timeout (below the 5min
+        # step backstop) lets a hang reach the rc check instead of failing the job.
         timeout-minutes: 5
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
@@ -238,7 +239,13 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           AFFILIATE_MONITOR_DISABLED: ${{ vars.AFFILIATE_MONITOR_DISABLED }}
-        run: node scripts/check-affiliate-health.js
+        run: |
+          rc=0
+          timeout -k 10 270 node scripts/check-affiliate-health.js || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::check-affiliate-health.js exited $rc (non-blocking; 124 = timed out)"
+            echo "- WARNING: \`check-affiliate-health.js\` exited $rc (non-blocking; 124 = timed out)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Run health check
         env:
@@ -612,7 +619,9 @@ jobs:
       # snapshot commit.
       - name: Acceptance recheck (shadow mode)
         if: always()
-        continue-on-error: true
+        # BRO-6261: no continue-on-error. The run line captures rc and an inner
+        # shell timeout sits just under the step timeout below, so a crash or a
+        # soft-deadline overrun is a warning, not a swallowed failure.
         # 3min verify budget + 8min step timeout backstop (task #695
         # ship-check finding, widened 5->8min for BRO-3373): the script's own
         # internal deadline is a soft check inside its verify loop — a single
@@ -661,10 +670,17 @@ jobs:
         # own deadline is the soft bound that keeps it there; the step timeout
         # stays the hard backstop it was.
         run: |
+          # Inner timeouts sit under the 95/8min step backstops so an overrun
+          # lands in the rc check (BRO-6261) rather than failing the job.
+          rc=0
           if [ "${RECHECK_BACKLOG}" = "true" ]; then
-            node scripts/autonomous-acceptance-recheck.js --backlog --time-budget-min 90
+            timeout -k 15 5580 node scripts/autonomous-acceptance-recheck.js --backlog --time-budget-min 90 || rc=$?
           else
-            node scripts/autonomous-acceptance-recheck.js --time-budget-min 5
+            timeout -k 15 450 node scripts/autonomous-acceptance-recheck.js --time-budget-min 5 || rc=$?
+          fi
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::autonomous-acceptance-recheck.js exited $rc (non-blocking; 124 = timed out, recheck ledger may be incomplete)"
+            echo "- WARNING: \`autonomous-acceptance-recheck.js\` exited $rc (non-blocking; 124 = timed out, recheck ledger may be incomplete)" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       # Ledger artifact backup (BRO-386): uploaded BEFORE the isolated commit
@@ -1248,14 +1264,20 @@ jobs:
       # itself is routed, not thrown, so a real finding never fails the job.
       - name: Missed opening-night broadcast sweep
         if: always()
-        continue-on-error: true
+        # BRO-6261: non-blocking, surfaced (inner timeout below the step backstop).
         timeout-minutes: 2
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/check-missed-broadcasts.js
+        run: |
+          rc=0
+          timeout -k 5 110 node scripts/check-missed-broadcasts.js || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::check-missed-broadcasts.js exited $rc (non-blocking; 124 = timed out)"
+            echo "- WARNING: \`check-missed-broadcasts.js\` exited $rc (non-blocking; 124 = timed out)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       - name: Stale announced shows audit (shadow mode)
         if: always()
@@ -1323,19 +1345,29 @@ jobs:
       # backlog condition would be alert noise.
       - name: Linear issue-cap monitor + Done auto-archive
         if: always()
-        continue-on-error: true
+        # BRO-6261: non-blocking, surfaced (inner timeouts below the step backstop).
         timeout-minutes: 4
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
         run: |
-          # || true: archive-done exits 1 on ANY per-issue archive failure —
-          # under bash -e that would skip the cap check exactly when a flaky
-          # Linear API leaves the count elevated. The cap check is the
-          # monitor; it must run regardless of the archiver's exit.
-          node scripts/linear-archive-done.js || true
-          node scripts/check-linear-cap.js --alert
+          # archive-done exits 1 on ANY per-issue archive failure; under bash -e
+          # that would skip the cap check exactly when a flaky Linear API leaves
+          # the count elevated. The cap check is the monitor; it must run
+          # regardless of the archiver's exit, so rc is captured and surfaced.
+          rc=0
+          timeout -k 5 135 node scripts/linear-archive-done.js || rc=$?
+          if [ "$rc" -ne 0 ]; then
+            echo "::warning::linear-archive-done.js exited $rc (non-blocking: some Done issues were not archived)"
+            echo "- WARNING: \`linear-archive-done.js\` exited $rc (non-blocking: some Done issues were not archived)" >> "$GITHUB_STEP_SUMMARY"
+          fi
+          cap_rc=0
+          timeout -k 5 90 node scripts/check-linear-cap.js --alert || cap_rc=$?
+          if [ "$cap_rc" -ne 0 ]; then
+            echo "::warning::check-linear-cap.js exited $cap_rc (non-blocking: Linear cap not checked this run)"
+            echo "- WARNING: \`check-linear-cap.js\` exited $cap_rc (non-blocking: Linear cap not checked this run)" >> "$GITHUB_STEP_SUMMARY"
+          fi
 
       # Digest snapshot artifact backup (Notion 3c4637c5-416f-8127 (run 32559247279 push-race), same BRO-386 pattern as
       # "Upload acceptance recheck ledger" above). data/audit/health-digest-
