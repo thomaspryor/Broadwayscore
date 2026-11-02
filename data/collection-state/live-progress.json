@@ -1,19 +1,48 @@
 {
-  "updatedAt": "2026-11-02T19:21:10.019Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-02T19:56:49.267Z",
+  "processed": 2,
+  "failed": 19,
+  "successRate": "9.5%",
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 5,
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-02T19:49:08.606Z",
+      "event": "bb-session",
+      "session": "5da13a85",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-02T19:50:48.052Z",
+      "event": "bb-session",
+      "session": "146363ae",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-02T19:50:48.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-02T19:52:34.394Z",
+      "event": "bb-session",
+      "session": "b67fe0f6",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T19:52:34.967Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
