@@ -1,15 +1,15 @@
 {
   "system": "commercial model",
-  "status": "warn",
-  "lastChecked": "2026-11-01T14:12:17.011Z",
+  "status": "pass",
+  "lastChecked": "2026-11-02T12:54:27.045Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Commercial model: stored vs fresh run",
-      "status": "warn",
-      "message": "6 of 476 records differ from a fresh run (5 same-day, 0 drift, 1 method): hamilton [same-day] run 2026-11-01 stored 3782.6%, same inputs give 3779.8%; wicked [same-day] run 2026-11-01 stored 4314.2%, same inputs give 4311.2%; chicago [same-day] run 2026-11-01 stored 6184.8%, same inputs give 6177.7%; book-of-mormon [same-day] run 2026-11-01 stored 2726.3%, same inputs give 2724.5%; aladdin [same-day] run 2026-11-01 stored 1730%, same inputs give 1726.9%"
+      "status": "pass",
+      "message": "476 records match a fresh run"
     },
     {
       "name": "Commercial model: Boring Waltz fit",

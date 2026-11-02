@@ -1,7 +1,7 @@
 {
   "system": "sync",
-  "status": "pass",
-  "lastChecked": "2026-11-01T14:12:17.009Z",
+  "status": "error",
+  "lastChecked": "2026-11-02T12:54:27.043Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "78551 files, 45469 reviews (surplus: 33082)"
+      "message": "79391 files, 46796 reviews (surplus: 32595)"
     },
     {
       "name": "Sync: open show coverage",
@@ -23,18 +23,18 @@
     },
     {
       "name": "Sync: cast coverage",
-      "status": "pass",
-      "message": "33 active Broadway shows all have cast data"
+      "status": "warn",
+      "message": "1 missing file: Here There Are Blueberries"
     },
     {
       "name": "Sync: baseline drift",
-      "status": "pass",
-      "message": "5744 shows, 273 open, 45469 reviews (all at or above baseline)"
+      "status": "error",
+      "message": "Open shows dropped by 11: 274 vs baseline 285"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 10/25/2026 (7d ago)"
+      "message": "weekEnding 10/25/2026 (8d ago)"
     }
   ]
 }

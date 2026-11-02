@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-01T14:12:17.009Z",
+  "lastChecked": "2026-11-02T12:54:27.043Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -94,17 +94,17 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "81 review(s) with no usable text, 64 rejected although verified as a review, 36 never scored, 34 with a blocked URL (0 published on the site), across 562 current shows"
+      "message": "81 review(s) with no usable text, 69 rejected although verified as a review, 17 never scored, 34 with a blocked URL (0 published on the site), across 561 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "19 published review score(s) contradict the critic's own rating or every model's verdict (6 more already queued for rescore), of 43110 checked"
+      "message": "19 published review score(s) contradict the critic's own rating or every model's verdict (6 more already queued for rescore), of 43501 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "475 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 165 more already attempted)"
+      "message": "137 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 139 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -114,17 +114,12 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 566 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 560 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "pass",
       "message": "No aggregator-reviewed show is missing from the catalogue"
-    },
-    {
-      "name": "Data: T1/T2 silent review gaps",
-      "status": "warn",
-      "message": "2 discovered review(s) not reaching the composite score (2 T1). Oldest: lincoln-in-the-bardo-off-broadway-2026 — hollywood-reporter (rejected-unscoreable)"
     }
   ]
 }
