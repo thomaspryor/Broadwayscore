@@ -162,7 +162,8 @@ test('BRO-5626: owner wording in the body and wait reasons hold the card (ported
   assert.equal(lib.unparkSkipReason(issue(50, `PARKED: ${TAKEABLE[0]}\n\nDECISION NEEDED: pick a layout${VERIFY}`)), 'owner-text');
   assert.equal(lib.unparkSkipReason(issue(51, `PARKED: ${TAKEABLE[0]}\n\nBlocked on the owner for wording.${VERIFY}`)), 'owner-text');
   for (const r of ['waiting for the BRO-5000 fix', 'after the quota resets', 'in 3 days', 'recheck 2026-11-01', 'wait until Monday']) {
-    assert.equal(hd.isWorkerTakeableParkReason(r), false, r);
+    // Pinned clock: a dated wait stops holding once its date is past (BRO-6798).
+    assert.equal(hd.isWorkerTakeableParkReason(r, new Date('2026-10-18T12:00:00Z')), false, r);
   }
 });
 
