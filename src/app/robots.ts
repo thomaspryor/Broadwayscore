@@ -48,8 +48,9 @@ export default function robots(): MetadataRoute.Robots {
       // Anthropic splits retrieval from training (support.claude.com article
       // 8896518): Claude-SearchBot (search indexing) + Claude-User (fetches for
       // a user's question) power citations; ClaudeBot is the TRAINING crawler.
-      // Owner decision 2026-07-19: be citable in Claude answers, keep training
-      // blocked — so allow the two retrieval agents, keep ClaudeBot below.
+      // Owner decision 2026-07-19 allowed only these two retrieval agents;
+      // ClaudeBot (training) was blocked until 2026-11-02 and is allowed below
+      // since BRO-6838.
       { ...CRAWLABLE_SURFACE, userAgent: 'Claude-SearchBot' },
       { ...CRAWLABLE_SURFACE, userAgent: 'Claude-User' },
       // CCBot: allowed 2026-07-19 (owner decision, eyes open) — Common Crawl is

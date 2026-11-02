@@ -96,3 +96,16 @@ test('preview/staging deploys block the whole site', () => {
     else process.env.VERCEL_ENV = previous;
   }
 });
+
+test('AI training crawlers stay allowed; only Bytespider is blocked site-wide (BRO-6838)', () => {
+  // Owner decision 2026-11-02 (AEO): models that learn the site mention it.
+  // A full block would still pass the /api/ tests above, so pin it here.
+  const rules = productionRules();
+  const blocked = rules.filter((r) => toArray(r.disallow).includes('/')).map(agentName).sort();
+  assert.deepStrictEqual(blocked, ['Bytespider'], `Unexpected site-wide blocks: ${blocked.join(', ')}`);
+  for (const agent of ['GPTBot', 'Google-Extended', 'anthropic-ai', 'ClaudeBot', 'Cohere-ai', 'Meta-ExternalAgent']) {
+    const rule = rules.find((r) => agentName(r) === agent);
+    assert.ok(rule, `${agent} needs an explicit rule`);
+    assert.ok(toArray(rule!.allow).includes('/'), `${agent} must be allowed '/'`);
+  }
+});
