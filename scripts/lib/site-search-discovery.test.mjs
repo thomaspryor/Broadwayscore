@@ -142,10 +142,23 @@ test('dailyMailHeadlineMatches: unrelated or non-review headlines do not match',
 test('BRO-6766: Royal Opera House (west-end market) opera shows get every opera outlet', () => {
   const show = { id: 'hercules-off-west-end-2027', type: 'opera', venue: 'Royal Opera House', market: 'west-end' };
   const ids = selectApplicableSiteSearchOutlets('west-end', show, new Set());
-  for (const want of ['bachtrack', 'operawire', 'seen-and-heard-international', 'artsdesk', 'guardian', 'times-uk']) {
+  for (const want of ['bachtrack', 'operawire', 'seen-and-heard-international', 'artsdesk', 'guardian', 'times-uk', 'opera-today', 'thestage-section']) {
     assert.ok(ids.includes(want), `ROH opera show must search ${want}; got ${ids.join(',')}`);
   }
   // a West End play must not pick up the opera-only outlets
   const play = selectApplicableSiteSearchOutlets('west-end', { id: 'x', type: 'play' }, new Set());
   assert.ok(!play.includes('operawire'));
+});
+
+test('BRO-6766: Opera Today is an opera-only, title-validated endpoint that rejects regional-house URLs', async () => {
+  const { SITE_SEARCH_ENDPOINTS } = require('./site-search-discovery.js');
+  const { hasNonMetOperaUrlMarker } = require('./content-filters.js');
+  const ep = SITE_SEARCH_ENDPOINTS['opera-today'];
+  assert.ok(ep, 'opera-today endpoint registered');
+  assert.equal(ep.applies({ type: 'opera' }), true);
+  assert.equal(ep.applies({ type: 'play' }), false);
+  for (const slug of ['tosca-at-glimmerglass', 'tosca-at-garsington', 'tosca-at-opera-holland-park']) {
+    assert.equal(hasNonMetOperaUrlMarker(`https://operatoday.com/2026/07/${slug}/`, 'eno').rejected, true, slug);
+  }
+  assert.equal(hasNonMetOperaUrlMarker('https://operatoday.com/2026/11/cosi-fan-tutte-review/', 'eno').rejected, false);
 });

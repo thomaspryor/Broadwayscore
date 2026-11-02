@@ -1157811,51 +1157811,40 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-02T20:36:20.586Z",
-    "completedAt": "2026-11-02T20:41:54.334Z",
-    "totalReviews": 79485,
-    "processed": 379,
-    "skipped": 77472,
-    "errors": 2,
+    "startedAt": "2026-11-02T20:48:13.153Z",
+    "completedAt": "2026-11-02T20:49:01.341Z",
+    "totalReviews": 34,
+    "processed": 384,
+    "skipped": 29,
+    "errors": 0,
     "tokensUsed": {
-      "input": 2389703,
-      "output": 120446,
-      "cacheRead": 715667,
-      "cacheWrite": 798947,
-      "total": 6002172
+      "input": 2421130,
+      "output": 122108,
+      "cacheRead": 723281,
+      "cacheWrite": 810278,
+      "total": 6079690
     },
-    "costUsd": 5.878474975,
-    "runId": "41519137970",
+    "costUsd": 11.915278299999999,
+    "runId": "41521301945",
     "source": "index",
-    "errorDetails": [
-      {
-        "showId": "dear-evan-hansen-tour-2024",
-        "outletId": "the-daily-iowan",
-        "error": "input_validation_failed:nav_chrome_majority"
-      },
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      }
-    ]
+    "errorDetails": []
   },
   {
-    "startedAt": "2026-11-02T20:42:08.692Z",
-    "completedAt": "2026-11-02T20:42:13.564Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-02T20:53:55.693Z",
+    "completedAt": "2026-11-02T20:54:14.372Z",
+    "totalReviews": 8,
+    "processed": 8,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 24172,
+      "output": 1819,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 25991
     },
-    "costUsd": 0,
-    "runId": "41519137970",
+    "costUsd": 0.065067,
+    "runId": "41521301945",
     "source": "comparative-rescore",
     "errorDetails": []
   }
