@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T06:16:48.272Z",
+  "generatedAt": "2026-11-02T09:52:44.927Z",
   "night": "2026-11-01",
   "counts": {
     "total": 3,
@@ -10,23 +10,23 @@
   "lines": [
     {
       "verdict": "FAIL",
-      "line": "Tosca: reviews not graded yet, still being checked; Reddit draft emailed to you is out of date (score 61 from 7 reviews, the site shows score 65 from 7 reviews). Failed."
+      "line": "Tosca: published by the regular pipeline; 1 of 1 review live by 12:00am; could not check the Reddit draft (the site's numbers could not be read). Failed."
     },
     {
-      "verdict": "PENDING",
-      "line": "Ms. Blakk for President: not graded yet, still being checked."
+      "verdict": "UNKNOWN",
+      "line": "Ms. Blakk for President: not graded, no reviews were published overnight."
     },
     {
-      "verdict": "PENDING",
-      "line": "The Blue Violinist Over West End Avenue: not graded yet, still being checked."
+      "verdict": "UNKNOWN",
+      "line": "The Blue Violinist Over West End Avenue: not graded, no reviews were published overnight."
     }
   ],
   "scoreboard": {
-    "graded": 8,
+    "graded": 9,
     "passed": 0,
     "passedOnOwn": 0
   },
   "missFirstSeen": {
-    "tosca-off-broadway-2026|2026-11-01|email:reddit:stale": "2026-11-02T06:16:48.272Z"
+    "tosca-off-broadway-2026|2026-11-01|review:other": "2026-11-02T09:52:44.927Z"
   }
 }
