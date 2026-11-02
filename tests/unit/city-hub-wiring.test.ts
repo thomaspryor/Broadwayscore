@@ -110,3 +110,20 @@ test('deploy gate and CI watch the registry file', () => {
   assert.match(read('scripts/lib/should-deploy-gate.js'), /data\/city-hubs\.json/);
   assert.match(read('.github/workflows/test.yml'), /data\/city-hubs\.json/);
 });
+
+test('every tic-cities venueCities entry resolves to its metro (else requireMetro silently drops those houses)', () => {
+  for (const c of Object.values(CITIES) as any[]) {
+    for (const v of c.venueCities || []) {
+      assert.equal(resolveMetro(`Some Theatre, ${v}`), c.metro, `${v} must resolve to ${c.metro} in data/venue-metros.json places`);
+    }
+  }
+});
+
+test('opening digest and outlet-metro are hand-wired per city: every launched slug appears in both', () => {
+  const digest = read('scripts/send-opening-digest.js');
+  const outlet = read('src/lib/outlet-metro.ts');
+  for (const slug of Object.keys(HUB_CITIES)) {
+    assert.ok(digest.includes(`'${slug}'`), `scripts/send-opening-digest.js must mention '${slug}' (CITY_REGIONS / REGION_BRAND)`);
+    assert.ok(outlet.includes(`'${slug}'`) || outlet.includes(`${slug}:`) , `src/lib/outlet-metro.ts REGION_METRO must map a region to ${slug}`);
+  }
+});

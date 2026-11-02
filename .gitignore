@@ -515,6 +515,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 /memory/*
 # BRO-6498: keep the requested public research report in the runner's diff.
 !/memory/us-city-hubs-report.md
+# BRO-6833: the add-a-city runbook is referenced by data/city-hubs.json.
+!/memory/add-us-city-hub.md
 /data/deep-research/
 /data/theater-research/
 /data/audit/**/*.md
