@@ -246,16 +246,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-11-01T19:24:21.368Z",
-      "lastSeen": "2026-11-01T23:40:32.410Z",
-      "lastNotifiedAt": "2026-11-01T19:24:21.368Z",
-      "lastSurfacedAt": "2026-11-01T19:24:21.368Z",
-      "notifyCount": 197,
+      "incidentOpenedAt": "2026-11-02T00:34:40.649Z",
+      "lastSeen": "2026-11-02T00:34:40.649Z",
+      "lastNotifiedAt": "2026-11-02T00:34:40.649Z",
+      "lastSurfacedAt": "2026-11-02T00:34:40.649Z",
+      "notifyCount": 198,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
-      "sweptTracker": "BRO-6656",
-      "silentRefires": 6
+      "sweptTracker": "BRO-6656"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6788,7 +6787,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-11-01T14:42:51.732Z",
-      "lastSeen": "2026-11-01T23:40:32.389Z",
+      "lastSeen": "2026-11-02T00:34:38.650Z",
       "lastNotifiedAt": "2026-11-01T14:42:51.732Z",
       "lastSurfacedAt": null,
       "notifyCount": 18,
@@ -6801,7 +6800,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
       },
       "absentRunIds": [],
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -34920,6 +34919,25 @@
       "linearIdentifier": null,
       "resolvedAt": "2026-11-01T23:26:08.589Z",
       "resolveReason": "no unrecoverable _pending stubs on a complete scan"
+    },
+    "test-yml:red:Unit Tests:9840d718": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"BRO-5626: owner wording in the body and wait reasons hold the card (ported from linear-promote-parked)\"",
+      "firstSeen": "2026-11-02T00:34:38.669Z",
+      "incidentOpenedAt": "2026-11-02T00:34:38.669Z",
+      "lastSeen": "2026-11-02T00:34:38.669Z",
+      "lastNotifiedAt": "2026-11-02T00:34:38.669Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6798",
+      "dispatch": {
+        "requestedAt": "2026-11-02T00:34:38.669Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41365576972",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41365576972"
+      }
     }
   }
 }
