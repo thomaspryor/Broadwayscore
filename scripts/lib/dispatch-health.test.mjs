@@ -549,6 +549,18 @@ test('BRO-6430: disk-pressure refusals are not failures and stay visible; other 
   assert.equal(row.status, 'pass', `10/12 resolved is over the 80% floor: ${row.message}`);
   assert.match(row.message, /40 refused before spawn for low disk/);
 
+  // A resume chain whose retry was disk-refused keeps the real failure.
+  const resumed = [
+    hlLaunch('2026-08-09T07:00:00.000Z', 'resumed'),
+    hlSpawn('2026-08-09T07:00:01.000Z', 'resumed', 'r1'),
+    hlFailed('2026-08-09T07:30:00.000Z', 'resumed', 'r1'),
+    { ts: '2026-08-09T07:31:00.000Z', event: JOB_EVENTS.RETRIED, taskId: 'resumed', jobId: 'r1' },
+    abandoned('2026-08-09T07:32:00.000Z', 'resumed', 'r2', 'disk-pressure: disk free 3.4GB < floor 5GB after self-heal GC — refusing dispatch'),
+  ];
+  const r = computeJobLaneOutcomeRate(resumed, { nowMs: NOW, lane: 'headless' });
+  assert.equal(r.failed, 1);
+  assert.equal(r.abandoned, 0);
+
   // Window with nothing but disk refusals: unmeasurable, and says why.
   const onlyDisk = entries.filter((e) => String(e.taskId).startsWith('disk-'));
   const empty = computeHeadlessDispatchDigest({ entries: onlyDisk, nowMs: NOW });

@@ -515,6 +515,16 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
 
   if (dryRun) return results;
 
+  // BRO-6430: the disk hold stops claims before bsc-runner's preflight is
+  // ever reached, so raise the same (cooldown-gated) digest alert the
+  // runner would have — the only signal for THIS Mac's disk.
+  const flags = (plan.budgets && plan.budgets.globalHoldFlags) || {};
+  if (flags.diskPressure) {
+    const hold = plan.budgets.globalHolds.find(h => h.startsWith('disk pressure')) || 'disk pressure';
+    console.error(`[watchdog] holding dispatch: ${hold}`);
+    try { require('./lib/bsc-runner.js').routeDiskPressureAlert(`${hold} — watchdog is holding all redispatches until it clears`); } catch (e) { console.error(`[watchdog] disk-pressure alert failed: ${e.message}`); }
+  }
+
   for (const item of plan.toPark) {
     // Card #1233: item.deaths is substantive-only unless the park itself was
     // triggered by the infra ceiling (item.reason === 'infra'), in which case

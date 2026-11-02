@@ -85,7 +85,7 @@ function main() {
     console.log(`  orphaned task(s) (${headless.orphanedTaskIds.length}, verify with reconcile-landed-but-open.js before treating as dead): ${headless.orphanedTaskIds.join(', ')}`);
   }
   if (headless.abandonedTaskIds.length) {
-    console.log(`  refused-before-spawn task(s) (${headless.abandonedTaskIds.length}, bsc-runner refused for low disk and never started a worker — see the 'Infra: disk space' health row): ${headless.abandonedTaskIds.join(', ')}`);
+    console.log(`  refused-before-spawn task(s) (${headless.abandonedTaskIds.length}, bsc-runner refused for low disk and never started a worker — free disk on this Mac): ${headless.abandonedTaskIds.join(', ')}`);
   }
   if (headless.blockedTaskIds.length) {
     console.log(`  blocked task(s) (${headless.blockedTaskIds.length}, needs an owner decision — see the Linear card comment): ${headless.blockedTaskIds.join(', ')}`);

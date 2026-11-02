@@ -305,11 +305,13 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       const upperBound = i + 1 < launches.length ? launches[i + 1].ts : Infinity;
 
       let last = null; // last job-* event for this task inside the ownership window
+      let spawnedInWindow = false; // a worker actually ran under this launch (incl. a reconciler resume)
       for (const e of rows) {
         if (String(e.taskId) !== taskId || !String(e.event || '').startsWith('job-')) continue;
         const t = tsOf(e);
         if (t === null || t < launch.ts || t >= upperBound) continue;
         if (!last || t >= last.ts) last = { ...e, ts: t };
+        if (e.event === JOB_EVENTS.SPAWNED) spawnedInWindow = true;
       }
 
       let outcome;
@@ -347,12 +349,15 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       // these as failures made a 3-day low-disk window (727 refused
       // launches, 2026-10-29..31) read as a 21% success rate. Excluded from
       // `resolved` like orphaned/blocked; the disk condition itself is
-      // alerted by health-check's 'Infra: disk space' row, and
+      // alerted by bsc-runner's routeDiskPressureAlert (digest), and
       // dispatch-watchdog now holds instead of re-launching. ONLY this
       // reason: the other ABANDONED writers (lease held by a duplicate
       // dispatch, acquireLease throwing) have no other alarm, so they stay
       // counted as failures here.
-      else if (last.event === JOB_EVENTS.ABANDONED && isDiskPressureRefusal(last)) outcome = 'abandoned';
+      // ...and only when no worker ever ran under this launch: a resume chain
+      // (SPAWNED -> FAILED -> RETRIED -> disk-refused) carries a real worker
+      // failure the refusal must not erase.
+      else if (last.event === JOB_EVENTS.ABANDONED && isDiskPressureRefusal(last) && !spawnedInWindow) outcome = 'abandoned';
       else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ABANDONED/RETRIED-with-no-successor-spawn-yet
       else outcome = 'inFlight'; // SPAWNED — chain still open
 

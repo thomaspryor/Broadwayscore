@@ -16,7 +16,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { diskSpaceResults, readDiskSpace } = require('../health-check.js');
+const { diskSpaceResults, readDiskSpace } = require('./disk-space-digest.js');
 
 test('the incident reading (2.0GB free) is an ERROR, not a warning', () => {
   const [r] = diskSpaceResults(2, 460);

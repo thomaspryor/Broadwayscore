@@ -607,9 +607,9 @@ function stallDetectionDepth(plan, { now, staleSlotMs } = {}) {
   const spendFromStaleSlots = !!f.spendHalt && staleSlots > 0 &&
     Number.isFinite(sp.spentUSD) && Number.isFinite(sp.perJobUSD) && Number.isFinite(sp.thresholdUSD) &&
     sp.spentUSD - staleSlots * sp.perJobUSD < sp.thresholdUSD;
-  // diskPressure (BRO-6430) is a known, deliberate hold: the 'Infra: disk
-  // space' health row is what alerts on it, so it must not ALSO read as a
-  // wedged dispatch flow.
+  // diskPressure (BRO-6430) is a known, deliberate hold: executeSweep raises
+  // bsc-runner's disk-pressure digest alert for it, so it must not ALSO read
+  // as a wedged dispatch flow.
   const policyBlocking = !!(unknownHold || f.killSwitch || f.dayBudget || f.hourly || f.diskPressure ||
     (f.spendHalt && !spendFromStaleSlots) || (f.concurrency && !staleConcurrency));
   if (policyBlocking) return toDispatch;
@@ -1226,7 +1226,7 @@ function planSweep(entries, tasks, opts) {
   // matching the runner's fail-open contract.
   const diskPressure = Number.isFinite(diskFreeGB) && Number.isFinite(diskFloorGB) &&
     shouldRefuseDispatch({ freeGB: diskFreeGB, floorGB: diskFloorGB });
-  if (diskPressure) globalHolds.push(`disk pressure (${diskFreeGB.toFixed(1)}GB free < ${diskFloorGB}GB dispatch floor) — every launch would be refused; see the 'Infra: disk space' health row`);
+  if (diskPressure) globalHolds.push(`disk pressure (${diskFreeGB.toFixed(1)}GB free < ${diskFloorGB}GB dispatch floor) on this Mac — every launch would be refused; scripts/gc-merged-worktrees.sh frees space`);
   // Union — a NEW array, never an alias of globalHolds (an alias made every
   // cmux hold a global one again, which is the exact bug this split removes).
   // The narrative and every existing reader see the same list they always did;

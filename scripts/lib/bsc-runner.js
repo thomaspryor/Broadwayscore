@@ -269,6 +269,40 @@ function diskPressureAlertDue() {
   return true;
 }
 
+// BRO-6430: shared by runJob()'s preflight and dispatch-watchdog's disk
+// hold — the watchdog now holds BEFORE the runner is reached, and health-
+// check's 'Infra: disk space' row runs on the GitHub runner (measures ITS
+// disk, not this Mac's), so this digest alert is the only Mac-side signal.
+//
+// Fire-and-forget: dispatch must not block on alert delivery. Routed
+// through owner-alert-router.js's routeAlert() (disposition 'digest')
+// rather than a direct sendAlert(email:true) — disk pressure is not on
+// page-worthy-alerts.js's allowlist (owner mandate 2026-07-28, card
+// #611: no sender emails the owner directly outside that list), and
+// the runner's self-heal GC already ran (or the hourly GC owns it), so this is a digest-tier "the owner
+// should know" condition, not an immediate page. Locally cooldown-gated
+// (adversarial review finding): a fleet-wide low-disk moment means MANY
+// dispatch attempts refuse near-simultaneously — without this, one
+// disk-pressure window would fire routeAlert once per refused task
+// instead of once per condition (routeAlert's own ledger cooldown
+// defaults to 7 days, too coarse for this fast-moving local signal).
+function routeDiskPressureAlert(detail) {
+  if (diskPressureAlertDue()) {
+    try {
+      require('./owner-alert-router.js').routeAlert({
+        conditionKey: 'bsc-runner:disk-pressure',
+        title: 'Dispatch refused — disk pressure',
+        description: detail,
+        severity: 'critical',
+        disposition: 'digest',
+        cooldownHours: 1,
+      }).catch((e) => console.error(`[bsc-runner] disk-pressure alert send failed: ${e.message}`));
+    } catch (e) { console.error(`[bsc-runner] disk-pressure alert require failed: ${e.message}`); }
+  } else {
+    console.error(`[bsc-runner] disk-pressure alert suppressed (within cooldown): ${detail}`);
+  }
+}
+
 /**
  * Run a task as a headless job. Resolves when the session finishes.
  * @param {object} opts
@@ -362,32 +396,7 @@ async function runJob(opts) {
     // Same "task is fine, this attempt just didn't run" semantics as the
     // lease-held case below.
     try { ledger.appendEntry({ event: ledger.JOB_EVENTS.ABANDONED, taskId, jobId, subject, reason: `disk-pressure: ${detail}` }); } catch (e) { console.error(`[bsc-runner] ledger write failed (non-fatal): ${e.message}`); }
-    // Fire-and-forget: dispatch must not block on alert delivery. Routed
-    // through owner-alert-router.js's routeAlert() (disposition 'digest')
-    // rather than a direct sendAlert(email:true) — disk pressure is not on
-    // page-worthy-alerts.js's allowlist (owner mandate 2026-07-28, card
-    // #611: no sender emails the owner directly outside that list), and
-    // self-heal GC already ran above, so this is a digest-tier "the owner
-    // should know" condition, not an immediate page. Locally cooldown-gated
-    // (adversarial review finding): a fleet-wide low-disk moment means MANY
-    // dispatch attempts refuse near-simultaneously — without this, one
-    // disk-pressure window would fire routeAlert once per refused task
-    // instead of once per condition (routeAlert's own ledger cooldown
-    // defaults to 7 days, too coarse for this fast-moving local signal).
-    if (diskPressureAlertDue()) {
-      try {
-        require('./owner-alert-router.js').routeAlert({
-          conditionKey: 'bsc-runner:disk-pressure',
-          title: 'Dispatch refused — disk pressure',
-          description: detail,
-          severity: 'critical',
-          disposition: 'digest',
-          cooldownHours: 1,
-        }).catch((e) => console.error(`[bsc-runner] disk-pressure alert send failed: ${e.message}`));
-      } catch (e) { console.error(`[bsc-runner] disk-pressure alert require failed: ${e.message}`); }
-    } else {
-      console.error(`[bsc-runner] disk-pressure alert suppressed (within cooldown): ${detail}`);
-    }
+    routeDiskPressureAlert(detail);
     return { ok: false, jobId, stage: 'disk-pressure', sessionId: null, resultText: '', logFile: null, cwd: null, keptWorktree: false };
   }
 
@@ -552,5 +561,5 @@ module.exports = {
   gitSafeJobId,
   runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
-  DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB, freeDiskGB,
+  DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB, freeDiskGB, routeDiskPressureAlert,
 };
