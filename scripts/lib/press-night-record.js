@@ -346,6 +346,16 @@ function isNightReview(p, night) {
   return !p.baseline;
 }
 
+// A review published more than a year before the press night cannot be this production's (BRO-6819: 2018 HuffPost/
+// Observer pages of an earlier Tosca were live at the first sample, then the rebuild purged them and deleted the
+// files, so the file snapshot could not prove the exclusion). Its disappearing is not a press-night instability.
+const PRIOR_RUN_DAYS = 365;
+function isPriorRunReview(p, night) {
+  if (!p || !p.publishAt || !night) return false;
+  const pub = toMs(String(p.publishAt).slice(0, 10)), n = toMs(night);
+  return pub != null && n != null && n - pub > PRIOR_RUN_DAYS * 24 * HOUR;
+}
+
 function outletIdOf(name) {
   if (!name) return null;
   const { normalizeOutlet } = require('./review-normalization');
@@ -876,7 +886,8 @@ function gradeNight(rec, g) {
     // A drop of a review the rebuild correctly excludes (a syndicated copy that went live first, a wrong-production
     // file) is the exclusion working, not instability (BRO-6070). Only with the file snapshot to prove it.
     const excl = excludedOutletSet(rec);
-    const isExcluded = (d) => excl.has(outletIdOf(d.outlet));
+    const priorRun = new Set((rec.perReview || []).filter((p) => isPriorRunReview(p, rec.night)).map((p) => p.key));
+    const isExcluded = (d) => excl.has(outletIdOf(d.outlet)) || priorRun.has(d.key);
     const open = rec.dropped.filter((d) => !d.restoredAt);
     const excused = open.filter(isExcluded);
     const stuck = open.filter((d) => !isExcluded(d));

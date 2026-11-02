@@ -507,6 +507,18 @@ test('stability does not count the drop of a review the rebuild excludes, but st
   assert.equal(stab(r).status, 'fail');
 });
 
+test('stability excuses the purge of a prior-run review (published >1y before the night) even with no file left (BRO-6819)', () => {
+  const r = fresh();
+  lib.applySample(r, { at: at(5), reviews: [rv('HuffPost', 'Wilborn Hampton'), rv('Vulture', 'S')] });
+  r.perReview.find((p) => p.outlet === 'HuffPost').publishAt = '2018-01-01';
+  r.perReview.find((p) => p.outlet === 'Vulture').publishAt = r.night;
+  const stab = (x) => lib.evaluateCheck(x).gates.find((g) => g.name === 'stability');
+  lib.applySample(r, { at: at(10), reviews: [rv('Vulture', 'S')] });
+  assert.equal(stab(r).status, 'pass');
+  lib.applySample(r, { at: at(15), reviews: [] }); // a night review dropping still fails
+  assert.equal(stab(r).status, 'fail');
+});
+
 test('the committed 2026-10-22 record: exclusions applied, same-night gate names Talkin\' Broadway and Vulture', () => {
   const fs = require('fs');
   const path = require('path');
