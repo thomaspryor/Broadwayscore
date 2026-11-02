@@ -87,7 +87,7 @@ test('censusExclusionReason: flagged rows the audit already proved are excluded;
   assert.equal(f({ confirmedNonReview: true }), 'confirmed-non-review');
   assert.equal(f({ copyOfLiveReview: true }), 'copy-of-live-review');
   assert.equal(f({ liveInReviews: true }), 'live-in-reviews');
-  assert.equal(f({ exclusion: 'automatedExcluded' }), 'collected-and-excluded');
+  assert.equal(f({ exclusion: 'automatedExcluded' }), null, 'an automated exclusion stays a gap for a person');
   assert.equal(f({ exclusion: 'humanExcluded' }), 'collected-and-excluded');
   assert.equal(f({ exclusion: 'automatedExcluded', recoverable: true }), null);
   assert.equal(f({}), null);
@@ -117,6 +117,12 @@ test('single-word title: a slug reading as a longer title is a different show', 
   assert.equal(x('https://example.com/reviews/girls-at-the-maria'), false);
   // a multi-word title is untouched; the title's own words are not extensions
   assert.equal(noise.titleExtendedInUrl('https://e.com/the-girls', { title: 'Hadestown' }, titleTokens), false);
+  for (const [u, title] of [
+    ['https://variety.com/2026/x/denzel-washington-jake-gyllenhaal-othello-review', 'Othello'],
+    ['https://theguardian.com/stage/a-thrilling-hamlet-review', 'Hamlet'],
+    ['https://e.com/disneys-aladdin-review', 'Aladdin'],
+    ['https://e.com/review-shakespeares-macbeth', 'Macbeth'],
+  ]) assert.equal(noise.titleExtendedInUrl(u, { title }, titleTokens), false, u);
   assert.equal(noise.titleExtendedInUrl('https://e.com/oh-mary-review', { title: 'Oh, Mary!' }, titleTokens), false);
 });
 
@@ -163,7 +169,7 @@ const row = (o) => ({ showId: 's', title: 'Girls', openingDate: '2026-10-27', ag
 test('censusVerdictFor: excluded rows no longer make a show incomplete, and are recorded', () => {
   const v = censusVerdictFor(row({
     aggregatorListedUrls: ['https://www.nytimes.com/2026/10/28/theater/girls-review.html'],
-    flaggedMisses: [{ url: 'https://stagefright.com/a-review', host: 'stagefright.com', confirmedNonReview: true }, { url: 'https://y.com/b', host: 'y.com', exclusion: 'automatedExcluded' }],
+    flaggedMisses: [{ url: 'https://stagefright.com/a-review', host: 'stagefright.com', confirmedNonReview: true }, { url: 'https://y.com/b', host: 'y.com', exclusion: 'humanExcluded' }],
     missing: [{ url: 'https://uk.headtopics.com/n/1', host: 'uk.headtopics.com', serpCensus: true }],
     nonReviewCandidates: [{ url: 'https://www.timeout.com/london/theatre/g', host: 'timeout.com', nonReviewVerdict: 'timeout-listing-blurb' }],
   }));
@@ -184,4 +190,11 @@ test('censusVerdictFor: a genuine miss still makes the show incomplete, recovera
   assert.equal(rec.verdict, 'incomplete');
   const bare = censusVerdictFor(row({ flaggedMisses: [{ url: 'https://y.com/b', host: 'y.com' }] }));
   assert.equal(bare.verdict, 'incomplete');
+});
+
+test('ukTourLegUrl: US cities that share a UK name are not UK legs', () => {
+  const tour = { category: 'tour', venue: 'North American tour' };
+  assert.equal(noise.ukTourLegUrl('https://e.com/the-bodyguard-at-bjcc-birmingham-review', tour), false);
+  assert.equal(noise.ukTourLegUrl('https://e.com/the-bodyguard-manchester-opera-house', tour), false);
+  assert.equal(noise.ukTourLegUrl('https://e.com/the-bodyguard-wimbledon-review', tour), true);
 });
