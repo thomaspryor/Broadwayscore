@@ -40,6 +40,8 @@ const fs = require('fs');
 const path = require('path');
 const { slowMarketListedGap } = require('./lib/slow-market-gap');
 const { currentRunOnly } = require('./lib/prior-production-citations');
+const { censusExclusionReason } = require('./lib/gap-census-noise');
+const { titleTokens } = require('./lib/show-title-tokens');
 const { computeSeasonWindows, measureOutletCoverage } = require('./audit-standing-coverage');
 
 const FREQUENT_OUTLET_RATE = 0.6;
@@ -61,7 +63,9 @@ function gradeShow(row, liveCount) {
     cited: g.rows.length - g.flaggedOut,
     capped: g.capped,
     reverify: g.flaggedOut,
-    census: currentRunOnly(row.missing).filter((m) => m && m.serpCensus).length,
+    // Census rows that are noise (syndication copies, other-title URLs) are not owed (BRO-6804).
+    census: currentRunOnly(row.missing).filter((m) => m && m.serpCensus
+      && !censusExclusionReason(m, 'missing', { show: { title: row.title, category: row.category, venue: row.venue, market: row.market, openingDate: row.openingDate, previewsStartDate: row.previewsStartDate, priorRuns: row.priorRuns }, tokensOf: titleTokens })).length,
     hiddenAsNonReview: currentRunOnly(row.flaggedMisses).filter((m) => m && m.confirmedNonReview).length,
     auditedAt: row.computedAt || null,
   };
