@@ -64,14 +64,6 @@ interface RatingEditorProps {
   presentation?: 'auto' | 'inline' | 'modal';
   /** Where the editor was opened from + which show; drives rating_* analytics events. */
   analytics?: { source: string; showId: string };
-  /**
-   * How Time + Seat are offered (BRO-6783 design options, owner review 2026-11-01):
-   * 'inline' always shown under Date; 'link' a "+ Add showtime & seat" link under
-   * Date; 'bottom' a "More details" disclosure under Notes; 'chips' "+ Showtime"
-   * / "+ Seat" pills under Notes. Collapsed variants open themselves when the
-   * entry already has a time or seat.
-   */
-  extrasVariant?: 'inline' | 'link' | 'bottom' | 'chips';
 }
 
 const MAX_CHARS = 2000;
@@ -109,7 +101,6 @@ export default function RatingEditor({
   onDelete,
   presentation = 'auto',
   analytics,
-  extrasVariant = 'inline',
 }: RatingEditorProps) {
   const today = localToday();
   // Cap only at today. Do NOT cap at the show's closing date: users log return
@@ -140,8 +131,8 @@ export default function RatingEditor({
   });
   const [seat, setSeat] = useState<string>(initialSeat ?? '');
   // Collapsed variants start open when there is already something to show.
-  const [timeOpen, setTimeOpen] = useState(() => !!showtime.time_slot);
-  const [seatOpen, setSeatOpen] = useState(() => !!initialSeat);
+  // Showtime + Seat sit folded under "More details" (owner pick, BRO-6783 option 2);
+  // the fold starts open when the entry already has either, so saved data never hides.
   const [extrasOpen, setExtrasOpen] = useState(() => !!showtime.time_slot || !!initialSeat);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -304,12 +295,6 @@ export default function RatingEditor({
       </div>
   );
   const timeAndSeat = <>{timeRow}{seatRow}</>;
-  const extrasLink = (label: string, cls: string) => (
-    <button type="button" onClick={() => setExtrasOpen(true)} data-testid="extras-link"
-      className={`${cls} block text-xs font-semibold text-brand hover:underline py-1`}>
-      {label}
-    </button>
-  );
   const notesBlock = (
     <div className="mb-3">
         <label className="block text-xs font-medium text-gray-400 mb-1">
@@ -391,14 +376,11 @@ export default function RatingEditor({
         </DatePickerButton>
       </div>
 
-      {extrasVariant === 'inline' && timeAndSeat}
-      {extrasVariant === 'link' && (extrasOpen ? timeAndSeat : extrasLink('+ Add showtime & seat', 'mb-3 -mt-1'))}
-
       {/* Private notes */}
       {notesBlock}
 
-      {extrasVariant === 'bottom' && (
-        <div className="mb-3 border-t border-white/10 pt-2">
+      {/* More details: showtime + seat, folded for non-power users */}
+      <div className="mb-3 border-t border-white/10 pt-2">
           <button
             type="button"
             onClick={() => setExtrasOpen(o => !o)}
@@ -406,36 +388,13 @@ export default function RatingEditor({
             className="w-full flex items-center justify-between py-2 text-xs font-medium text-gray-400 hover:text-white"
             data-testid="extras-toggle"
           >
-            <span>More details <span className="text-fg-muted font-normal">(showtime, seat)</span></span>
+            <span>More details <span className="text-fg-muted font-normal">({showId && dateSeen ? 'showtime, seat' : 'seat'})</span></span>
             <svg className={`w-4 h-4 transition-transform ${extrasOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
           {extrasOpen && <div className="pt-1">{timeAndSeat}</div>}
         </div>
-      )}
-      {extrasVariant === 'chips' && (
-        <>
-          {timeOpen && timeRow}
-          {seatOpen && seatRow}
-          {(!timeOpen || !seatOpen) && (
-            <div className="flex flex-wrap gap-2 mb-3">
-              {!timeOpen && showId && (
-                <button type="button" onClick={() => setTimeOpen(true)} data-testid="chip-time"
-                  className="h-9 px-3 rounded-full text-xs font-medium text-gray-300 bg-white/[0.05] ring-1 ring-inset ring-white/10 hover:text-white">
-                  + Showtime
-                </button>
-              )}
-              {!seatOpen && (
-                <button type="button" onClick={() => setSeatOpen(true)} data-testid="chip-seat"
-                  className="h-9 px-3 rounded-full text-xs font-medium text-gray-300 bg-white/[0.05] ring-1 ring-inset ring-white/10 hover:text-white">
-                  + Seat
-                </button>
-              )}
-            </div>
-          )}
-        </>
-      )}
 
       {/* Photos attach to a saved review (user_review_photos.review_id is a
           FK), so a brand-new rating gets them after its first save, from
