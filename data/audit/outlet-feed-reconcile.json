@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T12:01:12.293Z",
+  "generatedAt": "2026-11-02T13:54:28.819Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -37,6 +37,11 @@
       "id": "msblackforpresident-off-broadway-2026",
       "title": "Ms. Blakk for President",
       "openingDate": "2026-11-01"
+    },
+    {
+      "id": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "openingDate": "2026-10-31"
     },
     {
       "id": "a-few-good-men-2026",
@@ -156,6 +161,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "musical-theatre-review",
+      "error": "HTTP 503 for https://musicaltheatrereview.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -168,7 +177,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 767,
+  "itemsScanned": 752,
   "matchedGaps": 13,
   "possibleGaps": 11,
   "gaps": [
@@ -209,6 +218,15 @@
       "publishDate": "2026-10-28"
     },
     {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "matched",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/top-rated/girls/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=girls",
+      "headline": "GIRLS",
+      "publishDate": "2026-11-02"
+    },
+    {
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "matched",
@@ -233,15 +251,6 @@
       "outletId": "the-recs",
       "url": "https://therecs.co.uk/the-lives-of-others/",
       "headline": "The Lives of Others ★★★★",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
-      "outletId": "city-am",
-      "url": "https://www.cityam.com/the-lives-of-others-keira-knightley-stars-in-gripping-adaptation/",
-      "headline": "The Lives of Others: Keira Knightley stars in gripping adaptation",
       "publishDate": "2026-11-01"
     },
     {
