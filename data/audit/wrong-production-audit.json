@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T18:51:26.242Z",
+  "timestamp": "2026-11-02T19:57:45.758Z",
   "stats": {
-    "totalReviews": 79217,
-    "alreadyFlagged": 21962,
-    "dateGuardCatches": 221,
+    "totalReviews": 79235,
+    "alreadyFlagged": 21966,
+    "dateGuardCatches": 219,
     "directorMismatch": 3423,
-    "tvFilmSignals": 2251,
+    "tvFilmSignals": 2252,
     "londonSignals": 3581,
     "offBroadwaySignals": 739,
     "yearMismatch": 346,
-    "noPublishDate": 8363
+    "noPublishDate": 8371
   },
   "findings": [
     {
@@ -10703,20 +10703,6 @@
       ]
     },
     {
-      "showId": "carmen-off-broadway-2025",
-      "file": "wsj--heidi-waleson.json",
-      "score": 37,
-      "publishDate": "January 2nd, 2024",
-      "url": "https://www.wsj.com/arts-culture/theater/carmen-review-metropolitan-opera-bizet-carrie-cracknell-000779e2",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 665d before show (January 2nd, 2024 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
       "showId": "caroline-off-broadway-2026",
       "file": "off-off-online--adrienne-onofri.json",
       "score": 72,
@@ -13860,6 +13846,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael longhurst\" from constellations-2015"
+        }
+      ]
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "file": "mashable--kristy-puchko.json",
+      "publishDate": "2026-11-01",
+      "url": "https://mashable.com/entertainment/copperfield-the-musical-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -18341,20 +18340,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "don-giovanni-off-broadway-2025",
-      "file": "wsj--heidi-waleson.json",
-      "score": 90,
-      "publishDate": "May 8th, 2023",
-      "url": "https://www.wsj.com/articles/don-giovanni-review-ivo-van-hoves-grim-mozart-at-the-met-80e69ff0",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 870d before show (May 8th, 2023 vs 2025-09-24)"
         }
       ]
     },
@@ -68689,6 +68674,7 @@
     {
       "showId": "the-merchant-of-venice-1973",
       "file": "backstage--erik-haagensen.json",
+      "score": null,
       "publishDate": "July 2, 2010",
       "url": "http://www.backstage.com/bso/reviews-ny-theatre-off-broadway/ny-theater-review-the-merchant-of-venice-1004101807.story",
       "findings": [
@@ -92321,6 +92307,7 @@
     {
       "showId": "cyrano-de-bergerac-2012",
       "file": "nytimes--ben-brantley.json",
+      "score": null,
       "publishDate": "2012-10-11",
       "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html?pagewanted=2",
       "findings": [
@@ -95566,7 +95553,7 @@
       "showId": "evita-2012",
       "file": "nytimes--joyce-wadler.json",
       "score": 43,
-      "publishDate": "2012-03-25",
+      "publishDate": "2012-03-22",
       "url": "https://www.nytimes.com/2012/03/25/theater/elena-roger-brings-native-touch-to-broadway-evita.html?_r=1&scp=1&sq=elena%20roger&st=cse",
       "findings": [
         {
