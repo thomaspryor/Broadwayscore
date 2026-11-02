@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-02T18:11:32.219Z",
+    "lastUpdated": "2026-11-02T21:08:01.928Z",
     "version": "2.1.0",
     "lastChange": "BRO-6632: domainAliases artsatl += artsatl.com (ArtsATL published under artsatl.com before moving to artsatl.org; census sample is an ArtsATL review)"
   },
@@ -14851,6 +14851,22 @@
       "domain": "operatoday.com",
       "isDualMarket": true,
       "region": "dual"
+    },
+    "the-gay-and-lesbian-review": {
+      "displayName": "The Gay And Lesbian Review",
+      "tier": 3,
+      "aliases": [
+        "the-gay-and-lesbian-review"
+      ],
+      "domain": "glreview.org"
+    },
+    "bkmag": {
+      "displayName": "Bkmag",
+      "tier": 3,
+      "aliases": [
+        "bkmag"
+      ],
+      "domain": "bkmag.com"
     }
   },
   "_aliasIndex": {

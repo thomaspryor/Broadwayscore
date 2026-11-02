@@ -1,46 +1,56 @@
 {
-  "generatedAt": "2026-10-26T17:42:05.977Z",
-  "verdict": "ok",
-  "reason": "3 search method(s) within 0.15 of their 4-run median",
-  "regressions": [],
+  "generatedAt": "2026-11-02T20:58:22.225Z",
+  "verdict": "regressed",
+  "reason": "scoped: recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show",
+  "regressions": [
+    {
+      "level": "families",
+      "arm": "scoped",
+      "baseline": 0.267,
+      "current": 0.115,
+      "drop": 0.152,
+      "rule": "week-on-week",
+      "reason": "recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show"
+    }
+  ],
   "comparedArms": 3,
-  "trendEntries": 10,
+  "trendEntries": 11,
   "latest": {
-    "date": "2026-10-26",
-    "generatedAt": "2026-10-26T17:42:05.977Z",
+    "date": "2026-11-02",
+    "generatedAt": "2026-11-02T20:58:22.225Z",
     "naivePages": 2,
     "shows": 5,
     "informativeShows": 5,
     "excluded": {
-      "settling": 1
+      "settling": 6
     },
-    "truthUrls": 53,
-    "onDiskUrls": 39,
-    "newFromNaive": 8,
+    "truthUrls": 61,
+    "onDiskUrls": 53,
+    "newFromNaive": 7,
     "families": {
-      "naive": 0.377,
-      "onDisk": 0.736,
-      "scoped": 0.302
+      "naive": 0.328,
+      "onDisk": 0.869,
+      "scoped": 0.115
     },
     "arms": {
-      "naive-p0": 0.17,
-      "naive-p1": 0.208,
-      "onDisk": 0.736,
-      "scoped-q0": 0.113,
-      "scoped-q1": 0.226
+      "naive-p0": 0.23,
+      "naive-p1": 0.164,
+      "onDisk": 0.869,
+      "scoped-q0": 0.049,
+      "scoped-q1": 0.082
     },
-    "combinedRecall": 0.849,
+    "combinedRecall": 0.885,
     "familyYield": {
       "naive": 4,
-      "onDisk": 7.8,
-      "scoped": 3.2
+      "onDisk": 10.6,
+      "scoped": 1.4
     },
     "armYield": {
-      "naive-p0": 1.8,
-      "naive-p1": 2.2,
-      "onDisk": 7.8,
-      "scoped-q0": 1.2,
-      "scoped-q1": 2.4
+      "naive-p0": 2.8,
+      "naive-p1": 2,
+      "onDisk": 10.6,
+      "scoped-q0": 0.6,
+      "scoped-q1": 1
     },
     "armsFailed": {
       "naive-p0": 0,
@@ -52,39 +62,39 @@
     "unavailableArms": [],
     "byCategory": {
       "off-broadway": {
-        "shows": 3,
-        "truthUrls": 14,
+        "shows": 1,
+        "truthUrls": 6,
         "families": {
-          "naive": 0.429,
-          "onDisk": 0.786,
-          "scoped": 0.286
+          "naive": 0.5,
+          "onDisk": 1,
+          "scoped": 0.167
         }
       },
       "off-west-end": {
-        "shows": 1,
-        "truthUrls": 29,
+        "shows": 3,
+        "truthUrls": 38,
         "families": {
-          "naive": 0.31,
-          "onDisk": 0.759,
-          "scoped": 0.31
+          "naive": 0.421,
+          "onDisk": 0.816,
+          "scoped": 0.158
         }
       },
-      "west-end": {
+      "tour": {
         "shows": 1,
-        "truthUrls": 10,
+        "truthUrls": 17,
         "families": {
-          "naive": 0.5,
-          "onDisk": 0.6,
-          "scoped": 0.3
+          "naive": 0.059,
+          "onDisk": 0.941,
+          "scoped": 0
         }
       }
     },
     "sampleIds": [
-      "aftermath-art-new-york-off-broadway-2026",
-      "the-kick-inside-off-broadway-2026",
-      "garry-starr-classic-penguins-off-west-end-2026",
-      "cirque-berserk-west-end-2026",
-      "women-who-eat-off-broadway-2026"
+      "dogstar-off-west-end-2026",
+      "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "stoker-wilde-off-west-end-2026",
+      "specimen-off-broadway-2026",
+      "the-moth-off-west-end-2026"
     ]
   }
 }

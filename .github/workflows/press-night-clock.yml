@@ -69,7 +69,9 @@ jobs:
           [ -z "$FIRED" ] || printf '%s' "$FIRED" | grep -Eq '^[a-z0-9:,-]+$' || { echo "::error::fired must be show:night pairs"; exit 1; }
           printf '%s' "$CATEGORIES" | grep -Eq '^[a-z,-]+$' || { echo "::error::bad categories"; exit 1; }
           END=$(( $(date +%s) + 330 * 60 ))   # stop acting 15 min before the job timeout
+          REPLANS=0
           while true; do
+            [ "$(date +%s)" -lt "$END" ] || { echo "Job budget used; re-chaining"; retry gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" || exit 1; exit 0; }
             LINE=$(node scripts/lib/press-night-clock.js next --shows-file=data/shows.json --categories="$CATEGORIES" --fired="$FIRED") \
               || { echo "::error::clock plan failed"; exit 1; }
             if [ -z "$LINE" ]; then echo "No press-night kick left in the 10-day horizon. Chain ends."; exit 0; fi
@@ -77,15 +79,49 @@ jobs:
             WAIT=$(( $(date -u -d "$KICK" +%s) - $(date +%s) ))
             echo "Next kick: $SHOW $NIGHT at $KICK (embargo $EMBARGO), in ${WAIT}s"
             if [ "$DRY_RUN" = "true" ]; then exit 0; fi
-            if [ "$WAIT" -gt 18000 ] || [ $(( $(date +%s) + WAIT )) -gt "$END" ]; then
-              HOP=$(( 18000 < END - $(date +%s) ? 18000 : END - $(date +%s) ))
-              [ "$HOP" -gt 0 ] && sleep "$HOP"
+            # Sleep maths lives in press-night-clock.js (sleepPlan). Hop budget = what is left of the job minus 15 min of
+            # headroom for the refresh, run lists and retries. Sleeps are cut into 45-min chunks and the plan is re-read
+            # after each (BRO-6809): an embargo moved earlier or a new show must not be slept through.
+            LEFT=$(( (END - $(date +%s)) / 60 - 15 ))
+            [ "$LEFT" -gt 0 ] || LEFT=0
+            read -r SLEEP_S ACTION <<< "$(node scripts/lib/press-night-clock.js sleep-plan --kick-at="$KICK" --hop-budget-min="$(( LEFT < 300 ? LEFT : 300 ))")" \
+              || { echo "::error::sleep plan failed"; exit 1; }
+            CHUNKED=false
+            if [ "$SLEEP_S" -gt 2700 ]; then SLEEP_S=2700; CHUNKED=true; fi
+            [ "$SLEEP_S" -le 0 ] || sleep "$SLEEP_S"
+            if [ "$CHUNKED" = "false" ] && [ "$ACTION" = "rechain" ]; then
               echo "Re-chaining (fired: $FIRED)"
               retry gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" \
                 || { echo "::error::could not dispatch the next clock hop"; exit 1; }
               exit 0
             fi
-            [ "$WAIT" -gt 0 ] && sleep "$WAIT"
+            # Re-read shows.json from the source repo (override, closing, new show) via a temp file so a failed copy
+            # cannot leave a truncated data/shows.json.
+            . scripts/lib/git-net-timeout.sh
+            if git_net 90 -C /tmp/core-data-checkout fetch --depth 1 origin main >/dev/null 2>&1 \
+               && git -C /tmp/core-data-checkout reset --hard FETCH_HEAD >/dev/null 2>&1 \
+               && cp /tmp/core-data-checkout/shows.json /tmp/shows.fresh.json && node -e 'JSON.parse(require("fs").readFileSync("/tmp/shows.fresh.json","utf8"))'; then
+              mv /tmp/shows.fresh.json data/shows.json
+            else
+              echo "::warning::could not refresh shows.json; continuing with the data read earlier"
+            fi
+            if [ "$CHUNKED" = "true" ]; then continue; fi
+            # Awake at the kick: confirm the same show-night is still due on the fresh data, else replan.
+            CONFIRM=$(node scripts/lib/press-night-clock.js confirm --shows-file=data/shows.json --categories="$CATEGORIES" --fired="$FIRED" --show="$SHOW" --night="$NIGHT") \
+              || { echo "::error::kick confirmation failed"; exit 1; }
+            if [ "$CONFIRM" != "kick" ]; then
+              REPLANS=$(( REPLANS + 1 ))
+              echo "Plan changed while sleeping ($SHOW $NIGHT no longer due); replanning ($REPLANS/5)."
+              if [ "$REPLANS" -ge 5 ]; then
+                echo "::warning::plan keeps changing; handing over to a fresh hop"
+                retry gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" \
+                  || { echo "::error::could not dispatch the next clock hop"; exit 1; }
+                exit 0
+              fi
+              sleep 30
+              continue
+            fi
+            REPLANS=0
             CATEGORY=$(node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.stdout.write(s?s.category:"")' "$SHOW")
             # Already started? State, not the `fired` input, decides (a fresh seed carries no fired list): any probe run
             # for this show-night created since 30 min before the kick, in any status, means it was kicked.

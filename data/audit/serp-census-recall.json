@@ -1,46 +1,46 @@
 {
-  "generatedAt": "2026-10-26T17:42:05.977Z",
+  "generatedAt": "2026-11-02T20:58:22.225Z",
   "naivePages": 2,
   "settlingHours": 24,
   "totals": {
     "shows": 5,
     "excluded": [],
-    "undatedCandidates": 6,
-    "truthUrls": 53,
-    "scopedUrls": 16,
+    "undatedCandidates": 3,
+    "truthUrls": 61,
+    "scopedUrls": 7,
     "naiveUrls": 20,
-    "onDiskUrls": 39,
-    "newFromNaive": 8,
+    "onDiskUrls": 53,
+    "newFromNaive": 7,
     "perArm": {
       "naive-p0": {
-        "found": 9,
+        "found": 14,
         "queries": 5,
         "failed": 0,
-        "recall": 0.17
+        "recall": 0.23
       },
       "naive-p1": {
-        "found": 11,
+        "found": 10,
         "queries": 5,
         "failed": 0,
-        "recall": 0.208
+        "recall": 0.164
       },
       "onDisk": {
-        "found": 39,
+        "found": 53,
         "queries": 5,
         "failed": 0,
-        "recall": 0.736
+        "recall": 0.869
       },
       "scoped-q0": {
-        "found": 6,
+        "found": 3,
         "queries": 5,
         "failed": 0,
-        "recall": 0.113
+        "recall": 0.049
       },
       "scoped-q1": {
-        "found": 12,
+        "found": 5,
         "queries": 5,
         "failed": 0,
-        "recall": 0.226
+        "recall": 0.082
       }
     },
     "perFamily": {
@@ -48,76 +48,28 @@
         "found": 20,
         "arms": 2,
         "failed": 0,
-        "recall": 0.377
+        "recall": 0.328
       },
       "onDisk": {
-        "found": 39,
+        "found": 53,
         "arms": 1,
         "failed": 0,
-        "recall": 0.736
+        "recall": 0.869
       },
       "scoped": {
-        "found": 16,
+        "found": 7,
         "arms": 2,
         "failed": 0,
-        "recall": 0.302
+        "recall": 0.115
       }
     },
     "byCategory": {
       "off-broadway": {
-        "shows": 3,
-        "truthUrls": 14,
-        "families": {
-          "naive": {
-            "found": 6,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.429
-          },
-          "onDisk": {
-            "found": 11,
-            "arms": 1,
-            "failed": 0,
-            "recall": 0.786
-          },
-          "scoped": {
-            "found": 4,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.286
-          }
-        }
-      },
-      "off-west-end": {
         "shows": 1,
-        "truthUrls": 29,
+        "truthUrls": 6,
         "families": {
           "naive": {
-            "found": 9,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.31
-          },
-          "onDisk": {
-            "found": 22,
-            "arms": 1,
-            "failed": 0,
-            "recall": 0.759
-          },
-          "scoped": {
-            "found": 9,
-            "arms": 2,
-            "failed": 0,
-            "recall": 0.31
-          }
-        }
-      },
-      "west-end": {
-        "shows": 1,
-        "truthUrls": 10,
-        "families": {
-          "naive": {
-            "found": 5,
+            "found": 3,
             "arms": 2,
             "failed": 0,
             "recall": 0.5
@@ -126,102 +78,155 @@
             "found": 6,
             "arms": 1,
             "failed": 0,
-            "recall": 0.6
+            "recall": 1
           },
           "scoped": {
-            "found": 3,
+            "found": 1,
             "arms": 2,
             "failed": 0,
-            "recall": 0.3
+            "recall": 0.167
+          }
+        }
+      },
+      "off-west-end": {
+        "shows": 3,
+        "truthUrls": 38,
+        "families": {
+          "naive": {
+            "found": 16,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.421
+          },
+          "onDisk": {
+            "found": 31,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.816
+          },
+          "scoped": {
+            "found": 6,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.158
+          }
+        }
+      },
+      "tour": {
+        "shows": 1,
+        "truthUrls": 17,
+        "families": {
+          "naive": {
+            "found": 1,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0.059
+          },
+          "onDisk": {
+            "found": 16,
+            "arms": 1,
+            "failed": 0,
+            "recall": 0.941
+          },
+          "scoped": {
+            "found": 0,
+            "arms": 2,
+            "failed": 0,
+            "recall": 0
           }
         }
       }
     },
-    "scopedRecall": 0.302,
-    "naiveRecall": 0.377
+    "scopedRecall": 0.115,
+    "naiveRecall": 0.328
   },
   "shows": [
     {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
-      "market": "off-broadway",
-      "openingDate": "2026-10-24",
+      "showId": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "market": "off-west-end",
+      "openingDate": "2026-10-31",
       "sampleState": "measured",
       "sampleReason": "opened 2d ago",
-      "geo": "us",
-      "naiveQuery": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
+      "geo": "gb",
+      "naiveQuery": "Dogstar Hampstead Theatre review",
       "counts": {
-        "truth": 8,
-        "scoped": 1,
-        "naive": 2,
-        "onDisk": 7
+        "truth": 7,
+        "scoped": 0,
+        "naive": 5,
+        "onDisk": 4
       },
       "recall": {
-        "scoped": 0.125,
-        "naive": 0.25,
-        "onDisk": 0.875,
-        "censusPlusDisk": 0.875
+        "scoped": 0,
+        "naive": 0.714,
+        "onDisk": 0.571,
+        "censusPlusDisk": 0.571
       },
       "newFromNaive": [
-        "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/"
+        "https://www.timeout.com/london/theatre/dogstar-1",
+        "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
+        "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html"
       ],
       "missedByCensus": [
-        "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/",
-        "https://www.nysun.com/article/privilege-meets-its-reckoning-in-aftermath",
-        "https://www.talkinbroadway.com/page/ob/10_24_26.html",
-        "https://theaterpizzazz.com/aftermath-a-difficult-family-drama/",
-        "https://www.theatermania.com/news/review-a-rich-family-confronts-their-privilege-in-aftermath_1858158/",
-        "https://www.thereviewshub.com/aftermath-cluntergate-centre-horbury/",
-        "https://www.timeout.com/melbourne/restaurants/aftermath-diner"
+        "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre",
+        "https://www.timeout.com/london/theatre/dogstar-1",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+        "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
+        "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+        "https://louderthanwar.com/dogstar-the-roundhouse-london-live-review/",
+        "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Aftermath\" Off-Broadway review 2026",
-          "page": 0,
-          "geo": null,
-          "raw": 9,
-          "accepted": 1,
-          "urls": [
-            "https://newyorktheater.me/2026/10/24/aftermath-review/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "scoped-q1",
-          "query": "\"Aftermath\" review york",
+          "query": "\"Dogstar\" West End review 2026",
           "page": 0,
           "geo": null,
           "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://newyorktheater.me/2026/10/24/aftermath-review/"
-          ],
-          "ok": true,
-          "error": null
-        },
-        {
-          "arm": "naive-p0",
-          "query": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
-          "page": 0,
-          "geo": "us",
-          "raw": 9,
           "accepted": 0,
           "urls": [],
           "ok": true,
           "error": null
         },
         {
-          "arm": "naive-p1",
-          "query": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
-          "page": 1,
-          "geo": "us",
+          "arm": "scoped-q1",
+          "query": "\"Dogstar\" review hampstead",
+          "page": 0,
+          "geo": null,
+          "raw": 7,
+          "accepted": 0,
+          "urls": [],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p0",
+          "query": "Dogstar Hampstead Theatre review",
+          "page": 0,
+          "geo": "gb",
           "raw": 10,
-          "accepted": 2,
+          "accepted": 4,
           "urls": [
-            "https://newyorktheater.me/2026/10/24/aftermath-review/",
-            "https://www.theatermania.com/news/steven-skybell-to-star-in-new-york-premiere-of-aftermath_1847143/"
+            "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre",
+            "https://www.timeout.com/london/theatre/dogstar-1",
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+            "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse"
+          ],
+          "ok": true,
+          "error": null
+        },
+        {
+          "arm": "naive-p1",
+          "query": "Dogstar Hampstead Theatre review",
+          "page": 1,
+          "geo": "gb",
+          "raw": 10,
+          "accepted": 4,
+          "urls": [
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+            "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+            "https://www.timeout.com/london/theatre/dogstar-1",
+            "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse"
           ],
           "ok": true,
           "error": null
@@ -231,16 +236,13 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 7,
-          "accepted": 7,
+          "raw": 4,
+          "accepted": 4,
           "urls": [
-            "https://www.nysun.com/article/privilege-meets-its-reckoning-in-aftermath",
-            "https://newyorktheater.me/2026/10/24/aftermath-review/",
-            "https://www.talkinbroadway.com/page/ob/10_24_26.html",
-            "https://theaterpizzazz.com/aftermath-a-difficult-family-drama/",
-            "https://www.theatermania.com/news/review-a-rich-family-confronts-their-privilege-in-aftermath_1858158/",
-            "https://www.thereviewshub.com/aftermath-cluntergate-centre-horbury/",
-            "https://www.timeout.com/melbourne/restaurants/aftermath-diner"
+            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+            "https://louderthanwar.com/dogstar-the-roundhouse-london-live-review/",
+            "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/",
+            "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre"
           ],
           "ok": true,
           "error": null
@@ -248,87 +250,93 @@
       ]
     },
     {
-      "showId": "the-kick-inside-off-broadway-2026",
-      "title": "The Kick Inside",
-      "market": "off-broadway",
-      "openingDate": "2026-10-23",
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "title": "A Beautiful Noise, The Neil Diamond Musical",
+      "market": "tour",
+      "openingDate": "2026-10-30",
       "sampleState": "measured",
       "sampleReason": "opened 3d ago",
       "geo": "us",
-      "naiveQuery": "The Kick Inside HERE Arts Center review",
+      "naiveQuery": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
       "counts": {
-        "truth": 5,
-        "scoped": 3,
-        "naive": 4,
-        "onDisk": 3
+        "truth": 17,
+        "scoped": 0,
+        "naive": 1,
+        "onDisk": 16
       },
       "recall": {
-        "scoped": 0.6,
-        "naive": 0.8,
-        "onDisk": 0.6,
-        "censusPlusDisk": 0.6
+        "scoped": 0,
+        "naive": 0.059,
+        "onDisk": 0.941,
+        "censusPlusDisk": 0.941
       },
       "newFromNaive": [
-        "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
-        "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
+        "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome"
       ],
       "missedByCensus": [
-        "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
-        "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
+        "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
+        "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
+        "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
+        "https://www.daytonlocal.com/news/entertainment/review-a-beautiful-noise-the-neil-diamond-musical/",
+        "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
+        "https://frontmezzjunkies.com/2023/01/31/broadway-a-beautiful-noise/",
+        "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/",
+        "https://www.ludwig-van.com/toronto/2026/05/01/scrutiny-neil-diamond-musical-beautiful-noise-will-appeal-fans-revealing-artist-underneath-hits/",
+        "https://www.startribune.com/review-beautiful-noise-boasts-stellar-lead-but-has-a-wanting-script/601480278",
+        "https://www.newjerseystage.com/events/2027/03/20/a-beautiful-noise-the-neil-diamond-musical-at-state-theatre-new-jersey-in-new-brunswick-nj-on-2027-03-20",
+        "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/",
+        "https://www.sarasotamagazine.com/arts-and-entertainment/2026/04/review-a-beautiful-noise-the-neil-diamond-musical-van-wezel",
+        "https://www.sun-sentinel.com/2025/01/23/review-a-beautiful-noise-the-neil-diamond-musical-mixes-razzle-dazzle-with-quiet-moments-but-does-it-work/",
+        "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/",
+        "https://www.thesuburban.com/fyi/a-beautiful-noise-the-neil-diamond-musical-is-moving-and-joyful/article_506f9b80-7010-4056-8061-de772a5362ba.html",
+        "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
+        "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"The Kick Inside\" Off-Broadway review 2026",
+          "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
           "page": 0,
           "geo": null,
           "raw": 10,
-          "accepted": 1,
-          "urls": [
-            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/"
-          ],
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q1",
-          "query": "\"The Kick Inside\" review here",
+          "query": "\"A Beautiful Noise, The Neil Diamond Musical\" review american",
           "page": 0,
           "geo": null,
-          "raw": 10,
-          "accepted": 3,
-          "urls": [
-            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
-            "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
-            "https://thefrontrowcenter.com/2026/10/the-kick-inside/"
-          ],
+          "raw": 4,
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p0",
-          "query": "The Kick Inside HERE Arts Center review",
+          "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
           "page": 0,
           "geo": "us",
           "raw": 10,
-          "accepted": 3,
+          "accepted": 1,
           "urls": [
-            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
-            "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
-            "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/"
+            "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "The Kick Inside HERE Arts Center review",
+          "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
           "page": 1,
           "geo": "us",
           "raw": 10,
           "accepted": 1,
           "urls": [
-            "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
+            "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome"
           ],
           "ok": true,
           "error": null
@@ -338,12 +346,25 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 3,
-          "accepted": 3,
+          "raw": 16,
+          "accepted": 16,
           "urls": [
-            "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
-            "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
-            "https://thefrontrowcenter.com/2026/10/the-kick-inside/"
+            "https://www.buffalorising.com/2025/04/a-beautiful-noise-at-sheas-strikes-gold-with-longtime-fans-of-neil-diamonds-iconic-songbook/",
+            "https://chicago.suntimes.com/theater/2024/11/14/a-beautiful-noise-neil-diamond-musical-review-chicago-theater-great-music-mundane-script",
+            "https://www.daytonlocal.com/news/entertainment/review-a-beautiful-noise-the-neil-diamond-musical/",
+            "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
+            "https://frontmezzjunkies.com/2023/01/31/broadway-a-beautiful-noise/",
+            "https://gephardtdaily.com/local/review-the-neil-diamond-musical-a-beautiful-noise-delivers-hit-songs-saga-of-troubled-troubadour/",
+            "https://www.ludwig-van.com/toronto/2026/05/01/scrutiny-neil-diamond-musical-beautiful-noise-will-appeal-fans-revealing-artist-underneath-hits/",
+            "https://www.startribune.com/review-beautiful-noise-boasts-stellar-lead-but-has-a-wanting-script/601480278",
+            "https://www.newjerseystage.com/events/2027/03/20/a-beautiful-noise-the-neil-diamond-musical-at-state-theatre-new-jersey-in-new-brunswick-nj-on-2027-03-20",
+            "https://www.palmbeachdailynews.com/story/entertainment/theater/2026/04/09/a-beautiful-noise-at-the-kravis-center-in-west-palm-beach-is-a-celebration-of-neil-diamond/89537691007/",
+            "https://www.sarasotamagazine.com/arts-and-entertainment/2026/04/review-a-beautiful-noise-the-neil-diamond-musical-van-wezel",
+            "https://www.sun-sentinel.com/2025/01/23/review-a-beautiful-noise-the-neil-diamond-musical-mixes-razzle-dazzle-with-quiet-moments-but-does-it-work/",
+            "https://journalrecord.com/2026/03/05/neil-diamond-beautiful-noise-okc/",
+            "https://www.thesuburban.com/fyi/a-beautiful-noise-the-neil-diamond-musical-is-moving-and-joyful/article_506f9b80-7010-4056-8061-de772a5362ba.html",
+            "https://www.thestar.com/entertainment/stage/neil-diamond-a-beautiful-noise-mirvish-review/article_cf7d99c7-37db-4d03-938f-1838db2a583c.html",
+            "https://www.tulsapeople.com/about-town/review-a-beautiful-noise-the-neil-diamond-musical-at-the-tulsa-pac-through-feb-22/article_5aca618d-db5d-4660-a616-ffc4d144eb10.html"
           ],
           "ok": true,
           "error": null
@@ -351,114 +372,92 @@
       ]
     },
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "title": "Garry Starr Classic Penguins",
+      "showId": "stoker-wilde-off-west-end-2026",
+      "title": "Stoker Wilde",
       "market": "off-west-end",
-      "openingDate": "2026-10-23",
+      "openingDate": "2026-10-30",
       "sampleState": "measured",
       "sampleReason": "opened 3d ago",
       "geo": "gb",
-      "naiveQuery": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+      "naiveQuery": "Stoker Wilde Wilton's Music Hall review",
       "counts": {
-        "truth": 29,
-        "scoped": 9,
-        "naive": 9,
-        "onDisk": 22
+        "truth": 11,
+        "scoped": 1,
+        "naive": 8,
+        "onDisk": 10
       },
       "recall": {
-        "scoped": 0.31,
-        "naive": 0.31,
-        "onDisk": 0.759,
-        "censusPlusDisk": 0.966
+        "scoped": 0.091,
+        "naive": 0.727,
+        "onDisk": 0.909,
+        "censusPlusDisk": 1
       },
-      "newFromNaive": [
-        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins"
-      ],
+      "newFromNaive": [],
       "missedByCensus": [
-        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
-        "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
-        "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
-        "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
-        "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
-        "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
-        "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
-        "https://www.london-unattached.com/classic-penguins-gary-starr/",
-        "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
-        "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
-        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-garry-starr-classic-penguins",
-        "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-Arts-Theatre-20251104",
-        "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
-        "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-3/",
-        "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
-        "https://theaterscene.com/reviews/garry-starr-classic-penguins/",
-        "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
-        "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
-        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-arts-theatre",
-        "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/garry-starr-classic-penguins_1727588/"
+        "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+        "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
+        "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+        "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
+        "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+        "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
+        "https://www.whatsonstage.com/news/wiltons-music-hall-autumn-season-led-by-new-stoker-wilde-glam-rock-musical_1726600/",
+        "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
+        "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
+        "https://www.whatsonstage.com/news/jamie-bogyo-and-glenn-adamson-to-star-in-new-musical-about-bram-stoker-and-oscar-wilde_1731734/"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Garry Starr Classic Penguins\" West End review 2026",
+          "query": "\"Stoker Wilde\" West End review 2026",
           "page": 0,
           "geo": null,
           "raw": 7,
-          "accepted": 4,
+          "accepted": 1,
           "urls": [
-            "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
-            "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-4/",
-            "https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
-            "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins"
+            "https://thespyinthestalls.com/2026/10/stoker-wilde/"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q1",
-          "query": "\"Garry Starr Classic Penguins\" review other",
+          "query": "\"Stoker Wilde\" review wilton",
           "page": 0,
           "geo": null,
           "raw": 10,
-          "accepted": 5,
-          "urls": [
-            "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
-            "https://www.nytimes.com/2026/09/10/theater/garry-starr-classic-penguins-review.html",
-            "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
-            "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
-            "https://1minutecritic.substack.com/p/garry-starr-classic-penguins-review"
-          ],
+          "accepted": 0,
+          "urls": [],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p0",
-          "query": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+          "query": "Stoker Wilde Wilton's Music Hall review",
           "page": 0,
           "geo": "gb",
-          "raw": 9,
+          "raw": 10,
           "accepted": 4,
           "urls": [
-            "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
-            "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
-            "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
-            "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/"
+            "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+            "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
+            "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+            "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+          "query": "Stoker Wilde Wilton's Music Hall review",
           "page": 1,
           "geo": "gb",
           "raw": 10,
-          "accepted": 5,
+          "accepted": 4,
           "urls": [
-            "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
-            "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
-            "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
-            "https://www.london-unattached.com/classic-penguins-gary-starr/",
-            "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html"
+            "https://thespyinthestalls.com/2026/10/stoker-wilde/",
+            "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+            "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
+            "https://www.whatsonstage.com/news/wiltons-music-hall-autumn-season-led-by-new-stoker-wilde-glam-rock-musical_1726600/"
           ],
           "ok": true,
           "error": null
@@ -468,31 +467,19 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 22,
-          "accepted": 22,
+          "raw": 10,
+          "accepted": 10,
           "urls": [
-            "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
-            "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-garry-starr-classic-penguins",
-            "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-Arts-Theatre-20251104",
-            "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
-            "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
-            "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
-            "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-3/",
-            "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
-            "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
-            "https://www.london-unattached.com/classic-penguins-gary-starr/",
-            "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
-            "https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
-            "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
-            "https://theaterscene.com/reviews/garry-starr-classic-penguins/",
-            "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
-            "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
-            "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
-            "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
-            "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins",
-            "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
-            "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-arts-theatre",
-            "https://www.whatsonstage.com/shows/london-theatre/off-west-end-theatre/garry-starr-classic-penguins_1727588/"
+            "https://www.bestoftheatre.co.uk/blog/post/connor-carson-bram-stoker-stoker-wilde-wiltons",
+            "https://www.bestoftheatre.co.uk/blog/post/jamie-bogyo-glenn-adamson-stoker-wilde",
+            "https://everything-theatre.co.uk/2026/10/review-stoker-wilde-wiltons-music-hall/",
+            "https://www.londonboxoffice.co.uk/news/post/review-stoker-wilde-wiltons-music-hall",
+            "https://susanelkin.co.uk/articles/stoker-wilde-susan-elkin-reviews/",
+            "https://theatreweekly.com/review-stoker-wilde-at-wiltons-music-hall/",
+            "https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall",
+            "https://westendwilma.com/stoker-wilde-wiltons-music-hall/",
+            "https://www.whatsonstage.com/news/jamie-bogyo-and-glenn-adamson-to-star-in-new-musical-about-bram-stoker-and-oscar-wilde_1731734/",
+            "https://www.whatsonstage.com/news/wiltons-music-hall-autumn-season-led-by-new-stoker-wilde-glam-rock-musical_1726600/"
           ],
           "ok": true,
           "error": null
@@ -500,93 +487,84 @@
       ]
     },
     {
-      "showId": "cirque-berserk-west-end-2026",
-      "title": "Cirque Berserk",
-      "market": "west-end",
-      "openingDate": "2026-10-23",
+      "showId": "specimen-off-broadway-2026",
+      "title": "Specimen",
+      "market": "off-broadway",
+      "openingDate": "2026-10-30",
       "sampleState": "measured",
       "sampleReason": "opened 3d ago",
-      "geo": "gb",
-      "naiveQuery": "Cirque Berserk Garrick Theatre review",
+      "geo": "us",
+      "naiveQuery": "Specimen Axis Theatre review",
       "counts": {
-        "truth": 10,
-        "scoped": 3,
-        "naive": 5,
+        "truth": 6,
+        "scoped": 1,
+        "naive": 3,
         "onDisk": 6
       },
       "recall": {
-        "scoped": 0.3,
+        "scoped": 0.167,
         "naive": 0.5,
-        "onDisk": 0.6,
-        "censusPlusDisk": 0.6
+        "onDisk": 1,
+        "censusPlusDisk": 1
       },
-      "newFromNaive": [
-        "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
-        "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
-        "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
-        "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping"
-      ],
+      "newFromNaive": [],
       "missedByCensus": [
-        "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
-        "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
-        "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
-        "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
-        "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
-        "https://www.broadwayworld.com/westend/article/Review-CIRQUE-BERSERK-at-Riverside-Studios-20230220",
-        "https://soundsandstage.com/show/cirque-berserk"
+        "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
+        "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
+        "https://thefrontrowcenter.com/2026/05/specimen/",
+        "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
+        "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Cirque Berserk\" West End review 2026",
+          "query": "\"Specimen\" Off-Broadway review 2026",
           "page": 0,
           "geo": null,
-          "raw": 5,
-          "accepted": 0,
-          "urls": [],
+          "raw": 10,
+          "accepted": 1,
+          "urls": [
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen"
+          ],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q1",
-          "query": "\"Cirque Berserk\" review garrick",
+          "query": "\"Specimen\" review axis",
           "page": 0,
           "geo": null,
           "raw": 10,
-          "accepted": 3,
+          "accepted": 1,
           "urls": [
-            "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
-            "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
-            "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk"
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p0",
-          "query": "Cirque Berserk Garrick Theatre review",
+          "query": "Specimen Axis Theatre review",
           "page": 0,
-          "geo": "gb",
+          "geo": "us",
           "raw": 10,
           "accepted": 2,
           "urls": [
-            "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
-            "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/"
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
+            "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/"
           ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "Cirque Berserk Garrick Theatre review",
+          "query": "Specimen Axis Theatre review",
           "page": 1,
-          "geo": "gb",
+          "geo": "us",
           "raw": 10,
-          "accepted": 3,
+          "accepted": 1,
           "urls": [
-            "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
-            "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
-            "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping"
+            "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall"
           ],
           "ok": true,
           "error": null
@@ -599,12 +577,12 @@
           "raw": 6,
           "accepted": 6,
           "urls": [
-            "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
-            "https://www.broadwayworld.com/westend/article/Review-CIRQUE-BERSERK-at-Riverside-Studios-20230220",
-            "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
-            "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
-            "https://soundsandstage.com/show/cirque-berserk",
-            "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/"
+            "https://thefrontrowcenter.com/2026/05/specimen/",
+            "https://www.offoffonline.com/offoffonline/2026/5/4/specimen",
+            "https://www.theaterscene.net/plays/offbway-plays/specimen/tony-marinelli/",
+            "https://www.theatermania.com/news/axis-theatre-companys-specimen-will-return-for-an-encore-engagement_1847152/",
+            "https://www.theatrely.com/post/specimen-returns-to-axis-theatre-company-this-fall",
+            "https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/"
           ],
           "ok": true,
           "error": null
@@ -612,69 +590,98 @@
       ]
     },
     {
-      "showId": "women-who-eat-off-broadway-2026",
-      "title": "Women Who Eat",
-      "market": "off-broadway",
-      "openingDate": "2026-10-22",
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "market": "off-west-end",
+      "openingDate": "2026-10-30",
       "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
-      "geo": "us",
-      "naiveQuery": "Women Who Eat Theaterlab review",
+      "sampleReason": "opened 3d ago",
+      "geo": "gb",
+      "naiveQuery": "The Moth Finborough Theatre review",
       "counts": {
-        "truth": 1,
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1
+        "truth": 20,
+        "scoped": 5,
+        "naive": 3,
+        "onDisk": 17
       },
       "recall": {
-        "scoped": 0,
-        "naive": 0,
-        "onDisk": 1,
-        "censusPlusDisk": 1
+        "scoped": 0.25,
+        "naive": 0.15,
+        "onDisk": 0.85,
+        "censusPlusDisk": 0.85
       },
-      "newFromNaive": [],
+      "newFromNaive": [
+        "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
+        "https://quayslife.com/reviews/the-moth-review/",
+        "https://northernartsreview.co.uk/north-east/review-the-moth-at-live-theatre/"
+      ],
       "missedByCensus": [
-        "https://theaterlabnyc.com/atelier-theaterlab-women-who-eat/"
+        "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
+        "https://quayslife.com/reviews/the-moth-review/",
+        "https://northernartsreview.co.uk/north-east/review-the-moth-at-live-theatre/",
+        "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
+        "https://andyjordanproductions.co.uk/the-moth/",
+        "https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell",
+        "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/the-moth/",
+        "https://www.jewishnews.co.uk/apartheid-era-play-the-moth-has-unsettling-parallels-to-todays-world/",
+        "https://www.londonboxoffice.co.uk/news/post/the-moth-finborough-theatre-review",
+        "https://www.londonpubtheatres.com/review-the-moth-at-finborough-theatre-27-oct-21-nov-2026",
+        "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
+        "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
+        "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
+        "https://www.thereviewshub.com/the-moth-finborough-theatre-london/"
       ],
       "arms": [
         {
           "arm": "scoped-q0",
-          "query": "\"Women Who Eat\" Off-Broadway review 2026",
+          "query": "\"The Moth\" West End review 2026",
           "page": 0,
           "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
+          "raw": 6,
+          "accepted": 1,
+          "urls": [
+            "https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre"
+          ],
           "ok": true,
           "error": null
         },
         {
           "arm": "scoped-q1",
-          "query": "\"Women Who Eat\" review theaterlab",
+          "query": "\"The Moth\" review finborough",
           "page": 0,
           "geo": null,
-          "raw": 10,
-          "accepted": 0,
-          "urls": [],
+          "raw": 9,
+          "accepted": 4,
+          "urls": [
+            "https://theartsdispatch.substack.com/p/the-moth-review-finborough-theatre",
+            "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
+            "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
+            "https://broadwaybaby.com/shows/the-moth/839368"
+          ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p0",
-          "query": "Women Who Eat Theaterlab review",
+          "query": "The Moth Finborough Theatre review",
           "page": 0,
-          "geo": "us",
+          "geo": "gb",
           "raw": 10,
-          "accepted": 0,
-          "urls": [],
+          "accepted": 3,
+          "urls": [
+            "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
+            "https://quayslife.com/reviews/the-moth-review/",
+            "https://northernartsreview.co.uk/north-east/review-the-moth-at-live-theatre/"
+          ],
           "ok": true,
           "error": null
         },
         {
           "arm": "naive-p1",
-          "query": "Women Who Eat Theaterlab review",
+          "query": "The Moth Finborough Theatre review",
           "page": 1,
-          "geo": "us",
+          "geo": "gb",
           "raw": 10,
           "accepted": 0,
           "urls": [],
@@ -686,10 +693,26 @@
           "query": null,
           "page": null,
           "geo": null,
-          "raw": 1,
-          "accepted": 1,
+          "raw": 17,
+          "accepted": 17,
           "urls": [
-            "https://theaterlabnyc.com/atelier-theaterlab-women-who-eat/"
+            "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
+            "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
+            "https://andyjordanproductions.co.uk/the-moth/",
+            "https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell",
+            "https://broadwaybaby.com/shows/the-moth/839368",
+            "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
+            "https://fringereview.co.uk/review/fringereview-uk/2026/the-moth/",
+            "https://www.jewishnews.co.uk/apartheid-era-play-the-moth-has-unsettling-parallels-to-todays-world/",
+            "https://www.londonboxoffice.co.uk/news/post/the-moth-finborough-theatre-review",
+            "https://www.londonpubtheatres.com/review-the-moth-at-finborough-theatre-27-oct-21-nov-2026",
+            "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
+            "https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre",
+            "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
+            "https://theartsdispatch.substack.com/p/the-moth-review-finborough-theatre",
+            "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
+            "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
+            "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/"
           ],
           "ok": true,
           "error": null
@@ -701,41 +724,41 @@
   "onDiskUnavailable": false,
   "trend": {
     "entry": {
-      "date": "2026-10-26",
-      "generatedAt": "2026-10-26T17:42:05.977Z",
+      "date": "2026-11-02",
+      "generatedAt": "2026-11-02T20:58:22.225Z",
       "naivePages": 2,
       "shows": 5,
       "informativeShows": 5,
       "excluded": {
-        "settling": 1
+        "settling": 6
       },
-      "truthUrls": 53,
-      "onDiskUrls": 39,
-      "newFromNaive": 8,
+      "truthUrls": 61,
+      "onDiskUrls": 53,
+      "newFromNaive": 7,
       "families": {
-        "naive": 0.377,
-        "onDisk": 0.736,
-        "scoped": 0.302
+        "naive": 0.328,
+        "onDisk": 0.869,
+        "scoped": 0.115
       },
       "arms": {
-        "naive-p0": 0.17,
-        "naive-p1": 0.208,
-        "onDisk": 0.736,
-        "scoped-q0": 0.113,
-        "scoped-q1": 0.226
+        "naive-p0": 0.23,
+        "naive-p1": 0.164,
+        "onDisk": 0.869,
+        "scoped-q0": 0.049,
+        "scoped-q1": 0.082
       },
-      "combinedRecall": 0.849,
+      "combinedRecall": 0.885,
       "familyYield": {
         "naive": 4,
-        "onDisk": 7.8,
-        "scoped": 3.2
+        "onDisk": 10.6,
+        "scoped": 1.4
       },
       "armYield": {
-        "naive-p0": 1.8,
-        "naive-p1": 2.2,
-        "onDisk": 7.8,
-        "scoped-q0": 1.2,
-        "scoped-q1": 2.4
+        "naive-p0": 2.8,
+        "naive-p1": 2,
+        "onDisk": 10.6,
+        "scoped-q0": 0.6,
+        "scoped-q1": 1
       },
       "armsFailed": {
         "naive-p0": 0,
@@ -747,81 +770,91 @@
       "unavailableArms": [],
       "byCategory": {
         "off-broadway": {
-          "shows": 3,
-          "truthUrls": 14,
+          "shows": 1,
+          "truthUrls": 6,
           "families": {
-            "naive": 0.429,
-            "onDisk": 0.786,
-            "scoped": 0.286
+            "naive": 0.5,
+            "onDisk": 1,
+            "scoped": 0.167
           }
         },
         "off-west-end": {
-          "shows": 1,
-          "truthUrls": 29,
+          "shows": 3,
+          "truthUrls": 38,
           "families": {
-            "naive": 0.31,
-            "onDisk": 0.759,
-            "scoped": 0.31
+            "naive": 0.421,
+            "onDisk": 0.816,
+            "scoped": 0.158
           }
         },
-        "west-end": {
+        "tour": {
           "shows": 1,
-          "truthUrls": 10,
+          "truthUrls": 17,
           "families": {
-            "naive": 0.5,
-            "onDisk": 0.6,
-            "scoped": 0.3
+            "naive": 0.059,
+            "onDisk": 0.941,
+            "scoped": 0
           }
         }
       },
       "sampleIds": [
-        "aftermath-art-new-york-off-broadway-2026",
-        "the-kick-inside-off-broadway-2026",
-        "garry-starr-classic-penguins-off-west-end-2026",
-        "cirque-berserk-west-end-2026",
-        "women-who-eat-off-broadway-2026"
+        "dogstar-off-west-end-2026",
+        "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+        "stoker-wilde-off-west-end-2026",
+        "specimen-off-broadway-2026",
+        "the-moth-off-west-end-2026"
       ]
     },
     "judgement": {
-      "verdict": "ok",
-      "reason": "3 search method(s) within 0.15 of their 4-run median",
-      "regressions": [],
+      "verdict": "regressed",
+      "reason": "scoped: recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show",
+      "regressions": [
+        {
+          "level": "families",
+          "arm": "scoped",
+          "baseline": 0.267,
+          "current": 0.115,
+          "drop": 0.152,
+          "rule": "week-on-week",
+          "reason": "recall 0.115 vs 0.267 median over 4 prior run(s) — down 0.152 (threshold 0.15), yield 1.4 vs 3.367 URLs/show"
+        }
+      ],
       "latest": {
-        "date": "2026-10-26",
-        "generatedAt": "2026-10-26T17:42:05.977Z",
+        "date": "2026-11-02",
+        "generatedAt": "2026-11-02T20:58:22.225Z",
         "naivePages": 2,
         "shows": 5,
         "informativeShows": 5,
         "excluded": {
-          "settling": 1
+          "settling": 6
         },
-        "truthUrls": 53,
-        "onDiskUrls": 39,
-        "newFromNaive": 8,
+        "truthUrls": 61,
+        "onDiskUrls": 53,
+        "newFromNaive": 7,
         "families": {
-          "naive": 0.377,
-          "onDisk": 0.736,
-          "scoped": 0.302
+          "naive": 0.328,
+          "onDisk": 0.869,
+          "scoped": 0.115
         },
         "arms": {
-          "naive-p0": 0.17,
-          "naive-p1": 0.208,
-          "onDisk": 0.736,
-          "scoped-q0": 0.113,
-          "scoped-q1": 0.226
+          "naive-p0": 0.23,
+          "naive-p1": 0.164,
+          "onDisk": 0.869,
+          "scoped-q0": 0.049,
+          "scoped-q1": 0.082
         },
-        "combinedRecall": 0.849,
+        "combinedRecall": 0.885,
         "familyYield": {
           "naive": 4,
-          "onDisk": 7.8,
-          "scoped": 3.2
+          "onDisk": 10.6,
+          "scoped": 1.4
         },
         "armYield": {
-          "naive-p0": 1.8,
-          "naive-p1": 2.2,
-          "onDisk": 7.8,
-          "scoped-q0": 1.2,
-          "scoped-q1": 2.4
+          "naive-p0": 2.8,
+          "naive-p1": 2,
+          "onDisk": 10.6,
+          "scoped-q0": 0.6,
+          "scoped-q1": 1
         },
         "armsFailed": {
           "naive-p0": 0,
@@ -833,39 +866,39 @@
         "unavailableArms": [],
         "byCategory": {
           "off-broadway": {
-            "shows": 3,
-            "truthUrls": 14,
+            "shows": 1,
+            "truthUrls": 6,
             "families": {
-              "naive": 0.429,
-              "onDisk": 0.786,
-              "scoped": 0.286
+              "naive": 0.5,
+              "onDisk": 1,
+              "scoped": 0.167
             }
           },
           "off-west-end": {
-            "shows": 1,
-            "truthUrls": 29,
+            "shows": 3,
+            "truthUrls": 38,
             "families": {
-              "naive": 0.31,
-              "onDisk": 0.759,
-              "scoped": 0.31
+              "naive": 0.421,
+              "onDisk": 0.816,
+              "scoped": 0.158
             }
           },
-          "west-end": {
+          "tour": {
             "shows": 1,
-            "truthUrls": 10,
+            "truthUrls": 17,
             "families": {
-              "naive": 0.5,
-              "onDisk": 0.6,
-              "scoped": 0.3
+              "naive": 0.059,
+              "onDisk": 0.941,
+              "scoped": 0
             }
           }
         },
         "sampleIds": [
-          "aftermath-art-new-york-off-broadway-2026",
-          "the-kick-inside-off-broadway-2026",
-          "garry-starr-classic-penguins-off-west-end-2026",
-          "cirque-berserk-west-end-2026",
-          "women-who-eat-off-broadway-2026"
+          "dogstar-off-west-end-2026",
+          "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+          "stoker-wilde-off-west-end-2026",
+          "specimen-off-broadway-2026",
+          "the-moth-off-west-end-2026"
         ]
       },
       "comparedArms": 3,
