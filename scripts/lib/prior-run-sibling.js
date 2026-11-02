@@ -480,9 +480,7 @@ function collectHousedSiblingFiles(show, shows, deps) {
 // Leeds Playhouse Fences (Guardian review held there) never counted as the Lyric
 // Hammersmith run's earlier production and its URL stayed a "missing" review.
 function showMarketPool(s) {
-  const { getMarketPool } = require('./venue-classification');
-  if (s && s.category === 'regional' && require('./market-label').isUkRegionalVenue(s.venue)) return 'london';
-  return getMarketPool(s && s.category);
+  return require('./venue-classification').getShowMarketPool(s);
 }
 
 function collectSameTitleProductionFiles(show, shows, deps) {

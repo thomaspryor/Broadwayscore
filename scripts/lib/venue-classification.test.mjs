@@ -28,3 +28,14 @@ test('theatrely and empty input stay false', () => {
   assert.strictEqual(isUkOutletUrl(''), false);
   assert.strictEqual(isUkOutletUrl('not a url'), false);
 });
+
+// BRO-6716: a UK regional house is in the London pool (getMarketPool('regional') alone says 'nyc').
+test('getShowMarketPool: UK regional = london, US regional = nyc, else getMarketPool(category)', () => {
+  const { getShowMarketPool, getMarketPool } = createRequire(import.meta.url)('./venue-classification.js');
+  assert.equal(getShowMarketPool({ category: 'regional', venue: 'Leeds Playhouse, Leeds' }), 'london');
+  assert.equal(getShowMarketPool({ category: 'regional', venue: 'Theater Wit, Chicago, IL' }), 'nyc');
+  for (const c of ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'tour', null]) {
+    assert.equal(getShowMarketPool({ category: c, venue: 'Leeds Playhouse' }), getMarketPool(c));
+  }
+  assert.equal(getShowMarketPool(null), 'nyc');
+});

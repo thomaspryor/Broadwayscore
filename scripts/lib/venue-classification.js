@@ -291,6 +291,18 @@ function getMarketPool(category) {
   return 'nyc';
 }
 
+/**
+ * Market pool for a show ENTRY (BRO-6716). getMarketPool(category) reads a UK
+ * regional ('regional' category, e.g. Leeds Playhouse) as 'nyc', so a UK regional
+ * and its West End transfer looked cross-market and a UK regional looked like the
+ * same pool as Broadway. A UK regional house (uk-regional-venues.json) is 'london'.
+ * @param {{category?: string|null, venue?: string|null}} show
+ */
+function getShowMarketPool(show) {
+  if (show && show.category === 'regional' && require('./market-label').isUkRegionalVenue(show.venue)) return 'london';
+  return getMarketPool(show && show.category);
+}
+
 /** Returns true for both 'west-end' and 'off-west-end' — i.e., any London market. */
 function isLondonMarket(category) {
   return getMarketPool(category) === 'london';
@@ -532,4 +544,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, NON_THEATRE_VENUE_RE, isNonTheatreVenue, LONDON_RECEIVING_HOUSE_RE, isLondonReceivingHouse, isTheatreHouse, isUnreviewedNonTheatreRow, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, NON_THEATRE_VENUE_RE, isNonTheatreVenue, LONDON_RECEIVING_HOUSE_RE, isLondonReceivingHouse, isTheatreHouse, isUnreviewedNonTheatreRow, isSpecialEngagementVenue, isLondonMarket, getMarketPool, getShowMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
