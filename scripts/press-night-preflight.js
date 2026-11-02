@@ -8,6 +8,7 @@
  *   node scripts/press-night-preflight.js --show=ID --night=YYYY-MM-DD --label=pf24|pf3 [--dry-run]
  * Exit 0 clean, 1 problems found (paged unless --dry-run), 2 bad args.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');

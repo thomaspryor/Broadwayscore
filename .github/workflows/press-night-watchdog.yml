@@ -107,6 +107,15 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
 
+      # Staged here so the tree is clean; the ledger job below commits and pushes it (job-timeout margin).
+      - name: Stage alert state
+        if: always()
+        continue-on-error: true
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+
       - name: Upload alert state
         if: always()
         continue-on-error: true

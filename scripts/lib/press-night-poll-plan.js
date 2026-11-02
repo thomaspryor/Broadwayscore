@@ -14,11 +14,12 @@
 const FAST_MIN = 5;
 const FAST_WINDOW_MIN = 120;
 const MIN = 60000;
+const { isBroadwayCategory } = require('./venue-classification');
 
 /** shows: [{id, category, embargoMs}]. Returns {intervalMin, reason}. */
 function pollIntervalMin({ shows = [], nowMs, defaultMin = 15, overrideMin = null }) {
   if (Number.isFinite(overrideMin) && overrideMin > 0) return { intervalMin: overrideMin, reason: 'input override' };
-  const hot = shows.find((s) => s && s.category === 'broadway' && Number.isFinite(s.embargoMs)
+  const hot = shows.find((s) => s && isBroadwayCategory(s) && Number.isFinite(s.embargoMs)
     && nowMs >= s.embargoMs && nowMs - s.embargoMs <= FAST_WINDOW_MIN * MIN);
   if (hot) return { intervalMin: Math.min(FAST_MIN, defaultMin), reason: `${hot.id} is in its first 2h after the embargo` };
   return { intervalMin: defaultMin, reason: 'default' };

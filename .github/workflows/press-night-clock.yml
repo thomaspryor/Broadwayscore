@@ -180,7 +180,7 @@ jobs:
       # BRO-6858: emails the owner only when a Broadway event (preflight or kick) is within 24h; otherwise the
       # morning digest reports it, as before. The orchestrator re-seeds the chain on its next tick either way.
       - name: Notify on failure (Broadway night within 24h)
-        if: failure() && steps.clock.outputs.broadway_soon == 'true'
+        if: (failure() || cancelled()) && steps.clock.outputs.broadway_soon == 'true'
         uses: ./.github/actions/notify-failure
         with:
           title: 'Press night clock failed within 24h of a Broadway opening'

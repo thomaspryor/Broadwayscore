@@ -59,6 +59,8 @@ const HINT = 'hint text shown to a person, not a dispatch';
 const ON = 'opening-night work: exempt from the cap by design';
 const BASELINE = {
   [`scripts/audit-opening-night-coverage.js|${GATHER}`]: { count: 1, reason: ON },
+  [`scripts/lib/press-night-watchdog.js|${ENS}`]: { count: 1, reason: 'press-night watchdog (BRO-6858): one score retry per show-night, claimed once' },
+  [`scripts/press-night-watchdog.js|${ENS}`]: { count: 1, reason: 'press-night watchdog (BRO-6858): one score retry per show-night, claimed once' },
   [`scripts/lib/dispatch-rescore.js|${ENS}`]: { count: 1, reason: 'single targeted show_id rescore (verify-all-scored, orphan requeue, t1 silent gaps), each with its own per-show cooldown' },
   [`scripts/lib/opening-night-checks/aggregator-count-drift.check.js|${GATHER}`]: { count: 1, reason: ON },
   [`scripts/lib/opening-night-checks/t1-outlets-scored.check.js|${GATHER}`]: { count: 1, reason: ON },

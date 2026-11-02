@@ -14,6 +14,7 @@
  * LANE_STANDDOWN (read live). --dry-run decides and logs only: no dispatch, no claim, no alert (off-Broadway nights,
  * which BRO-6687 owns, always run dry). Exit 0 unless the watchdog itself could not run.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { execFileSync, execSync } = require('child_process');
@@ -48,7 +49,7 @@ function recentRuns() {
 
 async function liveRows(showId) {
   try {
-    const res = await fetch(`${SITE}/data/shows/${showId}.json?wd=${Date.now()}`, { headers: { 'cache-control': 'no-cache' } });
+    const res = await fetch(`${SITE}/data/shows/${showId}.json?wd=${Date.now()}`, { headers: { 'cache-control': 'no-cache' }, signal: AbortSignal.timeout(20000) });
     if (!res.ok) return { ok: false, rows: [], why: `HTTP ${res.status}` };
     const j = await res.json();
     return { ok: true, rows: Array.isArray(j.rv) ? j.rv : [] };

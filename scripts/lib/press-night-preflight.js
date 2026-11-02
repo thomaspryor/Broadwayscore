@@ -9,13 +9,15 @@
  * 90% used or more fails: the poller burns ~2-5k credits on a busy night.
  */
 
+const { foldDiacritics } = require('./url-slug');
+
 const REQUIRED = ['Anthropic', 'OpenAI', 'Gemini', 'ScrapingBee', 'ScrapingDog', 'Bright Data', 'Private Repo PAT', 'Vercel', 'Resend'];
 const SB_MAX_PCT_USED = 90;
 
 function preflightVerdict({ results = [], sb = null } = {}) {
   const problems = [];
   // A check that threw is named after its function (checkBrightData -> "BrightData"): match on letters and digits.
-  const norm = (n) => String(n || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+  const norm = (n) => foldDiacritics(String(n || '')).toLowerCase().replace(/[^a-z0-9]/g, '');
   const byName = new Map(results.map((r) => [norm(r.name), r]));
   for (const name of REQUIRED) {
     const r = byName.get(norm(name));
