@@ -495,3 +495,21 @@ test('BRO-6811: operaLinksMissingFlag lists unflagged opera links, id-less windo
   ];
   assert.deepEqual(lib.operaLinksMissingFlag(shows), [{ showId: 'a', runId: 'a-old' }, { showId: 'a', runId: null }]);
 });
+
+// BRO-6716: a UK regional earlier production is in the London pool (getMarketPool('regional') is 'nyc').
+test('collectSameTitleProductionFiles: UK regional earlier run (Leeds Fences) holds its reviews for the London run', () => {
+  const { showMarketPool } = require('./prior-run-sibling');
+  const LEEDS = { id: 'fences-leeds-regional-2026', title: 'Fences', category: 'regional', venue: 'Leeds Playhouse, Leeds',
+    openingDate: '2026-09-17', closingDate: null };
+  const LYRIC = { id: 'fences-off-west-end-2026', title: 'Fences', category: 'off-west-end', venue: 'Lyric Hammersmith',
+    openingDate: '2026-10-09', closingDate: '2026-10-31' };
+  const files = { [LEEDS.id]: [{ _file: 'guardian--catherine-love.json',
+    url: 'https://www.theguardian.com/stage/2026/sep/17/fences-review-leeds-playhouse-august-wilson', publishDate: '2026-09-17' }] };
+  const deps = { loadFiles: id => files[id] || [], isCovered: () => true };
+  assert.equal(showMarketPool(LEEDS), 'london');
+  assert.deepEqual(collectSameTitleProductionFiles(LYRIC, [LEEDS, LYRIC], deps).map(d => d._housedOnShowId), [LEEDS.id]);
+  // A US regional of the same title stays out of the London pool.
+  const CHICAGO = { ...LEEDS, id: 'fences-regional-2026', venue: 'Theater Wit, Chicago, IL' };
+  assert.equal(showMarketPool(CHICAGO), 'nyc');
+  assert.deepEqual(collectSameTitleProductionFiles(LYRIC, [CHICAGO, LYRIC], { ...deps, loadFiles: () => files[LEEDS.id] }), []);
+});

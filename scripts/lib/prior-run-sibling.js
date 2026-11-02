@@ -476,17 +476,25 @@ function collectHousedSiblingFiles(show, shows, deps) {
  *
  * @returns {Array<object>} copies tagged `_housedOnShowId` (and `_laterRun` when later)
  */
+// BRO-6716: getMarketPool('regional') is 'nyc' even for a UK regional house, so the
+// Leeds Playhouse Fences (Guardian review held there) never counted as the Lyric
+// Hammersmith run's earlier production and its URL stayed a "missing" review.
+function showMarketPool(s) {
+  const { getMarketPool } = require('./venue-classification');
+  if (s && s.category === 'regional' && require('./market-label').isUkRegionalVenue(s.venue)) return 'london';
+  return getMarketPool(s && s.category);
+}
+
 function collectSameTitleProductionFiles(show, shows, deps) {
   const out = [];
   if (!show || !Array.isArray(shows)) return out;
-  const { getMarketPool } = require('./venue-classification');
   const start = runStartMs(show);
   if (!Number.isFinite(start)) return out;
   const base = baseTitle(show);
   const linked = new Set(findPriorRunSiblings(show, shows).map(s => s.sibling.id));
   for (const other of shows) {
     if (!other || other.id === show.id || linked.has(other.id) || !base || baseTitle(other) !== base) continue;
-    if (getMarketPool(other.category) !== getMarketPool(show.category)) continue;
+    if (showMarketPool(other) !== showMarketPool(show)) continue;
     const otherStart = runStartMs(other);
     if (!Number.isFinite(otherStart)) continue;
     // BRO-6716: also a LATER same-title production that started after this one closed
@@ -641,6 +649,7 @@ function supersededPriorRunReviews(reviews, shows) {
 }
 
 module.exports = {
+  showMarketPool,
   priorRunWindows,
   priorRunClassifier,
   supersededPriorRunReviews,
