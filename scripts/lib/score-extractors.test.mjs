@@ -425,3 +425,16 @@ test('BRO-6779: a month/day run date is not an x/5 star rating', () => {
   assert.equal(extractGenericStarRating('', 'Verdict: 4/5').originalScore, '4/5');
   assert.equal(extractGenericStarRating('', 'Rating 3.5/5').originalScore, '3.5/5');
 });
+
+// BRO-6779: "an A rating" is a verdict (Digital Journal: '"Oh Mary!" garners an A
+// rating'); "an A grade" stays out because plots use it ("offer her an A grade",
+// Oleanna), as do "a straight A grade" and "an A-grade student".
+test('BRO-6779: "an A rating" extracts; plot "an A grade" forms do not', () => {
+  const { extractGenericLetterGrade } = require('./score-extractors.js');
+  assert.equal(extractGenericLetterGrade('', '"Oh Mary!" garners an A rating. Bravo.').originalScore, 'A');
+  for (const t of [
+    'John decides to rip up Carol\'s bad essay and offer her an A grade.',
+    'He offers to give her a straight A grade if she listens to him talk.',
+    'Her missing son, an A-grade student, is on track to enter a military academy.',
+  ]) assert.equal(extractGenericLetterGrade('', t), null, t);
+});

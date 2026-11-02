@@ -180,5 +180,12 @@ test('BRO-6779: syndicated secondary is skipped only while its primary ships', a
   assert.equal(scanReviewTexts(root).findings.length, 0, 'live primary shields the secondary');
   fs.writeFileSync(path.join(dir, 'theatermania--zachary-stewart.json'), JSON.stringify({ ...primary, wrongProduction: true }));
   assert.equal(scanReviewTexts(root).findings.length, 1, 'excluded primary does not shield');
+  const { llmScore: _l, assignedScore: _a, ...unscored } = primary;
+  fs.writeFileSync(path.join(dir, 'theatermania--zachary-stewart.json'), JSON.stringify(unscored));
+  assert.equal(scanReviewTexts(root).findings.length, 1, 'unscored primary does not ship, so it does not shield');
+  // Outlet ids are normalised before the syndication lookup (rebuild parity).
+  fs.writeFileSync(path.join(dir, 'theatermania--zachary-stewart.json'), JSON.stringify(primary));
+  fs.writeFileSync(path.join(dir, 'whatsonstage--zachary-stewart.json'), JSON.stringify({ ...secondary, outletId: 'WhatsOnStage' }));
+  assert.equal(scanReviewTexts(root).findings.length, 0, 'non-canonical outletId still finds its primary');
   fs.rmSync(root, { recursive: true, force: true });
 });

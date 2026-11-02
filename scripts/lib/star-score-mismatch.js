@@ -38,7 +38,7 @@ const { parseRating } = require('./score-conversion-rules');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIntentionalClear } = require('./review-write-guard');
 const { detectBandFromReviewFile, isUncorroboratedGenericStar } = require('./star-reliability');
-const { getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./syndication-pairs');
+const { getSyndicationPrimaries } = require('./syndication-pairs');
 
 // A gap this large between an explicit critic rating and the site's independent
 // read almost always means the rating was mis-extracted (wrong show in a combined
@@ -121,14 +121,18 @@ function humanScoreResolvesBand(review) {
 
 // BRO-6779: a syndicated secondary copy (WhatsOnStage reprint of a TheaterMania
 // review, Tribune-group reprint, ...) is dropped at rebuild whenever its primary
-// ships, so its star can contradict nothing on the site. Same helpers the
-// rebuild's runtime syndication dedup uses (syndication-pairs.js); a secondary
-// whose primary is missing or excluded still alerts, because then it ships.
-function isShieldedSyndicatedCopy(review, showDir, fileNames) {
-  const critic = String((review && review.criticName) || '').toLowerCase().trim();
-  const primaries = getSyndicationPrimaries(critic, review && review.outletId);
+// ships, so its star can contradict nothing on the site. Same rule scoring-delta.js
+// and t1-silent-gap.js mirror: hasIncludableSyndicationPrimary with requireScore
+// (an includable AND scored primary; outlet normalised with normalizeOutlet).
+// A secondary whose primary is missing, excluded or unscored still alerts.
+function isShieldedSyndicatedCopy(review, filePath, show) {
+  const { normalizeOutlet } = require('./review-normalization');
+  const primaries = getSyndicationPrimaries(review && review.criticName,
+    normalizeOutlet((review && (review.outletId || review.outlet)) || ''));
   if (!primaries.length) return false;
-  try { return hasLiveSyndicationPrimary(showDir, primaries, critic, { fileNames }); } catch { return false; }
+  try {
+    return require('./review-guards').hasIncludableSyndicationPrimary(review, show || null, filePath, { primaries, requireScore: true });
+  } catch { return false; }
 }
 
 /**
@@ -244,6 +248,8 @@ function scanReviewTexts(rootDir, opts = {}) {
     : null;
 
   const shows = opts.shows || listShowDirs(rootDir);
+  // Optional Map<showId, show> for the syndication-shield exclusion check.
+  const showsById = opts.showsById || null;
   const findings = [];
   let scanned = 0;
   let baselinedCount = 0;
@@ -259,7 +265,7 @@ function scanReviewTexts(rootDir, opts = {}) {
       scanned++;
       const finding = evaluateReview(r, { threshold });
       if (!finding) continue;
-      if (isShieldedSyndicatedCopy(r, dir, files)) continue;
+      if (isShieldedSyndicatedCopy(r, path.join(dir, f), showsById && showsById.get(showId))) continue;
       if (cutoff !== null) {
         const ts = reviewTimestamp(r);
         if (ts === null || ts < cutoff) continue;

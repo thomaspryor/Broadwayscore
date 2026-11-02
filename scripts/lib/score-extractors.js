@@ -1291,7 +1291,11 @@ function extractGenericLetterGrade(html, text) {
   const patterns = [
     new RegExp(`\\b${GRADE_KW_RE}\\s*:?\\s*([A-F][+-]?)(?![A-Za-z+])`),
     new RegExp(`\\b${GRADE_ONLY_KW_RE}\\s+([A-F][+-]?)(?![A-Za-z+])`),
-    new RegExp(`\\b${LETTER_BEFORE_KW_RE}\\s+${GRADE_KW_RE}\\b`)
+    new RegExp(`\\b${LETTER_BEFORE_KW_RE}\\s+${GRADE_KW_RE}\\b`),
+    // "garners an A rating" (Digital Journal's verdict line). Only "rating": the
+    // "an A grade" form is plot as often as verdict ("offer her an A grade",
+    // Oleanna), so it stays out.
+    /\b[Aa]n\s+(A)\s+[Rr][Aa][Tt][Ii][Nn][Gg]\b/
   ];
 
   for (const pattern of patterns) {
