@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T02:15:47.759Z",
+  "generatedAt": "2026-11-02T02:37:47.343Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1140,27 +1140,26 @@
       "status": "open",
       "slug": "tosca-off-broadway",
       "thumbnail": "/images/shows/tosca-off-broadway-2026/thumbnail.webp",
-      "siteScore": 61.28,
-      "liveScore": 60,
-      "scoreDrift": -1.2800000000000011,
+      "siteScore": 61.9,
+      "liveScore": 61,
+      "scoreDrift": -0.8999999999999986,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
-      "t1": 3,
+      "total": 8,
+      "t1": 4,
       "t2": 2,
       "t3": 2,
       "positive": 3,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 4,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/12 total",
-          "T1:2/3",
-          "hi-conf:5/8"
+          "8/12 total",
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1578,6 +1577,18 @@
           "t3": 2,
           "p": 3,
           "m": 0,
+          "n": 4,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-02T02:37:47.343Z",
+          "rc": 8,
+          "s": 61.9,
+          "t1": 4,
+          "t2": 2,
+          "t3": 2,
+          "p": 3,
+          "m": 1,
           "n": 4,
           "bc": "waiting"
         }
@@ -2511,26 +2522,26 @@
       "status": "open",
       "slug": "medea-off-broadway",
       "thumbnail": "/images/shows/medea-off-broadway-2026/thumbnail.webp",
-      "siteScore": 75.55,
-      "liveScore": 72,
-      "scoreDrift": -3.549999999999997,
+      "siteScore": 76,
+      "liveScore": 73,
+      "scoreDrift": -3,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 9,
+      "total": 11,
       "t1": 4,
       "t2": 1,
-      "t3": 4,
-      "positive": 6,
+      "t3": 6,
+      "positive": 8,
       "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "9/12 total",
+          "11/12 total",
           "T2:2/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -2939,6 +2950,18 @@
           "t2": 1,
           "t3": 4,
           "p": 6,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-02T02:37:47.343Z",
+          "rc": 11,
+          "s": 76,
+          "t1": 4,
+          "t2": 1,
+          "t3": 6,
+          "p": 8,
           "m": 3,
           "n": 0,
           "bc": "waiting"
