@@ -110,5 +110,36 @@
       }
     ],
     "queuedAt": "2026-11-02T21:35:31.007Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6852-owner-hold-sweep-v2",
+    "title": "Landing blocked: rebase red on land/bro-6852-owner-hold-sweep-v2",
+    "description": "land.yml did not land land/bro-6852-owner-hold-sweep-v2: the rebase gate went red at cf64c8c54e. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6852-owner-hold-sweep-v2 @ cf64c8c54e (origin/land/bro-6852-owner-hold-sweep-v2) → origin/main @ bacb80993f REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 95dc584e22: Rebasing (1/1) error: could not apply cf64c8c54ec... Owner-hold sweep: Claude decides and releases owner-worded holds with no question (BRO-6852) hint: Resolve all conflicts manually, mark them as Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41528349960",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6852-owner-hold-sweep-v2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "cf64c8c54ec50e33afadbf63ca7a4c8dca7d9875"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41528349960"
+      }
+    ],
+    "queuedAt": "2026-11-02T21:50:23.740Z"
   }
 ]
