@@ -72,7 +72,7 @@ async function main() {
       if (!fresh.length) break;
       out.push(...fresh);
     }
-    console.log(JSON.stringify(out, null, 1));
+    if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(out, null, 1) + '\n'); else console.log(JSON.stringify(out, null, 1));
   } else {
     console.error('usage: city-finder.js find|recall|enumerate --city=<key>');
     process.exitCode = 2;
