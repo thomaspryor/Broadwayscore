@@ -79,6 +79,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // breadcrumb that says what was checked. evaluateShowMentionGuard honours the
   // breadcrumb, so backfill-review-flags / the collector do not set it again.
   'showNotMentioned', 'showNotMentionedManualClear',
+  // fullTextWrongAuthor (BRO-6716): CLEAR ONLY (false), and only when the record's current
+  // fullText no longer contains the author the flagger detected (wrongAuthorFlagEvidenceGone).
+  // apply-audit-flags deletes the text it flags; a later refetch brings the real body back
+  // with the flag still set (New Statesman: "Sally Rooney" from a sidebar, 1 of 80 flagged).
+  'fullTextWrongAuthor',
   // BRO-5858: fabricatedEntry is CLEAR ONLY (false). It was stamped in bulk on
   // web-search rows ("84% fabrication rate", Feb 2026), so a row whose url the
   // plan author has fetched and found to be the real review stays excluded and
@@ -165,7 +170,23 @@ function storedLabelRelabelError(target, record) {
 }
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
+// BRO-6716: the author apply-audit-flags / the collector recorded as the wrong byline.
+function detectedWrongAuthor(record) {
+  const m = /^Byline says (.+?), file says /.exec(String(record._authorMismatch || ''))
+    || /^Byline at [^:]+: "([^"]+)"/.exec(String(record._authorMismatch || ''));
+  return m ? m[1].trim() : null;
+}
+
+/** True when the stored body is real text and no longer names the detected wrong author. */
+function wrongAuthorFlagEvidenceGone(record) {
+  const who = detectedWrongAuthor(record);
+  const text = typeof record.fullText === 'string' ? record.fullText : '';
+  return !!who && who.length >= 3 && text.trim().length >= 500 && !text.toLowerCase().includes(who.toLowerCase());
+}
+
 const FIELD_VALUE_CHECKS = {
+  fullTextWrongAuthor: (v, record) => (v === false && record.fullTextWrongAuthor === true && wrongAuthorFlagEvidenceGone(record)
+    ? null : 'fullTextWrongAuthor may only be cleared (false), when the stored fullText (500+ chars) no longer names the author the flag detected'),
   crossOutletVerifiedNote: (v) => (typeof v === 'string' && v.trim().length >= 20
     ? null : 'crossOutletVerifiedNote must record the checked byline evidence (20+ chars)'),
   crossOutletVerified: (v, record) => (v === true && record.wrongAttribution !== true
