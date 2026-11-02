@@ -1,7 +1,8 @@
 /** Pure weekly result alerts. No winner judgment and no flag writes. */
-const { ARMS, CUTOVER, STOPPING_N } = require('./related-shows-ab-analysis');
+const { ARMS, CUTOVER, STOPPING_N, JOIN_GAP_PROBLEM } = require('./related-shows-ab-analysis');
 const { RELATED_SHOWS_FLAG } = require('./related-shows-ab');
 const COOLDOWN_MS = 6 * 24 * 60 * 60 * 1000;
+const STALL_CHECK_MS = 5 * 24 * 60 * 60 * 1000;
 const DOC_URL = 'https://github.com/thomaspryor/Broadwayscore/blob/main/docs/experiments/related-shows-position.md';
 
 function decideRelatedShowsAlerts(summary, state = {}, nowMs = Date.now()) {
@@ -28,13 +29,30 @@ function decideRelatedShowsAlerts(summary, state = {}, nowMs = Date.now()) {
     && (!Number.isFinite(primary?.p) || primary.p < 0 || primary.p > 1 || !Number.isFinite(primary?.z))) {
     problems.push('the result came back without a usable p-value');
   }
+  // Stalled exposure: cumulative n only grows, so no growth between weekly runs
+  // means the exposure event or traffic broke. Compare at most every 5 days.
+  if (validCounts && Math.min(...variants.map(v => v.n)) < STOPPING_N) {
+    const minN = Math.min(...variants.map(v => v.n));
+    const due = !Number.isFinite(state.lastMinNAt) || nowMs - state.lastMinNAt >= STALL_CHECK_MS;
+    if (due) {
+      if (Number.isFinite(state.lastMinNAt) && minN <= state.lastMinN) {
+        problems.push('no new exposed people since the last weekly check (exposure may have stopped)');
+      }
+      next.lastMinN = minN;
+      next.lastMinNAt = nowMs;
+    }
+  }
   if (problems.length) {
     // Drop a problem already quoted inside a longer one ("flag health failed"
     // also appears inside "primary suppressed: flag health failed").
     const shown = problems.filter(p => !problems.some(q => q !== p && q.includes(p)));
     const detail = `What the check found: ${shown.join('; ')}.`;
     const sampleReached = validCounts && variants.every(v => v.n >= STOPPING_N);
-    if (!sampleReached) {
+    // Only a small first-session join gap is statistical noise worth waiting on.
+    // Anything else (cross-arm contamination, unhealthy flag, wrong design, a
+    // missing arm, stalled exposure) breaks the test now, so it emails at once.
+    const joinGapOnly = shown.every(p => p.includes(JOIN_GAP_PROBLEM));
+    if (!sampleReached && joinGapOnly) {
       // Nobody is waiting on a readout yet, so there is nothing for the owner to
       // do. Log it (run summary) instead of emailing (BRO-6868, actionable-only).
       alerts.push({
@@ -49,10 +67,14 @@ function decideRelatedShowsAlerts(summary, state = {}, nowMs = Date.now()) {
         alerts.push({
           kind: 'data-problem', severity: 'error', email: true, stampKey: 'lastDataProblemAlertAt',
           subjectLabel: 'ACTION NEEDED',
-          title: 'Related shows test: enough people, but the results cannot be trusted',
+          title: sampleReached
+            ? 'Related shows test: enough people, but the results cannot be trusted'
+            : 'Related shows test: the data has a problem',
           description: 'This is the A/B test on show pages (does a row of related shows near the reviews get more people '
-            + `to open a second page). It has reached its planned ${STOPPING_N.toLocaleString('en-US')} people per arm, `
-            + 'but the results check found a problem with the data, so there is no readout yet. '
+            + 'to open a second page). '
+            + (sampleReached
+              ? `It has reached its planned ${STOPPING_N.toLocaleString('en-US')} people per arm, but the results check found a problem with the data, so there is no readout yet. `
+              : 'It is still collecting people, but the weekly check found a problem that would spoil the results if left alone. ')
             + 'Nothing is broken on the site and no test setting changed. '
             + `${detail} The check repeats weekly and emails again after six days if this persists. Test write-up: ${DOC_URL}`,
         });
