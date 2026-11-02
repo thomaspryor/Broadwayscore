@@ -176,7 +176,7 @@ export default async function TourCityPage(props: { params: Promise<{ city: stri
         {s.closingDate ? `–${formatShowDate(s.closingDate, { month: 'short', day: 'numeric', year: 'numeric' })}` : ''}
         {s.venue ? ` · ${hubVenue(s.venue, c.slug)}` : ''}
       </p>
-      <ShowListCard show={{ ...serializeShowForClient(s), tourNowNext: null, ticketLinks: [] }} index={i} scoreMode="critics" variant="compact" showReviewCount />
+      <ShowListCard show={{ ...serializeShowForClient(s), hubProduction: !s.transferredTo, tourNowNext: null, ticketLinks: [] }} index={i} scoreMode="critics" variant="compact" showReviewCount />
     </li>
   );
 

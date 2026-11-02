@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T02:41:14.881Z",
+  "generatedAt": "2026-11-02T03:06:08.580Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,10 +138,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 503 for https://theaterpizzazz.com/feed/"
-    },
-    {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
     },
@@ -160,14 +156,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "nysr",
-      "error": "HTTP 429 for https://nystagereview.com/wp-json/wp/v2/posts?per_page=50&orderby=date&order=desc&after=2026-10-19T02%3A41%"
     }
   ],
-  "itemsScanned": 743,
-  "matchedGaps": 11,
+  "itemsScanned": 777,
+  "matchedGaps": 10,
   "possibleGaps": 12,
   "gaps": [
     {
@@ -241,15 +233,6 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-the-lives-of-others-adelphi-theatre",
       "headline": "Review: THE LIVES OF OTHERS, Adelphi Theatre",
       "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
-      "headline": "The Moth | Finborough Theatre",
-      "publishDate": "2026-11-02"
     },
     {
       "showId": "tosca-english-national-opera-west-end-2026",

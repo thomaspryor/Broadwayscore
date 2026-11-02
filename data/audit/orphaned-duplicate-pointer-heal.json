@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-02T02:22:24.388Z",
+  "generated": "2026-11-02T03:11:39.631Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 42,
+  "count": 41,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -120,13 +120,6 @@
       "loserFile": "londonlivinglarge--unknown.json",
       "targetFile": "londonlivinglarge--london-living-large.json",
       "reason": "orphaned-duplicate-heal: londonlivinglarge--london-living-large.json was flagged invalid after londonlivinglarge--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "little-shop-of-horrors-crucible-regional-2025",
-      "loserFile": "thereviewshub--unknown.json",
-      "targetFile": "thereviewshub--the-reviews-hub.json",
-      "reason": "orphaned-duplicate-heal: thereviewshub--the-reviews-hub.json was flagged invalid after thereviewshub--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

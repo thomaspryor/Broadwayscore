@@ -1652,6 +1652,48 @@
     "queuedAt": "2026-11-02T02:38:20.760Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+    "title": "Review gap — \"A Beautiful Noise, The Neil Diamond Musical\" missing 1 cited review(s)",
+    "description": "A Beautiful Noise, The Neil Diamond Musical (a-beautiful-noise-the-neil-diamond-musical-tour-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-beautiful-noise-the-neil-diamond-musical-tour-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T03:05:16.952Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:are-you-now-or-have-you-ever-been-regional-2026",
+    "title": "Review gap — \"Are You Now or Have You Ever Been?\" missing 1 cited review(s)",
+    "description": "Are You Now or Have You Ever Been? (are-you-now-or-have-you-ever-been-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=are-you-now-or-have-you-ever-been-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T03:05:17.011Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-02.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T03:05:42.659Z"
+  },
+  {
     "conditionKey": "live-data-test:tests/unit/doubled-market-ids-live-data.test.mjs::the live corpus has zero unallowlisted doubled-market ids",
     "title": "Live-data test failing: the live corpus has zero unallowlisted doubled-market ids (tests/unit/doubled-market-ids-live-data.test.mjs)",
     "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the live corpus has zero unallowlisted doubled-market ids\" in tests/unit/doubled-market-ids-live-data.test.mjs is red against the live corpus.\n\nfix the title, or allowlist the id with the source you checked\n+ actual - expected\n\n+ [\n+   'loki-the-end-of-the-world-tour-regional-2026 \"Loki - The End of the World Tour\"'\n+ ]\n- []\n",
@@ -1692,5 +1734,67 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T02:43:48.963Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6796-visual",
+    "title": "Landing blocked: rebase red on land/bro-6796-visual",
+    "description": "land.yml did not land land/bro-6796-visual: the rebase gate went red at 211106708b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41382694937",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6796-visual"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "211106708b2c04c9c395149a27dcb8d8159715bd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41382694937"
+      }
+    ],
+    "queuedAt": "2026-11-02T03:24:26.056Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6802-press-night-clock",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6802-press-night-clock",
+    "description": "land.yml did not land land/bro-6802-press-night-clock: the unit-tests-node gate went red at 34a34a78e7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41380645846",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6802-press-night-clock"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "34a34a78e751244f77644dfc4cdd8c6383945efb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41380645846"
+      }
+    ],
+    "queuedAt": "2026-11-02T03:23:27.161Z"
   }
 ]

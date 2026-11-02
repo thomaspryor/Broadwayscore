@@ -1,80 +1,13 @@
 {
-  "generatedAt": "2026-11-02T02:41:14.488Z",
+  "generatedAt": "2026-11-02T03:06:08.204Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 310,
-  "clean": 306,
-  "defective": 4,
-  "byType": {
-    "score-drift": 4
-  },
-  "shows": [
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "openingDate": "2026-11-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 61.9 vs local 61.28 (Δ0.62)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 7,
-      "deployedCount": 8,
-      "firstDefectAt": "2026-11-02T02:41:10.496Z"
-    },
-    {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "openingDate": "2026-10-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 76 vs local 75.55 (Δ0.45)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-02T02:41:10.496Z"
-    },
-    {
-      "showId": "beauty-and-the-beast-tour-2025",
-      "title": "Beauty and the Beast",
-      "openingDate": "2025-06-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.23 vs local 84.3 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 39,
-      "deployedCount": 40,
-      "firstDefectAt": "2026-11-02T02:41:10.496Z"
-    },
-    {
-      "showId": "and-juliet-tour-2024",
-      "title": "& Juliet",
-      "openingDate": "2024-09-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 82.95 vs local 83.84 (Δ0.89)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 45,
-      "deployedCount": 46,
-      "firstDefectAt": "2026-11-02T02:41:10.496Z"
-    }
-  ],
+  "clean": 310,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
