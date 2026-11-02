@@ -15,7 +15,7 @@ const textQuality = require('../lib/text-quality.js');
 // scripts/lib/opera-prompt-context.js exported its own check; both did the
 // same thing but could drift on the first time someone broadens opera
 // detection (e.g. to non-Met houses).
-const { isOperaShow } = require('../lib/opera-prompt-context');
+const { isOperaShow, getOperaHouse } = require('../lib/opera-prompt-context');
 const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket, getTourPromptContext } = require('../lib/market-label');
 // A renamed house is the same venue (BRO-4956: Rent at the Duke of York's,
 // reviewed as the Tom Stoppard Theatre, was rejected as wrong_production).
@@ -193,7 +193,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
     // ensemble legs correctly rejected them as wrong_production (2026-07-30).
     // venue is passed so a UK regional house (RSC, Chichester) is not announced
     // as "Regional (US, outside New York)" — card #1405.
-    const marketLabel = isOpera ? 'Opera (Metropolitan Opera)'
+    const marketLabel = isOpera ? `Opera (${getOperaHouse(review).full})`
       : getMarketLabel(review.category, review.venue);
     // A tour's venue is "North American Tour", not a theater; the tour note
     // below says every stop counts (BRO-4211).
