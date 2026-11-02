@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6860",
   "planId": "70f06e51-c4ea-4586-95ba-67b755990c9e",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T22:57:42.354Z",
   "submitter": {
     "name": null,
@@ -122,5 +122,69 @@
         "description": "tiny-beautiful-things-off-broadway-2016/dailybeast--janice-kaplan.json: wrongAttribution"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T23:19:39.741Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arcadia-off-broadway-2023/theatrely--christian-lewis.json crossOutletVerifiedNote: null -> \"Live page 2026-11-02 shows author Christian Lewis on theatrely.com; byline matches stored critic\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "arcadia-off-broadway-2023/theatrely--christian-lewis.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-cage-aux-folles-2010/dctheatrescene--richard-seff.json crossOutletVerifiedNote: null -> \"Live page 2026-11-02 shows author-name Richard Seff on dctheatrescene.com; byline matches stored critic\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "la-cage-aux-folles-2010/dctheatrescene--richard-seff.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-the-body-of-the-world-off-broadway-2018/theatermania--iris-fanger.json crossOutletVerifiedNote: null -> \"TheaterMania Boston page 2026-11-02 shows author Iris Fanger (theatermania.com/authors/iris-fanger); matches stored critic\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "in-the-body-of-the-world-off-broadway-2018/theatermania--iris-fanger.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-the-remix-off-broadway-2016/cervelli-on-stage--joseph-cervelli.json crossOutletVerifiedNote: null -> \"Blog post on cervellionstage.blogspot.com carries By Joseph Cervelli; his own blog, byline matches\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-the-remix-off-broadway-2016/cervelli-on-stage--joseph-cervelli.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweet-charity-off-broadway-2016/cervelli-on-stage--joseph-cervelli.json crossOutletVerifiedNote: null -> \"Blog post on cervellionstage.blogspot.com carries By Joseph Cervelli; his own blog, byline matches\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweet-charity-off-broadway-2016/cervelli-on-stage--joseph-cervelli.json crossOutletVerified: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-babylon-line-off-broadway-2016/dailybeast--janice-kaplan.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tiny-beautiful-things-off-broadway-2016/dailybeast--janice-kaplan.json wrongAttribution: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
