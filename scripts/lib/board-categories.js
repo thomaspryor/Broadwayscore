@@ -264,7 +264,9 @@ function compareReports(prev, cur) {
  */
 function lastRecheckStatuses(entries) {
   const out = new Map();
-  for (const e of entries || []) {
+  // Sorted by ts so an appended retry of an older run cannot overwrite a newer verdict.
+  const rows = (entries || []).filter(Boolean).slice().sort((a, b) => String(a.ts || '').localeCompare(String(b.ts || '')));
+  for (const e of rows) {
     if (!e || e.event !== 'recheck' || !/^BRO-\d+$/.test(String(e.cardId || '')) || !e.status) continue;
     out.set(e.cardId, e.status);
   }

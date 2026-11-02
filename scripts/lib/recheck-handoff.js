@@ -58,7 +58,7 @@ function buildHandoffComment({ why, now = new Date() } = {}) {
   ].join('\n');
 }
 
-async function handoffCard({ identifier, why, linearBrainMain, now } = {}) {
+async function handoffCard({ identifier, why, linearBrainMain, now, getIssue } = {}) {
   const comment = buildHandoffComment({ why, now });
   const main = linearBrainMain || require('../linear-brain.js').main;
   const realExit = process.exit;
@@ -68,6 +68,12 @@ async function handoffCard({ identifier, why, linearBrainMain, now } = {}) {
     throw new ExitTrap(firstCode);
   };
   try {
+    // The run can take minutes after the fetch: do not move a card someone has since started or a parallel run already moved.
+    if (getIssue !== null) {
+      const issue = await (getIssue || require('./linear-client').getIssue)(identifier);
+      const name = issue && issue.state && issue.state.name;
+      if (!HANDOFF_STATE_NAMES.includes(name)) return { handedOff: false, error: `card is ${name || 'unknown'} now, not Paused/Backlog`, comment };
+    }
     await main(['update', identifier, '--state', 'Todo', '--comment', comment]);
     return { handedOff: true, error: null, comment };
   } catch (err) {

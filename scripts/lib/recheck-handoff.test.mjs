@@ -54,12 +54,15 @@ test('handoff: leaves alone a closable pass, a claimed card, a Todo card and one
 test('handoffCard: one linear-brain update to Todo with the marker comment; exit codes become a result', async () => {
   const calls = [];
   const okMain = async (argv) => { calls.push(argv); };
-  const r = await handoffCard({ identifier: 'BRO-1', why: 'why', linearBrainMain: okMain, now: NOW });
+  const r = await handoffCard({ identifier: 'BRO-1', why: 'why', linearBrainMain: okMain, now: NOW, getIssue: async () => ({ state: { name: 'Paused' } }) });
   assert.equal(r.handedOff, true);
   assert.deepEqual(calls[0].slice(0, 4), ['update', 'BRO-1', '--state', 'Todo']);
   assert.ok(calls[0][5].startsWith(core.RECHECK_HANDOFF_MARKER));
   const realExit = process.exit;
-  const bad = await handoffCard({ identifier: 'BRO-1', why: 'w', linearBrainMain: async () => { process.exit(5); } });
+  const bad = await handoffCard({ identifier: 'BRO-1', why: 'w', linearBrainMain: async () => { process.exit(5); }, getIssue: async () => ({ state: { name: 'Paused' } }) });
+  const moved = await handoffCard({ identifier: 'BRO-1', why: 'w', linearBrainMain: okMain, getIssue: async () => ({ state: { name: 'In Progress' } }) });
+  assert.equal(moved.handedOff, false);
+  assert.match(moved.error, /In Progress/);
   assert.equal(bad.handedOff, false);
   assert.equal(process.exit, realExit, 'process.exit is restored');
 });

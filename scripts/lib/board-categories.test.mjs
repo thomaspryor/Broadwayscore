@@ -269,6 +269,11 @@ test('BRO-6853: lastRecheckStatuses keeps the newest real verdict, ignores skips
     { event: 'recheck-summary', cardId: 'BRO-3', status: 'fail' },
   ]);
   assert.deepEqual([...m], [['BRO-1', 'fail'], ['BRO-2', 'pass']]);
+  const late = bc.lastRecheckStatuses([
+    { event: 'recheck', cardId: 'BRO-9', status: 'fail', ts: '2026-11-02T00:00:00Z' },
+    { event: 'recheck', cardId: 'BRO-9', status: 'pass', ts: '2026-10-01T00:00:00Z' },
+  ]);
+  assert.equal(late.get('BRO-9'), 'fail', 'file order does not beat the timestamp');
 });
 
 test('BRO-6853: the board report prints the failed and waiting rows separately', () => {
