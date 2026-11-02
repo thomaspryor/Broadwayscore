@@ -122,8 +122,8 @@ const findCanarySpawn = dispatchReconcile.findMyJob;
  * BRO-6822: true when the dispatcher REFUSED this canary's job for host disk
  * pressure (job-abandoned, reason "disk-pressure: ..."). That is an
  * infrastructure refusal, not evidence the dispatch pipeline is broken, so
- * the canary must re-dispatch rather than record canary-fail (10-31 and
- * 11-01 both failed this way at ~2.8-4.8GB free vs the 5GB floor).
+ * it gets its own 'disk-pressure' stage that the health row reports as a warn
+ * (10-31 and 11-01 both failed this way at ~2.8-4.8GB free vs the 5GB floor).
  */
 function wasRefusedByDiskPressure(dispatchLedgerEntries, taskId) {
   const entries = Array.isArray(dispatchLedgerEntries) ? dispatchLedgerEntries : [];
@@ -153,10 +153,19 @@ function foldCanaryStage({ dateStr, canaryLedgerEntries, dispatchLedgerEntries, 
   if (resolvedPass) return { stage: 'verified-pass', taskId: filed.taskId };
 
   const resolvedFail = entries.find((e) => e && e.event === 'canary-fail' && e.date === dateStr);
-  if (resolvedFail) return { stage: resolvedFail.stage || 'card-filed', taskId: filed.taskId };
+  if (resolvedFail) {
+    // Fails recorded before the 'disk-pressure' stage existed (10-31, 11-01) say
+    // 'card-filed'; the dispatch ledger still proves the real cause.
+    const recorded = resolvedFail.stage || 'card-filed';
+    const refused = recorded === 'card-filed' && wasRefusedByDiskPressure(dispatchLedgerEntries, filed.taskId);
+    return { stage: refused ? 'disk-pressure' : recorded, taskId: filed.taskId };
+  }
 
   const job = findCanarySpawn(dispatchLedgerEntries, filed.taskId, filed.ts);
-  if (!job) return { stage: 'card-filed', taskId: filed.taskId };
+  if (!job) {
+    if (wasRefusedByDiskPressure(dispatchLedgerEntries, filed.taskId)) return { stage: 'disk-pressure', taskId: filed.taskId };
+    return { stage: 'card-filed', taskId: filed.taskId };
+  }
   if (job.event === dispatchLedger.JOB_EVENTS.DONE) {
     return { stage: 'job-done', taskId: filed.taskId, jobId: job.jobId };
   }
@@ -227,6 +236,18 @@ function assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries, now = new
       name,
       status: 'warn',
       message: `Autofix pipeline canary for ${yesterday} finished its dispatch but is not yet confirmed (marker not yet verified on origin/main, or this machine could not check) — not a confirmed failure yet.`,
+    };
+  }
+
+  // BRO-6822: the dispatcher refused the job for host disk pressure — an
+  // infrastructure condition with its own disk-pressure alert, not proof the
+  // dispatch pipeline is broken.
+  if (stage === 'disk-pressure') {
+    return {
+      name,
+      status: 'warn',
+      message: `Autofix pipeline canary for ${yesterday} was refused by the dispatcher for host disk pressure (free space under the dispatch floor) — a host condition, not a confirmed pipeline failure.`,
+      hint: 'Free disk (scripts/gc-merged-worktrees.sh); see the disk-pressure alert.',
     };
   }
 
@@ -548,21 +569,13 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
       // bound, marker not yet visible) — don't call it a failure prematurely.
       const filed = ledgerEntries.find((e) => e && e.event === 'card-filed' && e.date === yesterday);
       const ageH = filed ? (now.getTime() - new Date(filed.ts).getTime()) / 3600e3 : Infinity;
-      const redispatched = ledgerEntries.some((e) => e && e.event === 'canary-redispatch' && e.date === yesterday);
-      if (!redispatched && wasRefusedByDiskPressure(dispatchLedgerEntries, yState.taskId)) {
-        // One retry per date; the next run resolves it (pass, or fail if it is still refused).
-        if (!dryRun) {
-          appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'canary-redispatch', date: yesterday, taskId: yState.taskId, reason: 'disk-pressure' });
-          try { dispatchDetached(yState.taskId, log, 0, null, { allowAutofixFiled: true, allowAutomationParked: true }); }
-          catch (err) { log(`[autofix-canary] WARN redispatch failed for ${yState.taskId}: ${String(err.message).slice(0, 120)}`); }
-        }
-        log(`[autofix-canary] ${yesterday} canary was refused for disk pressure — re-dispatched once instead of failing`);
-      } else if (ageH < ORPHAN_TIMEOUT_H && yState.stage !== 'job-failed') {
+      if (ageH < ORPHAN_TIMEOUT_H && yState.stage !== 'job-failed') {
         log(`[autofix-canary] ${yesterday} canary still in flight at stage "${yState.stage}" (${ageH.toFixed(1)}h old) — resolving next run`);
       } else {
         if (!dryRun) {
           appendJsonlLedger(CANARY_LEDGER_PATH, {
-            event: 'canary-fail', date: yesterday, taskId: yState.taskId, stage: yState.stage,
+            event: 'canary-fail', date: yesterday, taskId: yState.taskId,
+            stage: wasRefusedByDiskPressure(dispatchLedgerEntries, yState.taskId) ? 'disk-pressure' : yState.stage,
             note: markerExists ? 'marker on origin/main but task not marked completed' : 'marker never landed on origin/main',
           });
         }

@@ -590,3 +590,32 @@ test('wasRefusedByDiskPressure: a later real spawn supersedes the refusal', () =
   ];
   assert.equal(wasRefusedByDiskPressure(d, 'linear:BRO-1'), false);
 });
+
+test('foldCanaryStage: filed, no spawn, disk-pressure abandon -> disk-pressure stage', () => {
+  const canary = [{ event: 'card-filed', date: YESTERDAY, taskId: 'linear:BRO-1', ts: at(30) }];
+  const disp = [{ event: 'job-abandoned', taskId: 'linear:BRO-1', ts: at(29), reason: 'disk-pressure: disk free 4.8GB < floor 5GB' }];
+  assert.equal(foldCanaryStage({ dateStr: YESTERDAY, canaryLedgerEntries: canary, dispatchLedgerEntries: disp, now: new Date(NOW) }).stage, 'disk-pressure');
+});
+
+test('assessCanaryRow: disk-pressure stage (derived or recorded canary-fail) is a warn, not an error', () => {
+  const filed = { event: 'card-filed', date: YESTERDAY, taskId: 'linear:BRO-1', ts: at(30) };
+  const disp = [{ event: 'job-abandoned', taskId: 'linear:BRO-1', ts: at(29), reason: 'disk-pressure: x' }];
+  const a = assessCanaryRow({ canaryLedgerEntries: [filed], dispatchLedgerEntries: disp, now: new Date(NOW) });
+  assert.equal(a.status, 'warn');
+  const b = assessCanaryRow({ canaryLedgerEntries: [filed, { event: 'canary-fail', date: YESTERDAY, taskId: 'linear:BRO-1', stage: 'disk-pressure' }], dispatchLedgerEntries: [], now: new Date(NOW) });
+  assert.equal(b.status, 'warn');
+});
+
+test('assessCanaryRow: a card-filed canary with no disk-pressure refusal is still an error', () => {
+  const filed = { event: 'card-filed', date: YESTERDAY, taskId: 'linear:BRO-1', ts: at(30) };
+  assert.equal(assessCanaryRow({ canaryLedgerEntries: [filed], dispatchLedgerEntries: [], now: new Date(NOW) }).status, 'error');
+});
+
+test('foldCanaryStage: legacy recorded canary-fail "card-filed" + disk-pressure abandon in dispatch ledger -> disk-pressure', () => {
+  const canary = [
+    { event: 'card-filed', date: YESTERDAY, taskId: 'linear:BRO-1', ts: at(30) },
+    { event: 'canary-fail', date: YESTERDAY, taskId: 'linear:BRO-1', stage: 'card-filed' },
+  ];
+  const disp = [{ event: 'job-abandoned', taskId: 'linear:BRO-1', reason: 'disk-pressure: x' }];
+  assert.equal(foldCanaryStage({ dateStr: YESTERDAY, canaryLedgerEntries: canary, dispatchLedgerEntries: disp, now: new Date(NOW) }).stage, 'disk-pressure');
+});
