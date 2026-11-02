@@ -32,7 +32,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIncludableForRebuild } = require('./review-guards');
-const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, canonicalPublicationHost } = require('./host-suffix-lists');
 const { registrableHost } = require('./non-review-url-patterns');
 
 // ── (b) missing contentTier ─────────────────────────────────────────────
@@ -313,6 +313,11 @@ function findProbableDomainMoves(outlets, unknownHosts) {
     if (!host) continue;
     // Compare in registrable form on BOTH sides (see the set-build comment).
     if (allKnownHosts.has(registrableHost(host.toLowerCase()))) continue; // already registered SOMEWHERE — not a move
+    // A Blogger country mirror (x.blogspot.de) is the registered blog
+    // x.blogspot.com, not a move (BRO-6837: dougmarino.blogspot.de was
+    // reported against act-three-the-reviews in the 2026-11-02 digest).
+    const canonical = canonicalPublicationHost(`https://${host}/`);
+    if (canonical && allKnownHosts.has(registrableHost(canonical))) continue;
     const slug = normalizeHostSlug(host);
     if (slug.length < MIN_SLUG_LENGTH) continue;
     for (const [outletId, outlet] of Object.entries(outlets)) {

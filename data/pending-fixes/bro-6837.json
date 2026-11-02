@@ -1,0 +1,27 @@
+{
+  "issueNumber": "bro-6837",
+  "planId": "3776edd4-6495-4964-b6b4-7549539e6bc4",
+  "status": "pending",
+  "createdAt": "2026-11-02T17:02:05.840Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6837: record artsatl.com as a domain alias of artsatl (registered domain artsatl.org). The 2026-11-02 digest row Quality: outlet domain moves listed it; the sample URL is an ArtsATL review (www.artsatl.com/2013/09/review-manilows-harmony...), the outlet's pre-.org address.",
+    "steps": [
+      "Append artsatl.com to domainAliases on artsatl in data/outlet-registry.json."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "outlet-registry-alias",
+        "outletId": "artsatl",
+        "host": "artsatl.com",
+        "kind": "domainAlias",
+        "reason": "ArtsATL published under artsatl.com before moving to artsatl.org; census sample is an ArtsATL review",
+        "description": "Alias artsatl.com to artsatl"
+      }
+    ]
+  }
+}

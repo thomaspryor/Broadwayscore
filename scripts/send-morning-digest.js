@@ -472,6 +472,13 @@ function decisionsListLinkHtml(needsYou, secret = process.env.APPROVAL_HMAC_SECR
 
 const SUBJECT_NAME_MAX = 42;
 const SUBJECT_LIMIT = 120; // digest-content-invariants.js: subject must be < 120 chars
+// BRO-6837: the open-board reads (403 issues, 5 pages) take ~1s from a Mac or
+// cloud session but blew a 15s budget on the GitHub runner on 2026-11-02, so
+// the Action's email read "Linear unreadable", matched no fix card, and showed
+// every visitor row as "no automatic fix confirmed" although most had cards.
+// Same 60s budget as fetchOpenBoard above; the job has a 20-minute cap.
+const LINEAR_BOARD_READ_TIMEOUT_MS = 60_000;
+
 function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, loopDead = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
@@ -1210,7 +1217,7 @@ async function main() {
     const { buildDecisionsSection } = require('./lib/owner-decision-notify.js');
     // BRO-6266: comments for the decision cards only, so the digest applies the
     // same already-answered test as the decision email.
-    const issues = await withTimeout(fetchOpenIssues().then(attachDecisionComments), 15_000, { message: 'timed out after 15000ms' });
+    const issues = await withTimeout(fetchOpenIssues().then(attachDecisionComments), LINEAR_BOARD_READ_TIMEOUT_MS, { message: `timed out after ${LINEAR_BOARD_READ_TIMEOUT_MS}ms` });
     return buildDecisionsSection(issues);
   })();
   linearDecisionsPromise.catch(() => {}); // handled where awaited
@@ -1234,7 +1241,7 @@ async function main() {
   try {
     const linear = require('./lib/linear-client.js');
     const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
-    const issues = await withTimeout(linear.listOpenIssues(), 15_000, { message: 'timed out after 15000ms' });
+    const issues = await withTimeout(linear.listOpenIssues(), LINEAR_BOARD_READ_TIMEOUT_MS, { message: `timed out after ${LINEAR_BOARD_READ_TIMEOUT_MS}ms` });
     openIssues = issues;
     const awaiting = (issues || []).filter(isAwaitingOwner);
     // BRO-420: "waiting since" is derived from linear-attach-approval.js's
@@ -1510,6 +1517,17 @@ async function main() {
   // 'tracked' so the email matches the Mac's "already has a fix ticket".
   if (noAutofix) try {
     const { planAutofix, markTrackedReportOnly, keepDecisionQueued, localRollupIssues } = require('./lib/digest-autofix.js');
+    // BRO-6837: report-only rows lean entirely on the board read for their
+    // status, so one slow page must not label every row "no automatic fix
+    // confirmed". Retry once before giving up.
+    if (!Array.isArray(openIssues)) {
+      try {
+        openIssues = await withTimeout(require('./lib/linear-client.js').listOpenIssues(), LINEAR_BOARD_READ_TIMEOUT_MS, { message: `timed out after ${LINEAR_BOARD_READ_TIMEOUT_MS}ms` });
+        console.log(`[digest] --no-autofix: open-board read retried and succeeded (${openIssues.length} issue(s))`);
+      } catch (err) {
+        console.error(`[digest] WARN --no-autofix: open-board retry failed: ${String(err.message).slice(0, 120)}`);
+      }
+    }
     const openTitles = Array.isArray(openIssues) ? new Set(openIssues.map((i) => i && i.title).filter(Boolean)) : null;
     const queued = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
     autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles);

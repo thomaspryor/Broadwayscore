@@ -305,3 +305,37 @@ test('SOURCE GUARD: no consumer re-declares its own suffix list', () => {
     );
   }
 });
+
+// BRO-6837: generic `<sld>.<ccTLD>` suffixes (com.my, com.hk, com.ph) are
+// public suffixes, never a registrable domain. Before this the 2026-11-02
+// digest reported 'com.my' and 'com.hk' as Manila Bulletin domain moves.
+test('BRO-6837: generic second-level country suffixes are recognised', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { multipartSuffixOf, isBareSuffix } = req('./host-suffix-lists.js');
+  const { registrableHost } = req('./non-review-url-patterns.js');
+  assert.equal(multipartSuffixOf('movies.rockstarmedia.com.my'), 'com.my');
+  assert.equal(registrableHost('movies.rockstarmedia.com.my'), 'rockstarmedia.com.my');
+  assert.equal(registrableHost('en.tripadvisor.com.hk'), 'tripadvisor.com.hk');
+  assert.equal(registrableHost('mb.com.ph'), 'mb.com.ph');
+  assert.equal(isBareSuffix('com.my'), true);
+  // Unchanged shapes
+  assert.equal(registrableHost('theater.nytimes.com'), 'nytimes.com');
+  assert.equal(registrableHost('www.bbc.co.uk'), 'bbc.co.uk');
+  assert.equal(multipartSuffixOf('com.my'), null);
+  assert.equal(multipartSuffixOf('go.com'), null);
+});
+
+test('BRO-6837: domain-move detector ignores bare suffixes and Blogger country mirrors', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { findProbableDomainMoves } = req('./silent-exclusion-detectors.js');
+  const outlets = {
+    'manila-bulletin': { domain: 'mb.com.ph' },
+    'act-three-the-reviews': { domain: 'dougmarino.blogspot.com' },
+    artsatl: { domain: 'artsatl.org' },
+  };
+  const census = ['com.my', 'com.hk', 'dougmarino.blogspot.de', 'artsatl.com'].map((host) => ({ host, occurrences: 1 }));
+  const moves = findProbableDomainMoves(outlets, census).map((m) => [m.host, m.outletId]);
+  assert.deepEqual(moves, [['artsatl.com', 'artsatl']]);
+});

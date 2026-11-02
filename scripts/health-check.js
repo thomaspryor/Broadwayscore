@@ -1002,8 +1002,12 @@ function checkSync() {
     const empty = [];
     for (const show of activeShows) {
       const castFile = path.join(castDir, `${show.id}.json`);
+      // Pre-opening previews: IBDB often has no page yet, so neither a missing
+      // file nor an empty tombstone is a coverage gap until openingDate passes
+      // (BRO-6837: Here There Are Blueberries flagged on its first preview day).
+      const preOpening = show.status === 'previews' && show.openingDate && show.openingDate > new Date().toISOString().slice(0, 10);
       if (!fs.existsSync(castFile)) {
-        missing.push(show.title);
+        if (!preOpening) missing.push(show.title);
       } else {
         try {
           const cast = readJSON(castFile);
@@ -1012,7 +1016,6 @@ function checkSync() {
             // under an earlier production's page, which the backfill rejects) —
             // a confirmed-empty tombstone there is expected, not a coverage gap.
             // Re-checked weekly by the backfill; counted once openingDate passes.
-            const preOpening = show.status === 'previews' && show.openingDate && show.openingDate > new Date().toISOString().slice(0, 10);
             if (!preOpening) empty.push(show.title);
           }
         } catch {}
@@ -1057,13 +1060,19 @@ function checkSync() {
       worstStatus = 'warn';
       issues.push(`Shows dropped: ${currentTotal} vs baseline ${baseline.totalShows}`);
     }
-    const openDrop = baseline.openShows - currentOpen;
+    // BRO-6837: shows that closed on their own scheduled closingDate since the
+    // baseline was written are expected, not lost data. On 2026-11-02 eleven
+    // weekend closings (Oct 30 to Nov 1) tripped this as a visitor-facing
+    // error ("fewer shows than yesterday") until the next baseline refresh.
+    const { countScheduledClosingsSince } = require('./lib/scheduled-closings');
+    const scheduledClosings = countScheduledClosingsSince(showList, baseline);
+    const openDrop = baseline.openShows - currentOpen - scheduledClosings;
     if (openDrop > 5) {
       worstStatus = 'error';
-      issues.push(`Open shows dropped by ${openDrop}: ${currentOpen} vs baseline ${baseline.openShows}`);
+      issues.push(`Open shows dropped by ${openDrop} beyond ${scheduledClosings} scheduled closing(s): ${currentOpen} vs baseline ${baseline.openShows}`);
     } else if (openDrop > 2) {
       worstStatus = 'warn';
-      issues.push(`Open shows dropped by ${openDrop}: ${currentOpen} vs baseline ${baseline.openShows}`);
+      issues.push(`Open shows dropped by ${openDrop} beyond ${scheduledClosings} scheduled closing(s): ${currentOpen} vs baseline ${baseline.openShows}`);
     }
     if (currentReviews < baseline.totalReviews) {
       worstStatus = 'warn';
@@ -1071,7 +1080,7 @@ function checkSync() {
     }
 
     if (issues.length === 0) {
-      return { name: 'Sync: baseline drift', status: 'pass', message: `${currentTotal} shows, ${currentOpen} open, ${currentReviews} reviews (all at or above baseline)` };
+      return { name: 'Sync: baseline drift', status: 'pass', message: `${currentTotal} shows, ${currentOpen} open, ${currentReviews} reviews (all at or above baseline${scheduledClosings ? `; ${scheduledClosings} scheduled closing(s) since the baseline` : ''})` };
     }
     return { name: 'Sync: baseline drift', status: worstStatus, message: issues.join('; '), hint: 'Run validate-data.js to update baseline' };
   }));

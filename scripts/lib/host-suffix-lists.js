@@ -96,6 +96,7 @@ function isBareSuffix(host) {
   if (h.split('.').filter(Boolean).length < 2) return true;
   if (PLATFORM_HOST_SUFFIXES.includes(h)) return true;
   if (MULTIPART_PUBLIC_SUFFIXES.includes(h)) return true;
+  if (isGenericMultipartSuffix(h)) return true;
   return isBloggerMirror(h);
 }
 
@@ -194,10 +195,27 @@ function platformSuffixOf(host) {
  * @param {string} host
  * @returns {string|null}
  */
+// Generic second-level country suffix shape (BRO-6837): `<sld>.<ccTLD>` where
+// the second-level label is one registries hand out under a country code
+// (com.my, com.hk, com.ph, co.jp, org.sg, ...). The 12-entry list above missed
+// these, so registrableHost('movies.rockstarmedia.com.my') returned 'com.my'
+// and the domain-move detector paired that bare suffix with Manila Bulletin
+// (mb.com.ph -> 'com.ph'), a false "outlet moved" row in the 2026-11-02 digest.
+const GENERIC_SECOND_LEVEL = /^(?:com|co|org|net|gov|edu|ac|or|ne|go|gob|nic|mil|ltd|plc|sch)\.[a-z]{2}$/;
+
+function isGenericMultipartSuffix(suffix) {
+  return GENERIC_SECOND_LEVEL.test(suffix);
+}
+
 function multipartSuffixOf(host) {
   const h = cleanHost(host);
   if (!h) return null;
-  return MULTIPART_PUBLIC_SUFFIXES.find((s) => h.endsWith('.' + s)) || null;
+  const listed = MULTIPART_PUBLIC_SUFFIXES.find((s) => h.endsWith('.' + s));
+  if (listed) return listed;
+  const labels = h.split('.').filter(Boolean);
+  if (labels.length < 3) return null; // 'co.uk'-shaped bare suffix: nothing registrable
+  const tail = labels.slice(-2).join('.');
+  return isGenericMultipartSuffix(tail) ? tail : null;
 }
 
 /**

@@ -5721,6 +5721,9 @@ function runValidation() {
   const newBaseline = {
     totalShows: shows.length,
     openShows: openShows.length,
+    // BRO-6837: which shows were open, so health-check's baseline-drift check
+    // can tell a scheduled closing from a show that vanished.
+    openShowIds: openShows.map(s => s.id).filter(Boolean).sort(),
     totalReviews: reviewCount,
     tonyNominations: tonyResult?.totalNominations || null,
     tonyWins: tonyResult?.totalWins || null,
