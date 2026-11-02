@@ -1,0 +1,205 @@
+{
+  "issueNumber": "bro-5075-b",
+  "planId": "484d9470-14f1-4b16-8232-2f60b200c40a",
+  "status": "pending",
+  "createdAt": "2026-11-02T14:24:38.938Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5075: repair or remove the 127 review files whose url is not an absolute http(s) url. 37 repaired in place to the same article (BroadwayWorld relative paths given their host, scheme typos, schemeless hosts; score and flags kept, needs the url-change-invariant repair rule landed with this plan). 90 deleted, none live today: 67 /people/ critic-profile paths and 4 text-fragment urls with no fullText (the rebuild excludes them as skippedInvalidUrl), plus 19 duplicates whose article a sibling or another show already holds with a valid url. (part 2 of 6)",
+    "steps": [
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: Misspelled-critic duplicate of broadwayworld--charles-shubow.json, which holds the same article with an absolute url.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: Duplicate: abc-news--mark-kennedy.json holds the same AP wire page with a valid url.",
+      "BRO-5075: Duplicate: broadwayworld--aliya-al-hassan.json holds the same BWW article with an absolute url.",
+      "BRO-5075: Duplicate: broadwayworld--unknown.json holds the same BWW article with an absolute url and is the live row.",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "death-becomes-her-2024/broadwayworld--misha-davenport.json",
+        "field": "url",
+        "oldValue": "/chicago/article/Review-DEATH-BECOMES-HER-at-Cadillac-Palace-20240520",
+        "newValue": "https://www.broadwayworld.com/chicago/article/Review-DEATH-BECOMES-HER-at-Cadillac-Palace-20240520",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-1999/ap--mark-kennedy.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-1999/forbes--roger-friedman.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-1999/hollywood-reporter--david-rooney.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-1999/independent--sarah-hughes.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-1999/nypost--elisabeth-vincentelli.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-1999/village-voice--michael-musto.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-1999/vulture--scott-brown.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elektra-off-broadway-2026/broadwayworld--alexander-cohen.json",
+        "field": "url",
+        "oldValue": "/westend/article/Review-ELEKTRA-Duke-Of-Yorks-20250206",
+        "newValue": "https://www.broadwayworld.com/westend/article/Review-ELEKTRA-Duke-Of-Yorks-20250206",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "encores-la-cage-aux-folles-off-broadway-2026/standard--nick-curtis.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "faith-healer-1979/broadwayworld--eleni-cashell.json",
+        "field": "url",
+        "oldValue": "/westend/article/BWW-Review-FAITH-HEALER-Old-Vic-In-Camera-20200919",
+        "newValue": "https://www.broadwayworld.com/westend/article/BWW-Review-FAITH-HEALER-Old-Vic-In-Camera-20200919",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fela-2012/nypost--elisabeth-vincentelli.json",
+        "description": "BRO-5075: url field holds a text fragment, not a url; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "fences-2010/independent--paul-taylor.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "gigi-2015/broadwayworld--chrles-shubow.json",
+        "description": "BRO-5075: Misspelled-critic duplicate of broadwayworld--charles-shubow.json, which holds the same article with an absolute url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hair-2011/entertainment-today--michael-holder.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hamilton-west-end-2021/broadwayworld--marianka-swain.json",
+        "field": "url",
+        "oldValue": "/article/BWW-Review-HAMILTON-Victoria-Palace-Theatre-20171221",
+        "newValue": "https://www.broadwayworld.com/article/BWW-Review-HAMILTON-Victoria-Palace-Theatre-20171221",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamlet-2009/telegraph--charles-spencer.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heisenberg-2016/ap--mark-kennedy.json",
+        "description": "BRO-5075: Duplicate: abc-news--mark-kennedy.json holds the same AP wire page with a valid url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hello-dolly-west-end-2024/broadwayworld--unknown.json",
+        "description": "BRO-5075: Duplicate: broadwayworld--aliya-al-hassan.json holds the same BWW article with an absolute url."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "here-we-are-west-end-2025/broadwayworld--brenner-alexander-cohen.json",
+        "description": "BRO-5075: Duplicate: broadwayworld--unknown.json holds the same BWW article with an absolute url and is the live row."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "into-the-woods-2022/broadwayworld--evan-henerson.json",
+        "field": "url",
+        "oldValue": "/los-angeles/article/Review-INTO-THE-WOODS-at-Ahmanson-Theatre-20230704",
+        "newValue": "https://www.broadwayworld.com/los-angeles/article/Review-INTO-THE-WOODS-at-Ahmanson-Theatre-20230704",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jesus-christ-superstar-1971/broadwayworld--carrie-dunn.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "jesus-christ-superstar-1971/liverpool-echo--catherine-jones.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019/broadwayworld--isabella-perrone.json",
+        "field": "url",
+        "oldValue": "/toronto/article/Review-JOSEPH-AND-THE-TECHNICOLOR-DREAMCOAT-dazzles-in-imaginative-new-production-20221219",
+        "newValue": "https://www.broadwayworld.com/toronto/article/Review-JOSEPH-AND-THE-TECHNICOLOR-DREAMCOAT-dazzles-in-imaginative-new-production-20221219",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/herald--neil-cooper.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      }
+    ]
+  }
+}

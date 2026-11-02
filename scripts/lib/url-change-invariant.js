@@ -217,7 +217,24 @@ function urlCanonicallyChanged(existingUrl, newUrl) {
   if (newUrl.includes('undefined') || !/^https?:\/\//i.test(newUrl)) return false;
   // Lazy require — review-normalization lazy-requires this module back.
   const { normalizeUrl } = require('./review-normalization');
+  if (isMalformedUrlRepair(existingUrl, newUrl, normalizeUrl)) return false;
   return normalizeUrl(existingUrl) !== normalizeUrl(newUrl);
+}
+
+/**
+ * BRO-5075: true when `existingUrl` is not an absolute url and `newUrl` is its
+ * one deterministic repair (relative-review-url.js: a BroadwayWorld
+ * "/<region>/article/..." path given its host, "hhttp://"/" https://" typos,
+ * "www.x.com/..." given a scheme). Same article, so nothing derived from it is
+ * stale: without this every such repair wiped the file's score and flags.
+ * The BWW host is only inferred when the new url is on broadwayworld.com.
+ */
+function isMalformedUrlRepair(existingUrl, newUrl, normalizeUrl) {
+  if (/^https?:\/\//i.test(existingUrl)) return false;
+  let outletId = null;
+  try { if (/(^|\.)broadwayworld\.com$/i.test(new URL(newUrl).hostname)) outletId = 'broadwayworld'; } catch { return false; }
+  const { fixedUrl } = require('./relative-review-url').classifyRelativeUrl(existingUrl, outletId);
+  return !!fixedUrl && normalizeUrl(fixedUrl) === normalizeUrl(newUrl);
 }
 
 /**
