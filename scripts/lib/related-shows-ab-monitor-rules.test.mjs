@@ -132,3 +132,54 @@ test('real weekly runner: dry-run writes nothing; failed delivery retries; succe
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// BRO-6868: the real 2026-11-02 readout (~5% of people without a first-session
+// pageview join) used to suppress the result and email [CRITICAL] every week.
+const live = (nC, mC, nV, mV) => summarizeRelatedShows([
+  ['control', nC, Math.floor(nC * .1), Math.floor(nC * .4), mC, 0],
+  ['compact-after-reviews', nV, Math.floor(nV * .12), Math.floor(nV * .4), mV, 0],
+], { ok: true, problem: null });
+
+test('a small join gap (live 2026-11-02 shape) is tolerated and yields a p-value', () => {
+  const s = live(893, 48, 950, 38);
+  assert.equal(s.primary.suppressed, null);
+  assert.ok(Number.isFinite(s.primary.p));
+  assert.deepEqual(kinds(decideRelatedShowsAlerts(s, {}, NOW)), []);
+});
+
+test('a large or lopsided join gap still suppresses the result', () => {
+  assert.match(live(1000, 150, 1000, 140).primary.suppressed, /pageview join/); // >10% each
+  assert.match(live(1000, 10, 1000, 80).primary.suppressed, /pageview join/);   // 7pp apart
+  assert.equal(live(1000, 100, 1000, 100).primary.suppressed, null);            // exactly 10% ok
+});
+
+test('below the planned sample a data problem is log-only, never an email', () => {
+  const s = live(893, 150, 950, 150);
+  const [a] = decideRelatedShowsAlerts(s, {}, NOW).alerts;
+  assert.equal(a.kind, 'data-problem');
+  assert.equal(a.logOnly, true);
+  assert.equal(a.email, false);
+  assert.equal(a.severity, 'warning');
+  // log-only alerts never consume the email cooldown
+  assert.equal(decideRelatedShowsAlerts(s, {}, NOW).state.lastDataProblemAlertAt, undefined);
+});
+
+test('at the planned sample a data problem emails in plain English, not [CRITICAL] jargon', () => {
+  const s = summary();
+  s.primary.suppressed = 'exposed people without a usable first-session pageview join';
+  const [a] = decideRelatedShowsAlerts(s, {}, NOW).alerts;
+  assert.equal(a.email, true);
+  assert.equal(a.subjectLabel, 'ACTION NEEDED');
+  assert.match(a.description, /A\/B test on show pages/);
+  assert.match(a.description, /no readout yet/);
+  assert.doesNotMatch(a.description, /maintainer|finite probability|statistic/i);
+  // a suppressed result is explained once, not twice
+  assert.equal((a.description.match(/pageview join/g) || []).length, 1);
+});
+
+test('a problem quoted inside a longer one is only shown once in the email', () => {
+  const s = summarizeRelatedShows([['control', 3200, 600, 2200, 0, 0], ['compact-after-reviews', 3210, 650, 2100, 0, 0]],
+    { ok: false, problem: 'flag inactive' });
+  const [a] = decideRelatedShowsAlerts(s, {}, NOW).alerts;
+  assert.equal((a.description.match(/flag health failed/g) || []).length, 1);
+});

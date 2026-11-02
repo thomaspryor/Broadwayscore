@@ -22,20 +22,41 @@ function decideRelatedShowsAlerts(summary, state = {}, nowMs = Date.now()) {
   if (summary?.flagHealth?.ok !== true) problems.push('flag health failed or unavailable');
   if (primary?.suppressed) problems.push(`primary suppressed: ${primary.suppressed}`);
   if (primary?.degenerate) problems.push(`primary degenerate: ${primary.degenerate}`);
-  if (!Number.isFinite(primary?.p) || primary.p < 0 || primary.p > 1 || !Number.isFinite(primary?.z)) {
-    problems.push('primary test has no finite probability and statistic');
+  // A suppressed or degenerate result already explains why p is empty; only
+  // report a bad p when nothing else did.
+  if (!primary?.suppressed && !primary?.degenerate
+    && (!Number.isFinite(primary?.p) || primary.p < 0 || primary.p > 1 || !Number.isFinite(primary?.z))) {
+    problems.push('the result came back without a usable p-value');
   }
   if (problems.length) {
-    const stamp = next.lastDataProblemAlertAt;
-    if (!Number.isFinite(stamp) || nowMs - stamp >= COOLDOWN_MS) {
-      next.lastDataProblemAlertAt = nowMs;
+    // Drop a problem already quoted inside a longer one ("flag health failed"
+    // also appears inside "primary suppressed: flag health failed").
+    const shown = problems.filter(p => !problems.some(q => q !== p && q.includes(p)));
+    const detail = `What the check found: ${shown.join('; ')}.`;
+    const sampleReached = validCounts && variants.every(v => v.n >= STOPPING_N);
+    if (!sampleReached) {
+      // Nobody is waiting on a readout yet, so there is nothing for the owner to
+      // do. Log it (run summary) instead of emailing (BRO-6868, actionable-only).
       alerts.push({
-        kind: 'data-problem', severity: 'error', email: true, stampKey: 'lastDataProblemAlertAt',
-        title: 'Related shows test: results need a data check',
-        description: `The related shows test needs a data check before its results can be read. `
-          + `No experiment setting has changed. Details for the maintainer: ${problems.join('; ')}. `
-          + `From the weekly experiment monitor. ${DOC_URL}`,
+        kind: 'data-problem', severity: 'warning', email: false, logOnly: true,
+        title: 'Related shows test: numbers could not be read yet',
+        description: `${detail} The planned sample of ${STOPPING_N.toLocaleString('en-US')} people per arm is not reached, so no readout is due.`,
       });
+    } else {
+      const stamp = next.lastDataProblemAlertAt;
+      if (!Number.isFinite(stamp) || nowMs - stamp >= COOLDOWN_MS) {
+        next.lastDataProblemAlertAt = nowMs;
+        alerts.push({
+          kind: 'data-problem', severity: 'error', email: true, stampKey: 'lastDataProblemAlertAt',
+          subjectLabel: 'ACTION NEEDED',
+          title: 'Related shows test: enough people, but the results cannot be trusted',
+          description: 'This is the A/B test on show pages (does a row of related shows near the reviews get more people '
+            + `to open a second page). It has reached its planned ${STOPPING_N.toLocaleString('en-US')} people per arm, `
+            + 'but the results check found a problem with the data, so there is no readout yet. '
+            + 'Nothing is broken on the site and no test setting changed. '
+            + `${detail} The check repeats weekly and emails again after six days if this persists. Test write-up: ${DOC_URL}`,
+        });
+      }
     }
   } else if (variants.every(v => v.n >= STOPPING_N) && !next.readyToJudgeAlertAt) {
     next.readyToJudgeAlertAt = nowMs;

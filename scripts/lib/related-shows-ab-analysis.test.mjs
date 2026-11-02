@@ -27,7 +27,7 @@ test('missing arms and zero-variance data have explicit degenerate reasons', () 
 });
 
 test('bad joins, cross-assignment, malformed counts and unknown arms suppress the primary', () => {
-  for (const patch of [[4, 1], [5, 1], [1, '3140'], [2, 3200], [3, -1], [0, 'unexpected']]) {
+  for (const patch of [[4, 400], [5, 1], [1, '3140'], [2, 3200], [3, -1], [0, 'unexpected']]) {
     const r = rows();
     r[0][patch[0]] = patch[1];
     const s = summarizeRelatedShows(r, healthy);
