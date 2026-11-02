@@ -130,11 +130,11 @@ test('gate: refuses before ENABLE_FROM, before 07:45 ET, and on a bad date; send
   assert.equal(d('2026-11-02T13:50:00Z').go, true, 'EST retry');
   assert.equal(d('2027-07-01T11:50:00Z').go, true, 'EDT 07:50');
   assert.equal(d('2027-07-01T10:50:00Z').go, false);
-  // upper bound: the catch-up must not fire a stale digest in the afternoon (pager owns it from 12:00 ET)
-  assert.equal(d('2026-11-02T16:59:00Z').go, true, 'EST 11:59');
-  assert.equal(d('2026-11-02T17:00:00Z').go, false, 'EST 12:00');
-  assert.equal(d('2027-07-01T15:59:00Z').go, true, 'EDT 11:59');
-  assert.equal(d('2027-07-01T16:00:00Z').go, false, 'EDT 12:00');
+  // upper bound: the catch-up must not fire a stale digest in the afternoon (pager owns it from 11:30 ET)
+    assert.equal(d('2026-11-02T16:29:00Z').go, true, 'EST 11:29');
+  assert.equal(d('2026-11-02T16:30:00Z').go, false, 'EST 11:30 (pager time)');
+  assert.equal(d('2027-07-01T15:29:00Z').go, true, 'EDT 11:29');
+  assert.equal(d('2027-07-01T15:30:00Z').go, false, 'EDT 11:30');
   assert.equal(d('2026-11-03T12:50:00Z').go, true, 'next morning, EST 07:50');
   for (const bad of [undefined, '', '2026-13-45', 'tomorrow']) assert.equal(gate.decideScheduledSend({ now: new Date('2027-01-01T13:00:00Z'), enableFrom: bad }).go, false, String(bad));
 });
