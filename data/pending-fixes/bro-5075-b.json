@@ -149,10 +149,12 @@
         "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
       },
       {
-        "type": "review-file-op",
-        "operation": "delete",
-        "sourcePath": "heisenberg-2016/ap--mark-kennedy.json",
-        "description": "BRO-5075: Duplicate: abc-news--mark-kennedy.json holds the same AP wire page with a valid url."
+        "type": "review-field-edit",
+        "file": "heisenberg-2016/ap--mark-kennedy.json",
+        "field": "url",
+        "oldValue": "hhttp://abcnews.go.com/Entertainment/wireStory/review-broadways-bare-play-heisenberg-sumptuous-42793495",
+        "newValue": "http://abcnews.go.com/Entertainment/wireStory/review-broadways-bare-play-heisenberg-sumptuous-42793495",
+        "description": "BRO-5075: 'hhttp' scheme typo repaired to the same AP wire page; only scored copy, kept (independent review finding)."
       },
       {
         "type": "review-file-op",
