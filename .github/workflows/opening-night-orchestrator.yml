@@ -277,6 +277,25 @@ jobs:
             echo "No earlier in-progress orchestrator covers market=$MY_MARKET — proceeding."
           fi
 
+      - name: Keep the press-night clock running (BRO-6802)
+        # press-night-clock.yml is the punctual, non-cron trigger for press night (it kicks this orchestrator and the
+        # probe at embargo -2h). It is one self-chaining dispatch run; this step re-seeds it on any tick when no hop is
+        # queued or running and a kick is still planned, so a broken chain heals. Warn-only, runs before the guard's
+        # verdict is used, and a failure here must never delay the poller. Idempotent: skipped while a hop exists.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          NEXT=$(node scripts/lib/press-night-clock.js next --shows-file=data/shows.json --categories=broadway,off-broadway) \
+            || { echo "::warning::press-night clock plan failed"; exit 0; }
+          if [ -z "$NEXT" ]; then echo "No press-night kick planned."; exit 0; fi
+          HOPS=$( (gh run list --workflow=press-night-clock.yml --status in_progress --json databaseId --jq '.[].databaseId'; \
+                   gh run list --workflow=press-night-clock.yml --status queued --json databaseId --jq '.[].databaseId') 2>/dev/null) \
+            || { echo "::warning::could not list press-night clock runs; not re-seeding"; exit 0; }
+          if [ -n "$HOPS" ]; then echo "Press-night clock already running ($NEXT)."; exit 0; fi
+          echo "Press-night clock not running; re-seeding for: $NEXT"
+          gh workflow run press-night-clock.yml || echo "::warning::could not re-seed the press-night clock"
+
       - name: Find shows to poll
         id: find
         env:

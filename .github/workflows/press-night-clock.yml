@@ -1,0 +1,111 @@
+name: Press night clock
+run-name: 'Press night clock ${{ inputs.fired }}'
+
+# BRO-6802. The punctual clock for the press-night path. GitHub crons fire 1-6h late (and drop ticks), so the old
+# arrangement (orchestrator crons at 23:00/00:00 UTC, the morning status flip) put the first review 87-100 min behind
+# the embargo on both measured Broadway nights. Nothing on the press-night path may wait for a cron: this workflow is
+# dispatch-only (workflow_dispatch is punctual), sleeps until each show's kick time (embargo -2h, from
+# scripts/lib/press-night-clock.js), and then dispatches the orchestrator for that one show. The orchestrator's own
+# steps start the press-night probe, the lane shadow and (when LANE_ONLY_MARKETS names the market) the lane night run
+# + watchdog. Off-Broadway shows are probe-only: the probe starts their lane shadow, nothing else.
+#
+# One run sleeps at most 5h, then re-dispatches itself (one chain, `fired` carries the kicks already made). Re-seeded
+# by the orchestrator's "Keep the press-night clock running" step (any tick) and by the scheduled wake-ups the owning
+# session sets, so a broken chain heals without a person. Concurrency: one run at a time, a newer dispatch queues.
+#
+# Advisory first (CLAUDE.md §19): adds no CI gate. To stop the chain, cancel the running hop and delete queued ones.
+#
+# hygiene-run-budget-ok: one bounded sleep per hop (<= 5h inside a 345-minute job); the chain ends when no kick is left in the 10-day horizon.
+
+on:
+  workflow_dispatch:
+    inputs:
+      fired:
+        description: 'Chain only: kicks already made (show:night, comma separated). Empty on a fresh seed.'
+        required: false
+        type: string
+        default: ''
+      categories:
+        description: 'Show categories the clock kicks (comma separated)'
+        required: false
+        type: string
+        default: 'broadway,off-broadway'
+      dry_run:
+        description: 'Print what would be kicked and when; sleep, dispatch and chain nothing'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  actions: write  # gh workflow run (orchestrator, probe, the next hop of this chain)
+
+concurrency:
+  group: press-night-clock
+  cancel-in-progress: false
+
+jobs:
+  clock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+
+      - name: Sleep to each kick, dispatch, chain
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FIRED: ${{ inputs.fired }}
+          CATEGORIES: ${{ inputs.categories }}
+          DRY_RUN: ${{ inputs.dry_run }}
+        run: |
+          [ -z "$FIRED" ] || printf '%s' "$FIRED" | grep -Eq '^[a-z0-9:,-]+$' || { echo "::error::fired must be show:night pairs"; exit 1; }
+          printf '%s' "$CATEGORIES" | grep -Eq '^[a-z,-]+$' || { echo "::error::bad categories"; exit 1; }
+          END=$(( $(date +%s) + 330 * 60 ))   # stop acting 15 min before the job timeout
+          while true; do
+            LINE=$(node scripts/lib/press-night-clock.js next --shows-file=data/shows.json --categories="$CATEGORIES" --fired="$FIRED") \
+              || { echo "::error::clock plan failed"; exit 1; }
+            if [ -z "$LINE" ]; then echo "No press-night kick left in the 10-day horizon. Chain ends."; exit 0; fi
+            read -r SHOW NIGHT KICK EMBARGO <<< "$LINE"
+            WAIT=$(( $(date -u -d "$KICK" +%s) - $(date +%s) ))
+            echo "Next kick: $SHOW $NIGHT at $KICK (embargo $EMBARGO), in ${WAIT}s"
+            if [ "$DRY_RUN" = "true" ]; then exit 0; fi
+            if [ "$WAIT" -gt 18000 ] || [ $(( $(date +%s) + WAIT )) -gt "$END" ]; then
+              HOP=$(( 18000 < END - $(date +%s) ? 18000 : END - $(date +%s) ))
+              [ "$HOP" -gt 0 ] && sleep "$HOP"
+              echo "Re-chaining (fired: $FIRED)"
+              gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" \
+                || { echo "::error::could not dispatch the next clock hop"; exit 1; }
+              exit 0
+            fi
+            [ "$WAIT" -gt 0 ] && sleep "$WAIT"
+            CATEGORY=$(node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.stdout.write(s?s.category:"")' "$SHOW")
+            ACTIVE=$( (gh run list --workflow=press-night-probe.yml --status in_progress --json displayTitle --jq '.[].displayTitle'; \
+                       gh run list --workflow=press-night-probe.yml --status queued --json displayTitle --jq '.[].displayTitle') 2>/dev/null || true)
+            if echo "$ACTIVE" | grep -qF "Press night probe $SHOW $NIGHT"; then
+              echo "A probe is already queued or running for $SHOW $NIGHT; nothing to start."
+            elif [ "$CATEGORY" = "broadway" ]; then
+              echo "Kick: orchestrator for $SHOW"
+              gh workflow run opening-night-orchestrator.yml -f show_id="$SHOW" -f market=broadway \
+                || { echo "::error::could not dispatch the orchestrator for $SHOW"; exit 1; }
+            else
+              echo "Kick: press-night probe for $SHOW ($CATEGORY)"
+              gh workflow run press-night-probe.yml -f show_id="$SHOW" -f night="$NIGHT" -f market="$CATEGORY" -f embargo_at="$EMBARGO" \
+                || { echo "::error::could not dispatch the probe for $SHOW"; exit 1; }
+            fi
+            FIRED="${FIRED:+$FIRED,}$SHOW:$NIGHT"
+          done
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Press night clock failed'
+          description: 'BRO-6802. The punctual press-night clock could not plan, sleep or dispatch. The orchestrator re-seeds it on its next tick; re-dispatch press-night-clock.yml by hand if a press night is within 20h.'
+          severity: 'warning'
+          email: 'false'
