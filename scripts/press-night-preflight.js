@@ -52,7 +52,9 @@ async function main() {
     description: `${v.problems.map((p) => `${p.key} (${p.why})`).join('; ')}.${v.resendDown ? ' Resend is down, so this email may not arrive; the alert also goes to Linear.' : ''} Run: ${runUrl || 'local'}`,
     url: runUrl,
   });
-  console.log(`alert: ${(res && res.action) || 'sent'}`);
+  // A 'digest' result (the router downgraded the page) is still delivered: the owner sees it in the next digest.
+  if (res && res.action === 'digest') console.log('alert: queued for the owner digest');
+  else console.log(`alert: ${(res && res.action) || 'sent'}`);
   return 1;
 }
 

@@ -117,6 +117,8 @@ async function alert(kind, showId, night, reason) {
     description: `${reason}. The press-night watchdog already retried the stuck step once; a worker session or the next poller run picks it up. Watchdog run: ${runUrl || 'local'}`,
     url: runUrl,
   });
+  // A 'digest' result (the router downgraded the page) counts as delivered: the owner sees it in the next digest.
+  if (res && res.action === 'digest') return 'digest';
   return (res && res.action) || 'sent';
 }
 
