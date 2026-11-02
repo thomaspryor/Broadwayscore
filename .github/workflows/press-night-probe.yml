@@ -29,7 +29,7 @@ on:
         required: true
         type: string
       market:
-        description: 'broadway or west-end (picks the census market)'
+        description: 'broadway, off-broadway or west-end (picks the census market; the lane shadow runs for broadway and off-broadway)'
         required: true
         type: string
       embargo_at:

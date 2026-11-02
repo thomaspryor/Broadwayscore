@@ -64,6 +64,7 @@ jobs:
           CATEGORIES: ${{ inputs.categories }}
           DRY_RUN: ${{ inputs.dry_run }}
         run: |
+          retry() { local n; for n in 1 2 3; do "$@" && return 0; sleep 30; done; return 1; }
           [ -z "$FIRED" ] || printf '%s' "$FIRED" | grep -Eq '^[a-z0-9:,-]+$' || { echo "::error::fired must be show:night pairs"; exit 1; }
           printf '%s' "$CATEGORIES" | grep -Eq '^[a-z,-]+$' || { echo "::error::bad categories"; exit 1; }
           END=$(( $(date +%s) + 330 * 60 ))   # stop acting 15 min before the job timeout
@@ -79,23 +80,33 @@ jobs:
               HOP=$(( 18000 < END - $(date +%s) ? 18000 : END - $(date +%s) ))
               [ "$HOP" -gt 0 ] && sleep "$HOP"
               echo "Re-chaining (fired: $FIRED)"
-              gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" \
+              retry gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" \
                 || { echo "::error::could not dispatch the next clock hop"; exit 1; }
               exit 0
             fi
             [ "$WAIT" -gt 0 ] && sleep "$WAIT"
             CATEGORY=$(node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.stdout.write(s?s.category:"")' "$SHOW")
-            ACTIVE=$( (gh run list --workflow=press-night-probe.yml --status in_progress --json displayTitle --jq '.[].displayTitle'; \
-                       gh run list --workflow=press-night-probe.yml --status queued --json displayTitle --jq '.[].displayTitle') 2>/dev/null || true)
-            if echo "$ACTIVE" | grep -qF "Press night probe $SHOW $NIGHT"; then
-              echo "A probe is already queued or running for $SHOW $NIGHT; nothing to start."
+            # Already started? State, not the `fired` input, decides (a fresh seed carries no fired list): any probe run
+            # for this show-night created since 30 min before the kick, in any status, means it was kicked.
+            SINCE=$(date -u -d "$KICK - 30 minutes" +%Y-%m-%dT%H:%M:%SZ)
+            STARTED=$(gh run list --workflow=press-night-probe.yml --limit 100 --json displayTitle,createdAt \
+                        --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle") \
+              || { echo "::warning::could not list probe runs; dispatching anyway (the probe's concurrency group absorbs a duplicate)"; STARTED=""; }
+            ORCH=$(gh run list --workflow=opening-night-orchestrator.yml --limit 100 --json displayTitle,createdAt \
+                     --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle") \
+              || { echo "::warning::could not list orchestrator runs"; ORCH=""; }
+            STARTED=$(printf '%s\n%s\n' "$STARTED" "$ORCH" | sed 's/^Opening Night Orchestrator targeted /Press night probe /;s/ (broadway)$/ '"$NIGHT"'/')
+            if [ -z "$CATEGORY" ]; then
+              echo "::warning::$SHOW is not in shows.json any more; skipping its kick."
+            elif echo "$STARTED" | grep -qF "Press night probe $SHOW $NIGHT"; then
+              echo "A probe was already started for $SHOW $NIGHT; nothing to start."
             elif [ "$CATEGORY" = "broadway" ]; then
               echo "Kick: orchestrator for $SHOW"
-              gh workflow run opening-night-orchestrator.yml -f show_id="$SHOW" -f market=broadway \
+              retry gh workflow run opening-night-orchestrator.yml -f show_id="$SHOW" -f market=broadway \
                 || { echo "::error::could not dispatch the orchestrator for $SHOW"; exit 1; }
             else
               echo "Kick: press-night probe for $SHOW ($CATEGORY)"
-              gh workflow run press-night-probe.yml -f show_id="$SHOW" -f night="$NIGHT" -f market="$CATEGORY" -f embargo_at="$EMBARGO" \
+              retry gh workflow run press-night-probe.yml -f show_id="$SHOW" -f night="$NIGHT" -f market="$CATEGORY" -f embargo_at="$EMBARGO" \
                 || { echo "::error::could not dispatch the probe for $SHOW"; exit 1; }
             fi
             FIRED="${FIRED:+$FIRED,}$SHOW:$NIGHT"

@@ -5,7 +5,7 @@ name: Opening Night Orchestrator
 # (github.event.schedule), NOT from the clock hour: GitHub delays these crons
 # by 3-6h (measured 2026-10), which put the West End crons in the Broadway
 # hour window (BRO-2730). The hour maps below are only a fallback.
-run-name: 'Opening Night Orchestrator (${{ inputs.market || (contains(fromJSON(''["0 5 * * *","0 18 * * *","0 20 * * *","0 21 * * *"]''), github.event.schedule) && ''west-end'' || github.event.schedule && ''broadway'' || ''auto'') }})'
+run-name: '${{ inputs.show_id && format(''Opening Night Orchestrator targeted {0} '', inputs.show_id) || ''Opening Night Orchestrator '' }}(${{ inputs.market || (contains(fromJSON(''["0 5 * * *","0 18 * * *","0 20 * * *","0 21 * * *"]''), github.event.schedule) && ''west-end'' || github.event.schedule && ''broadway'' || ''auto'') }})'
 
 # Sustained polling for opening nights. Dispatches the single-shot poller
 # every N minutes for up to M iterations. Each poller run gets a fresh
@@ -252,6 +252,9 @@ jobs:
             # (BRO-2730). Only a pre-change scheduled run still titled "(auto)"
             # falls back to the clock-hour map.
             case "$TITLE" in
+              # BRO-6802: a run for ONE show (press-night clock, owner dispatch) polls only that show, so it never
+              # covers a market for the other shows' cron runs.
+              *"Orchestrator targeted "*) continue ;;
               *"(broadway)"*) OTHER_MARKET=broadway ;;
               *"(west-end)"*) OTHER_MARKET=west-end ;;
               *)
@@ -290,7 +293,8 @@ jobs:
             || { echo "::warning::press-night clock plan failed"; exit 0; }
           if [ -z "$NEXT" ]; then echo "No press-night kick planned."; exit 0; fi
           HOPS=$( (gh run list --workflow=press-night-clock.yml --status in_progress --json databaseId --jq '.[].databaseId'; \
-                   gh run list --workflow=press-night-clock.yml --status queued --json databaseId --jq '.[].databaseId') 2>/dev/null) \
+                   gh run list --workflow=press-night-clock.yml --status queued --json databaseId --jq '.[].databaseId'; \
+                   gh run list --workflow=press-night-clock.yml --status pending --json databaseId --jq '.[].databaseId') 2>/dev/null) \
             || { echo "::warning::could not list press-night clock runs; not re-seeding"; exit 0; }
           if [ -n "$HOPS" ]; then echo "Press-night clock already running ($NEXT)."; exit 0; fi
           echo "Press-night clock not running; re-seeding for: $NEXT"

@@ -52,3 +52,12 @@ test('sleepPlan sleeps straight to a near kick and rechains for a far one', () =
   assert.deepEqual(sleepPlan(now + 9 * 3600000, now), { sleepMs: 300 * 60000, action: 'rechain' });
   assert.deepEqual(sleepPlan(now - 1000, now), { sleepMs: 0, action: 'kick' });
 });
+
+test('express preemption spares orchestrator runs targeted at another show (BRO-6802)', () => {
+  const ep = require('../../scripts/lib/express-preemption.js');
+  const wf = 'opening-night-orchestrator.yml';
+  assert.equal(ep.shouldCancel(wf, 'Opening Night Orchestrator targeted a-show (broadway)', 'b-show'), false);
+  assert.equal(ep.shouldCancel(wf, 'Opening Night Orchestrator targeted a-show (broadway)', 'a-show'), true);
+  assert.equal(ep.shouldCancel(wf, 'Opening Night Orchestrator (broadway)', 'b-show'), true);
+  assert.deepEqual(ep.planRedispatch(wf, 'Opening Night Orchestrator targeted a-show (broadway)').fields, { market: 'broadway', show_id: 'a-show' });
+});
