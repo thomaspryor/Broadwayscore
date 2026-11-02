@@ -132,6 +132,10 @@ const ERROR_PAGE_PATTERNS = [
 // PAST the 300-char window, so detectErrorPage missed them and they reached
 // scoring. Verified FP-safe across the corpus: 0 matches on legit scored reviews
 // (2026-06-01 ship-check follow-up). See feedback_test_yml_data_gates_flap...
+// BRO-5166: match only a standalone failed-frame document. Valid articles can
+// retain this message from an embedded player below the actual review.
+const BROWSER_ERROR_PAGE_PATTERN = /^\s*the\s+webpage\s+at\s+https?:\/\/\S+\s+might\s+be\s+temporarily\s+down\s+or\s+it\s+may\s+have\s+moved\s+permanently\s+to\s+a\s+new\s+web\s+address\.?\s*$/i;
+
 const STRONG_ERROR_PAGE_PATTERNS = [
   /\bpage\s+not\s+found\b/i,
   /\b404\s+(?:error|not\s+found)\b/i,
@@ -152,6 +156,7 @@ const STRONG_ERROR_PAGE_PATTERNS = [
   /resale\s+ticket\s+prices\s+may\s+be\s+above\s+face\s+value/i,
   /whether\s+you\s+are\s+buying\s+or\s+selling\s+tickets\s+on\s+our\s+site/i,
   /\bresale\b[^.]{0,40}\bprices\s+are\s+set\s+by\s+sellers\s+and\s+move\s+with\s+demand/i,
+  BROWSER_ERROR_PAGE_PATTERN,
 ];
 
 /**
@@ -1763,7 +1768,16 @@ function validateShowMentionedOrNamedByUrl(text, showTitle, showId, record) {
 /** assessTextQuality options from a review record (BRO-5395): its url and publish date. */
 function qualityOptsFor(record) {
   if (!record || typeof record !== 'object') return {};
-  return { url: record.url || null, publishDate: record.publishDate || null };
+  const opts = { url: record.url || null, publishDate: record.publishDate || null };
+  // Print-only capsules can describe characters without generic theater
+  // terms. Keep very short (<300 char) fragments blocked without that signal.
+  // This is not evidence of show identity; all other checks still run.
+  if (record.source === 'theatre-record' && !record.url
+      && typeof record.fullText === 'string'
+      && record.fullText.length >= 300 && record.fullText.length < 1000) {
+    opts.printCapsule = true;
+  }
+  return opts;
 }
 
 /**
@@ -1831,9 +1845,14 @@ function assessTextQuality(text, showId, showTitle, opts = {}) {
   }
 
   // Check for review content
+  const wrongArticle = detectWrongArticle(text, showTitle || showId);
+  // Never soften an explicit non-theater-content signal. Reducing the issue
+  // count in that case could turn a rejected news page into scoreable text.
+  const capsuleKeywords = opts.printCapsule && (!wrongArticle.detected
+    || wrongArticle.reason === 'No theater-related keywords in short text');
   const reviewCheck = hasReviewContent(text);
   if (!reviewCheck.hasReviewContent) {
-    issues.push('No theater-related keywords found');
+    issues.push(`${capsuleKeywords ? 'Warning: ' : ''}No theater-related keywords found`);
   }
 
   // Use the enhanced show title validation
@@ -1852,9 +1871,8 @@ function assessTextQuality(text, showId, showTitle, opts = {}) {
   }
 
   // Check for wrong article
-  const wrongArticle = detectWrongArticle(text, showTitle || showId);
   if (wrongArticle.detected) {
-    issues.push(wrongArticle.reason);
+    issues.push(`${capsuleKeywords ? 'Warning: ' : ''}${wrongArticle.reason}`);
   }
 
   // Check text length
@@ -4157,6 +4175,7 @@ module.exports = { isSiteWideAuthorSource, isSiteWideAuthorAccount,
   detectLegalPage,
   detectErrorPage,
   detectStrongErrorPageAnywhere,
+  BROWSER_ERROR_PAGE_PATTERN,
   detectStrongWsjArchiveTruncationAnywhere,
   detectWsjRegistrationInterstitial,
   stripDowJonesReprintChrome,
