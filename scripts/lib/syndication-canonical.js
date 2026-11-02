@@ -25,6 +25,33 @@ const SYNDICATION_HOSTS = Object.freeze([
   'news.google.com', 'apple.news',
 ]);
 
+// BRO-6716: newspaper groups that publish one article on several sites at the
+// SAME path (one CMS, many mastheads). A same-path copy on a sister site is the
+// review we already hold, not a missing one: oh-mary-tour's marinij.com review
+// is the live mercurynews.com review. Groups only, never a bare path match:
+// towleroad.com and thefrontrowcenter.com share /2016/04/american-psycho/ by chance.
+const SAME_PATH_SISTER_GROUPS = Object.freeze([
+  // Bay Area News Group (MediaNews)
+  ['mercurynews.com', 'eastbaytimes.com', 'marinij.com', 'siliconvalley.com', 'montereyherald.com', 'santacruzsentinel.com'],
+  // New Journal Enterprises, London
+  ['islingtontribune.co.uk', 'islingtontribune.com', 'camdennewjournal.co.uk', 'camdennewjournal.com', 'westminsterextra.co.uk', 'westendextra.com'],
+  // WEHCO Media, Arkansas
+  ['arkansasonline.com', 'nwaonline.com'],
+  // Providence Media
+  ['providenceonline.com', 'heyrhody.com'],
+  // One blog on its custom domain and its wordpress.com address
+  ['pagesonstages.com', 'pagesonstages.wordpress.com'],
+].map((g) => Object.freeze(g)));
+
+function sisterGroupOf(url) {
+  const h = hostOf(url);
+  return SAME_PATH_SISTER_GROUPS.find((g) => g.includes(h)) || null;
+}
+
+function isSisterSiteHost(url) {
+  return !!sisterGroupOf(url);
+}
+
 function hostOf(url) {
   try { return new URL(url).hostname.toLowerCase().replace(/\.+$/, '').replace(/^www\./, ''); } catch { return ''; }
 }
@@ -119,6 +146,9 @@ async function resolveSyndicatedHit(url, deps) {
 module.exports = {
   SYNDICATION_HOSTS,
   isSyndicationHost,
+  isSisterSiteHost,
+  sisterGroupOf,
+  SAME_PATH_SISTER_GROUPS,
   extractCanonicalSourceUrl,
   makeRegisteredOutletPredicate,
   resolveSyndicatedHit,
