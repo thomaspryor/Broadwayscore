@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T17:36:31.630Z",
+  "timestamp": "2026-11-02T18:32:09.868Z",
   "stats": {
-    "totalReviews": 79214,
-    "alreadyFlagged": 21958,
-    "dateGuardCatches": 222,
-    "directorMismatch": 3422,
+    "totalReviews": 79215,
+    "alreadyFlagged": 21959,
+    "dateGuardCatches": 221,
+    "directorMismatch": 3423,
     "tvFilmSignals": 2251,
-    "londonSignals": 3580,
-    "offBroadwaySignals": 740,
+    "londonSignals": 3579,
+    "offBroadwaySignals": 739,
     "yearMismatch": 346,
-    "noPublishDate": 8379
+    "noPublishDate": 8383
   },
   "findings": [
     {
@@ -68687,6 +68687,19 @@
       ]
     },
     {
+      "showId": "the-merchant-of-venice-1973",
+      "file": "backstage--erik-haagensen.json",
+      "publishDate": "July 2, 2010",
+      "url": "http://www.backstage.com/bso/reviews-ny-theatre-off-broadway/ny-theater-review-the-merchant-of-venice-1004101807.story",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel sullivan\" from the-merchant-of-venice-2010"
+        }
+      ]
+    },
+    {
       "showId": "the-merchant-of-venice-2010",
       "file": "vulture--jesse-green.json",
       "score": 77,
@@ -97626,19 +97639,6 @@
     },
     {
       "showId": "girls-off-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-10-13",
-      "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
-      "showId": "girls-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 86,
       "publishDate": "2026-10-29",
@@ -121682,25 +121682,6 @@
     },
     {
       "showId": "teeth-off-broadway-2024",
-      "file": "theater-pizzazz--jk-clarke.json",
-      "score": 69,
-      "publishDate": "2024-03-29",
-      "url": "https://www.theaterpizzazz.com/teeth/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 201d before show (2024-03-29 vs 2024-10-16)"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "teeth-off-broadway-2024",
       "file": "theatermania--pete-hempstead.json",
       "score": 90,
       "publishDate": null,
@@ -128062,7 +128043,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 80,
+      "score": 76,
       "publishDate": "2026-11-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-lives-of-others-adelphi-theatre",
       "findings": [
@@ -128144,7 +128125,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-11-02",
       "url": "https://www.londontheatre.co.uk/reviews/the-lives-of-others-review-adelphi-theatre",
       "findings": [

@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-02T17:28:03.367Z",
+  "generated": "2026-11-02T18:19:33.578Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 42,
+  "count": 41,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -289,13 +289,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "twelfth-night-off-west-end-2026",
-      "loserFile": "theatrebookings--unknown.json",
-      "targetFile": "lsbo--unknown.json",
-      "reason": "orphaned-duplicate-heal: lsbo--unknown.json was flagged invalid after theatrebookings--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
