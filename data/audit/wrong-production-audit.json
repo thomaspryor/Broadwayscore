@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-02T22:34:19.955Z",
+  "timestamp": "2026-11-02T22:55:13.531Z",
   "stats": {
-    "totalReviews": 79283,
+    "totalReviews": 79305,
     "alreadyFlagged": 21975,
     "dateGuardCatches": 219,
-    "directorMismatch": 3423,
+    "directorMismatch": 3424,
     "tvFilmSignals": 2251,
     "londonSignals": 3585,
     "offBroadwaySignals": 734,
-    "yearMismatch": 347,
+    "yearMismatch": 348,
     "noPublishDate": 8380
   },
   "findings": [
@@ -20389,6 +20389,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2017 (2x) more than 2025 (1x). 2017 matches production: evita-west-end-2017"
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-regional-2026",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2026-05-13",
+      "url": "https://www.latimes.com/entertainment-arts/story/2026-05-13/exit-king-review-theater-absurd-ionesco-a-noise-within",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"neil armfield\" from exit-the-king-2009"
         }
       ]
     },
@@ -49139,6 +49152,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jeremy herrin\" from people-places-and-things-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "pericles-off-broadway-2024",
+      "file": "vulture--sara-holdren.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-fiasco-theaters-pericles.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (0x). 2026 matches production: pericles-regional-2026"
         }
       ]
     },
