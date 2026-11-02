@@ -1,44 +1,6 @@
 {
-  "exactUrlMatch": [
-    {
-      "critic": "Laura Collins Hughes",
-      "expectedOutlet": "nytimes",
-      "existsAs": "Laura Collins-Hughes",
-      "showId": "slam-frank-off-broadway-2026",
-      "outletId": "nytimes",
-      "title": "‘Slam Frank’ Review: Razzing the Wokerati",
-      "url": "https://www.nytimes.com/2026/10/13/theater/slam-frank-review.html"
-    },
-    {
-      "critic": "Laura Collins Hughes",
-      "expectedOutlet": "nytimes",
-      "existsAs": "Laura Collins-Hughes",
-      "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
-      "outletId": "nytimes",
-      "title": "‘Creation Stories’ Review: When a Dream Evaporates",
-      "url": "https://www.nytimes.com/2026/10/02/theater/creation-stories-and-all-the-important-importants-review.html"
-    },
-    {
-      "critic": "Laura Collins Hughes",
-      "expectedOutlet": "nytimes",
-      "existsAs": "Laura Collins-Hughes",
-      "showId": "the-holes-off-broadway-2026",
-      "outletId": "nytimes",
-      "title": "‘The Holes’ Review: Benediction in the Back Room",
-      "url": "https://www.nytimes.com/2026/09/23/theater/the-holes-review-max-wolf-friedlich.html"
-    }
-  ],
+  "exactUrlMatch": [],
   "showOutletMatch": [
-    {
-      "critic": "Elysa Gardner",
-      "expectedOutlet": "usatoday",
-      "showId": "dead-outlaw-2025",
-      "showTitle": "Dead Outlaw",
-      "existsAs": "Michael Sommers",
-      "title": "The Dead, 1904: Irish Rep Brings James Joyce Adaptation Home (to New York) for the Holidays",
-      "url": "https://nystagereview.com/2024/11/26/the-dead-1904-irish-rep-brings-james-joyce-adaptation-home-to-new-york-for-the-holidays/",
-      "market": "bwy"
-    },
     {
       "critic": "Elysa Gardner",
       "expectedOutlet": "usatoday",
@@ -57,16 +19,6 @@
       "existsAs": "Frank Scheck",
       "title": "Prayer for the French Republic: Old Hatred and Enduring Hope",
       "url": "https://nystagereview.com/2022/02/01/prayer-for-the-french-republic-old-hatred-and-enduring-hope/",
-      "market": "bwy"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "expectedOutlet": "usatoday",
-      "showId": "company-2021",
-      "showTitle": "Company",
-      "existsAs": "Melissa Rose Bernardo",
-      "title": "Company: That Invincible Bunch, Reconsidered",
-      "url": "https://nystagereview.com/2021/12/09/company-that-invincible-bunch-reconsidered/",
       "market": "bwy"
     }
   ],
@@ -96,6 +48,18 @@
       "url": "https://nystagereview.com/2025/02/06/urinetown-encores-musical-minds-its-pees-cues/",
       "reason": "show-too-old",
       "matchedShow": "urinetown-2001"
+    },
+    {
+      "critic": "Elysa Gardner",
+      "market": "us",
+      "title": "The Dead, 1904: Irish Rep Brings James Joyce Adaptation Home (to New York) for the Holidays",
+      "url": "https://nystagereview.com/2024/11/26/the-dead-1904-irish-rep-brings-james-joyce-adaptation-home-to-new-york-for-the-holidays/",
+      "matchedShow": {
+        "id": "dead-outlaw-off-broadway-2024",
+        "title": "Dead Outlaw",
+        "category": "off-broadway",
+        "openingDate": "2024-03-10"
+      }
     },
     {
       "critic": "Elysa Gardner",
@@ -162,14 +126,14 @@
     {
       "critic": "Elysa Gardner",
       "market": "us",
-      "title": "The Saviour: Seeking redemption and rapture, against all odds",
-      "url": "https://nystagereview.com/2023/07/13/the-saviour-seeking-redemption-and-rapture-against-all-odds/"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
       "title": "The Doctor: From London, a Scathing Societal Diagnosis, and a Meditation on Faith",
-      "url": "https://nystagereview.com/2023/06/15/the-doctor-from-london-a-scathing-societal-diagnosis-and-a-meditation-on-faith/"
+      "url": "https://nystagereview.com/2023/06/15/the-doctor-from-london-a-scathing-societal-diagnosis-and-a-meditation-on-faith/",
+      "matchedShow": {
+        "id": "the-doctor-off-broadway-2023",
+        "title": "The Doctor",
+        "category": "off-broadway",
+        "openingDate": "2023-06-13"
+      }
     },
     {
       "critic": "Elysa Gardner",
@@ -204,18 +168,6 @@
       "url": "https://nystagereview.com/2022/10/25/a-raisin-in-the-sun-a-classic-overbaked-but-with-radiant-performances/",
       "reason": "show-too-old",
       "matchedShow": "a-raisin-in-the-sun-2014"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
-      "title": "Candida: Revisiting an Early Shavian Heroine, and Her Motley Crew of Admirers",
-      "url": "https://nystagereview.com/2022/10/25/candida-revisiting-an-early-shavian-heroine-and-her-motley-crew-of-admirers/"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
-      "title": "Everything's Fine: Recollections of A Teacher's Pet, Horrific and Kindly Rendered",
-      "url": "https://nystagereview.com/2022/10/13/everythings-fine-recollections-of-a-teachers-pet-horrific-and-kindly-rendered/"
     },
     {
       "critic": "Elysa Gardner",
@@ -297,21 +249,13 @@
       "critic": "Elysa Gardner",
       "market": "us",
       "title": "The Hang: Prepare Ye the Way of Socrates",
-      "url": "https://nystagereview.com/2022/01/23/the-hang-prepare-ye-the-way-of-socrates/",
-      "reason": "url-slug-mismatch",
-      "matchedShow": "hangmen-2022"
+      "url": "https://nystagereview.com/2022/01/23/the-hang-prepare-ye-the-way-of-socrates/"
     },
     {
       "critic": "Elysa Gardner",
       "market": "us",
       "title": "Whisper House: Not-So-Blithe Spirits",
       "url": "https://nystagereview.com/2022/01/20/whisper-house-not-so-blithe-spirits/"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
-      "title": "Trevor: A Boy and His Diva",
-      "url": "https://nystagereview.com/2021/11/10/trevor-a-boy-and-his-diva/"
     },
     {
       "critic": "Elysa Gardner",
@@ -425,10 +369,10 @@
       "title": "Medea: Another Woman on the Verge, and Past It",
       "url": "https://nystagereview.com/2020/01/30/medea-another-woman-on-the-verge-and-past-it/",
       "matchedShow": {
-        "id": "medea-off-broadway-2026",
+        "id": "medea-off-broadway-2022",
         "title": "Medea",
         "category": "off-broadway",
-        "openingDate": "2026-10-30"
+        "openingDate": "2022-09-27"
       }
     },
     {
@@ -448,14 +392,6 @@
     {
       "critic": "Elysa Gardner",
       "market": "us",
-      "title": "London Assurance: High Jinks Among the High-Born",
-      "url": "https://nystagereview.com/2019/12/15/london-assurance-high-jinks-among-the-high-born/",
-      "reason": "show-too-old",
-      "matchedShow": "london-assurance-1974"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
       "title": "Judgment Day: The Roar, and Lure, of the Crowd",
       "url": "https://nystagereview.com/2019/12/11/judgment-day-the-roar-and-lure-of-the-crowd/"
     },
@@ -464,18 +400,6 @@
       "market": "us",
       "title": "Halfway Bitches Go Straight to Heaven: A Purgatory Where Women Lead, and Suffer",
       "url": "https://nystagereview.com/2019/12/09/halfway-bitches-go-straight-to-heaven-a-purgatory-where-women-lead-and-suffer/"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
-      "title": "A Bright Room Called Day: A Call to Action, Refreshed",
-      "url": "https://nystagereview.com/2019/11/25/a-bright-room-called-day-a-call-to-action-refreshed/"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
-      "title": "The Underlying Chris: The Circle of Life, Through a Rainbow of Lenses",
-      "url": "https://nystagereview.com/2019/11/21/the-underlying-chris-the-circle-of-life-through-a-rainbow-of-lenses/"
     },
     {
       "critic": "Elysa Gardner",
@@ -512,12 +436,6 @@
     {
       "critic": "Elysa Gardner",
       "market": "us",
-      "title": "Bella Bella: Tribute to a Champion, of Feminism and More",
-      "url": "https://nystagereview.com/2019/10/22/bella-bella-tribute-to-a-champion-of-feminism-and-more/"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
       "title": "Only Human: Giving the Devil His Due, and Then Some",
       "url": "https://nystagereview.com/2019/10/21/only-human-giving-the-devil-his-due-and-then-some/"
     },
@@ -542,14 +460,6 @@
     {
       "critic": "Elysa Gardner",
       "market": "us",
-      "title": "Caesar and Cleopatra: Shaw Redux, with Reverent Irreverence",
-      "url": "https://nystagereview.com/2019/09/25/caesar-and-cleopatra-shaw-redux-with-reverent-irreverence/",
-      "reason": "show-too-old",
-      "matchedShow": "caesar-and-cleopatra-1977"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
       "title": "Fern Hill: Old Friends, Getting Older",
       "url": "https://nystagereview.com/2019/09/19/fern-hill-old-friends-getting-older/"
     },
@@ -562,14 +472,10 @@
     {
       "critic": "Elysa Gardner",
       "market": "us",
-      "title": "Only Yesterday: A Day (and Night) in the Life of Lennon and McCartney",
-      "url": "https://nystagereview.com/2019/09/12/only-yesterday-a-day-and-night-in-the-life-of-lennon-and-mccartney/"
-    },
-    {
-      "critic": "Elysa Gardner",
-      "market": "us",
       "title": "L.O.V.E.R.: From Boy Crazy to Womanly and Wily",
-      "url": "https://nystagereview.com/2019/09/08/l-o-v-e-r-from-boy-crazy-to-womanly-and-wily/"
+      "url": "https://nystagereview.com/2019/09/08/l-o-v-e-r-from-boy-crazy-to-womanly-and-wily/",
+      "reason": "url-slug-mismatch",
+      "matchedShow": "love-off-broadway-2023"
     },
     {
       "critic": "Elysa Gardner",
@@ -622,6 +528,12 @@
       "url": "https://www.newyorker.com/culture/goings-on/winter-culture-preview-2025"
     },
     {
+      "critic": "Helen Shaw",
+      "market": "us",
+      "title": "Hannah Gadsby Stays Sunny by Any Means Necessary",
+      "url": "https://www.vulture.com/article/hannah-gadsby-body-of-work-bam-comedy-review.html"
+    },
+    {
       "critic": "Jackson McHenry",
       "market": "us",
       "title": "War Knows Exactly What It Is",
@@ -646,7 +558,25 @@
       "url": "https://www.vulture.com/article/not-suitable-for-work-review-hulu-mindy-kaling.html"
     },
     {
-      "critic": "Laura Collins Hughes",
+      "critic": "Maya Phillips",
+      "title": "‘Wildwood’ Review: A Magical, Stop-Motion Adventure",
+      "url": "https://www.nytimes.com/2026/10/22/movies/wildwood-review.html",
+      "reason": "non-theater-path"
+    },
+    {
+      "critic": "Maya Phillips",
+      "title": "‘Forgotten Island’ Review: A Supernatural Filipino Adventure",
+      "url": "https://www.nytimes.com/2026/09/24/movies/forgotten-island-review.html",
+      "reason": "non-theater-path"
+    },
+    {
+      "critic": "Maya Phillips",
+      "title": "‘Cocoon — One Summer of Girlhood’ Review: Patriotic Sacrifices",
+      "url": "https://www.nytimes.com/2026/09/03/movies/cocoon-one-summer-of-girlhood-review.html",
+      "reason": "non-theater-path"
+    },
+    {
+      "critic": "Laura Collins-Hughes",
       "title": "‘You’re Going to Be Changed’: Reading ‘East of Eden’ for the First Time",
       "url": "https://www.nytimes.com/2026/10/09/books/review/reading-east-of-eden.html",
       "reason": "non-theater-path"
