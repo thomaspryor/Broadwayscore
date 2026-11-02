@@ -104,6 +104,53 @@ test('hasGscImpressions fails open without a snapshot and reads counts otherwise
   assert.equal(seo.loadGscImpressions('/nonexistent/file.json'), null);
 });
 
+test('opera search traffic on either route keeps a closed unreviewed show indexable', () => {
+  const show = { type: 'opera', slug: 'la-traviata-off-broadway-2026', status: 'closed', reviewCount: 0 };
+  for (const route of ['/show/la-traviata-off-broadway-2026', '/opera/la-traviata-2026']) {
+    const landing = seo.getShowSearchSignals(show, new Set([route]), {});
+    assert.deepEqual(landing, { hasSearchLanding: true, hasGscImpressions: false });
+    assert.equal(seo.isThinClosedShow({ ...show, ...landing }, true), false);
+    const impressions = seo.getShowSearchSignals(show, new Set(), { [route]: 140 });
+    assert.deepEqual(impressions, { hasSearchLanding: false, hasGscImpressions: true });
+    assert.equal(seo.isThinClosedShow({ ...show, ...impressions }, true), false);
+    assert.equal(seo.isThinShowRollout({ ...show, ...impressions }, show.slug, { SEO_THIN_NOINDEX: '1' }), false);
+  }
+});
+
+test('opera lookup matches title routes for both off markets and preserves years and West End slugs', () => {
+  for (const [show, route] of [
+    [{ type: 'opera', slug: 'la-traviata-off-broadway' }, '/opera/la-traviata'],
+    [{ type: 'opera', slug: 'tosca-off-west-end-2026' }, '/opera/tosca-2026'],
+    [{ type: 'opera', slug: 'tosca-english-national-opera-west-end-2026' }, '/opera/tosca-english-national-opera-west-end-2026'],
+    [{ type: 'opera', id: 'carmen-off-broadway-2026' }, '/opera/carmen-2026'],
+  ]) {
+    assert.deepEqual(seo.getShowSearchSignals(show, new Set([route]), { [route]: 1 }), {
+      hasSearchLanding: true, hasGscImpressions: true,
+    });
+  }
+});
+
+test('non-opera shows only use their show route, including the id fallback', () => {
+  for (const show of [{ type: 'musical', slug: 'carmen-off-broadway-2026' }, { id: 'carmen-off-broadway-2026' }]) {
+    assert.deepEqual(seo.getShowSearchSignals(show, new Set(['/opera/carmen-2026']), { '/opera/carmen-2026': 50 }), {
+      hasSearchLanding: false, hasGscImpressions: false,
+    });
+    assert.deepEqual(seo.getShowSearchSignals(show, new Set(['/show/carmen-off-broadway-2026']), { '/show/carmen-off-broadway-2026': 1 }), {
+      hasSearchLanding: true, hasGscImpressions: true,
+    });
+  }
+});
+
+test('an opera without search traffic remains thin and snapshots still fail open', () => {
+  const show = { type: 'opera', slug: 'carmen-off-broadway-2026', status: 'closed', reviewCount: 0 };
+  const noTraffic = seo.getShowSearchSignals(show, new Set(['/opera/another-show']), { '/opera/carmen-2026': 0 });
+  assert.deepEqual(noTraffic, { hasSearchLanding: false, hasGscImpressions: false });
+  assert.equal(seo.isThinClosedShow({ ...show, ...noTraffic }, true), true);
+  for (const [landings, gsc] of [[null, {}], [new Set(), null], [null, null]]) {
+    assert.equal(seo.isThinClosedShow({ ...show, ...seo.getShowSearchSignals(show, landings, gsc) }, true), false);
+  }
+});
+
 test('GSC rows normalise host, slash and query and sum duplicates', () => {
   const agg = gscLib.aggregateRows([
     { keys: ['https://broadwayscorecard.com/show/hamilton'], impressions: 5 },

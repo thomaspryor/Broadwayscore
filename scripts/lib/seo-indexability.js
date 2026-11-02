@@ -90,6 +90,20 @@ function hasGscImpressions(urlPath, gsc = loadGscImpressions()) {
   return (gsc[String(urlPath).replace(/\/+$/, '')] || 0) > 0;
 }
 
+/** Search traffic on either the show route or an opera's title route protects the page. */
+function getShowSearchSignals(show, landings = loadSearchLandings(), gsc = loadGscImpressions()) {
+  const slug = show.slug || show.id;
+  const paths = [`/show/${slug}`];
+  if (show.type === 'opera' && slug) {
+    // Match getOperaTitleSlug in src/lib/data-core.ts, including year suffixes.
+    paths.push(`/opera/${slug.replace(/-off-broadway|-off-west-end/, '')}`);
+  }
+  return {
+    hasSearchLanding: paths.some(p => hasSearchLanding(p, landings)),
+    hasGscImpressions: paths.some(p => hasGscImpressions(p, gsc)),
+  };
+}
+
 // Staged rollout (BRO-5992): the thin rule applies to a frozen 10% cohort of slugs.
 // Cohort = sha256("seo-thin-cohort-v1:" + slug) first 8 hex as uint32, mod 100, < 10.
 // scripts/seo-thin-cohort.js freezes the list in data/audit/seo-thin-cohort.json; the
@@ -164,6 +178,6 @@ function isThinCritic(c, enabled = thinRulesEnabled()) {
 }
 
 module.exports = {
-  thinRulesEnabled, isThinClosedShow, isThinCritic, hasSearchLanding, loadSearchLandings, ALWAYS_INDEXABLE_STATUSES,
+  thinRulesEnabled, isThinClosedShow, isThinCritic, hasSearchLanding, loadSearchLandings, getShowSearchSignals, ALWAYS_INDEXABLE_STATUSES,
   loadGscImpressions, hasGscImpressions, isStale, MAX_SNAPSHOT_AGE_DAYS, cohortBucket, inCohortHash, loadCohort, inFrozenCohort, isThinShowRollout, COHORT_PERCENT,
 };
