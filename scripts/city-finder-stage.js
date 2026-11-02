@@ -21,6 +21,7 @@ const { getFinder } = require('./lib/city-finder-config');
 const ROOT = path.join(__dirname, '..');
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
 const today = arg('today', new Date().toISOString().slice(0, 10));
+const normUrl = (u) => String(u).toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
 const SLUG_YEAR = (d) => String(d).slice(0, 4);
 
 const slugify = (t) => String(t).toLowerCase().replace(/&/g, ' and ').replace(/['’]/g, '').normalize('NFKD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
@@ -56,7 +57,8 @@ async function listProductions(city, since, fetch) {
   for (const p of (census && census.productions) || []) {
     if (p.openingDate < since) continue;
     const t = theatreOf(city, p.theatre);
-    add({ title: p.title, theatre: t ? t.name : p.theatre, theatreKey: t ? t.name : p.theatre, city: t && t.city, pro: t ? t.pro : !!p.professional, start: p.openingDate, startSource: 'census', end: null, seeds: (p.reviews || []).filter((r) => r.url).map((r) => ({ url: r.url, outlet: r.outlet, critic: r.critic || null, date: r.date || null })) });
+    if (!t) { console.error(`skip (theatre not on the ${city.key} allowlist, city unknown): ${p.title} @ ${p.theatre}`); continue; }
+    add({ title: p.title, theatre: t.name, theatreKey: t.name, city: t.city, pro: t.pro, start: p.openingDate, startSource: 'census', end: null, seeds: (p.reviews || []).filter((r) => r.url).map((r) => ({ url: r.url, outlet: r.outlet, critic: r.critic || null, date: r.date || null })) });
   }
   // 2. config extras
   for (const p of city.extraProductions || []) {
@@ -93,8 +95,8 @@ async function run() {
   for (const p of prods) {
     const res = await F.findReviews({ title: p.title, theatre: p.theatre, start: p.start, end: p.end, aliases: (theatreOf(city, p.theatre) || {}).aliases || [] }, city, ctx);
     const byUrl = new Map();
-    for (const s of p.seeds || []) byUrl.set(s.url.replace(/\/$/, ''), { url: s.url, outlet: s.outlet, critic: s.critic, date: s.date, source: 'census' });
-    for (const r of res.reviews) byUrl.set(r.url.replace(/\/$/, ''), { url: r.url, outlet: r.outlet, outletId: r.outletId, critic: r.critic, date: r.date, headline: r.headline, source: 'finder' });
+    for (const s of p.seeds || []) byUrl.set(normUrl(s.url), { url: s.url, outlet: s.outlet, critic: s.critic, date: s.date, source: 'census' });
+    for (const r of res.reviews) byUrl.set(normUrl(r.url), { url: r.url, outlet: r.outlet, outletId: r.outletId, critic: r.critic, date: r.date, headline: r.headline, source: 'finder' });
     const reviews = [...byUrl.values()];
     const dates = reviews.map((r) => r.date).filter(Boolean).sort();
     out.push({ ...p, seeds: undefined, reviews, rejected: res.rejected.map((x) => ({ url: x.url, reason: x.reason })), firstReview: dates[0] || null });
@@ -112,6 +114,8 @@ function emit() {
   const staged = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'audit', `city-finder-stage-${city.key}.json`), 'utf8'));
   const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8')).shows;
   const taken = new Set(shows.map((s) => s.id));
+  const pf = path.join(ROOT, 'data', 'pending-fixes');
+  for (const f of fs.readdirSync(pf)) { if (f.startsWith(`${arg('id', '~')}`)) continue; try { for (const a of JSON.parse(fs.readFileSync(path.join(pf, f), 'utf8')).plan.actions || []) if (a.show) taken.add(a.show.id); } catch { /* skip */ } }
   const hubs = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'city-hubs.json'), 'utf8'));
   const hubEntry = Object.entries(hubs.hubs).find(([, h]) => h.finder && h.finder.key === city.key);
   if (!hubEntry) throw new Error(`no data/city-hubs.json entry with finder.key=${city.key}`);
@@ -120,10 +124,10 @@ function emit() {
   const skipped = [];
   for (const p of staged.productions) {
     const openNow = p.end && p.end >= today && p.start <= today;
-    if (p.reviews.length < min && !(openNow && p.reviews.length >= 1)) { skipped.push(`${p.title} (${p.reviews.length} reviews)`); continue; }
+    if (p.reviews.length < min && !(openNow && p.reviews.length >= 2)) { skipped.push(`${p.title} (${p.reviews.length} reviews)`); continue; }
     const opening = p.firstReview && p.firstReview < p.start && p.startSource !== 'bww' ? p.firstReview : p.start;
     let id = `${slugify(p.title)}-regional-${SLUG_YEAR(opening)}`;
-    if (taken.has(id)) id = `${slugify(p.title)}-${slugify(p.theatre).replace(/^the-/, '').split('-')[0]}-regional-${SLUG_YEAR(opening)}`;
+    if (taken.has(id)) id = `${slugify(p.title)}-${slugify(p.theatre).replace(/^the-/, '').split('-').slice(0, /^the /i.test(p.theatre) || !/^la /i.test(p.theatre) ? 1 : 2).join('')}-regional-${SLUG_YEAR(opening)}`;
     if (taken.has(id)) { skipped.push(`${p.title} (id taken)`); continue; }
     taken.add(id);
     const closed = p.end ? p.end < today : (Date.parse(today) - Date.parse(opening)) / 86400000 > 42;
@@ -131,7 +135,7 @@ function emit() {
       id, title: p.title, slug: id,
       venue: `${p.theatre}, ${p.city || 'San Diego'}, ${city.state}`,
       status: closed ? 'closed' : 'open',
-      type: /musical|rent|hairspray|mean girls|cher show|rock of ages|guys and dolls|come from away|evan hansen|seussical|spongebob|rock$|most happy fella|american rhythm|we will rock you|carrie|charlie and the chocolate/i.test(p.title) ? 'musical' : 'play',
+      type: /\b(musical|rent|hairspray|mean girls|cher show|rock of ages|guys and dolls|come from away|evan hansen|seussical|spongebob|most happy fella|american rhythm|we will rock you|carrie|charlie and the chocolate factory)\b/i.test(p.title) ? 'musical' : 'play',
       category: 'regional', market: 'regional',
       openingDate: opening,
       openingDateSource: p.startSource === 'census' ? 'census-earliest-review-date' : p.startSource === 'bww' ? 'broadwayworld-regional-listing' : 'earliest-review-date',

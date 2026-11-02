@@ -59,12 +59,13 @@ function theatreAliases(theatre, extra = []) {
   const out = new Set([norm(base)]);
   const toks = norm(base).split(' ').filter(Boolean);
   const stripped = toks.filter((t) => !GENERIC_THEATRE_WORDS.has(t)).join(' ');
-  if (stripped && stripped.split(' ').length >= 2) out.add(stripped);
+  const PLACE = new Set(['san', 'diego', 'north', 'coast', 'scripps', 'ranch', 'la', 'jolla', 'old', 'town']);
+  if (stripped && stripped.split(' ').length >= 2 && !stripped.split(' ').every((t) => PLACE.has(t))) out.add(stripped);
   for (const e of extra) out.add(norm(e));
   return [...out].filter((a) => a.length >= 4);
 }
 
-const NON_REVIEW_RE = /\b(interview|spotlight|casting|cast announced|announces?|to open|to premiere|to make|tickets?|on sale|season (?:announcement|lineup)|auditions?|podcast|obituary|in memoriam|photos?|video|preview|holiday guide|things to do|what to see|gala|fundraiser|hires?|appoints?|names?)\b/i;
+const NON_REVIEW_RE = /\b(interview|spotlight|casting|cast announced|announces?|to open|to premiere|to make|tickets?|on sale|season (?:announcement|lineup)|auditions?|podcast|obituary|in memoriam|photos?|video|preview|holiday guide|things to do|what to see|gala|fundraiser|hires?|appoints?|names?|confirms?|presents?|premieres?|welcomes?|inicio|season will)\b/i;
 
 /** Reject obvious non-review pages from their title + url alone. */
 function looksLikeNonReview(title, url) {
@@ -264,12 +265,18 @@ function verifyArticle(html, url, prod, window, extra = {}) {
   const inBody = variants.some((v) => hasPhrase(text.slice(0, 4000), v));
   if (!inHead && !inBody) return { ok: false, reason: 'title-not-found' };
   const aliases = theatreAliases(prod.theatre, prod.aliases || []);
-  if (!aliases.some((a) => hasPhrase(text, a))) return { ok: false, reason: 'theatre-not-found' };
+  const lede = `${headline} ${text.slice(0, 6000)}`;
+  if (!aliases.some((a) => hasPhrase(lede, a))) return { ok: false, reason: 'theatre-not-found' };
   if (looksLikeNonReview(headline, url) && !/\breview\b/i.test(text.slice(0, 3000))) return { ok: false, reason: 'not-a-review' };
   let date = null;
   try { date = extractPublishDate(html, url) || null; } catch { /* fall through */ }
   date = (date && String(date).slice(0, 10)) || extra.date || null;
   if (date && (date < window.from || date > window.to)) return { ok: false, reason: `date-outside-window:${date}` };
+  if (!date) {
+    // Undated page: a year baked into the slug (Squarespace "...6252022") must fall inside the window.
+    const yr = /(?:^|\D)\d{0,4}(20[12]\d)$/.exec(decodeURIComponent(String(url)).replace(/\/+$/, ''));
+    if (yr && (yr[1] < window.from.slice(0, 4) || yr[1] > window.to.slice(0, 4))) return { ok: false, reason: `url-year-outside-window:${yr[1]}` };
+  }
   // Review verbs are a weak signal; a headline-only match with no theatre in the headline or lede is flagged low.
   const confidence = inHead ? 'high' : 'medium';
   return { ok: true, critic: extractByline(html), date, headline, confidence };
@@ -336,7 +343,7 @@ function makeContext({ fetch, today, dayCache = {}, saveDayCache = () => {} }) {
       const [y, m, d] = day.split('-');
       const r = await fetch(`${site.base}/sitemap.xml?yyyy=${y}&mm=${m}&dd=${d}`);
       const urls = [...String((r && r.content) || '').matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => decode(x[1]));
-      if (day < today) { dayCache[key] = urls.filter((u) => !site.slugPrefix || (u.split('/').filter(Boolean).pop() || '').startsWith(site.slugPrefix)); saveDayCache(dayCache); return dayCache[key]; }
+      if (r && day < today) { dayCache[key] = urls.filter((u) => !site.slugPrefix || (u.split('/').filter(Boolean).pop() || '').startsWith(site.slugPrefix)); saveDayCache(dayCache); return dayCache[key]; }
       return urls;
     },
     async bwwReviews(region, window) {

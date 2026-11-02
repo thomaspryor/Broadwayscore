@@ -1,17 +1,17 @@
 {
   "issueNumber": "bro-6854-sd",
-  "planId": "d3c53d76-bc59-4bed-bf7a-64622f5698e3",
+  "planId": "88f44609-a089-4be2-b335-6cd424cf8bac",
   "status": "pending",
-  "createdAt": "2026-11-02T21:31:24.877Z",
+  "createdAt": "2026-11-02T21:39:06.911Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6854: San Diego city hub, 39 local productions since 2026-05-01 (part 1 of 2)",
+    "summary": "BRO-6854: San Diego city hub, local productions since 2026-05-01 (part 1 of 2)",
     "steps": [
       "add a-room-in-the-castle-regional-2026",
-      "add purpose-la-regional-2026",
+      "add purpose-lajolla-regional-2026",
       "add seussical-regional-2026",
       "add kims-convenience-regional-2026",
       "add rent-regional-2026",
@@ -24,17 +24,17 @@
       "add the-rise-and-fall-of-little-voice-regional-2026",
       "add measure-for-measure-regional-2026",
       "add isaacs-eye-regional-2026",
-      "add boy-my-greatness-regional-2026",
       "add north-by-northwest-old-regional-2026",
       "add arcadia-regional-2026",
-      "add dive-bar-time-machine-regional-2026",
       "add cyrano-regional-2026",
-      "add the-family-album-la-regional-2026",
+      "add the-family-album-lajolla-regional-2026",
       "add scapin-regional-2026",
       "add ha-ha-ha-ha-ha-ha-ha-regional-2026",
-      "add the-fairy-tale-monologues-regional-2026",
       "add much-ado-about-nothing-regional-2026",
-      "add guys-and-dolls-regional-2026"
+      "add guys-and-dolls-regional-2026",
+      "add we-will-rock-you-regional-2026",
+      "add ni-mi-madre-regional-2026",
+      "add rock-of-ages-regional-2026"
     ],
     "riskLevel": "low",
     "actions": [
@@ -64,11 +64,11 @@
       },
       {
         "type": "add-show",
-        "description": "add purpose-la-regional-2026",
+        "description": "add purpose-lajolla-regional-2026",
         "show": {
-          "id": "purpose-la-regional-2026",
+          "id": "purpose-lajolla-regional-2026",
           "title": "Purpose",
-          "slug": "purpose-la-regional-2026",
+          "slug": "purpose-lajolla-regional-2026",
           "venue": "La Jolla Playhouse, La Jolla, CA",
           "status": "closed",
           "type": "play",
@@ -376,30 +376,6 @@
       },
       {
         "type": "add-show",
-        "description": "add boy-my-greatness-regional-2026",
-        "show": {
-          "id": "boy-my-greatness-regional-2026",
-          "title": "Boy My Greatness",
-          "slug": "boy-my-greatness-regional-2026",
-          "venue": "Loud Fridge Theatre Group, San Diego, CA",
-          "status": "closed",
-          "type": "play",
-          "category": "regional",
-          "market": "regional",
-          "openingDate": "2026-07-06",
-          "openingDateSource": "census-earliest-review-date",
-          "discoverySource": "cityfinder-san-diego",
-          "localOnly": true,
-          "city": "san-diego-ca",
-          "discoveredAt": "2026-11-02",
-          "evidenceUrls": [
-            "https://www.davidcoddon.com/theatre-reviews/stage-west-loud-fridge-theatre-groups-boy-my-greatness",
-            "https://www.sandiegouniontribune.com/2026/07/06/review-gender-and-identity-thoughtfully-explored-in-boy-my-greatness/"
-          ]
-        }
-      },
-      {
-        "type": "add-show",
         "description": "add north-by-northwest-old-regional-2026",
         "show": {
           "id": "north-by-northwest-old-regional-2026",
@@ -448,30 +424,6 @@
       },
       {
         "type": "add-show",
-        "description": "add dive-bar-time-machine-regional-2026",
-        "show": {
-          "id": "dive-bar-time-machine-regional-2026",
-          "title": "Dive Bar Time Machine",
-          "slug": "dive-bar-time-machine-regional-2026",
-          "venue": "Blindspot Collective, San Diego, CA",
-          "status": "closed",
-          "type": "play",
-          "category": "regional",
-          "market": "regional",
-          "openingDate": "2026-07-21",
-          "openingDateSource": "census-earliest-review-date",
-          "discoverySource": "cityfinder-san-diego",
-          "localOnly": true,
-          "city": "san-diego-ca",
-          "discoveredAt": "2026-11-02",
-          "evidenceUrls": [
-            "https://www.talktheatretome.com/theatre/blindspotcollectivedivebartimemachine",
-            "https://www.sandiegouniontribune.com/2026/07/21/review-dive-bar-time-machine-a-joyful-jukebox-celebration/"
-          ]
-        }
-      },
-      {
-        "type": "add-show",
         "description": "add cyrano-regional-2026",
         "show": {
           "id": "cyrano-regional-2026",
@@ -496,11 +448,11 @@
       },
       {
         "type": "add-show",
-        "description": "add the-family-album-la-regional-2026",
+        "description": "add the-family-album-lajolla-regional-2026",
         "show": {
-          "id": "the-family-album-la-regional-2026",
+          "id": "the-family-album-lajolla-regional-2026",
           "title": "The Family Album",
-          "slug": "the-family-album-la-regional-2026",
+          "slug": "the-family-album-lajolla-regional-2026",
           "venue": "La Jolla Playhouse, La Jolla, CA",
           "status": "closed",
           "type": "play",
@@ -568,30 +520,6 @@
       },
       {
         "type": "add-show",
-        "description": "add the-fairy-tale-monologues-regional-2026",
-        "show": {
-          "id": "the-fairy-tale-monologues-regional-2026",
-          "title": "The Fairy Tale Monologues",
-          "slug": "the-fairy-tale-monologues-regional-2026",
-          "venue": "Riot Productions, San Diego, CA",
-          "status": "closed",
-          "type": "play",
-          "category": "regional",
-          "market": "regional",
-          "openingDate": "2026-08-02",
-          "openingDateSource": "census-earliest-review-date",
-          "discoverySource": "cityfinder-san-diego",
-          "localOnly": true,
-          "city": "san-diego-ca",
-          "discoveredAt": "2026-11-02",
-          "evidenceUrls": [
-            "https://www.talktheatretome.com/theatre/riotfairytalemonologuesreview",
-            "https://fromanother0.com/fairy-tales-with-a-feminist-twistor-redeemed/"
-          ]
-        }
-      },
-      {
-        "type": "add-show",
         "description": "add much-ado-about-nothing-regional-2026",
         "show": {
           "id": "much-ado-about-nothing-regional-2026",
@@ -635,6 +563,78 @@
           "evidenceUrls": [
             "https://www.talktheatretome.com/theatre/moonlightguysanddolls",
             "https://www.sandiegouniontribune.com/2026/08/13/review-moonlights-guys-and-dolls-a-classic-that-still-sparkles/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add we-will-rock-you-regional-2026",
+        "show": {
+          "id": "we-will-rock-you-regional-2026",
+          "title": "We Will Rock You",
+          "slug": "we-will-rock-you-regional-2026",
+          "venue": "New Village Arts, Carlsbad, CA",
+          "status": "closed",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-08-16",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.talktheatretome.com/theatre/nvawewillrockyou",
+            "https://www.sandiegouniontribune.com/2026/08/16/review-with-queen-musical-come-for-the-music-not-the-script/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add ni-mi-madre-regional-2026",
+        "show": {
+          "id": "ni-mi-madre-regional-2026",
+          "title": "Ni Mi Madre",
+          "slug": "ni-mi-madre-regional-2026",
+          "venue": "Diversionary Theatre, San Diego, CA",
+          "status": "closed",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-08-23",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://fromanother0.com/diversionarys-west-coast-premiere-of-ni-mi-madre/",
+            "https://www.sandiegouniontribune.com/2026/08/24/review-ni-mi-madre-an-eye-opening-portrait-of-a-complex-mom/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "description": "add rock-of-ages-regional-2026",
+        "show": {
+          "id": "rock-of-ages-regional-2026",
+          "title": "Rock of Ages",
+          "slug": "rock-of-ages-regional-2026",
+          "venue": "San Diego Musical Theatre, San Diego, CA",
+          "status": "closed",
+          "type": "musical",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-08-23",
+          "openingDateSource": "census-earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-02",
+          "evidenceUrls": [
+            "https://www.talktheatretome.com/theatre/sdmtrockofages",
+            "https://www.broadwayworld.com/san-diego/article/Review-ROCK-OF-AGES-at-San-Diego-Musical-Theatre-20260823"
           ]
         }
       }

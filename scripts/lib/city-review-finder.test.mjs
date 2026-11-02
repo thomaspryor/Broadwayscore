@@ -117,3 +117,18 @@ test('findReviews merges adapters, verifies each candidate and reports rejects',
   assert.equal(res.rejected.length, 1);
   assert.equal(res.rejected[0].reason, 'theatre-not-found');
 });
+
+test('verifyArticle rejects an undated page whose slug carries an out-of-window year', () => {
+  const html = '<html><head><title>Cyrano at Old Globe</title></head><body><article><p>Old Globe Cyrano review.</p></article></body></html>';
+  const v = F.verifyArticle(html, 'https://x.com/cyrano-at-old-globe6252022', PROD, WIN);
+  assert.equal(v.ok, false);
+  assert.match(v.reason, /url-year-outside-window/);
+});
+
+test('verifyArticle rejects press-release posts and place-only theatre aliases', () => {
+  const rep = { title: 'Hamlet', theatre: 'San Diego Repertory Theatre', start: '2026-07-23', end: '2026-08-30', aliases: [] };
+  assert.ok(!F.theatreAliases('San Diego Repertory Theatre').includes('san diego'));
+  const v = F.verifyArticle(page('Cygnet Theatre Presents Hamlet', 'Hamlet comes to San Diego Repertory Theatre this season.'), 'https://x.com/presents-hamlet', rep, WIN);
+  assert.equal(v.ok, false);
+  assert.equal(v.reason, 'not-a-review');
+});
