@@ -773,3 +773,49 @@ test('coordinatorWarnings: seam result is used, a crashing check is silent', asy
   assert.notEqual(v.decision, 'block');
   assert.ok(v.warnings.includes('COORDINATOR CHECK: BRO-5955'), JSON.stringify(v.warnings));
 });
+
+// BRO-5730: land-local-check records its verdict per tip; the land push hook warns (never blocks)
+// when a code-changing tip has no clean verdict, and logs the status beside the push verdict.
+test('land-local-check-log: records per HEAD in the shared checkout log, newest wins, tree match, exit 2 not recorded', async () => {
+  const { createRequire } = await import('node:module');
+  const lib = createRequire(import.meta.url)('../../scripts/lib/land-local-check-log.js');
+  const { d, wt } = landFixture();
+  const file = lib.logPath(wt);
+  assert.equal(file, path.join(fs.realpathSync(d), '.claude', 'land-local-check.jsonl'), 'a worktree writes to the main checkout log');
+  assert.equal(lib.recordVerdict(wt, 2), null, 'bad usage is not a check');
+  lib.recordVerdict(wt, 1);
+  const head = sh(wt, 'git rev-parse HEAD').trim();
+  const tree = sh(wt, 'git rev-parse HEAD^{tree}').trim();
+  assert.equal(lib.latestVerdict({ sha: head, tree, file }).verdict, 'new-failures');
+  lib.recordVerdict(wt, 0);
+  assert.equal(lib.latestVerdict({ sha: head, tree, file }).verdict, 'clean');
+  assert.equal(lib.latestVerdict({ sha: 'f'.repeat(40), tree, file }).verdict, 'clean', 'same tree under another commit (an amend)');
+  assert.equal(lib.latestVerdict({ sha: 'f'.repeat(40), tree: 'e'.repeat(40), file }), null);
+  assert.equal(lib.latestVerdict({ sha: head, tree, file: path.join(d, 'missing.jsonl') }), null);
+});
+
+test('localCheckWarning: none/new-failures/not-ready warn on a code change; clean, docs-only and an old tree stay quiet', async () => {
+  const { localCheckWarning, runHook } = await import('../../scripts/lib/land-preflight.mjs');
+  const { wt } = landFixture();
+  sh(wt, 'git reset -q --hard origin/main && mkdir -p scripts/lib && echo "module.exports = 1;" > scripts/lib/x.js && git add -A && git commit -qm code');
+  const at = (verdict) => ({ latestVerdict: () => (verdict ? { verdict } : null) });
+  assert.equal(localCheckWarning({ root: wt, src: 'HEAD' }).status, 'unknown', 'a tree without land-local-check-log.js is skipped');
+  assert.equal(localCheckWarning({ root: wt, src: 'HEAD', seams: at('clean') }).warning, null);
+  for (const [v, re] of [[null, /no land-local-check verdict/], ['new-failures', /NEW failures/], ['not-ready', /setup-local-data/], ['skipped', /mutex/]]) {
+    const r = localCheckWarning({ root: wt, src: 'HEAD', seams: at(v) });
+    assert.equal(r.status, v || 'none');
+    assert.match(r.warning, re);
+  }
+  assert.equal(localCheckWarning({ root: wt, src: 'HEAD', seams: { ...at(null), changedFiles: ['docs/a.md', 'data/x.json'] } }).status, 'no-code');
+  // End to end: the pushed tree's own lib, a real recorded verdict, the warning on the hook verdict.
+  fs.copyFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '../../scripts/lib/land-local-check-log.js'), path.join(wt, 'scripts/lib/land-local-check-log.js'));
+  sh(wt, 'git add -A && git commit -qm lib');
+  const push = (seams) => runHook({ command: 'git push origin HEAD:refs/heads/land/feat', cwd: wt, env: ENV, seams: { coordinator: () => [], ...seams } });
+  let v = push();
+  assert.notEqual(v.decision, 'block');
+  assert.ok(v.warnings.some((w) => /no land-local-check verdict/.test(w)), JSON.stringify(v.warnings));
+  const { createRequire } = await import('node:module');
+  createRequire(import.meta.url)(path.join(wt, 'scripts/lib/land-local-check-log.js')).recordVerdict(wt, 0);
+  v = push();
+  assert.ok(!v.warnings.some((w) => /land-local-check/.test(w)), JSON.stringify(v.warnings));
+});
