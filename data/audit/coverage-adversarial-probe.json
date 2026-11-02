@@ -1,63 +1,38 @@
 {
-  "generatedAt": "2026-10-26T18:42:06.157Z",
+  "generatedAt": "2026-11-02T21:45:40.647Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "night-city-off-west-end-2026",
-    "the-hungry-ghost-off-west-end-2026",
-    "our-sinatra-a-musical-celebration-off-broadway-2026",
-    "the-humanities-regional-2026",
-    "the-secret-circus-musical-off-broadway-2026"
+    "garry-starr-classic-penguins-off-west-end-2026",
+    "the-flying-lovers-of-vitebsk-regional-2026",
+    "copperfield-the-new-musical-off-broadway-2026",
+    "kramerfauci-st-anns-off-broadway-2026",
+    "monsters-of-the-villa-diodati-regional-2026"
   ],
-  "settlingSkipped": 1,
+  "settlingSkipped": 6,
   "shows": [
     {
-      "showId": "night-city-off-west-end-2026",
-      "title": "Night City",
-      "openingDate": "2026-09-12",
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "openingDate": "2026-10-23",
       "sampleState": "measured",
-      "sampleReason": "opened 44d ago",
-      "naiveQuery": "Night City Southwark Playhouse review",
+      "sampleReason": "opened 10d ago",
+      "naiveQuery": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
       "candidates": [
         {
-          "url": "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
+          "url": "https://www.thereviewshub.com/garry-starr-classic-penguins-arts-theatre-london/",
           "state": "excluded",
-          "reason": "duplicateOf"
+          "reason": "quarantined: date_implausible"
         },
         {
-          "url": "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
+          "url": "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://therecs.co.uk/garry-starr-classic-penguins/",
           "state": "excluded",
-          "reason": "duplicateOf"
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/night-city-southwark-playh-26005",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
-          "state": "live",
-          "reason": null
+          "reason": "quarantined: date_implausible"
         }
       ],
       "queries": [
@@ -69,95 +44,21 @@
       "onDiskCount": 31
     },
     {
-      "showId": "the-hungry-ghost-off-west-end-2026",
-      "title": "The Hungry Ghost",
-      "openingDate": "2026-10-06",
+      "showId": "the-flying-lovers-of-vitebsk-regional-2026",
+      "title": "The Flying Lovers of Vitebsk",
+      "openingDate": "2026-10-17",
       "sampleState": "measured",
-      "sampleReason": "opened 20d ago",
-      "naiveQuery": "The Hungry Ghost Bush Theatre review",
+      "sampleReason": "opened 16d ago",
+      "naiveQuery": "The Flying Lovers of Vitebsk Theater J, Washington, DC review",
       "candidates": [
         {
-          "url": "https://everything-theatre.co.uk/2026/10/review-the-hungry-ghost-the-bush-theatre/",
+          "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-FLYING-LOVERS-OF-VITEBSK-at-Theater-J-20261017",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
+          "url": "https://www.thegeorgetowndish.com/articles/flying-lovers-vitebsk",
           "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://theartsdesk.com/theatre/hungry-ghost-bush-theatre-review-enjoyable-gothicky-rom-com-if-bit-superficial",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-hungry-ghost-review-bush-theatre-studio-london-mei-leng-yew-mei-mac-isabella-wei",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 29
-    },
-    {
-      "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
-      "title": "Our Sinatra: A Musical Celebration",
-      "openingDate": "2026-09-15",
-      "sampleState": "measured",
-      "sampleReason": "opened 41d ago",
-      "naiveQuery": "Our Sinatra: A Musical Celebration The Marjorie S. Deane Little Theater review",
-      "candidates": [
-        {
-          "url": "https://nitelifeexchange.com/our-sinatra-a-musical-celebration-a-legend-within-a-legend/",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://theaterlife.com/our-sinatra-a-musical-celebration/",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 3
-    },
-    {
-      "showId": "the-humanities-regional-2026",
-      "title": "The Humanities",
-      "openingDate": "2026-09-13",
-      "sampleState": "measured",
-      "sampleReason": "opened 43d ago",
-      "naiveQuery": "The Humanities Victory Gardens Theater (Biograph Theater), Chicago, IL review",
-      "candidates": [
-        {
-          "url": "https://www.chicagotribune.com/2026/09/15/review-humanities-victory-gardens-theater/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.theatreinchicago.com/the-humanities/13480/",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/15/picksinsix-review-the-humanities-victory-gardens-theater",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/the-humanities/",
-          "state": "gap",
           "reason": null
         }
       ],
@@ -170,27 +71,17 @@
       "onDiskCount": 5
     },
     {
-      "showId": "the-secret-circus-musical-off-broadway-2026",
-      "title": "The Secret Circus Musical",
-      "openingDate": "2026-09-26",
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "openingDate": "2026-10-19",
       "sampleState": "measured",
-      "sampleReason": "opened 30d ago",
-      "naiveQuery": "The Secret Circus Musical SoHo Playhouse review",
+      "sampleReason": "opened 14d ago",
+      "naiveQuery": "Copperfield! The New Musical The Duke on 42nd Street review",
       "candidates": [
         {
-          "url": "https://thenerdparty.com/reviews/the-secret-circus-musical",
+          "url": "https://t2conline.com/copperfield-the-new-musical-a-dickens-of-a-cast-but-where-is-david/",
           "state": "live",
           "reason": null
-        },
-        {
-          "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
-          "state": "excluded",
-          "reason": "wrongProduction"
-        },
-        {
-          "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
-          "state": "excluded",
-          "reason": "wrongShow"
         }
       ],
       "queries": [
@@ -199,16 +90,72 @@
           "raw": 10
         }
       ],
-      "onDiskCount": 7
+      "onDiskCount": 16
+    },
+    {
+      "showId": "kramerfauci-st-anns-off-broadway-2026",
+      "title": "Kramer/Fauci",
+      "openingDate": "2026-10-04",
+      "sampleState": "measured",
+      "sampleReason": "opened 29d ago",
+      "naiveQuery": "Kramer/Fauci St. Ann's Warehouse review",
+      "candidates": [
+        {
+          "url": "https://www.nytimes.com/2026/10/05/theater/kramer-fauci-review.html",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://newyorktheater.me/2026/10/04/kramer-fauci-review/",
+          "state": "excluded",
+          "reason": "duplicateOf"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-daniel-fish-turns-an-aids-era-clash-into-gripping-theater-in-kramer-fauci_1856164/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://playsinternational.org.uk/kramer-fauci-st-anns-warehouse-new-york/",
+          "state": "excluded",
+          "reason": "wrongProduction"
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 24
+    },
+    {
+      "showId": "monsters-of-the-villa-diodati-regional-2026",
+      "title": "Monsters of the Villa Diodati",
+      "openingDate": "2026-10-14",
+      "sampleState": "measured",
+      "sampleReason": "opened 19d ago",
+      "naiveQuery": "Monsters of the Villa Diodati Creative Cauldron, Falls Church, VA review",
+      "candidates": [
+        {
+          "url": "https://mdtheatreguide.com/2026/10/theatre-review-monsters-of-the-villa-diodati-at-creative-cauldron/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 1
     }
   ],
   "summary": {
-    "verdict": "gaps-found",
+    "verdict": "clean",
     "measured": 5,
-    "gapCount": 4,
-    "gapShows": [
-      "our-sinatra-a-musical-celebration-off-broadway-2026",
-      "the-humanities-regional-2026"
-    ]
+    "gapCount": 0,
+    "gapShows": []
   }
 }
