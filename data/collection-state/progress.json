@@ -31,7 +31,12 @@
     "next-to-normal-2009/newsday--linda-winer.json",
     "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
     "next-to-normal-2009/rollingstone--unknown.json",
-    "carousel-1994/time--unknown.json"
+    "carousel-1994/time--unknown.json",
+    "in-the-heights-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+    "in-the-heights-off-broadway-2026/theatermania--zachary-stewart.json",
+    "in-the-heights-off-broadway-2026/cititour--brian-scott-lipton.json",
+    "the-kick-inside-off-broadway-2026/theater-scene--tony-marinelli.json"
   ],
   "failed": [
     "the-merchant-of-venice-1973/backstage--erik-haagensen.json",
@@ -46,7 +51,25 @@
     "noises-off-2016/american-theater-web--andy-propst.json",
     "cyrano-de-bergerac-2012/plays-to-see--unknown.json",
     "next-to-normal-2009/ap--ben-brantley.json",
-    "chess-1988/daily-mail--unknown.json"
+    "chess-1988/daily-mail--unknown.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
+    "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -59,7 +82,10 @@
       "noises-off-2016/theatre-reviews-by-john-clum--john-clum.json",
       "cyrano-de-bergerac-2012/newsday--matt-windman.json",
       "cyrano-de-bergerac-2012/exeunt-magazine--unknown.json",
-      "carousel-1994/time--unknown.json"
+      "carousel-1994/time--unknown.json",
+      "in-the-heights-off-broadway-2026/nyt-theater--jonathan-mandell.json",
+      "in-the-heights-off-broadway-2026/theatermania--zachary-stewart.json",
+      "the-kick-inside-off-broadway-2026/theater-scene--tony-marinelli.json"
     ],
     "amp": [],
     "browserbase": [
@@ -75,17 +101,18 @@
     "scrapingbee": [
       "junk-2017/huffpost--steven-suskin.json",
       "a-strange-loop-2022/theatrely--juan-a-ramirez.json",
-      "next-to-normal-2009/rollingstone--unknown.json"
-    ],
-    "brightdata": [
-      "the-minutes-2022/talkinbroadway--howard-miller.json",
-      "cyrano-de-bergerac-2012/variety--marilyn-stasio.json"
+      "next-to-normal-2009/rollingstone--unknown.json",
+      "in-the-heights-off-broadway-2026/cititour--brian-scott-lipton.json"
     ],
     "brightdata": [],
     "archiveToday": [
       "data/review-texts/cyrano-de-bergerac-2012/newsday--linda-winer.json",
       "data/review-texts/a-strange-loop-2022/hollywood-reporter--david-rooney.json",
-      "data/review-texts/cyrano-de-bergerac-2012/plays-to-see--unknown.json"
+      "data/review-texts/cyrano-de-bergerac-2012/plays-to-see--unknown.json",
+      "data/review-texts/msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json"
     ],
     "archive": [
       "junk-2017/village-voice--michael-feingold.json",
@@ -103,11 +130,12 @@
       "noises-off-2016/american-theater-web--andy-propst.json",
       "cyrano-de-bergerac-2012/northjerseycom--robert-feldberg.json",
       "next-to-normal-2009/newsday--linda-winer.json",
-      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json"
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
     ]
   },
   "startTime": "2026-11-02T18:08:56.607Z",
-  "lastProcessed": "chess-1988/daily-mail--unknown.json",
+  "lastProcessed": "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
   "log": [
     {
       "t": "2026-11-02T18:14:18.563Z",
@@ -164,6 +192,17 @@
       "t": "2026-11-02T18:22:10.576Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-02T18:46:37.828Z",
+      "event": "bb-session",
+      "session": "d77a162e",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T18:46:38.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }

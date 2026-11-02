@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-02T18:25:24.691Z",
-  "processed": 32,
-  "failed": 13,
-  "successRate": "71.1%",
+  "updatedAt": "2026-11-02T18:51:15.070Z",
+  "processed": 37,
+  "failed": 31,
+  "successRate": "54.4%",
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 3,
-    "brightdata": 2,
-    "archiveToday": 3,
-    "archive": 16
+    "scrapingbee": 4,
+    "brightdata": 0,
+    "archiveToday": 7,
+    "archive": 17
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-11-02T18:14:18.563Z",
@@ -71,6 +71,17 @@
       "t": "2026-11-02T18:22:10.576Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-02T18:46:37.828Z",
+      "event": "bb-session",
+      "session": "d77a162e",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T18:46:38.697Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
