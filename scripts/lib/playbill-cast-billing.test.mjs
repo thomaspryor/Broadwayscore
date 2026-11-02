@@ -130,3 +130,15 @@ test('stamped alphabetical billing from this source is cleared; hand-entered is 
   assert.equal(enrichCastBillingFromSnapshot(hand, snap(alpha), URL), false);
   assert.deepEqual(hand.castBilling, alpha);
 });
+
+test('two-block real pages (hamilton, book of mormon) and suffixes are caught', () => {
+  assert.equal(isAlphabeticalBySurname(['Amina Faye', 'David Guzman', 'Christopher Jackson', 'Marcus John', 'Lencia Kebede', 'Noah Kieserman', 'Simon Longnight', 'Lauren Mariasoosay', 'Reanne Acasio']), true);
+  assert.equal(isAlphabeticalBySurname(['Kevin Clay', 'Diego Enrico', 'Nikki M. James', "Rory O'Malley", 'Jacques C. Smith', 'Jay Wilkison', 'Derrick Williams', 'J. Casey Barrett']), true);
+  assert.equal(isAlphabeticalBySurname(['Amy Adams', 'Sammy Davis Jr.', 'Cy Clark', 'Di Young']), true);
+});
+
+test('stamped alphabetical billing clears, and dry-run logging copes with no billing', () => {
+  const show = { status: 'open', castBilling: [...alpha], castBillingSource: URL };
+  assert.equal(enrichCastBillingFromSnapshot(show, snap(alpha), URL), true);
+  assert.equal(show.castBilling, undefined);
+});

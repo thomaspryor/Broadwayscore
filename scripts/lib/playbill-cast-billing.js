@@ -2,7 +2,7 @@
 
 const cheerio = require('cheerio');
 
-const surname = (n) => n.trim().split(/\s+/).pop().toLowerCase();
+const surname = (n) => n.trim().replace(/,?\s+(jr\.?|sr\.?|ii|iii|iv)$/i, '').split(/\s+/).pop().toLowerCase();
 
 /**
  * Long-runners' Playbill 'Cast Current' tab lists everyone alphabetically by
@@ -12,7 +12,9 @@ const surname = (n) => n.trim().split(/\s+/).pop().toLowerCase();
  */
 function isAlphabeticalBySurname(names) {
   if (!Array.isArray(names) || names.length < 4) return false;
-  const keys = names.map(surname);
+  // Some pages are two alphabetical blocks back to back (hamilton-2015), so
+  // judge the leading run, which is what a post would name.
+  const keys = names.slice(0, 6).map(surname);
   return keys.every((k, i) => i === 0 || keys[i - 1].localeCompare(k, 'en') <= 0);
 }
 

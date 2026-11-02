@@ -142,7 +142,7 @@ function main() {
     // Most affected shows already have cast, so they must reach this writer.
     if (enrichCastBillingFromSnapshot(show, castChanges[show.id]?.castBilling, playbillUrls[show.id], { force })) {
       billingEnriched++;
-      if (dryRun) console.log(`  Would enrich billing: ${show.id} - ${show.castBilling.slice(0, 4).join(', ')}`);
+      if (dryRun) console.log(show.castBilling ? `  Would enrich billing: ${show.id} - ${show.castBilling.slice(0, 4).join(', ')}` : `  Would clear alphabetical billing: ${show.id}`);
     }
 
     // Skip if already has cast and not forcing
