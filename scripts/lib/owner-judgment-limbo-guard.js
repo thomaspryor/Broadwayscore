@@ -91,8 +91,8 @@ const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:re
 // login/account, taste, irreversible bulk, Mac), no real block (key, date) and no risky action. Workers read
 // such a card as the owner's and never take it, and no question reaches the owner, so it would sit until
 // scripts/owner-hold-sweep.js releases it. Same word lists the sweep uses, so filing and sweep agree.
-const OWNER_WORDING_RE = /\bowner|go-ahead|approv|\bhuman\b|judg|decision|decid|design call|taste|manual/i;
-const OWNER_WORDS_RE = /\b(?:owner'?s?|human|manual\w*|by hand)\b/gi;
+const OWNER_WORDING_RE = /\bowner(?![-\w])|go-ahead|approv|\bhuman\b|judg|decision|decid|design call|taste|manual/i;
+const OWNER_WORDS_RE = /\b(?:owner'?s?(?![-\w])|human|manual\w*|by hand)\b/gi;
 function ownerWordedParkHit(reason) {
   const hd = require('./headless-dispatchability.js');
   const r = hd.neutralizeParkReason(String(reason || '').trim()).trim();

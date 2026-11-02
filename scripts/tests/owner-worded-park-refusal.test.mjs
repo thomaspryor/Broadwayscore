@@ -39,3 +39,9 @@ test('a written question, or a real owner-only need or block, still files', () =
   assert.equal(createLimboReason({ body: 'x', parkReason: 'needs a rescore after the flags clear (BRO-1 lands first)' }), null);
   assert.equal(createLimboReason({ body: 'x', parkReason: '' }), null);
 });
+
+test('script names like owner-alert-router are not owner wording', async () => {
+  const { ownerWordedParkHit } = await import('../lib/owner-judgment-limbo-guard.js');
+  assert.equal(ownerWordedParkHit('blocked on a fix for owner-alert-router dedupe first'), null);
+  assert.equal(ownerWordedParkHit('waiting on the owner-hold-sweep run'), null);
+});
