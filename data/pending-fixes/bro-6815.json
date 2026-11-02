@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6815",
   "planId": "6a1036bd-266a-4c03-bb77-ee59df9e7bea",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T10:59:09.415Z",
   "submitter": {
     "name": null,
@@ -134,5 +134,69 @@
         "description": "shows.json: north-star-off-broadway-2026.closingDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T11:11:56.033Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-paparazzi-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-paparazzi-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-paparazzi-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for our-house-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for the-wedding-march-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-wedding-march-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for the-wedding-march-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for north-star-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for north-star-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
