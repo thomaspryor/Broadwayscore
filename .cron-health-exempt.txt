@@ -331,3 +331,5 @@ money-welcome.yml
 sweep-image-variants.yml  # BRO-6808: self-healing daily sweep; a missing sm/ variant is a perf-only defect
 # BRO-6841: weekly AI visibility tracker; advisory data snapshot, a missed week only delays the trend line. Failures go through notify-failure
 aeo-visibility-weekly.yml
+# BRO-6857: monthly report-only board hygiene dry run; a missed month only delays the report
+board-hygiene-report.yml

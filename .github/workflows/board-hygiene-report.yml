@@ -1,0 +1,28 @@
+name: Board Hygiene Report
+
+# BRO-6857. Monthly, REPORT-ONLY (CLAUDE.md rule 19: new gates land advisory first). Runs
+# scripts/board-hygiene-sweep.js as a dry run: prose date waits that need a RECHECK-AFTER stamp, routine audit logs
+# sitting in Backlog, and the age sweep (open cards created more than 30 days ago: dispatch / needs-VERIFY / reconfirm).
+# It never passes --apply; a session reads the report in the run summary and applies it.
+on:
+  schedule:
+    - cron: '23 13 1 * *'   # 1st of the month
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: '22'
+      - name: Dry-run the sweep into the run summary
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/board-hygiene-sweep.js | tee -a "$GITHUB_STEP_SUMMARY"
