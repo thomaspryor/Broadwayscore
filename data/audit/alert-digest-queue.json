@@ -514,6 +514,37 @@
     "queuedAt": "2026-11-02T20:40:13.613Z"
   },
   {
+    "conditionKey": "land:land/bro-6856",
+    "title": "Landing blocked: rebase red on land/bro-6856",
+    "description": "land.yml did not land land/bro-6856: the rebase gate went red at 9d17567b44. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6856 @ 9d17567b44 (origin/land/bro-6856) → origin/main @ 609d29d385 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 609d29d385: Rebasing (1/2) error: could not apply 5fb1cafef83... feat(BRO-6856): board names idle started cards and Other reasons; digest Waiting tile falls back to board table hint: Resolve all conflicts manually, mark them as resolved with hint:  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41521195962",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6856"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "9d17567b4484492174a89ebbd07dc06d9ef8c93e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41521195962"
+      }
+    ],
+    "queuedAt": "2026-11-02T21:06:20.213Z"
+  },
+  {
     "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
     "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
     "description": "check-corpus-drift.js audit \"orphaned-wrongprod-provenance\" (node scripts/audit-orphaned-wrongprod-provenance.js --gate) has been drifting. Latest output:\n\nScanned 79491 files: 1 orphaned (0 baselined, 1 NEW, 0 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  the-whoopi-monologues-off-broadway-2026/playbill--unknown.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.",
@@ -526,19 +557,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T21:02:52.421Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +12 more). Checked 2026-11-02.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-02T21:02:52.854Z"
   }
 ]
