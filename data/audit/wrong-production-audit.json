@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T23:31:17.706Z",
+  "timestamp": "2026-11-02T23:52:03.846Z",
   "stats": {
-    "totalReviews": 79385,
-    "alreadyFlagged": 21978,
+    "totalReviews": 79427,
+    "alreadyFlagged": 21981,
     "dateGuardCatches": 219,
     "directorMismatch": 3424,
-    "tvFilmSignals": 2252,
+    "tvFilmSignals": 2253,
     "londonSignals": 3585,
     "offBroadwaySignals": 734,
-    "yearMismatch": 349,
-    "noPublishDate": 8388
+    "yearMismatch": 350,
+    "noPublishDate": 8399
   },
   "findings": [
     {
@@ -2568,6 +2568,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-time-to-kill-regional-2026",
+      "file": "stage-raw--steven-morris.json",
+      "publishDate": "2026-05-26",
+      "url": "https://stageraw.com/stage-raw-review-a-time-to-kill/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2013 (2x) more than 2026 (1x). 2013 matches production: a-time-to-kill-2013"
         }
       ]
     },
@@ -38718,6 +38731,19 @@
       "score": 63,
       "publishDate": null,
       "url": "https://www.theatermania.com/news/review-dule-hill-and-daniel-j-watts-are-unforgettable-in-a-murky-lights-out_1779864/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "limonade-tous-les-jours-a-paris-love-story-regional-2026",
+      "file": "ticketholdersla--unknown.json",
+      "publishDate": null,
+      "url": "https://www.ticketholdersla.com/current-reviews/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
