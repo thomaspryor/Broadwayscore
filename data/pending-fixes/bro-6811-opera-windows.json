@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6811-opera-windows",
   "planId": "81d4cba2-18c1-42d0-b841-4692a4639870",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T07:00:02.394Z",
   "submitter": {
     "name": null,
@@ -60,5 +60,19 @@
         "file": "shows.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T10:15:49.890Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for carmen-off-broadway-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for don-giovanni-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
