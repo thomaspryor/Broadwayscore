@@ -1163109,21 +1163109,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-02T23:35:33.206Z",
-    "completedAt": "2026-11-02T23:36:13.780Z",
-    "totalReviews": 8,
-    "processed": 8,
+    "startedAt": "2026-11-02T23:35:10.801Z",
+    "completedAt": "2026-11-02T23:35:15.522Z",
+    "totalReviews": 1,
+    "processed": 1,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 51098,
-      "output": 2588,
-      "cacheRead": 30456,
+      "input": 5082,
+      "output": 288,
+      "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 125381
+      "total": 13690
     },
-    "costUsd": 0.19219669999999997,
-    "runId": "41545539722",
+    "costUsd": 0.0197279,
+    "runId": "41545358056",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1205180,6 +1205180,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-physicists-regional-2026",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-pianist-off-west-end-2026",
         "ourDistribution": {
           "up": 27,
@@ -1211969,8 +1211979,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-02T23:41:10.802Z",
-    "completedAt": "2026-11-02T23:41:10.804Z",
+    "startedAt": "2026-11-02T23:40:13.239Z",
+    "completedAt": "2026-11-02T23:40:13.241Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1211983,7 +1211993,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41545539722",
+    "runId": "41545358056",
     "source": "comparative-rescore",
     "errorDetails": []
   }
