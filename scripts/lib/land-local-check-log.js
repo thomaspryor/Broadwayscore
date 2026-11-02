@@ -31,13 +31,13 @@ function logPath(cwd) {
   return common ? path.join(path.dirname(common), '.claude', LOG_NAME) : null;
 }
 
-/** Append the verdict for the HEAD `cwd` has checked out. Unknown exit codes are not recorded. */
-function recordVerdict(cwd, exitCode, { file = logPath(cwd), now = new Date() } = {}) {
+/** Append the verdict for `head` (the commit the check judged; default the HEAD `cwd` has checked out now). Unknown exit codes are not recorded. */
+function recordVerdict(cwd, exitCode, { file = logPath(cwd), now = new Date(), head: judgedHead } = {}) {
   const verdict = VERDICT_BY_EXIT[exitCode];
   if (!verdict || !file) return null;
   try {
-    const head = gitOut(cwd, ['rev-parse', 'HEAD']);
-    const tree = gitOut(cwd, ['rev-parse', 'HEAD^{tree}']);
+    const head = judgedHead || gitOut(cwd, ['rev-parse', 'HEAD']);
+    const tree = head ? gitOut(cwd, ['rev-parse', `${head}^{tree}`]) : null;
     if (!head) return null;
     const entry = { ts: now.toISOString(), head, tree, verdict };
     fs.mkdirSync(path.dirname(file), { recursive: true });

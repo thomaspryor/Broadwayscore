@@ -293,8 +293,10 @@ function main(argv = process.argv.slice(2)) {
 module.exports = { main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) {
+  // Capture the tip before the ~20 min run: the session may commit meanwhile, and that commit was not tested.
+  const judgedHead = git('rev-parse', 'HEAD').stdout;
   const code = main();
   // BRO-5730: record the verdict so the land push hook can tell whether this tip was checked.
-  if (!parseArgs(process.argv.slice(2)).help) require('./land-local-check-log.js').recordVerdict(ROOT, code);
+  if (!parseArgs(process.argv.slice(2)).help) require('./land-local-check-log.js').recordVerdict(ROOT, code, { head: judgedHead });
   process.exit(code);
 }

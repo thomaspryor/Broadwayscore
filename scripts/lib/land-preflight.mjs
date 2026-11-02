@@ -908,7 +908,7 @@ export function coordinatorWarnings({ root, src, target, seams = {} }) {
  * BRO-5730: advisory. Claude worker lands were refused ~24% of the time (10/28-11/02; Codex,
  * which runs the gauntlet first, ~7%), mostly by repo-wide test gates that
  * scripts/lib/land-local-check.js catches before the push. Look up that check's recorded verdict
- * for the pushed tip (scripts/lib/land-local-check-log.js, loaded from the pushed tree; an older
+ * for the pushed tip (scripts/lib/land-local-check-log.js, loaded from the working tree; an older
  * tree without it is skipped). -> { status, warning }:
  *   status: clean | new-failures | not-ready | skipped | none | no-code | unknown
  *   warning: text for the session, or null. Never blocks.

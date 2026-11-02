@@ -578,6 +578,8 @@ tmp/
 .claude/review-verdicts.jsonl
 # BRO-4593: land-preflight hook verdict log (blocks, bypasses, skips)
 .claude/land-preflight.jsonl
+# BRO-5730: land-local-check verdict log
+.claude/land-local-check.jsonl
 .claude/ux-walkthrough/
 
 # Autonomous nightly loop — generated queue artifact (rewritten every triage run)

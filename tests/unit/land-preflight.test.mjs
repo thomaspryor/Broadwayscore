@@ -792,6 +792,11 @@ test('land-local-check-log: records per HEAD in the shared checkout log, newest 
   assert.equal(lib.latestVerdict({ sha: 'f'.repeat(40), tree, file }).verdict, 'clean', 'same tree under another commit (an amend)');
   assert.equal(lib.latestVerdict({ sha: 'f'.repeat(40), tree: 'e'.repeat(40), file }), null);
   assert.equal(lib.latestVerdict({ sha: head, tree, file: path.join(d, 'missing.jsonl') }), null);
+  // A commit made while the check ran was not tested: the verdict belongs to the head the check judged.
+  sh(wt, 'echo more > later.txt && git add -A && git commit -qm later');
+  const later = sh(wt, 'git rev-parse HEAD').trim();
+  lib.recordVerdict(wt, 0, { head });
+  assert.equal(lib.latestVerdict({ sha: later, tree: 'd'.repeat(40), file }), null, 'the untested tip gets no verdict');
 });
 
 test('localCheckWarning: none/new-failures/not-ready warn on a code change; clean, docs-only and an old tree stay quiet', async () => {
