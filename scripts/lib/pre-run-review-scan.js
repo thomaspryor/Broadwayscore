@@ -25,10 +25,10 @@ function classify({ shows, reviews, days = 180 }) {
     if (!Number.isFinite(start) || !Number.isFinite(pub)) continue;
     if ((start - pub) / DAY <= days) continue;
     const runs = Array.isArray(s.priorRuns) ? s.priorRuns : [];
-    const inWindow = runs.find((p) => p && p.openingDate && pub >= toDateMs(p.openingDate) - 30 * DAY
+    const inWindow = runs.find((p) => p && p.inheritReviews !== false && p.openingDate && pub >= toDateMs(p.openingDate) - 30 * DAY
       && (!p.closingDate || pub <= toDateMs(p.closingDate) + 60 * DAY));
     let cls;
-    if (s.type === 'opera' && runs.some((p) => p && p.id && typeof p.inheritReviews !== 'boolean')) cls = 'opera-unflagged';
+    if (s.type === 'opera' && runs.some((p) => p && typeof p.inheritReviews !== 'boolean')) cls = 'opera-unflagged';
     else if (r.inheritedFromShowId || inWindow) cls = 'carried-by-link';
     else cls = 'uncovered';
     const e = per.get(s.id) || { showId: s.id, type: s.type || null, hasPriorRuns: runs.length > 0, rows: 0, inherited: 0, cls: {}, outlets: [] };

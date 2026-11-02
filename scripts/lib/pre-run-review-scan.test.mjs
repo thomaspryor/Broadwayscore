@@ -20,3 +20,10 @@ test('classify: opera unflagged link, carried transfer and uncovered rows', () =
   assert.deepEqual(by.un.cls, { uncovered: 1 });
   assert.equal(by.un.rows, 1);
 });
+
+test('BRO-6811: id-less opera window is opera-unflagged; opted-out window is not carried', () => {
+  const mk = (flag) => ({ id: 'o', type: 'opera', previewsStartDate: '2025-12-01', priorRuns: [{ venue: 'Met', openingDate: '2023-12-31', closingDate: '2024-01-27', ...(flag === undefined ? {} : { inheritReviews: flag }) }] });
+  const rv = [{ showId: 'o', outletId: 'x', publishDate: '2024-01-03' }];
+  assert.equal(Object.keys(classify({ shows: [mk()], reviews: rv })[0].cls)[0], 'opera-unflagged');
+  assert.equal(Object.keys(classify({ shows: [mk(false)], reviews: rv })[0].cls)[0], 'uncovered');
+});

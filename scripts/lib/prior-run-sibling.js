@@ -253,7 +253,7 @@ function operaLinksMissingFlag(shows) {
   for (const show of shows || []) {
     if (!show || show.type !== 'opera' || !Array.isArray(show.priorRuns)) continue;
     for (const run of show.priorRuns) {
-      if (run && typeof run === 'object' && run.id && typeof run.inheritReviews !== 'boolean') out.push({ showId: show.id, runId: run.id });
+      if (run && typeof run === 'object' && typeof run.inheritReviews !== 'boolean') out.push({ showId: show.id, runId: run.id || run.venue || null });
     }
   }
   return out;

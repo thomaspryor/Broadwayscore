@@ -487,11 +487,11 @@ test('BRO-6811: an opera link flagged inheritReviews:false does not carry; unfla
   assert.equal((lib.preWindowExemptPriorRuns(mk({ inheritReviews: false }), [old, mk({ inheritReviews: false })]) || []).length, 0);
 });
 
-test('BRO-6811: operaLinksMissingFlag lists unflagged opera links only', () => {
+test('BRO-6811: operaLinksMissingFlag lists unflagged opera links, id-less windows included', () => {
   const lib = createRequire(import.meta.url)('./prior-run-sibling.js');
   const shows = [
     { id: 'a', type: 'opera', priorRuns: [{ id: 'a-old' }, { id: 'a-older', inheritReviews: false }, { openingDate: '2000-01-01' }] },
     { id: 'b', type: 'play', priorRuns: [{ id: 'b-old' }] },
   ];
-  assert.deepEqual(lib.operaLinksMissingFlag(shows), [{ showId: 'a', runId: 'a-old' }]);
+  assert.deepEqual(lib.operaLinksMissingFlag(shows), [{ showId: 'a', runId: 'a-old' }, { showId: 'a', runId: null }]);
 });

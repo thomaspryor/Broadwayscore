@@ -1,0 +1,64 @@
+{
+  "issueNumber": "bro-6811-opera-windows",
+  "planId": "81d4cba2-18c1-42d0-b841-4692a4639870",
+  "status": "pending",
+  "createdAt": "2026-11-02T07:00:02.394Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6811: id-less Met windows on carmen-2025 and don-giovanni-2025 opted out of carrying (inheritReviews:false), same rule as the seven linked revivals",
+    "steps": [
+      "Set inheritReviews:false on carmen-off-broadway-2025 priorRuns window",
+      "Set inheritReviews:false on don-giovanni-off-broadway-2025 priorRuns window"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "showId": "carmen-off-broadway-2025",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "venue": "Metropolitan Opera House",
+            "openingDate": "2023-12-31",
+            "closingDate": "2024-01-27"
+          }
+        ],
+        "newValue": [
+          {
+            "venue": "Metropolitan Opera House",
+            "openingDate": "2023-12-31",
+            "closingDate": "2024-01-27",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      },
+      {
+        "type": "data-edit",
+        "showId": "don-giovanni-off-broadway-2025",
+        "field": "priorRuns",
+        "oldValue": [
+          {
+            "venue": "Metropolitan Opera House",
+            "openingDate": "2023-05-05",
+            "closingDate": "2023-06-02"
+          }
+        ],
+        "newValue": [
+          {
+            "venue": "Metropolitan Opera House",
+            "openingDate": "2023-05-05",
+            "closingDate": "2023-06-02",
+            "inheritReviews": false
+          }
+        ],
+        "description": "BRO-6811: opera past-run link must not carry the earlier staging reviews onto the revival (owner decision BRO-6767, 2026-11-01)",
+        "file": "shows.json"
+      }
+    ]
+  }
+}
