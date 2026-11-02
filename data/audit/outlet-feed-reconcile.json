@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T15:11:22.454Z",
+  "generatedAt": "2026-11-02T17:02:38.370Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -150,7 +150,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -171,21 +171,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 761,
-  "matchedGaps": 13,
-  "possibleGaps": 10,
+  "itemsScanned": 724,
+  "matchedGaps": 14,
+  "possibleGaps": 11,
   "gaps": [
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/10/30/review-revlon-girls/",
-      "headline": "REVIEW: Revlon Girls",
-      "publishDate": "2026-10-30"
-    },
     {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
@@ -202,6 +197,24 @@
       "outletId": "plays-to-see",
       "url": "https://playstosee.com/reviews/top-rated/girls/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=girls",
       "headline": "GIRLS",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "level": "matched",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/02/patrick-stewart-broadway-star-in-the-heights-and-rent-return-stageworthy-news-of-the-week/",
+      "headline": "Patrick Stewart, Broadway Star. In The Heights and Rent Return!  Stageworthy News of the Week",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "level": "matched",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/memoriam-southwark-playhouse-borough/",
+      "headline": "Memoriam &#8211; Southwark Playhouse Borough",
       "publishDate": "2026-11-02"
     },
     {
@@ -244,28 +257,19 @@
       "showId": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "level": "matched",
-      "outletId": "city-am",
-      "url": "https://www.cityam.com/the-lives-of-others-keira-knightley-stars-in-gripping-adaptation/",
-      "headline": "The Lives of Others: Keira Knightley stars in gripping adaptation",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/the-lives-of-others-adelphi-theatre/",
-      "headline": "The Lives of Others | Adelphi Theatre",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
       "outletId": "west-end-best-friend",
       "url": "https://www.westendbestfriend.co.uk/news/review-the-lives-of-others-adelphi-theatre",
       "headline": "Review: THE LIVES OF OTHERS, Adelphi Theatre",
       "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "level": "matched",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/the-revlon-girl-park-theatre/",
+      "headline": "The Revlon Girl – Park Theatre",
+      "publishDate": "2026-11-02"
     },
     {
       "showId": "tosca-english-national-opera-west-end-2026",
@@ -283,6 +287,15 @@
       "outletId": "a-youngish-perspective",
       "url": "https://ayoungishperspective.co.uk/2026/11/02/review-tosca-2/",
       "headline": "REVIEW: Tosca",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "new-york-classical-review",
+      "url": "https://newyorkclassicalreview.com/2026/11/with-hernandez-debut-big-voices-and-big-drama-in-metstosca/",
+      "headline": "With Hernández debut, big voices and big drama in Met&#8217;s &#8220;Tosca&#8221;",
       "publishDate": "2026-11-02"
     },
     {
@@ -319,6 +332,15 @@
       "outletId": "artsdesk",
       "url": "https://theartsdesk.com/theatre/bloodsport-stratford-east-review-1536-author-pits-more-essex-girls-against-bellicose-englishmen",
       "headline": "Bloodsport, Stratford East review - the &#039;1536&#039; author pits more Essex girls against bellicose Englishmen",
+      "publishDate": null
+    },
+    {
+      "showId": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "level": "possible",
+      "outletId": "theatermania",
+      "url": "https://www.theatermania.com/news/review-in-the-heights-lin-manuel-mirandas-victory-lap-at-new-york-city-center_1858642/",
+      "headline": "Review: In the Heights, Lin-Manuel Miranda’s Victory Lap at New York City Center",
       "publishDate": null
     },
     {

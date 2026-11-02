@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T15:11:01.899Z",
+  "generatedAt": "2026-11-02T17:02:11.402Z",
   "windowDays": 45,
   "showsScanned": 224,
   "gaps": [
@@ -21,34 +21,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 189.3000947222222,
+      "fileAgeHours": 191.1520686111111,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 174.76264777777777,
+      "nonTerminalAgeHours": 176.61528722222224,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "an-evening-with-an-immigrant-off-west-end-2026",
-      "title": "An Evening With An Immigrant",
-      "openingDate": "2026-10-06",
-      "file": "london-theatre--ava-wong-davies.json",
-      "outletId": "london-theatre",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.londontheatre.co.uk/reviews/inua-ellams-an-evening-with-an-immigrant-the-bridge-theatre",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "[review-write-guard] date-implausible: an-evening-with-an-immigrant-off-west-end-2026/london-theatre--ava-wong-davies.json → quarantined to _pending/an-evening-with-an-immigrant-off-west-end-2026/london-theatre--ava-wong-davies.json (2201d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/an-evening-with-an-immigrant-off-west-end-2026/london-theatre--ava-wong-davies.json"
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.londontheatre.co.uk/reviews/inua-ellams-an-evening-with-an-immigrant-the-bridge-theatre --outlet=london-theatre --critic=\"Ava Wong Davies\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-02T13:39:15.409Z",
-      "fileAgeHours": 1.525041388888889,
-      "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 0,
-      "needsManualRecovery": false
     },
     {
       "showId": "an-evening-with-an-immigrant-off-west-end-2026",
@@ -69,9 +45,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 1.5290088888888889,
+      "fileAgeHours": 3.381553333333333,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 1.8526394444444445,
       "needsManualRecovery": false
     }
   ],
