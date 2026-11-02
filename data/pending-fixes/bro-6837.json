@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6837",
   "planId": "3776edd4-6495-4964-b6b4-7549539e6bc4",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T17:02:05.840Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,15 @@
         "description": "Alias artsatl.com to artsatl"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T18:11:32.262Z",
+  "results": [
+    {
+      "action": "outlet-registry-alias",
+      "ok": true,
+      "changed": true,
+      "msg": "artsatl: artsatl.com added to domainAliases"
+    }
+  ],
+  "executedIn": "ci"
 }
