@@ -158,10 +158,11 @@
     "alertUncollected": 0
   },
   "little-bear-ridge-road-2025": {
-    "at": "2026-09-26T20:19:48.597Z",
-    "gaps": 5,
-    "priorProductionGaps": 4,
-    "uncollected": 0
+    "at": "2026-11-02T10:10:31.683Z",
+    "gaps": 7,
+    "priorProductionGaps": 1,
+    "uncollected": 0,
+    "alertUncollected": 0
   },
   "liberation-2025": {
     "at": "2026-09-26T20:20:17.552Z",
@@ -2032,10 +2033,12 @@
     "refVersion": 2
   },
   "hercules-west-end-2025": {
-    "at": "2026-09-25T02:06:02.085Z",
-    "gaps": 3,
-    "priorProductionGaps": 16,
+    "at": "2026-11-02T09:56:27.184Z",
+    "gaps": 0,
+    "priorProductionGaps": 0,
     "uncollected": 0,
+    "alertUncollected": 0,
+    "slowMarketResidual": 0,
     "refVersion": 2
   },
   "titanique-west-end-2024": {
@@ -4007,10 +4010,12 @@
     "uncollected": 0
   },
   "armory-public-tours-off-broadway-2026": {
-    "at": "2026-09-25T19:08:50.057Z",
+    "at": "2026-11-02T10:02:18.604Z",
     "gaps": 0,
     "priorProductionGaps": 0,
-    "uncollected": 0
+    "uncollected": 0,
+    "alertUncollected": 0,
+    "slowMarketResidual": 0
   },
   "onegin-off-broadway-2026": {
     "at": "2026-08-13T06:20:21.155Z",
@@ -7569,9 +7574,9 @@
     "serpCensusAt": "2026-10-21T03:39:02.980Z"
   },
   "slanted-floors-off-broadway-2026": {
-    "at": "2026-11-02T04:54:26.020Z",
+    "at": "2026-11-02T10:00:01.492Z",
     "gaps": 0,
-    "priorProductionGaps": 0,
+    "priorProductionGaps": 2,
     "uncollected": 0,
     "alertUncollected": 0,
     "slowMarketResidual": 0,
@@ -7582,7 +7587,7 @@
         "since": "2026-10-23T05:20:28.718Z"
       }
     },
-    "serpCensusAt": "2026-11-02T02:52:06.545Z"
+    "serpCensusAt": "2026-11-02T10:00:01.493Z"
   },
   "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026": {
     "at": "2026-10-25T23:35:17.280Z",
@@ -7824,12 +7829,12 @@
     "serpCensusAt": "2026-11-02T04:06:13.847Z"
   },
   "ceilidh-the-musical-off-west-end-2026": {
-    "at": "2026-11-02T03:56:26.728Z",
+    "at": "2026-11-02T09:54:47.643Z",
     "gaps": 8,
     "priorProductionGaps": 0,
-    "uncollected": 0,
-    "alertUncollected": 0,
-    "slowMarketResidual": 0,
+    "uncollected": 1,
+    "alertUncollected": 1,
+    "slowMarketResidual": 1,
     "refVersion": 2,
     "zeroChar": {
       "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/": {
@@ -7841,9 +7846,19 @@
         "n": 5,
         "at": "2026-10-25T05:22:55.339Z",
         "since": "2026-10-24T01:07:09.250Z"
+      },
+      "https://www.thereviewshub.com/ceilidh-shoreditch-town-hall-london/": {
+        "n": 1,
+        "at": "2026-11-02T09:54:50.610Z",
+        "since": "2026-11-02T09:54:50.610Z"
       }
     },
-    "serpCensusAt": "2026-11-02T03:56:26.728Z"
+    "serpCensusAt": "2026-11-02T03:56:26.728Z",
+    "weAlert": {
+      "hash": "2160987691",
+      "at": "2026-11-02T09:54:47.651Z",
+      "delivered": false
+    }
   },
   "memoriam-off-west-end-2026": {
     "at": "2026-11-02T08:17:57.834Z",
@@ -8082,11 +8097,11 @@
     "refVersion": 2
   },
   "the-moth-off-west-end-2026": {
-    "at": "2026-11-02T06:39:25.893Z",
-    "gaps": 2,
-    "priorProductionGaps": 0,
-    "uncollected": 1,
-    "alertUncollected": 1,
+    "at": "2026-11-02T10:09:23.681Z",
+    "gaps": 4,
+    "priorProductionGaps": 1,
+    "uncollected": 2,
+    "alertUncollected": 2,
     "slowMarketResidual": 0,
     "refVersion": 2,
     "weAlert": {
@@ -8096,12 +8111,12 @@
     },
     "zeroChar": {
       "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/": {
-        "n": 4,
-        "at": "2026-11-02T06:39:28.646Z",
+        "n": 5,
+        "at": "2026-11-02T10:09:43.050Z",
         "since": "2026-11-01T17:40:52.873Z"
       }
     },
-    "serpCensusAt": "2026-11-02T02:51:15.732Z"
+    "serpCensusAt": "2026-11-02T10:09:23.682Z"
   },
   "i-became-we-off-broadway-2026": {
     "at": "2026-11-02T08:11:58.447Z",
@@ -8120,7 +8135,7 @@
     "serpCensusAt": "2026-11-02T03:42:57.956Z"
   },
   "the-morbs-off-broadway-2026": {
-    "at": "2026-11-02T04:56:59.723Z",
+    "at": "2026-11-02T10:00:35.309Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -8133,7 +8148,7 @@
         "since": "2026-10-26T08:11:18.815Z"
       }
     },
-    "serpCensusAt": "2026-11-02T00:47:05.108Z"
+    "serpCensusAt": "2026-11-02T10:00:35.309Z"
   },
   "franky-off-west-end-2026": {
     "at": "2026-11-02T08:25:37.375Z",
@@ -8245,9 +8260,9 @@
     "alertUncollected": 0
   },
   "in-the-heights-off-broadway-2026": {
-    "at": "2026-11-02T06:34:32.114Z",
+    "at": "2026-11-02T10:04:30.608Z",
     "gaps": 1,
-    "priorProductionGaps": 2,
+    "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
     "slowMarketResidual": 0,
@@ -8306,7 +8321,7 @@
     "serpCensusAt": "2026-10-28T16:22:05.616Z"
   },
   "starstuff-off-broadway-2026": {
-    "at": "2026-11-02T04:49:25.682Z",
+    "at": "2026-11-02T09:58:11.443Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -8315,9 +8330,9 @@
     "serpCensusAt": "2026-11-02T04:49:25.699Z"
   },
   "ghost-notes-off-broadway-2026": {
-    "at": "2026-11-02T04:49:57.020Z",
+    "at": "2026-11-02T09:59:07.608Z",
     "gaps": 1,
-    "priorProductionGaps": 1,
+    "priorProductionGaps": 0,
     "uncollected": 1,
     "alertUncollected": 1,
     "slowMarketResidual": 0,
@@ -8750,7 +8765,7 @@
     "serpCensusAt": "2026-11-02T04:47:13.323Z"
   },
   "ivy-day-off-broadway-2026": {
-    "at": "2026-11-02T06:33:43.869Z",
+    "at": "2026-11-02T10:04:09.306Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -8775,9 +8790,9 @@
     "refVersion": 2
   },
   "erebus-off-broadway-2026": {
-    "at": "2026-11-02T06:29:06.100Z",
+    "at": "2026-11-02T10:02:29.982Z",
     "gaps": 5,
-    "priorProductionGaps": 3,
+    "priorProductionGaps": 0,
     "uncollected": 4,
     "alertUncollected": 4,
     "slowMarketResidual": 0,
@@ -9072,9 +9087,9 @@
     "refVersion": 2
   },
   "tosca-english-national-opera-west-end-2026": {
-    "at": "2026-11-02T06:30:44.442Z",
+    "at": "2026-11-02T10:02:50.646Z",
     "gaps": 1,
-    "priorProductionGaps": 4,
+    "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
     "slowMarketResidual": 0,
@@ -9105,7 +9120,7 @@
     "serpCensusAt": "2026-11-02T06:36:52.052Z"
   },
   "dogstar-off-west-end-2026": {
-    "at": "2026-11-02T06:31:55.175Z",
+    "at": "2026-11-02T10:03:25.810Z",
     "gaps": 4,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -9122,7 +9137,7 @@
     "serpCensusAt": "2026-11-02T06:31:55.176Z"
   },
   "specimen-off-broadway-2026": {
-    "at": "2026-11-02T06:38:10.239Z",
+    "at": "2026-11-02T10:06:31.397Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -9138,11 +9153,11 @@
     "serpCensusAt": "2026-11-02T06:38:10.239Z"
   },
   "a-beautiful-noise-the-neil-diamond-musical-tour-2026": {
-    "at": "2026-11-02T06:38:27.396Z",
-    "gaps": 6,
-    "priorProductionGaps": 0,
-    "uncollected": 1,
-    "alertUncollected": 1,
+    "at": "2026-11-02T10:07:39.536Z",
+    "gaps": 9,
+    "priorProductionGaps": 29,
+    "uncollected": 4,
+    "alertUncollected": 4,
     "zeroChar": {
       "https://www.theatermania.com/news/a-beautiful-noise-the-neil-diamond-musical-to-tour-north-america_95001/": {
         "n": 1,
@@ -9150,7 +9165,7 @@
         "since": "2026-10-31T10:11:52.797Z"
       }
     },
-    "serpCensusAt": "2026-11-02T02:49:09.289Z"
+    "serpCensusAt": "2026-11-02T10:07:39.540Z"
   },
   "the-name-off-west-end-2026": {
     "at": "2026-10-27T13:41:19.426Z",
@@ -9615,7 +9630,7 @@
     }
   },
   "the-seance-off-west-end-2026": {
-    "at": "2026-11-02T06:35:13.530Z",
+    "at": "2026-11-02T10:05:13.211Z",
     "gaps": 2,
     "priorProductionGaps": 0,
     "uncollected": 1,
@@ -10179,20 +10194,20 @@
     "serpCensusAt": "2026-11-02T06:42:41.014Z"
   },
   "msblackforpresident-off-broadway-2026": {
-    "at": "2026-11-02T06:45:16.432Z",
+    "at": "2026-11-02T10:12:33.291Z",
     "gaps": 5,
     "priorProductionGaps": 3,
     "uncollected": 1,
     "alertUncollected": 1,
     "slowMarketResidual": 0,
-    "serpCensusAt": "2026-11-02T06:45:16.433Z",
     "zeroChar": {
       "https://www.theatermania.com/news/tarell-alvin-mccraney-to-star-as-joan-jett-blakk-in-ms-blakk-for-president_88088/": {
-        "n": 1,
-        "at": "2026-11-02T06:45:36.973Z",
+        "n": 2,
+        "at": "2026-11-02T10:12:55.170Z",
         "since": "2026-11-02T06:45:36.973Z"
       }
-    }
+    },
+    "serpCensusAt": "2026-11-02T06:45:16.433Z"
   },
   "tristan-and-yseult-off-broadway-2026": {
     "at": "2026-11-02T06:39:55.893Z",
@@ -10219,7 +10234,7 @@
     "serpCensusAt": "2026-10-29T19:11:38.297Z"
   },
   "violets-magic-glasses-off-broadway-2026": {
-    "at": "2026-11-02T06:41:13.087Z",
+    "at": "2026-11-02T10:11:48.405Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -10237,7 +10252,7 @@
     "serpCensusAt": "2026-11-02T06:46:04.566Z"
   },
   "the-infinite-fright-off-broadway-2026": {
-    "at": "2026-11-02T06:32:35.744Z",
+    "at": "2026-11-02T10:03:50.291Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -10261,13 +10276,13 @@
     "alertUncollected": 0
   },
   "clifford-odets-waiting-for-lefty-off-broadway-2026": {
-    "at": "2026-11-02T04:57:19.116Z",
+    "at": "2026-11-02T10:02:01.276Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
     "slowMarketResidual": 0,
-    "serpCensusAt": "2026-11-02T00:48:04.169Z"
+    "serpCensusAt": "2026-11-02T10:02:01.276Z"
   },
   "nero-off-west-end-2026": {
     "at": "2026-10-30T00:31:11.464Z",
@@ -15305,6 +15320,29 @@
   },
   "prodigal-son-regional-2025": {
     "at": "2026-11-02T08:25:22.981Z",
+    "gaps": 0,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0
+  },
+  "the-unbelievers-west-end-2025": {
+    "at": "2026-11-02T09:59:18.622Z",
+    "gaps": 0,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0,
+    "slowMarketResidual": 0,
+    "refVersion": 2
+  },
+  "hundreds-and-hundreds-of-stars-regional-2025": {
+    "at": "2026-11-02T10:03:38.835Z",
+    "gaps": 0,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0
+  },
+  "mel-brooks-young-frankenstein-hope-mill-regional-2025": {
+    "at": "2026-11-02T10:06:40.272Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,

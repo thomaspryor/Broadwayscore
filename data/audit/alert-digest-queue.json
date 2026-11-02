@@ -2017,20 +2017,6 @@
     "queuedAt": "2026-11-02T08:30:10.700Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-02.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-02T08:30:27.065Z"
-  },
-  {
     "conditionKey": "land:land/bro-6811-audit-script",
     "title": "Landing blocked: unit-tests-node red on land/bro-6811-audit-script",
     "description": "land.yml did not land land/bro-6811-audit-script: the unit-tests-node gate went red at 012a6ad3cd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41409158867",
@@ -2091,5 +2077,33 @@
       }
     ],
     "queuedAt": "2026-11-02T09:05:08.136Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:ceilidh-the-musical-off-west-end-2026",
+    "title": "Review gap — \"Ceilidh The Musical\" missing 1 cited review(s)",
+    "description": "Ceilidh The Musical (ceilidh-the-musical-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=ceilidh-the-musical-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T10:12:56.262Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-02.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T10:13:20.755Z"
   }
 ]

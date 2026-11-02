@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T08:31:00.588Z",
+  "generatedAt": "2026-11-02T10:13:49.596Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -41,6 +41,11 @@
     {
       "id": "a-few-good-men-2026",
       "title": "A Few Good Men",
+      "openingDate": "2026-10-29"
+    },
+    {
+      "id": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
       "openingDate": "2026-10-29"
     },
     {
@@ -104,6 +109,11 @@
       "openingDate": "2026-10-29"
     },
     {
+      "id": "roleplay-off-west-end-2026",
+      "title": "Roleplay",
+      "openingDate": "2026-10-27"
+    },
+    {
       "id": "all-the-worlds-a-stage-regional-2026",
       "title": "All The World's A Stage",
       "openingDate": "2026-10-28"
@@ -138,16 +148,16 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "british-theatre",
-      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
-    },
-    {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -162,10 +172,19 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 745,
-  "matchedGaps": 8,
+  "itemsScanned": 757,
+  "matchedGaps": 10,
   "possibleGaps": 11,
   "gaps": [
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/ceilidh-shoreditch-town-hall-london/",
+      "headline": "Ceilidh – Shoreditch Town Hall, London",
+      "publishDate": "2026-11-01"
+    },
     {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
@@ -197,8 +216,17 @@
       "showId": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "level": "matched",
+      "outletId": "plays-international",
+      "url": "https://playsinternational.org.uk/the-lives-of-others-adelphi-theatre/",
+      "headline": "“The Lives of Others” at the Adelphi Theatre",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
       "outletId": "the-recs",
-      "url": "https://therecs.co.uk/the-lives-of-others-%e2%98%85%e2%98%85%e2%98%85%e2%98%85/",
+      "url": "https://therecs.co.uk/the-lives-of-others/",
       "headline": "The Lives of Others ★★★★",
       "publishDate": "2026-11-01"
     },

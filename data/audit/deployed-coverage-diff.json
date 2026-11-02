@@ -1,39 +1,13 @@
 {
-  "generatedAt": "2026-11-02T08:31:00.198Z",
+  "generatedAt": "2026-11-02T10:13:49.210Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 313,
-  "clean": 312,
-  "defective": 1,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "openingDate": "2026-11-01",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: zeal-nyc"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.74 vs local 64.86 (Δ4.12)"
-        }
-      ],
-      "missingFromProd": [
-        "zeal-nyc"
-      ],
-      "localCount": 7,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-11-02T08:30:49.862Z"
-    }
-  ],
+  "clean": 313,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
