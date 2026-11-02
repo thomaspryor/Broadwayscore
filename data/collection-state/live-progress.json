@@ -1,42 +1,50 @@
 {
-  "updatedAt": "2026-11-02T04:35:22.284Z",
-  "processed": 3,
-  "failed": 17,
-  "successRate": "15.0%",
+  "updatedAt": "2026-11-02T04:35:34.085Z",
+  "processed": 15,
+  "failed": 13,
+  "successRate": "53.6%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 12,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 3,
+    "archiveToday": 5,
     "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-11-02T04:27:23.936Z",
+      "t": "2026-11-02T04:26:46.905Z",
       "event": "bb-session",
-      "session": "a70e9b3d",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+      "session": "5e032e27",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
     },
     {
-      "t": "2026-11-02T04:27:24.490Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-11-02T04:29:22.416Z",
+      "t": "2026-11-02T04:27:28.323Z",
       "event": "bb-session",
-      "session": "ef0f4c5d",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "a31a732b",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     },
     {
-      "t": "2026-11-02T04:29:22.931Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "t": "2026-11-02T04:27:37.182Z",
+      "event": "bb-session",
+      "session": "b88aaaf5",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-02T04:29:50.805Z",
+      "event": "bb-session",
+      "session": "c6c4f1e7",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-02T04:31:18.795Z",
+      "event": "bb-session",
+      "session": "daf8aa0f",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
