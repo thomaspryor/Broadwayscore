@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T16:11:09.531Z",
+  "timestamp": "2026-11-02T17:22:28.500Z",
   "stats": {
-    "totalReviews": 79201,
-    "alreadyFlagged": 21953,
+    "totalReviews": 79207,
+    "alreadyFlagged": 21958,
     "dateGuardCatches": 222,
     "directorMismatch": 3422,
     "tvFilmSignals": 2252,
-    "londonSignals": 3580,
+    "londonSignals": 3581,
     "offBroadwaySignals": 740,
     "yearMismatch": 346,
-    "noPublishDate": 8374
+    "noPublishDate": 8375
   },
   "findings": [
     {
@@ -64754,19 +64754,6 @@
     },
     {
       "showId": "the-enormous-crocodile-west-end-2026",
-      "file": "show-score--unknown.json",
-      "publishDate": "2024-05-28",
-      "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-enormous-crocodile",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 791d before show (2024-05-28 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
-      "showId": "the-enormous-crocodile-west-end-2026",
       "file": "theatre-vibe--lizzie-loveridge.json",
       "score": 90,
       "publishDate": "2024-05-27",
@@ -97667,6 +97654,19 @@
     },
     {
       "showId": "girls-off-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2026-10-13",
+      "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girls-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 86,
       "publishDate": "2026-10-29",
@@ -104460,6 +104460,19 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "publishDate": "2026-09-07",
+      "url": "https://www.londontheatre.co.uk/theatre-news/news/full-cast-revealed-for-jesus-christ-superstar-at-theatre-royal-drury-lane",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 39d before show (2026-09-07 vs 2026-10-16)"
         }
       ]
     },
