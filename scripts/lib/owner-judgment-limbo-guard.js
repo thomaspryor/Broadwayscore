@@ -87,12 +87,33 @@ function ownerJudgmentLimboResults(report, now = Date.now()) {
 const MARKER_LINE_RE = /^[ \t]*(?:>[ \t]*|[-*+][ \t]+|\d+[.)][ \t]+|#{1,6}[ \t]+)*(?:\*\*|__|`)*VERIFY:\s*owner-judgment/im;
 const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bowner\s+(?:decision|sign-?off|approval)\b|\bowner\s+to\s+(?:review|decide|look)\b|\bfor\s+(?:the\s+)?owner(?![-\w])|\bowner(?:'?s)?\s+(?:taste|sweep)\b|\b(?:taste\s+call|deliberate\s+sweep)\b/i;
 
+// BRO-6852: a park reason worded as an owner hold that names nothing only the owner can supply (no money,
+// login/account, taste, irreversible bulk, Mac), no real block (key, date) and no risky action. Workers read
+// such a card as the owner's and never take it, and no question reaches the owner, so it would sit until
+// scripts/owner-hold-sweep.js releases it. Same word lists the sweep uses, so filing and sweep agree.
+const OWNER_WORDING_RE = /\bowner|go-ahead|approv|\bhuman\b|judg|decision|decid|design call|taste|manual/i;
+const OWNER_WORDS_RE = /\b(?:owner'?s?|human|manual\w*|by hand)\b/gi;
+function ownerWordedParkHit(reason) {
+  const hd = require('./headless-dispatchability.js');
+  const r = hd.neutralizeParkReason(String(reason || '').trim()).trim();
+  if (!r || hd.isAutomationParked(`PARKED: ${r}`)) return null;
+  const hit = r.match(OWNER_WORDING_RE);
+  if (!hit || hd.OWNER_ONLY_PARK_RE.test(r) || hd.REAL_BLOCK_PARK_RE.test(r)) return null;
+  if (r.replace(OWNER_WORDS_RE, ' ').match(hd.RISKY_ACTION_PARK_RE)) return null;
+  return hit[0];
+}
+
 function createLimboReason({ body, parkReason } = {}) {
   const text = String(body || '');
   if (findOwnerDecisions([{ identifier: 'BRO-new', description: text }]).length) return null;
   const markerOnly = MARKER_LINE_RE.test(text) && !evaluateVerifiability(text, []).cmd;
   const reviewPark = OWNER_REVIEW_PARK_RE.test(String(parkReason || ''));
-  if (!markerOnly && !reviewPark) return null;
+  const wordedHit = !markerOnly && !reviewPark ? ownerWordedParkHit(parkReason) : null;
+  if (!markerOnly && !reviewPark && !wordedHit) return null;
+  if (wordedHit) {
+    return `the park reason "${String(parkReason).trim().slice(0, 80)}" reads as an owner hold ("${wordedHit}") but names nothing only the owner can supply, and no line starts with "DECISION NEEDED:", so no worker takes the card and nobody tells the owner (BRO-6852). `
+      + 'If a worker can do it, file it with --dispatch (or --self / --child) and a safe-form VERIFY line. If the owner must decide, add a plain-English "DECISION NEEDED: <question>" line with the options and your recommendation (docs/owner-email-guidelines.md).';
+  }
   return `${markerOnly ? 'the notes are armed only by "VERIFY: owner-judgment"' : `the park reason "${String(parkReason).trim().slice(0, 80)}" waits on owner review`}, but no line starts with "DECISION NEEDED:", so nobody tells the owner (they do not read Linear). `
     + 'If the owner must decide, add a plain-English "DECISION NEEDED: <question>" line with the context, the options and your recommendation (docs/owner-email-guidelines.md; run node scripts/lib/owner-decision-recall.js "<topic>" first in case they already answered). '
     + 'If a worker can do it, file it with --dispatch and a safe-form VERIFY line instead.';
@@ -107,4 +128,4 @@ function updateLimboReason({ before, after } = {}) {
   return createLimboReason({ body: after });
 }
 
-module.exports = { ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults, createLimboReason, updateLimboReason };
+module.exports = { ownerWordedParkHit, ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults, createLimboReason, updateLimboReason };
