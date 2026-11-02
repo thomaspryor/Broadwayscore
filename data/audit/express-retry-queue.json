@@ -1,51 +1,6 @@
 {
   "entries": [
     {
-      "kind": "truncated-t1-refetch",
-      "showId": "a-few-good-men-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-30T05:36:16.839Z",
-      "dueAt": "2026-10-30T06:36:16.839Z",
-      "offsetHours": 1,
-      "outletIds": [
-        "nytimes"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-30T08:32:48.704Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "a-few-good-men-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-30T05:36:16.839Z",
-      "dueAt": "2026-10-30T08:36:16.839Z",
-      "offsetHours": 3,
-      "outletIds": [
-        "nytimes"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-30T09:04:03.538Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "a-few-good-men-2026",
-      "market": "broadway",
-      "queuedAt": "2026-10-30T05:36:16.839Z",
-      "dueAt": "2026-10-30T17:36:16.839Z",
-      "offsetHours": 12,
-      "outletIds": [
-        "nytimes"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-30T19:44:44.468Z"
-    },
-    {
       "showId": "medea-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-10-30T15:41:59.213Z",
@@ -66,21 +21,24 @@
       "market": "broadway",
       "queuedAt": "2026-11-01T14:36:12.889Z",
       "dueAt": "2026-11-02T04:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-02T06:26:38.820Z"
     },
     {
       "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-11-01T14:31:46.842Z",
       "dueAt": "2026-11-02T04:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-02T06:26:38.820Z"
     },
     {
       "showId": "msblackforpresident-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-11-01T14:31:09.616Z",
       "dueAt": "2026-11-02T04:15:00.000Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-11-02T06:26:38.820Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -118,7 +76,10 @@
       "outletIds": [
         "guardian"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "express-retry-same-tick",
+      "attemptedAt": "2026-11-02T06:26:38.820Z"
     },
     {
       "kind": "truncated-t1-refetch",
