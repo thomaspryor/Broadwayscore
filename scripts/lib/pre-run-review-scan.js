@@ -1,18 +1,16 @@
 #!/usr/bin/env node
 'use strict';
 /**
- * audit-pre-run-reviews.js (BRO-6811) — reviews dated long before the show's first preview.
+ * pre-run-review-scan.js (BRO-6811) — reviews dated long before the show's first preview.
  *
  * Scan rule: (show start - publishDate) > --days (default 180), show start = previewsStartDate || openingDate.
  * Each show is classed by what legitimises (or not) the old rows:
  *   opera-unflagged   opera show whose priorRuns link has no explicit inheritReviews (owner rule BRO-6767: should be false)
  *   carried-by-link   rows tagged inheritedFromShowId, or dated inside a priorRuns window that carries (transfer / return)
  *   uncovered         old rows with no priorRuns window covering them: candidates for a wrongProduction fix
- * Usage: node scripts/audit-pre-run-reviews.js [--days=180] [--json]
+ * Usage: node scripts/lib/pre-run-review-scan.js [--days=180] [--json]
  */
 const path = require('path');
-const { hasHelpFlag } = require('./lib/cli-help.js');
-if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/audit-pre-run-reviews.js [--days=180] [--json]'); process.exit(0); }
 const DAY = 86400000;
 
 function classify({ shows, reviews, days = 180 }) {
@@ -44,8 +42,10 @@ function classify({ shows, reviews, days = 180 }) {
 module.exports = { classify };
 
 if (require.main === module) {
+  const { hasHelpFlag } = require('./cli-help.js');
+  if (hasHelpFlag(process.argv)) { console.log('Usage: node scripts/lib/pre-run-review-scan.js [--days=180] [--json]'); process.exit(0); }
   const arg = (n, d) => { const a = process.argv.find((x) => x.startsWith(`--${n}=`)); return a ? a.split('=')[1] : d; };
-  const root = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
+  const root = process.env.DATA_DIR || path.join(__dirname, '..', '..', 'data');
   const sj = require(path.join(root, 'shows.json'));
   const rj = require(path.join(root, 'reviews.json'));
   const out = classify({ shows: sj.shows || sj, reviews: Array.isArray(rj) ? rj : rj.reviews, days: Number(arg('days', 180)) });

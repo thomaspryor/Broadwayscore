@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
-const { classify } = createRequire(import.meta.url)('./audit-pre-run-reviews.js');
+const { classify } = createRequire(import.meta.url)('./pre-run-review-scan.js');
 test('classify: opera unflagged link, carried transfer and uncovered rows', () => {
   const shows = [
     { id: 'op', type: 'opera', openingDate: '2026-11-01', priorRuns: [{ id: 'op-old', openingDate: '2018-01-01' }] },
