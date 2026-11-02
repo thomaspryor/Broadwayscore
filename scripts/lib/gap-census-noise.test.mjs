@@ -198,3 +198,17 @@ test('ukTourLegUrl: US cities that share a UK name are not UK legs', () => {
   assert.equal(noise.ukTourLegUrl('https://e.com/the-bodyguard-manchester-opera-house', tour), false);
   assert.equal(noise.ukTourLegUrl('https://e.com/the-bodyguard-wimbledon-review', tour), true);
 });
+
+test('vetting stops fetching once the run budget is exceeded and keeps the rest as candidates (BRO-6804)', async () => {
+  let fetched = 0;
+  const deps = { fetchPage: async () => { fetched++; return { content: '' }; } };
+  const missing = [{ url: 'https://www.timeout.com/newyork/theater/a-show' }, { url: 'https://www.timeout.com/newyork/theater/b-show' }];
+  const out = await noise.vetTimeoutListingCandidates(missing, { openingDate: '2026-10-01' }, deps, { exceeded: () => true });
+  assert.equal(fetched, 0);
+  assert.equal(out.missing.length, 2);
+  assert.equal(out.nonReview.length, 0);
+});
+
+test('ukTourLegUrl survives a malformed percent-escape in the path', () => {
+  assert.doesNotThrow(() => noise.ukTourLegUrl('https://e.com/%E0%A4%A', { category: 'tour', venue: 'North American tour' }));
+});
