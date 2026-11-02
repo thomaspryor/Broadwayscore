@@ -153,6 +153,11 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # the pre-check loads send-morning-digest.js (resendSentToday), whose module reads these too
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
         run: node scripts/digest-sent-precheck.js
 
       # hygiene-cache-runid-ok: a rolling one-file snapshot (<1 KB) restored from the newest earlier entry; the key must be new each run because caches cannot be overwritten.
