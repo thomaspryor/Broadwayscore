@@ -1,17 +1,13 @@
 {
-  "updatedAt": "2026-11-02T13:10:29.871Z",
-  "scanned": 4647,
-  "showsWithViolations": 496,
-  "totalViolations": 749,
-  "newSinceLastRun": 7,
+  "updatedAt": "2026-11-02T21:49:16.098Z",
+  "scanned": 4649,
+  "showsWithViolations": 497,
+  "totalViolations": 750,
+  "newSinceLastRun": 3,
   "newViolationKeys": [
-    "a-dolls-house-2023::dailybeast--tim-teeman.json",
-    "sea-wall-a-life-2019::dailybeast--tim-teeman.json",
-    "the-glass-menagerie-2017::guardian--alexis-soloski.json",
-    "the-glass-menagerie-2017::timeout--david-cote.json",
-    "significant-other-2017::timeout--adam-feldman.json",
-    "misery-2015::newsday--linda-winer.json",
-    "a-taste-of-honey-royal-exchange-regional-2024::thestage--chris-bartlett.json"
+    "the-lives-of-others-west-end-2026::thestage--dave-fargnoli.json",
+    "the-only-way-out-is-in-pitlochry-festival-regional-2026::thestage--fergus-morgan.json",
+    "pacific-overtures-off-broadway-2017::film-festival-traveler--kevin-filipski.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -87,7 +83,6 @@
     "the-price-2017::washpost--peter-marks.json",
     "the-glass-menagerie-2017::guardian--alexis-soloski.json",
     "the-glass-menagerie-2017::timeout--david-cote.json",
-    "significant-other-2017::timeout--adam-feldman.json",
     "in-transit-2016::act-three-the-reviews--doug-marino.json",
     "les-liaisons-dangereuses-2016::timeout--david-cote.json",
     "falsettos-2016::washpost--peter-marks.json",
@@ -100,7 +95,6 @@
     "eclipsed-2016::the-culture-mom--holly-rosen-fink.json",
     "noises-off-2016::ap--mark-kennedy.json",
     "the-color-purple-2015::bobs-theater-blog--robert-sholiton.json",
-    "misery-2015::newsday--linda-winer.json",
     "old-times-2015::ap--mark-kennedy.json",
     "spring-awakening-2015::financialtimes--brendan-lemon.json",
     "spring-awakening-2015::onstage-blog--c-f-kim.json",
@@ -369,6 +363,7 @@
     "the-price-off-west-end-2026::thestage--unknown.json",
     "evita-west-end-2025::thestage--sam-marlowe.json",
     "firewing-off-west-end-2026::guardian--arifa-akbar.json",
+    "the-lives-of-others-west-end-2026::thestage--dave-fargnoli.json",
     "dinosaur-world-live-off-west-end-2026::dayoutwiththekids--jessica-degraag.json",
     "la-boheme-off-broadway-2025::new-york-classical-review--rick-perdian.json",
     "la-boheme-off-broadway-2025::operawire--david-salazar.json",
@@ -750,12 +745,14 @@
     "robinredbreast-aviva-studios-regional-2024::guardian--mark-fisher.json",
     "robinredbreast-aviva-studios-regional-2024::thestage--anya-ryan.json",
     "chariots-of-fire-crucible-regional-2024::whatsonstage--ron-simpson.json",
+    "the-only-way-out-is-in-pitlochry-festival-regional-2026::thestage--fergus-morgan.json",
     "barriers-birmingham-rep-regional-2025::guardian--anya-ryan.json",
     "barriers-birmingham-rep-regional-2025::voice-magazine--elisha-pearce.json",
     "attachment-liverpool-everyman-regional-2026::guardian--anya-ryan.json",
     "tell-me-how-it-ends-liverpool-everyman-regional-2024::thestage--chris-bartlett.json",
     "tell-me-how-it-ends-liverpool-everyman-regional-2024::whatsonstage--matt-barton.json",
     "jesus-hopped-the-a-train-off-broadway-2017::theater-pizzazz--sandi-durell.json",
+    "pacific-overtures-off-broadway-2017::film-festival-traveler--kevin-filipski.json",
     "4000-days-regional-2021::chicago-theatre-review--colin-douglas.json",
     "8-track-regional-2021::chicago-theatre-review--colin-douglas.json",
     "sweat-regional-2022::chicago-theatre-review--colin-douglas.json",
@@ -2310,30 +2307,6 @@
       ]
     },
     {
-      "showId": "significant-other-2017",
-      "title": "Significant Other",
-      "openingDate": "2017-03-02",
-      "message": "timeout/Adam Feldman (timeout--adam-feldman.json) SHIPPED but fullText never mentions 'Significant Other' (303 chars): http://www.timeout.com/newyork/theater/significant-other",
-      "violations": [
-        {
-          "filename": "timeout--adam-feldman.json",
-          "url": "http://www.timeout.com/newyork/theater/significant-other",
-          "outletId": "timeout",
-          "criticName": "Adam Feldman",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "in-transit-2016",
       "title": "In Transit",
       "openingDate": "2016-12-11",
@@ -2616,30 +2589,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
-      "showId": "misery-2015",
-      "title": "Misery",
-      "openingDate": "2015-11-15",
-      "message": "newsday/Linda Winer (newsday--linda-winer.json) SHIPPED but fullText never mentions 'Misery' (303 chars): http://www.newsday.com/entertainment/theater/misery-review-bruce-willis-laurie-metcalf-shine-1.11122832",
-      "violations": [
-        {
-          "filename": "newsday--linda-winer.json",
-          "url": "http://www.newsday.com/entertainment/theater/misery-review-bruce-willis-laurie-metcalf-shine-1.11122832",
-          "outletId": "newsday",
-          "criticName": "Linda Winer",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -8265,6 +8214,30 @@
               "contentTier=truncated"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "openingDate": "2026-10-29",
+      "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Lives of Others' (4350 chars, textIssues flag set): https://www.thestage.co.uk/reviews/the-lives-of-others-review-adelphi-theatre-london-keira-knightley-robert-icke",
+      "violations": [
+        {
+          "filename": "thestage--dave-fargnoli.json",
+          "url": "https://www.thestage.co.uk/reviews/the-lives-of-others-review-adelphi-theatre-london-keira-knightley-robert-icke",
+          "outletId": "thestage",
+          "criticName": "Dave Fargnoli",
+          "haystackLength": 4350,
+          "textIssuesFlag": true,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         }
@@ -15714,7 +15687,7 @@
       "showId": "inexperience-pitlochry-festival-regional-2026",
       "title": "Inexperience",
       "openingDate": "2026-06-19",
-      "message": "guardian/Mark Fisher (guardian--mark-fisher.json) SHIPPED but fullText never mentions 'Inexperience' (2223 chars): https://www.theguardian.com/stage/2026/jun/20/inexperience-review-pitlochry-festival-theatre\n⚠️  thestage/Fergus Morgan (thestage--fergus-morgan.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/inexperience-review-pitlochry-festival-theatre-douglas-maxwell",
+      "message": "guardian/Mark Fisher (guardian--mark-fisher.json) SHIPPED but fullText never mentions 'Inexperience' (2223 chars): https://www.theguardian.com/stage/2026/jun/20/inexperience-review-pitlochry-festival-theatre",
       "violations": [
         {
           "filename": "guardian--mark-fisher.json",
@@ -15922,7 +15895,7 @@
       "showId": "the-penelopiad-york-royal-regional-2026",
       "title": "The Penelopiad",
       "openingDate": "2026-10-15",
-      "message": "whatsonstage/Jim Keaveney (whatsonstage--jim-keaveney.json) SHIPPED but fullText never mentions 'The Penelopiad' (3322 chars): https://www.whatsonstage.com/news/margaret-atwoods-the-penelopiad-at-york-theatre-royal-review_1735043/",
+      "message": "whatsonstage/Jim Keaveney (whatsonstage--jim-keaveney.json) SHIPPED but fullText never mentions 'The Penelopiad' (3322 chars): https://www.whatsonstage.com/news/margaret-atwoods-the-penelopiad-at-york-theatre-royal-review_1735043/\n⚠️  thestage/Matt Barton (thestage--matt-barton.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/the-penelopiad-review-york-theatre-royal-margaret-atwood-amelia-bullmore",
       "violations": [
         {
           "filename": "whatsonstage--jim-keaveney.json",
@@ -16423,6 +16396,30 @@
       ]
     },
     {
+      "showId": "the-only-way-out-is-in-pitlochry-festival-regional-2026",
+      "title": "The Only Way Out Is In",
+      "openingDate": "2026-06-19",
+      "message": "thestage/Fergus Morgan (thestage--fergus-morgan.json) SHIPPED but fullText never mentions 'The Only Way Out Is In' (2903 chars): https://www.thestage.co.uk/reviews/the-only-way-out-is-in-review-pitlochry-festival-theatre",
+      "violations": [
+        {
+          "filename": "thestage--fergus-morgan.json",
+          "url": "https://www.thestage.co.uk/reviews/the-only-way-out-is-in-review-pitlochry-festival-theatre",
+          "outletId": "thestage",
+          "criticName": "Fergus Morgan",
+          "haystackLength": 2903,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "barriers-birmingham-rep-regional-2025",
       "title": "Barriers",
       "openingDate": "2025-10-22",
@@ -16545,6 +16542,30 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "pacific-overtures-off-broadway-2017",
+      "title": "Pacific Overtures",
+      "openingDate": "2017-05-04",
+      "message": "film-festival-traveler/Kevin Filipski (film-festival-traveler--kevin-filipski.json) SHIPPED but fullText never mentions 'Pacific Overtures' (634 chars): http://filmfestivaltraveler.com/film-arts/21-reviews/3439-new-musical-revivals%E2%80%94%E2%80%9Cthe-golden-apple%E2%80%9D-at-encores-sondheim%E2%80%99s-%E2%80%9Cpacific-overtures%E2%80%9D-at-classic-stage-company",
+      "violations": [
+        {
+          "filename": "film-festival-traveler--kevin-filipski.json",
+          "url": "http://filmfestivaltraveler.com/film-arts/21-reviews/3439-new-musical-revivals%E2%80%94%E2%80%9Cthe-golden-apple%E2%80%9D-at-encores-sondheim%E2%80%99s-%E2%80%9Cpacific-overtures%E2%80%9D-at-classic-stage-company",
+          "outletId": "film-festival-traveler",
+          "criticName": "Kevin Filipski",
+          "haystackLength": 634,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -16720,12 +16741,12 @@
     }
   ],
   "triage": {
-    "total": 749,
+    "total": 750,
     "counts": {
-      "excerpt": 194,
+      "excerpt": 192,
       "wrong-production": 9,
-      "unresolved": 439,
-      "truncated": 107
+      "unresolved": 441,
+      "truncated": 108
     },
     "outletPlans": [
       {
@@ -18441,6 +18462,25 @@
         "candidates": [
           {
             "file": "cosi-fan-tutte-off-broadway-2026/fandango--unknown.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "film-festival-traveler",
+        "total": 1,
+        "counts": {
+          "truncated": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "pacific-overtures-off-broadway-2017/film-festival-traveler--kevin-filipski.json",
             "bucket": "truncated",
             "evidence": [
               "contentTier=truncated"
@@ -20574,9 +20614,9 @@
       },
       {
         "outletId": "newsday",
-        "total": 7,
+        "total": 6,
         "counts": {
-          "excerpt": 7
+          "excerpt": 6
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -20609,15 +20649,6 @@
           },
           {
             "file": "master-class-2011/newsday--linda-winer.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "misery-2015/newsday--linda-winer.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -22650,10 +22681,10 @@
       },
       {
         "outletId": "thestage",
-        "total": 103,
+        "total": 105,
         "counts": {
           "truncated": 16,
-          "unresolved": 74,
+          "unresolved": 76,
           "excerpt": 13
         },
         "requiresArticleReview": true,
@@ -23361,7 +23392,25 @@
             "requiresArticleReview": true
           },
           {
+            "file": "the-lives-of-others-west-end-2026/thestage--dave-fargnoli.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
             "file": "the-new-real-royal-shakespeare-regional-2024/thestage--holly-williams.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-only-way-out-is-in-pitlochry-festival-regional-2026/thestage--fergus-morgan.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -23663,11 +23712,11 @@
       },
       {
         "outletId": "timeout",
-        "total": 6,
+        "total": 5,
         "counts": {
           "unresolved": 2,
           "truncated": 2,
-          "excerpt": 2
+          "excerpt": 1
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -23705,15 +23754,6 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
-            "requiresArticleReview": true
-          },
-          {
-            "file": "significant-other-2017/timeout--adam-feldman.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           },
           {
