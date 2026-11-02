@@ -1,18 +1,25 @@
 {
-  "updatedAt": "2026-11-01T14:54:03.846Z",
-  "scanned": 4589,
-  "showsWithViolations": 166,
-  "totalViolations": 217,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-11-02T13:09:56.662Z",
+  "scanned": 4647,
+  "showsWithViolations": 169,
+  "totalViolations": 222,
+  "newSinceLastRun": 6,
   "handled": {
-    "temporal-override-low-confidence": 903,
-    "not-shipped": 53,
+    "temporal-override-low-confidence": 915,
+    "not-shipped": 54,
     "duplicate-not-shipped": 54,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
-    "prior-run-or-tour-leg": 45
+    "prior-run-or-tour-leg": 43
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "marvins-room-2017::huffpost--steven-suskin.json",
+    "significant-other-2017::nbcny--robert-kahn.json",
+    "a-streetcar-named-desire-2012::village-voice--michael-musto.json",
+    "little-shop-of-horrors-off-broadway-2019::lighting-and-sound-america--david-barbour.json",
+    "heathers-the-musical-off-broadway-2025::theatrely--kobi-kassal.json",
+    "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
@@ -43,6 +50,7 @@
     "the-children-2017::theater-pizzazz--carol-rocamora.json",
     "m-butterfly-2017::showbiz411--roger-friedman.json",
     "prince-of-broadway-2017::theater-life--david-sheward.json",
+    "marvins-room-2017::huffpost--steven-suskin.json",
     "six-degrees-of-separation-2017::simon-seez--simon-saltzman.json",
     "charlie-and-the-chocolate-factory-2017::stageandcinema--tony-frankel.json",
     "the-little-foxes-2017::njcom--christopher-kelly.json",
@@ -52,6 +60,7 @@
     "present-laughter-2017::frontmezzjunkies--steven-ross.json",
     "sweat-2017::more-than-the-play-blog--domenick-danza.json",
     "sweat-2017::times-square-chronicles--suzanna-bowling.json",
+    "significant-other-2017::nbcny--robert-kahn.json",
     "sunset-boulevard-2017::theater-life--isa-goldberg.json",
     "sunset-boulevard-2017::washpost--peter-marks.json",
     "the-present-2017::frontmezzjunkies--steven-ross.json",
@@ -83,6 +92,7 @@
     "les-miserables-2014::hollywood-reporter--david-rooney.json",
     "the-winslow-boy-2013::ew--thom-geier.json",
     "the-mystery-of-edwin-drood-2012::timeout--david-cote.json",
+    "a-streetcar-named-desire-2012::village-voice--michael-musto.json",
     "master-class-2011::financialtimes--brendan-lemon.json",
     "anything-goes-2011::new-jersey-newsroom--michael-sommers.json",
     "fences-2010::financialtimes--brendan-lemon.json",
@@ -95,8 +105,10 @@
     "the-receptionist-off-broadway-2026::theatre-reviews-limited--unknown.json",
     "titus-andronicus-off-broadway-2026::nysr--melissa-rose-bernardo.json",
     "titus-andronicus-off-broadway-2026::theater-scene--darryl-reilly.json",
+    "little-shop-of-horrors-off-broadway-2019::lighting-and-sound-america--david-barbour.json",
     "little-shop-of-horrors-off-broadway-2019::nysr--melissa-rose-bernardo.json",
     "heathers-the-musical-off-broadway-2025::nyt-theater--jonathan-mandell.json",
+    "heathers-the-musical-off-broadway-2025::theatrely--kobi-kassal.json",
     "mother-russia-off-broadway-2026::the-interested-bystander--cary-wong.json",
     "music-city-off-broadway-2026::new-york-sun--elysa-gardner.json",
     "blackout-songs-off-broadway-2026::one-minute-critic--emily-chackerian.json",
@@ -206,7 +218,6 @@
     "the-hot-wing-king-west-end-2024::standard--unknown.json",
     "why-am-i-so-single-west-end-2024::artsdesk--gary-naylor.json",
     "why-am-i-so-single-west-end-2024::times-uk--clive-davis.json",
-    "othello-west-end-2022::whatsonstage--unknown.json",
     "my-sons-a-queer-but-what-can-you-do-west-end-2023::whatsonstage--charlotte-vickers.json",
     "aint-too-proud-west-end-2023::whatsonstage--alun-hood.json",
     "mrs-doubtfire-west-end-2023::london-theatre--unknown.json",
@@ -228,6 +239,7 @@
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
     "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
+    "the-blood-quilt-off-broadway-2024::theater-scene--deirdre-donovan.json",
     "sunny-afternoon-west-end-2014::standard--fiona-mountford.json",
     "oppenheimer-west-end-2015::standard--fiona-mountford.json",
     "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json"
@@ -806,6 +818,27 @@
       ]
     },
     {
+      "showId": "marvins-room-2017",
+      "title": "Marvin's Room",
+      "openingDate": "2017-06-29",
+      "message": "huffpost/Steven Suskin (huffpost--steven-suskin.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review with strong critical assessment, but it is reviewing the 1991 pre-Broadway Goodman T — http://www.huffingtonpost.com/entry/59556a5ee4b0c85b96c66043",
+      "violations": [
+        {
+          "filename": "huffpost--steven-suskin.json",
+          "url": "http://www.huffingtonpost.com/entry/59556a5ee4b0c85b96c66043",
+          "outletId": "huffpost",
+          "criticName": "Steven Suskin",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a legitimate theater review with strong critical assessment, but it is reviewing the 1991 pre-Broadway Goodman T",
+          "cvIssues": [
+            "Review describes pre-Broadway tryout at Goodman Theatre Chicago (winter 1991), not the Broadway production (2017)",
+            "Text explicitly states: 'Marvin's Room opened in Chicago at the Goodman Theatre Studio in the winter of' — reviewing the regional theater production, not Broadway"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "six-degrees-of-separation-2017",
       "title": "Six Degrees of Separation",
       "openingDate": "2017-04-25",
@@ -966,6 +999,27 @@
           "cvIssues": [
             "Review describes The Public Theatre production (off-Broadway), not the Broadway production at Harold and Miriam Steinberg Center for Theatre",
             "Critic explicitly states 'When Pulitzer Prize winning Lynn Nottage's Sweat played at The Public Theatre earlier this year, I missed it' and 'After seeing the show last night' — indicating this is a review of the Broadway production BUT the opening paragraph references the off-Broadway prior run"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "significant-other-2017",
+      "title": "Significant Other",
+      "openingDate": "2017-03-02",
+      "message": "nbcny/Robert Kahn (nbcny--robert-kahn.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: While this is a legitimate theater review with critical assessment, it reviews the 2015 Off-Broadway Roundabout producti — https://www.nbcnewyork.com/entertainment/the-scene/Review-Significant-Other-Joshua-Harmon-415146063.html",
+      "violations": [
+        {
+          "filename": "nbcny--robert-kahn.json",
+          "url": "https://www.nbcnewyork.com/entertainment/the-scene/Review-Significant-Other-Joshua-Harmon-415146063.html",
+          "outletId": "nbcny",
+          "criticName": "Robert Kahn",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "While this is a legitimate theater review with critical assessment, it reviews the 2015 Off-Broadway Roundabout producti",
+          "cvIssues": [
+            "Review describes the 2015 Off-Broadway Roundabout production at an unspecified venue, not the 2017 Broadway production at Booth Theatre",
+            "Text states 'debuted Off-Broadway nearly two years ago' and references '2015 Roundabout production,' indicating this review covers the pre-Broadway production"
           ]
         }
       ]
@@ -1502,6 +1556,27 @@
       ]
     },
     {
+      "showId": "a-streetcar-named-desire-2012",
+      "title": "A Streetcar Named Desire",
+      "openingDate": "2012-04-22",
+      "message": "village-voice/Michael Musto (village-voice--michael-musto.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of A Streetcar Named Desire, but it reviews a different Broadway production than the one spe — https://blogs.villagevoice.com/dailymusto/2012/04/streetcar_of_co.php",
+      "violations": [
+        {
+          "filename": "village-voice--michael-musto.json",
+          "url": "https://blogs.villagevoice.com/dailymusto/2012/04/streetcar_of_co.php",
+          "outletId": "village-voice",
+          "criticName": "Michael Musto",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a legitimate review of A Streetcar Named Desire, but it reviews a different Broadway production than the one spe",
+          "cvIssues": [
+            "Review byline and outlet do not match expected values: scraped content shows Broadway.com as outlet, but expected outlet is Village Voice; expected critic is Michael Musto but no byline is visible in scraped text",
+            "Text ends mid-word ('Simps') indicating truncation or incomplete scrape"
+          ]
+        }
+      ]
+    },
+    {
       "showId": "master-class-2011",
       "title": "Master Class",
       "openingDate": "2011-07-07",
@@ -1739,8 +1814,21 @@
       "showId": "little-shop-of-horrors-off-broadway-2019",
       "title": "Little Shop of Horrors",
       "openingDate": "2019-09-17",
-      "message": "nysr/Melissa Rose Bernardo (nysr--melissa-rose-bernardo.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of Little Shop of Horrors, but it is reviewing the wrong production. The scraped content describes the  — http://nystagereview.com/2019/10/17/little-shop-of-horrors-a-bloody-good-time/",
+      "message": "lighting-and-sound-america/David Barbour (lighting-and-sound-america--david-barbour.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: While the visible content appears to be a review of the correct 2019 Off-Broadway Little Shop of Horrors production (Jon — http://www.lightingandsoundamerica.com/news/story.asp?ID=7CR1C6\nnysr/Melissa Rose Bernardo (nysr--melissa-rose-bernardo.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of Little Shop of Horrors, but it is reviewing the wrong production. The scraped content describes the  — http://nystagereview.com/2019/10/17/little-shop-of-horrors-a-bloody-good-time/",
       "violations": [
+        {
+          "filename": "lighting-and-sound-america--david-barbour.json",
+          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=7CR1C6",
+          "outletId": "lighting-and-sound-america",
+          "criticName": "David Barbour",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "While the visible content appears to be a review of the correct 2019 Off-Broadway Little Shop of Horrors production (Jon",
+          "cvIssues": [
+            "Review text is truncated mid-sentence ('taken in, years earlier, by the exploitative')",
+            "Cast member Jonathan Groff is associated with the 2019 Off-Broadway revival at Westside Theatre, which matches the expected production"
+          ]
+        },
         {
           "filename": "nysr--melissa-rose-bernardo.json",
           "url": "http://nystagereview.com/2019/10/17/little-shop-of-horrors-a-bloody-good-time/",
@@ -1760,7 +1848,7 @@
       "showId": "heathers-the-musical-off-broadway-2025",
       "title": "Heathers The Musical",
       "openingDate": "2025-06-30",
-      "message": "nyt-theater/Jonathan Mandell (nyt-theater--jonathan-mandell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review explicitly states it's about the Off-Broadway production at New World Stages. The text is also truncated. — https://newyorktheater.me/2025/07/10/heathers-the-musical-review/",
+      "message": "nyt-theater/Jonathan Mandell (nyt-theater--jonathan-mandell.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The review explicitly states it's about the Off-Broadway production at New World Stages. The text is also truncated. — https://newyorktheater.me/2025/07/10/heathers-the-musical-review/\ntheatrely/Kobi Kassal (theatrely--kobi-kassal.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: The scraped content reviews the original 2014 Off-Broadway production ('when the musical premiered Off-Broadway' in 2014 — https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
       "violations": [
         {
           "filename": "nyt-theater--jonathan-mandell.json",
@@ -1773,6 +1861,19 @@
           "cvIssues": [
             "Wrong production: Review is of an Off-Broadway production at New World Stages, not a Broadway production.",
             "Truncated: The review ends mid-sentence."
+          ]
+        },
+        {
+          "filename": "theatrely--kobi-kassal.json",
+          "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
+          "outletId": "theatrely",
+          "criticName": "Kobi Kassal",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "The scraped content reviews the original 2014 Off-Broadway production ('when the musical premiered Off-Broadway' in 2014",
+          "cvIssues": [
+            "Review describes 2014 Off-Broadway premiere, not the 2025 revival opening on 2025-06-22",
+            "Text is truncated mid-sentence at end"
           ]
         }
       ]
@@ -3830,27 +3931,6 @@
       ]
     },
     {
-      "showId": "othello-west-end-2022",
-      "title": "Othello",
-      "openingDate": "2022-11-30",
-      "message": "whatsonstage/Sarah Crompton (whatsonstage--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This review evaluates a Tom Morris production of Othello at Theatre Royal Haymarket, not the expected Lyttelton Theatre  — https://www.whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279/",
-      "violations": [
-        {
-          "filename": "whatsonstage--unknown.json",
-          "url": "https://www.whatsonstage.com/news/othello-starring-david-harewood-toby-jones-and-caitlin-fitzgerald-west-end-review_1701279/",
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This review evaluates a Tom Morris production of Othello at Theatre Royal Haymarket, not the expected Lyttelton Theatre ",
-          "cvIssues": [
-            "Wrong venue: Review describes Theatre Royal Haymarket, not Lyttelton Theatre",
-            "Wrong director: Review credits Tom Morris as director, not the expected director for the Lyttelton production"
-          ]
-        }
-      ]
-    },
-    {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2023",
       "title": "My Son's a Queer but What Can You Do",
       "openingDate": "2023-01-25",
@@ -4268,6 +4348,27 @@
       ]
     },
     {
+      "showId": "the-blood-quilt-off-broadway-2024",
+      "title": "The Blood Quilt",
+      "openingDate": "2024-11-21",
+      "message": "theater-scene/Deirdre Donovan (theater-scene--deirdre-donovan.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 32d of opening, likely correct production] This is a well-written review of Katori Hall's The B — https://theaterscene.com/Blood-Quilt-DD.html",
+      "violations": [
+        {
+          "filename": "theater-scene--deirdre-donovan.json",
+          "url": "https://theaterscene.com/Blood-Quilt-DD.html",
+          "outletId": "theater-scene",
+          "criticName": "Deirdre Donovan",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 32d of opening, likely correct production] This is a well-written review of Katori Hall's The B",
+          "cvIssues": [
+            "CRITICAL: Review evaluates Broadway production at Lincoln Center, not Off-Broadway production. Text explicitly states 'at Lincoln Center' and 'Mitzi E. Newhouse at Lincoln Center' — Mitzi E. Newhouse is part of Lincoln Center Theater on Broadway, not an Off-Broadway venue.",
+            "Venue mismatch: Expected venue is 'Mitzi E. Newhouse Theatre' (Off-Broadway context), but the review places the production at 'Mitzi E. Newhouse at Lincoln Center' — a Broadway theater."
+          ]
+        }
+      ]
+    },
+    {
       "showId": "sunny-afternoon-west-end-2014",
       "title": "Sunny Afternoon",
       "openingDate": "2014-10-28",
@@ -4312,7 +4413,7 @@
     {
       "showId": "school-of-rock-west-end-2016",
       "title": "School of Rock",
-      "openingDate": "2016-10-22",
+      "openingDate": "2016-11-14",
       "message": "timeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 79d of opening, likely correct production] While this is clearly a review of School of Rock the — https://www.timeout.com/london/theatre/school-of-rock-the-musical",
       "violations": [
         {
