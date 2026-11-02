@@ -29,3 +29,10 @@ jobs:
         run: |
           set -o pipefail
           node scripts/board-hygiene-sweep.js | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Board Hygiene Report Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
