@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6464",
   "planId": "873cd429-624c-46b0-917d-7d7cdd366dcd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T16:35:47.689Z",
   "submitter": {
     "name": null,
@@ -22,5 +22,15 @@
         "description": "Review is of the Playwrights Horizons production (March 2024), filed under the New World Stages transfer (Oct 2024)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T17:31:52.074Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved teeth-off-broadway-2024/theater-pizzazz--jk-clarke.json → teeth-playwrights-horizons-off-broadway-2024/theater-pizzazz--jk-clarke.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
