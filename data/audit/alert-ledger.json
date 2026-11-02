@@ -777,13 +777,13 @@
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
       "incidentOpenedAt": "2026-10-27T08:11:38.216Z",
-      "lastSeen": "2026-11-02T13:12:39.671Z",
+      "lastSeen": "2026-11-02T21:51:35.916Z",
       "lastNotifiedAt": "2026-10-27T08:11:38.216Z",
       "lastSurfacedAt": "2026-10-27T08:11:38.216Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -18751,13 +18751,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-11-02T21:42:37.315Z",
+      "lastSeen": "2026-11-02T21:54:16.327Z",
       "lastNotifiedAt": "2026-11-02T10:36:47.182Z",
       "lastSurfacedAt": "2026-11-02T10:36:47.182Z",
       "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 31
+      "silentRefires": 32
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -25994,12 +25994,13 @@
       "title": "The Stage roundups: scrape-thestage-roundups.yml failed its last 20 runs in a row (last success 2026-06-09)",
       "firstSeen": "2026-10-24T07:38:57.669Z",
       "incidentOpenedAt": "2026-10-24T07:38:57.669Z",
-      "lastSeen": "2026-11-02T13:10:25.540Z",
+      "lastSeen": "2026-11-02T21:49:11.357Z",
       "lastNotifiedAt": "2026-11-02T13:10:25.540Z",
       "lastSurfacedAt": "2026-11-02T13:10:25.540Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "aggregator-health:nyc-theatre:coverage-drop": {
       "status": "open",
@@ -26007,12 +26008,13 @@
       "title": "NYC Theatre roundups: archive coverage 49% in 2025Q4+2026Q2 vs 82% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
       "firstSeen": "2026-10-24T07:38:57.677Z",
       "incidentOpenedAt": "2026-10-24T07:38:57.677Z",
-      "lastSeen": "2026-11-02T13:10:25.552Z",
+      "lastSeen": "2026-11-02T21:49:11.380Z",
       "lastNotifiedAt": "2026-11-02T13:10:25.552Z",
       "lastSurfacedAt": "2026-11-02T13:10:25.552Z",
       "notifyCount": 10,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-6056-multiauthor": {
       "status": "resolved",
@@ -35453,15 +35455,16 @@
       "title": "Landing blocked: rebase red on land/bro-6858-press-night-hardening",
       "firstSeen": "2026-11-02T21:35:46.355Z",
       "incidentOpenedAt": "2026-11-02T21:35:46.355Z",
-      "lastSeen": "2026-11-02T21:35:46.355Z",
+      "lastSeen": "2026-11-02T22:09:53.294Z",
       "lastNotifiedAt": "2026-11-02T21:35:46.355Z",
       "lastSurfacedAt": "2026-11-02T21:35:46.355Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-6855-data": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-6855-data",
       "firstSeen": "2026-11-02T21:35:31.006Z",
@@ -35471,7 +35474,8 @@
       "lastSurfacedAt": "2026-11-02T21:35:31.006Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-02T22:07:29.410Z"
     },
     "land:land/bro-6852-owner-hold-sweep-v2": {
       "status": "open",
@@ -35482,6 +35486,32 @@
       "lastSeen": "2026-11-02T21:50:23.739Z",
       "lastNotifiedAt": "2026-11-02T21:50:23.739Z",
       "lastSurfacedAt": "2026-11-02T21:50:23.739Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "aggregator-health:lbo-roundups:workflow-stale:scrape-new-aggregators.yml": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "London Box Office roundups: scrape-new-aggregators.yml last succeeded 6 days ago",
+      "firstSeen": "2026-11-02T21:49:11.368Z",
+      "incidentOpenedAt": "2026-11-02T21:49:11.368Z",
+      "lastSeen": "2026-11-02T21:49:11.368Z",
+      "lastNotifiedAt": "2026-11-02T21:49:11.368Z",
+      "lastSurfacedAt": "2026-11-02T21:49:11.368Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-6854-sd": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-6854-sd",
+      "firstSeen": "2026-11-02T22:01:46.126Z",
+      "incidentOpenedAt": "2026-11-02T22:01:46.126Z",
+      "lastSeen": "2026-11-02T22:01:46.126Z",
+      "lastNotifiedAt": "2026-11-02T22:01:46.126Z",
+      "lastSurfacedAt": "2026-11-02T22:01:46.126Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

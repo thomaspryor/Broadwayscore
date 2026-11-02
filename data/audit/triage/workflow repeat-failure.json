@@ -1,7 +1,7 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-11-02T12:54:27.049Z",
+  "lastChecked": "2026-11-02T21:18:44.822Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,42 +9,12 @@
     {
       "name": "Workflow repeat-failure: Secret Scan (gitleaks) / scan / Scan working tree (code paths)",
       "status": "error",
-      "message": "Secret Scan (gitleaks) / scan / Scan working tree (code paths) failed 6 times in the last 24h — likely broken, not transient."
+      "message": "Secret Scan (gitleaks) / scan / Scan working tree (code paths) failed 10 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Secret Scan (gitleaks) / scan / Checkout for notify action",
       "status": "error",
-      "message": "Secret Scan (gitleaks) / scan / Checkout for notify action failed 6 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite / E2E Tests / Run E2E tests",
-      "status": "error",
-      "message": "Test Suite / E2E Tests / Run E2E tests failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite / Data Validation / Audit review contamination",
-      "status": "error",
-      "message": "Test Suite / Data Validation / Audit review contamination failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite / Test Summary / Check results",
-      "status": "error",
-      "message": "Test Suite / Test Summary / Check results failed 4 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite",
-      "status": "error",
-      "message": "Test Suite failed 3 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Check Corpus Drift / Run corpus-statistics audits (non-blocking) / Live-data assertions (moved from test.yml unit batch)",
-      "status": "warn",
-      "message": "Check Corpus Drift / Run corpus-statistics audits (non-blocking) / Live-data assertions (moved from test.yml unit batch) failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Secret Scan (gitleaks)",
-      "status": "warn",
-      "message": "Secret Scan (gitleaks) failed 2 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
+      "message": "Secret Scan (gitleaks) / scan / Checkout for notify action failed 10 times in the last 24h — likely broken, not transient."
     }
   ]
 }

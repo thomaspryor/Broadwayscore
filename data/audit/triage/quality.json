@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-11-02T12:54:27.044Z",
+  "lastChecked": "2026-11-02T21:18:44.791Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,23 +13,23 @@
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "warn",
-      "message": "6 NEW review(s) whose explicit rating contradicts the score (worst: cardinal-off-broadway-2018 Theatre's Leiter Side A→90 vs LLM 36, gap 54); 1 star-won-hiding"
+      "status": "pass",
+      "message": "No new star/score contradictions (31 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "94.5% scored (46796/49498)"
+      "message": "95.2% scored (47199/49577)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "27 audit(s) drifting, each reported on its own card or the digest FYI line (0h ago)"
+      "message": "26 audit(s) drifting, each reported on its own card or the digest FYI line (0h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "17199 messages, 0 auth failures (p=reject)"
+      "message": "17847 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -38,8 +38,8 @@
     },
     {
       "name": "Quality: outlet domain moves",
-      "status": "warn",
-      "message": "4 unregistered host(s) name-match a registered outlet (e.g. com.my → manila-bulletin) — probable domain move dropping reviews via domain-mismatch"
+      "status": "pass",
+      "message": "No probable domain moves in 298 unregistered host(s)"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1820 outlet(s), 79148 review(s)"
+      "message": "No broken-extractor signature in 1820 outlet(s), 79230 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "warn",
-      "message": "3 outlet(s) show a broken-extractor signature (worst: portsmouth-news — 3/3 recent invalid, 100% vs 0% baseline)"
+      "message": "1 outlet(s) show a broken-extractor signature (worst: portsmouth-news — 3/3 recent invalid, 100% vs 0% baseline)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -68,8 +68,8 @@
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
-      "status": "warn",
-      "message": "Heartbeat monitor last ran 14d ago (>8d)"
+      "status": "pass",
+      "message": "148 outlet×market rows checked, none NEW silent 2+ consecutive weeks (31 known/baselined, 2h ago)"
     },
     {
       "name": "Quality: outlet feed staleness",

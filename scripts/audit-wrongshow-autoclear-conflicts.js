@@ -38,7 +38,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const { hasEnsembleConsensus } = require('./lib/wrong-production-autoclear');
+const { CLASSES, findAutoClearConflicts } = require('./lib/autoclear-ensemble-conflicts');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -52,24 +52,6 @@ Usage:
   --fix     re-assert the flag with a manual reason so it survives rebuild + push restore
   --json    emit the findings as JSON
 `;
-
-// The two conflicting states, each: the ensemble said X, an auto-clear undid it.
-const CLASSES = [
-  {
-    kind: 'wrong_show',
-    flag: 'wrongShow',
-    breadcrumb: 'wrongShowAutoCleared',
-    reasonField: 'wrongShowReason',
-    atField: 'wrongShowReasonAt',
-  },
-  {
-    kind: 'wrong_production',
-    flag: 'wrongProduction',
-    breadcrumb: 'wrongProductionAutoCleared',
-    reasonField: 'wrongProductionReason',
-    atField: 'wrongProductionReasonAt',
-  },
-];
 
 function listShowDirs() {
   let entries;
@@ -97,10 +79,7 @@ function scan() {
       let data;
       try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
       filesRead++;
-      for (const c of CLASSES) {
-        if (!hasEnsembleConsensus(data, c.kind)) continue;
-        if (!data[c.breadcrumb]) continue;      // no auto-clear happened
-        if (data[c.flag] === true) continue;    // flag survived — not a conflict
+      for (const c of findAutoClearConflicts(data)) {
         findings.push({
           showId,
           file,
@@ -132,6 +111,8 @@ function applyFix(findings) {
       failures.push(`${f.path}: unreadable (${e.message})`);
       continue;
     }
+    // A recovery recorded since the scan also supersedes the old rejection.
+    if (!findAutoClearConflicts(data).some((conflict) => conflict.kind === c.kind)) continue;
     data[c.flag] = true;
     // A manual *Reason is what every auto-clear predicate already respects, and
     // it is a PROTECTED_FIELD — so this is what makes the re-flag durable across

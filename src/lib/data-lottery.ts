@@ -15,7 +15,23 @@ interface LotteryRushFile {
   shows: Record<string, ShowLotteryRush>;
 }
 
-const lotteryRush = lotteryRushData as unknown as LotteryRushFile;
+/** Ticket options the pages can show. An option scraped without a usable price
+ *  rendered as a bare "$" on the lottery/rush card (the-rocky-horror-show-2026
+ *  studentRush, BRO-6851), so it is dropped here, once, for every reader. */
+const PRICED_OPTION_KEYS = ['lottery', 'rush', 'digitalRush', 'studentRush', 'standingRoom', 'specialLottery'] as const;
+export function dropUnpricedOptions(entry: ShowLotteryRush): ShowLotteryRush {
+  const out = { ...entry } as Record<string, unknown>;
+  for (const key of PRICED_OPTION_KEYS) {
+    const opt = out[key] as { price?: unknown } | null | undefined;
+    if (opt && !(typeof opt.price === 'number' && Number.isFinite(opt.price) && opt.price > 0)) out[key] = null;
+  }
+  return out as unknown as ShowLotteryRush;
+}
+const lotteryRushRaw = lotteryRushData as unknown as LotteryRushFile;
+const lotteryRush: LotteryRushFile = {
+  ...lotteryRushRaw,
+  shows: Object.fromEntries(Object.entries(lotteryRushRaw.shows).map(([id, e]) => [id, dropUnpricedOptions(e)])),
+};
 const rawShows = partitionShowRows(showsData.shows).valid as Array<{ id: string; slug: string }>;
 
 /**

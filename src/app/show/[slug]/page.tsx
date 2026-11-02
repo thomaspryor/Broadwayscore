@@ -322,7 +322,6 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         breadcrumbHome,
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
       ]);
-  const faqSchema = generateShowFAQSchema(show, getCriticConsensus(show.id)?.text ?? null, isTour ? getTourNowNextForShow(show) : null);
   const score = show.criticScore?.score;
   const grosses = getShowGrosses(params.slug);
   const weekEnding = getGrossesWeekEnding();
@@ -476,9 +475,6 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         .map(m => ({ name: m.name, role: m.role, link: getCreativeLink(m.name, m.role) }))
     : [];
 
-  // Combine schemas, filtering out null FAQ schema
-  const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
-
   // Pre-compute score variables for redesigned mobile header
   const reviewCount = show.criticScore?.reviewCount || 0;
   const tier1Count = show.criticScore?.tier1Count || 0;
@@ -505,6 +501,14 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const sentiment = score ? getSentimentLabel(score, show.category) : null;
   const hasAudience = !showTBD && audienceBuzz != null && audienceBuzz.combinedScore != null && hasEnoughAudienceReviews(audienceBuzz);
   const audienceGrade = hasAudience ? getAudienceGrade(audienceBuzz!.combinedScore!) : null;
+  // One set of FAQ inputs for both the visible FAQ and its FAQPage JSON-LD
+  // (must stay 1:1). Audience only when the audience tile shows; lottery/rush
+  // only when the discount card can show (its own gate is open/previews).
+  const faqTour = isTour ? getTourNowNextForShow(show) : null;
+  const faqExtras = { audience: hasAudience ? audienceBuzz : null, lotteryRush: lotteryRush ?? null };
+  const faqSchema = generateShowFAQSchema(show, consensus?.text ?? null, faqTour, faqExtras);
+  // Combine schemas, filtering out null FAQ schema
+  const schemas = [showSchema, breadcrumbSchema, faqSchema].filter(Boolean);
   const totalAudienceCount = audienceBuzz ? getTotalAudienceReviews(audienceBuzz) : 0;
 
   return (
@@ -1128,7 +1132,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           isCuratedHistoricalShow={isCuratedHistoricalShow}
           lastUpdated={lastUpdated}
           score={score}
-          faqs={getShowFAQs(show, consensus?.text ?? null, isTour ? getTourNowNextForShow(show) : null)}
+          faqs={getShowFAQs(show, consensus?.text ?? null, faqTour, faqExtras)}
         />
 
       </div>

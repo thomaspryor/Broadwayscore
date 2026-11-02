@@ -11,6 +11,9 @@ import { formatShowDate } from './date-utils';
 import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from './tour-schedule';
 import { isTourScored, isTourScoreHidden } from './tour-listing';
 import { displaysCriticScore } from './critic-score-display';
+import { getAudienceGrade, getTotalAudienceReviews } from './audience-grade-utils';
+import { getCurrencySymbol } from './market-utils';
+import type { AudienceBuzzData, ShowLotteryRush } from './data-types';
 
 export const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -556,11 +559,57 @@ function formatFAQDate(dateStr?: string | null): string | null {
 }
 
 /**
+ * Page data the FAQ can answer from. The caller decides visibility (the same
+ * gates the page uses for the audience tile and the lottery/rush card) and
+ * passes null when the page would not show it, so the FAQ never states a
+ * number the page hides.
+ */
+export interface ShowFAQExtras {
+  audience?: AudienceBuzzData | null;
+  lotteryRush?: ShowLotteryRush | null;
+}
+
+const AUDIENCE_VERDICT: Record<string, string> = {
+  'Loving It': 'Audiences love it.',
+  'Liking It': 'Audiences like it.',
+  'Shrugging': 'Audiences are lukewarm.',
+  'Disliking It': 'Audiences mostly dislike it.',
+  'Loathing It': 'Audiences strongly dislike it.',
+};
+
+function formatTicketPrice(price: number, currency: string): string {
+  return `${currency}${Number.isInteger(price) ? price : price.toFixed(2)}`;
+}
+
+/**
+ * "Are there cheap tickets?" answer from the lottery/rush data, or null when
+ * the show has no priced option. Exported for the unit test.
+ */
+export function describeDiscountTickets(title: string, lr: ShowLotteryRush, currency: string): string | null {
+  const options: { label: string; price: number }[] = [];
+  const add = (label: string, price: unknown) => {
+    if (typeof price === 'number' && Number.isFinite(price) && price > 0) options.push({ label, price });
+  };
+  if (lr.lottery) add(`a ${lr.lottery.type === 'digital' ? 'digital ' : ''}lottery${!lr.lottery.platform ? '' : /^show website$/i.test(lr.lottery.platform) ? ' on the show website' : ` (${lr.lottery.platform})`}`, lr.lottery.price);
+  if (lr.specialLottery) add(`a special lottery${lr.specialLottery.name ? ` (${lr.specialLottery.name})` : ''}`, lr.specialLottery.price);
+  if (lr.rush) add(lr.rush.type === 'digital' ? `digital rush${lr.rush.platform ? ` (${lr.rush.platform})` : ''}` : `${lr.rush.type === 'student' ? 'student' : 'general'} rush${lr.rush.location ? ' at the box office' : ''}`, lr.rush.price);
+  if (lr.digitalRush) add(`digital rush${lr.digitalRush.platform ? ` (${lr.digitalRush.platform})` : ''}`, lr.digitalRush.price);
+  if (lr.studentRush) add('student rush', lr.studentRush.price);
+  if (lr.standingRoom) add('standing room', lr.standingRoom.price);
+  if (options.length === 0) return null;
+  const parts = options.map(o => `${o.label} for ${formatTicketPrice(o.price, currency)}`);
+  const list = parts.length === 1 ? parts[0] : `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`;
+  const cheapest = Math.min(...options.map(o => o.price));
+  const cheapestNote = options.length > 1 ? ` The cheapest way in is ${formatTicketPrice(cheapest, currency)}.` : '';
+  return `${title} offers ${list}.${cheapestNote} Prices and rules change, so check before you go.`;
+}
+
+/**
  * `tour` is the national tour's current and next engagement (data passed in,
  * this module imports no data files). ShowFAQSection and the FAQ schema must
  * get the same value so the two stay 1:1.
  */
-export function getShowFAQs(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null): { question: string; answer: string }[] {
+export function getShowFAQs(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null, extras?: ShowFAQExtras | null): { question: string; answer: string }[] {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;
   const isLondon = isLondonMarket(show.category);
@@ -624,6 +673,26 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
         'Critics generally did not recommend this show.'
       }`,
     });
+  }
+
+  // Q: What do audiences think? Theatergoer grade, only when the page shows
+  // the audience tile (caller gates on review count and coverage).
+  const audience = extras?.audience;
+  if (audience && audience.combinedScore != null) {
+    const grade = getAudienceGrade(audience.combinedScore);
+    const n = getTotalAudienceReviews(audience);
+    faqs.push({
+      question: `What do audiences think of ${show.title}?`,
+      answer: `${AUDIENCE_VERDICT[grade.label] ?? 'Audiences are split.'} Theatergoers give ${show.title} an audience grade of ${grade.grade} (${grade.label}), based on ${n.toLocaleString('en-US')} audience reviews.`,
+    });
+  }
+
+  // Q: Cheap tickets? Lottery, rush and standing room, only while the show
+  // is playing (caller passes null otherwise, matching the ticket card).
+  const lotteryRush = extras?.lotteryRush;
+  if (lotteryRush && (show.status === 'open' || show.status === 'previews')) {
+    const answer = describeDiscountTickets(show.title, lotteryRush, getCurrencySymbol(show.category, show.venue ?? undefined));
+    if (answer) faqs.push({ question: `How can I get cheap tickets to ${show.title}?`, answer });
   }
 
   // Q: Is it still running?
@@ -706,8 +775,8 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
   return faqs;
 }
 
-export function generateShowFAQSchema(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null) {
-  const faqs = getShowFAQs(show, consensusText, tour);
+export function generateShowFAQSchema(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null, extras?: ShowFAQExtras | null) {
+  const faqs = getShowFAQs(show, consensusText, tour, extras);
   if (faqs.length === 0) return null;
 
   return {
