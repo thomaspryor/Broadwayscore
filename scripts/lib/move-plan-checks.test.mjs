@@ -81,3 +81,11 @@ test('rename counts as a move, paths are normalized, null entries and junk urls 
   const junk = { [move.sourcePath]: { url: 'N/A' }, 'arcadia-west-end-2026/wos--x.json': { url: 'N/A' } };
   assert.deepEqual(movePlanWarnings(move, [move], fake(junk)), []);
 });
+
+// BRO-6716: edit-then-move plans clear the marker on the source path before the move; the moved file carries it.
+test('a manual clear on the source path BEFORE the move silences the warning', () => {
+  const files = { [move.sourcePath]: { url: URL, wrongProduction: true, wrongProductionReason: 'cross-production-audit' } };
+  const clear = { type: 'review-field-edit', file: move.sourcePath, field: 'wrongProductionManualClear', oldValue: null, newValue: true };
+  assert.deepEqual(movePlanWarnings(move, [clear, move], fake(files)), []);
+  assert.equal(movePlanWarnings(move, [move, clear], fake(files)).length, 1);
+});
