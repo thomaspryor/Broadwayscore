@@ -87,86 +87,6 @@
       "autoApplyBlocked": "the record carries a human-reviewed designation: a person must decide",
       "autoApplyBlockedAt": "2026-11-01T09:19:51.020Z"
     },
-    "fish-in-the-dark-2015": {
-      "capitalization": null,
-      "capitalizationSource": null,
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": "2015-05",
-      "recoupedSource": "Playbill, 'Larry David's Fish in the Dark Recoups on Broadway' (May 20, 2015)",
-      "estimatedRecoupmentPct": [
-        100,
-        100
-      ],
-      "designation": "Easy Winner",
-      "notes": "Limited Broadway engagement; recouped its entire capitalization by May 2015. I could not verify a public capitalization or weekly running cost in the sources checked.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/production/fish-in-the-dark-cort-theatre-vault-0000014078",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/larry-davids-fish-in-the-dark-recoups-on-broadway-com-349565",
-          "date": "2015-05-20"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/article/Larry-Davids-FISH-IN-THE-DARK-Breaks-Broadway-Advance-Sales-Records-20150126",
-          "date": "2015-01-26"
-        }
-      ],
-      "_recoupedClaim": true,
-      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
-      "title": "Fish in the Dark",
-      "slug": "fish-in-the-dark-2015",
-      "openingDate": "2015-03-05",
-      "status": "closed",
-      "researchedAt": "2026-10-31T22:15:56.662Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-01T09:21:01.435Z"
-    },
-    "the-river-2014": {
-      "capitalization": 3200000,
-      "capitalizationSource": "SEC Form D amendment for River Broadway Ltd Partnership lists a total offering amount of $3,200,000. ([sec.gov](https://www.sec.gov/Archives/edgar/data/1610105/000161010515000001/primary_doc.xml?utm_source=openai))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": "2014-12",
-      "recoupedSource": "Playbill reported that The River recouped its $3.2 million investment in mid-December 2014 after seven weeks of Broadway performances. ([playbill.com](https://playbill.com/article/hugh-jackman-hit-the-river-vanishes-on-broadway-com-340867?utm_source=openai))",
-      "estimatedRecoupmentPct": null,
-      "designation": "Easy Winner",
-      "notes": "Limited Broadway engagement; capitalization publicly disclosed at $3.2 million and recoupment was announced during the run. I could not verify a public weekly running cost. No independent source I found confirmed a tax-credit-assisted recoupment.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "sec",
-          "url": "https://www.sec.gov/Archives/edgar/data/1610105/000161010515000001/primary_doc.xml",
-          "date": "2015-01-12"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/article/broadway-loves-hugh-jackman-the-river-recoups-in-only-seven-weeks-com-337820",
-          "date": "2014-12-19"
-        }
-      ],
-      "_recoupedClaim": true,
-      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
-      "title": "The River",
-      "slug": "the-river-2014",
-      "openingDate": "2014-11-16",
-      "status": "closed",
-      "researchedAt": "2026-10-31T22:24:05.187Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-01T09:21:06.886Z"
-    },
     "indecent-2017": {
       "capitalization": 3417500,
       "capitalizationSource": "SEC Form D/A for Indecent Broadway Ltd Liability Co; clarification states 'Offering capitalized at $3,417,500' (maximum capitalization $3,750,000).",
@@ -204,7 +124,9 @@
       "model": "gpt-5.4-mini",
       "researchTrigger": "backlog",
       "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-01T09:21:09.578Z"
+      "autoApplyBlockedAt": "2026-11-01T09:21:09.578Z",
+      "verifyAttempts": 1,
+      "lastVerifyAttemptAt": "2026-11-02T22:45:45.091Z"
     },
     "springsteen-on-broadway-2021": {
       "capitalization": null,
@@ -242,124 +164,6 @@
       "researchAttempts": 1,
       "autoApplyBlocked": "backfill research row: needs a person to release it",
       "autoApplyBlockedAt": "2026-11-01T09:21:09.578Z"
-    },
-    "skylight-2015": {
-      "capitalization": 3500000,
-      "capitalizationSource": "SEC Form D for Skylight Broadway LP lists a total offering amount of $3.5 million for the production's financing vehicle. ([sec.gov](https://www.sec.gov/Archives/edgar/data/1633128/000114420415009736/primary_doc.xml?utm_source=openai))",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": "2015-05",
-      "recoupedSource": "Playbill reported on 2015-05-31 that Skylight had recouped its entire original investment; TheaterMania reported the same. ([playbill.com](https://playbill.com/article/broadways-skylight-with-carey-mulligan-and-bill-nighy-recoups-com-350266?utm_source=openai))",
-      "estimatedRecoupmentPct": null,
-      "designation": "Easy Winner",
-      "notes": "This was a 13-week limited Broadway engagement that opened on 2015-04-02 and was scheduled to close on 2015-06-21, and it recouped during the run. I did not find a verified public weekly nut. ([playbill.com](https://playbill.com/article/broadways-skylight-with-carey-mulligan-and-bill-nighy-recoups-com-350266?utm_source=openai))",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "sec",
-          "url": "https://www.sec.gov/Archives/edgar/data/1633128/000114420415009736/primary_doc.xml",
-          "date": "2015-02-13"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/broadways-skylight-with-carey-mulligan-and-bill-nighy-recoups-com-350266",
-          "date": "2015-05-31"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.theatermania.com/news/broadway-revival-of-skylight-recoups-investment_73088/",
-          "date": "2015-05-31"
-        }
-      ],
-      "_recoupedClaim": true,
-      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
-      "title": "Skylight",
-      "slug": "skylight-2015",
-      "openingDate": "2015-04-02",
-      "status": "closed",
-      "researchedAt": "2026-10-31T22:44:55.516Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-01T09:21:16.130Z"
-    },
-    "the-audience-2015": {
-      "capitalization": 3400000,
-      "capitalizationSource": "Trade press reported that The Audience had recouped its $3.4 million production/capitalization cost after eight weeks (April 13, 2015).",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": "2015-04",
-      "recoupedSource": "Playbill reported on 2015-04-13 that The Audience had recouped its $3,400,000 production cost in eight weeks.",
-      "estimatedRecoupmentPct": null,
-      "designation": "Easy Winner",
-      "notes": "Limited Broadway engagement; recouped during the run. I could not verify a public weekly running cost from reliable sources.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/the-queens-a-hit-as-the-audience-starring-helen-mirren-recoups-on-broadway-com-346637",
-          "date": "2015-04-13"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.theatermania.com/news/the-audience-woos-broadway-audiences-recouping-costs-in-short-order_72513/",
-          "date": "2015-04-13"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-show/the-audience-497829",
-          "date": null
-        }
-      ],
-      "_recoupedClaim": true,
-      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
-      "title": "The Audience",
-      "slug": "the-audience-2015",
-      "openingDate": "2015-03-08",
-      "status": "closed",
-      "researchedAt": "2026-10-31T22:46:54.346Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-01T09:21:16.130Z"
-    },
-    "the-elephant-man-2014": {
-      "capitalization": 3100000,
-      "capitalizationSource": "TheWrap reported that The Elephant Man's capitalization costs totaled $3.1 million.",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": true,
-      "recoupedDate": "2014-12",
-      "recoupedSource": "TheWrap, Dec. 29, 2014, reporting recoupment following the week of Dec. 21, 2014.",
-      "estimatedRecoupmentPct": null,
-      "designation": "Easy Winner",
-      "notes": "Booth Theatre revival opened Dec. 7, 2014 and closed Feb. 21, 2015. It recouped its $3.1M capitalization during its limited run, but I could not verify a public weekly running cost.",
-      "confidence": "medium",
-      "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/the-elephant-man-497261",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.thewrap.com/bradley-coopers-broadway-elephant-man-recoups-costs-breaks-own-box-office-record-again/",
-          "date": "2014-12-29"
-        }
-      ],
-      "_recoupedClaim": true,
-      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
-      "title": "The Elephant Man",
-      "slug": "the-elephant-man-2014",
-      "openingDate": "2014-12-07",
-      "status": "closed",
-      "researchedAt": "2026-10-31T22:54:13.626Z",
-      "model": "gpt-5.4-mini",
-      "researchTrigger": "backlog",
-      "autoApplyBlocked": "recoupment claim: a person must confirm it against the cited source",
-      "autoApplyBlockedAt": "2026-11-01T09:21:16.777Z"
     },
     "appropriate": {
       "capitalization": 3750000,
@@ -539,35 +343,6 @@
       ],
       "confidence": "medium",
       "researchedAt": "2026-08-06T15:19:22.850Z"
-    },
-    "just-in-time-2025": {
-      "title": "Just in Time",
-      "slug": "just-in-time",
-      "openingDate": "2025-04-26",
-      "status": "open",
-      "capitalization": 12500000,
-      "capitalizationSource": "Variety article explicitly states 'Just in Time' recouped its $12.5 million investment",
-      "weeklyRunningCost": null,
-      "costMethodology": "trade-reported",
-      "recouped": true,
-      "recoupedDate": null,
-      "recoupedSource": "Variety article headlined 'Broadway's Just in Time Recoups $12.5 Million Investment'; Broadway Journal also references recoupment announcement",
-      "designation": "Windfall",
-      "notes": "Just in Time, a commercial production at Circle in the Square starring Jonathan Groff (later Jeremy Jordan), recouped its $12.5 million capitalization per Variety. The Broadway Journal noted recoupment was 'imminently' expected as of May 2026, with Variety confirming it. The show has a scheduled closing date of 2026-10-18, making it an extended but ultimately limited commercial run. With a planned closing date and confirmed recoupment, it qualifies as a Windfall rather than a Miracle (run is under 10 years, not a decade-defining phenomenon) or Easy Winner (not a clearly limited/star-driven play engagement in the traditional sense — it ran over a year on an open-ended commercial basis before announcing a close date).",
-      "sources": [
-        {
-          "type": "trade",
-          "url": "https://variety.com/2026/legit/news/broadway-just-in-time-recoups-investment-1236752436/",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/broadways-missing-mojo",
-          "date": "2026-05-06"
-        }
-      ],
-      "confidence": "medium",
-      "researchedAt": "2026-08-06T15:23:15.016Z"
     },
     "oh-mary-2024": {
       "title": "Oh, Mary!",
@@ -2149,7 +1924,7 @@
       "researchedAt": "2026-11-02T21:37:24.885Z"
     }
   },
-  "lastUpdated": "2026-11-02T21:46:57.186Z",
+  "lastUpdated": "2026-11-02T22:45:45.092Z",
   "hardTruthFindings": {
     "collectedAt": "2026-10-11",
     "card": "BRO-5017",

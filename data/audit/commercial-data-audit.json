@@ -1,12 +1,12 @@
 {
   "_meta": {
     "description": "Commercial data audit report",
-    "generatedAt": "2026-10-31T23:05:45.232Z",
+    "generatedAt": "2026-11-02T22:45:45.956Z",
     "scriptVersion": "1.0.0"
   },
   "summary": {
     "totalEntries": 476,
-    "totalShowsInShowsJson": 5746,
+    "totalShowsInShowsJson": 5866,
     "matchStats": {
       "matchedBySlug": 476,
       "matchedById": 0,
@@ -14,17 +14,17 @@
     },
     "designationDistribution": {
       "Miracle": 9,
-      "Windfall": 25,
-      "Trickle": 28,
+      "Recouped": 45,
+      "Trickle": 8,
       "Wait & See": 1,
       "Flop": 177,
       "Fizzle": 43,
-      "TBD": 58,
+      "TBD": 55,
       "Nonprofit": 96,
       "Tour Stop": 2,
       "Easy Winner": 30,
       "Squeaker": 2,
-      "Did Not Recoup": 5
+      "Did Not Recoup": 8
     },
     "recoupmentStats": {
       "recouped": 96,
@@ -50,7 +50,7 @@
       "hasCapitalization": 303,
       "hasWeeklyRunningCost": 115,
       "hasCostMethodology": 153,
-      "hasSources": 427,
+      "hasSources": 429,
       "hasDeepResearch": 161
     },
     "openShowCoverage": {
@@ -60,19 +60,19 @@
       "coveragePct": 100
     },
     "issuesSummary": {
-      "total": 295,
+      "total": 306,
       "bySeverity": {
         "high": 9,
-        "medium": 30,
-        "low": 256
+        "medium": 27,
+        "low": 270
       },
       "byType": {
         "designation-logic": 9,
-        "source-quality": 202,
+        "source-quality": 216,
         "financial-sanity": 1,
         "methodology": 23,
         "stale-data": 4,
-        "closed-show-tbd": 21,
+        "closed-show-tbd": 18,
         "nonprofit-classification": 26,
         "model-false-negative": 9
       }
@@ -83,55 +83,55 @@
       "type": "designation-logic",
       "severity": "medium",
       "showId": "appropriate",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "the-lehman-trilogy-2021",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "skylight-2015",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "fish-in-the-dark-2015",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "the-elephant-man-2014",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "the-river-2014",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "its-only-a-play-2014",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "designation-logic",
       "severity": "medium",
       "showId": "the-audience-2015",
-      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Squeaker."
+      "detail": "recouped=true but designation is still \"TBD\". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle/Recouped/Squeaker."
     },
     {
       "type": "source-quality",
@@ -190,6 +190,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "the-great-gatsby",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "stranger-things",
       "detail": "sources[2] missing date."
     },
@@ -216,6 +222,18 @@
       "severity": "low",
       "showId": "buena-vista-social-club",
       "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "buena-vista-social-club",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "buena-vista-social-club",
+      "detail": "sources[4] missing date."
     },
     {
       "type": "source-quality",
@@ -676,6 +694,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "small-mouth-sounds",
+      "detail": "sources[6] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "grey-house",
       "detail": "sources[0] missing date."
     },
@@ -754,6 +778,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "other-desert-cities",
+      "detail": "sources[9] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "billy-crystal-860",
       "detail": "sources[0] missing date."
     },
@@ -768,6 +798,12 @@
       "severity": "low",
       "showId": "billy-crystal-860",
       "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "billy-crystal-860",
+      "detail": "sources[4] missing date."
     },
     {
       "type": "source-quality",
@@ -1030,6 +1066,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "blue-man-group-a-new-holiday-surprise",
+      "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "wanted",
       "detail": "sources[0] missing date."
     },
@@ -1044,6 +1086,24 @@
       "severity": "low",
       "showId": "wanted",
       "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "wanted",
+      "detail": "sources[4] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "wanted",
+      "detail": "sources[8] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "wanted",
+      "detail": "sources[9] missing date."
     },
     {
       "type": "source-quality",
@@ -1246,6 +1306,12 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "present-laughter-2017",
+      "detail": "sources[3] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "sweat-2017",
       "detail": "sources[0] missing date."
     },
@@ -1301,7 +1367,7 @@
       "type": "source-quality",
       "severity": "low",
       "showId": "the-heidi-chronicles-2015",
-      "detail": "sources[2] missing date."
+      "detail": "sources[3] missing date."
     },
     {
       "type": "source-quality",
@@ -1336,6 +1402,18 @@
     {
       "type": "source-quality",
       "severity": "low",
+      "showId": "living-on-love-2015",
+      "detail": "sources[1] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "living-on-love-2015",
+      "detail": "sources[2] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
       "showId": "wolf-hall-parts-one-and-two-2015",
       "detail": "sources[0] missing date."
     },
@@ -1344,6 +1422,12 @@
       "severity": "low",
       "showId": "doctor-zhivago-2015",
       "detail": "sources[0] missing date."
+    },
+    {
+      "type": "source-quality",
+      "severity": "low",
+      "showId": "the-amish-project",
+      "detail": "sources[1] missing date."
     },
     {
       "type": "financial-sanity",
@@ -1493,151 +1577,133 @@
       "type": "stale-data",
       "severity": "low",
       "showId": "the-great-gatsby",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (276 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (278 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "stranger-things",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (270 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-03\" (272 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "buena-vista-social-club",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (255 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-02-18\" (257 days ago)."
     },
     {
       "type": "stale-data",
       "severity": "low",
       "showId": "operation-mincemeat",
-      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (276 days ago)."
+      "detail": "TBD show with stale recoupment estimate: estimatedRecoupmentDate is \"2026-01-28\" (278 days ago)."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "parade-2023",
-      "detail": "Show is closed (closed 1182 days ago on 2023-08-06) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 1184 days ago on 2023-08-06) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "appropriate",
-      "detail": "Show is closed (closed 853 days ago on 2024-06-30) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 855 days ago on 2024-06-30) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-lehman-trilogy-2021",
-      "detail": "Show is closed (closed 1763 days ago on 2022-01-02) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 1765 days ago on 2022-01-02) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "angels-in-america",
-      "detail": "Show is closed (closed 3030 days ago on 2018-07-15) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 3032 days ago on 2018-07-15) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "charlie-and-the-chocolate-factory-2017",
-      "detail": "Show is closed (closed 3212 days ago on 2018-01-14) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 3214 days ago on 2018-01-14) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "indecent-2017",
-      "detail": "Show is closed (closed 3373 days ago on 2017-08-06) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
-    },
-    {
-      "type": "closed-show-tbd",
-      "severity": "medium",
-      "showId": "present-laughter-2017",
-      "detail": "Show is closed (closed 3408 days ago on 2017-07-02) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 3375 days ago on 2017-08-06) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "amelie-a-new-musical-2017",
-      "detail": "Show is closed (closed 3450 days ago on 2017-05-21) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 3452 days ago on 2017-05-21) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "skylight-2015",
-      "detail": "Show is closed (closed 4150 days ago on 2015-06-21) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4152 days ago on 2015-06-21) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "fish-in-the-dark-2015",
-      "detail": "Show is closed (closed 4109 days ago on 2015-08-01) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4111 days ago on 2015-08-01) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-elephant-man-2014",
-      "detail": "Show is closed (closed 4270 days ago on 2015-02-21) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4272 days ago on 2015-02-21) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-river-2014",
-      "detail": "Show is closed (closed 4283 days ago on 2015-02-08) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4285 days ago on 2015-02-08) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "its-only-a-play-2014",
-      "detail": "Show is closed (closed 4164 days ago on 2015-06-07) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4166 days ago on 2015-06-07) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
-      "detail": "Show is closed (closed 3709 days ago on 2016-09-04) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 3711 days ago on 2016-09-04) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-audience-2015",
-      "detail": "Show is closed (closed 4143 days ago on 2015-06-28) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
-    },
-    {
-      "type": "closed-show-tbd",
-      "severity": "medium",
-      "showId": "the-heidi-chronicles-2015",
-      "detail": "Show is closed (closed 4199 days ago on 2015-05-03) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4145 days ago on 2015-06-28) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "the-visit-2015",
-      "detail": "Show is closed (closed 4157 days ago on 2015-06-14) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4159 days ago on 2015-06-14) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "it-shoulda-been-you-2015",
-      "detail": "Show is closed (closed 4101 days ago on 2015-08-09) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
-    },
-    {
-      "type": "closed-show-tbd",
-      "severity": "medium",
-      "showId": "living-on-love-2015",
-      "detail": "Show is closed (closed 4199 days ago on 2015-05-03) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4103 days ago on 2015-08-09) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "wolf-hall-parts-one-and-two-2015",
-      "detail": "Show is closed (closed 4136 days ago on 2015-07-05) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4138 days ago on 2015-07-05) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "closed-show-tbd",
       "severity": "medium",
       "showId": "doctor-zhivago-2015",
-      "detail": "Show is closed (closed 4192 days ago on 2015-05-10) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
+      "detail": "Show is closed (closed 4194 days ago on 2015-05-10) but still designated \"TBD\". Should be resolved to a designation (Miracle/Windfall/Easy Winner/Trickle/Fizzle/Flop/Did Not Recoup); use our model or analyst estimate (designationBasis model-estimate) when nothing is announced."
     },
     {
       "type": "nonprofit-classification",
@@ -1709,7 +1775,7 @@
       "type": "nonprofit-classification",
       "severity": "low",
       "showId": "what-the-constitution-means-to-me-2019",
-      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Trickle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Recouped\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
     {
       "type": "nonprofit-classification",
@@ -1763,7 +1829,7 @@
       "type": "nonprofit-classification",
       "severity": "low",
       "showId": "the-humans-2016",
-      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Trickle\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Recouped\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
     {
       "type": "nonprofit-classification",
@@ -1775,7 +1841,7 @@
       "type": "nonprofit-classification",
       "severity": "low",
       "showId": "rock-of-ages-2009",
-      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Windfall\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
+      "detail": "Show is at \"Helen Hayes Theater\" (Second Stage Theater venue) but designation is \"Recouped\" instead of \"Nonprofit\". This may be correct for commercial co-productions -- verify."
     },
     {
       "type": "nonprofit-classification",
