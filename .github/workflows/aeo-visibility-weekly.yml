@@ -48,3 +48,10 @@ jobs:
             git commit -m "data: weekly AI visibility run [skip ci]"
             bash scripts/lib/push-with-retry.sh
           fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'AEO Visibility Weekly Failed'
+          severity: 'low'
