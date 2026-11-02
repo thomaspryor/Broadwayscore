@@ -1,20 +1,20 @@
 {
-  "runDate": "2026-11-02T03:59:34.367Z",
+  "runDate": "2026-11-02T10:26:25.213Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "tosca-off-broadway-2026",
+    "showFilter": "tosca-english-national-opera-west-end-2026,medea-off-broadway-2026,tosca-off-broadway-2026,msblackforpresident-off-broadway-2026,the-moth-off-west-end-2026,the-blue-violinist-over-west-end-avenue-off-broadway-2026,specimen-off-broadway-2026,a-beautiful-noise-the-neil-diamond-musical-tour-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
     "playwright": 0,
@@ -24,40 +24,42 @@
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 4,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
+    "tier1Attempts": 4,
     "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 1,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 4,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 4,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 4,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 4,
+    "tier3_6Success": 4,
+    "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 0,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 5,
+    "scrapingBeePageCredits": 3,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.3,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 0,
+    "processed": 0,
+    "failed": 5,
     "shows": [
-      "tosca-off-broadway-2026"
+      "medea-off-broadway-2026",
+      "msblackforpresident-off-broadway-2026",
+      "tosca-english-national-opera-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,15 +67,23 @@
       "failed": 0
     }
   },
-  "processed": [
-    "tosca-off-broadway-2026/guardian--flora-willson.json"
+  "processed": [],
+  "failed": [
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
   ],
-  "failed": [],
   "cumulativeResumedState": {
-    "processed": [
-      "tosca-off-broadway-2026/guardian--flora-willson.json"
-    ],
-    "failed": []
+    "processed": [],
+    "failed": [
+      "medea-off-broadway-2026/express-uk--neil-norman.json",
+      "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+      "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+      "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
+    ]
   },
   "tierDetails": {
     "playwright": [],
@@ -83,7 +93,12 @@
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+      "data/review-texts/tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json"
+    ],
     "archive": []
   },
   "failuresByOutlet": {},
