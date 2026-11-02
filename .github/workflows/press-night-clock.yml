@@ -41,6 +41,7 @@ permissions:
   actions: write  # gh workflow run (orchestrator, probe, the next hop of this chain)
 
 concurrency:
+  # concurrency-queue-ok: a kick or re-seed dispatches a hop only when no hop is queued, pending or running (the orchestrator re-seed step and each hop's own chain step check first), and every hop recomputes its plan from state, so an evicted pending hop loses nothing the next one does not rebuild.
   group: press-night-clock
   cancel-in-progress: false
 
