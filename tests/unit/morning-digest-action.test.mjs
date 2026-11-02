@@ -32,7 +32,23 @@ test('digest workflow: committed schedule (both DST offsets), gated by the hando
   assert.match(WF, /d=\$\(node -p "require\('\.\/scripts\/lib\/digest-handoff\.js'\)\.handoffDate\(\)"\)\n\s+node scripts\/lib\/digest-enable-gate\.js "\$d"/);
   assert.match(WF, /^ {6}test:$/m);
   // A scheduled run sends only when the gate said go; dispatch sends only with send=true.
-  assert.match(WF, /if: \(github\.event_name == 'schedule' && steps\.gate\.outputs\.go == 'true'\) \|\| \(github\.event_name == 'workflow_dispatch' && inputs\.send\)/);
+  assert.match(WF, /if: \(github\.event_name == 'schedule' && steps\.gate\.outputs\.go == 'true'\) \|\| \(github\.event_name == 'workflow_run' && steps\.precheck\.outputs\.go == 'true'\) \|\| \(github\.event_name == 'workflow_dispatch' && inputs\.send\)/);
+});
+
+test('digest workflow: dropped-cron catch-up wakes on Test Suite runs on main, gated then pre-checked, one send path', () => {
+  assert.match(WF, /^ {2}workflow_run:\n {4}workflows: \['Test Suite'\]\n {4}types: \[completed\]\n {4}branches: \[main\]/m);
+  // gate runs for schedule and catch-up; the pre-check only for the catch-up, only after the gate said go
+  assert.match(WF, /id: gate\n\s+if: github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_run'/);
+  assert.match(WF, /id: precheck\n\s+if: github\.event_name == 'workflow_run' && steps\.gate\.outputs\.go == 'true'/);
+  assert.match(WF, /node scripts\/digest-sent-precheck\.js/);
+  // exactly one send step, always with the Resend sent-today guard on the automatic paths
+  assert.equal((WF.match(/send-morning-digest\.js --send-to-owner/g) || []).length, 1);
+  assert.match(WF, /--resend-sent-guard/);
+  // cache restore follows the same condition so a skipped wake does no work
+  const cache = steps.find((x) => x.includes("Restore yesterday's board snapshot"));
+  assert.match(cache, /workflow_run' && steps\.precheck\.outputs\.go == 'true'/);
+  // the failure pager treats the catch-up like the schedule
+  assert.match(WF, /\(github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_run'\) && 'critical'/);
 });
 
 test('digest workflow: the Mac label is NOT retired; on the handoff day it runs autofix only (W2)', () => {
@@ -77,7 +93,7 @@ test('digest workflow: read-only permissions, no npm install, notify-failure las
   assert.doesNotMatch(WF.replace(/^\s*#.*$/gm, ''), /npm (ci|install)/);
   const last = steps[steps.length - 1];
   assert.match(last, /uses: \.\/\.github\/actions\/notify-failure/);
-  assert.match(last, /severity: \$\{\{ github\.event_name == 'schedule' && 'critical' \|\| 'warning' \}\}/);
+  assert.match(last, /severity: \$\{\{ \(github\.event_name == 'schedule' \|\| github\.event_name == 'workflow_run'\) && 'critical' \|\| 'warning' \}\}/);
 });
 
 test('pager workflow: both signals are live and explicit, no repo variables', () => {
@@ -114,6 +130,12 @@ test('gate: refuses before ENABLE_FROM, before 07:45 ET, and on a bad date; send
   assert.equal(d('2026-11-02T13:50:00Z').go, true, 'EST retry');
   assert.equal(d('2027-07-01T11:50:00Z').go, true, 'EDT 07:50');
   assert.equal(d('2027-07-01T10:50:00Z').go, false);
+  // upper bound: the catch-up must not fire a stale digest in the afternoon (pager owns it from 12:00 ET)
+  assert.equal(d('2026-11-02T16:59:00Z').go, true, 'EST 11:59');
+  assert.equal(d('2026-11-02T17:00:00Z').go, false, 'EST 12:00');
+  assert.equal(d('2027-07-01T15:59:00Z').go, true, 'EDT 11:59');
+  assert.equal(d('2027-07-01T16:00:00Z').go, false, 'EDT 12:00');
+  assert.equal(d('2026-11-03T12:50:00Z').go, true, 'next morning, EST 07:50');
   for (const bad of [undefined, '', '2026-13-45', 'tomorrow']) assert.equal(gate.decideScheduledSend({ now: new Date('2027-01-01T13:00:00Z'), enableFrom: bad }).go, false, String(bad));
 });
 
@@ -364,4 +386,21 @@ test('test-send: TEST subject, no guards, no sent-state or snapshot write', () =
   const iTest = src.indexOf("sent-state and board snapshot left untouched");
   assert.ok(iTest > 0 && iTest < src.indexOf('saveBoardTableSnapshot(boardTable.report)'));
   assert.match(WF, /if \[ "\$IS_TEST" = "true" \]; then MODE="--test-send"; else MODE="--resend-sent-guard"; fi/);
+});
+
+// ── catch-up pre-check (digest-sent-precheck.js) ────────────────────────────
+const precheckMod = require('../../scripts/digest-sent-precheck.js');
+test('precheck: go only when no digest to the owner exists yet today; fails closed', async () => {
+  const now = new Date('2026-11-03T13:30:00Z');
+  const base = { apiKey: 're_test', recipient: 'owner@example.com', now };
+  const none = await precheckMod.precheck({ ...base, fetchEmails: async () => [] });
+  assert.equal(none.go, true, JSON.stringify(none));
+  const sent = await precheckMod.precheck({ ...base, fetchEmails: async () => [{ to: ['owner@example.com'], subject: 'Morning digest, Tue Nov 3', created_at: '2026-11-03T12:55:00Z', last_event: 'delivered' }] });
+  assert.equal(sent.go, false, JSON.stringify(sent));
+  const boom = await precheckMod.precheck({ ...base, fetchEmails: async () => { throw new Error('resend down'); } });
+  assert.equal(boom.go, false, 'cannot tell means skip, never double-send');
+  const nokey = await precheckMod.precheck({ ...base, apiKey: '', fetchEmails: async () => [] });
+  assert.equal(nokey.go, false);
+  assert.equal(precheckMod.goFromVerdict('already-sent'), false);
+  assert.equal(precheckMod.goFromVerdict('cannot-tell'), false);
 });

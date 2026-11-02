@@ -2337,6 +2337,7 @@ on:
       # tests/unit/morning-digest-action.test.mjs.
       - 'scripts/check-morning-digest-sent.js'
       - 'scripts/lib/digest-enable-gate.js'
+      - 'scripts/digest-sent-precheck.js'
       # Close-time acceptance verify + trunk status (task #1003) — the decision
       # lib, the shared checkout/runner it leans on, the gh producer, and the
       # tests. Not covered by any broader glob (scripts/tests/ is not
