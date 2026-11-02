@@ -23,6 +23,7 @@
  */
 
 const fs = require('fs');
+const { mapSpecialToSpecialLottery } = require('./lib/special-lottery');
 const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
@@ -999,6 +1000,8 @@ function postProcessPlaybillEntry(entry) {
     }
   }
 
+  mapSpecialToSpecialLottery(entry);
+
   return entry;
 }
 
@@ -1447,6 +1450,12 @@ function sanitizeData(existing) {
   ];
 
   for (const [showId, show] of Object.entries(existing.shows)) {
+    // --- Map bwayrush `special` onto `specialLottery` (BRO-6862) ---
+    if (show.special) {
+      mapSpecialToSpecialLottery(show);
+      fixes.push(`${showId}: Mapped special -> specialLottery`);
+    }
+
     // --- Remove null-valued top-level fields ---
     for (const key of Object.keys(show)) {
       if (show[key] === null && key !== '_lastScrapedFrom' && key !== '_lastScrapedAt') {

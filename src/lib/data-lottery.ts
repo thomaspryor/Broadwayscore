@@ -27,10 +27,22 @@ export function dropUnpricedOptions(entry: ShowLotteryRush): ShowLotteryRush {
   }
   return out as unknown as ShowLotteryRush;
 }
+
+/** Load-time safety net (BRO-6862): the bwayrush scraper used to write a raw
+ *  `special` ({name, price}); the card only reads `specialLottery`. The scraper
+ *  and data now map it, this keeps any stray row visible. */
+export function mapLegacySpecial(entry: ShowLotteryRush): ShowLotteryRush {
+  const legacy = (entry as unknown as { special?: { name?: string; price?: number } }).special;
+  if (legacy && !entry.specialLottery && legacy.name && typeof legacy.price === 'number') {
+    return { ...entry, specialLottery: { name: legacy.name, platform: '', url: '', price: legacy.price, instructions: '' } };
+  }
+  return entry;
+}
+
 const lotteryRushRaw = lotteryRushData as unknown as LotteryRushFile;
 const lotteryRush: LotteryRushFile = {
   ...lotteryRushRaw,
-  shows: Object.fromEntries(Object.entries(lotteryRushRaw.shows).map(([id, e]) => [id, dropUnpricedOptions(e)])),
+  shows: Object.fromEntries(Object.entries(lotteryRushRaw.shows).map(([id, e]) => [id, dropUnpricedOptions(mapLegacySpecial(e))])),
 };
 const rawShows = partitionShowRows(showsData.shows).valid as Array<{ id: string; slug: string }>;
 
