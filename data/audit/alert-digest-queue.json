@@ -1796,5 +1796,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T04:18:31.341Z"
+  },
+  {
+    "conditionKey": "land:land/newsletter-voice-announced",
+    "title": "Landing blocked: unit-tests-node red on land/newsletter-voice-announced",
+    "description": "land.yml did not land land/newsletter-voice-announced: the unit-tests-node gate went red at 41c9786b26. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41387176272",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/newsletter-voice-announced"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "41c9786b26d3d291653e1f895d5846da07485cde"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41387176272"
+      }
+    ],
+    "queuedAt": "2026-11-02T04:34:19.400Z"
   }
 ]
