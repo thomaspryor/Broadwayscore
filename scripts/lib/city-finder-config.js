@@ -16,7 +16,8 @@ const monthsBetween = (from, to) => {
   while (y < ty || (y === ty && m <= tm)) { out.push([y, String(m).padStart(2, '0')]); m += 1; if (m > 12) { m = 1; y += 1; } }
   return out;
 };
-const slug = (t) => String(t).toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+const { foldDiacritics } = require('./title-match');
+const slug = (t) => foldDiacritics(String(t)).toLowerCase().replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
 const FINDERS = {
   'san-diego': {
