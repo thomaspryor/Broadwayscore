@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6797",
   "planId": "84da358c-121a-4b70-937f-e44d6b8392d5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T01:37:54.450556Z",
   "submitter": {
     "name": null,
@@ -42,5 +42,24 @@
         "description": "ExPats Theatre Coming to America at Atlas, Oct 2 2026 review matches the show; flag came from the wrong opening date"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T01:48:47.034Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for coming-to-america-an-immigrant-cabaret-regional-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "coming-to-america-an-immigrant-cabaret-regional-2026/broadwayworld--peter-rouleau.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "coming-to-america-an-immigrant-cabaret-regional-2026/dc-theater-arts--neal-learner.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
