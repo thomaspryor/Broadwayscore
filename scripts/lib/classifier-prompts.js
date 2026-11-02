@@ -10,6 +10,7 @@
 
 const {
   isOperaShow,
+  getOperaHouse,
   getOperaWrongProductionContext,
   getOperaWrongShowContext,
 } = require('./opera-prompt-context');
@@ -68,9 +69,9 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
   // rationale. WRONG_PRODUCTION for opera means a different Met run, not
   // that the work has been performed at other opera houses.
   const filedUnderLabel = isOpera
-    ? `FILED UNDER PRODUCTION: ${result.showId} (Metropolitan Opera run opening: ${showYear})
+    ? `FILED UNDER PRODUCTION: ${result.showId} (${getOperaHouse(show).full} run opening: ${showYear})
 
-${getOperaWrongProductionContext()}`
+${getOperaWrongProductionContext(show)}`
     : `FILED UNDER PRODUCTION: ${result.showId} (${marketLabel} opening: ${showYear})${regionalNote}`;
 
   return `SHOW: "${showTitle}"
@@ -104,7 +105,7 @@ function buildWrongShowUserPrompt({ show, showTitle, showId, text }) {
   // first section is another show read as the wrong show.
   const truncated = buildClassifySample(showTitle, text || '', { head: 2000, fullLimit: 4000 });
   const isOpera = isOperaShow(show);
-  const operaContext = isOpera ? `\n\n${getOperaWrongShowContext()}\n` : '';
+  const operaContext = isOpera ? `\n\n${getOperaWrongShowContext(show)}\n` : '';
   const scope = truncated.length < (text || '').length ? 'opening, passages naming the show, and ending; "[...]" marks omitted text' : 'complete';
 
   return `Show: "${showTitle}" (${showId})${operaContext}\n\nReview text (${scope}):\n${truncated}`;

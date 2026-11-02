@@ -85,3 +85,15 @@ test('opera contexts are non-empty distinct strings', () => {
   assert.ok(ws.length > 300, 'wrong-show context should be substantive');
   assert.notEqual(wp, ws, 'contexts should be distinct (different classifier purposes)');
 });
+
+test('BRO-6799: prompts name the show\'s own house; no show keeps the Met wording', async () => {
+  const { createRequire } = await import('node:module');
+  const c = createRequire(import.meta.url)('../../scripts/lib/opera-prompt-context');
+  const eno = c.getOperaWrongProductionContext({ venue: 'London Coliseum' });
+  assert.match(eno, /production at the English National Opera/);
+  assert.match(eno, /DIFFERENT ENO RUN/);
+  assert.doesNotMatch(eno, /DIFFERENT MET RUN/);
+  assert.match(c.getOperaWrongShowContext({ venue: 'War Memorial Opera House' }), /production at the War Memorial Opera House/);
+  assert.match(c.getOperaWrongProductionContext(), /DIFFERENT MET RUN/);
+  assert.equal(c.getOperaHouse({ venue: 'Royal Opera House' }).short, 'ROH');
+});
