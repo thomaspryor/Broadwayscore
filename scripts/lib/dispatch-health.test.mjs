@@ -523,7 +523,7 @@ test('landed-acked for a different jobId (or none) does not rescue the job', () 
 // spawning (disk under the dispatch floor) and the rate read 21%. ABANDONED
 // means the attempt never ran — no worker, no verdict — so it sits outside
 // `resolved` like orphaned/blocked, and is still shown in the message.
-test('BRO-6430: pre-spawn refusals (job-abandoned) are not failures and stay visible', () => {
+test('BRO-6430: disk-pressure refusals are not failures and stay visible; other ABANDONED reasons still count', () => {
   const abandoned = (ts, taskId, jobId, reason) => ({ ts, event: JOB_EVENTS.ABANDONED, taskId, jobId, reason });
   const entries = [];
   for (let i = 0; i < 10; i++) {
@@ -538,12 +538,20 @@ test('BRO-6430: pre-spawn refusals (job-abandoned) are not failures and stay vis
   entries.push(hlLaunch('2026-08-09T06:00:00.000Z', 'real'), hlSpawn('2026-08-09T06:00:00.000Z', 'real', 'real-j'), hlFailed('2026-08-09T06:30:00.000Z', 'real', 'real-j'));
 
   const stats = computeJobLaneOutcomeRate(entries, { nowMs: NOW, lane: 'headless' });
-  assert.equal(stats.abandoned, 41);
-  assert.equal(stats.failed, 1, 'a spawned job that failed still counts');
-  assert.equal(stats.resolved, 11);
-  assert.ok(stats.abandonedTaskIds.includes('dup'));
+  assert.equal(stats.abandoned, 40);
+  // Duplicate-dispatch (lease held) has no other alarm: still a failure.
+  assert.equal(stats.failed, 2, 'the spawned job that failed and the lease-held refusal both count');
+  assert.equal(stats.resolved, 12);
+  assert.ok(!stats.abandonedTaskIds.includes('dup'));
+  assert.ok(stats.failedTaskIds.includes('dup'));
 
   const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
-  assert.equal(row.status, 'pass', `10/11 resolved is over the 80% floor: ${row.message}`);
-  assert.match(row.message, /41 refused before spawn/);
+  assert.equal(row.status, 'pass', `10/12 resolved is over the 80% floor: ${row.message}`);
+  assert.match(row.message, /40 refused before spawn for low disk/);
+
+  // Window with nothing but disk refusals: unmeasurable, and says why.
+  const onlyDisk = entries.filter((e) => String(e.taskId).startsWith('disk-'));
+  const empty = computeHeadlessDispatchDigest({ entries: onlyDisk, nowMs: NOW });
+  assert.equal(empty.status, 'warn');
+  assert.match(empty.message, /40 refused before spawn for low disk/);
 });

@@ -389,7 +389,8 @@ clean_stale_scratchpad() {
 # downloaded CI log as ~/.cache/gh/run-log-<id>-<ts>.zip and never expires
 # them. It reached 3.6GB (1,400+ zips) during the 2026-10-29..11-02 low-disk
 # window that kept dispatch refused; every zip is re-downloadable from
-# GitHub on demand. Only run-log zips older than GH_RUN_LOG_STALE_DAYS go —
+# GitHub on demand. Only run-log zips older than GH_RUN_LOG_STALE_DAYS go
+# (find -mtime +N: at least N+1 whole days old) —
 # the rest of ~/.cache/gh (API response cache) is left alone.
 GH_RUN_LOG_STALE_DAYS="${WORKTREE_GC_GH_RUN_LOG_STALE_DAYS:-7}"
 LAST_GH_RUN_LOG_FREED_KB=0
@@ -397,7 +398,7 @@ clean_stale_gh_run_logs() {
   local dir="$HOME/.cache/gh" sz
   LAST_GH_RUN_LOG_FREED_KB=0
   [ -d "$dir" ] || return 0
-  sz=$(find "$dir" -maxdepth 1 -type f -name 'run-log-*.zip' -mtime +"$GH_RUN_LOG_STALE_DAYS" -print0 2>/dev/null | xargs -0 du -sk 2>/dev/null | awk '{s+=$1} END {print s+0}')
+  sz=$(find "$dir" -maxdepth 1 -type f -name 'run-log-*.zip' -mtime +"$GH_RUN_LOG_STALE_DAYS" -print0 2>/dev/null | xargs -0 -r du -sk 2>/dev/null | awk '{s+=$1} END {print s+0}')
   sz=${sz:-0}
   [ "$sz" = "0" ] && return 0
   if [ "$DRY_RUN" = "1" ]; then

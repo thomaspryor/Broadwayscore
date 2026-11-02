@@ -444,6 +444,11 @@ test('BRO-6430: disk under the dispatch floor is a global hold — nothing claim
   assert.ok(low.budgets.globalHolds.some(h => h.startsWith('disk pressure (3.4GB free < 5GB')));
   // A known hold, not a wedge: the dead-flow page must not fire on it.
   assert.equal(core.stallDetectionDepth(low, { now: NOW, staleSlotMs: 6 * 3600 * 1000 }), 0);
+  // ...even alongside a failure-shaped flag: without diskPressure in the
+  // policy branch, claimOutage would count the held lane-eligible card (1).
+  const withOutage = { ...low, budgets: { ...low.budgets, globalHoldFlags: { ...low.budgets.globalHoldFlags, claimOutage: true } } };
+  assert.equal(low.budgets.laneEligible, 1);
+  assert.equal(core.stallDetectionDepth(withOutage, { now: NOW, staleSlotMs: 6 * 3600 * 1000 }), 0);
 
   // df unreadable (null) fails open, same contract as the runner's preflight.
   const unknown = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE, diskFreeGB: null, diskFloorGB: 5 });
