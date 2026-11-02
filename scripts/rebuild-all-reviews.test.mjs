@@ -121,6 +121,30 @@ test('wiring: the getBestScore-null call site and the post-loop flush loop both 
   );
 });
 
+// BRO-2453: the exact and prefix duplicate branches used to increment only
+// skippedDuplicate. Pin each call site separately: logging one branch must
+// not let the other silently lose its per-file exclusion trail again.
+for (const { branch, condition, detail } of [
+  { branch: 'exact', condition: String.raw`seenKeys\.has\(dedupKey\)`, detail: 'exact outlet/critic match' },
+  { branch: 'prefix', condition: 'prefixDuplicate', detail: 'critic name prefix match' },
+]) {
+  test(`BRO-2453: ${branch} duplicate branch logs skippedDuplicate before returning`, () => {
+    const source = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
+    assert.match(source, new RegExp(
+      String.raw`if \(${condition}\)\s*\{\s*logExclusion\("skippedDuplicate", showId, file, data, \{ reason: "${detail}" \}\);\s*stats\.skippedDuplicate\+\+;\s*return;`
+    ));
+
+    const showId = `duplicate-${branch}-test-show`;
+    const file = 'nytimes--jesse-green-copy.json';
+    logExclusion('skippedDuplicate', showId, file, { outletId: 'nytimes' }, { reason: detail });
+    const entries = stats.byShow[showId].exclusions;
+    assert.equal(entries.length, 1);
+    assert.equal(entries[0].file, file);
+    assert.equal(entries[0].reason, 'skippedDuplicate');
+    assert.equal(entries[0].evidence.reason, detail);
+  });
+}
+
 // BRO-938 — "CV pre-pass promotes wrongProduction through temporal override".
 // The card feared the rebuild's CV pre-pass (which copies cv.wrongProduction to
 // the top level) would undo the temporal override. It cannot: the override runs
