@@ -17,6 +17,7 @@ const crypto = require('crypto');
 const { fetchPage, cleanup } = require('./lib/scraper');
 const F = require('./lib/city-review-finder');
 const { getFinder } = require('./lib/city-finder-config');
+const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
@@ -133,7 +134,7 @@ function emit() {
     const closed = p.end ? p.end < today : (Date.parse(today) - Date.parse(opening)) / 86400000 > 42;
     const show = {
       id, title: p.title, slug: id,
-      venue: `${p.theatre}, ${p.city || 'San Diego'}, ${city.state}`,
+      venue: sanitizeVenueForWrite(`${p.theatre}, ${p.city || city.defaultCity || 'San Diego'}, ${city.state}`),
       status: closed ? 'closed' : 'open',
       type: /\b(musical|rent|hairspray|mean girls|cher show|rock of ages|guys and dolls|come from away|evan hansen|seussical|spongebob|most happy fella|american rhythm|we will rock you|carrie|charlie and the chocolate factory)\b/i.test(p.title) ? 'musical' : 'play',
       category: 'regional', market: 'regional',
