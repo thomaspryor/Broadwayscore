@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T03:24:39.957Z",
+  "timestamp": "2026-11-02T03:44:43.704Z",
   "stats": {
-    "totalReviews": 79157,
-    "alreadyFlagged": 21912,
+    "totalReviews": 79158,
+    "alreadyFlagged": 21914,
     "dateGuardCatches": 244,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
-    "londonSignals": 3578,
+    "londonSignals": 3577,
     "offBroadwaySignals": 742,
     "yearMismatch": 345,
-    "noPublishDate": 8380
+    "noPublishDate": 8379
   },
   "findings": [
     {
@@ -113571,7 +113571,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2025-01-19",
       "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
       "findings": [
@@ -128436,19 +128436,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-09-30",
-      "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-robert-ickes-the-lives-of-others-ahead-of-west-end-premiere/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
