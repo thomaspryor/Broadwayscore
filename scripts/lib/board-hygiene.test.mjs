@@ -7,9 +7,9 @@ const NOW = Date.parse('2026-11-02T12:00:00Z');
 let n = 0;
 const card = (o = {}) => ({ identifier: `BRO-${++n}`, title: 't', priority: 3, createdAt: '2026-08-01T00:00:00Z', updatedAt: '2026-08-01T00:00:00Z', state: { name: 'Backlog', type: 'backlog' }, comments: { nodes: [] }, description: '', ...o });
 
-test('prose stamps: a written date wins, durations count from the last touch, a stamped card is skipped', () => {
-  const a = card({ description: 'PARKED: date: promote no earlier than 2026-11-13, after one clean week', updatedAt: '2026-10-30T00:00:00Z' });
-  const b = card({ description: 'PARKED: needs about a week of per-lane data to accrue', updatedAt: '2026-10-30T00:00:00Z' });
+test('prose stamps: a written date wins, durations count from creation, a stamped card is skipped', () => {
+  const a = card({ description: 'PARKED: date: promote no earlier than 2026-11-13, after one clean week', createdAt: '2026-10-30T00:00:00Z' });
+  const b = card({ description: 'PARKED: needs about a week of per-lane data to accrue', createdAt: '2026-10-30T00:00:00Z' });
   const c = card({ description: 'PARKED: waits for 2 weeks of hit data\nRECHECK-AFTER: 2026-11-12' });
   const d = card({ description: 'PARKED: needs an API key' });
   const plan = h.planProseStamps([a, b, c, d], NOW);
@@ -45,4 +45,12 @@ test('age sweep: dispatch, needs-VERIFY, reconfirm and skip lanes; it never clos
 test('age sweep: a reconfirm older than 30 days brings the card back', () => {
   const c = card({ priority: 3, description: 'PARKED: x', comments: { nodes: [{ body: 'AGE-SWEEP-RECONFIRMED: 2026-09-20', createdAt: '2026-09-20T00:00:00Z' }] } });
   assert.equal(h.planAgeSweep([c], NOW).reconfirm.length, 1);
+});
+
+test('review fixes: a title alone never closes a card; a decision-needed card is not dispatched', () => {
+  const NOW = Date.parse('2026-11-02T00:00:00Z');
+  const real = { identifier: 'BRO-1', title: 'Fix routine audit log duplication bug', description: 'a real defect', state: { name: 'Backlog' }, createdAt: '2026-10-01T00:00:00Z' };
+  assert.equal(h.planMachineLogs([real]).length, 0);
+  const held = { identifier: 'BRO-2', title: 'x', description: 'VERIFY: node --test a.mjs\nDECISION NEEDED: owner pick', state: { name: 'Backlog' }, priority: 2, createdAt: '2026-08-01T00:00:00Z' };
+  assert.equal(h.planAgeSweep([held], NOW).dispatch.length, 0);
 });

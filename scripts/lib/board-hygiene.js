@@ -16,6 +16,7 @@ const WORD_NUM = { a: 1, an: 1, one: 1, two: 2, three: 3, four: 4, five: 5, six:
 const UNIT_DAYS = { hour: 1, day: 1, night: 1, week: 7, month: 30, run: 1 };
 // Cards that are storage or trackers, never work: the sweep leaves them alone.
 const KEEP_RE = /\b(?:do not close|automation storage|tracker card|not work)\b/i;
+const HOLD_RE = /DECISION NEEDED|owner decision|\bmac[- ]only\b|needs the Mac|do not dispatch/i;
 const AUDIT_LOG_RE = /\broutine audit log\b/i;
 
 const parkReasons = (d) => [...String(d || '').matchAll(PARKED_RE)].map((m) => m[1].trim());
@@ -24,7 +25,7 @@ const bodies = (c) => ((c.comments && c.comments.nodes) || []).map((x) => String
 const stampOf = (c) => parseRecheckAfterFromCard({ comments: bodies(c), notes: String(c.description || '') });
 const stateName = (c) => String(c.state && c.state.name || '');
 
-/** -> ms of the day a prose wait ends. A written date wins (the latest one); else "N units" from the card's last touch. */
+/** -> ms of the day a prose wait ends. A written date wins (the latest one); else "N units" from the day the card was created (updatedAt is bumped by automation). */
 function waitEnd(reason, anchorMs) {
   const dates = [...String(reason).matchAll(/\b(\d{4}-\d{2}-\d{2})\b/g)].map((m) => Date.parse(`${m[1]}T00:00:00Z`)).filter(Number.isFinite);
   if (dates.length) return Math.max(...dates);
@@ -43,7 +44,7 @@ function planProseStamps(cards, nowMs) {
     if (!/^(Backlog|Paused|Todo)$/.test(stateName(c))) continue;
     const reason = parkReasons(c.description).find((r) => proseDateWait(r));
     if (!reason || stampOf(c) != null) continue;
-    const anchor = Date.parse(c.updatedAt) || Date.parse(c.createdAt) || nowMs;
+    const anchor = Date.parse(c.createdAt) || Date.parse(c.updatedAt) || nowMs;
     // Never earlier than tomorrow: a stamp on today would fire the recheck before the wait is over.
     const end = Math.max(waitEnd(reason, anchor), nowMs + DAY);
     out.push({ identifier: c.identifier, title: c.title, date: isoDay(end), reason: reason.slice(0, 140) });
@@ -54,7 +55,7 @@ function planProseStamps(cards, nowMs) {
 /** -> [{identifier, reason}] Backlog records that are logs, not work. */
 function planMachineLogs(cards) {
   return cards
-    .filter((c) => stateName(c) === 'Backlog' && !KEEP_RE.test(String(c.description || '')) && (parkReasons(c.description).some((r) => AUDIT_LOG_RE.test(r)) || AUDIT_LOG_RE.test(c.title || '')))
+    .filter((c) => stateName(c) === 'Backlog' && !KEEP_RE.test(String(c.description || '')) && (parkReasons(c.description).some((r) => AUDIT_LOG_RE.test(r))))
     .map((c) => ({ identifier: c.identifier, title: c.title, reason: 'Closed by the board age rules (BRO-6857): a routine audit log is a record of one run, not work; the audit files a new one each run and its ledger holds this one.' }));
 }
 
@@ -89,7 +90,7 @@ function planAgeSweep(cards, nowMs, { verifyOf = (c) => (/^\s*VERIFY:\s*(\S.*)$/
     const verify = verifyOf(c);
     const open = /^(Backlog|Todo)$/.test(stateName(c));
     if (stateName(c) === 'Todo' && verify) { out.skipped.push({ ...row, reason: 'in the worker queue with a VERIFY' }); continue; }
-    if (stateName(c) === 'Backlog' && !parked && verify && row.priority >= 1 && row.priority <= 3) {
+    if (stateName(c) === 'Backlog' && !parked && !HOLD_RE.test(String(c.description || '')) && verify && row.priority >= 1 && row.priority <= 3) {
       out.dispatch.push({ ...row, reason: `Backlog for ${row.ageDays} days with a VERIFY and no block: moved to Todo so a worker takes it.` });
     } else if (open && !parked && !verify) {
       out.needsVerify.push({ ...row, reason: 'technical work with no VERIFY line, so no worker can pick it up: add a VERIFY command or close it with a reason.' });

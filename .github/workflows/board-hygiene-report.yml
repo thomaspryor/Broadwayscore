@@ -25,4 +25,7 @@ jobs:
       - name: Dry-run the sweep into the run summary
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-        run: node scripts/board-hygiene-sweep.js | tee -a "$GITHUB_STEP_SUMMARY"
+        shell: bash
+        run: |
+          set -o pipefail
+          node scripts/board-hygiene-sweep.js | tee -a "$GITHUB_STEP_SUMMARY"
