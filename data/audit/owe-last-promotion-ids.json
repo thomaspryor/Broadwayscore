@@ -1,7 +1,36 @@
 {
-  "generatedAt": "2026-11-01T19:50:44.701Z",
-  "promoted": [],
+  "generatedAt": "2026-11-02T23:16:31.472Z",
+  "promoted": [
+    {
+      "id": "saving-alan-turing-off-west-end-2027",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
+    },
+    {
+      "id": "thinking-drinkers-great-british-pub-ride-off-west-end-2027",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
+    },
+    {
+      "id": "mrs-macbeth-off-west-end-2027",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
+    },
+    {
+      "id": "yippee-ki-yay-off-west-end-2026",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
+    }
+  ],
   "rejected": [
+    {
+      "title": "Golden Boy",
+      "venue": "Almeida Theatre",
+      "source": "venue-page:almeida-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as golden-boy-off-west-end-2026 (normalized-equal)"
+    },
     {
       "title": "Desire Under the Elms",
       "venue": "Almeida Theatre",
@@ -113,14 +142,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as robin-hood-and-the-merry-mandem-off-west-end-2026 (same house, title words contained, overlapping run (\"Robin Hood and the Merry Mandem\" vs \"Robin Hood\"))"
-    },
-    {
-      "title": "Surinderella",
-      "venue": "Theatre Royal Stratford East",
-      "source": "venue-page:theatre-royal-stratford-east",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as surinderella-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Talking In Tongues",
@@ -379,20 +400,20 @@
       "reason": "already in shows.json as the-radium-girls-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "An Oak Tree",
-      "venue": "The Other Palace",
-      "source": "venue-page:the-other-palace",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
-    },
-    {
       "title": "Garry Starr Classic Penguins",
       "venue": "The Other Palace",
       "source": "venue-page:the-other-palace",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as garry-starr-classic-penguins-garrick-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"Garrick Theatre\"))"
+    },
+    {
+      "title": "An Oak Tree",
+      "venue": "The Other Palace",
+      "source": "venue-page:the-other-palace",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as an-oak-tree-off-west-end-2026 (london-pool-title-equal (venue \"The Other Palace\" vs \"The Other Palace - Main Theatre\"))"
     },
     {
       "title": "Boys Who Dance",
@@ -731,14 +752,6 @@
       "reason": "already in shows.json as the-bridge-off-west-end-2026 (normalized-equal)"
     },
     {
-      "title": "The Hungry Ghost",
-      "venue": "Bush Theatre",
-      "source": "venue-page:bush-theatre",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as the-hungry-ghost-off-west-end-2026 (normalized-equal)"
-    },
-    {
       "title": "SQUID: A Victim Impact Statement",
       "venue": "Arcola Theatre",
       "source": "venue-page:arcola-theatre",
@@ -867,14 +880,6 @@
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-08))"
     },
     {
-      "title": "To Be Frank",
-      "venue": "King's Head Theatre",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-01))"
-    },
-    {
       "title": "Before the Coffee Gets Cold",
       "venue": "Lyric Hammersmith",
       "source": "venue-page:lyric-hammersmith",
@@ -913,22 +918,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as father-christmas-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Fences",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as fences-off-west-end-2026 (normalized-equal)"
-    },
-    {
-      "title": "Franky",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as franky-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "Hare & Tortoise",
@@ -1041,38 +1030,6 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as we-have-always-lived-in-the-castle-off-west-end-2027 (normalized-equal)"
-    },
-    {
-      "title": "YAF: Devising for Beginners with Adam Carvell",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
-    },
-    {
-      "title": "YAF: How To Be A Theatre Producer",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
-    },
-    {
-      "title": "YAF: Special Effects Make-Up with Franky Lehmeier",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
-    },
-    {
-      "title": "YAF: Talent Agent: Here's what you need to know...",
-      "venue": "Lyric Hammersmith",
-      "source": "venue-page:lyric-hammersmith",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-10-31))"
     },
     {
       "title": "A Hunger Artist",
@@ -1243,14 +1200,6 @@
       "reason": "already in shows.json as mother-ignacia-off-west-end-2027 (normalized-equal)"
     },
     {
-      "title": "Paradise Villa – A Rehearsed Reading",
-      "venue": "Riverside Studios",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": null,
-      "kind": "skip-unconfirmed",
-      "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2026-11-01))"
-    },
-    {
       "title": "The Crimes of Pete",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1369,14 +1318,6 @@
       "sourceUrl": null,
       "kind": "skip-unconfirmed",
       "reason": "venue's dated listing does not confirm a run: not a production (one-night event (2027-01-21))"
-    },
-    {
-      "title": "Stoker Wilde",
-      "venue": "Wilton's Music Hall",
-      "source": "venue-page:wilton-s-music-hall",
-      "sourceUrl": null,
-      "kind": "skip-duplicate",
-      "reason": "already in shows.json as stoker-wilde-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "The Actress",
