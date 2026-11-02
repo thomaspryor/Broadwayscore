@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-11-01T14:57:37.443Z",
-  "scope": "2 opening window(s): tosca-off-broadway-2026 (2026-11-01), msblackforpresident-off-broadway-2026 (2026-11-01)",
+  "generatedAt": "2026-11-02T13:12:39.213Z",
+  "scope": "2 opening window(s): clifford-odets-waiting-for-lefty-off-broadway-2026 (2026-11-02), the-morbs-off-broadway-2026 (2026-11-02)",
   "degraded": null,
   "windows": [
     {
-      "showId": "tosca-off-broadway-2026",
-      "openingDate": "2026-11-01",
-      "from": "2026-10-31T00:00:00.000Z",
-      "to": "2026-11-05T23:59:59.999Z"
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "openingDate": "2026-11-02",
+      "from": "2026-11-01T00:00:00.000Z",
+      "to": "2026-11-06T23:59:59.999Z"
     },
     {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "openingDate": "2026-11-01",
-      "from": "2026-10-31T00:00:00.000Z",
-      "to": "2026-11-05T23:59:59.999Z"
+      "showId": "the-morbs-off-broadway-2026",
+      "openingDate": "2026-11-02",
+      "from": "2026-11-01T00:00:00.000Z",
+      "to": "2026-11-06T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 182281,
-  "logOldestEntryAt": "2026-10-31T15:04:01.874Z",
+  "logEntryCount": 187718,
+  "logOldestEntryAt": "2026-11-01T06:58:43.939Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 1,
+    "inFlight": 0,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -35,17 +35,5 @@
     "breaches": [],
     "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "tosca-off-broadway-2026",
-      "outletId": "guardian",
-      "reviewKey": "guardian:flora-willson:https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
-      "basis": null,
-      "firstSeenAt": "2026-11-01T14:29:20.997Z",
-      "liveAt": null,
-      "pipelineMinutes": null,
-      "publishedToLiveMinutes": null,
-      "stuckAtStage": "rebuilt"
-    }
-  ]
+  "records": []
 }
