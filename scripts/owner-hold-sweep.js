@@ -77,7 +77,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
             continue;
           }
           if (kind === 'release') {
-            const cls = sweep.classifyHold(fresh, { now, secret });
+            // getIssue lacks board-only fields (updatedAt...): classify the fresh text on top of the board row.
+            const cls = sweep.classifyHold({ ...before, ...fresh }, { now, secret });
             if (cls.action !== 'release') { done.changed.push(row.identifier); continue; }
             const input = { description: sweep.releasedView(fresh, now).description };
             if (['backlog'].includes(fresh.state.type) || fresh.state.name === 'Paused') input.stateId = todo.id;

@@ -70,3 +70,12 @@ test('a card edited after the read is left alone', async () => {
   assert.deepEqual(r.summary.done.changed, ['BRO-3']);
   assert.equal(f.log.updates.length, 0);
 });
+
+test('apply still releases when getIssue returns the slim shape (no updatedAt), as the real client does', async () => {
+  const card = mk(7, 'needs owner judgment on the wording');
+  const c = fake([card]);
+  c.getIssue = async () => { const { updatedAt, createdAt, ...slim } = card; return slim; };
+  const r = await quiet(() => main(['--apply', '--json'], { linear: c, graphql: c.graphql, now: NOW }));
+  assert.deepEqual(r.summary.done.released, ['BRO-7']);
+  assert.deepEqual(r.summary.done.changed, []);
+});
