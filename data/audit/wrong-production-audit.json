@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T17:22:28.500Z",
+  "timestamp": "2026-11-02T17:36:31.630Z",
   "stats": {
-    "totalReviews": 79207,
+    "totalReviews": 79214,
     "alreadyFlagged": 21958,
     "dateGuardCatches": 222,
     "directorMismatch": 3422,
-    "tvFilmSignals": 2252,
-    "londonSignals": 3581,
+    "tvFilmSignals": 2251,
+    "londonSignals": 3580,
     "offBroadwaySignals": 740,
     "yearMismatch": 346,
-    "noPublishDate": 8375
+    "noPublishDate": 8379
   },
   "findings": [
     {
@@ -48623,20 +48623,6 @@
     },
     {
       "showId": "patriots-2024",
-      "file": "theatermania--jesse-green.json",
-      "score": 64,
-      "publishDate": "April 22, 2024",
-      "url": "https://www.theatermania.com/news/review-patriots-on-broadway-unpacks-the-power-struggle-for-russia_1737910/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "patriots-2024",
       "file": "theatermania--zachary-stewart.json",
       "score": 67,
       "publishDate": "April 22, 2024",
@@ -72191,7 +72177,7 @@
       "showId": "the-play-that-goes-wrong-regional-2026",
       "file": "hillrag--matthew-mcclure.json",
       "score": 84,
-      "publishDate": null,
+      "publishDate": "2026-06-17",
       "url": "https://www.hillrag.com/2026/06/17/a-play-goes-wrong-at-keegan/",
       "findings": [
         {
@@ -92297,20 +92283,6 @@
       "score": 85,
       "publishDate": "October 12, 2012",
       "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html?ref=theater",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "cyrano-de-bergerac-2012",
-      "file": "nytimes--ben-brantley.json",
-      "score": 83,
-      "publishDate": "October 12, 2012",
-      "url": "https://www.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
