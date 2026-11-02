@@ -963,3 +963,23 @@ test('_auditAllowCrossMarket can be set true only (BRO-6323)', () => {
   assert.equal(applyReviewFieldEdit(rec, { field: '_auditAllowCrossMarket', oldValue: null, newValue: false }, stamp).ok, false);
   assert.equal(applyReviewFieldEdit(rec, { field: '_auditAllowCrossMarket', oldValue: null, newValue: 'yes' }, stamp).ok, false);
 });
+
+// BRO-6716: a stale wrong-author flag clears only when the refetched body no longer names the flagged author.
+test('fullTextWrongAuthor: clear-only, and only when the detected author is gone from a real body', () => {
+  const stamp = { fixId: 'bro-6716-g', at: '2026-11-02T00:00:00.000Z' };
+  const body = 'It is a bold writer indeed who decides to tell a recently uncovered story about the Holocaust. '.repeat(8);
+  const rec = { url: 'https://www.newstatesman.com/x', criticName: 'Rachel Cunliffe', fullText: body,
+    fullTextWrongAuthor: true, _authorMismatch: 'Byline says Sally Rooney, file says rachel-cunliffe' };
+  const clear = { field: 'fullTextWrongAuthor', oldValue: true, newValue: false };
+  assert.equal(applyReviewFieldEdit(rec, clear, stamp).ok, true);
+  // The flagged author still in the text: the flag stands.
+  assert.equal(applyReviewFieldEdit({ ...rec, fullText: body + ' By Sally Rooney' }, clear, stamp).ok, false);
+  // No real body (the flagger deleted it, nothing refetched): the flag stands.
+  assert.equal(applyReviewFieldEdit({ ...rec, fullText: 'short' }, clear, stamp).ok, false);
+  // AP-wire flags name no author: never cleared this way.
+  assert.equal(applyReviewFieldEdit({ ...rec, _authorMismatch: 'AP wire content detected in non-AP file: x' }, clear, stamp).ok, false);
+  // Collector shape ("Byline at <pos>: "<name>"").
+  assert.equal(applyReviewFieldEdit({ ...rec, _authorMismatch: 'Byline at top: "Sally Rooney", expected "Rachel Cunliffe"' }, clear, stamp).ok, true);
+  // Never set true through a plan.
+  assert.equal(applyReviewFieldEdit({ ...rec, fullTextWrongAuthor: false }, { field: 'fullTextWrongAuthor', oldValue: false, newValue: true }, stamp).ok, false);
+});
