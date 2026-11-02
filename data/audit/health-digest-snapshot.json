@@ -1,54 +1,50 @@
 {
-  "generatedAt": "2026-11-02T09:31:28.000Z",
-  "subject": "BSC Daily: 9 internal issues, no visitor-facing errors (day 88)",
-  "bannerText": "9 errors, 33 warnings",
-  "consecutiveErrorDays": 88,
+  "generatedAt": "2026-11-02T12:54:30.750Z",
+  "subject": "BSC URGENT (day 89): 9 unresolved errors",
+  "bannerText": "9 errors, 35 warnings",
+  "consecutiveErrorDays": 89,
   "errors": [
     {
+      "name": "Sync: baseline drift",
+      "message": "Open shows dropped by 11: 274 vs baseline 285"
+    },
+    {
       "name": "Main: red streak",
-      "message": "main's Test Suite has had no confirmed-green run in 10.3h (27 failing runs) — first red commit 759b09b2b, job \"E2E Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 10.7h (no green run found in the runs checked — actual gap may be longer) (29 failing runs) — first red commit 657c52bf8, job \"E2E Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Push-retry deadman",
-      "message": "363 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x220, Ingest Review URLs x69, Opening Night Poller x17, Opening Night Express x16, Press Night Probe x14, Collect Review Texts x6, Rebuild Reviews (Fast) x4, Test Suite x4, Audit Aggregator Review Gap x3, Rebuild Reviews Data x2, Recover WE Major Outlet Reviews x2, Land x2, Collect WE/OB Review Texts x2, Recover Explicit Ratings x1, Gather Review Data x1]. Most recent reason: retries-exhausted. 1916 committed file(s) discarded across 361 run(s). 1059 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+      "message": "363 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x220, Ingest Review URLs x69, Opening Night Poller x17, Opening Night Express x16, Press Night Probe x14, Collect Review Texts x6, Rebuild Reviews (Fast) x4, Test Suite x4, Audit Aggregator Review Gap x3, Rebuild Reviews Data x2, Recover WE Major Outlet Reviews x2, Land x2, Collect WE/OB Review Texts x2, Recover Explicit Ratings x1, Gather Review Data x1]. Most recent reason: retries-exhausted. 1916 committed file(s) discarded across 361 run(s). 1048 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     },
     {
       "name": "Workflow repeat-failure: Secret Scan (gitleaks) / scan / Scan working tree (code paths)",
-      "message": "Secret Scan (gitleaks) / scan / Scan working tree (code paths) failed 7 times in the last 24h — likely broken, not transient."
+      "message": "Secret Scan (gitleaks) / scan / Scan working tree (code paths) failed 6 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Secret Scan (gitleaks) / scan / Checkout for notify action",
-      "message": "Secret Scan (gitleaks) / scan / Checkout for notify action failed 7 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Test Suite / Data Validation / Audit review contamination",
-      "message": "Test Suite / Data Validation / Audit review contamination failed 5 times in the last 24h — likely broken, not transient."
+      "message": "Secret Scan (gitleaks) / scan / Checkout for notify action failed 6 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Test Suite / E2E Tests / Run E2E tests",
-      "message": "Test Suite / E2E Tests / Run E2E tests failed 5 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite / E2E Tests / Run E2E tests failed 4 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test Suite / Data Validation / Audit review contamination",
+      "message": "Test Suite / Data Validation / Audit review contamination failed 4 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Test Suite / Test Summary / Check results",
-      "message": "Test Suite / Test Summary / Check results failed 5 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite / Test Summary / Check results failed 4 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "message": "Test Suite failed 4 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Secret Scan (gitleaks)",
-      "message": "Secret Scan (gitleaks) failed 3 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
+      "message": "Test Suite failed 3 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
     }
   ],
   "warns": [
     {
-      "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 46806 vs baseline 46830"
-    },
-    {
-      "name": "Quality: opening date vs review dates",
-      "message": "1 show(s) store an opening date later than their reviews: merrily-we-roll-along-regional-2026 (stored 2026-09-08, reviews 2026-09-04)"
+      "name": "Sync: cast coverage",
+      "message": "1 missing file: Here There Are Blueberries"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -64,23 +60,23 @@
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (19h ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (22h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "6 NEW unmatched review(s) since last run (751 total across 491 show(s), 19h ago)"
+      "message": "6 NEW unmatched review(s) since last run (751 total across 491 show(s), 22h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "3 NEW cross-show URL mismatch(es) since last run (325 total across 266 show(s), 19h ago)"
+      "message": "3 NEW cross-show URL mismatch(es) since last run (325 total across 266 show(s), 22h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
-      "message": "1 show(s) opened and qualified but never emailed subscribers (0 still alertable, 1 aged out past the paging window; 7 more were covered by a weekly round-up, 19h ago)"
+      "message": "1 show(s) opened and qualified but never emailed subscribers (0 still alertable, 1 aged out past the paging window; 7 more were covered by a weekly round-up, 22h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
-      "message": "4 show(s) still 'announced' after apparently opening (11 silenced by contamination, 19h ago)"
+      "message": "4 show(s) still 'announced' after apparently opening (11 silenced by contamination, 22h ago)"
     },
     {
       "name": "Coverage: adversarial probe",
@@ -88,7 +84,7 @@
     },
     {
       "name": "Memory: cloud notes not reaching the Mac",
-      "message": "7 cloud-memory note(s) differ from the Mac's memory for over 48h. Oldest: design-system.md (cloud-edit-merged, 107h)"
+      "message": "7 cloud-memory note(s) differ from the Mac's memory for over 48h. Oldest: design-system.md (cloud-edit-merged, 110h)"
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
@@ -100,11 +96,7 @@
     },
     {
       "name": "Main: green rate",
-      "message": "rate 41.7% (green 247 / red 346, 593 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 34.4%, day 0 of 14 at ≥80% → FAIL"
-    },
-    {
-      "name": "Autofix: persistent visitor rows with no open card",
-      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Quality: opening date vs review dates (5d, BRO-6697 closed)"
+      "message": "rate 42% (green 247 / red 341, 588 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 34.4%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Data freshness: shows missing poster/synopsis/tickets",
@@ -137,6 +129,14 @@
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "message": "137 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 139 more already attempted)"
+    },
+    {
+      "name": "Workflow repeat-failure: Check Corpus Drift / Run corpus-statistics audits (non-blocking) / Live-data assertions (moved from test.yml unit batch)",
+      "message": "Check Corpus Drift / Run corpus-statistics audits (non-blocking) / Live-data assertions (moved from test.yml unit batch) failed 2 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Secret Scan (gitleaks)",
+      "message": "Secret Scan (gitleaks) failed 2 times in the last 24h; failed-step details unavailable, this count may combine different causes — likely broken, not transient."
     }
   ],
   "queued": [
@@ -144,149 +144,6 @@
       "conditionKey": "review-gap:opening-window:buffy-revamped-west-end-2026",
       "title": "Review gap — \"Buffy Revamped\" missing 6 cited review(s)",
       "description": "Buffy Revamped (buffy-revamped-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=buffy-revamped-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:copperfield-the-new-musical-off-broadway-2026",
-      "title": "Review gap — \"Copperfield! The New Musical\" missing 1 cited review(s)",
-      "description": "Copperfield! The New Musical (copperfield-the-new-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=copperfield-the-new-musical-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:derren-brown-only-human-west-end-2026",
-      "title": "Review gap — \"Derren Brown: Only Human\" missing 2 cited review(s)",
-      "description": "Derren Brown: Only Human (derren-brown-only-human-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=derren-brown-only-human-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:hayward-regional-2026",
-      "title": "Review gap — \"Hayward\" missing 1 cited review(s)",
-      "description": "Hayward (hayward-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=hayward-regional-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:jest-to-impress-off-broadway-2026",
-      "title": "Review gap — \"Jest to Impress\" missing 2 cited review(s)",
-      "description": "Jest to Impress (jest-to-impress-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jest-to-impress-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "title": "Review gap — \"Jesus Christ Superstar\" missing 1 cited review(s)",
-      "description": "Jesus Christ Superstar (jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:lanny-bristol-old-vic-regional-2026",
-      "title": "Review gap — \"Lanny\" missing 1 cited review(s)",
-      "description": "Lanny (lanny-bristol-old-vic-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lanny-bristol-old-vic-regional-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Review gap — \"Memoirs of Amorous Gentlemen\" missing 1 cited review(s)",
-      "description": "Memoirs of Amorous Gentlemen (memoirs-of-amorous-gentlemen-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=memoirs-of-amorous-gentlemen-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:mud-row-regional-2026",
-      "title": "Review gap — \"Mud Row\" missing 1 cited review(s)",
-      "description": "Mud Row (mud-row-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mud-row-regional-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:other-desert-cities-2026",
-      "title": "Review gap — \"Other Desert Cities\" missing 5 cited review(s)",
-      "description": "Other Desert Cities (other-desert-cities-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=other-desert-cities-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:school-pictures-off-broadway-2026",
-      "title": "Review gap — \"School Pictures\" missing 1 cited review(s)",
-      "description": "School Pictures (school-pictures-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-pictures-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:seussical-theatre-young-audiences-off-broadway-2026",
-      "title": "Review gap — \"Seussical ™ – Theatre Young Audiences\" missing 2 cited review(s)",
-      "description": "Seussical ™ – Theatre Young Audiences (seussical-theatre-young-audiences-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=seussical-theatre-young-audiences-off-broadway-2026 --checkpoint --ingest-missing",
       "severity": "warning",
       "url": null,
       "decision": false,
@@ -310,136 +167,6 @@
       "fields": []
     },
     {
-      "conditionKey": "review-gap:opening-window:the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "Review gap — \"The Curious Case of Benjamin Button\" missing 3 cited review(s)",
-      "description": "The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-curious-case-of-benjamin-button-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:the-penelopiad-york-royal-regional-2026",
-      "title": "Review gap — \"The Penelopiad\" missing 6 cited review(s)",
-      "description": "The Penelopiad (the-penelopiad-york-royal-regional-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-penelopiad-york-royal-regional-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:the-pianist-off-west-end-2026",
-      "title": "Review gap — \"The Pianist\" missing 1 cited review(s)",
-      "description": "The Pianist (the-pianist-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-pianist-off-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:twelfth-night-crucible-regional-2026",
-      "title": "Review gap — \"Twelfth Night\" missing 2 cited review(s)",
-      "description": "Twelfth Night (twelfth-night-crucible-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=twelfth-night-crucible-regional-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:two-girls-off-broadway-2026",
-      "title": "Review gap — \"Two Girls\" missing 1 cited review(s)",
-      "description": "Two Girls (two-girls-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=two-girls-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
-      "title": "Review gap — \"Medea\" missing 2 cited review(s)",
-      "description": "Medea (medea-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:middlemarch-rsc-regional-2026",
-      "title": "Review gap — \"Middlemarch\" missing 1 cited review(s)",
-      "description": "Middlemarch (middlemarch-rsc-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=middlemarch-rsc-regional-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:the-bridge-off-west-end-2026",
-      "title": "Review gap — \"The Bridge\" missing 1 cited review(s)",
-      "description": "The Bridge (the-bridge-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bridge-off-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:the-unexpected-3rd-2026",
-      "title": "Review gap — \"The Unexpected 3rd\" missing 1 cited review(s)",
-      "description": "The Unexpected 3rd (the-unexpected-3rd-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-unexpected-3rd-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "review-gap:opening-window:tristan-and-yseult-off-broadway-2026",
-      "title": "Review gap — \"Tristan & Yseult\" missing 1 cited review(s)",
-      "description": "Tristan & Yseult (tristan-and-yseult-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tristan-and-yseult-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
       "conditionKey": "coverage-holes:tosca-off-broadway-2026",
       "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "description": "- rejected as not-a-review, verification says review: tosca-off-broadway-2026/broadwayworld--dc-felton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
@@ -450,19 +177,6 @@
       "decisionPrompt": null,
       "model": null,
       "tracked": null,
-      "fields": []
-    },
-    {
-      "conditionKey": "llm-scoring:daily-cost-breach",
-      "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
-      "description": "Still firing after 16 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $28.87 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
-      "severity": "warning",
-      "url": null,
-      "decision": false,
-      "info": false,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": "BRO-6732",
       "fields": []
     },
     {
@@ -1783,19 +1497,6 @@
       ]
     },
     {
-      "conditionKey": "corpus-drift:monitor-only",
-      "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-02.",
-      "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-      "severity": "info",
-      "url": null,
-      "decision": false,
-      "info": true,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
       "conditionKey": "pending-unrecoverable:harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "title": "1 review(s) for harry-potter-and-the-cursed-child-one-part-west-end-2026 stuck in _pending with no text and no byline",
       "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/harry-potter-and-the-cursed-child-review-at-palace-theatre-london--new-cast-equals-the-original",
@@ -2029,19 +1730,6 @@
       "fields": []
     },
     {
-      "conditionKey": "t1-gaps:needs-manual-recovery",
-      "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-02.",
-      "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-      "severity": "info",
-      "url": null,
-      "decision": false,
-      "info": true,
-      "decisionPrompt": null,
-      "model": null,
-      "tracked": null,
-      "fields": []
-    },
-    {
       "conditionKey": "land:land/bro-6811-audit-script",
       "title": "Landing blocked: unit-tests-node red on land/bro-6811-audit-script",
       "description": "land.yml did not land land/bro-6811-audit-script: the unit-tests-node gate went red at 012a6ad3cd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41409158867",
@@ -2102,25 +1790,375 @@
       ]
     },
     {
-      "conditionKey": "test-yml:main-streak",
-      "title": "Main test.yml red — no confirmed-green run in 10.3h — escalated after 76 notifications",
-      "description": "Filed BRO-6812 for owner triage after 76 repeats with no tracker.\n\nmain's Test Suite has had no confirmed-green run in 10.3h (27 failing runs) — first red commit 759b09b2b, job \"E2E Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk.",
-      "severity": "error",
+      "conditionKey": "review-gap:opening-window:ceilidh-the-musical-off-west-end-2026",
+      "title": "Review gap — \"Ceilidh The Musical\" missing 1 cited review(s)",
+      "description": "Ceilidh The Musical (ceilidh-the-musical-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=ceilidh-the-musical-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
       "url": null,
       "decision": false,
       "info": false,
       "decisionPrompt": null,
       "model": null,
-      "tracked": "BRO-6812",
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "llm-scoring:daily-cost-breach",
+      "title": "LLM scoring daily spend over budget (still open — BRO-6732)",
+      "description": "Still firing after 17 notifications since it was filed. Tracked at BRO-6732.\n\nRolling 24h LLM scoring cost $18.33 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": "BRO-6732",
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:copperfield-the-new-musical-off-broadway-2026",
+      "title": "Review gap — \"Copperfield! The New Musical\" missing 1 cited review(s)",
+      "description": "Copperfield! The New Musical (copperfield-the-new-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=copperfield-the-new-musical-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:derren-brown-only-human-west-end-2026",
+      "title": "Review gap — \"Derren Brown: Only Human\" missing 2 cited review(s)",
+      "description": "Derren Brown: Only Human (derren-brown-only-human-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=derren-brown-only-human-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:hayward-regional-2026",
+      "title": "Review gap — \"Hayward\" missing 1 cited review(s)",
+      "description": "Hayward (hayward-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=hayward-regional-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:jest-to-impress-off-broadway-2026",
+      "title": "Review gap — \"Jest to Impress\" missing 2 cited review(s)",
+      "description": "Jest to Impress (jest-to-impress-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jest-to-impress-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "title": "Review gap — \"Jesus Christ Superstar\" missing 2 cited review(s)",
+      "description": "Jesus Christ Superstar (jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:lanny-bristol-old-vic-regional-2026",
+      "title": "Review gap — \"Lanny\" missing 1 cited review(s)",
+      "description": "Lanny (lanny-bristol-old-vic-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lanny-bristol-old-vic-regional-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:medea-off-broadway-2026",
+      "title": "Review gap — \"Medea\" missing 8 cited review(s)",
+      "description": "Medea (medea-off-broadway-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=medea-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:memoirs-of-amorous-gentlemen-off-broadway-2026",
+      "title": "Review gap — \"Memoirs of Amorous Gentlemen\" missing 1 cited review(s)",
+      "description": "Memoirs of Amorous Gentlemen (memoirs-of-amorous-gentlemen-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=memoirs-of-amorous-gentlemen-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:middlemarch-rsc-regional-2026",
+      "title": "Review gap — \"Middlemarch\" missing 1 cited review(s)",
+      "description": "Middlemarch (middlemarch-rsc-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=middlemarch-rsc-regional-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:msblackforpresident-off-broadway-2026",
+      "title": "Review gap — \"Ms. Blakk for President\" missing 1 cited review(s)",
+      "description": "Ms. Blakk for President (msblackforpresident-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=msblackforpresident-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:mud-row-regional-2026",
+      "title": "Review gap — \"Mud Row\" missing 1 cited review(s)",
+      "description": "Mud Row (mud-row-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mud-row-regional-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:other-desert-cities-2026",
+      "title": "Review gap — \"Other Desert Cities\" missing 5 cited review(s)",
+      "description": "Other Desert Cities (other-desert-cities-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=other-desert-cities-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:school-pictures-off-broadway-2026",
+      "title": "Review gap — \"School Pictures\" missing 1 cited review(s)",
+      "description": "School Pictures (school-pictures-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-pictures-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:seussical-theatre-young-audiences-off-broadway-2026",
+      "title": "Review gap — \"Seussical ™ – Theatre Young Audiences\" missing 2 cited review(s)",
+      "description": "Seussical ™ – Theatre Young Audiences (seussical-theatre-young-audiences-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=seussical-theatre-young-audiences-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:the-bridge-off-west-end-2026",
+      "title": "Review gap — \"The Bridge\" missing 1 cited review(s)",
+      "description": "The Bridge (the-bridge-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-bridge-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "Review gap — \"The Curious Case of Benjamin Button\" missing 3 cited review(s)",
+      "description": "The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-curious-case-of-benjamin-button-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:the-penelopiad-york-royal-regional-2026",
+      "title": "Review gap — \"The Penelopiad\" missing 3 cited review(s)",
+      "description": "The Penelopiad (the-penelopiad-york-royal-regional-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-penelopiad-york-royal-regional-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:the-pianist-off-west-end-2026",
+      "title": "Review gap — \"The Pianist\" missing 1 cited review(s)",
+      "description": "The Pianist (the-pianist-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-pianist-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:the-unexpected-3rd-2026",
+      "title": "Review gap — \"The Unexpected 3rd\" missing 1 cited review(s)",
+      "description": "The Unexpected 3rd (the-unexpected-3rd-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-unexpected-3rd-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:tristan-and-yseult-off-broadway-2026",
+      "title": "Review gap — \"Tristan & Yseult\" missing 2 cited review(s)",
+      "description": "Tristan & Yseult (tristan-and-yseult-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tristan-and-yseult-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:twelfth-night-crucible-regional-2026",
+      "title": "Review gap — \"Twelfth Night\" missing 1 cited review(s)",
+      "description": "Twelfth Night (twelfth-night-crucible-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=twelfth-night-crucible-regional-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "review-gap:opening-window:two-girls-off-broadway-2026",
+      "title": "Review gap — \"Two Girls\" missing 1 cited review(s)",
+      "description": "Two Girls (two-girls-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=two-girls-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "t1-gaps:needs-manual-recovery",
+      "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-02.",
+      "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+      "severity": "info",
+      "url": null,
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "corpus-drift:monitor-only",
+      "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-02.",
+      "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+      "severity": "info",
+      "url": null,
+      "decision": false,
+      "info": true,
+      "decisionPrompt": null,
+      "model": null,
+      "tracked": null,
+      "fields": []
+    },
+    {
+      "conditionKey": "test-yml:main-streak-escalation",
+      "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+      "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+      "severity": "error",
+      "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41441184472",
+      "decision": false,
+      "info": false,
+      "decisionPrompt": null,
+      "model": "opus",
+      "tracked": null,
       "fields": [
         {
-          "name": "First red commit",
-          "value": "759b09b2b7e9a482e10878ca325e7cc90f9df3e0"
+          "name": "This failed run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41441184472)"
+        },
+        {
+          "name": "Previous failed run",
+          "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41428395140)"
+        },
+        {
+          "name": "Consecutive failures",
+          "value": "31"
+        },
+        {
+          "name": "Currently failing job(s)",
+          "value": "E2E Tests, Unit Tests"
         }
       ]
     }
   ],
   "autoFixedCount": 1,
-  "passedCount": 105,
-  "totalCount": 152
+  "passedCount": 104,
+  "totalCount": 153
 }
