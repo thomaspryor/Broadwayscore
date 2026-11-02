@@ -334,7 +334,10 @@ function fullTextNamesShowRepeatedly(fullTexts, mentionRe) {
  * Theatre/Theater interchangeable. null when the name is too short or is a
  * generic word on its own ("Theatre"), so it can never confirm anything.
  */
-const GENERIC_VENUE_WORDS = new Set(['the', 'theatre', 'theater', 'center', 'centre', 'stage', 'hall', 'house', 'playhouse', 'company', 'studio', 'space']);
+// Generic venue words, and market words that make "Broadway Theatre" or
+// "West End Theatre" read as the phrase "a Broadway theater" (BRO-5693 review).
+const GENERIC_VENUE_WORDS = new Set(['the', 'theatre', 'theater', 'center', 'centre', 'stage', 'hall', 'house', 'playhouse', 'company', 'studio', 'space',
+  'broadway', 'off', 'west', 'end', 'london', 'new', 'york', 'city', 'music', 'opera', 'arts', 'performing', 'regional', 'chicago']);
 function buildVenueRegex(show) {
   // "Signature Center/Romulus Linney Courtyard Theatre": either name counts.
   const names = foldDiacritics(String((show && show.venue) || '').split(',')[0]).split('/');
@@ -350,23 +353,39 @@ function buildVenueRegex(show) {
 }
 
 /**
- * True when a saved FULL text names the show's venue AND either names the
- * whole title (mentionRe) or uses a significant title word at least
- * REPEAT_MENTIONS times (BRO-5693).
- * Some outlets keep the title only in the page header, which extraction drops:
- * Chicago Theatre Review's "The Locusts" review never repeats the title in
- * its body, but names Theater Wit and says "locusts" three times. An article
- * about a different show at the same venue would not keep using this show's
- * title words or its whole title, and a stray title word still flags.
+ * True when a saved FULL text names the show's venue AND names the show beyond
+ * a single passing mention (BRO-5693). Some outlets keep the title only in the
+ * page header, which extraction drops, so the body uses the title's words
+ * instead. Rules, so a different show at the same venue still flags:
+ * - titles with fewer than two significant words never clear here (one word
+ *   such as "Company" or "Rent" is ordinary prose);
+ * - two or more whole-title mentions clear;
+ * - otherwise, with the whole-title mentions removed, two or more DISTINCT
+ *   significant title words must still appear ("Theater Wit, which staged
+ *   London Road last fall" names the title once and does not clear).
  */
+function significantTitleWords(show) {
+  const title = foldDiacritics(String((show && show.title) || '')).toLowerCase();
+  const out = new Set();
+  for (const token of title.split(/[\s/]+/)) {
+    const clean = token.replace(/[^a-z0-9*]/g, '');
+    if (clean.replace(/\*/g, '').length >= 4 && !STOPWORDS.has(clean) && !/^\d+$/.test(clean)) out.add(clean);
+  }
+  return [...out];
+}
+
 function fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe) {
   if (!venueRe || !fullTexts) return false;
-  const words = buildAcceptSlugs(show)
-    .filter(s => !s.includes('-') && s.length >= 4 && !STOPWORDS.has(s) && !/^\d+$/.test(s));
-  if (words.length === 0) return false;
-  const wordRe = new RegExp(`(^|[^A-Za-z0-9])(${words.map(slugPattern).join('|')})(s|es)?(?=$|[^A-Za-z0-9])`, 'gi');
-  return fullTexts.some(t => typeof t === 'string' && venueRe.test(t)
-    && ((mentionRe && mentionRe.test(t)) || (t.match(wordRe) || []).length >= REPEAT_MENTIONS));
+  const words = significantTitleWords(show);
+  if (words.length < 2) return false;
+  const wordRes = words.map(w => new RegExp(`(^|[^A-Za-z0-9])${slugPattern(w)}(s|es)?(?=$|[^A-Za-z0-9])`, 'i'));
+  const wholeRe = mentionRe ? new RegExp(mentionRe.source, 'gi') : null;
+  return fullTexts.some((t) => {
+    if (typeof t !== 'string' || !venueRe.test(t)) return false;
+    if (wholeRe && (t.match(wholeRe) || []).length >= REPEAT_MENTIONS) return true;
+    const rest = wholeRe ? t.replace(wholeRe, ' ') : t;
+    return wordRes.filter(re => re.test(rest)).length >= 2;
+  });
 }
 
 function run(show, context) {

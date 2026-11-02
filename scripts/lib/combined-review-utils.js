@@ -161,4 +161,17 @@ function isBogusCombinedFlag(data) {
     && data.combinedWith.length > MAX_PLAUSIBLE_COMBINED_SHOWS;
 }
 
-module.exports = { isBogusCombinedFlag, MAX_PLAUSIBLE_COMBINED_SHOWS, normalizeArticleUrl, baseSlug, areSameTitleSiblings, computeCombinedWith, shouldRecoverJointWrongShow };
+/**
+ * BRO-5693: clear an isCombinedReview flag whose URL key no longer joins the
+ * file to any other show. keyShowCount counts the distinct show folders whose
+ * files carry this key, INCLUDING files the flagging pass skips
+ * (wrongProduction, roundup, duplicate), so a real joint review whose partner
+ * copy is merely excluded keeps its flag. The >10 bogus-list rule (BRO-6682)
+ * is the special case of the same thing.
+ */
+function shouldClearUnjoinedCombinedFlag(data, keyShowCount) {
+  if (!data || data.isCombinedReview !== true) return false;
+  return isBogusCombinedFlag(data) || keyShowCount < 2;
+}
+
+module.exports = { isBogusCombinedFlag, shouldClearUnjoinedCombinedFlag, MAX_PLAUSIBLE_COMBINED_SHOWS, normalizeArticleUrl, baseSlug, areSameTitleSiblings, computeCombinedWith, shouldRecoverJointWrongShow };
