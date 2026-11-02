@@ -125,3 +125,27 @@ test('gradeShow census count leaves out syndication-portal noise (BRO-6804)', ()
   ], flaggedMisses: [] };
   assert.equal(gradeShow(row, 3).census, 1);
 });
+
+// BRO-6716: fixed opening-date window + --check-gaps (STALE passes, FAIL/NO-AUDIT fail).
+test('openedBetweenIds is an inclusive YYYY-MM-DD window and skips undated shows', () => {
+  const { openedBetweenIds } = require('./slow-market-grade.js');
+  const shows = [
+    { id: 'a', openingDate: '2025-10-31' }, { id: 'b', openingDate: '2026-10-31T00:00:00Z' },
+    { id: 'c', openingDate: '2025-10-30' }, { id: 'd', openingDate: '2026-11-01' }, { id: 'e', openingDate: null }, { id: 'f' },
+  ];
+  assert.deepEqual(openedBetweenIds(shows, '2025-10-31', '2026-10-31'), ['a', 'b']);
+});
+
+test('hasGap: STALE and PASS pass; FAIL (stale or fresh) and NO-AUDIT fail', () => {
+  const { hasGap } = require('./slow-market-grade.js');
+  assert.equal(hasGap([{ grade: 'PASS' }, { grade: 'STALE', stale: true }]), false);
+  assert.equal(hasGap([{ grade: 'PASS' }, { grade: 'FAIL', stale: true }]), true);
+  assert.equal(hasGap([{ grade: 'NO-AUDIT' }]), true);
+});
+
+test('main refuses a half or reversed window (exit 2) before reading data', () => {
+  const { main } = require('./slow-market-grade.js');
+  assert.equal(main(['--opened-from=2025-10-31', '--check-gaps']), 2);
+  assert.equal(main(['--opened-from=2026-10-31', '--opened-to=2025-10-31']), 2);
+  assert.equal(main(['--opened-from=2025-1-1', '--opened-to=2026-10-31']), 2);
+});
