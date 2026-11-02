@@ -588,5 +588,24 @@
       }
     ],
     "queuedAt": "2026-11-02T21:10:41.882Z"
+  },
+  {
+    "conditionKey": "cron-health-failed:Secret Scan (gitleaks)",
+    "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
+    "description": "Secret Scan (gitleaks): Latest run failed (last success 30h ago). Not stale yet; fix it before it is.",
+    "severity": "warning",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41526398144",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41526398144)"
+      }
+    ],
+    "queuedAt": "2026-11-02T21:15:33.526Z"
   }
 ]

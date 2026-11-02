@@ -21843,7 +21843,7 @@
       "resolveReason": "absent"
     },
     "cron-health-failed:Fetch All Image Formats": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Fetch All Image Formats",
       "firstSeen": "2026-10-19T18:07:12.430Z",
@@ -21853,7 +21853,9 @@
       "lastSurfacedAt": "2026-10-29T17:59:59.346Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-02T21:15:33.542Z",
+      "resolveReason": "latest run no longer failing"
     },
     "opening-night-fulltext-mentions-show:short:triumph-off-west-end-2026": {
       "status": "resolved",
@@ -34757,10 +34759,10 @@
       "title": "Cron's latest run failed (not yet stale): Secret Scan (gitleaks)",
       "firstSeen": "2026-11-01T17:29:47.370Z",
       "incidentOpenedAt": "2026-11-01T17:29:47.370Z",
-      "lastSeen": "2026-11-01T17:29:47.370Z",
-      "lastNotifiedAt": "2026-11-01T17:29:47.370Z",
-      "lastSurfacedAt": "2026-11-01T17:29:47.370Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-11-02T21:15:33.525Z",
+      "lastNotifiedAt": "2026-11-02T21:15:33.525Z",
+      "lastSurfacedAt": "2026-11-02T21:15:33.525Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -35385,6 +35387,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "cron-health-chronic:Replay Push Rescue": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Replay Push Rescue",
+      "firstSeen": "2026-11-02T21:15:33.632Z",
+      "incidentOpenedAt": "2026-11-02T21:15:33.632Z",
+      "lastSeen": "2026-11-02T21:15:33.632Z",
+      "lastNotifiedAt": "2026-11-02T21:15:33.632Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6859"
     }
   }
 }
