@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-02T03:09:01.427Z",
-    "endedAt": null,
+    "endedAt": "2026-11-02T09:00:32.896Z",
     "intervalMin": 5,
-    "samples": 23,
+    "samples": 70,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-02T04:59:07.393Z",
-    "lastOkSampleAt": "2026-11-02T04:59:07.393Z"
+    "lastSampleAt": "2026-11-02T08:57:39.948Z",
+    "lastOkSampleAt": "2026-11-02T08:57:39.948Z"
   },
   "firstLiveAt": null,
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 0,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 0,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-02T04:04:04.397Z",
-    "2h": null,
+    "2h": "2026-11-02T05:07:32.642Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -47,6 +47,17 @@
       "liveCount": 0,
       "fetchedAt": "2026-11-02T05:00:27.966Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-02T09:00:28.824Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -59,11 +70,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-02T09:00:28.911Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-02T05:00:32.714Z",
+    "capturedAt": "2026-11-02T09:00:32.829Z",
     "files": [
       {
         "file": "broadwayworld--unknown.json",
