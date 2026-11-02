@@ -927,7 +927,7 @@ export function localCheckWarning({ root, src, base = 'origin/main', seams = {} 
     const status = rec ? rec.verdict : 'none';
     if (status === 'clean') return { status, warning: null };
     const run = 'run `node scripts/lib/land-local-check.js | tail -15` in the background (~20 min) and push after it exits 0';
-    const why = 'About 1 in 4 Claude worker lands is refused, mostly by repo-wide test gates this check catches.';
+    const why = 'Most refused Claude worker lands fail on repo-wide test gates this check catches; each refusal costs a ~30 min land cycle.';
     const text = {
       none: `no land-local-check verdict for this tip (${sha.slice(0, 10)}). ${why} Before pushing, ${run}.`,
       'new-failures': `land-local-check found NEW failures on this tip (${sha.slice(0, 10)}); land.yml will very likely refuse it. Fix them, then ${run}.`,
