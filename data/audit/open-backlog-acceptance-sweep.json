@@ -1,18 +1,60 @@
 {
-  "generatedAt": "2026-11-01T14:42:35.688Z",
+  "generatedAt": "2026-11-02T13:01:42.671Z",
   "shadow": true,
-  "checkoutSha": "1eaf5aaa67c3b831206f35cb56db36e58fdb540c",
-  "totalCandidates": 403,
-  "eligibleCandidates": 115,
-  "checked": 14,
+  "checkoutSha": "b67b7f250578557dcc964edb2ee406cb6b384105",
+  "totalCandidates": 410,
+  "eligibleCandidates": 110,
+  "checked": 23,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 7,
-    "fail": 1,
-    "unverifiable": 6
+    "pass": 16,
+    "fail": 3,
+    "unverifiable": 4
   },
   "alreadyDone": [
+    {
+      "id": "BRO-6806",
+      "name": "Othello 2022 WhatsOnStage review links the 2025 Haymarket article (URL inherited from wrongProduction duplicate)",
+      "verifyCmd": "node --test scripts/lib/sibling-rating-inherit.test.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6803",
+      "name": "Opera: SFO The Monkey King has 3 unscored review files; score them or retire the row",
+      "verifyCmd": "test -f scripts/linear-brain.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6801",
+      "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
+      "verifyCmd": "node --test tests/unit/press-window-serp.test.mjs tests/unit/outlet-coverage-claim.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6785",
+      "name": "Live in HD polish: keep date in meta description, fix post-expiry title/hero mismatch",
+      "verifyCmd": "node --test tests/unit/live-in-hd.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6773",
+      "name": "Monthly Profitability Scorecard email: preview-only draft generator for the money list",
+      "verifyCmd": "node --test tests/unit/money-monthly.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6764",
+      "name": "Mac-to-cloud Phase 2b: cut the morning digest over to the GitHub Action (one email a day, dated, reversible)",
+      "verifyCmd": "node --test tests/unit/morning-digest-action.test.mjs tests/unit/mac-cloud-routines-verification.test.mjs tests/unit/mac-retired-reconciler.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6762",
+      "name": "Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
+      "verifyCmd": "node --test tests/unit/outlet-coverage-claim.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-6750",
       "name": "Audience grade gate still counts sources the combined score ignores (sub-10 Theatr, sub-50 Reddit, non-US Broadway.com)",
@@ -20,21 +62,9 @@
       "detail": null
     },
     {
-      "id": "BRO-6746",
-      "name": "castBilling gaps: alphabetical Playbill billing, 20 Off-Broadway shows with no snapshot, 4 Broadway shows missing playbill URLs (BRO-6678 follow-up)",
-      "verifyCmd": "node --test scripts/lib/playbill-cast-billing.test.mjs scripts/lib/reddit-opening-post.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6743",
-      "name": "gather-reviews: a shard killed at its 75-min timeout drops its unfinished shows with no follow-up hop",
-      "verifyCmd": "node --test scripts/lib/gather-deferred.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6733",
-      "name": "Gap audit: transfer shows' non-roundup sources report the other production's reviews as current-run missing",
-      "verifyCmd": "node --test scripts/audit-show-review-gap.test.mjs",
+      "id": "BRO-6737",
+      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
+      "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
       "detail": null
     },
     {
@@ -44,24 +74,60 @@
       "detail": null
     },
     {
-      "id": "BRO-6688",
-      "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
-      "verifyCmd": "test -f scripts/lib/wait-for-land.js",
-      "detail": null
-    },
-    {
       "id": "BRO-6666",
       "name": "verify-schema failed 2 days (unapplied migration) with nobody acting: auto-file a fix card on failure",
       "verifyCmd": "node scripts/audit-workflow-hygiene.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6646",
+      "name": "Scraping spend alert: alarm on prepaid-credit exhaustion pace, not daily credits",
+      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cHJvdmlkZXItc3BlbmQ6b3ZlcnNwZW5k",
+      "detail": null
+    },
+    {
+      "id": "BRO-6599",
+      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
+      "verifyCmd": "node --test scripts/lib/cross-show-url.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6567",
+      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
+      "verifyCmd": "node --test tests/unit/text-contrast-guard.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6564",
+      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
+      "verifyCmd": "npx tsx --test tests/unit/commercial-display.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6538",
+      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     }
   ],
   "failing": [
     {
-      "id": "BRO-6646",
-      "name": "Scraping spend alert: alarm on prepaid-credit exhaustion pace, not daily credits",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 cHJvdmlkZXItc3BlbmQ6b3ZlcnNwZW5k",
-      "detail": "[check-alert-condition-absent] FAIL: \"provider-spend:overspend\" still firing — open, last fired 2026-10-30T08:43:47.483Z (54.0h ago, within 168h)\n"
+      "id": "BRO-6688",
+      "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
+      "verifyCmd": "node scripts/check-remote-branch-absent.js --branch=land/bro-6682-opening-night-leftovers",
+      "detail": "[check-remote-branch-absent] FAIL: land/bro-6682-opening-night-leftovers is still on origin\n"
+    },
+    {
+      "id": "BRO-6590",
+      "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
+      "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=check-cookie-health.yml --expect=success",
+      "detail": "(gh not authenticated; read runs from the public GitHub API)\ncheck-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41115619938)\n"
+    },
+    {
+      "id": "BRO-6586",
+      "name": "Re-extract truncated/stub BroadwayWorld review files with the new JSON-LD articleBody extractor",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=broadwayworld --reviews=3",
+      "detail": "FAIL broadwayworld: show missing; scored reviews 0 < 3\n"
     }
   ],
   "unverifiable": [
@@ -72,22 +138,10 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/e2e-failure-alert.test.mjs"
     },
     {
-      "id": "BRO-6739",
-      "name": "Link-in-bio page: feature the show of the latest video so 'link in bio' lands on it",
-      "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/test-video-captions.test.mjs"
-    },
-    {
-      "id": "BRO-6737",
-      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
-      "verifyCmd": "node --test scripts/test-video-captions.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/test-video-captions.test.mjs"
-    },
-    {
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 143300ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 143657ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6681",
@@ -99,16 +153,44 @@
       "id": "BRO-6602",
       "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 44580ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 79211ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6743",
-      "name": "gather-reviews: a shard killed at its 75-min timeout drops its unfinished shows with no follow-up hop",
-      "branch": "land/codex-bro-6743",
-      "sha": "25c6d521fd949d90c890defd1ed43ef811dbbe4e",
-      "landedAt": "2026-11-01T08:34:43.169Z"
+      "id": "BRO-6806",
+      "name": "Othello 2022 WhatsOnStage review links the 2025 Haymarket article (URL inherited from wrongProduction duplicate)",
+      "branch": "land/codex-bro-6806",
+      "sha": "942b13bb60c11af5a1998f9efadf4e247869f902",
+      "landedAt": "2026-11-02T12:00:22.564Z"
+    },
+    {
+      "id": "BRO-6773",
+      "name": "Monthly Profitability Scorecard email: preview-only draft generator for the money list",
+      "branch": "land/bro-6773-audience-apply",
+      "sha": "91e2216d4eb269f76d7bdabae18a7ee18a3e4a68",
+      "landedAt": "2026-11-01T18:10:53.314Z"
+    },
+    {
+      "id": "BRO-6764",
+      "name": "Mac-to-cloud Phase 2b: cut the morning digest over to the GitHub Action (one email a day, dated, reversible)",
+      "branch": "land/bro-6764-w2b",
+      "sha": "d5dab5a341a70ae10ff03ec30393215669ec2d5f",
+      "landedAt": "2026-11-01T18:52:51.307Z"
+    },
+    {
+      "id": "BRO-6762",
+      "name": "Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
+      "branch": "land/bro-6762-cost-row",
+      "sha": "b8321d30fe59ebd3678a3d8a0886938f9d351bb7",
+      "landedAt": "2026-11-01T16:26:01.820Z"
+    },
+    {
+      "id": "BRO-6737",
+      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
+      "branch": "land/bro-6737-video-clean2",
+      "sha": "11f4cc38b7d71e57dac7ffb1d8a08c85082cbad5",
+      "landedAt": "2026-11-01T15:07:57.966Z"
     },
     {
       "id": "BRO-6666",
@@ -116,6 +198,41 @@
       "branch": "land/bro-6666-schema-drift-card",
       "sha": "6947845febf7a49fe03443fea3222768a67d4c6e",
       "landedAt": "2026-10-30T22:48:34.402Z"
+    },
+    {
+      "id": "BRO-6646",
+      "name": "Scraping spend alert: alarm on prepaid-credit exhaustion pace, not daily credits",
+      "branch": "land/bro-6646-spend-pace",
+      "sha": "8227039083469d644e36ea5e326c8c9817de5504",
+      "landedAt": "2026-10-30T17:38:37.143Z"
+    },
+    {
+      "id": "BRO-6599",
+      "name": "audit-cross-show-url.js: 109 non-London unhandled hits are title-overlap false positives (A Beautiful Noise vs Beautiful etc.); teach it to skip them",
+      "branch": "land/bro-6599-cross-show-canon",
+      "sha": "88819d77d5934cc5eebb2b9dbbd8f56d813e1fa3",
+      "landedAt": "2026-11-01T04:44:16.715Z"
+    },
+    {
+      "id": "BRO-6567",
+      "name": "Accessibility follow-ups to BRO-6553: web min text size (9-11px) + high-contrast mode on web and app",
+      "branch": "land/bro-6567-font-floor-b",
+      "sha": "d72a9f34f93cad7ec0cc7b048b0d030d437eb12c",
+      "landedAt": "2026-10-31T08:53:44.084Z"
+    },
+    {
+      "id": "BRO-6564",
+      "name": "Show page money card: show estimated return range for closed win labels (match /biz table)",
+      "branch": "land/codex-bro-6564",
+      "sha": "0f2198a9a40edfe49e8f70ed5258012c8b44fa6b",
+      "landedAt": "2026-10-30T08:33:33.052Z"
+    },
+    {
+      "id": "BRO-6538",
+      "name": "London census: CDX pass for guardian, observer, thestage archive + T1 newspaper probes",
+      "branch": "land/codex-bro-6538",
+      "sha": "f2acd8d4b066b481f93c7c18c6949ab3b037d563",
+      "landedAt": "2026-10-31T04:22:57.455Z"
     }
   ]
 }
