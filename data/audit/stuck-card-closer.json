@@ -1,64 +1,42 @@
 {
-  "generatedAt": "2026-11-02T13:09:00.068Z",
+  "generatedAt": "2026-11-02T21:44:39.529Z",
   "apply": true,
-  "auditGeneratedAt": "2026-11-02T13:01:55.650Z",
+  "auditGeneratedAt": "2026-11-02T21:38:20.253Z",
   "counts": {
     "skip:no-verify-command": 1,
-    "skip:command-shared-with-another-card": 1,
-    "skip:command-multi-file-test": 1,
-    "bounce:recent-activity": 3,
+    "skip:command-shared-with-another-card": 2,
+    "bounced": 3,
     "bounce:recheck-after-pending": 1,
-    "bounce:no-auto-worker": 5,
+    "bounce:no-auto-worker": 2,
+    "state-changed-since-audit": 2,
     "recheck-after-pending": 2,
     "no-commit-naming-card-touched-test": 1,
     "no-landing-naming-card": 1,
-    "recent-activity": 5,
+    "recent-activity": 7,
     "landing-evidence-needs-in-review": 1,
-    "closed": 1,
     "sweep:eligible": 0
   },
   "rows": [
     {
       "id": "BRO-6736",
       "state": "In Review",
-      "action": "leave",
-      "reason": "recent-activity"
+      "action": "bounced"
     },
     {
       "id": "BRO-6716",
       "state": "In Review",
-      "action": "leave",
-      "reason": "recent-activity"
+      "action": "bounced"
     },
     {
       "id": "BRO-6710",
       "state": "In Review",
-      "action": "leave",
-      "reason": "recent-activity"
+      "action": "bounced"
     },
     {
       "id": "BRO-6571",
       "state": "In Review",
       "action": "leave",
       "reason": "recheck-after-pending"
-    },
-    {
-      "id": "BRO-6386",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-auto-worker"
-    },
-    {
-      "id": "BRO-6382",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-auto-worker"
-    },
-    {
-      "id": "BRO-6381",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-auto-worker"
     },
     {
       "id": "BRO-6121",
@@ -71,6 +49,12 @@
       "state": "In Review",
       "action": "leave",
       "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-6809",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "state-changed-since-audit"
     },
     {
       "id": "BRO-6663",
@@ -115,25 +99,37 @@
       "reason": "landing-evidence-needs-in-review"
     },
     {
-      "id": "BRO-5526",
-      "state": "In Review",
-      "action": "closed",
-      "sha": "76ac450f31ee7ccb1f59eb378d341b01ad70af32"
+      "id": "BRO-5018",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6857",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6856",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "state-changed-since-audit"
+    },
+    {
+      "id": "BRO-6853",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6852",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
     },
     {
       "id": "BRO-6822",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-6821",
-      "state": "In Progress",
-      "action": "leave",
-      "reason": "recent-activity"
-    },
-    {
-      "id": "BRO-6783",
       "state": "In Progress",
       "action": "leave",
       "reason": "recent-activity"
