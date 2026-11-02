@@ -1,0 +1,166 @@
+name: Press night watchdog
+run-name: 'Press night watchdog ${{ inputs.show_id }} ${{ inputs.night }}${{ inputs.dry_run && '' (dry run)'' || '''' }}'
+
+# BRO-6858: the old-path press-night watchdog. press-night-clock.yml starts it at the night's kick (embargo -2h):
+# live for Broadway, dry run for off-Broadway (BRO-6687 owns those nights; the dry run only shows what it would do).
+# It sleeps to the embargo, then every 10 min to +3h checks each found review file of the night against the live
+# site and retries the stuck step (score, rebuild, deploy) once, starts the targeted orchestrator once if no pipeline
+# runs in the first 2h, and pages the owner (press-night:stuck:) only when a review is still stuck after its retry.
+# Decisions: scripts/lib/press-night-watchdog.js (unit tested). On a lane-only night it observes only.
+# Replays: scripts/press-night-watchdog-replay.js.
+
+on:
+  workflow_dispatch:
+    inputs:
+      show_id:
+        description: 'Show id (as in shows.json)'
+        required: true
+        type: string
+      night:
+        description: 'Opening night, YYYY-MM-DD'
+        required: true
+        type: string
+      embargo_at:
+        description: 'Embargo, ISO UTC (empty = from shows.json, re-read every tick)'
+        required: false
+        type: string
+        default: ''
+      dry_run:
+        description: 'Decide and log only: dispatch, claim and page nothing'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write  # once-per-night claims (opening-night-lane-fallbacks), alert ledger
+
+concurrency:
+  group: press-night-watchdog-${{ inputs.show_id }}-${{ inputs.night }}
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 345
+    permissions:
+      contents: write
+      actions: write  # gh run list and gh workflow run (score, rebuild, deploy, orchestrator)
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          fetch-depth: 1000
+
+      - name: Validate inputs
+        env:
+          SHOW: ${{ inputs.show_id }}
+          NIGHT: ${{ inputs.night }}
+          EMBARGO: ${{ inputs.embargo_at }}
+        run: |
+          printf '%s' "$SHOW" | grep -Eq '^[a-z0-9][a-z0-9-]{0,127}$' || { echo "::error::show_id must be a show id"; exit 1; }
+          printf '%s' "$NIGHT" | grep -Eq '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "::error::night needs YYYY-MM-DD"; exit 1; }
+          if [ -n "$EMBARGO" ]; then date -u -d "$EMBARGO" +%s >/dev/null || { echo "::error::embargo_at must be ISO UTC"; exit 1; }; fi
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse: 'true'
+
+      - name: Checkout review-texts (this show)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          sparse-paths: ${{ inputs.show_id }}
+
+      - name: Watch the night
+        timeout-minutes: 330
+        env:
+          SHOW: ${{ inputs.show_id }}
+          NIGHT: ${{ inputs.night }}
+          EMBARGO: ${{ inputs.embargo_at }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          GH_TOKEN: ${{ github.token }}
+          CORE_DATA_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}  # opening-night-sent.json (broadcast state)
+          VARS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}       # LANE_ONLY_MARKETS / LANE_STANDDOWN, read live
+          REFRESH_CMD: bash scripts/lib/press-night-data-refresh.sh
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+        run: |
+          ARGS=(--show="$SHOW" --night="$NIGHT" --tick-log=/tmp/press-night-watchdog.jsonl)
+          [ -n "$EMBARGO" ] && ARGS+=(--embargo-at="$EMBARGO")
+          [ "$DRY_RUN" = "true" ] && ARGS+=(--dry-run)
+          node scripts/press-night-watchdog.js "${ARGS[@]}"
+
+      - name: Upload tick log
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: press-night-watchdog-${{ inputs.show_id }}-${{ inputs.night }}
+          path: /tmp/press-night-watchdog.jsonl
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Upload alert state
+        if: always()
+        continue-on-error: true
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
+        with:
+          name: press-night-watchdog-alert-state-${{ inputs.show_id }}-${{ inputs.night }}
+          path: |
+            data/audit/alert-ledger.json
+            data/audit/alert-digest-queue.json
+            data/audit/alert-router-attempts.jsonl
+          if-no-files-found: ignore
+          retention-days: 7
+
+  # The ledger push lives in its own short job: a push inside the 5h watch job leaves no headroom under
+  # GitHub's 6h job cap (audit-push-retry-budgets job-timeout-margin rule).
+  ledger:
+    needs: watch
+    if: always() && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Download alert state
+        continue-on-error: true
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: press-night-watchdog-alert-state-${{ inputs.show_id }}-${{ inputs.night }}
+          path: data/audit
+
+      - name: Commit alert ledger
+        continue-on-error: true
+        run: |
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then echo "No alert state to commit"; exit 0; fi
+          git commit -m "audit: press-night watchdog alert ledger [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
+      - name: Notify on failure
+        if: failure() || needs.watch.result == 'failure'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Press night watchdog failed'
+          description: 'BRO-6858. The press-night watchdog itself failed (checkout or runner). The old path still runs on its crons and the lane watchdog is separate. Read the "Watch the night" step.'
+          severity: 'warning'
+          email: 'false'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

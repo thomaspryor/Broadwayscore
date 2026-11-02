@@ -928,8 +928,15 @@ jobs:
 
             # Sleep between iterations (skip on last iteration)
             if [ "$ITERATION" -lt "$MAX_ITERATIONS" ]; then
-              echo "Sleeping ${POLL_INTERVAL} minutes until next iteration..."
-              sleep $((POLL_INTERVAL * 60))
+              # BRO-6858: 5 min instead of POLL_INTERVAL inside a Broadway show's first 2h after the embargo
+              # (scripts/lib/press-night-poll-plan.js). An explicit poll_interval_minutes input always wins; any
+              # error prints POLL_INTERVAL. SERP deferral is unchanged (counted in iterations).
+              SLEEP_MIN=$(timeout 30 node scripts/lib/press-night-poll-plan.js --shows="$SHOWS" --default="$POLL_INTERVAL" \
+                --override="${{ inputs.poll_interval_minutes }}" 2>/tmp/poll-plan.err) || SLEEP_MIN=$POLL_INTERVAL
+              cat /tmp/poll-plan.err 2>/dev/null || true
+              case "$SLEEP_MIN" in ''|*[!0-9]*) SLEEP_MIN=$POLL_INTERVAL ;; esac
+              echo "Sleeping ${SLEEP_MIN} minutes until next iteration..."
+              sleep $((SLEEP_MIN * 60))
             fi
           done
 

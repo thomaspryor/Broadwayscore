@@ -44,6 +44,8 @@
 // prefixes because the real conditionKey carries a per-night/per-show
 // suffix (date or show-window key).
 const PAGE_WORTHY_PREFIXES = [
+  'press-night:stuck:', // press-night-watchdog.js (BRO-6858): on a Broadway press night a found review is not live 15 min after it was found and no pipeline run is moving it (the watchdog's one automatic retry already went out)
+  'press-night:preflight:', // press-night-preflight.js (BRO-6858): 24h / 3h before a Broadway embargo, a scraper credit, LLM key or secret the night needs is failing
   'lane-live-timeout:', // opening-night lane (real-ports.js, BRO-6649): a publish pushed to core data is still not on the live site after 20 minutes on a press night
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
@@ -269,6 +271,7 @@ const PAGE_WORTHY_WORKFLOWS = new Set([
   // Category 2: opening-night pipeline dead on an opening night.
   'opening-night-orchestrator.yml',
   'opening-night-poller.yml',
+  'press-night-clock.yml', // BRO-6858: only its 'within 24h of a Broadway opening' notify step is critical
   'opening-night-broadcast.yml', // the subscriber email the owner sends by hand
   // Sign-in is down until the owner restores the project from the Supabase
   // dashboard; nobody else holds that login.
@@ -347,6 +350,10 @@ const OWNER_ACTIONS = {
   // Kept as emails by the owner (option A, 2026-10-16).
   [FINAL_REPORT_ENTRY]: 'Read tonight\'s opening-night result for this show.',
   'broadcast:overdue:': 'Send the opening-night email; it is overdue.',
+  // BRO-6858 (card: owner alert within 15 min on Broadway press nights). Sent only after the watchdog's own retry.
+  'press-night:stuck:': 'Nothing is needed from you. You asked to hear within 15 minutes when a Broadway press-night review is found but not on the site; the watchdog already retried once and the details are below.',
+  'press-night:preflight:': 'Top up or renew the account named below before tonight\'s Broadway opening (a scraper or AI account is out of credit or its key stopped working).',
+  'press-night-clock.yml': 'Nothing is needed from you. You asked to hear when the press-night clock breaks within a day of a Broadway opening; it restarts itself on the next orchestrator tick.',
   'lane-live-timeout:': 'Check that the show page has its new reviews; if not, tell the coordinator session so it can run the old publish path.',
   'broadcast:never-sent:': 'Send the opening-night email; it never went out.',
   // BRO-5477: files a worker card first and emails only when that automatic

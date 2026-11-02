@@ -49,6 +49,7 @@ on:
       # BRO-6669: tests/unit/lane-auto-fallback.test.mjs runs these (stuck-but-alive watchdog + shared census).
       - 'scripts/lane-watchdog.js'
       - 'scripts/press-night-record.js'
+      - 'scripts/press-night-watchdog-replay.js'
       - '.github/workflows/opening-night-lane-live.yml'
       - '.github/actions/read-lane-only-vars/**'
       # BRO-6622: tests/unit/lane-rollback.test.mjs runs the CLI refusals and pins the switch workflow.

@@ -317,6 +317,10 @@ async function checkBrightData() {
   try {
     const data = JSON.parse(res.body);
     const disableReason = data.plan?.disable || data.disable;
+    if (disableReason && process.argv.includes('--no-alert')) {
+      // Preflight (BRO-6858): report only, no recovery side effects; a disabled zone is a press-night problem.
+      return { name: 'Bright Data', status: 'fail', message: `Zone ${zoneName} disabled: "${disableReason}" (not auto-recovered under --no-alert; the weekly check recovers it)` };
+    }
     if (disableReason) {
       // Auto-recover: create a new zone and update GitHub secret
       console.log(`  ⚠ Zone ${zoneName} disabled: "${disableReason}" — attempting auto-recovery...`);
@@ -594,11 +598,19 @@ async function main() {
 
   console.log(`\n--- Summary: ${passed.length} pass, ${warnings.length} warn, ${failures.length} fail ---\n`);
 
+  // BRO-6858: the press-night preflight reads the results as JSON and owns its own alert
+  // (--no-alert skips every alert and recovery branch below; the exit code is unchanged).
+  const jsonOutArg = process.argv.find(a => a.startsWith('--json-out='));
+  if (jsonOutArg) {
+    require('fs').writeFileSync(jsonOutArg.slice('--json-out='.length), JSON.stringify({ checkedAt: new Date().toISOString(), results }, null, 2));
+  }
+  const noAlert = process.argv.includes('--no-alert');
+
   // Alert email only fires in CI or with an explicit --alert flag — a local/
   // interactive run (morning briefing, manual debug) still exits nonzero on
   // failure but must never page the owner (2026-07-26 regression: a local run
   // with GH_DISPATCH_TOKEN absent fired a real [CRITICAL] email).
-  const shouldAlert = process.env.GITHUB_ACTIONS === 'true' || process.argv.includes('--alert');
+  const shouldAlert = !noAlert && (process.env.GITHUB_ACTIONS === 'true' || process.argv.includes('--alert'));
 
   // Send alert if any failures
   if (failures.length > 0) {
@@ -653,7 +665,7 @@ async function main() {
   }
 
   // Send warning-only alert (Discord only, no email)
-  if (warnings.length > 0) {
+  if (warnings.length > 0 && !noAlert) {
     const { sendAlert } = require('./lib/discord-notify');
 
     await sendAlert({

@@ -5,11 +5,15 @@
 //
 // Pure planning lives here so the workflow and the unit test share one implementation.
 //   node scripts/lib/press-night-clock.js next --shows-file=data/shows.json [--categories=broadway,off-broadway]
-//        [--fired=show:night,...] [--now=ISO]    -> prints "SHOW NIGHT KICK_ISO EMBARGO_ISO" or nothing
+//        [--fired=show:night,...] [--now=ISO]    -> prints "SHOW NIGHT KICK_ISO EMBARGO_ISO KIND" or nothing
 //   node scripts/lib/press-night-clock.js sleep-plan --kick-at=ISO [--now=ISO] [--hop-budget-min=N]
 //                                           -> prints "SLEEP_SECONDS kick|rechain"
-//   node scripts/lib/press-night-clock.js confirm --shows-file=... --show=ID --night=DATE [--categories=..] [--fired=..] [--now=ISO]
-//                                           -> prints "kick" or "replan" (fresh data, same show+night, due)
+//   node scripts/lib/press-night-clock.js confirm --shows-file=... --show=ID --night=DATE [--kind=K] [--categories=..] [--fired=..] [--now=ISO]
+//                                           -> prints "kick" or "replan" (fresh data, same show+night+kind, due)
+//
+// BRO-6858: besides the kick, a Broadway night has two preflight events (embargo -24h and -3h) that dispatch
+// press-night-preflight.yml. Each kind has its own key (the kick keeps the bare show:night key so a chain started
+// before this change carries over) and its own late bound, so a re-seed at -2h never runs the stale -24h check.
 
 const { defaultEmbargoAt } = require('./press-night-record.js');
 
@@ -19,8 +23,15 @@ const KICK_LATE_MIN = 170; // still kick up to embargo +2h50 (probeDue closes at
 const HORIZON_DAYS = 10;
 const DEFAULT_CATEGORIES = ['broadway'];
 
-function kickKey(showId, night) {
-  return `${showId}:${night}`;
+/** Event kinds: lead (min before embargo), late (min after its own time it may still fire), categories it applies to. */
+const KINDS = {
+  kick: { leadMin: KICK_LEAD_MIN, lateMin: KICK_LEAD_MIN + KICK_LATE_MIN, categories: null },
+  pf24: { leadMin: 24 * 60, lateMin: 20 * 60, categories: ['broadway'] }, // until embargo -4h
+  pf3: { leadMin: 180, lateMin: 120, categories: ['broadway'] }, // until embargo -1h
+};
+
+function kickKey(showId, night, kind = 'kick') {
+  return kind === 'kick' ? `${showId}:${night}` : `${showId}:${night}:${kind}`;
 }
 
 /** Every unfired kick, earliest first: [{showId, night, category, embargoAt, kickAtMs}] */
@@ -34,14 +45,17 @@ function planKicks(shows, nowMs, { categories = DEFAULT_CATEGORIES, fired = [], 
     if (!embargoAt) continue;
     const embMs = Date.parse(embargoAt);
     if (!Number.isFinite(embMs)) continue;
-    const kickAtMs = embMs - KICK_LEAD_MIN * MIN;
-    if (nowMs > embMs + KICK_LATE_MIN * MIN) continue;
-    if (kickAtMs - nowMs > horizonDays * 24 * 60 * MIN) continue;
     const showId = show.id || show.slug;
-    if (done.has(kickKey(showId, show.openingDate))) continue;
-    out.push({ showId, night: show.openingDate, category: show.category, embargoAt, kickAtMs });
+    for (const [kind, k] of Object.entries(KINDS)) {
+      if (k.categories && !k.categories.includes(show.category)) continue;
+      const kickAtMs = embMs - k.leadMin * MIN;
+      if (nowMs > kickAtMs + k.lateMin * MIN) continue;
+      if (kickAtMs - nowMs > horizonDays * 24 * 60 * MIN) continue;
+      if (done.has(kickKey(showId, show.openingDate, kind))) continue;
+      out.push({ showId, night: show.openingDate, category: show.category, embargoAt, kickAtMs, kind });
+    }
   }
-  return out.sort((a, b) => a.kickAtMs - b.kickAtMs || a.showId.localeCompare(b.showId));
+  return out.sort((a, b) => a.kickAtMs - b.kickAtMs || a.showId.localeCompare(b.showId) || a.kind.localeCompare(b.kind));
 }
 
 function nextKick(shows, nowMs, opts) {
@@ -65,10 +79,11 @@ function confirmKick(shows, nowMs, planned, opts) {
   const next = nextKick(shows, nowMs, opts);
   if (!next || !planned) return 'replan';
   if (next.showId !== planned.showId || next.night !== planned.night) return 'replan';
+  if (next.kind !== (planned.kind || 'kick')) return 'replan'; // BRO-6858: a preflight and the kick are different events
   return next.kickAtMs <= nowMs ? 'kick' : 'replan';
 }
 
-module.exports = { planKicks, nextKick, sleepPlan, confirmKick, kickKey, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
+module.exports = { planKicks, nextKick, sleepPlan, confirmKick, kickKey, KINDS, KICK_LEAD_MIN, KICK_LATE_MIN, HORIZON_DAYS, DEFAULT_CATEGORIES };
 
 if (require.main === module) {
   const arg = (k) => {
@@ -89,10 +104,10 @@ if (require.main === module) {
     const cats = (arg('categories') || DEFAULT_CATEGORIES.join(',')).split(',').filter(Boolean);
     const opts = { categories: cats, fired: arg('fired').split(',').filter(Boolean) };
     if (sub === 'confirm') {
-      process.stdout.write(`${confirmKick(shows, now, { showId: arg('show'), night: arg('night') }, opts)}\n`);
+      process.stdout.write(`${confirmKick(shows, now, { showId: arg('show'), night: arg('night'), kind: arg('kind') || 'kick' }, opts)}\n`);
     } else {
       const k = nextKick(shows, now, opts);
-      if (k) process.stdout.write(`${k.showId} ${k.night} ${new Date(k.kickAtMs).toISOString()} ${k.embargoAt}\n`);
+      if (k) process.stdout.write(`${k.showId} ${k.night} ${new Date(k.kickAtMs).toISOString()} ${k.embargoAt} ${k.kind}\n`);
     }
   }
 }

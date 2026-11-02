@@ -38,7 +38,7 @@ on:
 
 permissions:
   contents: read
-  actions: write  # gh workflow run (orchestrator, probe, the next hop of this chain)
+  actions: write  # gh workflow run (orchestrator, probe, watchdog, preflight, the next hop of this chain)
 
 concurrency:
   # concurrency-queue-ok: a kick or re-seed dispatches a hop only when no hop is queued, pending or running (the orchestrator re-seed step and each hop's own chain step check first), and every hop recomputes its plan from state, so an evicted pending hop loses nothing the next one does not rebuild.
@@ -59,6 +59,7 @@ jobs:
       - uses: ./.github/actions/setup-node
 
       - name: Sleep to each kick, dispatch, chain
+        id: clock
         env:
           GH_TOKEN: ${{ github.token }}
           FIRED: ${{ inputs.fired }}
@@ -75,9 +76,13 @@ jobs:
             LINE=$(node scripts/lib/press-night-clock.js next --shows-file=data/shows.json --categories="$CATEGORIES" --fired="$FIRED") \
               || { echo "::error::clock plan failed"; exit 1; }
             if [ -z "$LINE" ]; then echo "No press-night kick left in the 10-day horizon. Chain ends."; exit 0; fi
-            read -r SHOW NIGHT KICK EMBARGO <<< "$LINE"
+            read -r SHOW NIGHT KICK EMBARGO KIND <<< "$LINE"
             WAIT=$(( $(date -u -d "$KICK" +%s) - $(date +%s) ))
-            echo "Next kick: $SHOW $NIGHT at $KICK (embargo $EMBARGO), in ${WAIT}s"
+            echo "Next event: $KIND for $SHOW $NIGHT at $KICK (embargo $EMBARGO), in ${WAIT}s"
+            # A Broadway event within 24h makes a failure of this run email the owner (BRO-6858); otherwise digest only.
+            if [ "$WAIT" -lt 86400 ] && node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.exit(s&&s.category==="broadway"?0:1)' "$SHOW"; then
+              echo "broadway_soon=true" >> "$GITHUB_OUTPUT"
+            fi
             if [ "$DRY_RUN" = "true" ]; then exit 0; fi
             # Sleep maths lives in press-night-clock.js (sleepPlan). Hop budget = what is left of the job minus 15 min of
             # headroom for the refresh, run lists and retries. Sleeps are cut into 45-min chunks and the plan is re-read
@@ -107,11 +112,11 @@ jobs:
             fi
             if [ "$CHUNKED" = "true" ]; then continue; fi
             # Awake at the kick: confirm the same show-night is still due on the fresh data, else replan.
-            CONFIRM=$(node scripts/lib/press-night-clock.js confirm --shows-file=data/shows.json --categories="$CATEGORIES" --fired="$FIRED" --show="$SHOW" --night="$NIGHT") \
+            CONFIRM=$(node scripts/lib/press-night-clock.js confirm --shows-file=data/shows.json --categories="$CATEGORIES" --fired="$FIRED" --show="$SHOW" --night="$NIGHT" --kind="$KIND") \
               || { echo "::error::kick confirmation failed"; exit 1; }
             if [ "$CONFIRM" != "kick" ]; then
               REPLANS=$(( REPLANS + 1 ))
-              echo "Plan changed while sleeping ($SHOW $NIGHT no longer due); replanning ($REPLANS/5)."
+              echo "Plan changed while sleeping ($KIND for $SHOW $NIGHT no longer due); replanning ($REPLANS/5)."
               if [ "$REPLANS" -ge 5 ]; then
                 echo "::warning::plan keeps changing; handing over to a fresh hop"
                 retry gh workflow run press-night-clock.yml -f fired="$FIRED" -f categories="$CATEGORIES" \
@@ -122,10 +127,25 @@ jobs:
               continue
             fi
             REPLANS=0
+            KEY="$SHOW:$NIGHT"; [ "$KIND" = "kick" ] || KEY="$SHOW:$NIGHT:$KIND"
             CATEGORY=$(node -e 'const a=require("./data/shows.json");const L=Array.isArray(a)?a:a.shows;const s=L.find(x=>(x.id||x.slug)===process.argv[1]);process.stdout.write(s?s.category:"")' "$SHOW")
+            SINCE=$(date -u -d "$KICK - 30 minutes" +%Y-%m-%dT%H:%M:%SZ)
+            if [ "$KIND" != "kick" ]; then
+              # BRO-6858 preflight (-24h / -3h): credits, balances and secrets for the night. Dedupe on its run title.
+              DONE=$(gh run list --workflow=press-night-preflight.yml --limit 50 --json displayTitle,createdAt \
+                       --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle" 2>/dev/null || true)
+              if echo "$DONE" | grep -qF "Press night preflight $SHOW $NIGHT $KIND"; then
+                echo "Preflight $KIND for $SHOW $NIGHT already ran."
+              else
+                echo "Preflight $KIND for $SHOW"
+                retry gh workflow run press-night-preflight.yml -f show_id="$SHOW" -f night="$NIGHT" -f label="$KIND" \
+                  || { echo "::error::could not dispatch the preflight for $SHOW"; exit 1; }
+              fi
+              FIRED="${FIRED:+$FIRED,}$KEY"
+              continue
+            fi
             # Already started? State, not the `fired` input, decides (a fresh seed carries no fired list): any probe run
             # for this show-night created since 30 min before the kick, in any status, means it was kicked.
-            SINCE=$(date -u -d "$KICK - 30 minutes" +%Y-%m-%dT%H:%M:%SZ)
             STARTED=$(gh run list --workflow=press-night-probe.yml --limit 100 --json displayTitle,createdAt \
                         --jq ".[] | select(.createdAt >= \"$SINCE\") | .displayTitle") \
               || { echo "::warning::could not list probe runs; dispatching anyway (the probe's concurrency group absorbs a duplicate)"; STARTED=""; }
@@ -146,11 +166,32 @@ jobs:
               retry gh workflow run press-night-probe.yml -f show_id="$SHOW" -f night="$NIGHT" -f market="$CATEGORY" -f embargo_at="$EMBARGO" \
                 || { echo "::error::could not dispatch the probe for $SHOW"; exit 1; }
             fi
-            FIRED="${FIRED:+$FIRED,}$SHOW:$NIGHT"
+            # BRO-6858: the old-path watchdog for the night, whatever started the pipeline. A second start queues behind
+            # the first (concurrency per show-night) and, starting past +3h, ends after one tick; dispatches are
+            # claimed once per night either way. Off-Broadway only observes (dry run): BRO-6687 owns that path.
+            if [ -n "$CATEGORY" ]; then
+              WD_DRY=true; [ "$CATEGORY" = "broadway" ] && WD_DRY=false
+              retry gh workflow run press-night-watchdog.yml -f show_id="$SHOW" -f night="$NIGHT" -f embargo_at="$EMBARGO" -f dry_run="$WD_DRY" \
+                || echo "::warning::could not start the press-night watchdog for $SHOW (the pipeline itself is started)"
+            fi
+            FIRED="${FIRED:+$FIRED,}$KEY"
           done
 
+      # BRO-6858: emails the owner only when a Broadway event (preflight or kick) is within 24h; otherwise the
+      # morning digest reports it, as before. The orchestrator re-seeds the chain on its next tick either way.
+      - name: Notify on failure (Broadway night within 24h)
+        if: failure() && steps.clock.outputs.broadway_soon == 'true'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Press night clock failed within 24h of a Broadway opening'
+          description: 'BRO-6802/BRO-6858. The press-night clock could not plan, sleep or dispatch with a Broadway press night less than a day away. The orchestrator re-seeds it on its next tick.'
+          severity: 'critical'
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
       - name: Notify on failure
-        if: failure()
+        if: failure() && steps.clock.outputs.broadway_soon != 'true'
         uses: ./.github/actions/notify-failure
         with:
           title: 'Press night clock failed'
