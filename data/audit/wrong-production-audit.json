@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-11-02T09:59:13.423Z",
+  "timestamp": "2026-11-02T10:39:46.230Z",
   "stats": {
-    "totalReviews": 79176,
-    "alreadyFlagged": 21926,
-    "dateGuardCatches": 243,
+    "totalReviews": 79181,
+    "alreadyFlagged": 21943,
+    "dateGuardCatches": 227,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
     "londonSignals": 3580,
-    "offBroadwaySignals": 742,
-    "yearMismatch": 345,
+    "offBroadwaySignals": 740,
+    "yearMismatch": 346,
     "noPublishDate": 8375
   },
   "findings": [
@@ -1267,6 +1267,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "showsiveseen--unknown.json",
+      "publishDate": "2026-01-14",
+      "url": "https://www.showsiveseen.com/a-beautiful-noise-the-niel-diamond-musical-review-paramount-theatre/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2024 (0x). 2026 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2026"
         }
       ]
     },
@@ -10705,184 +10718,6 @@
     },
     {
       "showId": "carmen-off-broadway-2025",
-      "file": "broadwayworld--richard-sasanow.json",
-      "score": 66,
-      "publishDate": "2024-01-06",
-      "url": "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 661d before show (2024-01-06 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "financialtimes--george-grella.json",
-      "score": 78,
-      "publishDate": "2024-01-02",
-      "url": "https://www.ft.com/content/376a1a78-c5d5-4432-aaa4-2d10b3d54f29",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 665d before show (2024-01-02 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "new-york-classical-review--richard-sasanow.json",
-      "score": 80,
-      "publishDate": "2024-01-02",
-      "url": "https://newyorkclassicalreview.com/2024/01/cast-brings-vocal-luster-to-mets-grim-truck-stop-carmen/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 665d before show (2024-01-02 vs 2025-10-28)"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "new-york-classical-review--rick-perdian.json",
-      "score": 78,
-      "publishDate": "January 1st, 2024",
-      "url": "https://newyorkclassicalreview.com/2024/01/cast-brings-vocal-luster-to-mets-grim-truck-stop-carmen/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 666d before show (January 1st, 2024 vs 2025-10-28)"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "nytimes--zachary-woolfe.json",
-      "score": 41,
-      "publishDate": "January 1st, 2024",
-      "url": "https://www.nytimes.com/2024/01/01/arts/music/carmen-bizet-met-opera-review.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 666d before show (January 1st, 2024 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "observer--christopher-corwin.json",
-      "score": 68,
-      "publishDate": "January 4th, 2024",
-      "url": "https://observer.com/2024/01/review-carmen-aigul-akhmetshina-met-opera/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 663d before show (January 4th, 2024 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "operawire--david-salazar.json",
-      "score": 25,
-      "publishDate": "January 4th, 2024",
-      "url": "https://operawire.com/metropolitan-opera-2023-24-review-carmen/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 663d before show (January 4th, 2024 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "parterre-box--gabrielle-ferrari.json",
-      "score": 68,
-      "publishDate": "2024-01-03",
-      "url": "https://parterre.com/2024/01/03/star-vehicles/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 664d before show (2024-01-03 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "vulture--justin-davidson.json",
-      "score": 38,
-      "publishDate": "2024-01-04",
-      "url": "https://www.vulture.com/2024/01/review-metropolitan-opera-rust-belt-carmen.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 663d before show (2024-01-04 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "washpost--andor-brodeur.json",
-      "score": 78,
-      "publishDate": "2024-01-01",
-      "url": "https://www.washingtonpost.com/entertainment/music/2024/01/01/metropolitan-opera-carmen-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 666d before show (2024-01-01 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "washpost--justin-davidson.json",
-      "score": 77,
-      "publishDate": "2024-01-01",
-      "url": "https://www.washingtonpost.com/entertainment/music/2024/01/01/metropolitan-opera-carmen-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 666d before show (2024-01-01 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "washpost--michael-andor-brodeur.json",
-      "score": 77,
-      "publishDate": "January 1st, 2024",
-      "url": "https://www.washingtonpost.com/entertainment/music/2024/01/01/metropolitan-opera-carmen-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 666d before show (January 1st, 2024 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
       "file": "wsj--heidi-waleson.json",
       "score": 37,
       "publishDate": "January 2nd, 2024",
@@ -10892,17 +10727,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 665d before show (January 2nd, 2024 vs 2025-10-28)"
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "wsj--justin-davidson.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 665d before show (2024-01-02 vs 2025-10-28)"
         }
       ]
     },
@@ -18531,48 +18355,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "don-giovanni-off-broadway-2025",
-      "file": "financialtimes--clemency-burton-hill.json",
-      "score": 82,
-      "publishDate": "2023-05-08",
-      "url": "https://www.ft.com/content/a9257154-cd50-405e-a4ff-41b6d4298f49",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 870d before show (2023-05-08 vs 2025-09-24)"
-        }
-      ]
-    },
-    {
-      "showId": "don-giovanni-off-broadway-2025",
-      "file": "nytimes--zachary-woolfe.json",
-      "score": 78,
-      "publishDate": "May 8th, 2023",
-      "url": "https://www.nytimes.com/2023/05/07/arts/music/review-don-giovanni-mozart-met-opera.html",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 870d before show (May 8th, 2023 vs 2025-09-24)"
-        }
-      ]
-    },
-    {
-      "showId": "don-giovanni-off-broadway-2025",
-      "file": "operawire--david-salazar.json",
-      "score": 93,
-      "publishDate": "May 6th, 2023",
-      "url": "https://operawire.com/metropolitan-opera-2022-23-review-don-giovanni/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 872d before show (May 6th, 2023 vs 2025-09-24)"
         }
       ]
     },
