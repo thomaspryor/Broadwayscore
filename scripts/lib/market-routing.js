@@ -551,8 +551,9 @@ function classifyMarketRouting(args) {
       const reroute = pickRerouteTarget(sibData.showYear, sibData.siblings, reviewYear);
       if (reroute.action === 'reroute' && !visitedSet.has(reroute.targetShowId)) {
         const target = sibData.siblings.find(s => s.id === reroute.targetShowId);
-        const targetIsLondon = target && isLondonMarket(target.category);
-        const currentIsLondon = isLondonMarket(category);
+        // BRO-6716: show-aware, so a UK regional run pools with London here too.
+        const targetIsLondon = target && getShowMarketPool(target) === 'london';
+        const currentIsLondon = getShowMarketPool({ category, venue: sibData.venue }) === 'london';
         const sameMarket = target && (targetIsLondon === currentIsLondon);
         const hasBroadwayUrlMarker = isBroadwayUrl(url, outletId) !== null;
         if (sameMarket || hasBroadwayUrlMarker) {

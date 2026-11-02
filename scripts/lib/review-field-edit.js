@@ -181,7 +181,9 @@ function detectedWrongAuthor(record) {
 function wrongAuthorFlagEvidenceGone(record) {
   const who = detectedWrongAuthor(record);
   const text = typeof record.fullText === 'string' ? record.fullText : '';
-  return !!who && who.length >= 3 && text.trim().length >= 500 && !text.toLowerCase().includes(who.toLowerCase());
+  // Whitespace (incl. nbsp) and case folded, so "By Sally\u00a0Rooney" still counts as naming her.
+  const fold = (x) => x.replace(/[\s\u00a0]+/g, ' ').toLowerCase();
+  return !!who && who.length >= 3 && text.trim().length >= 500 && !fold(text).includes(fold(who));
 }
 
 const FIELD_VALUE_CHECKS = {

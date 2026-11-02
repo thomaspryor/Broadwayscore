@@ -162,3 +162,9 @@ test('a short excerpt quoting an error code or "this site can\'t be reached" is 
   assert.notEqual(junkBodyReason('The second act turns on a phone screen reading ERR_CONNECTION_REFUSED, a gag that lands.'), 'browser-error');
   assert.notEqual(junkBodyReason('"This site can\'t be reached," sighs the hero, and the audience roared.'), 'browser-error');
 });
+
+test('a "this site can\'t be reached" header does not swallow the review prose after it', () => {
+  const { junkBodyReason } = require('./junk-body.js');
+  const prose = 'Bill Irwin is a clown of genius, and his Argan is a physical marvel from first wheeze to last breath on stage. '.repeat(8);
+  assert.notEqual(junkBodyReason(`This site can’t be reached ERR_NAME_NOT_RESOLVED\n${prose}`), 'browser-error');
+});
