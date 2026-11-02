@@ -7,113 +7,78 @@
  * (Exeunt Magazine rows were rejected for exactly this). The prompt already
  * says missing attribution is neutral; this is the deterministic backstop.
  *
- * Deliberately narrow (an earlier, looser carve-out was rejected in review
- * because it could flip wrong-article / truncated verdicts):
- *   - an issue counts only when its WHOLE text is an absence-of-byline/outlet
- *     clause: every word is attribution / absence / filler vocabulary or a
- *     (near-)spelling of the expected critic or outlet name. Any other word
- *     ("truncated", "different", "AP", "excerpt", "date", "venue", a third
- *     person's name, a digit) keeps the issue.
- *   - "is not <X>" / "not by" / "not from" (an identity claim, i.e. a
- *     different critic or outlet) keeps the issue.
- *   - the verdict changes only when EVERY issue is such a clause and the model
- *     set no wrongArticle / wrongProduction / isFilmTv / truncated flag and
- *     called it a review. Otherwise the verdict is returned unchanged.
+ * Deliberately narrow. Two word-bag versions leaked in review (stub pages
+ * "only the byline, no review text", a near-spelled different critic), so an
+ * issue now counts only when the WHOLE normalized string matches one anchored
+ * template below. The templates were written from the issue strings the
+ * verifier actually stored on byline-only rejections (see the test file); the
+ * expected critic / outlet appear only as exact (case/diacritic/whitespace-
+ * normalized) names, never by edit distance. Anything else keeps the issue.
+ *
+ * The verdict changes only when EVERY issue matches and the model set no
+ * wrongArticle / wrongProduction / isFilmTv / truncated flag and called it a
+ * review. Otherwise the verdict is returned unchanged.
  */
 
-const SUBJECT = new Set([
-  'critic', 'critics', 'byline', 'bylines', 'author', 'authors', 'authorship', 'writer', 'reviewer',
-  'outlet', 'outlets', 'publication', 'publications', 'publisher', 'attribution', 'attributions',
-  'masthead', 'branding', 'credit', 'credited', 'signature',
-]);
-
-const ABSENCE = new Set([
-  'no', 'not', 'missing', 'absent', 'absence', 'lacks', 'lacking', 'lack', 'without', 'cannot', 'unable',
-  'unverified', 'unverifiable', 'none', 'neither', 'nor',
-]);
-
-// After "not", only an absence verb may follow ("not credited", "does not name").
-const AFTER_NOT = new Set([
-  'be', 'been', 'credited', 'credit', 'named', 'name', 'names', 'mentioned', 'mention', 'mentions', 'visible',
-  'present', 'found', 'find', 'identified', 'identify', 'identifies', 'verified', 'verify', 'verifiable',
-  'shown', 'listed', 'included', 'include', 'includes', 'provided', 'provide', 'given', 'stated',
-  'displayed', 'available', 'confirmed', 'confirm', 'appear', 'appears',
-  'specified', 'indicated', 'anywhere', 'clearly', 'explicitly',
-]);
-
-const FILLER = new Set([
-  ...AFTER_NOT,
-  'name', 'names', 'expected', 'stated', 'the', 'a', 'an', 'in', 'of', 'from', 'to', 'is', 'are', 'was', 'were',
-  'be', 'been', 'any', 'this', 'that', 'it', 'its', 'for', 'on', 'with', 'by', 'or', 'and', 'either',
-  'as', 'there',
-  'does', 'do', 'did', 'can', 'could', 'so', 'but', 'information', 'line', 'visible', 'verification', 'confirmation',
-  'confirmable', 'attributed', 'attribute', 'appearing', 'present', 'here', 'also', 'same',
-]);
-
-// Where the byline is missing FROM: "in the scraped text", "from the provided
-// content", "scraped content does not name ...". Only these phrases may carry
-// the words text/content/article/review/page/body: on their own those words
-// describe the article ("no review content, only the byline") and keep the issue.
-const LOCATION_PHRASE = new RegExp(
-  '\\b(?:(?:in|from|within|on|of)\\s+(?:the\\s+|this\\s+|any\\s+)?(?:(?:scraped|provided|extracted|fetched|review|article)\\s+)*'
-  + '|(?:the\\s+)?(?:scraped|provided|extracted|fetched)\\s+)(?:text|content|page|article|review|body|sample|copy)\\b',
-  'g'
-);
-
-function tokens(s) {
+function norm(s) {
   return String(s || '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
     .toLowerCase()
-    .replace(/[‘’]/g, "'")
-    .replace(/'s\b/g, '')
-    .replace(/n't\b/g, ' not')
-    .split(/[^a-z0-9]+/)
-    .filter(Boolean);
+    .replace(/[‘’“”'"()]/g, '')
+    .replace(/\s*[—–]\s*/g, ': ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/\.$/, '');
 }
 
-function editDistance(a, b) {
-  if (Math.abs(a.length - b.length) > 2) return 3;
-  let prev = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    const cur = [i];
-    for (let j = 1; j <= b.length; j++) {
-      cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
-    }
-    prev = cur;
-  }
-  return prev[b.length];
-}
+const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&');
 
-/** Tokens of the expected critic / outlet names (a typo of one, like "Kalsall", still matches). */
-function nameMatcher(names) {
-  const known = [...new Set(names.flatMap(tokens).filter((t) => t.length >= 3 && !/^\d+$/.test(t)))];
-  return (t, exact) => !/^\d+$/.test(t) && known.some((k) => k === t || (!exact && t.length >= 5 && editDistance(k, t) <= 1));
-}
+// Building blocks. <N> is replaced per call by the exact expected names.
+const SUBJ = '(?:critic|outlet)(?:/publication)?(?: name| byline| attribution)?';
+const HEAD = `(?:missing (?:critic|outlet) (?:byline|attribution)|${SUBJ} missing|${SUBJ} not (?:found|identified)(?: in scraped content)?)`;
+const LOC = '(?: anywhere)? (?:(?:in|from) (?:the )?(?:scraped|review) (?:text|content)|in the article)';
+const NOTPRESENT = '(?:is|are) not (?:named|identified|present|mentioned)';
+const BODIES = [
+  // expected <c> but no byline is present [in the scraped content]
+  `(?:the )?expected (?:critic |outlet )?<N>(?: from <N>)?,? but no (?:byline|outlet attribution|byline or outlet attribution) (?:is present|appears)(?:${LOC})?`,
+  // the expected critic is <c>, but no byline is present in the scraped content
+  `(?:the )?expected (?:critic|outlet) is <N>,? but no (?:byline|outlet attribution) is present${LOC}`,
+  // expected critic <c> is not named anywhere in the scraped text / not found in scraped content
+  `expected (?:critic |outlet )?<N>(?: and (?:critic|outlet) <N>)? (?:${NOTPRESENT}|not found)${LOC}`,
+  // scraped content does not name <c> as the author
+  'scraped content does not name <N> as the author',
+  // no attribution to <o> found in scraped text
+  `no attribution to <N> found${LOC}`,
+  // no author name <c> expected appears in the scraped text
+  `no (?:author|outlet) name <N> expected appears${LOC}`,
+  // critic name <c> does not appear ... / outlet <o> is not identified ... / the byline/author <c> is not present ...
+  `(?:${SUBJ}|the byline/author) <N> (?:does not appear|${NOTPRESENT})${LOC}`,
+  `<N> ${NOTPRESENT}${LOC}`,
+  // outlet attribution to <o> cannot be verified from the scraped content
+  `${SUBJ} to <N> cannot be verified${LOC}`,
+  'no byline or critic attribution is present in the article',
+  `cannot verify (?:outlet or critic|critic or outlet) attribution${LOC}`,
+  'cannot verify attribution to stated critic',
+  `byline does not appear${LOC}`,
+  // expected critic is <c>; no critic name is present in the review text
+  `expected (?:critic|outlet) is <N>; no (?:critic|outlet)(?:/publication)? name is present${LOC}`,
+];
 
-const IDENTITY = new Set(['by', 'is', 'was', 'are', 'were']);
+function templateFor(names) {
+  const exact = [names.criticName, names.outletName].map(norm).filter((n) => n.length >= 3);
+  // No usable name: templates that need one cannot match.
+  const N = exact.length ? `(?:${exact.map(escapeRe).join('|')})` : '(?!)';
+  const body = `(?:${BODIES.join('|')})`.replace(/<N>/g, N);
+  return new RegExp(`^(?:${HEAD}[:;] )?${body}(?:(?:; |\\. |: )${body})?$`);
+}
 
 /**
  * Whether the whole issue string only says the expected byline / outlet is not
  * shown in the scraped text.
  */
 function isAttributionAbsenceIssue(issue, names) {
-  const { criticName, outletName } = names || {};
-  if (!tokens(issue).length) return false;
-  const toks = tokens(String(issue).toLowerCase().replace(LOCATION_PHRASE, ' '));
-  const isName = nameMatcher([criticName, outletName].filter(Boolean));
-  // A near-spelling ("Greer" for "Green") is only a typo when nothing names
-  // someone as the author: with "by" in the issue, or right after "is", exact only.
-  const strictNames = toks.includes('by');
-  let subject = false;
-  let absence = false;
-  for (let i = 0; i < toks.length; i++) {
-    const t = toks[i];
-    if (t === 'not' && !AFTER_NOT.has(toks[i + 1])) return false;
-    if (SUBJECT.has(t)) { subject = true; continue; }
-    if (ABSENCE.has(t)) { absence = true; continue; }
-    if (FILLER.has(t) || isName(t, strictNames || IDENTITY.has(toks[i - 1]))) continue;
-    return false;
-  }
-  return subject && absence;
+  const n = norm(issue);
+  return !!n && templateFor(names || {}).test(n);
 }
 
 /**
@@ -121,8 +86,9 @@ function isAttributionAbsenceIssue(issue, names) {
  * Returns { applied, isValid, issues, dropped }.
  */
 function applyAttributionAbsenceCarveout(v, names) {
-  const issues = Array.isArray(v && v.issues) ? v.issues.map(String) : [];
-  const isValid = (v && v.isValid) ?? true;
+  if (!v || typeof v !== 'object') return { applied: false, isValid: false, issues: [], dropped: [] };
+  const issues = Array.isArray(v.issues) ? v.issues.map(String) : [];
+  const isValid = v.isValid ?? true;
   const unchanged = { applied: false, isValid, issues, dropped: [] };
   if (isValid || !issues.length) return unchanged;
   if (v.wrongArticle || v.wrongProduction || v.isFilmTv || v.truncated) return unchanged;
