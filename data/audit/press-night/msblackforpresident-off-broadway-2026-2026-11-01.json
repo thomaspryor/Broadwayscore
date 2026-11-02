@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "showId": "msblackforpresident-off-broadway-2026",
+  "night": "2026-11-01",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-02T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-02T03:09:01.427Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 23,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-02T04:59:07.393Z",
+    "lastOkSampleAt": "2026-11-02T04:59:07.393Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-02T04:04:04.397Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-02T05:00:27.966Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-02T05:00:28.043Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-02T05:00:32.714Z",
+    "files": [
+      {
+        "file": "broadwayworld--unknown.json",
+        "outletId": "broadwayworld",
+        "outlet": "BroadwayWorld",
+        "critic": "Unknown",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2026-05-04",
+        "url": "broadwayworld.com/article/wayne-brady-to-star-in-ms-blakk-for-president-off-broadway-20260504",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "chicago-reader--dan-jakes.json",
+        "outletId": "chicago-reader",
+        "outlet": "Chicago Reader",
+        "critic": "Dan Jakes",
+        "firstSeenAt": "2026-09-13T17:33:14.975Z",
+        "scoredAt": null,
+        "publishDate": "2019-06-04",
+        "url": "chicagoreader.com/chicago/ms-blakk-for-president-steppenwolf/content?oid=70761615",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "chicagotribune--chris-jones.json",
+        "outletId": "chicagotribune",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones",
+        "firstSeenAt": "2026-09-13T17:33:14.979Z",
+        "scoredAt": null,
+        "publishDate": "2019-06-04",
+        "url": "chicagotribune.com/entertainment/theater/ct-ent-ms-blakk-steppenwolf-review-ttd-0605-story.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytimes--jesse-green.json",
+        "outletId": "nytimes",
+        "outlet": "The New York Times",
+        "critic": "Jesse Green",
+        "firstSeenAt": null,
+        "scoredAt": null,
+        "publishDate": "2019-06-04",
+        "url": "nytimes.com/2019/06/04/theater/ms-blakk-for-president-review-tarell-mccraney.html",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--zachary-stewart.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Zachary Stewart",
+        "firstSeenAt": "2026-11-01T05:20:26.536Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-29",
+        "url": "theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
