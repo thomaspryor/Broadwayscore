@@ -155,6 +155,18 @@ function extractTheatreAndTonicByline(text) {
   return name ? { name, known: true } : null;
 }
 
+// The Arts Desk (BRO-6716) prints "<standfirst> by <Name> <Weekday>, <DD Month YYYY>" above the
+// body. 66 stored artsdesk files carried it while filed as "Unknown" (65) or under a name lifted
+// from body prose ("designed by Hildegard Bechtler", The Lives of Others 2026). The dateline anchor
+// keeps "book by Burt Shevelove" and other prose credits out.
+const ARTSDESK_BY_RE = new RegExp(String.raw`\bby\s+(${PRINTED_NAME})\s+(?:Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday),?\s+\d{1,2}\s+\p{Lu}\p{Ll}+,?\s+\d{4}\b`, "u");
+function extractArtsdeskByline(text) {
+  if (!text) return null;
+  const m = ARTSDESK_BY_RE.exec(String(text).slice(0, 2500).replace(/\s+/g, " "));
+  const name = m && printedPerson(m[1]);
+  return name ? { name, known: true } : null;
+}
+
 const BYLINE_EXTRACTORS = {
   "plays-international": extractPlaysInternationalByline,
   "theater-scene": extractTheaterSceneByline,
@@ -165,6 +177,7 @@ const BYLINE_EXTRACTORS = {
   "nytg": extractNewYorkTheatreGuideByline,
   "timeout": extractTimeOutByline,
   "timeout-london": extractTimeOutByline,
+  "artsdesk": extractArtsdeskByline,
 };
 
 /**
@@ -178,6 +191,7 @@ const PRINTED_BYLINE_OVERRIDES = new Map([
   ["south-london", { requireUrlSlug: false }],
   ["theatreandtonic", { requireUrlSlug: false }],
   ["all-that-dazzles-uk", { requireUrlSlug: false }],
+  ["artsdesk", { requireUrlSlug: false }],
 ]);
 
 const foldName = (n) => String(n || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
@@ -259,6 +273,7 @@ module.exports = {
   sameCriticName,
   extractSouthLondonByline,
   extractTheatreAndTonicByline,
+  extractArtsdeskByline,
   extractAllThatDazzlesByline,
   extractTalkinBroadwayByline,
   extractNewYorkTheatreGuideByline,
