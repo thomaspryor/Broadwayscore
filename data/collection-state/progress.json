@@ -2128,7 +2128,8 @@
     "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
     "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
-    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json"
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+    "love-me-off-broadway-2026/consequence--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -3947,7 +3948,7 @@
     ]
   },
   "startTime": "2026-11-01T03:36:50.252Z",
-  "lastProcessed": "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-11-01T04:08:37.792Z",
@@ -4174,6 +4175,28 @@
       "event": "bb-session",
       "session": "6faf7f3e",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-11-02T02:15:06.659Z",
+      "event": "bb-session",
+      "session": "bcbc0ff6",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-02T02:15:07.547Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-02T02:16:54.947Z",
+      "event": "bb-session",
+      "session": "f704789c",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T02:16:55.789Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
