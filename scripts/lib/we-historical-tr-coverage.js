@@ -52,6 +52,14 @@ function classifyShow(show, probe, counted) {
   const held = Number.isFinite(p.skippedExisting) ? p.skippedExisting : 0;
   const row = { ...base, listed, held };
   if (listed === 0) {
+    // BRO-6507: text came through, but not one review header (outlet + date,
+    // or a bare dd.mm.yy byline date)
+    // anywhere in the issue, in any of the three text modes: the review pages are images
+    // and only the front matter and listings carry text. Like scanned-only,
+    // no parser change can read them. Older probes lack the count and stay
+    // unexplained.
+    const h = p.pdf && p.pdf.reviewHeaders;
+    if (h && h.layout === 0 && h.raw === 0 && h.default === 0) return { ...row, status: 'explained', reason: 'no-review-text' };
     // PDF text came through but no review did, or the page was not a PDF and
     // listed nothing: either way TR has content we did not read.
     return { ...row, status: 'unexplained', reason: p.pdf ? 'parser-yielded-zero' : 'listed-zero' };

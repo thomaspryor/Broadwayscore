@@ -666,3 +666,24 @@ __t6507('skeletonKeepLines prefers the bare title line over contents/index hits'
   __a6507.ok(keep.has(lines.length - 100));
   __a6507.ok(!keep.has(250), 'does not spend the window on contents hits');
 });
+
+// BRO-6507: the volume 36 issue 19 PDF (No Man's Land, Wyndham's 2016) has
+// text only in its front matter and listings; 42nd Street's issue has review
+// headers. Counted title-blind on the committed masked skeletons.
+test('countReviewHeaders: zero for an issue whose review pages carry no text', async () => {
+  const { countReviewHeaders } = require('./tr-pdf-parse.js');
+  const fsm = await import('node:fs');
+  const read = (id, m) => fsm.readFileSync(new URL(`../../data/audit/we-historical-tr-skeletons/${id}.${m}.txt`, import.meta.url), 'utf8');
+  for (const m of ['layout', 'raw', 'default']) assert.equal(countReviewHeaders(read('no-mans-land-west-end-2016', m)), 0, m);
+  assert.ok(countReviewHeaders(read('42nd-street-west-end-2017', 'raw')) > 0);
+  assert.ok(countReviewHeaders(read('42nd-street-west-end-2017', 'default')) > 0);
+  // Any header shape counts: known outlet with a date below, caps line over a date, bare dd.mm.yy line.
+  assert.ok(countReviewHeaders('GUARDIAN\n\nMichael Billington\n04.04.17\nbody') > 0);
+  assert.ok(countReviewHeaders('SOME NEW PAPER\n04.04.17\nbody') > 0);
+  assert.ok(countReviewHeaders('Evening Standard\n05.04.17\nbody') > 0);
+  assert.equal(countReviewHeaders('listing line 20 Sep 16\n27 Oct 2016\nno headers here'), 0);
+  // Inline byline layout ("Name, Outlet, dd.mm.yy") counts; a prose date with punctuation does not.
+  assert.ok(countReviewHeaders('Fiona Mountford, Evening Standard, 05.04.17\nbody') > 0);
+  assert.ok(countReviewHeaders('Fiona Mountford  Evening Standard  05.04.17\nbody') > 0);
+  assert.equal(countReviewHeaders('first performed 25.11.52; at the Ambassadors'), 0);
+});

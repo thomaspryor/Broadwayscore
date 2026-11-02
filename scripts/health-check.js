@@ -1346,7 +1346,12 @@ function checkQuality() {
           expiryNote = describeExpiry(b, Date.now(), { renewCommand: '`node scripts/audit-star-score-mismatch.js --renew-baseline`' });
         }
       } catch { /* no baseline yet — everything is "new" */ }
-      const { findings, baselinedCount } = scanReviewTexts(rtDir, { baselineKeys });
+      let showsById = null;
+      try {
+        const sd = readJSON(path.join(DATA_DIR, 'shows.json'));
+        showsById = new Map((Array.isArray(sd) ? sd : (sd?.shows || [])).map((s) => [s.id, s]));
+      } catch { /* shield check falls back to show-less exclusion rules */ }
+      const { findings, baselinedCount } = scanReviewTexts(rtDir, { baselineKeys, showsById });
       if (findings.length === 0) {
         return { name: 'Quality: star-vs-score mismatch', status: 'pass', message: `No new star/score contradictions (${baselinedCount} known/baselined)${expiryNote}` };
       }

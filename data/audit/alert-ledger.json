@@ -18755,13 +18755,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-11-02T20:14:43.831Z",
+      "lastSeen": "2026-11-02T20:42:14.002Z",
       "lastNotifiedAt": "2026-11-02T10:36:47.182Z",
       "lastSurfacedAt": "2026-11-02T10:36:47.182Z",
       "notifyCount": 17,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 23
+      "silentRefires": 27
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -34719,12 +34719,13 @@
       "title": "Land Dependabot PR #1175: chore(deps): Bump the all-updates group across 1 directory with 11 updates",
       "firstSeen": "2026-11-01T16:54:50.253Z",
       "incidentOpenedAt": "2026-11-01T16:54:50.253Z",
-      "lastSeen": "2026-11-01T16:54:50.253Z",
+      "lastSeen": "2026-11-02T20:30:16.170Z",
       "lastNotifiedAt": "2026-11-01T16:54:50.253Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6778"
+      "linearIdentifier": "BRO-6778",
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:5794f9f4": {
       "status": "resolved",
@@ -35337,7 +35338,7 @@
       "resolvedAt": "2026-11-02T19:28:28.859Z"
     },
     "land:land/bro-6445-dependabot-resolve": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-6445-dependabot-resolve",
       "firstSeen": "2026-11-02T20:01:36.339Z",
@@ -35347,7 +35348,8 @@
       "lastSurfacedAt": "2026-11-02T20:01:36.339Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-11-02T20:39:55.457Z"
     }
   }
 }

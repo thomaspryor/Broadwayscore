@@ -24,6 +24,7 @@ const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-au
 const { isLateTheatreRecordReviewOfBroadwayShow } = require('./lib/tr-late-review-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
 const { splitOutletForLabel } = require('./lib/outlet-mismatch-heal');
+const { findHeldUnderRelatedOutlet } = require('./lib/tr-held-review');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
 const { pickTrProduction, trTitleMatches } = require('./lib/tr-production-pick');
@@ -31,7 +32,7 @@ const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isTrNoRecordCandidate, shouldSweepNoRecord } = require('./lib/review-text-identity');
 
-const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, skeletonKeepLines, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
+const { DATE_SHORT, parseShortDate, countReviewHeaders, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, skeletonKeepLines, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
 
 // BRO-6097 coverage probe: per-show outcome (counts and reasons only, never
@@ -143,6 +144,9 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   if (dumpDir && defaultText) { try { dumpPdfText(show.id, 'default', defaultText, show.title); } catch (_) {} }
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { defaultReviews: defaultReviews.length }) });
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
+  // BRO-6507: title-blind review headers in the whole issue. All zero = the
+  // issue's text layer has no reviews (image pages), not a parser gap.
+  probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { reviewHeaders: { layout: countReviewHeaders(text0), raw: countReviewHeaders(rawText), default: defaultText ? countReviewHeaders(defaultText) : null } }) });
   if (process.argv.some(a => a.startsWith('--probe-out='))) {
     // BRO-6154: where in the issue each mode's reviews sit (no prose).
     const diag = {
@@ -617,7 +621,9 @@ async function main() {
       // BRO-6302: a review this section yields but the run skips because its file
       // exists is still on the page; the NO-RECORD sweep below must not stamp it.
       const seen = (p) => { if (p) touchedFiles.add(p); };
-      const parentFile = parentOutletId !== outletId ? findExistingReviewFile(showDir, parentOutletId, review.critic) : null;
+      // BRO-6507: or under a sister paper on the same site (Observer review in
+      // a guardian-- file): held too, so no second copy is written.
+      const parentFile = findHeldUnderRelatedOutlet(showDir, { parentOutletId, outletId, critic: review.critic, date: parseDate(review.date), ownFileExists: !!(fileExists || existingVariant) });
       if (parentFile) {
         seen(parentFile.path);
         skippedCount++;

@@ -29,4 +29,32 @@ function dependabotPrAlerts(prs) {
     }));
 }
 
-module.exports = { dependabotPrAlerts };
+const KEY_RE = /^dependabot-pr:(\d+)$/;
+
+/**
+ * Open ledger conditions whose Dependabot PR is no longer open (BRO-6445).
+ * The cards workflow only lists OPEN PRs, so a PR closed or merged by a worker
+ * just stopped refiring: its condition stayed 'open' and its card's
+ * check-alert-condition-absent VERIFY could never pass (#1111, #1165, #1167).
+ *
+ * `prs` is the full `gh pr list --state open` result. Every listed number
+ * counts as open, filtered or not, so a PR this lib skips is never resolved.
+ * Returns [] when `prs` is not an array (a failed listing must not
+ * mass-resolve) or when the list is as long as `limit` (it may be truncated).
+ *
+ * @param {Record<string,{status?:string}>} conditions ledger.conditions
+ * @param {Array<{number:number}>} prs
+ * @param {{limit?:number}} [opts]
+ * @returns {string[]}
+ */
+function staleDependabotPrKeys(conditions, prs, { limit = 50 } = {}) {
+  if (!Array.isArray(prs) || prs.length >= limit) return [];
+  const open = new Set(prs.filter((p) => p && Number.isInteger(p.number)).map((p) => p.number));
+  return Object.entries(conditions || {})
+    .filter(([key, c]) => c && c.status === 'open' && KEY_RE.test(key))
+    .filter(([key]) => !open.has(Number(KEY_RE.exec(key)[1])))
+    .map(([key]) => key)
+    .sort();
+}
+
+module.exports = { dependabotPrAlerts, staleDependabotPrKeys };

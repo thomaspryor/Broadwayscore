@@ -774,6 +774,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
 }
 
 module.exports = {
+  CROSS_PUBLICATION_ALLOW,
   runOutletMismatchCleanup,
   renameAndRepoint,
   makeDirIO,

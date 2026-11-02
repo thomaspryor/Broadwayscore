@@ -75,6 +75,16 @@ const LETTER_GRADES = {
   'F': 20
 };
 
+// BRO-6779: grade/rating keywords in any case, so the letter-grade patterns can
+// drop the /i flag and match the LETTER case-sensitively. With /i, the article
+// "a" in "asked her for a grade" / "rating a ..." was read as grade A (Cardinal,
+// Theatre's Leiter Side: served/stored A→90 on a 36 pan).
+const GRADE_ONLY_KW_RE = '(?:[Gg][Rr][Aa][Dd][Ee])';
+const GRADE_KW_RE = '(?:[Gg][Rr][Aa][Dd][Ee]|[Rr][Aa][Tt][Ii][Nn][Gg])';
+// Letter BEFORE the keyword ("B+ grade"): a bare capital "A" there is usually the
+// sentence-initial article ("A grade of 56 ..."), so only A+/A- count in that order.
+const LETTER_BEFORE_KW_RE = '(A[+\\-–—]|[B-F][+\\-–—]?)';
+
 // Sentiment bucket → 0-100
 const BUCKET_SCORES = {
   'Rave': 90, 'Positive': 82, 'Mixed': 65, 'Negative': 48, 'Pan': 30
@@ -359,10 +369,12 @@ function extractEWScore(html, text) {
     // \b word boundaries prevent false matches inside words like
     // "frustrating for" (frust-RATING → matches "rating", then "f" from "for" = F)
     // or "operating against" (ope-RATING → "rating", then "A" from "against" = A).
-    /\b(?:grade|rating)\b\s*:?\s*([A-F][+\-–—]?)/i,
-    /\bgrade\s+([A-F][+\-–—]?)\b/i,
-    /\b([A-F][+\-–—]?)\s*(?:rating|grade)\b/i,
-    /EW\s+Grade:?\s*([A-F][+\-–—]?)/i
+    // BRO-6779: letters are matched case-SENSITIVELY (keywords stay any-case) —
+    // with /i the article "a" read as grade A ("asked her for a grade").
+    new RegExp(`\\b${GRADE_KW_RE}\\b\\s*:?\\s*([A-F][+\\-–—]?)`),
+    new RegExp(`\\b${GRADE_ONLY_KW_RE}\\s+([A-F][+\\-–—]?)\\b`),
+    new RegExp(`\\b${LETTER_BEFORE_KW_RE}\\s*${GRADE_KW_RE}\\b`),
+    /EW\s+[Gg][Rr][Aa][Dd][Ee]:?\s*([A-F][+\-–—]?)/
   ];
 
   for (const pattern of patterns) {
@@ -657,9 +669,10 @@ function extractNYPostScore(html, text) {
 
   // Letter grade patterns: "Grade: A" or "rating: B+"
   const gradePatterns = [
-    /(?:grade|rating)\s*:?\s*([A-F][+-]?)\b/i,
-    /\bgrade\s+([A-F][+-]?)\b/i,
-    /\b([A-F][+-]?)\s+(?:grade|rating)\b/i,
+    // BRO-6779: case-sensitive letters (see GRADE_KW_RE); \b keeps "frustRATING for" out.
+    new RegExp(`\\b${GRADE_KW_RE}\\s*:?\\s*([A-F][+-]?)(?![A-Za-z+])`),
+    new RegExp(`\\b${GRADE_ONLY_KW_RE}\\s+([A-F][+-]?)(?![A-Za-z+])`),
+    new RegExp(`\\b${LETTER_BEFORE_KW_RE}\\s+${GRADE_KW_RE}\\b`),
     /^([A-F][+-]?)\s*$/m
   ];
 
@@ -1229,7 +1242,10 @@ function extractGenericStarRating(html, text) {
 
   // "X/5" is ambiguous — could be a date (4/5/04), fraction (2/5 of the cast),
   // or forum metadata (Joined: 4/5/14). Apply targeted rejection rules.
-  const xOf5Regex = /(\d(?:\.\d)?)\s*\/\s*5/g;
+  // BRO-6779: the lookbehind rejects a digit that is the tail of a longer number —
+  // the run-dates line "Through 11/5: Thu-Sat 8 PM" read as "1/5" (Chicago Reader,
+  // Botticelli in the Fire: served 20 on a 60 review). (?!\d) keeps "4/50" out.
+  const xOf5Regex = /(?<!\d|\d\.)(\d(?:\.\d)?)\s*\/\s*5(?!\d)/g;
   let xOf5Match;
   while ((xOf5Match = xOf5Regex.exec(text)) !== null) {
     const rating = parseFloat(xOf5Match[1]);
@@ -1249,6 +1265,10 @@ function extractGenericStarRating(html, text) {
     // REJECT: preceded by forum/metadata patterns — "Joined: X/5" or "Member since X/5"
     if (/\b(?:joined|member\s+since|registered|posted|replied)\s*:?\s*\d{0,2}\s*\/?\s*$/i.test(beforeMatch)) continue;
 
+    // REJECT (BRO-6779): a run-dates listing — "Through 3/5: Thu-Sat", "runs until 2/5",
+    // "opens 4/5" — is a month/day date, not a rating.
+    if (/\b(?:through|thru|until|till|closes|closing|opens|opening|runs?|extended\s+to)\s*$/i.test(beforeMatch)) continue;
+
     return {
       originalScore: `${rating}/5`,
       normalizedScore: starsToNumeric(rating, 5),
@@ -1267,10 +1287,15 @@ function extractGenericLetterGrade(html, text) {
   // Only look for letter grades with clear context
   // NOTE: Pattern 1 uses \b before the alternation to avoid matching "rating" as a
   // substring inside words like "celebrating", "operating", "frustrating".
+  // BRO-6779: letters case-sensitive (see GRADE_KW_RE) — /i read "for a grade" as A.
   const patterns = [
-    /\b(?:grade|rating)\s*:?\s*([A-F][+-]?)\b/i,
-    /\bgrade\s+([A-F][+-]?)\b/i,
-    /\b([A-F][+-]?)\s+(?:grade|rating)\b/i
+    new RegExp(`\\b${GRADE_KW_RE}\\s*:?\\s*([A-F][+-]?)(?![A-Za-z+])`),
+    new RegExp(`\\b${GRADE_ONLY_KW_RE}\\s+([A-F][+-]?)(?![A-Za-z+])`),
+    new RegExp(`\\b${LETTER_BEFORE_KW_RE}\\s+${GRADE_KW_RE}\\b`),
+    // "garners an A rating" (Digital Journal's verdict line). Only "rating": the
+    // "an A grade" form is plot as often as verdict ("offer her an A grade",
+    // Oleanna), so it stays out.
+    /\b[Aa]n\s+(A)\s+[Rr][Aa][Tt][Ii][Nn][Gg]\b/
   ];
 
   for (const pattern of patterns) {
