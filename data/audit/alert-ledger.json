@@ -247,16 +247,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-11-02T09:59:03.804Z",
-      "lastSeen": "2026-11-02T10:52:02.103Z",
-      "lastNotifiedAt": "2026-11-02T09:59:03.804Z",
-      "lastSurfacedAt": "2026-11-02T09:59:03.804Z",
-      "notifyCount": 201,
+      "incidentOpenedAt": "2026-11-02T12:29:49.035Z",
+      "lastSeen": "2026-11-02T12:29:49.035Z",
+      "lastNotifiedAt": "2026-11-02T12:29:49.035Z",
+      "lastSurfacedAt": "2026-11-02T12:29:49.035Z",
+      "notifyCount": 202,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
-      "sweptTracker": "BRO-6656",
-      "silentRefires": 1
+      "sweptTracker": "BRO-6656"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6790,7 +6789,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-11-01T14:42:51.732Z",
-      "lastSeen": "2026-11-02T10:52:02.079Z",
+      "lastSeen": "2026-11-02T12:29:47.719Z",
       "lastNotifiedAt": "2026-11-01T14:42:51.732Z",
       "lastSurfacedAt": null,
       "notifyCount": 18,
@@ -6803,7 +6802,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
       },
       "absentRunIds": [],
-      "silentRefires": 24
+      "silentRefires": 25
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -35192,6 +35191,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:fed1898c": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"don-giovanni-off-broadway-2025 keeps its backfilled coverage (was 7)\"",
+      "firstSeen": "2026-11-02T12:29:47.738Z",
+      "incidentOpenedAt": "2026-11-02T12:29:47.738Z",
+      "lastSeen": "2026-11-02T12:29:47.738Z",
+      "lastNotifiedAt": "2026-11-02T12:29:47.738Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6821",
+      "dispatch": {
+        "requestedAt": "2026-11-02T12:29:47.738Z",
+        "mode": "dispatch-at-filing",
+        "runId": "41441184472",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41441184472"
+      }
     }
   }
 }
