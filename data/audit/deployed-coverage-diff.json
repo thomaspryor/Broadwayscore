@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-01T23:27:25.953Z",
+  "generatedAt": "2026-11-02T01:00:27.392Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 312,
-  "clean": 312,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 311,
+  "clean": 309,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "title": "Going Bacharach: The Songs of an Icon",
+      "openingDate": "2026-09-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.64 vs local 80.29 (Δ0.65)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 11,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-02T01:00:23.700Z"
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "title": "Heathers The Musical",
+      "openingDate": "2025-06-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.86 vs local 72.18 (Δ0.68)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 29,
+      "deployedCount": 29,
+      "firstDefectAt": "2026-11-02T01:00:23.700Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

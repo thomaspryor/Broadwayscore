@@ -1476,20 +1476,6 @@
     "queuedAt": "2026-11-01T22:26:25.661Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Lincoln in the Bardo (washpost), High School Musical (daily-mail)). Checked 2026-11-01.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-01T23:23:42.350Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:tosca-english-national-opera-west-end-2026",
     "title": "1 review(s) for tosca-english-national-opera-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- seen-and-heard-international--190ff8a5.json (seen-and-heard-international): no byline in page and no recoverable body https://seenandheard-international.com/2026/04/english-national-opera-in-london-and-manchester-in-2026-2027/",
@@ -1533,5 +1519,19 @@
       }
     ],
     "queuedAt": "2026-11-02T00:47:36.683Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 2 (Lincoln in the Bardo (washpost), High School Musical (daily-mail)). Checked 2026-11-02.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T01:00:02.013Z"
   }
 ]

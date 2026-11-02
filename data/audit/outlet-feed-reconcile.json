@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-01T23:27:26.681Z",
+  "generatedAt": "2026-11-02T01:00:27.784Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -22,6 +22,11 @@
       "id": "tosca-english-national-opera-west-end-2026",
       "title": "Tosca - English National Opera",
       "openingDate": "2026-10-30"
+    },
+    {
+      "id": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "openingDate": "2026-11-02"
     },
     {
       "id": "medea-off-broadway-2026",
@@ -74,11 +79,6 @@
       "openingDate": "2026-10-29"
     },
     {
-      "id": "hospital-hour-off-broadway-2026",
-      "title": "Hospital Hour",
-      "openingDate": "2026-10-26"
-    },
-    {
       "id": "the-morbs-off-broadway-2026",
       "title": "The Morbs",
       "openingDate": "2026-11-02"
@@ -104,11 +104,6 @@
       "openingDate": "2026-11-02"
     },
     {
-      "id": "the-unexpected-3rd-2026",
-      "title": "The Unexpected 3rd",
-      "openingDate": "2026-10-26"
-    },
-    {
       "id": "middlemarch-rsc-regional-2026",
       "title": "Middlemarch",
       "openingDate": "2026-10-29"
@@ -121,7 +116,11 @@
   ],
   "skipped": [
     {
-      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "showId": "well-see-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -131,6 +130,10 @@
   ],
   "feedsChecked": 73,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -156,9 +159,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 781,
-  "matchedGaps": 5,
-  "possibleGaps": 11,
+  "itemsScanned": 775,
+  "matchedGaps": 12,
+  "possibleGaps": 13,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -186,6 +189,69 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
+      "outletId": "theatre-weekly",
+      "url": "https://theatreweekly.com/review-the-lives-of-others-at-adelphi-theatre/",
+      "headline": "Review: The Lives of Others at Adelphi Theatre",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/the-lives-of-others-%e2%98%85%e2%98%85%e2%98%85%e2%98%85/",
+      "headline": "The Lives of Others ★★★★",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-lives-of-others-adelphi-theatre",
+      "headline": "Review: The Lives Of Others (Adelphi Theatre)",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/the-lives-of-others-adelphi-theatre/",
+      "headline": "The Lives of Others | Adelphi Theatre",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/nov/02/the-lives-of-others-review-keira-knightley-brings-star-power-to-robert-ickes-stasi-drama",
+      "headline": "The Lives of Others review – Keira Knightley brings star power to Robert Icke’s Stasi drama",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-the-lives-of-others-adelphi-theatre",
+      "headline": "Review: THE LIVES OF OTHERS, Adelphi Theatre",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
+      "headline": "The Moth | Finborough Theatre",
+      "publishDate": "2026-11-02"
     },
     {
       "showId": "tosca-english-national-opera-west-end-2026",
@@ -294,6 +360,24 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-birmingham-royal-ballets-swan-lake-sadlers-wells",
       "headline": "Review: Birmingham Royal Ballet’s SWAN LAKE, Sadler’s Wells",
       "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "possible",
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html",
+      "headline": "The Lives of Others review: Keira Knightley&#x27;s return is revolutionary",
+      "publishDate": null
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "possible",
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/lives-others-adelphi-theatre-review-slick-staging-saves-unwieldy-adaptation-hit-film",
+      "headline": "The Lives of Others, Adelphi Theatre review - slick staging saves an unwieldy adaptation of the hit film",
+      "publishDate": null
     },
     {
       "showId": "the-moth-off-west-end-2026",

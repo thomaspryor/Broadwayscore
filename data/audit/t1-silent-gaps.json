@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-01T23:23:42.348Z",
+  "generatedAt": "2026-11-02T01:00:02.012Z",
   "windowDays": 45,
-  "showsScanned": 229,
+  "showsScanned": 226,
   "gaps": [
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 173.51777777777778,
+      "fileAgeHours": 175.10332444444444,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 158.97388361111112,
+      "nonTerminalAgeHours": 160.57934555555556,
       "needsManualRecovery": true
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 202.0374813888889,
+      "fileAgeHours": 203.62303583333335,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 188.085775,
+      "nonTerminalAgeHours": 189.69123694444446,
       "needsManualRecovery": true
     },
     {
@@ -60,9 +60,129 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=the-imaginary-invalid-2026 --url=https://www.thewrap.com/creative-content/theater/the-imaginary-invalid-broadway-review-bill-irwin/ --outlet=thewrap --critic=\"Robert Hofler\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-23T02:57:17.702Z",
-      "fileAgeHours": 236.43943027777777,
+      "fileAgeHours": 238.02501972222223,
       "gapSeenAt": "2026-11-01T18:06:26.493Z",
-      "nonTerminalAgeHours": 5.2877375,
+      "nonTerminalAgeHours": 6.893199444444445,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+      "title": "Ma Rainey's Black Bottom",
+      "openingDate": "2026-09-21",
+      "file": "broadwayworld--roger-catlin.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.broadwayworld.com/article/Review-MA-RAINEYS-BLACK-BOTTOM-at-Round-House-Theatre-20260917",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=ma-raineys-black-bottom-regional-2026-round-house-theatre --url=https://www.broadwayworld.com/article/Review-MA-RAINEYS-BLACK-BOTTOM-at-Round-House-Theatre-20260917 --outlet=broadwayworld --critic=\"Roger Catlin\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T00:01:00.590Z",
+      "fileAgeHours": 0.9685741666666666,
+      "gapSeenAt": "2026-11-02T01:00:02.011Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "hundred-days-regional-2026",
+      "title": "Hundred Days",
+      "openingDate": "2026-10-13",
+      "file": "broadwayworld--doug-poms.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.broadwayworld.com/article/Review-HUNDRED-DAYS-at-The-Keegan-Theatre-20261012",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=hundred-days-regional-2026 --url=https://www.broadwayworld.com/article/Review-HUNDRED-DAYS-at-The-Keegan-Theatre-20261012 --outlet=broadwayworld --critic=\"Doug Poms\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T00:00:44.627Z",
+      "fileAgeHours": 0.9774494444444445,
+      "gapSeenAt": "2026-11-02T01:00:02.011Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "wish-you-were-here-regional-2026",
+      "title": "Wish You Were Here",
+      "openingDate": "2026-09-29",
+      "file": "broadwayworld--doug-poms.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.broadwayworld.com/article/Review-WISH-YOU-WERE-HERE-at-Studio-Theatre-20260929",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=wish-you-were-here-regional-2026 --url=https://www.broadwayworld.com/article/Review-WISH-YOU-WERE-HERE-at-Studio-Theatre-20260929 --outlet=broadwayworld --critic=\"Doug Poms\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T00:00:58.048Z",
+      "fileAgeHours": 0.9752044444444444,
+      "gapSeenAt": "2026-11-02T01:00:02.011Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "some-like-it-hot-regional-2026",
+      "title": "Some Like It Hot",
+      "openingDate": "2026-09-27",
+      "file": "broadwayworld--jake-bridges.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.broadwayworld.com/article/Review-SOME-LIKE-IT-HOT-at-Olney-Theatre-Center-20260925",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=some-like-it-hot-regional-2026 --url=https://www.broadwayworld.com/article/Review-SOME-LIKE-IT-HOT-at-Olney-Theatre-Center-20260925 --outlet=broadwayworld --critic=\"Jake Bridges\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T00:00:57.182Z",
+      "fileAgeHours": 0.9795688888888889,
+      "gapSeenAt": "2026-11-02T01:00:02.011Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "where-dead-women-go-to-dance-regional-2026",
+      "title": "Where Dead Women Go to Dance",
+      "openingDate": "2026-09-29",
+      "file": "broadwayworld--jackson-malmgren.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.broadwayworld.com/article/Review-WHERE-DEAD-WOMEN-GO-TO-DANCE-at-Theatre-Prometheus-20261010",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=where-dead-women-go-to-dance-regional-2026 --url=https://www.broadwayworld.com/article/Review-WHERE-DEAD-WOMEN-GO-TO-DANCE-at-Theatre-Prometheus-20261010 --outlet=broadwayworld --critic=\"Jackson Malmgren\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T00:00:36.216Z",
+      "fileAgeHours": 0.9904977777777778,
+      "gapSeenAt": "2026-11-02T01:00:02.011Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     }
   ],
