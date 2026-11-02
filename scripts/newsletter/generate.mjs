@@ -36,6 +36,7 @@ const { getScoreTierId, SCORE_TIER_LABELS } = cjsRequire('../lib/score-tiers.js'
 const { buildUnsubscribeUrl, resolveNewsletterEdition, buildAccountCtaHtml } = cjsRequire(path.join(repo, 'scripts/lib/email-templates'));
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
+const { showCardHtml, criticsTakeHtml } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-show-card'));
 const { classifyOpeningEvent } = cjsRequire(path.join(repo, 'scripts/lib/opening-events-for-week'));
 const { isBroadwayCategory } = cjsRequire(path.join(repo, 'scripts/lib/venue-classification'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
@@ -729,26 +730,18 @@ function showRow(show, opts = {}) {
         <div style="font-size:10px;color:#9ca3af;margin-top:6px;">${a ? a.count + ' rev' : '0 reviews'}</div>
         ${audChip}
       </td>`;
-  return `
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" style="background:#1a1a24;border-radius:16px;border:1px solid rgba(255,255,255,0.05);box-shadow:0 2px 8px -2px rgba(0,0,0,0.5);margin-bottom:10px;">
-    <tr>
-      <td valign="top" width="96" style="padding:12px 0 12px 16px;">${posterOrThumb(show, 80, 120)}</td>
-      <td valign="top" style="padding:12px 8px 12px 12px;">
+  const take = (opts.noConsensus || score == null) ? null : clampTake(criticsTake(show.id));
+  const takeHtml = criticsTakeHtml(take, show.slug ? showHref(show) : null);
+  return showCardHtml({
+    posterHtml: posterOrThumb(show, 80, 120),
+    infoHtml: `
         <div style="font-size:17px;font-weight:700;color:#fff;line-height:1.25;">${showLink(show, show.title)}</div>
         <div style="margin-top:6px;">${marketTag}${formatPill}${revivalPill}${reopenPill}</div>
         <div style="font-size:13px;color:#9ca3af;margin-top:6px;line-height:1.35;">${metaDate}</div>
-        <div style="font-size:13px;color:#9ca3af;margin-top:1px;line-height:1.35;">${metaVenue}</div>
-        ${(() => {
-          if (opts.noConsensus || score == null) return '';
-          const take = clampTake(criticsTake(show.id));
-          if (!take) return '';
-          const readMore = show.slug ? ` <a href="${showHref(show)}" style="color:#d4a574;font-weight:600;text-decoration:none;white-space:nowrap;">Read more&nbsp;&rarr;</a>` : '';
-          return `<div style="font-size:13px;color:#c7cbd4;margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.06);line-height:1.45;"><span style="color:#d4a574;font-weight:700;">Critics&#8217; Take&nbsp;&nbsp;</span>${take}${readMore}</div>`;
-        })()}
-      </td>
-      ${scoreCol}
-    </tr>
-  </table>`;
+        <div style="font-size:13px;color:#9ca3af;margin-top:1px;line-height:1.35;">${metaVenue}</div>`,
+    scoreColHtml: scoreCol,
+    takeHtml,
+  });
 }
 
 function sectionHeading(title, countNote, opts = {}) {
