@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-6436",
+  "planId": "3b9b7376-17b9-4ad5-8d72-2d8aaeb7f4a9",
+  "status": "pending",
+  "createdAt": "2026-11-02T09:08:55.750Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6436: clear stale date-guard flag on A View From the Bridge NJ.com review; record operator basis on Richard III Time Out review",
+    "steps": [
+      "a-view-from-the-bridge-2015/njcom--christopher-kelly.json: wrongProduction",
+      "a-view-from-the-bridge-2015/njcom--christopher-kelly.json: wrongProductionManualClear",
+      "richard-iii-west-end-2014/timeout-london--andrzej-lukowski.json: wrongProductionReason"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2015/njcom--christopher-kelly.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Read-confirmed right production: Lyceum Broadway staging with Mark Strong, Phoebe Fox, Russell Tovey, dated 2015-11-12 (opening day); flag came from a wrong 2015-07-01 date since corrected"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-view-from-the-bridge-2015/njcom--christopher-kelly.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6436 manual clear: stale Pre-opening guard basis (cited date 2015-07-01 no longer on record); same adjudication as the wrongProduction clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "richard-iii-west-end-2014/timeout-london--andrzej-lukowski.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Operator-confirmed: current url richard-iii-32 and body are the Globe Ensemble Richard III, not the 2014 Trafalgar production; the stale 2014 publishDate came from the aggregator excerpt of the earlier url",
+        "description": "Flag stays: url richard-iii-32 and the stored body are the Globe Ensemble Richard III, not the 2014 Trafalgar Studios staging. Replaces the stale date-only basis with an operator reason so the date-guard sweep stops treating the 2014 publishDate as contradicting it"
+      }
+    ]
+  }
+}

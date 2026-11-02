@@ -200,3 +200,13 @@ test('audit --gate refuses to pass when shows.json is missing', () => {
   assert.equal(r.status, 1, 'no show records must fail, not report a clean sweep');
   assert.match(r.stderr, /cannot pass vacuously/);
 });
+
+// BRO-6436: a flag that is RIGHT (url/body belong to another production) but
+// carries a stale date-only note is retired from the sweep by recording an
+// operator wrongProductionReason (an allowlisted review-field-edit), not by
+// clearing it. A date cannot refute a non-date-guard basis.
+test('an operator wrongProductionReason beside a stale date note is not contradicted', () => {
+  const review = { ...CAROUSEL_REVIEW, wrongProductionReason: 'Operator-confirmed: url and body are another production' };
+  const v = detectContradictedFlagBasis({ review, show: CAROUSEL_SHOW });
+  assert.equal(v.contradicted, false);
+});
