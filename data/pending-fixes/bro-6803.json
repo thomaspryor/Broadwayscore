@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6803",
   "planId": "e78abe49-55bb-46bf-aeb3-4677567b4146",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T17:30:00.000Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,29 @@
         "description": "Retire The Monkey King (SFO)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T17:31:09.052Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monkey-king-off-broadway-2025/nytimes--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monkey-king-off-broadway-2025/nytimes--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-monkey-king-off-broadway-2025/nytimes--joshua-barone.json"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired the-monkey-king-off-broadway-2025 (\"The Monkey King\" @ War Memorial Opera House)"
+    }
+  ],
+  "executedIn": "ci"
 }
