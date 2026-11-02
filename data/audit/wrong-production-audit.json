@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-02T14:51:43.606Z",
+  "timestamp": "2026-11-02T15:28:32.638Z",
   "stats": {
-    "totalReviews": 79199,
-    "alreadyFlagged": 21950,
+    "totalReviews": 79201,
+    "alreadyFlagged": 21951,
     "dateGuardCatches": 222,
     "directorMismatch": 3422,
-    "tvFilmSignals": 2251,
-    "londonSignals": 3581,
+    "tvFilmSignals": 2252,
+    "londonSignals": 3580,
     "offBroadwaySignals": 740,
     "yearMismatch": 346,
     "noPublishDate": 8377
@@ -8535,6 +8535,19 @@
       "score": 88,
       "publishDate": "2026-10-28",
       "url": "https://theaterlife.com/billy-crystal-860-the-imaginary-invalid/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "file": "theater-scene--samuel-l-leiter.json",
+      "publishDate": "2026-10-31",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/860/samuel-l-leiter/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -100222,20 +100235,6 @@
       "score": 97,
       "publishDate": "2022-01-25",
       "url": "https://www.newyorktheatreguide.com/reviews/review-of-harry-potter-and-the-cursed-child-on-broadway",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-2021",
-      "file": "sfgate--lily-janiak.json",
-      "score": null,
-      "publishDate": "2018-06-28",
-      "url": "https://www.sfgate.com/performance/article/Harry-Potter-play-coming-to-San-Francisco-s-13035122.php",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
