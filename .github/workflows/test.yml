@@ -1963,6 +1963,8 @@ on:
       - 'scripts/audit-show-review-gap.js'
       # BRO-6687: slow-market review-coverage grade; tested by scripts/slow-market-grade.test.mjs.
       - 'scripts/slow-market-grade.js'
+      # BRO-6794: never-audited backlog probe; tested by scripts/check-never-audited-backlog.test.mjs.
+      - 'scripts/check-never-audited-backlog.js'
       # BRO-2211: hook-budget guard (hook count/line ceiling, every hook wired). The hooks glob keeps the
       # orphan check live when a hook is pushed alone.
       - '.claude/hooks/**'
