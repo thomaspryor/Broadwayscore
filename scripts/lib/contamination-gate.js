@@ -80,4 +80,37 @@ function isAlreadyExcludedFromScoring(data, show, filePath) {
   return !isIncludableForRebuild(data, show, filePath);
 }
 
-module.exports = { shouldBlockContaminationGate, STRICT_CLASSES, countStrictHits, isAlreadyExcludedFromScoring };
+/**
+ * Class C (domain/outlet mismatch) skip: a human/agent read the page and
+ * confirmed the critic-outlet pairing (crossOutletVerified, e.g. a freelancer
+ * cross-posting to their own blog). Same marker cross-outlet-triage.js honours;
+ * without it the gate re-counted a checked file forever (BRO-6842).
+ * @param {object} data parsed review-text file
+ * @returns {boolean}
+ */
+function isClassCVerifiedPairing(data) {
+  return !!data && data.crossOutletVerified === true;
+}
+
+/**
+ * Class G (older production live) skip. "Live" means the canonical rebuild
+ * predicate includes the file: a wrongProduction file whose flag the G helper
+ * reads as cleared (stale allowEarlyDate / allowCrossMarket) but that rebuild
+ * still drops is shown to no one (BRO-6842: all 3 G hits were this).
+ * @param {object} data parsed review-text file
+ * @param {object} [show] shows.json entry
+ * @param {string} [filePath] path.join(showId, file)
+ * @returns {boolean}
+ */
+function isClassGExempt(data, show, filePath) {
+  if (!data) return true;
+  return !!(data.isRoundupArticle || data.wrongAttribution
+    || data.contentVerification?.wrongArticle || data.isNonReview || data.nonReviewFlag
+    || data.nonReviewContent || data.duplicateOf || data.rejectionReason)
+    || isAlreadyExcludedFromScoring(data, show, filePath);
+}
+
+module.exports = {
+  shouldBlockContaminationGate, STRICT_CLASSES, countStrictHits, isAlreadyExcludedFromScoring,
+  isClassCVerifiedPairing, isClassGExempt,
+};

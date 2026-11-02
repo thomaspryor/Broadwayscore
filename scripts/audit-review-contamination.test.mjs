@@ -256,3 +256,54 @@ test('BRO-973: isAlreadyExcludedFromScoring skips ensemble-rejected, no-text stu
   assert.equal(isAlreadyExcludedFromScoring({ outletId: 'x', criticName: 'Unknown', url: 'https://x.com/r', contentTier: 'stub', fullText: '' }), true);
   assert.equal(isAlreadyExcludedFromScoring({ ...live, contentTier: 'invalid', contentTierReason: 'Wrong show', fullText: '' }), true);
 });
+
+// ── BRO-6842: class C / class G per-file skips ───────────────────────────────
+// The gate went red on a real class-A leak; the triage then chased 3 class-G
+// "older production live" hits that the rebuild already drops (a wrongProduction
+// flag next to a stale allowEarlyDate/allowCrossMarket bypass) and a class-C hit
+// on a crossOutletVerified freelancer cross-post. Both skips live in
+// lib/contamination-gate.js so they are tested here, not copied.
+{
+  const { isClassGExempt, isClassCVerifiedPairing } = require('./lib/contamination-gate.js');
+  const { olderProductionLiveReason } = require('./lib/older-production-live-guard.js');
+  const show = { id: 'west-side-story-2009', title: 'West Side Story', market: 'broadway', category: 'broadway',
+    openingDate: '2009-03-19', closingDate: '2011-01-02', status: 'closed', venue: 'Palace Theatre' };
+  const live = { showId: show.id, outletId: 'variety', outlet: 'Variety', criticName: 'Paul Harris',
+    url: 'https://variety.com/2009/legit/reviews/west-side-story-1200473848/', publishDate: '2009-03-19',
+    fullText: 'The revival of West Side Story at the Palace is a vivid, kinetic evening. '.repeat(60),
+    contentTier: 'complete', assignedScore: 80, isFullReview: true };
+  // Shape of west-side-story-2009/ew--leah-greenblatt.json (the 2020 revival's review).
+  const staleBypass = { ...live, outletId: 'ew', outlet: 'Entertainment Weekly', criticName: 'Leah Greenblatt',
+    url: 'https://ew.com/theater-reviews/2020/02/20/west-side-story-broadway-review/', publishDate: undefined,
+    wrongProduction: true, allowEarlyDate: true, allowLateDate: true };
+
+  test('BRO-6842: G skips a file the rebuild drops even when the helper reads its flag as cleared', () => {
+    const fp = 'west-side-story-2009/ew--leah-greenblatt.json';
+    assert.ok(olderProductionLiveReason(staleBypass, show), 'precondition: the helper alone would report it');
+    assert.equal(isAlreadyExcludedFromScoring(staleBypass, show, fp), true, 'precondition: rebuild excludes it');
+    assert.equal(isClassGExempt(staleBypass, show, fp), true);
+  });
+
+  test('BRO-6842: G still sees a live includable file (the Oliver! auto-clear shape)', () => {
+    const fp = 'west-side-story-2009/variety--paul-harris.json';
+    assert.equal(isClassGExempt(live, show, fp), false);
+    const leaked = { ...live, url: 'https://variety.com/2020/02/20/west-side-story-review/', publishDate: undefined };
+    assert.equal(isClassGExempt(leaked, show, fp), false);
+    assert.ok(olderProductionLiveReason(leaked, show), 'an includable out-of-window review still reports');
+  });
+
+  test('BRO-6842: G keeps its existing explicit skips', () => {
+    for (const k of ['isRoundupArticle', 'wrongAttribution', 'isNonReview', 'nonReviewFlag', 'nonReviewContent']) {
+      assert.equal(isClassGExempt({ ...live, [k]: true }, show, 'x/y.json'), true, k);
+    }
+    assert.equal(isClassGExempt({ ...live, duplicateOf: 'variety--other.json' }, show, 'x/y.json'), true);
+    assert.equal(isClassGExempt(null, show, 'x/y.json'), true);
+  });
+
+  test('BRO-6842: C skips only an explicit crossOutletVerified === true', () => {
+    assert.equal(isClassCVerifiedPairing({ crossOutletVerified: true }), true);
+    assert.equal(isClassCVerifiedPairing({ crossOutletVerified: 'true' }), false);
+    assert.equal(isClassCVerifiedPairing({}), false);
+    assert.equal(isClassCVerifiedPairing(null), false);
+  });
+}

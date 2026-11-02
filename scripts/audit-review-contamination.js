@@ -103,7 +103,7 @@ const {
   normalizeShowTitle: normalizeTitle,
 } = require('./lib/cross-market-contamination');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { countStrictHits, shouldBlockContaminationGate, isAlreadyExcludedFromScoring } = require('./lib/contamination-gate');
+const { countStrictHits, shouldBlockContaminationGate, isAlreadyExcludedFromScoring, isClassCVerifiedPairing, isClassGExempt } = require('./lib/contamination-gate');
 const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check');
 const { buildWpLiveIndex, isLiveScored } = require('./lib/wp-live-scored-check');
 const { olderProductionLiveReason } = require('./lib/older-production-live-guard');
@@ -437,7 +437,7 @@ for (const showId of showDirs) {
       // ground truth (loadLiveScoredUrls) rather than this field at all.
       // Anything the canonical rebuild predicate already excludes (ensemble
       // rejection, "Wrong show" tier, no-text stub) can't reach a score or a
-      // page either — BRO-973. A/A2/C/D read this; E applies it directly; B/F have own gates.
+      // page either — BRO-973. A/A2/C/D read this; E and G apply it directly; B/F have own gates.
       || isAlreadyExcludedFromScoring(d, show, path.join(showId, f));
 
     // ─── A: Cross-market / cross-production contamination ────
@@ -506,7 +506,8 @@ for (const showId of showDirs) {
     // "ibj" → "indianapolis-business-journal") resolve correctly. Without this,
     // a single stranded file with a legacy outletId would re-trip the audit even
     // though the registry already knows the canonical mapping.
-    if (shouldRunClass('C') && !alreadyFlagged && d.url) {
+    // crossOutletVerified = a checked, legitimate pairing (BRO-6842).
+    if (shouldRunClass('C') && !alreadyFlagged && !isClassCVerifiedPairing(d) && d.url) {
       const domain = parseDomain(d.url);
       if (domain && !AMBIGUOUS_DOMAINS.has(domain) && !ARCHIVE_MIRROR_DOMAINS.has(domain)
           && !AGGREGATOR_ROUNDUP_DOMAINS.has(domain)) {
@@ -646,10 +647,8 @@ for (const showId of showDirs) {
     // ─── G: older/other production live on this show (BRO-4432) ────
     // wrongProduction/wrongShow are left to the helper, which reads them as
     // EFFECTIVE flags (an auto-cleared flag is how the Oliver! file leaked).
-    const excludedOtherwise = d.isRoundupArticle || d.wrongAttribution
-      || d.contentVerification?.wrongArticle || d.isNonReview || d.nonReviewFlag
-      || d.nonReviewContent || d.duplicateOf || d.rejectionReason;
-    if (shouldRunClass('G') && !excludedOtherwise) {
+    // "Live" = includable by the canonical rebuild predicate (BRO-6842).
+    if (shouldRunClass('G') && !isClassGExempt(d, show, path.join(showId, f))) {
       const g = olderProductionLiveReason(d, show);
       if (g) hits.G_older_production_live.push({ showId, file: f, kind: g.kind, reason: g.reason, url: d.url || null });
     }
