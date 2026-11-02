@@ -39,6 +39,14 @@ test('audience answer gives the grade and counts only visible sources', () => {
   assert.match(a!.answer, /1,500 audience reviews/); // suppressed reddit excluded
 });
 
+test('a grade on fewer than 15 reviews carries the same small-sample caveat as the card', () => {
+  const small = { ...audience, sources: { mezzanine: { score: 84, reviewCount: 12 } } } as unknown as AudienceBuzzData;
+  const a = getShowFAQs(show(), null, null, { audience: small }).find(f => /audiences think/.test(f.question));
+  assert.match(a!.answer, /12 audience reviews\. That is a small sample/);
+  const big = getShowFAQs(show(), null, null, { audience }).find(f => /audiences think/.test(f.question));
+  assert.doesNotMatch(big!.answer, /small sample/);
+});
+
 test('no audience answer when the page hides the audience tile (null passed)', () => {
   assert.ok(!getShowFAQs(show(), null, null, { audience: null }).some(f => /audiences/.test(f.question)));
   assert.ok(!getShowFAQs(show()).some(f => /audiences/.test(f.question)));

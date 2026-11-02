@@ -4,7 +4,7 @@
  * Runs long-tail prompts through ChatGPT and Gemini with web search ON, several
  * runs each, and records mention, position, cited URLs and how we're described.
  *
- *   node scripts/aeo-visibility-tracker.js [--runs=2] [--prompts=20] [--engines=openai,gemini]
+ *   node scripts/aeo-visibility-tracker.js [--runs=2] [--prompts=all] [--engines=openai,gemini]
  *        [--budget=4.5] [--dry-run] [--out=data/aeo]
  * Writes data/aeo/visibility-YYYY-MM-DD.json, visibility-latest.json, history.jsonl.
  * Stops when projected spend would pass --budget (default $4.50, under the $5/week cap).

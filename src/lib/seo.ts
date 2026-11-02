@@ -11,7 +11,7 @@ import { formatShowDate } from './date-utils';
 import { shortCity, stopPlace, stopKey, type TourNowNext, type TourStop } from './tour-schedule';
 import { isTourScored, isTourScoreHidden } from './tour-listing';
 import { displaysCriticScore } from './critic-score-display';
-import { getAudienceGrade, getTotalAudienceReviews } from './audience-grade-utils';
+import { getAudienceGrade, getTotalAudienceReviews, FULL_CONFIDENCE_AUDIENCE_REVIEWS } from './audience-grade-utils';
 import { getCurrencySymbol } from './market-utils';
 import type { AudienceBuzzData, ShowLotteryRush } from './data-types';
 
@@ -683,7 +683,7 @@ export function getShowFAQs(show: ComputedShow, consensusText?: string | null, t
     const n = getTotalAudienceReviews(audience);
     faqs.push({
       question: `What do audiences think of ${show.title}?`,
-      answer: `${AUDIENCE_VERDICT[grade.label] ?? 'Audiences are split.'} Theatergoers give ${show.title} an audience grade of ${grade.grade} (${grade.label}), based on ${n.toLocaleString('en-US')} audience reviews.`,
+      answer: `${AUDIENCE_VERDICT[grade.label] ?? 'Audiences are split.'} Theatergoers give ${show.title} an audience grade of ${grade.grade} (${grade.label}), based on ${n.toLocaleString('en-US')} audience reviews.${n < FULL_CONFIDENCE_AUDIENCE_REVIEWS ? ' That is a small sample, so treat the grade as a rough read.' : ''}`,
     });
   }
 

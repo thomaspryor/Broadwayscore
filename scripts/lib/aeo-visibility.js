@@ -28,6 +28,9 @@ const PROMPTS = [
   'Which Broadway shows are worth full price versus lottery or rush tickets?',
   'Are Broadway reviews from the New York Times and Vulture usually aligned?',
   'What Broadway shows are closing soon that critics loved?',
+  // Mirrors the show-page FAQ questions added in BRO-6851 (audience + cheap tickets)
+  'What do audiences think of Hamilton on Broadway?',
+  'How can I get cheap tickets to Wicked on Broadway?',
 ];
 
 const BRAND = {
