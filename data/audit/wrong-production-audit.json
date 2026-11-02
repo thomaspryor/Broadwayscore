@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-11-02T11:21:25.257Z",
+  "timestamp": "2026-11-02T11:53:34.903Z",
   "stats": {
     "totalReviews": 79181,
     "alreadyFlagged": 21946,
-    "dateGuardCatches": 223,
+    "dateGuardCatches": 222,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
     "londonSignals": 3580,
@@ -7702,20 +7702,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"series finale\""
-        }
-      ]
-    },
-    {
-      "showId": "beauty-and-the-beast-tour-2025",
-      "file": "around-the-town-chicago--alan-bresloff.json",
-      "score": 90,
-      "publishDate": "2023-01-01",
-      "url": "https://aroundthetownchicago.com/theatre-reviews/disneys-beauty-and-the-beast-4/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 906d before show (2023-01-01 vs 2025-06-25)"
         }
       ]
     },
