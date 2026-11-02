@@ -559,11 +559,6 @@ function formatFAQDate(dateStr?: string | null): string | null {
 }
 
 /**
- * `tour` is the national tour's current and next engagement (data passed in,
- * this module imports no data files). ShowFAQSection and the FAQ schema must
- * get the same value so the two stay 1:1.
- */
-/**
  * Page data the FAQ can answer from. The caller decides visibility (the same
  * gates the page uses for the audience tile and the lottery/rush card) and
  * passes null when the page would not show it, so the FAQ never states a
@@ -595,7 +590,7 @@ export function describeDiscountTickets(title: string, lr: ShowLotteryRush, curr
   const add = (label: string, price: unknown) => {
     if (typeof price === 'number' && Number.isFinite(price) && price > 0) options.push({ label, price });
   };
-  if (lr.lottery) add(`a ${lr.lottery.type === 'digital' ? 'digital ' : ''}lottery${lr.lottery.platform ? ` (${lr.lottery.platform})` : ''}`, lr.lottery.price);
+  if (lr.lottery) add(`a ${lr.lottery.type === 'digital' ? 'digital ' : ''}lottery${!lr.lottery.platform ? '' : /^show website$/i.test(lr.lottery.platform) ? ' on the show website' : ` (${lr.lottery.platform})`}`, lr.lottery.price);
   if (lr.specialLottery) add(`a special lottery${lr.specialLottery.name ? ` (${lr.specialLottery.name})` : ''}`, lr.specialLottery.price);
   if (lr.rush) add(lr.rush.type === 'digital' ? `digital rush${lr.rush.platform ? ` (${lr.rush.platform})` : ''}` : `${lr.rush.type === 'student' ? 'student' : 'general'} rush${lr.rush.location ? ' at the box office' : ''}`, lr.rush.price);
   if (lr.digitalRush) add(`digital rush${lr.digitalRush.platform ? ` (${lr.digitalRush.platform})` : ''}`, lr.digitalRush.price);
@@ -609,6 +604,11 @@ export function describeDiscountTickets(title: string, lr: ShowLotteryRush, curr
   return `${title} offers ${list}.${cheapestNote} Prices and rules change, so check before you go.`;
 }
 
+/**
+ * `tour` is the national tour's current and next engagement (data passed in,
+ * this module imports no data files). ShowFAQSection and the FAQ schema must
+ * get the same value so the two stay 1:1.
+ */
 export function getShowFAQs(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null, extras?: ShowFAQExtras | null): { question: string; answer: string }[] {
   const score = show.criticScore?.score ? Math.round(show.criticScore.score) : null;
   const reviewCount = show.criticScore?.reviewCount || 0;

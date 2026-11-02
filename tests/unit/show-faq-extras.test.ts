@@ -82,3 +82,23 @@ test('FAQPage JSON-LD matches the visible FAQ one to one', () => {
   assert.deepEqual(schema.mainEntity.map(q => q.name), visible.map(f => f.question));
   assert.ok(visible.some(f => /audiences/.test(f.question)) && visible.some(f => /cheap/.test(f.question)));
 });
+
+test('lottery data loader drops options with no usable price (bare "$" on the card)', async () => {
+  const { dropUnpricedOptions, getLotteryRush } = await import('../../src/lib/data-lottery');
+  const out = dropUnpricedOptions({ lottery: null, rush: null, standingRoom: { price: 40, time: '', instructions: '' }, studentRush: { price: undefined as unknown as number, type: 'student', time: '', instructions: '' } });
+  assert.equal(out.studentRush, null);
+  assert.equal(out.standingRoom!.price, 40);
+  // Real data: every option the loader returns has a positive numeric price.
+  for (const id of ['the-rocky-horror-show-2026', 'hamilton-2015', 'harry-potter-2021']) {
+    const lr = getLotteryRush(id) as unknown as Record<string, { price?: unknown } | null> | undefined;
+    if (!lr) continue;
+    for (const k of ['lottery', 'rush', 'digitalRush', 'studentRush', 'standingRoom', 'specialLottery']) {
+      if (lr[k]) assert.ok(typeof lr[k]!.price === 'number' && (lr[k]!.price as number) > 0, `${id}.${k}`);
+    }
+  }
+});
+
+test('a lottery on "show website" reads naturally', () => {
+  const t = describeDiscountTickets('X', { lottery: { type: 'general', platform: 'show website', url: '', price: 35, time: '', instructions: '' }, rush: null, standingRoom: null }, '£');
+  assert.match(t!, /a lottery on the show website for £35/);
+});
