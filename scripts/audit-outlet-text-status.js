@@ -10,7 +10,7 @@
  * remaining rows. Ids, critics, dates and urls only, never review text.
  *
  * A row counts as "full text" when contentTier is complete and the content
- * verifier, if it ran, did not reject it. Rows the rebuild excludes for
+ * verifier, if it ran, did not reject it (a rejection only for a missing byline/outlet does not count, BRO-6491). Rows the rebuild excludes for
  * another reason (wrongProduction, duplicateOf, ...) are reported apart.
  *
  * Usage: node scripts/audit-outlet-text-status.js --outlet=wsj [--list=N] [--json]
@@ -29,6 +29,7 @@
 const fs = require('fs');
 const path = require('path');
 const { wordpressAttachmentParentUrl } = require('./lib/non-review-url-patterns');
+const { applyAttributionAbsenceCarveout } = require('./lib/attribution-absence-carveout');
 
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
@@ -53,6 +54,18 @@ function urlShape(url) {
   return 'other-domain';
 }
 
+/**
+ * Whether the content verifier rejected this row. A stored rejection whose only
+ * issues say the byline/outlet is absent from the scraped body does not count
+ * (BRO-6491): verdicts written before that carve-out existed are read as the
+ * verifier would now return them.
+ */
+function isCvRejected(r) {
+  const cv = r && r.contentVerification;
+  if (!cv || cv.isValid !== false) return false;
+  return !applyAttributionAbsenceCarveout(cv, { criticName: r.criticName, outletName: r.outlet || r.outletName }).applied;
+}
+
 function decade(d) {
   const m = /\b(19|20)(\d)\d\b/.exec(String(d || ''));
   return m ? `${m[1]}${m[2]}0s` : 'no-date';
@@ -75,7 +88,7 @@ function main() {
       try { r = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
       if (zeroDays == null && !outlets.includes(r.outletId)) continue;
       const chars = String(r.fullText || '').length;
-      const cvRejected = r.contentVerification && r.contentVerification.isValid === false;
+      const cvRejected = isCvRejected(r);
       const excludedBy = EXCLUDING_FLAGS.find((k) => r[k]) || null;
       const full = r.contentTier === 'complete' && !cvRejected && chars >= 500;
       const fail = failById.get(`${show}/${file}`);
@@ -156,6 +169,6 @@ function reportZeroCharHosts(rows, days) {
   if (flagged.length) process.exitCode = 1;
 }
 
-module.exports = { zeroCharHosts, urlShape };
+module.exports = { zeroCharHosts, urlShape, isCvRejected };
 
 if (require.main === module) main();
