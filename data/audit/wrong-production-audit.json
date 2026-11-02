@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-11-02T12:07:03.006Z",
+  "timestamp": "2026-11-02T12:25:52.319Z",
   "stats": {
-    "totalReviews": 79184,
-    "alreadyFlagged": 21947,
+    "totalReviews": 79188,
+    "alreadyFlagged": 21948,
     "dateGuardCatches": 222,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
-    "londonSignals": 3580,
+    "londonSignals": 3581,
     "offBroadwaySignals": 740,
     "yearMismatch": 346,
     "noPublishDate": 8375
@@ -128086,6 +128086,20 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 94,
+      "publishDate": "2026-11-01",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-LIVES-OF-OTHERS-Starring-Keira-Knightly-Stephen-Dillane-Luke-Thompson-20261101",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
@@ -128114,7 +128128,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 96,
+      "score": 94,
       "publishDate": "2026-11-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-lives-of-others-adelphi-theatre-review",
       "findings": [
