@@ -1,5 +1,13 @@
 {
-  "shows": [],
-  "updatedAt": "2026-10-31T21:31:37.759Z",
-  "triggers": {}
+  "shows": [
+    "the-rocky-horror-show",
+    "death-of-a-salesman",
+    "two-strangers"
+  ],
+  "updatedAt": "2026-11-02T21:46:57.186Z",
+  "triggers": {
+    "the-rocky-horror-show": "sweep-requeue-low-conf",
+    "death-of-a-salesman": "sweep-requeue-low-conf",
+    "two-strangers": "sweep-requeue-low-conf"
+  }
 }
