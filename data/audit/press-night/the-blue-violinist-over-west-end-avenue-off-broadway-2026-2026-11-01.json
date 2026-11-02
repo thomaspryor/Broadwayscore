@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+  "night": "2026-11-01",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-02T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-02T03:09:33.449Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 23,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-02T04:59:37.903Z",
+    "lastOkSampleAt": "2026-11-02T04:59:37.903Z"
+  },
+  "firstLiveAt": null,
+  "firstLiveBaseline": false,
+  "lastLiveAt": null,
+  "liveCount": 0,
+  "liveCountAt": {
+    "1h": 0,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-02T04:04:35.627Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-02T05:00:23.224Z",
+      "censusNote": "no BWW roundup found"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-02T05:00:23.309Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-02T05:00:29.189Z",
+    "files": [
+      {
+        "file": "theatermania--david-gordon.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "David Gordon",
+        "firstSeenAt": "2026-11-01T05:36:07.819Z",
+        "scoredAt": null,
+        "publishDate": "2026-09-23",
+        "url": "theatermania.com/news/the-blue-violinist-over-west-end-avenue-sets-full-cast-for-off-broadway-premiere_1854757",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--linda-buchwald.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Linda Buchwald",
+        "firstSeenAt": "2026-11-01T02:25:02.862Z",
+        "scoredAt": null,
+        "publishDate": "2026-08-19",
+        "url": "theatermania.com/news/jonathan-silverstein-to-direct-the-blue-violinist-over-west-end-avenue_1850252",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
