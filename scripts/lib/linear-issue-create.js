@@ -210,6 +210,46 @@ function missingVerifyReason({ source, mode, parkReason, body, noVerify }) {
   return `${MISSING_VERIFY_MESSAGE} (${v.reason || 'no acceptance command found'})`;
 }
 
+// BRO-5456: a session card armed with `test -f <file already on main>` passes
+// before any work is done, so it can never tell done from not done; it then
+// sits in audit-card-verifiability.js's vacuousChecks bucket (the health row
+// "Data: armed-but-vacuous backlog cards") until someone rewrites it. Five
+// session cards filed in one week carried one (BRO-6688, BRO-6590, BRO-6530,
+// BRO-6488, BRO-2938): --mac-only demands a safe command and `test -f` on a
+// script the work uses was the easiest one to hand. This refuses it at the
+// door, with the same classifier the audit and the enricher use.
+// LINEAR_CREATE_VACUOUS_VERIFY_REFUSE=0 downgrades the refusal to a warning.
+const VACUOUS_VERIFY_REFUSE = process.env.LINEAR_CREATE_VACUOUS_VERIFY_REFUSE !== '0';
+
+function defaultExistsOnOriginMain(relPath) {
+  // Local origin/main ref, no fetch: a file on an older origin/main is still
+  // there in almost every case, and a create must stay fast. null (could not
+  // resolve) is treated as healthy by classifyVacuousCheck's caller below.
+  return require('./origin-main-path-check.js').pathExistsOnOriginMain(relPath, { fileOnly: true });
+}
+
+/**
+ * PURE (given existsFn). Why this card body's armed VERIFY command cannot test
+ * the work, or null. Null when nothing is armed (missingVerifyReason owns that),
+ * when the command is not a `test -f`, when the path does not exist yet (a file
+ * the work will create is the honest use of `test -f`), and when existsFn
+ * cannot answer (fail open: a git hiccup never blocks a filing).
+ * @param {string} body
+ * @param {(relPath:string)=>boolean|null} [existsFn]
+ * @returns {string|null}
+ */
+function vacuousVerifyReason(body, existsFn = defaultExistsOnOriginMain) {
+  const v = require('./verify-gate.js').evaluateVerifiability(body || '', []);
+  if (!v.armed || !v.cmd) return null;
+  const auditor = require('./card-premises-auditor.js');
+  const verdict = auditor.classifyVacuousCheck(v.cmd, existsFn);
+  if (!verdict || verdict.kind === auditor.VACUOUS_TEST_F_UNRESOLVED) return null;
+  return `VERIFY "${v.cmd}" cannot tell done from not done: ${verdict.reason}. `
+    + 'Name a check that fails before the work and passes after: a test or file the work creates, '
+    + 'an audit-*.js script that goes red on the problem, check-health-row-absent.js for a health row, '
+    + 'check-workflow-run-status.js for a workflow, check-remote-branch-absent.js for a branch';
+}
+
 async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly, child }) {
   if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
     throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
@@ -316,6 +356,20 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
   const contractText = `${disposition.reason || ''}\n${body || ''}`;
   const contract = cardDedupe.hasPerCardContract(contractText)
     || ['digest-autofix', 'alert-router', 'e2e-canary'].includes(cardSource);
+  // BRO-5456: refuse a session card whose VERIFY is green before the work starts.
+  // Workflow filers only get a warning: the alert router drops an alert whose create throws.
+  let vacuous = null;
+  try {
+    vacuous = vacuousVerifyReason(body);
+  } catch (e) {
+    console.warn(`[linear-issue-create] vacuous-VERIFY check failed open: ${e.message}`);
+  }
+  if (vacuous && cardSource === 'session' && VACUOUS_VERIFY_REFUSE) {
+    const err = new Error(`Card refused: ${vacuous}. Nothing was filed.`);
+    err.code = 'VACUOUS_VERIFY';
+    throw err;
+  }
+  if (vacuous) console.warn(`[linear-issue-create] VACUOUS-VERIFY: ${vacuous} (BRO-5456).`);
   // A --dispatch filing (a session's own card) is never swapped for another
   // card, but a near-match of an open card is refused so the session works on
   // that card or says why it is different (--new-anyway). Fails open.
@@ -658,5 +712,5 @@ async function reuseOpenTwin({ title, body, client, mode = 'park' }) {
 
 module.exports = {
   createLinearIssue, reuseOpenTwin, reuseNearDuplicate, rollUpFlood, defaultFindOpenIssueByTitle, twinServes, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
-  effectiveCreatePriority, priorityFromTitle, missingVerifyReason, MISSING_VERIFY_MESSAGE, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
+  effectiveCreatePriority, priorityFromTitle, missingVerifyReason, vacuousVerifyReason, MISSING_VERIFY_MESSAGE, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER, DEFAULT_CREATE_PRIORITY,
 };

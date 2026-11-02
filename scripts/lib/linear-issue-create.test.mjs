@@ -578,3 +578,55 @@ test('createLinearIssue: macOnly writes the MAC-ONLY line and the label, and nee
   assert.equal(sent[1].labelIds, undefined);
   assert.ok(isMacOnlyCard({ description: sent[1].description }), 'the line alone marks the card');
 });
+
+// BRO-5456: a session card whose VERIFY is a `test -f` on a file already on
+// origin/main passes before the work, so creation refuses it.
+const { vacuousVerifyReason } = require('./linear-issue-create.js');
+const existsOnly = (present) => (p) => (p in present ? present[p] : false);
+// CI checkouts carry an origin/main ref; a bare copy may not, and then the probe fails open.
+const ORIGIN_MAIN_KNOWN = require('./origin-main-path-check.js').pathExistsOnOriginMain('scripts/linear-brain.js', { fileOnly: true }) === true;
+
+test('vacuousVerifyReason: flags a test -f on a file already on origin/main', () => {
+  const body = '## Acceptance criteria\n\nVERIFY: test -f scripts/export-cookies.js\n';
+  const r = vacuousVerifyReason(body, existsOnly({ 'scripts/export-cookies.js': true }));
+  assert.match(r, /cannot tell done from not done/);
+  assert.match(r, /test -f scripts\/export-cookies\.js/);
+});
+
+test('vacuousVerifyReason: a test -f on a file the work will create is fine', () => {
+  const body = 'VERIFY: test -f scripts/lib/new-thing.test.mjs';
+  assert.equal(vacuousVerifyReason(body, existsOnly({})), null);
+});
+
+test('vacuousVerifyReason: an unresolved existence probe never refuses (fail open)', () => {
+  assert.equal(vacuousVerifyReason('VERIFY: test -f scripts/x.js', () => null), null);
+});
+
+test('vacuousVerifyReason: non-test-f and unarmed bodies are left to the other gates', () => {
+  const always = () => true;
+  assert.equal(vacuousVerifyReason('VERIFY: node --test scripts/lib/x.test.mjs', always), null);
+  assert.equal(vacuousVerifyReason('VERIFY: node scripts/check-remote-branch-absent.js --branch=land/x', always), null);
+  assert.equal(vacuousVerifyReason('no acceptance section here', always), null);
+});
+
+test('vacuousVerifyReason: real path check against this checkout\'s origin/main', () => {
+  // scripts/linear-brain.js is on main; the default existsFn reads the local origin/main ref.
+  const r = vacuousVerifyReason('VERIFY: test -f scripts/linear-brain.js');
+  if (!ORIGIN_MAIN_KNOWN) { assert.equal(r, null); return; }
+  assert.match(r, /already passes on origin\/main/);
+});
+
+test('createLinearIssue: refuses a session card with a vacuous VERIFY before any Linear call', { skip: !ORIGIN_MAIN_KNOWN && 'no origin/main ref in this checkout' }, async () => {
+  await assert.rejects(
+    () => createLinearIssue({
+      title: 'BRO-5456 fixture card', dispatch: true, source: 'session',
+      description: '## Acceptance criteria\n\nVERIFY: test -f scripts/linear-brain.js\n',
+    }),
+    (err) => {
+      assert.equal(err.code, 'VACUOUS_VERIFY');
+      assert.match(err.message, /^Card refused: VERIFY "test -f scripts\/linear-brain\.js"/);
+      assert.match(err.message, /Nothing was filed/);
+      return true;
+    },
+  );
+});

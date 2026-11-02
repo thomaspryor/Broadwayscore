@@ -98,6 +98,7 @@ const AUDIT_LINT_GENERIC_FORM_ALLOWED = new Set([
   'audit-false-balance.js',
   'audit-gate-corpus-guard-coverage.js',
   'audit-launchd-stale-sync-guard.js',
+  'audit-london-census-coverage.js', // BRO-5456: BRO-6488's acceptance check
   'audit-linear-issuecreate-chokepoint.js',
   'audit-nft-excluded-runtime-reads.js',
   'audit-placeholder-venues.js',
@@ -118,6 +119,7 @@ const AUDIT_LINT_GENERIC_FORM_ALLOWED = new Set([
   'audit-tony-attribution.js',
   'audit-tony-eligibility.js',
   'audit-unbounded-fetch.js',
+  'audit-url-critic-slug-filenames.js', // BRO-5456: BRO-2938's acceptance check
   'audit-verifier-wiring.js',
   'audit-workflow-concurrency.js',
   'audit-workflow-secret-gaps.js',
@@ -400,6 +402,14 @@ const SAFE_CHECK_FORMS = [
   // pass/fail signal, never vacuous (contrast the bare `gh run list` shape
   // refused above).
   { re: /^node scripts\/ci-green-rate\.js(?: --days (?:[7-9]|[1-9]\d|[1-3]\d\d))?(?: --min (?:100|[5-9]\d))?(?: --json)?$/ },
+  // BRO-5456: "delete branch X" cards. check-remote-branch-absent.js runs one
+  // read-only `git ls-remote --heads origin refs/heads/<branch>` (execFileSync
+  // argv, no shell) and exits 0 only when the branch is gone, so it fails
+  // before the work and passes after — the honest replacement for the vacuous
+  // `test -f` such cards were armed with. Branch token: slash-separated
+  // segments, each starting alphanumeric (no leading '-'), at most 200 chars;
+  // the script itself also refuses '..' and a '.lock' suffix.
+  { re: /^node scripts\/check-remote-branch-absent\.js --branch=(?=.{1,200}$)(?!.*\.\.)[A-Za-z0-9][A-Za-z0-9._-]*(?:\/[A-Za-z0-9][A-Za-z0-9._-]*)*$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
