@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-02T22:17:21.424Z",
-  "windowDays": 1095,
-  "targets": 910,
-  "auditedThisRun": 26,
-  "carriedForward": 1860,
+  "generatedAt": "2026-11-02T22:35:34.788Z",
+  "windowDays": 21,
+  "targets": 22,
+  "auditedThisRun": 22,
+  "carriedForward": 1879,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 625,
-    "missingCurrentRun": 1185,
+    "withGap": 624,
+    "missingCurrentRun": 1180,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 929,
+    "totalFlaggedMisses": 926,
     "totalRecoverable": 55,
     "totalRecovered": 96,
     "humanExcluded": 24,
-    "automatedExcluded": 978,
-    "automatedExcludedListed": 692,
-    "priorProductionCitations": 6252
+    "automatedExcluded": 968,
+    "automatedExcludedListed": 687,
+    "priorProductionCitations": 6308
   },
   "results": [
     {
@@ -5114,6 +5114,96 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "a-fine-madness-regional-2026",
+      "title": "A Fine Madness",
+      "openingDate": "2026-06-03",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
+    },
+    {
+      "showId": "a-gentlemans-guide-to-love-and-murder-regional-2026",
+      "title": "A Gentleman's Guide to Love and Murder",
+      "openingDate": "2026-07-09",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://morristheatredc.com/theatre/review-a-gentlemans-guide-to-love-and-murder-olney-theatre-center",
+          "host": "morristheatredc.com",
+          "file": "morris-theatre-dc--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "a-ghost-in-your-ear-off-broadway-2026",
@@ -15342,12 +15432,20 @@
       "status": "open",
       "category": "regional",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "aggregatorListedUrls": [
+        "https://mdtheatreguide.com/2026/10/theatre-review-all-the-worlds-a-stage-at-signature-theatre/",
+        "https://www.broadwayworld.com/washington-dc/article/Review-ALL-THE-WORLDS-A-STAGE-at-Signature-Theatre-20261030"
+      ],
+      "dirFiles": 3,
+      "dirClean": 3,
+      "inReviewsJson": 3,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "morristheatredc.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
@@ -15373,7 +15471,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -15382,7 +15480,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -15409,37 +15507,51 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 0,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 43,
+        "count": 36,
         "byReason": {
-          "not-http-url": 8,
-          "non-review-host": 7,
-          "aggregator-internal-nav": 5,
-          "roundup-page": 1,
-          "venue-production-page": 3,
+          "non-review-host": 15,
+          "census-junk-host": 2,
+          "non-stage-review": 1,
           "write-path-blocked": 1,
+          "aggregator-internal-nav": 6,
+          "production-database-listing": 1,
+          "roundup-page": 1,
           "news-roundup-site": 1,
-          "non-review-path": 4,
-          "census-junk-host": 4,
-          "ticketing-reseller": 9
+          "venue-production-page": 3,
+          "ticketing-reseller": 5
         }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
+        "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://mdtheatreguide.com/2026/10/theatre-review-all-the-worlds-a-stage-at-signature-theatre/",
+            "outletId": "mdtheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-02T22:35:34.788Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/washington-dc/article/Review-ALL-THE-WORLDS-A-STAGE-at-Signature-Theatre-20261030",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-02T22:35:34.788Z"
+          }
+        ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 2,
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-02T22:17:21.424Z"
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "allegra-west-end-2026",
@@ -56523,6 +56635,44 @@
         "candidateCount": 6
       },
       "computedAt": "2026-10-31T17:58:22.702Z"
+    },
+    {
+      "showId": "carla-hall-please-underestimate-me-regional-2026",
+      "title": "Carla Hall - Please Underestimate Me",
+      "openingDate": "2026-06-14",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "carmen-off-broadway-2025",
@@ -109023,6 +109173,44 @@
       "computedAt": "2026-10-31T19:29:46.681Z"
     },
     {
+      "showId": "get-down-tonight-classic-funk-regional-2026",
+      "title": "Get Down Tonight: Classic Funk",
+      "openingDate": "2026-05-09",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
+    },
+    {
       "showId": "ghost-light-off-broadway-2017",
       "title": "Ghost Light",
       "openingDate": "2017-06-19",
@@ -109166,6 +109354,44 @@
         "candidateCount": 2
       },
       "computedAt": "2026-10-31T08:36:58.086Z"
+    },
+    {
+      "showId": "ghost-limb-regional-2026",
+      "title": "Ghost Limb",
+      "openingDate": "2026-05-15",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "ghost-notes-off-broadway-2026",
@@ -138843,6 +139069,7 @@
       "openingDate": "2026-01-09",
       "status": "closed",
       "category": "west-end",
+      "previewsStartDate": "2025-12-17",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/high-noon-review-harold-pinter-theatre",
@@ -138857,8 +139084,8 @@
         "https://www.thestage.co.uk/reviews/high-noon-review-harold-pinter-theatre-london-denise-gough-billy-crudup-eric-roth"
       ],
       "dirFiles": 28,
-      "dirClean": 16,
-      "inReviewsJson": 21,
+      "dirClean": 17,
+      "inReviewsJson": 22,
       "missing": [],
       "dirOnly": [
         {
@@ -138896,28 +139123,6 @@
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "clean",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        },
-        {
           "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/high-noon-play-harold-pinter-theatre-billy-crudup-b2898002.html",
           "host": "independent.co.uk",
           "knownOutletId": "independent",
@@ -138945,6 +139150,14 @@
           ],
           "copyOfLiveReview": true,
           "liveInReviews": true,
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/high-noon-west-end"
+            }
+          ],
+          "listingDate": "2026-01-10",
+          "listingSource": "show-score",
           "reverify": false
         }
       ],
@@ -138959,24 +139172,22 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.londontheatre.co.uk/reviews/high-noon-review-harold-pinter-theatre",
             "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T21:40:26.604Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html",
+            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T21:40:26.604Z"
           },
@@ -139021,13 +139232,6 @@
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-26T16:01:10.315Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/high-noon-theatre-review-billy-crudup-b1265970.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T21:40:26.604Z"
           }
         ],
         "censusSchema": 4,
@@ -139038,10 +139242,10 @@
             "reason": "copy-of-live-review"
           }
         ],
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 9
       },
-      "computedAt": "2026-11-01T13:47:54.164Z"
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "high-school-musical-off-west-end-2026",
@@ -222193,6 +222397,54 @@
       "computedAt": "2026-11-01T00:22:16.175Z"
     },
     {
+      "showId": "north-star-off-broadway-2026",
+      "title": "North Star",
+      "openingDate": "2026-06-03",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-north-star-a-frederick-douglass-dance-party_1841123/"
+      ],
+      "dirFiles": 1,
+      "dirClean": 1,
+      "inReviewsJson": 1,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/review-north-star-a-frederick-douglass-dance-party_1841123/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-02T22:35:34.788Z"
+          }
+        ],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 1,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
+    },
+    {
       "showId": "not-nobody-off-broadway-2026",
       "title": "Not Nobody",
       "openingDate": "2026-02-05",
@@ -233295,6 +233547,44 @@
       "computedAt": "2026-10-11T21:47:22.687Z"
     },
     {
+      "showId": "or-regional-2026",
+      "title": "Or,",
+      "openingDate": "2026-05-21",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
+    },
+    {
       "showId": "oratorio-for-living-things-off-broadway-2026",
       "title": "Oratorio for Living Things",
       "openingDate": "2025-10-16",
@@ -239530,6 +239820,105 @@
         "since": "2026-11-01T17:11:29.566Z",
         "lastAt": "2026-11-01T17:11:29.566Z"
       }
+    },
+    {
+      "showId": "our-house-off-broadway-2026",
+      "title": "Our House",
+      "openingDate": "2026-03-06",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.offoffonline.com/offoffonline/2026/3/6/our-house",
+        "https://www.theaterscene.net/plays/offbway-plays/our-house/victor-gluck/"
+      ],
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.theaterscene.net/plays/offbway-plays/our-house/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/our-house"
+            }
+          ]
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theaterscene.net/plays/offbway-plays/our-house/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterscene.net/plays/offbway-plays/our-house/victor-gluck/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/3/6/our-house",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-02T22:35:34.788Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/our-house/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T22:35:34.788Z"
+          }
+        ],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 1,
+        "candidateCount": 2
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "our-public-house-leeds-regional-2026",
@@ -246362,6 +246751,58 @@
       "computedAt": "2026-10-31T17:07:08.919Z"
     },
     {
+      "showId": "pippin-regional-2026",
+      "title": "Pippin",
+      "openingDate": "2026-05-23",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://morristheatredc.com/theatre/review-pippin-signature-theatre",
+          "host": "morristheatredc.com",
+          "file": "morris-theatre-dc--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
+    },
+    {
       "showId": "pirates-the-penzance-musical-2025",
       "title": "Pirates! The Penzance Musical",
       "openingDate": "2025-04-24",
@@ -248317,6 +248758,58 @@
         "candidateCount": 15
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "precarious-regional-2026",
+      "title": "Precarious",
+      "openingDate": "2026-06-12",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://morristheatredc.com/theatre/review-precarious-mosaic-theater-company",
+          "host": "morristheatredc.com",
+          "file": "morris-theatre-dc--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "present-laughter-royal-bath-regional-2026",
@@ -263596,7 +264089,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T22:17:21.424Z"
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "rosie-odonnell-common-knowledge-off-broadway-2026",
@@ -264542,6 +265035,271 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T19:29:46.681Z"
+    },
+    {
+      "showId": "sally-and-tom-regional-2026",
+      "title": "Sally & Tom",
+      "openingDate": "2026-06-13",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2024/04/16/theater/sally-and-tom-review-suzan-lori-parks.html",
+        "https://www.vulture.com/article/theater-review-suzan-lori-parkss-sally-and-tom.html",
+        "https://www.washingtonpost.com/entertainment/theater/2024/04/16/sally-and-tom-public-theater-review/",
+        "https://www.thewrap.com/sally-tom-off-broadway-review-suzan-lori-parks/",
+        "https://www.nysun.com/article/suzan-lori-parks-offers-theatergoers-a-new-topdog-underdog-in-a-sense-with-sally-tom",
+        "https://nystagereview.com/2024/04/16/sally-tom-the-oddest-most-emblematic-couple-in-u-s-history/",
+        "https://nystagereview.com/2024/04/16/sally-tom-follies-of-a-founding-father/",
+        "https://newyorktheater.me/2024/04/16/sally-tom-review/",
+        "https://www.newyorktheatreguide.com/reviews/sally-and-tom-off-broadway-review"
+      ],
+      "dirFiles": 5,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2024/04/16/theater/sally-and-tom-review-suzan-lori-parks.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-suzan-lori-parkss-sally-and-tom.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/16/sally-and-tom-public-theater-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/sally-tom-off-broadway-review-suzan-lori-parks/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/suzan-lori-parks-offers-theatergoers-a-new-topdog-underdog-in-a-sense-with-sally-tom",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/16/sally-tom-the-oddest-most-emblematic-couple-in-u-s-history/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/16/sally-tom-follies-of-a-founding-father/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/04/16/sally-tom-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/sally-and-tom-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "mdtheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "metroweekly.com",
+          "count": 1
+        },
+        {
+          "host": "washingtoncitypaper.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 273,
+        "byReason": {
+          "non-review-host": 15,
+          "non-stage-review": 4,
+          "aggregator-internal-nav": 203,
+          "not-http-url": 45,
+          "aggregator-section-root": 6
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-Suzan-Lori-Parks-SALLY-TOM-20240417",
+          "publishDate": "2024-04-17"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2024/04/16/theater/sally-and-tom-review-suzan-lori-parks.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-suzan-lori-parkss-sally-and-tom.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/16/sally-and-tom-public-theater-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/sally-tom-off-broadway-review-suzan-lori-parks/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/suzan-lori-parks-offers-theatergoers-a-new-topdog-underdog-in-a-sense-with-sally-tom",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/16/sally-tom-the-oddest-most-emblematic-couple-in-u-s-history/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/16/sally-tom-follies-of-a-founding-father/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2024/04/16/sally-tom-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/sally-and-tom-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "sandra-off-broadway-2022",
@@ -340887,6 +341645,58 @@
       "computedAt": "2026-11-02T19:36:38.932Z"
     },
     {
+      "showId": "the-motion-regional-2026",
+      "title": "The Motion",
+      "openingDate": "2026-05-18",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://morristheatredc.com/theatre/review-the-motion-arena-stage",
+          "host": "morristheatredc.com",
+          "file": "morris-theatre-dc--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
+    },
+    {
       "showId": "the-mousetrap-west-end-2021",
       "title": "The Mousetrap",
       "openingDate": "1952-11-25",
@@ -345376,6 +346186,107 @@
       "computedAt": "2026-10-31T18:47:32.823Z"
     },
     {
+      "showId": "the-paparazzi-off-broadway-2026",
+      "title": "The Paparazzi",
+      "openingDate": "2026-03-06",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-new-musical-the-paparazzi-tells-a-story-thats-old-news_1827984/",
+        "https://www.theaterscene.net/musicals/offbway/the-paparazzi/victor-gluck/"
+      ],
+      "dirFiles": 2,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.theaterscene.net/musicals/offbway/the-paparazzi/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/off-broadway-shows/the-paparazzi"
+            }
+          ],
+          "listingDate": "2026-03-28",
+          "listingSource": "show-score"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theaterscene.net/musicals/offbway/the-paparazzi/victor-gluck/",
+          "host": "theaterscene.net",
+          "outletId": "theater-scene",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theater-scene",
+            "outlet": "theater-scene",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theaterscene.net/musicals/offbway/the-paparazzi/victor-gluck/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/review-new-musical-the-paparazzi-tells-a-story-thats-old-news_1827984/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-02T22:35:34.788Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/offbway/the-paparazzi/victor-gluck/",
+            "outletId": "theater-scene",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T22:35:34.788Z"
+          }
+        ],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 1,
+        "candidateCount": 2
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
+    },
+    {
       "showId": "the-pass-off-broadway-2026",
       "title": "The Pass",
       "openingDate": "2026-08-04",
@@ -349727,6 +350638,869 @@
         "candidateCount": 7
       },
       "computedAt": "2026-10-11T21:47:22.687Z"
+    },
+    {
+      "showId": "the-play-that-goes-wrong-regional-2026",
+      "title": "The Play That Goes Wrong",
+      "openingDate": "2026-06-17",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong",
+        "https://playbill.com/article/read-reviews-for-the-off-broadway-return-of-the-play-that-goes-wrong",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong",
+        "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london"
+      ],
+      "aggregatorListedUrls": [
+        "http://www.amny.com/entertainment/the-play-that-goes-wrong-review-comedy-gets-it-hilariously-right-1.13351699",
+        "http://www.chicagotribune.com/entertainment/theater/broadway/sc-play-goes-wrong-review-20170402-column.html",
+        "http://www.thedailybeast.com/articles/2017/04/02/the-play-that-goes-wrong-on-broadway-is-so-right.html",
+        "https://dctheatrescene.com/2017/04/02/play-goes-wrong-review-murder-silly/",
+        "http://deadline.com/2017/04/the-play-that-went-wrong-j-j-abrams-broadway-review-1202057952/",
+        "http://www.hollywoodreporter.com/review/play-goes-wrong-review-990621",
+        "http://www.newsday.com/entertainment/theater/the-play-that-goes-wrong-review-the-comedy-goes-right-1.13345179",
+        "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html",
+        "https://www.thestage.co.uk/reviews/2017/play-goes-wrong-review-lyceum-theatre-new-york/",
+        "https://www.timeout.com/newyork/theater/the-play-that-goes-wrong",
+        "http://variety.com/2017/legit/reviews/the-play-that-goes-wrong-review-broadway-1202019860/",
+        "http://www.vulture.com/2017/04/theater-what-goes-right-with-the-play-that-goes-wrong.html",
+        "http://www.thewrap.com/play-goes-wrong-broadway-review-jj-abrams-british-farce-ham/",
+        "https://dcmetrotheaterarts.com/2019/02/20/review-the-play-that-goes-wrong-at-new-world-stages/",
+        "https://nystagereview.com/2019/02/20/the-play-that-goes-wrong-rarely-does-anything-go-so-right/",
+        "http://nystagereview.com/2019/02/20/the-play-that-goes-wrong-murderous-merriment-moves-to-hells-kitchen/",
+        "https://www.newyorktheatreguide.com/reviews/review-of-the-play-that-goes-wrong-at-new-world-stages",
+        "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
+        "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
+        "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
+        "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-petepan-goes-wrong-review-20230420-lonjxl7frzawhgnnruqjpgojza-story.html",
+        "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
+        "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
+        "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
+        "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
+        "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
+        "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
+        "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
+        "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
+        "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
+        "https://www.standard.co.uk/go/london/theatre/magic-goes-wrong-review-mischief-theatre-a4330246.html",
+        "https://www.theguardian.com/stage/2020/jan/09/magic-goes-wrong-review-penn-teller-mischief-theatre-vaudeville-london",
+        "https://www.thestage.co.uk/reviews/2020/magic-goes-wrong-review-at-vaudeville-theatre-london-mischief-theatres-entertaining-fusion-of-magic-and-comedy/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/magic-goes-wrong-review-vaudeville-terrific-new-helping-art/",
+        "https://www.thetimes.co.uk/article/magic-goes-wrong-review-revelling-in-the-art-of-the-complex-cock-up-qk8htb005",
+        "https://www.whatsonstage.com/london-theatre/reviews/magic-goes-wrong-vaudeville-mischief_50661.html"
+      ],
+      "dirFiles": 2,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "http://www.amny.com/entertainment/the-play-that-goes-wrong-review-comedy-gets-it-hilariously-right-1.13351699",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-play-goes-wrong-review-20170402-column.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/04/02/the-play-that-goes-wrong-on-broadway-is-so-right.html",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "https://dctheatrescene.com/2017/04/02/play-goes-wrong-review-murder-silly/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://deadline.com/2017/04/the-play-that-went-wrong-j-j-abrams-broadway-review-1202057952/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/play-goes-wrong-review-990621",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-play-that-goes-wrong-review-the-comedy-goes-right-1.13345179",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2017/play-goes-wrong-review-lyceum-theatre-new-york/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-play-that-goes-wrong",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/the-play-that-goes-wrong-review-broadway-1202019860/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://www.vulture.com/2017/04/theater-what-goes-right-with-the-play-that-goes-wrong.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://www.thewrap.com/play-goes-wrong-broadway-review-jj-abrams-british-farce-ham/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2019/02/20/review-the-play-that-goes-wrong-at-new-world-stages/",
+          "host": "dcmetrotheaterarts.com",
+          "knownOutletId": "dc-theater-arts",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-off-broadway-return-of-the-play-that-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2019/02/20/the-play-that-goes-wrong-rarely-does-anything-go-so-right/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-off-broadway-return-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "http://nystagereview.com/2019/02/20/the-play-that-goes-wrong-murderous-merriment-moves-to-hells-kitchen/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-off-broadway-return-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/review-of-the-play-that-goes-wrong-at-new-world-stages",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-the-off-broadway-return-of-the-play-that-goes-wrong"
+            }
+          ]
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-petepan-goes-wrong-review-20230420-lonjxl7frzawhgnnruqjpgojza-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/magic-goes-wrong-review-mischief-theatre-a4330246.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/jan/09/magic-goes-wrong-review-penn-teller-mischief-theatre-vaudeville-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/magic-goes-wrong-review-at-vaudeville-theatre-london-mischief-theatres-entertaining-fusion-of-magic-and-comedy/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/magic-goes-wrong-review-vaudeville-terrific-new-helping-art/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/magic-goes-wrong-review-revelling-in-the-art-of-the-complex-cock-up-qk8htb005",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/magic-goes-wrong-vaudeville-mischief_50661.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "hillrag.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 466,
+        "byReason": {
+          "non-review-host": 82,
+          "non-stage-review": 4,
+          "aggregator-internal-nav": 267,
+          "not-http-url": 24,
+          "production-database-listing": 66,
+          "aggregator-section-root": 16,
+          "roundup-page": 5,
+          "bare-host": 2
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/what-did-broadway-critics-think-of-the-play-that-goes-wrong",
+          "publishDate": "2017-04-02"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-the-off-broadway-return-of-the-play-that-goes-wrong",
+          "publishDate": "2019-02-21"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-peter-pan-goes-wrong",
+          "publishDate": "2023-04-19"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-mischief-theatres-magic-goes-wrong-in-london",
+          "publishDate": "2020-01-09"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://www.amny.com/entertainment/the-play-that-goes-wrong-review-comedy-gets-it-hilariously-right-1.13351699",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-play-goes-wrong-review-20170402-column.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/04/02/the-play-that-goes-wrong-on-broadway-is-so-right.html",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://dctheatrescene.com/2017/04/02/play-goes-wrong-review-murder-silly/",
+          "host": "dctheatrescene.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2017/04/the-play-that-went-wrong-j-j-abrams-broadway-review-1202057952/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/play-goes-wrong-review-990621",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-play-that-goes-wrong-review-the-comedy-goes-right-1.13345179",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2017/play-goes-wrong-review-lyceum-theatre-new-york/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-play-that-goes-wrong",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/the-play-that-goes-wrong-review-broadway-1202019860/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2017/04/theater-what-goes-right-with-the-play-that-goes-wrong.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/play-goes-wrong-broadway-review-jj-abrams-british-farce-ham/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2019/02/20/review-the-play-that-goes-wrong-at-new-world-stages/",
+          "host": "dcmetrotheaterarts.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2019/02/20/the-play-that-goes-wrong-rarely-does-anything-go-so-right/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2019/02/20/the-play-that-goes-wrong-murderous-merriment-moves-to-hells-kitchen/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/review-of-the-play-that-goes-wrong-at-new-world-stages",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/peter-pan-goes-wrong-gets-major-laughs/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Peter-Pan-Goes-Wrong/1141",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-peter-pan-goes-wrong-review-20230420-bzexsy5yvre2zbyxzfilstupeu-story.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-peter-pan-goes-wrong-on-broadway-has-such-fun-causing-chaos",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-petepan-goes-wrong-review-20230420-lonjxl7frzawhgnnruqjpgojza-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/04/19/theater/peter-pan-goes-wrong-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-heap-o-corny-cheesy-mayhem-goes-right/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/04/19/peter-pan-goes-wrong-so-wrong-its-high-flying-right/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2023/04/19/peter-pan-goes-wrong-review-neverland-nincompoops-get-laughs/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2023/04/review-peter-pan-goes-wrong-is-a-magical-comedy-disaster/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/peter-pan-goes-wrong-in-the-best-ways-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/peter-pan-goes-wrong-broadway-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/2023/04/theater-review-peter-pan-goes-wrong-broadway.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/peter-pan-goes-wrong-broadway-review-neil-patrick-harris/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/magic-goes-wrong-review-mischief-theatre-a4330246.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2020/jan/09/magic-goes-wrong-review-penn-teller-mischief-theatre-vaudeville-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/magic-goes-wrong-review-at-vaudeville-theatre-london-mischief-theatres-entertaining-fusion-of-magic-and-comedy/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/magic-goes-wrong-review-vaudeville-terrific-new-helping-art/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/magic-goes-wrong-review-revelling-in-the-art-of-the-complex-cock-up-qk8htb005",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/magic-goes-wrong-vaudeville-mischief_50661.html",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -364508,6 +366282,7 @@
       "openingDate": "2026-02-10",
       "status": "closed",
       "category": "west-end",
+      "previewsStartDate": "2026-01-29",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.londontheatre.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-rachel-joyce-passenger-mark-addy",
@@ -364517,8 +366292,8 @@
         "https://www.whatsonstage.com/news/the-unlikely-pilgrimage-of-harold-fry-in-the-west-end-review_1711758/"
       ],
       "dirFiles": 29,
-      "dirClean": 12,
-      "inReviewsJson": 16,
+      "dirClean": 13,
+      "inReviewsJson": 17,
       "missing": [],
       "dirOnly": [
         {
@@ -364554,30 +366329,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
-          "host": "standard.co.uk",
-          "knownOutletId": "standard",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "standard--nick-curtis.json",
-              "flag": "clean",
-              "urlInDir": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "cvWrongArticleHighConfidence"
-          ],
-          "reverify": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -364589,24 +366341,22 @@
         "byReason": {}
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "standard",
-            "outlet": "standard",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
             "url": "https://www.londontheatre.co.uk/reviews/the-unlikely-pilgrimage-of-harold-fry-review-rachel-joyce-passenger-mark-addy",
             "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-08-07T21:40:26.604Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
+            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-08-07T21:40:26.604Z"
           },
@@ -364627,21 +366377,14 @@
             "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-08-07T21:40:26.604Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html",
-            "outletId": "standard",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-07T21:40:26.604Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 4,
+        "liveCount": 5,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-01T13:47:54.164Z"
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "the-unseen-regional-2025",
@@ -366397,6 +368140,44 @@
         "candidateCount": 6
       },
       "computedAt": "2026-11-01T04:55:45.004Z"
+    },
+    {
+      "showId": "the-wedding-march-off-broadway-2026",
+      "title": "The Wedding March",
+      "openingDate": "2026-04-09",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "the-wedding-singer-regional-2026",
@@ -379090,31 +380871,31 @@
       "openingDate": "2026-10-18",
       "status": "closed",
       "category": "off-west-end",
+      "previewsStartDate": "2026-10-16",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://fringereview.co.uk/review/fringereview-uk/2026/triumph/",
-        "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
         "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
-        "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+        "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
+        "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
         "https://www.whatsonstage.com/news/triumph-review-caryl-churchill-has-pitch-perfect-prescience-with-her-almeida-micro-play_1735346/",
         "https://www.thestage.co.uk/reviews/triumph-review-almeida-theatre-london-caryl-churchill",
+        "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+        "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
+        "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
+        "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
+        "https://playsinternational.org.uk/triumph-almeida-theatre/",
+        "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
+        "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
         "https://monstagigz.com/tag/triumph/",
         "https://monstagigz.com/2026/10/25/theatre-review-triumph-starring-kate-oflynn-at-the-almeida-theatre/",
-        "https://playsinternational.org.uk/triumph-almeida-theatre/",
-        "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
-        "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
-        "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
         "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
         "https://theqr.co.uk/2026/10/20/caryl-churchills-triumph-falters-at-the-almeida-theatre/",
-        "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
         "https://www.thetimes.com/culture/theatre-dance/article/triumph-review-is-this-theatre-for-the-tiktok-generation-srgrf0zz7",
-        "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
         "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
         "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
         "https://www.timeout.com/london/theatre/triumph",
-        "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida",
-        "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
         "https://shows.acast.com/mickeyjotheatre/episodes/triumph-almeida-theatre-london-review-of-caryl-churchills-17",
         "https://www.ft.com/content/cbd99692-7670-4d29-8483-9db10436aadd"
       ],
@@ -379129,6 +380910,51 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "viewfromthegods--simon-jenner.json",
+              "flag": "clean",
+              "urlInDir": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=triumph-almeida-islington"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "isSyndicatedDuplicate"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            },
+            {
+              "source": "bestoftheatre",
+              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-triumph-almeida-theatre"
+            }
+          ],
+          "listingDate": "2026-10-19",
+          "listingSource": "bestoftheatre",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 4,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": false
+        },
         {
           "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
           "host": "britishtheatreguide.info",
@@ -379149,6 +380975,18 @@
           "basis": [
             "rejectionReason"
           ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            },
+            {
+              "source": "bestoftheatre",
+              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-triumph-almeida-theatre"
+            }
+          ],
+          "listingDate": "2026-10-19",
+          "listingSource": "bestoftheatre",
           "weRef": true,
           "weRefSources": [
             "bestoftheatre"
@@ -379175,68 +381013,14 @@
           "basis": [
             "wrongProduction"
           ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--milo-garth.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
-          "host": "viewfromthegods.co.uk",
-          "knownOutletId": "viewfromthegods",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "viewfromthegods--simon-jenner.json",
-              "flag": "clean",
-              "urlInDir": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/?utm_source=rss&utm_medium=rss&utm_campaign=triumph-almeida-islington"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "isSyndicatedDuplicate"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "copyOfLiveReview": true,
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "bestoftheatre",
-          "reverify": false
         },
         {
           "url": "https://shows.acast.com/mickeyjotheatre/episodes/triumph-almeida-theatre-london-review-of-caryl-churchills-17",
@@ -379257,6 +381041,12 @@
           "exclusion": "automatedExcluded",
           "basis": [
             "rejectionReason"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
           ],
           "serpCensus": true,
           "reverify": true
@@ -379337,8 +381127,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 8,
             "error": null
           },
           {
@@ -379348,7 +381138,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 4,
             "error": null
           },
           {
@@ -379358,7 +381148,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -379374,18 +381164,19 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 30,
         "byReason": {
-          "non-review-host": 21,
-          "non-stage-review": 1,
-          "census-junk-host": 2,
-          "no-review-evidence": 3,
-          "static-asset": 2,
+          "non-review-host": 20,
+          "no-review-evidence": 1,
+          "aggregator-roundup": 1,
+          "census-junk-host": 1,
+          "non-stage-review": 2,
           "write-path-blocked": 1,
+          "static-asset": 1,
           "ticketing-listing": 1,
           "venue-listing-page": 2
         }
@@ -379427,20 +381218,20 @@
             "firstSeenAt": "2026-10-20T04:58:31.558Z"
           },
           {
-            "url": "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
             "url": "https://www.allthatdazzles.co.uk/post/review-triumph-almeida-theatre",
             "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
           },
           {
-            "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
-            "outletId": "liamodell.com",
+            "url": "https://www.thereviewshub.com/triumph-almeida-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
+            "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
           },
@@ -379457,10 +381248,46 @@
             "firstSeenAt": "2026-10-19T21:45:10.991Z"
           },
           {
+            "url": "https://liamodell.com/2026/10/18/triumph-review-almeida-theatre-public-theater-new-york-caryl-churchill/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T21:45:10.991Z"
+          },
+          {
             "url": "https://www.westendbestfriend.co.uk/news/review-triumph-almeida-theatre",
             "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T04:58:31.558Z"
+          },
+          {
+            "url": "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
+            "outletId": "theartsdispatch.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-19T21:45:10.991Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/triumph-almeida-theatre/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-20T12:25:09.398Z"
+          },
+          {
+            "url": "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T05:36:08.000Z"
           },
           {
             "url": "https://monstagigz.com/tag/triumph/",
@@ -379475,30 +381302,6 @@
             "firstSeenAt": "2026-10-31T17:07:08.919Z"
           },
           {
-            "url": "https://playsinternational.org.uk/triumph-almeida-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T12:25:09.398Z"
-          },
-          {
-            "url": "https://theartsdispatch.substack.com/p/triumph-review-almeida-theatre-london",
-            "outletId": "theartsdispatch.substack.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T21:45:10.991Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/19/trumps-press-officer-almeida-triumph-caryl-churchill-emperor",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/10/review-triumph-almeida-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-19T21:45:10.991Z"
-          },
-          {
             "url": "https://theartsdesk.com/theatre/triumph-golden-boy-almeida-theatre-almeida-fires-multiple-cylinders",
             "outletId": "theartsdesk.com",
             "state": "live",
@@ -379511,22 +381314,10 @@
             "firstSeenAt": "2026-10-21T15:55:40.470Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/triumph-review-b1301404.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-20T04:58:31.558Z"
-          },
-          {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/triumph-review-is-this-theatre-for-the-tiktok-generation-srgrf0zz7",
             "outletId": "thetimes.com",
             "state": "live",
             "firstSeenAt": "2026-10-19T08:59:24.560Z"
-          },
-          {
-            "url": "https://www.theguardian.com/commentisfree/2026/oct/23/the-guardian-view-on-caryl-churchills-triumph-a-play-for-today",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T05:36:08.000Z"
           },
           {
             "url": "https://www.londonlivinglarge.com/2026/10/triumph-almeida-theatre-october-16-23.html",
@@ -379565,11 +381356,6 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/kate-oflynn-matthew-beard-caryl-churchill-triumph-almeida",
-            "host": "bestoftheatre.co.uk",
-            "reason": "confirmed-non-review"
-          },
-          {
             "url": "https://viewfromthegods.co.uk/2026/10/18/triumph-almeida-islington/",
             "host": "viewfromthegods.co.uk",
             "reason": "confirmed-non-review"
@@ -379578,7 +381364,7 @@
         "liveCount": 18,
         "candidateCount": 21
       },
-      "computedAt": "2026-11-01T13:47:54.164Z"
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "trophy-boys-off-broadway-2025",
@@ -391938,9 +393724,9 @@
       "candidatesRejected": {
         "count": 282,
         "byReason": {
-          "not-http-url": 44,
           "non-review-host": 15,
           "aggregator-internal-nav": 214,
+          "not-http-url": 44,
           "aggregator-section-root": 5,
           "roundup-page": 2,
           "bare-host": 1,
@@ -391965,7 +393751,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T22:17:21.424Z"
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "wesley-off-broadway-2025",
@@ -392894,6 +394680,58 @@
         "candidateCount": 5
       },
       "computedAt": "2026-11-01T15:28:43.633Z"
+    },
+    {
+      "showId": "what-became-of-us-regional-2026",
+      "title": "What Became of Us",
+      "openingDate": "2026-06-29",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://morristheatredc.com/theatre/review-what-became-of-us-signature-theatre",
+          "host": "morristheatredc.com",
+          "file": "morris-theatre-dc--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:35:34.788Z"
     },
     {
       "showId": "what-happened-was-off-broadway-2026",
