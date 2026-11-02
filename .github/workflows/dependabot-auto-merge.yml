@@ -46,24 +46,12 @@ jobs:
             --json number,title,url,headRefName,isCrossRepository > "$RUNNER_TEMP/dependabot-prs.json"
           echo "open Dependabot PRs: $(node -e 'console.log(require(process.argv[1]).length)' "$RUNNER_TEMP/dependabot-prs.json")"
 
-      - name: File one card per PR (deduped by the alert router)
+      # Also resolves dependabot-pr:<N> for PRs no longer open (BRO-6445).
+      - name: File one card per PR (deduped by the alert router), resolve closed ones
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           PRS_JSON: ${{ runner.temp }}/dependabot-prs.json
-        run: |
-          node -e '
-            const { routeAlert } = require("./scripts/lib/owner-alert-router.js");
-            const { dependabotPrAlerts } = require("./scripts/lib/dependabot-pr-cards.js");
-            const alerts = dependabotPrAlerts(require(process.env.PRS_JSON));
-            (async () => {
-              for (const a of alerts) {
-                const result = await routeAlert({ ...a, severity: "warning", disposition: "auto", cooldownHours: 24 * 30,
-                  fields: [{ name: "PR", value: a.url }] });
-                console.log(`${a.conditionKey}: ${result.action}`);
-              }
-              if (!alerts.length) console.log("no open Dependabot PRs");
-            })().catch((e) => { console.error("routeAlert failed:", e.message); process.exit(1); });
-          '
+        run: node scripts/route-dependabot-pr-cards.js
 
       - name: Commit alert-router ledger changes
         continue-on-error: true # a failed push shows red but does not fail the job (ledger-step-guard)
