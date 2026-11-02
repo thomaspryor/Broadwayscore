@@ -1,0 +1,329 @@
+{
+  "_comment": "BRO-6833: THE city-hub registry. One entry per US city hub; src/lib/city-hub.ts, MarketNav, footer, getMarketStats, local-market (TS+JS), tic-cities and the app feed all read it. launched:false = staged (no menu/footer/sitemap/stats exposure; tic-daily --dry-run lists what it would add). Runbook: memory/add-us-city-hub.md. Wiring test: tests/unit/city-hub-wiring.test.ts. The metro slug must also be a place in data/venue-metros.json; the app mirrors slug+label in lib/market-filter.ts CITY_MARKETS.",
+  "hubs": {
+    "chicago-il": {
+      "name": "Chicago, IL",
+      "short": "Chicago",
+      "home": "Chicago, IL",
+      "emoji": "🏙",
+      "cardLabel": "Chicago",
+      "menuSub": "reviews since 2021",
+      "launched": true,
+      "appMarket": "chicago",
+      "discoverySource": "theatreinchicago",
+      "tic": {
+        "key": "chicago",
+        "base": "https://www.theatreinchicago.com",
+        "host": "theatreinchicago.com",
+        "files": {
+          "seen": "data/audit/tic-daily-seen.json",
+          "added": "data/audit/tic-daily-added.json"
+        },
+        "since": null
+      }
+    },
+    "washington-dc": {
+      "name": "Washington, DC",
+      "short": "Washington DC",
+      "home": "Washington, DC",
+      "since": "2026-05-01",
+      "emoji": "🏛",
+      "cardLabel": "DC",
+      "menuSub": "reviews since May 2026",
+      "launched": true,
+      "appMarket": "dc",
+      "discoverySource": "theatreindc",
+      "tic": {
+        "key": "dc",
+        "base": "https://www.theatreindc.com",
+        "host": "theatreindc.com",
+        "files": {
+          "seen": "data/audit/tic-daily-seen-dc.json",
+          "added": "data/audit/tic-daily-added-dc.json"
+        },
+        "since": "2026-05-01",
+        "tourHouses": [
+          "kennedy center",
+          "national theat",
+          "warner theat",
+          "hippodrome",
+          "lyric.*baltimore",
+          "capital one arena",
+          "dar constitution hall",
+          "anthem",
+          "strathmore",
+          "music center"
+        ],
+        "venueCities": [
+          [
+            "Washington",
+            "DC"
+          ],
+          [
+            "Arlington",
+            "VA"
+          ],
+          [
+            "Alexandria",
+            "VA"
+          ],
+          [
+            "Falls Church",
+            "VA"
+          ],
+          [
+            "Fairfax",
+            "VA"
+          ],
+          [
+            "Vienna",
+            "VA"
+          ],
+          [
+            "Reston",
+            "VA"
+          ],
+          [
+            "Herndon",
+            "VA"
+          ],
+          [
+            "McLean",
+            "VA"
+          ],
+          [
+            "Springfield",
+            "VA"
+          ],
+          [
+            "Woodbridge",
+            "VA"
+          ],
+          [
+            "Bethesda",
+            "MD"
+          ],
+          [
+            "North Bethesda",
+            "MD"
+          ],
+          [
+            "Chevy Chase",
+            "MD"
+          ],
+          [
+            "Rockville",
+            "MD"
+          ],
+          [
+            "Silver Spring",
+            "MD"
+          ],
+          [
+            "Takoma Park",
+            "MD"
+          ],
+          [
+            "College Park",
+            "MD"
+          ],
+          [
+            "Hyattsville",
+            "MD"
+          ],
+          [
+            "Mount Rainier",
+            "MD"
+          ],
+          [
+            "Olney",
+            "MD"
+          ],
+          [
+            "Gaithersburg",
+            "MD"
+          ],
+          [
+            "Germantown",
+            "MD"
+          ],
+          [
+            "Greenbelt",
+            "MD"
+          ],
+          [
+            "Laurel",
+            "MD"
+          ],
+          [
+            "Wheaton",
+            "MD"
+          ],
+          [
+            "Kensington",
+            "MD"
+          ],
+          [
+            "Glen Echo",
+            "MD"
+          ],
+          [
+            "Bowie",
+            "MD"
+          ],
+          [
+            "Upper Marlboro",
+            "MD"
+          ],
+          [
+            "Largo",
+            "MD"
+          ],
+          [
+            "Brentwood",
+            "MD"
+          ]
+        ],
+        "requireMetro": true,
+        "minOutlets": 1,
+        "allowTypes": [
+          "^comedy$"
+        ]
+      }
+    },
+    "los-angeles-ca": {
+      "name": "Los Angeles, CA",
+      "short": "Los Angeles",
+      "home": "Los Angeles, CA",
+      "since": "2026-05-01",
+      "emoji": "🌴",
+      "cardLabel": "LA",
+      "menuSub": "reviews since May 2026",
+      "launched": false,
+      "appMarket": "la",
+      "discoverySource": "theatreinla",
+      "tic": {
+        "key": "la",
+        "base": "https://www.theatreinla.com",
+        "host": "theatreinla.com",
+        "files": {
+          "seen": "data/audit/tic-daily-seen-la.json",
+          "added": "data/audit/tic-daily-added-la.json"
+        },
+        "since": "2026-05-01",
+        "tourHouses": [
+          "pantages",
+          "ahmanson",
+          "dolby",
+          "hollywood bowl",
+          "kia forum",
+          "microsoft theat",
+          "greek theat"
+        ],
+        "venueCities": [
+          [
+            "Los Angeles",
+            "CA"
+          ],
+          [
+            "Hollywood",
+            "CA"
+          ],
+          [
+            "West Hollywood",
+            "CA"
+          ],
+          [
+            "Pasadena",
+            "CA"
+          ],
+          [
+            "Beverly Hills",
+            "CA"
+          ],
+          [
+            "Culver City",
+            "CA"
+          ],
+          [
+            "Santa Monica",
+            "CA"
+          ],
+          [
+            "Glendale",
+            "CA"
+          ],
+          [
+            "Burbank",
+            "CA"
+          ],
+          [
+            "North Hollywood",
+            "CA"
+          ],
+          [
+            "Studio City",
+            "CA"
+          ],
+          [
+            "Long Beach",
+            "CA"
+          ],
+          [
+            "Costa Mesa",
+            "CA"
+          ],
+          [
+            "Thousand Oaks",
+            "CA"
+          ],
+          [
+            "La Mirada",
+            "CA"
+          ],
+          [
+            "Laguna Beach",
+            "CA"
+          ],
+          [
+            "Sherman Oaks",
+            "CA"
+          ],
+          [
+            "Van Nuys",
+            "CA"
+          ],
+          [
+            "Northridge",
+            "CA"
+          ],
+          [
+            "Torrance",
+            "CA"
+          ],
+          [
+            "Valencia",
+            "CA"
+          ],
+          [
+            "Whittier",
+            "CA"
+          ],
+          [
+            "Fullerton",
+            "CA"
+          ],
+          [
+            "Irvine",
+            "CA"
+          ]
+        ],
+        "requireMetro": true,
+        "minOutlets": 1,
+        "allowTypes": [
+          "^comedy$"
+        ]
+      }
+    }
+  }
+}

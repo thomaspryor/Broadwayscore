@@ -12,7 +12,7 @@
  */
 
 /** discoverySource values that mark a show as local-only even without the field. */
-const LOCAL_DISCOVERY_SOURCES = ['theatreinchicago', 'theatreindc'];
+const LOCAL_DISCOVERY_SOURCES = Object.values(require('../../data/city-hubs.json').hubs).map((h) => h.discoverySource);
 
 function isLocalOnlyShow(show) {
   if (!show) return false;

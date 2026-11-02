@@ -5,7 +5,7 @@
 import { pickRegionalShelf } from '@/lib/regional-shelf';
 import path from 'path';
 import { isLocalOnlyShow } from '@/lib/local-market';
-import { hubPhase } from '@/lib/city-hub';
+import { hubPhase, HUB_CITIES } from '@/lib/city-hub';
 import { getTourCity } from './data-tour-cities';
 import { versionedImagePath } from './versioned-image-path';
 import {
@@ -444,10 +444,10 @@ export function getMarketStats() {
       shows: pickRegionalShelf(ukRegional, { limit: Infinity, requireEnoughReviews: true }).length,
       openShows: ukRegional.filter(s => s.status === 'open' || s.status === 'previews').length,
     },
-    // City hubs (/tours/chicago-il BRO-6498, /tours/washington-dc BRO-6771): regional productions in the metro.
+    // City hubs (/tours/<slug>, BRO-6498, BRO-6771): regional productions in the metro.
     // openShows counts tour stops playing now too, like the hub's Now Playing list.
-    chicago: hubMarketStats('chicago-il'),
-    washingtonDc: hubMarketStats('washington-dc'),
+    // One entry per launched registry city (data/city-hubs.json); a new city needs no edit here (BRO-6833).
+    hubs: Object.fromEntries(Object.keys(HUB_CITIES).map(slug => [slug, hubMarketStats(slug)])),
   };
 }
 

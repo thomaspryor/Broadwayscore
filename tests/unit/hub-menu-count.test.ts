@@ -15,9 +15,9 @@ test('hub menu count equals the hub Now Playing list (local + touring)', async (
   const { getTourCity } = await import('../../src/lib/data-tour-cities');
   const today = new Date().toISOString().slice(0, 10);
   const stats = getMarketStats();
-  for (const [slug, key] of [['chicago-il', 'chicago'], ['washington-dc', 'washingtonDc']] as const) {
+  for (const slug of Object.keys(stats.hubs)) {
     const local = getCityHubShows(slug, today).now.length;
     const touring = (getTourCity(slug, today)?.stops ?? []).filter(s => s.start <= today && today <= s.end).length;
-    assert.equal(stats[key].openShows, local + touring, slug);
+    assert.equal(stats.hubs[slug].openShows, local + touring, slug);
   }
 });

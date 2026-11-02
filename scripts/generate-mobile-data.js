@@ -23,6 +23,7 @@ const { loadCoverageFloorInputs, coverageFloorOptsForShow } = require('./lib/cov
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { isLocalOnlyShow } = require('./lib/local-market');
+const CITY_HUB_SLUGS = new Set(Object.entries(require('../data/city-hubs.json').hubs).filter(([, h]) => h.launched !== false).map(([slug]) => slug));
 const { isUpcomingTag } = require('./lib/opening-night-completeness');
 const { versionedImagePath } = require('./lib/versioned-image-path');
 
@@ -214,6 +215,9 @@ const mobileShows = visibleShows.map(show => {
   // Local-only (Chicago, BRO-6760): the app keeps these out of search, related shows
   // and title matching unless the Chicago market is picked.
   if (isLocalOnlyShow(show)) entry.lo = 1;
+  // City hub slug (BRO-6833, e.g. 'chicago-il'): the app's city markets filter on it, so a new
+  // city needs no app-side venue list. Only launched registry cities (data/city-hubs.json) are carried.
+  if (show.city && CITY_HUB_SLUGS.has(show.city)) entry.cy = show.city;
   if (show.openingDate) entry.od = show.openingDate;
   if (show.closingDate) entry.cd = show.closingDate;
   // First preview date (YYYY-MM-DD) when shows.json has one; omitted otherwise.

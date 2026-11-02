@@ -6,12 +6,35 @@
 export const RECENT_DAYS = 365;
 export const CLOSED_LIMIT = 12;
 
-/** Slugs of the metros that have a hub page. `home` is the trailing "City, ST" a venue drops on that hub's own page. */
-export const HUB_CITIES: Record<string, { name: string; short: string; home: string; since?: string }> = {
-  'chicago-il': { name: 'Chicago, IL', short: 'Chicago', home: 'Chicago, IL' },
-  // BRO-6771: short-history launch (open now + opened since 2026-05-01), Theatre In DC.
-  'washington-dc': { name: 'Washington, DC', short: 'Washington DC', home: 'Washington, DC', since: '2026-05-01' },
-};
+import registry from '../../data/city-hubs.json';
+
+export interface HubCity {
+  name: string;
+  short: string;
+  home: string;
+  since?: string;
+  emoji: string;
+  /** Footer card headline ("DC"). */
+  cardLabel: string;
+  /** Market-menu line after "N playing now · ". */
+  menuSub: string;
+  /** Key of the app's CITY_MARKETS entry (BroadwayScorecard-app lib/market-filter.ts). */
+  appMarket: string;
+  /** shows.json discoverySource of this city's local productions (also the local-only marker). */
+  discoverySource: string;
+  /** false = staged: no menu, footer, sitemap, route or stats exposure. */
+  launched: boolean;
+}
+
+/** Every registry city, staged ones included. data/city-hubs.json is the one place a city is added (BRO-6833). */
+export const ALL_HUB_CITIES: Record<string, HubCity> = Object.fromEntries(
+  Object.entries(registry.hubs as Record<string, Partial<HubCity>>).map(([slug, h]) => [slug, { launched: true, ...h } as HubCity]),
+);
+
+/** Slugs of the launched metros that have a hub page. `home` is the trailing "City, ST" a venue drops on that hub's own page. */
+export const HUB_CITIES: Record<string, HubCity> = Object.fromEntries(
+  Object.entries(ALL_HUB_CITIES).filter(([, h]) => h.launched),
+);
 
 /** "Arena Stage, Washington, DC" -> "Arena Stage" on the DC hub; suburbs keep their city. */
 export function hubVenue(venue: string | null | undefined, slug: string): string {
