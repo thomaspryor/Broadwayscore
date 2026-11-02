@@ -21,6 +21,8 @@ node scripts/generate-show-lookup.js
 node scripts/generate-diary-data.js
 # App recommendations: slim copy of data/related-shows.json (gitignored, served at /data/related-shows-mobile.json)
 node scripts/generate-related-shows-mobile.js
+# App showtime picker: weekly schedules (gitignored, served at /data/show-schedules.json, BRO-6783)
+node scripts/generate-show-schedules-mobile.js
 # Actor slug manifest — collapses ~2400 data/cast/ files into a single ~1MB
 # JSON to keep Vercel's serverless bundle under the 300MB NFT limit.
 node scripts/build-actor-slugs-manifest.js

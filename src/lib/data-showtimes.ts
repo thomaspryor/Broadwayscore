@@ -112,6 +112,23 @@ export function isKnownDarkForSlot(showId: string, date: string, slot: 'matinee'
   return (slot === 'matinee' ? day.m : day.e) === null;
 }
 
+/** The real scheduled "HH:MM" for this slot on this date, or null (uncovered date, or dark). */
+export function scheduledShowtime(showId: string, date: string, slot: 'matinee' | 'evening'): string | null {
+  return scheduledTime(showId, date, slot);
+}
+
+/**
+ * When the schedule covers this date and only one performance plays, that
+ * slot (BRO-6783 auto-select); otherwise null.
+ */
+export function onlyPerformanceSlot(showId: string, date: string): 'matinee' | 'evening' | null {
+  const m = scheduledTime(showId, date, 'matinee');
+  const e = scheduledTime(showId, date, 'evening');
+  if (m && !e && isKnownDarkForSlot(showId, date, 'evening')) return 'matinee';
+  if (e && !m && isKnownDarkForSlot(showId, date, 'matinee')) return 'evening';
+  return null;
+}
+
 function scheduledTime(showId: string, date: string, slot: 'matinee' | 'evening'): string | null {
   const schedule = getShowSchedule(showId);
   const week = schedule?.weeks[mondayOfWeekYyyymmdd(date)];

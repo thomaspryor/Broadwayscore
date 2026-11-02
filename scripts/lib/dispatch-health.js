@@ -282,6 +282,12 @@ function isLandedAcked(rows, taskId, last) {
  *            inFlight, none, successRate, failureRate,
  *            failedTaskIds:string[]}}
  */
+// The reason prefix bsc-runner.js's runJob() disk preflight writes on its
+// ABANDONED row ("disk-pressure: disk free …GB < floor …").
+function isDiskPressureRefusal(entry) {
+  return /^disk-pressure:/.test(String((entry && entry.reason) || ''));
+}
+
 function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windowDays, lane = JOB_LANE } = {}) {
   if (!Number.isFinite(nowMs)) {
     throw new Error('dispatch-health.computeJobLaneOutcomeRate: nowMs (epoch ms) is required — this module takes no clock of its own');
@@ -299,11 +305,13 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       const upperBound = i + 1 < launches.length ? launches[i + 1].ts : Infinity;
 
       let last = null; // last job-* event for this task inside the ownership window
+      let spawnedInWindow = false; // a worker actually ran under this launch (incl. a reconciler resume)
       for (const e of rows) {
         if (String(e.taskId) !== taskId || !String(e.event || '').startsWith('job-')) continue;
         const t = tsOf(e);
         if (t === null || t < launch.ts || t >= upperBound) continue;
         if (!last || t >= last.ts) last = { ...e, ts: t };
+        if (e.event === JOB_EVENTS.SPAWNED) spawnedInWindow = true;
       }
 
       let outcome;
@@ -335,6 +343,21 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
         && isLandedAcked(rows, taskId, last)) outcome = 'done';
       else if (last.event === JOB_EVENTS.STOPPED_SHORT) outcome = 'stoppedShort';
       else if (last.event === JOB_EVENTS.STRANDED) outcome = 'stranded';
+      // BRO-6430: a disk-pressure ABANDONED means bsc-runner refused the
+      // attempt before spawning anything (free disk under the dispatch
+      // floor). No worker existed, so there is no outcome to judge; counting
+      // these as failures made a 3-day low-disk window (727 refused
+      // launches, 2026-10-29..31) read as a 21% success rate. Excluded from
+      // `resolved` like orphaned/blocked; the disk condition itself is
+      // alerted by bsc-runner's routeDiskPressureAlert (digest), and
+      // dispatch-watchdog now holds instead of re-launching. ONLY this
+      // reason: the other ABANDONED writers (lease held by a duplicate
+      // dispatch, acquireLease throwing) have no other alarm, so they stay
+      // counted as failures here.
+      // ...and only when no worker ever ran under this launch: a resume chain
+      // (SPAWNED -> FAILED -> RETRIED -> disk-refused) carries a real worker
+      // failure the refusal must not erase.
+      else if (last.event === JOB_EVENTS.ABANDONED && isDiskPressureRefusal(last) && !spawnedInWindow) outcome = 'abandoned';
       else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ABANDONED/RETRIED-with-no-successor-spawn-yet
       else outcome = 'inFlight'; // SPAWNED — chain still open
 
@@ -350,6 +373,7 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
   // above for why `blocked` gets ORPHANED's "not evidence either way"
   // treatment while `stoppedShort`/`stranded` are real failures.
   const blocked = results.filter((r) => r.outcome === 'blocked').length;
+  const abandoned = results.filter((r) => r.outcome === 'abandoned').length;
   const stoppedShort = results.filter((r) => r.outcome === 'stoppedShort').length;
   const stranded = results.filter((r) => r.outcome === 'stranded').length;
   const inFlight = results.filter((r) => r.outcome === 'inFlight').length;
@@ -377,6 +401,7 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
     failed,
     orphaned,
     blocked,
+    abandoned,
     stoppedShort,
     stranded,
     inFlight,
@@ -387,6 +412,7 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
     failedTaskIds: [...new Set(results.filter((r) => r.outcome === 'failed').map((r) => r.taskId))],
     orphanedTaskIds: [...new Set(results.filter((r) => r.outcome === 'orphaned').map((r) => r.taskId))],
     blockedTaskIds: [...new Set(results.filter((r) => r.outcome === 'blocked').map((r) => r.taskId))],
+    abandonedTaskIds: [...new Set(results.filter((r) => r.outcome === 'abandoned').map((r) => r.taskId))],
     stoppedShortTaskIds: [...new Set(results.filter((r) => r.outcome === 'stoppedShort').map((r) => r.taskId))],
     strandedTaskIds: [...new Set(results.filter((r) => r.outcome === 'stranded').map((r) => r.taskId))],
   };
@@ -433,7 +459,7 @@ function computeHeadlessDispatchDigest({
   // so it must still be visible here — otherwise a supervisor that only ever
   // orphans jobs (never actually failing or succeeding them) would silently
   // sit outside minResolved forever with no sign anything is wrong.
-  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.blocked} blocked (owner decision needed, not counted as failure), ${stats.stoppedShort} stopped short, ${stats.stranded} stranded (unlanded work), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
+  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.blocked} blocked (owner decision needed, not counted as failure), ${stats.abandoned} refused before spawn for low disk (not counted as failure), ${stats.stoppedShort} stopped short, ${stats.stranded} stranded (unlanded work), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
 
   // Orphan-rate gate FIRST, before the vacuous-gate (resolved===0) check
   // (Codex adversarial ship-check catch, 2nd pass): the vacuous-gate branch
@@ -466,7 +492,7 @@ function computeHeadlessDispatchDigest({
     return {
       name: HEADLESS_CHECK_NAME,
       status: 'warn',
-      message: `No resolved ${lane} launches in the ${span} — the success rate cannot be measured (${stats.launches} launch(es), all in-flight, orphaned, or unspawned).`,
+      message: `No resolved ${lane} launches in the ${span} — the success rate cannot be measured (${stats.launches} launch(es), all in-flight, orphaned, blocked, refused for low disk, or unspawned): ${detail}.`,
       hint: 'data/audit/dispatch-ledger.jsonl is per-machine and gitignored; run this where headless dispatches actually launch.',
       ...stats,
     };

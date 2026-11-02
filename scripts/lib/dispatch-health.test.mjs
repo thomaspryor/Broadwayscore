@@ -518,3 +518,52 @@ test('landed-acked for a different jobId (or none) does not rescue the job', () 
     assert.equal(r.done, 0);
   }
 });
+
+// BRO-6430: 2026-10-29..31 bsc-runner refused 730 headless launches before
+// spawning (disk under the dispatch floor) and the rate read 21%. ABANDONED
+// means the attempt never ran — no worker, no verdict — so it sits outside
+// `resolved` like orphaned/blocked, and is still shown in the message.
+test('BRO-6430: disk-pressure refusals are not failures and stay visible; other ABANDONED reasons still count', () => {
+  const abandoned = (ts, taskId, jobId, reason) => ({ ts, event: JOB_EVENTS.ABANDONED, taskId, jobId, reason });
+  const entries = [];
+  for (let i = 0; i < 10; i++) {
+    const t = `2026-08-0${4 + (i % 5)}T0${i % 10}:00:00.000Z`;
+    entries.push(hlLaunch(t, `ok-${i}`), hlSpawn(t, `ok-${i}`, `ok-${i}-j`), hlDone(t, `ok-${i}`, `ok-${i}-j`));
+  }
+  for (let i = 0; i < 40; i++) {
+    const t = `2026-08-09T${String(i % 24).padStart(2, '0')}:${String(i).padStart(2, '0')}:00.000Z`;
+    entries.push(hlLaunch(t, `disk-${i}`), abandoned(t, `disk-${i}`, `disk-${i}-j`, 'disk-pressure: disk free 3.4GB < floor 5GB after self-heal GC — refusing dispatch'));
+  }
+  entries.push(hlLaunch('2026-08-09T05:00:00.000Z', 'dup'), abandoned('2026-08-09T05:00:00.000Z', 'dup', 'dup-j', 'task already has a live job'));
+  entries.push(hlLaunch('2026-08-09T06:00:00.000Z', 'real'), hlSpawn('2026-08-09T06:00:00.000Z', 'real', 'real-j'), hlFailed('2026-08-09T06:30:00.000Z', 'real', 'real-j'));
+
+  const stats = computeJobLaneOutcomeRate(entries, { nowMs: NOW, lane: 'headless' });
+  assert.equal(stats.abandoned, 40);
+  // Duplicate-dispatch (lease held) has no other alarm: still a failure.
+  assert.equal(stats.failed, 2, 'the spawned job that failed and the lease-held refusal both count');
+  assert.equal(stats.resolved, 12);
+  assert.ok(!stats.abandonedTaskIds.includes('dup'));
+  assert.ok(stats.failedTaskIds.includes('dup'));
+
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.status, 'pass', `10/12 resolved is over the 80% floor: ${row.message}`);
+  assert.match(row.message, /40 refused before spawn for low disk/);
+
+  // A resume chain whose retry was disk-refused keeps the real failure.
+  const resumed = [
+    hlLaunch('2026-08-09T07:00:00.000Z', 'resumed'),
+    hlSpawn('2026-08-09T07:00:01.000Z', 'resumed', 'r1'),
+    hlFailed('2026-08-09T07:30:00.000Z', 'resumed', 'r1'),
+    { ts: '2026-08-09T07:31:00.000Z', event: JOB_EVENTS.RETRIED, taskId: 'resumed', jobId: 'r1' },
+    abandoned('2026-08-09T07:32:00.000Z', 'resumed', 'r2', 'disk-pressure: disk free 3.4GB < floor 5GB after self-heal GC — refusing dispatch'),
+  ];
+  const r = computeJobLaneOutcomeRate(resumed, { nowMs: NOW, lane: 'headless' });
+  assert.equal(r.failed, 1);
+  assert.equal(r.abandoned, 0);
+
+  // Window with nothing but disk refusals: unmeasurable, and says why.
+  const onlyDisk = entries.filter((e) => String(e.taskId).startsWith('disk-'));
+  const empty = computeHeadlessDispatchDigest({ entries: onlyDisk, nowMs: NOW });
+  assert.equal(empty.status, 'warn');
+  assert.match(empty.message, /40 refused before spawn for low disk/);
+});

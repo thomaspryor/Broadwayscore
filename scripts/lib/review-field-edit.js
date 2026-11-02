@@ -258,6 +258,13 @@ const FIELD_VALUE_CHECKS = {
     const { isAggregatorPageUrl } = require('./review-slot-guards');
     const { classifyReviewUrl, listingPageUrlReason } = require('./non-review-url-patterns');
     const current = record.url || '';
+    // BRO-5075: the stored url is the review's own url with its scheme or host
+    // missing (a BroadwayWorld "/chicago/article/..." path, "hhttp://", "www.x.com/...").
+    // Writing back the one deterministic repair keeps the same article, so it
+    // needs neither the provably-wrong proof nor the review-candidate check
+    // (real BWW review paths like /article/BWW-Review-... fail that check).
+    const repair = require('./relative-review-url').classifyRelativeUrl(current, record.outletId).fixedUrl;
+    if (repair && v === repair) return null;
     const currentAggregator = isAggregatorPageUrl(current);
     // BRO-5183: a legacy web-search row the scorer already excludes for want of
     // page text holds a url that step made up (outlet 404 pages, patterned

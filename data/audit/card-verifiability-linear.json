@@ -1,13 +1,38 @@
 {
-  "generatedAt": "2026-11-01T11:58:55.534Z",
-  "total": 393,
-  "armedCount": 382,
-  "refusedCount": 11,
+  "generatedAt": "2026-11-02T13:45:59.179Z",
+  "total": 408,
+  "armedCount": 395,
+  "refusedCount": 13,
   "byKind": {
+    "no-section": 2,
     "shape": 10,
     "traversal": 1
   },
   "refused": [
+    {
+      "id": "BRO-6820",
+      "name": "Opening-night audit 2026-11-02",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6820/opening-night-audit-2026-11-02",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-6810",
+      "name": "Tech Scorecard weekly port 2026-11-02",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6810/tech-scorecard-weekly-port-2026-11-02",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-6790",
+      "name": "Add opera assets to the /brand page and download zip",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6790/add-opera-assets-to-the-brand-page-and-download-zip",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: unzip -l public/brand-kit/broadway-scorecard-brand-kit.zip | grep -c opera)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-6755",
       "name": "BSC Daily: Commercial model drift",
@@ -65,14 +90,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-6453",
-      "name": "WE 2012-13 to 2014-15 review supply for the 87 BRO-6450 promoted shows, plus 2015-16 finish",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6453/we-2012-13-to-2014-15-review-supply-for-the-87-bro-6450-promoted-shows",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: for s in 2012-2013 2013-2014 2014-2015 2015-2016 2016-2017; do node scripts/audit-we-historical-season.js --season=$s; d)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-6428",
       "name": "West End history: seasons 2013-14 and 2012-13 (list-first + Guardian/WOS supply)",
       "priority": null,
@@ -98,8 +115,8 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 322,
-    "checked": 322,
+    "total": 324,
+    "checked": 324,
     "complete": true,
     "cards": [
       {
@@ -113,21 +130,57 @@
   },
   "missingCheckPaths": [
     {
-      "id": "BRO-6739",
-      "name": "Link-in-bio page: feature the show of the latest video so 'link in bio' lands on it",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6739/link-in-bio-page-feature-the-show-of-the-latest-video-so-link-in-bio",
-      "cmd": "node --test scripts/test-video-captions.test.mjs",
+      "id": "BRO-6833",
+      "name": "City hubs on rails: one registry entry adds a US city (web menu/footer/stats, app market, feed city slug, runbook, wiring test)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6833/city-hubs-on-rails-one-registry-entry-adds-a-us-city-web",
+      "cmd": "npx tsx --test tests/unit/city-hub-wiring.test.ts",
       "missingPaths": [
-        "scripts/test-video-captions.test.mjs"
+        "tests/unit/city-hub-wiring.test.ts"
       ]
     },
     {
-      "id": "BRO-6737",
-      "name": "Video captions: tagged link on Facebook, link in bio on TikTok/Instagram, YouTube description link (per-channel)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6737/video-captions-tagged-link-on-facebook-link-in-bio-on-tiktokinstagram",
-      "cmd": "node --test scripts/test-video-captions.test.mjs",
+      "id": "BRO-6807",
+      "name": "Next city hub decision (LA vs Boston/SF/San Diego) from Chicago + DC app usage",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6807/next-city-hub-decision-la-vs-bostonsfsan-diego-from-chicago-dc-app",
+      "cmd": "test -f memory/next-city-hub-decision.md",
       "missingPaths": [
-        "scripts/test-video-captions.test.mjs"
+        "memory/next-city-hub-decision.md"
+      ]
+    },
+    {
+      "id": "BRO-6804",
+      "name": "Review-gap audit: false 'missing' reviews hide real misses (Time Out listings, album reviews, other productions)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6804/review-gap-audit-false-missing-reviews-hide-real-misses-time-out",
+      "cmd": "node --test scripts/audit-review-gap.test.mjs",
+      "missingPaths": [
+        "scripts/audit-review-gap.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6800",
+      "name": "Opera hub page text still names only the Met and Royal Opera House (needs owner visual OK)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6800/opera-hub-page-text-still-names-only-the-met-and-royal-opera-house",
+      "cmd": "node --test tests/unit/opera-hub-text-expansion.test.mjs",
+      "missingPaths": [
+        "tests/unit/opera-hub-text-expansion.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6791",
+      "name": "Opera brand colour: site header is amber, social kit is rose-red",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6791/opera-brand-colour-site-header-is-amber-social-kit-is-rose-red",
+      "cmd": "node --test scripts/opera-brand-colour.test.mjs",
+      "missingPaths": [
+        "scripts/opera-brand-colour.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6768",
+      "name": "iOS nightly E2E failures reach no one: auto-file one Linear card when the scheduled Maestro run fails",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6768/ios-nightly-e2e-failures-reach-no-one-auto-file-one-linear-card-when",
+      "cmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
+      "missingPaths": [
+        "tests/unit/e2e-failure-alert.test.mjs"
       ]
     },
     {
@@ -164,15 +217,6 @@
       "cmd": "node --test tests/unit/lane-rehearsal-recorded.test.mjs",
       "missingPaths": [
         "tests/unit/lane-rehearsal-recorded.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6548",
-      "name": "NYC facts audit: 8 rows with no readable authoritative source (BRO-6489 leftovers)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6548/nyc-facts-audit-8-rows-with-no-readable-authoritative-source-bro-6489",
-      "cmd": "node --test scripts/nyc-facts-audit-verification.test.mjs",
-      "missingPaths": [
-        "scripts/nyc-facts-audit-verification.test.mjs"
       ]
     },
     {
@@ -272,24 +316,6 @@
       "cmd": "node --test scripts/port-tech-scorecard.test.mjs",
       "missingPaths": [
         "scripts/port-tech-scorecard.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6269",
-      "name": "iOS: iPhone-only for the public App Store launch (supportsTablet false)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6269/ios-iphone-only-for-the-public-app-store-launch-supportstablet-false",
-      "cmd": "node --test tests/unit/ios-tablet-support.test.mjs",
-      "missingPaths": [
-        "tests/unit/ios-tablet-support.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6263",
-      "name": "Codex trust ladder: unlock more access automatically as its record holds, relock on regression",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6263/codex-trust-ladder-unlock-more-access-automatically-as-its-record",
-      "cmd": "node --test scripts/lib/codex-runner.test.mjs",
-      "missingPaths": [
-        "scripts/lib/codex-runner.test.mjs"
       ]
     },
     {
@@ -797,15 +823,6 @@
       ]
     },
     {
-      "id": "BRO-3497",
-      "name": "Re-extract 301 stale Talkin' Broadway reviews now that BRO-912's extractor fix is live",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3497/re-extract-301-stale-talkin-broadway-reviews-now-that-bro-912s",
-      "cmd": "node --test scripts/re_extract_talkin_broadway_reviews.test.mjs",
-      "missingPaths": [
-        "scripts/re_extract_talkin_broadway_reviews.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-3467",
       "name": "Escalate repeated job-blocked parks on the same task (BRO-3442 follow-up)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3467/escalate-repeated-job-blocked-parks-on-the-same-task-bro-3442-follow",
@@ -952,76 +969,16 @@
   ],
   "vacuousChecks": [
     {
-      "id": "BRO-6688",
-      "name": "Delete stale failed land branch land/bro-6682-opening-night-leftovers",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6688/delete-stale-failed-land-branch-landbro-6682-opening-night-leftovers",
-      "cmd": "test -f scripts/lib/wait-for-land.js",
+      "id": "BRO-6803",
+      "name": "Opera: SFO The Monkey King has 3 unscored review files; score them or retire the row",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6803/opera-sfo-the-monkey-king-has-3-unscored-review-files-score-them-or",
+      "cmd": "test -f scripts/linear-brain.js",
       "kind": "test-f-satisfied",
       "polarity": "never-fails",
       "paths": [
-        "scripts/lib/wait-for-land.js"
+        "scripts/linear-brain.js"
       ],
-      "reason": "`test -f scripts/lib/wait-for-land.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-6590",
-      "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6590/renew-the-nyt-login-cookie-on-the-mac-studio-nyt-s-nyt-a-expired-by",
-      "cmd": "test -f scripts/export-cookies.js",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/export-cookies.js"
-      ],
-      "reason": "`test -f scripts/export-cookies.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-6530",
-      "name": "Renew The Stage login cookie on the Mac Studio (CI cookie expired 2026-10-29)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6530/renew-the-stage-login-cookie-on-the-mac-studio-ci-cookie-expired-2026",
-      "cmd": "test -f scripts/renew-cookies.js",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/renew-cookies.js"
-      ],
-      "reason": "`test -f scripts/renew-cookies.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-6488",
-      "name": "Outlet-first review census for London outlets, 2012 to now (T1-T3), matched to West End/Off-West End shows",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6488/outlet-first-review-census-for-london-outlets-2012-to-now-t1-t3",
-      "cmd": "test -f docs/specs/outlet-census.md",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "docs/specs/outlet-census.md"
-      ],
-      "reason": "`test -f docs/specs/outlet-census.md` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-2938",
-      "name": "P2: 58 review-text filenames carry a URL where the critic slug belongs, and six call sites parse identity by splitting that filename on '--'",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2938/p2-58-review-text-filenames-carry-a-url-where-the-critic-slug-belongs",
-      "cmd": "test -f scripts/lib/review-normalization.test.mjs",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/lib/review-normalization.test.mjs"
-      ],
-      "reason": "`test -f scripts/lib/review-normalization.test.mjs` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
-    },
-    {
-      "id": "BRO-266",
-      "name": "Rules & memory overhaul for the Linear world (CLAUDE.md rewrite, index prune)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-266/rules-and-memory-overhaul-for-the-linear-world-claudemd-rewrite-index",
-      "cmd": "test -f scripts/memory-index-integrity.test.mjs",
-      "kind": "test-f-satisfied",
-      "polarity": "never-fails",
-      "paths": [
-        "scripts/memory-index-integrity.test.mjs"
-      ],
-      "reason": "`test -f scripts/memory-index-integrity.test.mjs` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+      "reason": "`test -f scripts/linear-brain.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
     }
   ]
 }

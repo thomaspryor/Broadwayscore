@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T12:26:13.042Z",
+  "generatedAt": "2026-11-02T15:28:49.419Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-02",
-      "status": "previews",
+      "status": "open",
       "slug": "clifford-odets-waiting-for-lefty-off-broadway",
       "thumbnail": "/images/shows/clifford-odets-waiting-for-lefty-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -385,7 +385,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-02",
-      "status": "previews",
+      "status": "open",
       "slug": "the-morbs-off-broadway",
       "thumbnail": "/images/shows/the-morbs-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -761,7 +761,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-11-02",
-      "status": "previews",
+      "status": "open",
       "slug": "slanted-floors-off-broadway",
       "thumbnail": "/images/shows/slanted-floors-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -2357,6 +2357,172 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ]
+    },
+    {
+      "id": "dogstar-off-west-end-2026",
+      "title": "Dogstar",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-31",
+      "status": "open",
+      "slug": "dogstar-off-west-end",
+      "thumbnail": "/images/shows/dogstar-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 77,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 4,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 0,
+      "t3": 1,
+      "positive": 1,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        },
+        {
+          "name": "LondonTheatre1",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Box Office",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-11-02T14:14:26.432Z",
+          "rc": 1,
+          "s": 77,
+          "t1": 0,
+          "t2": 0,
+          "t3": 1,
+          "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -4477,7 +4643,7 @@
       "category": "broadway",
       "type": "play",
       "openingDate": "2026-11-09",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "here-there-are-blueberries",
       "thumbnail": "/images/shows/here-there-are-blueberries-2026/thumbnail.webp",
       "daysUntil": 7,

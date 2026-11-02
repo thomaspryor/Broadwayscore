@@ -1100,6 +1100,26 @@ async function main() {
     console.error(`[digest] WARN could not evaluate local dispatch-health ledger: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-6430: health-check.js's 'Infra: disk space' row runs on the GitHub
+  // runner (data-health-check.yml, ubuntu-latest), so it measures THAT disk.
+  // This Mac sat under bsc-runner's 5GB dispatch floor for days
+  // (2026-10-29..11-02, 727 refused headless launches) with no digest row
+  // saying so. Same thresholds (diskSpaceResults), measured here.
+  if (!skipMacLocal) try {
+    const { readDiskSpace, diskSpaceResults } = require('./lib/disk-space-digest.js');
+    const df = require('child_process').execFileSync('df', ['-h', REPO], { encoding: 'utf8', timeout: 10000 });
+    const { free, total } = readDiskSpace(df);
+    for (const row of diskSpaceResults(free, total)) {
+      if (row.status === 'error') {
+        if (!sections.health) sections.health = {};
+        if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+        sections.health.errors.push({ name: `${row.name} (this Mac)`, message: row.message, hint: row.hint });
+      }
+    }
+  } catch (err) {
+    console.error(`[digest] WARN could not read this Mac's free disk: ${String(err.message).slice(0, 120)}`);
+  }
+
   // BRO-2049: the shared checkout going shallow (a --shallow-since fetch) silently broke every session's
   // did-it-land proof for ~3 weeks. health-check.js cannot measure it (GitHub Actions only, and CI checkouts
   // are shallow by design), so this sender, which runs on the Mac that owns ~/Broadwayscore, evaluates it.

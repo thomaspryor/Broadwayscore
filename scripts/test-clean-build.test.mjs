@@ -38,7 +38,8 @@ test('local prebuild only regenerates ignored prerequisites, including with NODE
     assert.equal(result.status, 0, result.stderr);
     assert.deepEqual(result.calls, [
       'validate-shows-prebuild.js', 'generate-show-lookup.js', 'generate-diary-data.js',
-      'generate-related-shows-mobile.js', 'build-actor-slugs-manifest.js',
+      'generate-related-shows-mobile.js', 'generate-show-schedules-mobile.js',
+      'build-actor-slugs-manifest.js',
       'build-cast-manifest.js', 'build-coverage-floor-snapshot.js', 'generate-stats-shows.js',
     ]);
   }

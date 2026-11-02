@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-02T12:01:12.042Z",
+  "generatedAt": "2026-11-02T15:11:22.132Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 313,
-  "clean": 313,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 306,
+  "clean": 305,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.05 vs local 82.1 (Δ0.95)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-02T15:11:18.275Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

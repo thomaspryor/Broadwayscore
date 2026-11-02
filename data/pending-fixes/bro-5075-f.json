@@ -1,0 +1,110 @@
+{
+  "issueNumber": "bro-5075-f",
+  "planId": "1ce36f20-d8c8-4fd3-8eb5-c87471d44ca6",
+  "status": "pending",
+  "createdAt": "2026-11-02T14:24:38.938Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5075: repair or remove the 127 review files whose url is not an absolute http(s) url. 37 repaired in place to the same article (BroadwayWorld relative paths given their host, scheme typos, schemeless hosts; score and flags kept, needs the url-change-invariant repair rule landed with this plan). 90 deleted, none live today: 67 /people/ critic-profile paths and 4 text-fragment urls with no fullText (the rebuild excludes them as skippedInvalidUrl), plus 19 duplicates whose article a sibling or another show already holds with a valid url. (part 6 of 6)",
+    "steps": [
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl).",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept.",
+      "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-little-mermaid-the-musical-off-broadway-2026/broadwayworld--kaitlin-milligan.json",
+        "field": "url",
+        "oldValue": "/article/BWW-Review-THE-LITTLE-MERMAID-LIVE-is-an-Inventive-Way-to-Bring-Live-Musicals-to-Television-20191105",
+        "newValue": "https://www.broadwayworld.com/article/BWW-Review-THE-LITTLE-MERMAID-LIVE-is-an-Inventive-Way-to-Bring-Live-Musicals-to-Television-20191105",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-merchant-of-venice-1973/backstage--erik-haagensen.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-merchant-of-venice-1973/washpost--peter-marks.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-play-that-goes-wrong-west-end-2021/amny--matt-windman.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-play-that-goes-wrong-west-end-2021/chicagotribune--chris-jones.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-robber-bridegroom-1976/huffpost--steven-suskin.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-robber-bridegroom-1976/nbcny--robert-kahn.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ulster-american-irish-repertory-theatre-off-broadway-2026/broadwayworld--unknown.json",
+        "field": "url",
+        "oldValue": "/article/Review-ULSTER-AMERICAN-Riverside-Studios-20231214",
+        "newValue": "https://www.broadwayworld.com/article/Review-ULSTER-AMERICAN-Riverside-Studios-20231214",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "waiting-for-godot-west-end-2024/variety--frank-rizzo.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "whos-afraid-of-virginia-woolf-2005/broadwayworld--harker-jones.json",
+        "field": "url",
+        "oldValue": "/los-angeles/article/BWW-Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-at-Geffen-Playhouse-20220503",
+        "newValue": "https://www.broadwayworld.com/los-angeles/article/BWW-Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-at-Geffen-Playhouse-20220503",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wicked-2003/broadwayworld--jay-irwin.json",
+        "field": "url",
+        "oldValue": "/dallas/article/BWW-Review-WICKED-Brings-Dallas-Back-Together-20210808",
+        "newValue": "https://www.broadwayworld.com/dallas/article/BWW-Review-WICKED-Brings-Dallas-Back-Together-20210808",
+        "description": "BRO-5075: bww-relative url repaired to the same article (scheme/host restored); score and flags kept."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "you-got-older-off-broadway-2026/broadwayworld--patrick-rybarczyk.json",
+        "description": "BRO-5075: url is a /people/ critic profile path, not a review; no fullText; the rebuild already excludes it (skippedInvalidUrl)."
+      }
+    ]
+  }
+}

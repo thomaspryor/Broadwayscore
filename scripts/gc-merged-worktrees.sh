@@ -34,7 +34,8 @@
 # stripped worktree is the recovery path.
 #
 # Disk-free floor: below WORKTREE_GC_DISK_FLOOR_GB, run emergency cleanup of
-# Xcode DerivedData, stale scratchpad dirs, and unavailable simulators — none
+# Xcode DerivedData, stale scratchpad dirs, stale gh run-log zips and
+# unavailable simulators — none
 # of which touch worktree state or hold irreplaceable work.
 #
 # Manual run / dry-run:
@@ -384,6 +385,31 @@ clean_stale_scratchpad() {
   LAST_SCRATCHPAD_FREED_KB=$total
 }
 
+# gh CLI's run-log cache (BRO-6430): `gh run view --log*` stores every
+# downloaded CI log as ~/.cache/gh/run-log-<id>-<ts>.zip and never expires
+# them. It reached 3.6GB (1,400+ zips) during the 2026-10-29..11-02 low-disk
+# window that kept dispatch refused; every zip is re-downloadable from
+# GitHub on demand. Only run-log zips older than GH_RUN_LOG_STALE_DAYS go
+# (find -mtime +N: at least N+1 whole days old) —
+# the rest of ~/.cache/gh (API response cache) is left alone.
+GH_RUN_LOG_STALE_DAYS="${WORKTREE_GC_GH_RUN_LOG_STALE_DAYS:-7}"
+LAST_GH_RUN_LOG_FREED_KB=0
+clean_stale_gh_run_logs() {
+  local dir="$HOME/.cache/gh" sz
+  LAST_GH_RUN_LOG_FREED_KB=0
+  [ -d "$dir" ] || return 0
+  sz=$(find "$dir" -maxdepth 1 -type f -name 'run-log-*.zip' -mtime +"$GH_RUN_LOG_STALE_DAYS" -print0 2>/dev/null | xargs -0 -r du -sk 2>/dev/null | awk '{s+=$1} END {print s+0}')
+  sz=${sz:-0}
+  [ "$sz" = "0" ] && return 0
+  if [ "$DRY_RUN" = "1" ]; then
+    log "WOULD-CLEAN  gh run-log cache — $(human_kb "$sz"), older than ${GH_RUN_LOG_STALE_DAYS}d"
+  else
+    find "$dir" -maxdepth 1 -type f -name 'run-log-*.zip' -mtime +"$GH_RUN_LOG_STALE_DAYS" -delete 2>/dev/null
+    log "CLEAN  gh run-log cache — freed $(human_kb "$sz"), older than ${GH_RUN_LOG_STALE_DAYS}d"
+  fi
+  LAST_GH_RUN_LOG_FREED_KB=$sz
+}
+
 clean_unavailable_simulators() {
   command -v xcrun >/dev/null 2>&1 || return 0
   if [ "$DRY_RUN" = "1" ]; then
@@ -439,6 +465,7 @@ check_disk_floor() {
   log "ALERT: disk free ${before}GB below floor ${DISK_FLOOR_GB}GB — running emergency cleanup"
   clean_derived_data; floor_freed=$((floor_freed + LAST_CLEAN_DD_FREED_KB))
   clean_stale_scratchpad; floor_freed=$((floor_freed + LAST_SCRATCHPAD_FREED_KB))
+  clean_stale_gh_run_logs; floor_freed=$((floor_freed + LAST_GH_RUN_LOG_FREED_KB))
   clean_unavailable_simulators
   after=$(disk_free_gb "$PRIMARY_REPO")
   log "DIGEST: disk-floor cleanup freed $(human_kb "$floor_freed") — free space ${before}GB -> ${after}GB (floor ${DISK_FLOOR_GB}GB)"

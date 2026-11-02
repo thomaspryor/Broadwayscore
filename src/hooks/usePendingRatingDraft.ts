@@ -17,6 +17,9 @@ interface SaveDraftInput {
   reviewText?: string | null;
   dateSeen?: string | null;
   reviewId?: string;
+  timeSlot?: 'matinee' | 'evening' | 'custom' | null;
+  curtainTime?: string | null;
+  seat?: string | null;
 }
 
 interface UsePendingRatingDraftOptions {
@@ -58,6 +61,9 @@ export function usePendingRatingDraft(showId: string, options: UsePendingRatingD
       ...(data.reviewText ? { reviewText: data.reviewText } : {}),
       ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
       ...(data.reviewId ? { reviewId: data.reviewId } : {}),
+      ...(data.timeSlot ? { timeSlot: data.timeSlot } : {}),
+      ...(data.curtainTime ? { curtainTime: data.curtainTime } : {}),
+      ...(data.seat ? { seat: data.seat } : {}),
       returnUrl: window.location.pathname,
       timestamp: Date.now(),
     });

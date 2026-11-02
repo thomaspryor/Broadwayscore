@@ -30,7 +30,7 @@
 
 import { liveInHdLine } from '@/lib/met-live-in-hd';
 import { foldVenueName } from '@/lib/venue-fold';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { FULL_CONFIDENCE_AUDIENCE_REVIEWS } from '@/lib/audience-grade-utils';
@@ -48,7 +48,8 @@ import {
 import MiniStars from '@/components/user/Stars';
 import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
-import RatingEditor from '@/components/user/RatingEditor';
+import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
+import { diaryDetailText } from '@/lib/review-showtime';
 import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
@@ -219,6 +220,13 @@ function Inner({
   const onWatchlist = isAuthenticated ? isWatchlisted(show.id) : isSavedLocally(show.id);
   const watchlistEntry = watchlist.find(w => w.show_id === show.id);
   const watchlistDate = watchlistEntry?.planned_date || null;
+  // Stable object so a parent re-render never resets the editor's time pick.
+  const planSlot = watchlistEntry?.time_slot ?? null;
+  const planCurtain = watchlistEntry?.curtain_time ?? null;
+  const planShowtime = useMemo(
+    () => (planSlot ? { time_slot: planSlot, curtain_time: planCurtain } : null),
+    [planSlot, planCurtain],
+  );
   const plannedShowEvent = watchlistEntry ? buildPlannedShowEvent(show, watchlistEntry) : null;
 
   // Lists containing this show — caption only, no button on show page.
@@ -356,7 +364,7 @@ function Inner({
   // open with the typed note intact when this rejects. So on the authed path we
   // THROW on failure (no swallow, no close-in-finally) and let a resolved promise
   // signal success — the editor then calls onSaved to close.
-  const handleSaveReview = useCallback(async (data: { rating: number; reviewText: string | null; dateSeen: string | null; reviewId?: string }): Promise<void | 'auth-gated'> => {
+  const handleSaveReview = useCallback(async (data: RatingEditorSaveData): Promise<void | 'auth-gated'> => {
     if (!user) {
       if (authLoading) {
         // Session still restoring for an already-signed-in user — don't bounce
@@ -376,6 +384,7 @@ function Inner({
         rating: data.rating,
         review_text: data.reviewText || null,
         date_seen: data.dateSeen || null,
+        ...data.showtimeSeat,
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
@@ -390,6 +399,7 @@ function Inner({
         rating: data.rating,
         review_text: data.reviewText || null,
         date_seen: data.dateSeen || null,
+        ...data.showtimeSeat,
       });
       if (error) throw new Error(error.message);
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
@@ -822,6 +832,11 @@ function Inner({
           initialReviewText={editingReview?.review_text ?? pendingDraft?.reviewText ?? null}
           initialDateSeen={editingReview?.date_seen ?? pendingDraft?.dateSeen ?? null}
           suggestedDateSeen={editingReview ? null : watchlistDate}
+          showId={show.id}
+          initialTimeSlot={editingReview ? editingReview.time_slot ?? null : pendingDraft?.timeSlot ?? null}
+          initialCurtainTime={editingReview ? editingReview.curtain_time ?? null : pendingDraft?.curtainTime ?? null}
+          initialSeat={editingReview ? editingReview.seat ?? null : pendingDraft?.seat ?? null}
+          suggestedShowtime={editingReview ? null : planShowtime}
           mode={editingReview || pendingDraft?.reviewId ? 'edit' : hasRating ? 'append' : 'new'}
           onSave={handleSaveReview}
           onSaved={handleRateSaved}
@@ -959,6 +974,9 @@ function YourRatingInline({
             <MiniStars rating={review.rating} />
             <span className="text-sm font-bold text-amber-400 tabular-nums">{review.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
           </span>
+          {diaryDetailText(review) && (
+            <span className="ph-mask block mt-1 text-xs text-gray-400 truncate" data-testid="your-rating-detail">{diaryDetailText(review)}</span>
+          )}
           {review.review_text && (
             <span className="block mt-1">
               <span className="ph-mask text-sm text-gray-400 italic leading-snug line-clamp-2">

@@ -388,7 +388,19 @@ function buildPlan(now) {
       sinceMs: now - UNLANDED_CHECK_WINDOW_MS,
       mainRepoCwd: require('./lib/bsc-runner.js').REPO,
     }),
+    // BRO-6430: the same free-disk reading and floor bsc-runner's dispatch
+    // preflight uses, so the sweep holds instead of claiming launches the
+    // runner is certain to refuse.
+    ...diskPressureInputs(),
   });
+}
+
+function diskPressureInputs() {
+  const runner = require('./lib/bsc-runner.js');
+  return {
+    diskFreeGB: runner.freeDiskGB(runner.REPO),
+    diskFloorGB: runner.parseDispatchFloorGB(process.env.BSC_DISPATCH_DISK_FLOOR_GB),
+  };
 }
 
 // ── actions ────────────────────────────────────────────────────────────────
@@ -502,6 +514,16 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
   hb({});
 
   if (dryRun) return results;
+
+  // BRO-6430: the disk hold stops claims before bsc-runner's preflight is
+  // ever reached, so raise the same (cooldown-gated) digest alert the
+  // runner would have — the only signal for THIS Mac's disk.
+  const flags = (plan.budgets && plan.budgets.globalHoldFlags) || {};
+  if (flags.diskPressure) {
+    const hold = plan.budgets.globalHolds.find(h => h.startsWith('disk pressure')) || 'disk pressure';
+    console.error(`[watchdog] holding dispatch: ${hold}`);
+    try { require('./lib/bsc-runner.js').routeDiskPressureAlert(`${hold} — watchdog is holding all redispatches until it clears`); } catch (e) { console.error(`[watchdog] disk-pressure alert failed: ${e.message}`); }
+  }
 
   for (const item of plan.toPark) {
     // Card #1233: item.deaths is substantive-only unless the park itself was

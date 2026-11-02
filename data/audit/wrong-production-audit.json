@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T12:25:52.319Z",
+  "timestamp": "2026-11-02T15:28:32.638Z",
   "stats": {
-    "totalReviews": 79188,
-    "alreadyFlagged": 21948,
+    "totalReviews": 79201,
+    "alreadyFlagged": 21951,
     "dateGuardCatches": 222,
     "directorMismatch": 3422,
-    "tvFilmSignals": 2251,
-    "londonSignals": 3581,
+    "tvFilmSignals": 2252,
+    "londonSignals": 3580,
     "offBroadwaySignals": 740,
     "yearMismatch": 346,
-    "noPublishDate": 8375
+    "noPublishDate": 8377
   },
   "findings": [
     {
@@ -8535,6 +8535,19 @@
       "score": 88,
       "publishDate": "2026-10-28",
       "url": "https://theaterlife.com/billy-crystal-860-the-imaginary-invalid/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "file": "theater-scene--samuel-l-leiter.json",
+      "publishDate": "2026-10-31",
+      "url": "https://www.theaterscene.net/plays/broadway-plays/860/samuel-l-leiter/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -46292,6 +46305,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "broadwayworld--samantha-wu.json",
+      "score": 90,
       "publishDate": "2026-10-30",
       "url": "https://www.broadwayworld.com/toronto/article/Review-OPERATION-MINCEMEAT-at-Royal-Alexandra-Theatre-20261030",
       "findings": [
@@ -46375,6 +46389,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "so-sumi--glenn-sumi.json",
+      "score": 79,
       "publishDate": "2026-10-31",
       "url": "https://www.goaheadsumi.com/reviews-operation-mincemeat-mirvish-the-call-centre-of-cthulhu-eldritch/",
       "findings": [
@@ -46402,6 +46417,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "the-globe-and-mail--aisling-murphy.json",
+      "score": 80,
       "publishDate": "2026-10-30",
       "url": "https://www.theglobeandmail.com/culture/stage/article-operation-mincemeat-review-musical-slice-of-the-second-world-war/",
       "findings": [
@@ -46429,6 +46445,7 @@
     {
       "showId": "operation-mincemeat-tour-2026",
       "file": "toronto-star--joshua-chong.json",
+      "score": 79,
       "publishDate": "2026-11-01",
       "url": "https://www.thestar.com/entertainment/stage/mirvish-s-wildly-entertaining-operation-mincemeat-is-one-of-the-best-musicals-since-hamilton/article_57730a97-ac57-4fc1-9e17-7c7688484769.html",
       "findings": [
@@ -100228,20 +100245,6 @@
     },
     {
       "showId": "harry-potter-2021",
-      "file": "sfgate--lily-janiak.json",
-      "score": null,
-      "publishDate": "2018-06-28",
-      "url": "https://www.sfgate.com/performance/article/Harry-Potter-play-coming-to-San-Francisco-s-13035122.php",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "harry-potter-2021",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
       "score": 71,
       "publishDate": "April 30, 2018",
@@ -114782,6 +114785,19 @@
       ]
     },
     {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "publishDate": "2016-03-24",
+      "url": "http://www.whatsonstage.com/london-theatre/reviews/people-places-and-things-wyndhams-theatre_40032.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "people-places-and-things-west-end-2024",
       "file": "guardian--susannah-clapp.json",
       "publishDate": "2024-06-02",
@@ -128145,19 +128161,6 @@
       "score": 82,
       "publishDate": "2026-11-02",
       "url": "https://www.londontheatre.co.uk/reviews/the-lives-of-others-review-adelphi-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"adelphi theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "file": "londontheatredirect--jose-izcue-gana.json",
-      "publishDate": null,
-      "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

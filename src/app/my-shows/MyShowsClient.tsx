@@ -12,6 +12,7 @@ import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import { supabaseRestDelete, supabaseRestInsert, supabaseRestSelect, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { trackUgc } from '@/lib/ugc-analytics';
+import { diaryDetailText } from '@/lib/review-showtime';
 import { prepareAppleSignIn } from '@/lib/apple-auth';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
@@ -202,10 +203,10 @@ export default function MyShowsClient() {
     initialReviewText?: string | null;
     initialDateSeen?: string | null;
     suggestedDateSeen?: string | null;
-  } | null>(null);
+  } & RateOpts | null>(null);
   const openRatingEditor = useCallback((show: { id: string; title: string }, opts?: {
     reviewId?: string; initialRating?: number; initialReviewText?: string | null; initialDateSeen?: string | null; suggestedDateSeen?: string | null;
-  }) => {
+  } & RateOpts) => {
     setRatingTarget({ id: show.id, title: show.title, ...opts });
   }, []);
 
@@ -337,6 +338,7 @@ export default function MyShowsClient() {
         rating: data.rating,
         review_text: data.reviewText || null,
         date_seen: data.dateSeen || null,
+        ...data.showtimeSeat,
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
@@ -348,6 +350,7 @@ export default function MyShowsClient() {
         rating: data.rating,
         review_text: data.reviewText || null,
         date_seen: data.dateSeen || null,
+        ...data.showtimeSeat,
       });
       if (error) throw new Error(error.message);
       // Rating a show means you've seen it — drop any watchlist entry (parity
@@ -842,6 +845,11 @@ export default function MyShowsClient() {
           initialReviewText={ratingTarget.initialReviewText}
           initialDateSeen={ratingTarget.initialDateSeen}
           suggestedDateSeen={ratingTarget.suggestedDateSeen}
+          showId={ratingTarget.id}
+          initialTimeSlot={ratingTarget.initialTimeSlot}
+          initialCurtainTime={ratingTarget.initialCurtainTime}
+          initialSeat={ratingTarget.initialSeat}
+          suggestedShowtime={ratingTarget.suggestedShowtime}
           presentation="modal"
           onSave={handleInlineRatingSave}
           onSaved={() => setRatingTarget(null)}
@@ -1362,7 +1370,23 @@ function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: str
   );
 }
 
-function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; show?: ShowLookup; onDelete?: () => void; onRate?: (show: { id: string; title: string }, opts: { reviewId: string; initialRating: number; initialReviewText: string | null; initialDateSeen: string | null }) => void }) {
+/** Time + seat options for the rating editor (BRO-6783). */
+type RateOpts = {
+  initialTimeSlot?: UserReview['time_slot'];
+  initialCurtainTime?: string | null;
+  initialSeat?: string | null;
+  suggestedShowtime?: Pick<WatchlistEntry, 'time_slot' | 'curtain_time'> | null;
+};
+
+/** Rating a planned show: carry the plan's date and showtime into the editor. */
+function planRateOpts(entry: WatchlistEntry): { suggestedDateSeen: string | null } & RateOpts {
+  return {
+    suggestedDateSeen: entry.planned_date,
+    suggestedShowtime: entry.time_slot ? { time_slot: entry.time_slot, curtain_time: entry.curtain_time } : null,
+  };
+}
+
+function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; show?: ShowLookup; onDelete?: () => void; onRate?: (show: { id: string; title: string }, opts: { reviewId: string; initialRating: number; initialReviewText: string | null; initialDateSeen: string | null } & RateOpts) => void }) {
   const [confirmDelete, setConfirmDelete] = useState(false);
   // Auto-dismiss delete confirmation after 4 seconds
   useEffect(() => {
@@ -1394,7 +1418,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
       ) : onRate ? (
         <button
           type="button"
-          onClick={() => onRate({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen })}
+          onClick={() => onRate({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen, initialTimeSlot: review.time_slot ?? null, initialCurtainTime: review.curtain_time ?? null, initialSeat: review.seat ?? null })}
           className="inline-flex items-center justify-center p-1 rounded-full text-fg-muted hover:text-white transition-colors"
           aria-label="Edit rating"
         >
@@ -1448,6 +1472,9 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
               year: 'numeric',
             })}
           </p>
+        )}
+        {diaryDetailText(review) && (
+          <p data-testid="diary-detail" className="ph-mask text-xs text-fg-muted truncate">{diaryDetailText(review)}</p>
         )}
         {/* Mobile: real five stars STACKED under the date, same pattern as the
             To-Be-Rated rows — right-aligned stars + icons crushed titles to
@@ -1528,7 +1555,7 @@ function DiaryGridCard({ review, show, showYear = false }: { review: UserReview;
 function WatchlistCard({ entry, show, onRate }: {
   entry: WatchlistEntry;
   show?: ShowLookup;
-  onRate: (show: { id: string; title: string }) => void;
+  onRate: (show: { id: string; title: string }, opts?: { suggestedDateSeen?: string | null } & RateOpts) => void;
 }) {
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
@@ -1544,7 +1571,7 @@ function WatchlistCard({ entry, show, onRate }: {
   const rateHref = href ? `${href}?rate=1` : null;
   const handleRateStars = (stars: number) => {
     if (rateHref) window.location.href = `${rateHref}&stars=${stars}`;
-    else onRate({ id: entry.show_id, title });
+    else onRate({ id: entry.show_id, title }, planRateOpts(entry));
   };
 
   const isClosingSoon = show?.closingDate && (() => {
@@ -1639,7 +1666,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   show?: ShowLookup;
   onDateChange: (date: string | null) => void;
   onRemove: () => void;
-  onRate: (show: { id: string; title: string }) => void;
+  onRate: (show: { id: string; title: string }, opts?: { suggestedDateSeen?: string | null } & RateOpts) => void;
 }) {
   const router = useRouter();
   const [confirmRemove, setConfirmRemove] = useState(false);
@@ -1716,7 +1743,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
               rating={null}
               onRatingChange={(stars) => {
                 if (href) router.push(`${href}?rate=1&stars=${stars}`);
-                else onRate({ id: entry.show_id, title });
+                else onRate({ id: entry.show_id, title }, planRateOpts(entry));
               }}
               size="sm"
               hideLabel

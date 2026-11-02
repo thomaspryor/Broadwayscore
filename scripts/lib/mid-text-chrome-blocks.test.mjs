@@ -104,3 +104,32 @@ test('Express older signup wording (Read our Privacy Policy) mid-article is not 
 test('negatives: Express older signup as the whole text stays garbage', () => {
   assert.equal(isGarbageContent(`Review ${EXPRESS_OLD}`).isGarbage, true);
 });
+
+// BRO-6824: Bristol24/7 membership appeal and WarwickshireWorld newsletter block, mid-article.
+const BRISTOL = "Independent journalism is needed now More than ever Keep our city's journalism independent. Become a supporter member today. Become a member Community member Find out more";
+const WARWICK = 'Sign up to our daily WarwickshireWorld Today newsletter Sign up Thank you for signing up! Did you know with an ad-lite subscription to WarwickshireWorld, you get 70% fewer ads while viewing the news that matters to you. Subscription Offers Sorry, there seem to be some issues. Please try again later. Submitting... This site is protected by reCAPTCHA and the Google Privacy Notice and Terms of Service apply.';
+
+test('Bristol24/7 member appeal mid-article is not garbage', () => {
+  const t = `Starter for Ten review ${PROSE} ${BRISTOL} ${PROSE}`;
+  assert.equal(isGarbageContent(t).isGarbage, false);
+  assert.ok(!/Become a member/i.test(stripMidTextChromeBlocks(t)));
+});
+
+test('WarwickshireWorld newsletter block mid-article is not garbage', () => {
+  const t = `RSC review ${PROSE} ${WARWICK} ${PROSE}`;
+  assert.equal(isGarbageContent(t).isGarbage, false);
+  assert.ok(!/newsletter\s+sign/i.test(stripMidTextChromeBlocks(t)));
+});
+
+test('negatives: Bristol/Warwickshire blocks as the whole text stay garbage', () => {
+  assert.equal(isGarbageContent(`Review ${BRISTOL}`).isGarbage, true);
+  assert.equal(isGarbageContent(`Review ${WARWICK}`).isGarbage, true);
+});
+
+test('Bristol24/7 footer (Become a member of Bristol24/7 ... newsletters) after the review is not garbage', () => {
+  const foot = "Become a member of Bristol24/7 Share Share on Facebook Share on Twitter Tags: Reviews Our newsletters emailed directly to you I want to receive (tick as many as you want): Daily Our daily newsletter is sent out every day at 7am. Subscribe to get the latest news.";
+  const t = `Malory Towers review ${PROSE} ${BRISTOL} ${PROSE} Read next: Review: Wise Children ${foot} ${'Subscribe to find out more about events. '.repeat(40)}`;
+  assert.equal(isGarbageContent(t).isGarbage, false);
+  assert.ok(!/Become a member/i.test(stripMidTextChromeBlocks(t)));
+  assert.equal(isGarbageContent(`Review ${foot}`).isGarbage, true);
+});
