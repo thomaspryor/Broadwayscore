@@ -219,6 +219,20 @@
     "queuedAt": "2026-11-02T14:37:58.884Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-02.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T15:12:32.129Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:tosca-english-national-opera-west-end-2026",
     "title": "Review gap — \"Tosca - English National Opera\" missing 1 cited review(s)",
     "description": "Tosca - English National Opera (tosca-english-national-opera-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-english-national-opera-west-end-2026 --checkpoint --ingest-missing",
@@ -231,19 +245,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T15:10:18.797Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-02.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-02T15:11:01.900Z"
   }
 ]
