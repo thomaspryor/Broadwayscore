@@ -33,7 +33,7 @@ function listImageFiles(dir = IMAGES_DIR) {
 }
 
 async function main() {
-  if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/resize-show-images.js [--check | --dry-run | --variants [--staged] | --check-variants]\n  (no flag) re-encode oversized posters/thumbnails in place; --check lists them and exits 1 if any'); return; }
+  if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/resize-show-images.js [--check | --dry-run | --variants [--staged | --missing-only] | --check-variants]\n  (no flag) re-encode oversized posters/thumbnails in place; --check lists them and exits 1 if any'); return; }
   if (process.argv.includes('--check-variants')) {
     const sharp = require('sharp');
     const missing = [];
@@ -58,6 +58,7 @@ async function main() {
     process.exit(missing.length ? 1 : 0);
   }
   if (process.argv.includes('--variants')) {
+    require('sharp'); // fail loudly if missing: writeVariant swallows load errors as 'unreadable'
     const tally = {};
     // --staged (CI commit steps): only originals staged for commit, run AFTER
     // check-image-aspect --quarantine so rejected art never gets a variant, then

@@ -29,7 +29,9 @@ if [ -f "$REPO_ROOT/scripts/check-image-aspect.js" ]; then
     exit $RC
   fi
   # BRO-6808: stage sm/ list variants next to any image being committed
-  node "$REPO_ROOT/scripts/resize-show-images.js" --variants --staged || echo "warning: sm/ variant generation failed"
+  if ! git diff --cached --quiet -- public/images/shows; then
+    node "$REPO_ROOT/scripts/resize-show-images.js" --variants --staged || echo "warning: sm/ variant generation failed"
+  fi
 fi
 
 # 3. Auto-sort staged test manifests (tests/unit-test-manifest.txt and its

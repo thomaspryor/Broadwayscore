@@ -15,7 +15,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: fetch-images
+  group: sweep-image-variants
   cancel-in-progress: false
 
 jobs:
