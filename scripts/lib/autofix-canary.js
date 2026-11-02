@@ -119,6 +119,24 @@ function planCanaryDispatch({ ledgerEntries, dateStr }) {
 const findCanarySpawn = dispatchReconcile.findMyJob;
 
 /**
+ * BRO-6822: true when the dispatcher REFUSED this canary's job for host disk
+ * pressure (job-abandoned, reason "disk-pressure: ..."). That is an
+ * infrastructure refusal, not evidence the dispatch pipeline is broken, so
+ * the canary must re-dispatch rather than record canary-fail (10-31 and
+ * 11-01 both failed this way at ~2.8-4.8GB free vs the 5GB floor).
+ */
+function wasRefusedByDiskPressure(dispatchLedgerEntries, taskId) {
+  const entries = Array.isArray(dispatchLedgerEntries) ? dispatchLedgerEntries : [];
+  let refused = false;
+  for (const e of entries) {
+    if (!e || String(e.taskId) !== String(taskId)) continue;
+    if (e.event === dispatchLedger.JOB_EVENTS.SPAWNED) refused = false; // a later real spawn supersedes
+    else if (e.event === dispatchLedger.JOB_EVENTS.ABANDONED) refused = /^disk-pressure/.test(String(e.reason || ''));
+  }
+  return refused;
+}
+
+/**
  * Furthest stage the canary filed on `dateStr` has reached, folding our own
  * ledger (card-filed/canary-pass/canary-fail) against the shared
  * dispatch-ledger job lifecycle for anything still unresolved.
@@ -530,7 +548,16 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
       // bound, marker not yet visible) — don't call it a failure prematurely.
       const filed = ledgerEntries.find((e) => e && e.event === 'card-filed' && e.date === yesterday);
       const ageH = filed ? (now.getTime() - new Date(filed.ts).getTime()) / 3600e3 : Infinity;
-      if (ageH < ORPHAN_TIMEOUT_H && yState.stage !== 'job-failed') {
+      const redispatched = ledgerEntries.some((e) => e && e.event === 'canary-redispatch' && e.date === yesterday);
+      if (!redispatched && wasRefusedByDiskPressure(dispatchLedgerEntries, yState.taskId)) {
+        // One retry per date; the next run resolves it (pass, or fail if it is still refused).
+        if (!dryRun) {
+          appendJsonlLedger(CANARY_LEDGER_PATH, { event: 'canary-redispatch', date: yesterday, taskId: yState.taskId, reason: 'disk-pressure' });
+          try { dispatchDetached(yState.taskId, log, 0, null, { allowAutofixFiled: true, allowAutomationParked: true }); }
+          catch (err) { log(`[autofix-canary] WARN redispatch failed for ${yState.taskId}: ${String(err.message).slice(0, 120)}`); }
+        }
+        log(`[autofix-canary] ${yesterday} canary was refused for disk pressure — re-dispatched once instead of failing`);
+      } else if (ageH < ORPHAN_TIMEOUT_H && yState.stage !== 'job-failed') {
         log(`[autofix-canary] ${yesterday} canary still in flight at stage "${yState.stage}" (${ageH.toFixed(1)}h old) — resolving next run`);
       } else {
         if (!dryRun) {
@@ -636,6 +663,7 @@ module.exports = {
   buildCanaryCardNotes,
   planCanaryDispatch,
   foldCanaryStage,
+  wasRefusedByDiskPressure,
   assessCanaryRow,
   assessThroughputRow,
   runAutofixCanary,

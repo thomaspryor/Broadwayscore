@@ -12,7 +12,7 @@ import './autofix-canary-probe.test.mjs';
 const require = createRequire(import.meta.url);
 const {
   canaryDateStr, canaryMarkerRelPath, canaryCardTitle, buildCanaryCardNotes,
-  planCanaryDispatch, foldCanaryStage, assessCanaryRow, assessThroughputRow,
+  planCanaryDispatch, foldCanaryStage, wasRefusedByDiskPressure, assessCanaryRow, assessThroughputRow,
   ZERO_DISPATCH_ERROR_DAYS, ZERO_PASS_ERROR_DAYS, isPathAbsentFromTreeError,
 } = require('./autofix-canary.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
@@ -568,4 +568,25 @@ test('fetchPipelineIssues: asks Linear for both filers\' cards over the window',
   assert.ok(got.titlePrefixes.includes('BSC Daily:'));
   assert.ok(got.descriptionMarkers.includes('Auto-filed by digest-autofix'));
   assert.ok(got.descriptionMarkers.includes('Auto-filed by owner-alert-router'));
+});
+
+// ── BRO-6822: disk-pressure refusal is not a pipeline failure ───────────────
+
+test('wasRefusedByDiskPressure: abandoned with disk-pressure reason -> true', () => {
+  const d = [{ event: 'job-abandoned', taskId: 'linear:BRO-1', reason: 'disk-pressure: disk free 4.8GB < floor 5GB' }];
+  assert.equal(wasRefusedByDiskPressure(d, 'linear:BRO-1'), true);
+});
+
+test('wasRefusedByDiskPressure: other abandon reasons, other tasks, empty -> false', () => {
+  assert.equal(wasRefusedByDiskPressure([{ event: 'job-abandoned', taskId: 'linear:BRO-1', reason: 'cli logged out' }], 'linear:BRO-1'), false);
+  assert.equal(wasRefusedByDiskPressure([{ event: 'job-abandoned', taskId: 'linear:BRO-2', reason: 'disk-pressure: x' }], 'linear:BRO-1'), false);
+  assert.equal(wasRefusedByDiskPressure(undefined, 'linear:BRO-1'), false);
+});
+
+test('wasRefusedByDiskPressure: a later real spawn supersedes the refusal', () => {
+  const d = [
+    { event: 'job-abandoned', taskId: 'linear:BRO-1', reason: 'disk-pressure: x' },
+    { event: dispatchLedger.JOB_EVENTS.SPAWNED, taskId: 'linear:BRO-1' },
+  ];
+  assert.equal(wasRefusedByDiskPressure(d, 'linear:BRO-1'), false);
 });
