@@ -62,6 +62,20 @@ function isSlowMarketDailyWindow(show, now = Date.now()) {
   return SLOW_MARKETS.has(show?.category) && inOpeningWindow(show, now, SLOW_MARKET_ALERT_DAYS);
 }
 
+// BRO-6687: every slow-market row the audit has written since this time
+// carries a numeric slowMarketResidual (audit-show-review-gap.js writes it on
+// the entry and on the post-ingest recount). A row stamped after it without
+// one did not come from the audit whole (f8ee7b7d: a line-blended rebase
+// spliced two runs' entries), so it is not trusted as clean: it is due now
+// and sorts with the alerting tier, and the next real audit rewrites it.
+// Older rows predate the field and keep their normal schedule.
+const SLOW_MARKET_RESIDUAL_SINCE_MS = Date.parse('2026-10-31T06:00:00Z');
+function lacksSlowMarketResidual(show, entry) {
+  return !!entry && SLOW_MARKETS.has(show?.category)
+    && checkpointTs(entry) >= SLOW_MARKET_RESIDUAL_SINCE_MS
+    && typeof entry.slowMarketResidual !== 'number';
+}
+
 // BRO-6687 (owner scope 2026-10-31: every show from the last year, every
 // market): of ~920 shows that opened in the last 365 days, ~280 had never been
 // audited and ~300 had a checkpoint older than 14 days, because a closed show
@@ -108,6 +122,7 @@ function inOpeningPriorityWindow(show, now = Date.now()) {
 // caught; opening-week shows re-check every run.
 function freshnessMsFor(show, lastEntry, opts = {}) {
   const now = opts.now ?? Date.now();
+  if (lacksSlowMarketResidual(show, lastEntry)) return 0;
   let base = baseFreshnessMs(show, lastEntry, opts);
   // BRO-6687 caps last-year skips at 30d; BRO-6751 exempts a closed show whose
   // clean audit itself ran more than 30 days after opening. Judged at audit
@@ -122,7 +137,7 @@ function freshnessMsFor(show, lastEntry, opts = {}) {
   // A clean row (nothing uncollected, nothing the rollup counts) past the
   // opening week re-audits exactly daily, not at the 12h default, to keep the
   // tier's daily cost near one audit per show.
-  const clean = !!lastEntry && !(lastEntry.uncollected > 0) && !(lastEntry.slowMarketResidual > 0);
+  const clean = !!lastEntry && !(lastEntry.uncollected > 0) && typeof lastEntry.slowMarketResidual === 'number' && !(lastEntry.slowMarketResidual > 0);
   if (clean && !inOpeningPriorityWindow(show, now)) return SLOW_MARKET_DAILY_FRESHNESS_MS;
   return Math.min(base, SLOW_MARKET_DAILY_FRESHNESS_MS);
 }
@@ -182,6 +197,7 @@ function auditTier(show, entry, now = Date.now()) {
   if (inOpeningPriorityWindow(show, now)) return 0;
   if (show?.status !== 'closed' && inOpeningWindow(show, now) && (!entry || entry.uncollected > 0)) return 1;
   if (show?.status === 'closed' && alertReadsRow(show, entry, now)) return 1; // BRO-5513
+  if (lacksSlowMarketResidual(show, entry)) return 1; // BRO-6687: an unaudited-looking row
   if (isSlowMarketDailyWindow(show, now)) return SLOW_MARKET_TIER; // BRO-6687
   if (inLastYear(show, now) && (!entry || now - checkpointTs(entry) >= LAST_YEAR_STALE_MS)) return LAST_YEAR_TIER; // BRO-6687
   return 2;
@@ -411,6 +427,8 @@ module.exports = {
   compareAuditPriority,
   auditTier,
   isSlowMarketDailyWindow,
+  lacksSlowMarketResidual,
+  SLOW_MARKET_RESIDUAL_SINCE_MS,
   pickDueLane,
   DUE_LANE_CAP,
   SLOW_MARKET_TIER,

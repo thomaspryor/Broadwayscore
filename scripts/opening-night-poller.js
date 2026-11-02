@@ -80,6 +80,7 @@ const { getLondonSupplementalOutlets, rotateMissingOutlets, warnStalledReviewStu
 const {
   DEFAULT_SERP_BURST_CONFIG,
   DEFAULT_BW_SERP_BURST_CONFIG,
+  PRESS_WINDOW_SERP_BURST_CONFIG,
   checkSerpBurstAllowed,
   planSerpOutlets,
 } = require('./lib/serp-burst-caps');
@@ -201,7 +202,15 @@ function loadSerpBurstLedger(now = new Date()) {
     if (Number.isFinite(ms) && now.getTime() - ms < 2 * 86400000) lastBurstAt[id] = at;
   }
   if (!raw || raw.date !== today) {
-    return { date: today, globalBursts: 0, perShow: {}, tripwireAlerted: false, bw: { globalBursts: 0, perShow: {} }, lastBurstAt };
+    // BRO-6801 ship-check: the OB press-night slot (21Z-05Z) crosses 00:00 UTC, so the 'pw' counts
+    // carry over from yesterday's ledger while we are still inside the slot's early-morning tail.
+    // Otherwise perShowCap 2 / dailyGlobalCap 8 would silently double at midnight.
+    const yesterday = new Date(now.getTime() - 86400000).toISOString().slice(0, 10);
+    const carryPw = raw && raw.date === yesterday && raw.pw && now.getUTCHours() < 6;
+    const pwCarry = carryPw
+      ? { globalBursts: raw.pw.globalBursts || 0, perShow: raw.pw.perShow || {} }
+      : { globalBursts: 0, perShow: {} };
+    return { date: today, globalBursts: 0, perShow: {}, tripwireAlerted: false, bw: { globalBursts: 0, perShow: {} }, pw: pwCarry, lastBurstAt };
   }
   return {
     date: today,
@@ -209,6 +218,7 @@ function loadSerpBurstLedger(now = new Date()) {
     perShow: raw.perShow || {},
     tripwireAlerted: raw.tripwireAlerted || false,
     bw: { globalBursts: (raw.bw && raw.bw.globalBursts) || 0, perShow: (raw.bw && raw.bw.perShow) || {} },
+    pw: { globalBursts: (raw.pw && raw.pw.globalBursts) || 0, perShow: (raw.pw && raw.pw.perShow) || {} },
     lastBurstAt,
   };
 }
@@ -223,10 +233,11 @@ function writeSerpBurstLedger(ledger) {
   }
 }
 
-// bucket 'bw' counts Broadway/off-Broadway bursts apart from the WE caps + tripwire.
+// bucket 'bw' counts Broadway bursts, 'pw' counts OB/OWE press-window bursts (BRO-6801),
+// each apart from the WE caps + tripwire.
 function incrementSerpBurstLedger(showId, now = new Date(), { bucket = 'we' } = {}) {
   const ledger = loadSerpBurstLedger(now);
-  const counts = bucket === 'bw' ? ledger.bw : ledger;
+  const counts = bucket === 'bw' ? ledger.bw : bucket === 'pw' ? ledger.pw : ledger;
   counts.globalBursts += 1;
   counts.perShow[showId] = (counts.perShow[showId] || 0) + 1;
   ledger.lastBurstAt[showId] = now.toISOString();
@@ -1889,6 +1900,46 @@ async function pollShow(show) {
     }
   }
 
+  // Press-night slot (BRO-6801): off-Broadway / off-West-End shows get no aggressive window, so
+  // the orchestrator's iteration 1-8 --skip-serp left them with no SERP until iteration 9+, which
+  // runs are usually cancelled before. Inside isPressWindowSerpSlot's hours, override --skip-serp
+  // under its own 'pw' caps (serp-burst-caps.js PRESS_WINDOW_SERP_BURST_CONFIG). Kill switch:
+  // DISABLE_OB_PRESS_WINDOW_SERP=true.
+  let pressWindowBurstActive = false;
+  if (SKIP_SERP && !serpBurstActive && PRESS_WINDOW_SERP_BURST_CONFIG.markets.includes(_burstCat)) {
+    const _pwLedger = loadSerpBurstLedger();
+    const _pwSessions = (loadSerpSessionLedger().perShow || {})[SHOW_ID] || 0;
+    const _pwSlot = isPressWindowSerpSlot(show, new Date(), process.env, _pwSessions);
+    if (_pwSlot) {
+      const hoursSinceOpening = show.openingDate
+        ? (Date.now() - new Date(show.openingDate).getTime()) / 3600000
+        : null;
+      const _pwLast = _pwLedger.lastBurstAt[SHOW_ID] ? Date.parse(_pwLedger.lastBurstAt[SHOW_ID]) : NaN;
+      const _pwDecision = checkSerpBurstAllowed({
+        flagEnabled: true,
+        show,
+        mode: 'aggressive', // the slot predicate above already decided "now is the window"
+        hoursSinceOpening,
+        burstsToday: _pwLedger.pw.globalBursts,
+        burstsForShowToday: _pwLedger.pw.perShow[SHOW_ID] || 0,
+        minutesSinceLastBurstForShow: Number.isFinite(_pwLast) ? (Date.now() - _pwLast) / 60000 : null,
+        firstReviewsLanded: false,
+        config: PRESS_WINDOW_SERP_BURST_CONFIG,
+      });
+      if (_pwDecision.allowed) {
+        pressWindowBurstActive = true;
+        serpBurstActive = true;
+        console.log(
+          `\n[Layer 4] SERP PRESS-WINDOW: overriding --skip-serp for ${_burstCat} show ` +
+          `(${_pwLedger.pw.perShow[SHOW_ID] || 0}/${PRESS_WINDOW_SERP_BURST_CONFIG.perShowCap} this show, ` +
+          `${_pwLedger.pw.globalBursts}/${PRESS_WINDOW_SERP_BURST_CONFIG.dailyGlobalCap} used today)`
+        );
+      } else {
+        console.log(`\n[Layer 4] SERP press-window slot open but not allowed (${_pwDecision.reason}) — honoring --skip-serp`);
+      }
+    }
+  }
+
   // ── Process layers 1-3 before SERP (BRO-5674) ──
   // The workflow kills this process at 600s, and one SERP outlet can run for
   // minutes on provider timeouts. Write what we already found first so a kill
@@ -1978,7 +2029,10 @@ async function pollShow(show) {
       // Count the burst against the daily ledger only when SERP actually runs (missing
       // outlets exist) — a no-op cycle where everything is already found must not consume
       // the daily/per-show cap and starve another opening.
-      if (serpBurstActive && _isBwBurst) {
+      if (pressWindowBurstActive) {
+        // OB/OWE press-window bucket: own caps, no WE tripwire.
+        incrementSerpBurstLedger(SHOW_ID, new Date(), { bucket: 'pw' });
+      } else if (serpBurstActive && _isBwBurst) {
         // Broadway bucket: own caps, no WE tripwire (its threshold is sized for WE).
         incrementSerpBurstLedger(SHOW_ID, new Date(), { bucket: 'bw' });
       } else if (serpBurstActive) {

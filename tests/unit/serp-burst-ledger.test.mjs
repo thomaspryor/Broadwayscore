@@ -43,3 +43,13 @@ test('lastBurstAt entries older than 2 days are dropped', () => {
   const l = loadSerpBurstLedger(new Date('2026-10-03T00:00:00Z'));
   assert.equal(l.lastBurstAt['show-a'], undefined);
 });
+
+test('BRO-6801: press-window (pw) counts carry across 00Z while inside the 21Z-05Z slot, then reset', () => {
+  incrementSerpBurstLedger('ob-show', new Date('2026-10-10T22:00:00Z'), { bucket: 'pw' });
+  incrementSerpBurstLedger('ob-show', new Date('2026-10-10T23:50:00Z'), { bucket: 'pw' });
+  const early = loadSerpBurstLedger(new Date('2026-10-11T01:30:00Z'));
+  assert.equal(early.pw.perShow['ob-show'], 2, 'perShowCap must not reset mid-slot');
+  assert.equal(early.pw.globalBursts, 2);
+  const later = loadSerpBurstLedger(new Date('2026-10-11T07:00:00Z'));
+  assert.equal(later.pw.perShow['ob-show'], undefined, 'resets once the slot tail has passed');
+});

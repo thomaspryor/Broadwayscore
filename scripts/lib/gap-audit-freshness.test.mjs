@@ -191,7 +191,8 @@ test('BRO-5513: closed in-window show with an alerting row re-audits at 12h, not
 test('slow-market show in days 8-21 gets its own tier and a daily re-audit', () => {
   const { auditTier, SLOW_MARKET_TIER, SLOW_MARKET_DAILY_FRESHNESS_MS } = require('./gap-audit-freshness.js');
   const we = { id: 'we', status: 'open', category: 'west-end', openingDate: iso(10 * DAY) };
-  const clean = { at: new Date(NOW - 3 * DAY).toISOString(), gaps: 0, uncollected: 0 };
+  // the audit always writes slowMarketResidual on a slow-market row (BRO-6687)
+  const clean = { at: new Date(NOW - 3 * DAY).toISOString(), gaps: 0, uncollected: 0, slowMarketResidual: 0 };
   assert.equal(auditTier(we, clean, NOW), SLOW_MARKET_TIER);
   assert.equal(freshnessMsFor(we, clean, { now: NOW }), SLOW_MARKET_DAILY_FRESHNESS_MS);
   assert.ok(SLOW_MARKET_DAILY_FRESHNESS_MS < DAY, 'daily means under 24h so an hourly cron never skips a day');
@@ -343,4 +344,31 @@ test('schedulingCheckpoint drops entries with no gap row', () => {
   const now = Date.parse('2026-10-31T12:00:00Z');
   const cp2 = { a: { at: '2026-06-01T00:00:00Z' }, recent: { at: '2026-10-25T00:00:00Z' }, old: { at: '2026-07-01T00:00:00Z' } };
   assert.deepEqual(Object.keys(schedulingCheckpoint(cp2, ids, now)).sort(), ['a', 'recent']);
+});
+
+test('BRO-6687: a slow-market row stamped since the residual landed but missing it is due now and tier 1', () => {
+  const { lacksSlowMarketResidual, auditTier } = require('./gap-audit-freshness.js');
+  const now = Date.parse('2026-11-02T14:00:00Z');
+  // aristocrats-off-broadway-2024 as f8ee7b7d left it (closed, gaps 1, no residual)
+  const show = { id: 'aristocrats-off-broadway-2024', category: 'off-broadway', status: 'closed', openingDate: '2024-01-21', closingDate: '2024-03-03' };
+  const spliced = { at: '2026-11-01T15:23:43.244Z', gaps: 1, priorProductionGaps: 0, uncollected: 1, alertUncollected: 1 };
+  assert.equal(lacksSlowMarketResidual(show, spliced), true);
+  assert.equal(freshnessMsFor(show, spliced, { now }), 0);
+  assert.equal(auditTier(show, spliced, now), 1);
+  // the audit's own write carries the residual: normal closed-with-gaps 14d skip
+  const whole = { ...spliced, slowMarketResidual: 0 };
+  assert.equal(lacksSlowMarketResidual(show, whole), false);
+  assert.equal(freshnessMsFor(show, whole, { now }), 14 * DAY);
+  // rows from before the field existed, and non-slow markets, are untouched
+  assert.equal(lacksSlowMarketResidual(show, { ...spliced, at: '2026-10-20T00:00:00Z' }), false);
+  assert.equal(lacksSlowMarketResidual({ ...show, category: 'broadway' }, spliced), false);
+});
+
+test('BRO-6687: an in-window slow-market row without a numeric residual never earns the clean daily skip', () => {
+  const now = Date.parse('2026-11-02T14:00:00Z');
+  const show = { id: 'x', category: 'west-end', status: 'open', openingDate: '2026-10-20' };
+  const clean = { at: '2026-11-02T00:00:00Z', gaps: 0, uncollected: 0, slowMarketResidual: 0 };
+  assert.ok(freshnessMsFor(show, clean, { now }) > 0);
+  const { slowMarketResidual, ...noResidual } = clean;
+  assert.equal(freshnessMsFor(show, noResidual, { now }), 0);
 });

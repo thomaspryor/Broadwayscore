@@ -21,12 +21,26 @@
 # keeps for data/audit when they do conflict. Every other merge=ours path
 # (accumulating checkpoints, append-per-key files, feature-flags.ts) gets the
 # same text merge the strategy option gave it before, so it is unchanged.
+#
+# A path marked `merge-keyed=entries` (a {key: entry} checkpoint that both runs
+# append to) is merged whole entry by whole entry, newer `at` wins
+# (checkpoint-keyed-merge.js, BRO-6687): the text merge line-blended two audit
+# runs' gap-audit-checkpoint.json in f8ee7b7d, dropping seven entries and
+# splicing two versions of one. If that merge cannot run, the text merge below
+# still does.
 side="$1" base="$2" cur="$3" other="$4" path="${5:-}"
 if [ -n "$path" ]; then
   case "$(git check-attr autostash -- "$path" 2>/dev/null)" in
     *": autostash: regenerated")
       if [ "$side" = "B" ]; then cp "$other" "$cur" || exit 1; fi
       exit 0
+      ;;
+  esac
+  case "$(git check-attr merge-keyed -- "$path" 2>/dev/null)" in
+    *": merge-keyed: entries")
+      if [ "$side" = "B" ]; then run=theirs; else run=ours; fi
+      if node "$(dirname "$0")/checkpoint-keyed-merge.js" "$run" "$base" "$cur" "$other"; then exit 0; fi
+      echo "::warning::merge-keep-run: keyed merge of $path failed; falling back to the text merge" >&2
       ;;
   esac
 fi

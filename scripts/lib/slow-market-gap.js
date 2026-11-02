@@ -23,17 +23,26 @@ const SLOW_MARKET_ALERT_DAYS = 21; // the audit's own opening window (audit-show
  */
 function slowMarketListedGap(r) {
   const landed = new Set((r.ingestResults || []).filter(x => x && x.ok).map(x => x.url));
-  const tried = new Set((r.ingestResults || []).map(x => x && x.url));
+  const lastTry = new Map((r.ingestResults || []).filter(x => x && x.url).map(x => [x.url, x]));
   const capped = new Set((r.ingestSkippedByCap || []).map(x => x && x.url));
-  const cited = currentRunOnly(r.missing).filter(m => m && !m.serpCensus && !landed.has(m.url));
+  // An expected ingest rejection (publish date unresolved, prior production,
+  // cross-market reroute) is the correct, permanent outcome, the same rule as
+  // the Broadway residual (computeResidualCounts): it is settled, not a gap,
+  // and must not hold the rollup open for 21 days. A conflict stays a gap.
+  // A noop (the file already exists, nothing to write) is also not a failed
+  // ingest: computeResidualCounts leaves noops out of the Broadway residual.
+  const settled = (x) => !!x && !x.ok && !x.conflict && (x.expected === true || x.noop === true);
+  const cited = currentRunOnly(r.missing).filter(m => m && !m.serpCensus && !landed.has(m.url) && !settled(lastTry.get(m.url)));
   const recovered = new Set((r.recoveryResults || []).filter(x => x && x.recovered && !x.uncited).map(x => x.url));
   const reverify = currentRunOnly(r.flaggedMisses).filter(m => m && m.reverify === true && !m.serpCensus && !recovered.has(m.url));
+  const tried = (m) => lastTry.has(m.url);
+  const conflict = (m) => tried(m) && lastTry.get(m.url).conflict === true;
   const counts = {
-    failedIngest: cited.filter(m => tried.has(m.url)).length,
-    capped: cited.filter(m => capped.has(m.url)).length,
-    uningested: cited.filter(m => !tried.has(m.url) && !capped.has(m.url)).length,
+    failedIngest: cited.filter(m => tried(m) && !conflict(m)).length,
+    capped: cited.filter(m => !tried(m) && capped.has(m.url)).length,
+    uningested: cited.filter(m => !tried(m) && !capped.has(m.url)).length,
     flaggedOut: reverify.length,
-    conflictIngest: 0,
+    conflictIngest: cited.filter(conflict).length,
   };
   return { residual: cited.length + reverify.length, ...counts, rows: [...cited, ...reverify] };
 }

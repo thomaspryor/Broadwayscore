@@ -57,3 +57,25 @@ test('guards stay free of the provenance graph (safe-form allowlist stays write-
   assert.equal(isFallbackPublishDate({ dateSource: 'archive-first-capture' }), true);
   assert.equal(isFallbackPublishDate({ dateSource: 'html-meta' }), false);
 });
+
+// BRO-6801: gap audit hands the aggregator listing date to ingest only inside this run's window.
+import { createRequire as __cr } from 'node:module';
+const __req = __cr(import.meta.url);
+const { listingDateForRun } = __req('../../scripts/lib/fallback-publish-date.js');
+const { runWindowStartMs } = __req('../../scripts/lib/audit-show-review-gap.js');
+test('listingDateForRun: accepts a listing inside the run, refuses prior-production and far-future dates', () => {
+  const revival = { openingDate: '2026-10-20', previewsStartDate: '2026-10-01' };
+  assert.equal(listingDateForRun('2026-10-21', revival, runWindowStartMs), '2026-10-21');
+  assert.equal(listingDateForRun('2016-03-02', revival, runWindowStartMs), null, 'prior production');
+  assert.equal(listingDateForRun('2027-03-01', revival, runWindowStartMs), null, 'past opening+60d');
+  assert.equal(listingDateForRun(null, revival, runWindowStartMs), null);
+  assert.equal(listingDateForRun('October 21', revival, runWindowStartMs), null, 'not ISO');
+  assert.equal(listingDateForRun('2026-10-21', { }, runWindowStartMs), null, 'undated show');
+});
+
+test('fallbackDateArgs: ingest args only when a listing date exists', () => {
+  const { fallbackDateArgs } = __req('../../scripts/lib/fallback-publish-date.js');
+  assert.deepEqual(fallbackDateArgs({ date: '2026-10-21', source: 'show-score' }), ['--fallback-publish-date=2026-10-21', '--fallback-date-source=show-score']);
+  assert.deepEqual(fallbackDateArgs(null), []);
+  assert.deepEqual(fallbackDateArgs({ source: 'x' }), []);
+});

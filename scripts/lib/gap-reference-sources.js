@@ -210,7 +210,7 @@ async function getWeReferenceRows(show, opts = {}) {
   };
   const rows = [];
 
-  const push = (source, sourceArticleUrl, priorRun, r) => {
+  const push = (source, sourceArticleUrl, priorRun, r, listingDate = null) => {
     const outletName = (r.outlet || '').trim();
     if (!outletName) return;
     rows.push({
@@ -221,6 +221,8 @@ async function getWeReferenceRows(show, opts = {}) {
       source,
       sourceArticleUrl: sourceArticleUrl || null,
       priorRun,
+      // BRO-6801: the round-up's own post date, offered to ingest as a last-resort publish date.
+      listingDate: priorRun ? null : (listingDate || null),
     });
   };
 
@@ -236,7 +238,7 @@ async function getWeReferenceRows(show, opts = {}) {
       sources.westendtheatre.found = true;
       sources.westendtheatre.rows = wet.rows.length;
       const priorRun = !isCurrentRunRoundup(wet.post.date, show, undefined, { londonOnly: true });
-      for (const r of wet.rows) push('westendtheatre', wet.post.link, priorRun, r);
+      for (const r of wet.rows) push('westendtheatre', wet.post.link, priorRun, r, wet.post.date);
     } else if ((wetStats.titleMatchedPosts || 0) > 0) {
       sources.westendtheatre.found = true;
       sources.westendtheatre.emptyParse = true;
@@ -298,7 +300,7 @@ async function getWeReferenceRows(show, opts = {}) {
       if (parsed.length === 0) sources.bestoftheatre.emptyParse = true;
       // No post date at all = cannot prove this run: report-only, never ingested.
       const priorRun = !bot.postDate || !isCurrentRunRoundup(bot.postDate, show, undefined, { londonOnly: true });
-      for (const r of parsed) push('bestoftheatre', bot.url, priorRun, r);
+      for (const r of parsed) push('bestoftheatre', bot.url, priorRun, r, bot.postDate);
     }
   } catch (e) {
     sources.bestoftheatre.error = e.message;

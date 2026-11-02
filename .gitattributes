@@ -430,6 +430,14 @@ data/image-sources.json merge-coverage=exempt
 data/todaytix-ids.json merge-coverage=exempt
 scripts/health-check.js merge-coverage=exempt
 
+# merge-keyed=entries (BRO-6687): a CUSTOM attribute read only by
+# scripts/lib/merge-keep-run.sh, the merge=ours driver push-with-retry.sh uses.
+# The file is a {key: entry} object that concurrent runs each add entries to;
+# it is merged one whole entry at a time (newer `at` wins, fields never mixed)
+# by checkpoint-keyed-merge.js instead of line by line. The line merge spliced
+# two runs' gap-audit-checkpoint.json in f8ee7b7d (2026-11-01).
+data/audit/gap-audit-checkpoint.json merge-keyed=entries
+
 # autostash=regenerated (BRO-4688): a CUSTOM attribute read only by
 # push-with-retry.sh's autostash restore. In CI, when a caller's uncommitted
 # copy of one of these conflicts with upstream's, upstream's (an equally fresh

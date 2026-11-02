@@ -3459,6 +3459,8 @@ on:
       # BRO-6088 plan-only create_session hook entry (tests/unit/plan-only-create-session.test.mjs).
       - 'scripts/plan-only-create-session-hook.js'
       - '.claude/hooks/block-prompting-remote-tools.sh'
+      # BRO-6687 slow-market replay CLI (scripts/replay-slow-market-openings.test.mjs); a solo edit would otherwise trigger zero CI.
+      - 'scripts/replay-slow-market-openings.js'
   pull_request:
     branches: [main]
   schedule:

@@ -154,3 +154,36 @@ test('off-Broadway uses the roundup path through day 3 and the slow path from da
   assert.deepEqual(plan.alert.map((a) => a.showId), ['d2']);
   assert.deepEqual(plan.resolve, ['d5']);
 });
+
+// BRO-6687: an expected (correct, permanent) ingest rejection is settled, the
+// same rule as the Broadway residual; a conflict and a plain failure stay gaps.
+test('slow market: expected ingest rejections are settled, conflicts and failures still alert', () => {
+  const r = slow('z', 'west-end', '2026-10-06', {
+    missing: [{ url: 'https://e.example/r' }, { url: 'https://c.example/r' }, { url: 'https://f.example/r' }],
+    ingestResults: [
+      { url: 'https://e.example/r', ok: false, noop: true, expected: true, expectedReason: 'prior-production-quarantined' },
+      { url: 'https://c.example/r', ok: false, noop: true, conflict: true, conflictReason: 'cross-show-url-owned' },
+      { url: 'https://f.example/r', ok: false },
+    ],
+  });
+  const plan = planRoundupGapAlerts([r], true, NOW);
+  const c = plan.alert[0].counts;
+  assert.deepEqual([c.residual, c.failedIngest, c.conflictIngest], [2, 1, 1]);
+  assert.deepEqual(plan.alert[0].missing.map((m) => m.url), ['https://c.example/r', 'https://f.example/r']);
+  const onlyExpected = slow('e', 'west-end', '2026-10-06', { missing: [{ url: 'https://e.example/r' }], ingestResults: [r.ingestResults[0]] });
+  assert.deepEqual(planRoundupGapAlerts([onlyExpected], true, NOW).resolve, ['e']);
+  // A plain noop (file already there) is not a failed ingest, matching computeResidualCounts.
+  const onlyNoop = slow('n', 'west-end', '2026-10-06', { missing: [{ url: 'https://n.example/r' }], ingestResults: [{ url: 'https://n.example/r', ok: false, noop: true }] });
+  assert.deepEqual(planRoundupGapAlerts([onlyNoop], true, NOW).resolve, ['n']);
+});
+
+// BRO-6687 (BRO-5489 rule): the window comes from today's shows.json, not the row.
+test('slow market: a carried row with a stale openingDate alerts from the current show entry', () => {
+  const r = slow('dogstar', 'off-west-end', null, { missing: [{ url: 'https://n.example/r' }] });
+  assert.equal(planRoundupGapAlerts([r], true, NOW).alert.length, 0, 'row alone: no opening date, no window');
+  const showById = new Map([['dogstar', { id: 'dogstar', category: 'off-west-end', openingDate: '2026-10-10' }]]);
+  assert.deepEqual(planRoundupGapAlerts([r], true, NOW, { showById }).alert.map((a) => a.showId), ['dogstar']);
+  const moved = new Map([['dogstar', { id: 'dogstar', category: 'off-west-end', openingDate: '2027-01-10' }]]);
+  const r2 = slow('dogstar', 'off-west-end', '2026-10-10', { missing: [{ url: 'https://n.example/r' }] });
+  assert.equal(planRoundupGapAlerts([r2], true, NOW, { showById: moved }).alert.length, 0, 'rescheduled show leaves the window');
+});

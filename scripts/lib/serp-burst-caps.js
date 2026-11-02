@@ -67,6 +67,20 @@ const DEFAULT_BW_SERP_BURST_CONFIG = {
   cascadeTripwire: 24,
 };
 
+// BRO-6801: OB / OWE press-night slot. Fires only inside isPressWindowSerpSlot's hours and
+// overrides the orchestrator's iteration 1-8 --skip-serp. Own ledger bucket ('pw'), so it can
+// never eat the Broadway or WE caps. At most 2 SERP-running cycles per show per UTC day,
+// 2h apart, and 8 a day across all OB/OWE shows; SERP_BUDGET still bounds each cycle.
+const PRESS_WINDOW_SERP_BURST_CONFIG = {
+  markets: ['off-broadway', 'off-west-end'],
+  minHoursAfterOpening: 3,
+  minMinutesBetweenBursts: 120,
+  requireFirstReviews: false,
+  perShowCap: 2,
+  dailyGlobalCap: 8,
+  cascadeTripwire: 8,
+};
+
 /**
  * Decide whether a SERP burst is allowed for this poller cycle.
  *
@@ -214,6 +228,7 @@ function planSerpOutlets(outlets, { budget, lowTierReserve = 3, rotation = 0 }) 
 }
 
 module.exports = {
+  PRESS_WINDOW_SERP_BURST_CONFIG,
   DEFAULT_SERP_BURST_CONFIG,
   DEFAULT_BW_SERP_BURST_CONFIG,
   planSerpOutlets,

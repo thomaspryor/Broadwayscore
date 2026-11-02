@@ -75,8 +75,13 @@ test('isOverdue: closed last-year show follows its own promise (365d clean, 14d 
 test('isOverdue: in-window slow-market show is overdue past its 20h daily promise + grace', () => {
   const show = { id: 'y', category: 'off-broadway', status: 'open', openingDate: new Date(N6751 - 12 * 864e5).toISOString().slice(0, 10) };
   const limitH = 20 + OVERDUE_GRACE_HOURS;
-  assert.equal(isOverdue(show, { at: new Date(N6751 - (limitH - 1) * 36e5).toISOString(), gaps: 0, uncollected: 0 }, N6751, F6751), false);
-  assert.equal(isOverdue(show, { at: new Date(N6751 - (limitH + 1) * 36e5).toISOString(), gaps: 0, uncollected: 0 }, N6751, F6751), true);
+  // the audit always writes slowMarketResidual on a slow-market row (BRO-6687)
+  const row = (h) => ({ at: new Date(N6751 - h * 36e5).toISOString(), gaps: 0, uncollected: 0, slowMarketResidual: 0 });
+  assert.equal(isOverdue(show, row(limitH - 1), N6751, F6751), false);
+  assert.equal(isOverdue(show, row(limitH + 1), N6751, F6751), true);
+  // the same row spliced without it is overdue: the scheduler made it due at once
+  const { slowMarketResidual, ...spliced } = row(limitH - 1);
+  assert.equal(isOverdue(show, spliced, N6751, F6751), true);
 });
 
 test('isOverdue: no checkpoint entry is overdue; unknown show is null', () => {

@@ -78,7 +78,8 @@ test('WE: SERP SKIPPED in evening (not WE morning slot)', () => {
 // ── OB/OWE: no aggressive window, only daily morning-slot ──
 test('OB: no aggressive window — daily morning slot only', () => {
   // OB show 30h post-parsed-opening: should NOT be aggressive.
-  const r = firesSerp(OB, '2026-03-24T01:00:00Z'); // UTC 01 not in BW slot
+  // BRO-6801: 21Z-05Z is now the OB press-window slot, so probe an hour outside both slots.
+  const r = firesSerp(OB, '2026-03-24T15:00:00Z'); // UTC 15 not in BW slot or press window
   assert.equal(r.mode, 'daily');
   assert.equal(r.fires, false);
 });

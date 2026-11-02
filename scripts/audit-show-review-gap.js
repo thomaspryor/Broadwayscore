@@ -1105,6 +1105,8 @@ async function auditShow(show, opts = {}) {
   // stale-year Show Score URL is tagged priorRun and permanently ingest-
   // blocked rather than silently treated as current-run.
   const ssPriorRunUrls = new Map(); // url -> priorRunSource
+  const weListingDates = new Map(); // url -> { date, source } from a current-run WE round-up post (BRO-6801)
+  const ssTileDates = new Map();    // url -> Show Score tile review date (BRO-6801 fallback publish date)
   try {
     const { showScoreUrlForShow, fetchAllShowScoreCriticTiles } = require('./lib/show-score-discover');
     const { isShowScoreTileDateOutOfRun } = require('./lib/gap-ingest-policy');
@@ -1122,6 +1124,7 @@ async function auditShow(show, opts = {}) {
         if (!isReviewUrl(u)) continue;
         const norm = normalizeReviewUrl(u);
         addSourceUrl(norm, 'show-score', ssUrl);
+        if (tile.date) ssTileDates.set(norm, tile.date);
         if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.set(norm, 'show-score-url-year');
         // BRO-6629: the tile's own review date. Show Score keeps one page per
         // title, and a prior run's year-less URLs passed the URL-year check.
@@ -1301,6 +1304,7 @@ async function auditShow(show, opts = {}) {
           const u = normalizeReviewUrl(row.url);
           addSourceUrl(u, row.source, row.sourceArticleUrl);
           weRefUrls.add(u);
+          if (row.listingDate && !weListingDates.has(u)) weListingDates.set(u, { date: row.listingDate, source: row.source });
           // Source attribution is CURRENT-RUN only (QA review 2026-07-11): a
           // source's prior-run citation must not earn corroboration credit for
           // (or vouch trust on) a URL its current roundup never cited.
@@ -1600,8 +1604,25 @@ async function auditShow(show, opts = {}) {
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
   // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
   for (const m of [...result.missing, ...result.flaggedMisses]) m.sources = urlSources.get(m.url) || [];
-  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || bwDatelessOnlyUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0) {
+  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || bwDatelessOnlyUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0 || ssTileDates.size > 0 || weListingDates.size > 0) {
     for (const m of [...result.missing, ...result.flaggedMisses]) {
+      // BRO-6801: an aggregator listing date inside this run's window is the fallback publish
+      // date for a page that carries none (ingest uses it only under --require-publish-date).
+      if (!ssTileDates.has(m.url) && weListingDates.has(m.url)) {
+        const w = weListingDates.get(m.url);
+        const ld = listingDateForRun(w.date, show, runWindowStartMs);
+        if (ld) {
+          m.listingDate = ld; m.listingSource = w.source;
+          if (verbose) console.log(`  📅 listing date ${ld} (${w.source}) available as fallback publish date for ${m.url}`);
+        }
+      }
+      if (ssTileDates.has(m.url)) {
+        const ld = listingDateForRun(ssTileDates.get(m.url), show, runWindowStartMs);
+        if (ld) {
+          m.listingDate = ld; m.listingSource = 'show-score';
+          if (verbose) console.log(`  📅 listing date ${ld} (show-score) available as fallback publish date for ${m.url}`);
+        } else if (verbose) console.log(`  📅 show-score listing date ${ssTileDates.get(m.url)} outside this run's window — not used for ${m.url}`);
+      }
       // BRO-5627: no dated aggregator article vouches for this URL's run.
       if (bwDatelessOnlyUrls.has(m.url)) m.datelessCitationOnly = true;
       if (weRefUrls.has(m.url)) {
@@ -1815,7 +1836,7 @@ async function dispatchGatherFor(showId) {
 // Returns { ok, reason } so the caller can log per-URL outcomes. Skips URLs
 // whose host is unknown to the registry (those should be added to the registry
 // first via the unknown-aggregator-outlets audit).
-function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = false, show = null } = {}) {
+function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = false, show = null, listing = null } = {}) {
   // BRO-5500: ingest-review-from-url.js refuses these with exit 1 (the submission workflow
   // depends on that), which read here as a FAILED ingest and re-alarmed roundup-gap:all
   // hourly. Same permanent refusal, so classify it as the expected skip without spawning.
@@ -1828,6 +1849,8 @@ function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = fal
   // BRO-5627: refuse before any write when the page has no readable publish date
   // (see gapIngestRequiresPublishDate) — an undated file bypasses the date guard.
   if (requirePublishDate) args.push('--require-publish-date');
+  // BRO-6801: aggregator listing date (inside this run's window) as the date of last resort.
+  if (requirePublishDate) args.push(...fallbackDateArgs(listing));
   let provisional = false;
   if (knownOutletId) {
     args.push(`--outlet=${knownOutletId}`);
@@ -2067,7 +2090,8 @@ function openingWindowClearedKeys(results, now = Date.now(), { liveShowIds, show
     .map(r => openingWindowConditionKey(r.showId));
 }
 
-const { currentRunUncollected: countUncollected, earlierDatedCitation, gapIngestRequiresPublishDate } = require('./lib/audit-show-review-gap');
+const { currentRunUncollected: countUncollected, earlierDatedCitation, gapIngestRequiresPublishDate, runWindowStartMs } = require('./lib/audit-show-review-gap');
+const { listingDateForRun, fallbackDateArgs } = require('./lib/fallback-publish-date'); // BRO-6801
 
 function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}) {
   const bl = blocklist !== undefined ? blocklist : loadBlocklist(path.join(REVIEW_TEXTS_DIR, r.showId || ''));
@@ -2085,10 +2109,16 @@ function currentRunUncollected(r, { blocklist, ignoreCensusTagged = false } = {}
 // with no residual resolves it. Slow markets (BRO-6687) join the same rollup below.
 const ROUNDUP_GAP_ALERT_DAYS = 3;
 const { slowMarketListedGap, inSlowMarketWindow, SLOW_MARKETS } = require('./lib/slow-market-gap');
-function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
+function planRoundupGapAlerts(results, ingestMissing, now = Date.now(), { showById } = {}) {
   const alert = [];
   const resolve = [];
-  for (const r of results || []) {
+  for (const row of results || []) {
+    // BRO-6687 (the BRO-5489 rule): judge the window from today's shows.json
+    // entry, not the row. A carried row keeps the openingDate of its last audit
+    // (dogstar-off-west-end-2026: row openingDate null, show opened 2026-10-31),
+    // so the slow-market alert silently skipped an in-window opening.
+    const s = showById && row ? showById.get(row.showId) : null;
+    const r = s ? { ...row, category: s.category || row.category, openingDate: s.openingDate || row.openingDate } : row;
     const opened = r.openingDate ? Date.parse(r.openingDate) : NaN;
     const inRoundupWindow = ['broadway', 'off-broadway'].includes(r.category)
       && Number.isFinite(opened) && opened <= now && now - opened <= ROUNDUP_GAP_ALERT_DAYS * 86400000;
@@ -2270,7 +2300,10 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null,
   // BRO-5627: on a show with earlier-dated citations an UNDATED file may only
   // be filled from a page that yields a publish date (the post-fill window
   // check below can judge a date, never its absence).
-  if (requirePublishDate && !file.publishDate) iargs.push('--require-publish-date');
+  if (requirePublishDate && !file.publishDate) {
+    iargs.push('--require-publish-date');
+    iargs.push(...fallbackDateArgs(m.listingDate && m.listingSource === 'show-score' ? { date: m.listingDate, source: m.listingSource } : null)); // BRO-6801: recovery runs only under earlier-dated evidence, so only a real review date (Show Score tile) may stand in
+  }
   let ingestExit = false; let reason = null;
   try {
     execFileSync('node', iargs, { stdio: 'pipe', timeout: 120000 });
@@ -2739,7 +2772,7 @@ async function main(argv = process.argv.slice(2)) {
       const earlierEvidence = earlierDatedCitation(r, s, { heldDates: loadDirFiles(s.id).map(d => d.publishDate) });
       if (earlierEvidence) console.log(`  📅 earlier-dated citation (${earlierEvidence}) — gap ingests must resolve a publish date`);
       for (const m of ingestable) {
-        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId, { requirePublishDate: gapIngestRequiresPublishDate(m, earlierEvidence), show: s });
+        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId, { requirePublishDate: gapIngestRequiresPublishDate(m, earlierEvidence), show: s, listing: (m.listingDate && !(earlierEvidence && m.listingSource !== 'show-score')) ? { date: m.listingDate, source: m.listingSource } : null });
         perShowFetches++;
         const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
         // conflict/conflictReason MUST be carried through: computeResidualCounts
@@ -3475,7 +3508,7 @@ async function main(argv = process.argv.slice(2)) {
   // Same inputs and gates as the opening-window alert above: liveReportedResults (the
   // blast-radius-accepted set) and never on --dry-run.
   if (!dryRun && useCheckpoint && process.env.GITHUB_ACTIONS === 'true') {
-    const plan = planRoundupGapAlerts(liveReportedResults, ingestMissing);
+    const plan = planRoundupGapAlerts(liveReportedResults, ingestMissing, Date.now(), { showById });
     const alertOpts = buildRoundupGapAlert(plan);
     try {
       const { loadLedger, resolveQuietConditions } = require('./lib/owner-alert-router');

@@ -67,4 +67,26 @@ function pickFallbackPublishDate({ listingDate = null, listingSource = null, arc
   return null;
 }
 
-module.exports = { inReviewWindow, cdxTimestampToDate, archiveFirstCaptureDate, pickFallbackPublishDate };
+/**
+ * BRO-6801: the aggregator listing date to hand to ingest as --fallback-publish-date for one
+ * missing URL, or null. Only a real YYYY-MM-DD that sits inside THIS run's window counts: not
+ * before the run window start (previews/opening minus the audit's 30-day slack, so a revival's
+ * prior-production listing is refused) and not past the window pickFallbackPublishDate accepts
+ * (opening + 60 days). `runWindowStartMs` is injected to keep this file dependency-free.
+ */
+function listingDateForRun(rawDate, show, runWindowStartMs) {
+  const d = String(rawDate || '').slice(0, 10);
+  if (!ISO.test(d) || !show || !show.openingDate) return null;
+  const t = Date.parse(d + 'T00:00:00Z');
+  const start = typeof runWindowStartMs === 'function' ? runWindowStartMs(show) : null;
+  if (!Number.isFinite(t) || (start !== null && t < start)) return null;
+  return inReviewWindow(d, String(show.openingDate).slice(0, 10), { daysBefore: 7, daysAfter: 60 }) ? d : null;
+}
+
+/** CLI args that hand an aggregator listing date to ingest-review-from-url.js (BRO-6801). */
+function fallbackDateArgs(listing) {
+  if (!listing || !listing.date) return [];
+  return [`--fallback-publish-date=${listing.date}`, `--fallback-date-source=${listing.source || ''}`];
+}
+
+module.exports = { fallbackDateArgs, listingDateForRun, inReviewWindow, cdxTimestampToDate, archiveFirstCaptureDate, pickFallbackPublishDate };

@@ -34,26 +34,27 @@ const RUN = 'a\nb\nc\nd\ne\nf\nG-run\nh\n';         // this run's regeneration
 const BLEND = 'a\nB-remote\nc\nd\ne\nf\nG-run\nh\n';
 
 const SNAP = 'data/audit/unknown-aggregator-outlets.json';
-const ATTR = `data/audit/*.json merge=ours\n${SNAP} autostash=regenerated\nsrc/config/*.ts merge=ours\n`;
+const CKPT = 'data/audit/gap-audit-checkpoint.json';
+const ATTR = `data/audit/*.json merge=ours\n${SNAP} autostash=regenerated\n${CKPT} merge-keyed=entries\nsrc/config/*.ts merge=ours\n`;
 const write = (dir, f, s) => { fs.mkdirSync(path.join(dir, path.dirname(f)), { recursive: true }); fs.writeFileSync(path.join(dir, f), s); };
 
 // main = upstream with REMOTE; `run` = this run's commit(s) with RUN, both off BASE.
 // conflictFirst: this run first commits a clashing edit to other.txt, so the
 // rebase stops there and the snapshot commit replays in `rebase --continue`.
-function race(file, op, { conflictFirst = false } = {}) {
+function race(file, op, { conflictFirst = false, baseText = BASE, remote = REMOTE, run = RUN } = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'keep-run-'));
   try {
     git(dir, 'init', '-q', '-b', 'main');
     write(dir, '.gitattributes', ATTR);
-    write(dir, file, BASE); write(dir, 'other.txt', 'x\n');
+    write(dir, file, baseText); write(dir, 'other.txt', 'x\n');
     git(dir, 'add', '.'); git(dir, 'commit', '-qm', 'base');
     const base = git(dir, 'rev-parse', 'HEAD').trim();
     git(dir, 'checkout', '-qb', 'run');
     if (conflictFirst) { write(dir, 'other.txt', 'run\n'); git(dir, 'commit', '-qam', 'run other'); }
-    write(dir, file, RUN); git(dir, 'commit', '-qam', 'run regen');
+    write(dir, file, run); git(dir, 'commit', '-qam', 'run regen');
     const runHead = git(dir, 'rev-parse', 'HEAD').trim();
     git(dir, 'checkout', '-q', 'main');
-    write(dir, file, REMOTE);
+    write(dir, file, remote);
     if (conflictFirst) write(dir, 'other.txt', 'remote\n');
     git(dir, 'commit', '-qam', 'remote regen');
     git(dir, 'checkout', '-q', 'run');
@@ -91,8 +92,7 @@ test('cherry-pick and merge -X ours fallbacks keep this run\'s regenerated snaps
   assert.equal(race(SNAP, 'merge'), RUN);
 });
 
-test('merge=ours paths that are NOT regenerated keep the old text merge (checkpoints, feature-flags.ts)', () => {
-  assert.equal(race('data/audit/gap-audit-checkpoint.json', 'rebase'), BLEND);
+test('merge=ours paths that are neither regenerated nor keyed keep the old text merge (feature-flags.ts)', () => {
   assert.equal(race('src/config/feature-flags.ts', 'rebase'), BLEND);
   assert.equal(race('src/config/feature-flags.ts', 'merge'), BLEND);
 });
@@ -121,4 +121,33 @@ test('ours is the only custom merge driver .gitattributes names (a new one needs
 
 test('the snapshot that blended is marked regenerated in the real .gitattributes', () => {
   assert.match(ATTRS, /^data\/audit\/unknown-aggregator-outlets\.json autostash=regenerated$/m);
+});
+
+// BRO-6687: f8ee7b7d. Two hourly audit runs both appended to
+// gap-audit-checkpoint.json; the line merge kept run B's lines, dropped run
+// A's new entries and spliced the shared show's two versions together.
+const J = (o) => JSON.stringify(o, null, 2) + '\n';
+const OLD = { at: '2026-10-30T00:00:00.000Z', gaps: 0, uncollected: 0, slowMarketResidual: 0 };
+const NEW_A = { at: '2026-11-01T15:23:43.244Z', gaps: 1, uncollected: 1, alertUncollected: 1, slowMarketResidual: 0 };
+const STALE_B = { at: '2026-11-01T15:10:00.000Z', gaps: 1, uncollected: 2, alertUncollected: 2, slowMarketResidual: 1 };
+const CK_BASE = J({ keep: OLD, shared: OLD });
+const CK_REMOTE = J({ keep: OLD, shared: NEW_A, a1: NEW_A, a2: NEW_A });   // run A, already on main
+const CK_RUN = J({ keep: OLD, shared: STALE_B, b1: STALE_B });               // run B, replayed onto it
+const CK_OPTS = { baseText: CK_BASE, remote: CK_REMOTE, run: CK_RUN };
+const CK_WANT = { keep: OLD, shared: NEW_A, a1: NEW_A, a2: NEW_A, b1: STALE_B };
+
+test('TRAP: the plain line merge of two audit runs\' checkpoints is not their keyed union', () => {
+  let out;
+  try { out = JSON.parse(race(CKPT, 'plain-rebase', CK_OPTS)); } catch { out = null; }
+  assert.notDeepEqual(out, CK_WANT);
+});
+
+test('rebase, cherry-pick and merge combine the checkpoint entry by entry; newer `at` wins a shared show whole', () => {
+  for (const op of ['rebase', 'cherry-pick', 'merge']) {
+    assert.deepEqual(JSON.parse(race(CKPT, op, CK_OPTS)), CK_WANT, op);
+  }
+});
+
+test('the real .gitattributes marks the gap-audit checkpoint merge-keyed=entries', () => {
+  assert.match(ATTRS, /^data\/audit\/gap-audit-checkpoint\.json merge-keyed=entries$/m);
 });
