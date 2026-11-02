@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-02T22:50:37.833Z",
+  "generatedAt": "2026-11-02T23:10:31.129Z",
   "windowDays": 45,
-  "showsScanned": 240,
+  "showsScanned": 243,
   "gaps": [
     {
       "showId": "lincoln-in-the-bardo-off-broadway-2026",
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 196.9663647222222,
+      "fileAgeHours": 197.2978711111111,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 182.42262944444445,
+      "nonTerminalAgeHours": 182.75410055555557,
       "needsManualRecovery": true
     },
     {
@@ -44,9 +44,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 9.188846944444444,
+      "fileAgeHours": 9.520336111111112,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 7.659981666666667,
+      "nonTerminalAgeHours": 7.991452777777778,
       "needsManualRecovery": false
     }
   ],

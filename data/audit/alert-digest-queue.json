@@ -185,7 +185,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-02T22:50:37.834Z"
+    "queuedAt": "2026-11-02T23:10:31.130Z"
   },
   {
     "conditionKey": "land:land/bro-6854-sd2",
@@ -217,6 +217,34 @@
       }
     ],
     "queuedAt": "2026-11-02T22:39:20.463Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:are-you-now-or-have-you-ever-been-regional-2026",
+    "title": "Review gap — \"Are You Now or Have You Ever Been?\" missing 1 cited review(s)",
+    "description": "Are You Now or Have You Ever Been? (are-you-now-or-have-you-ever-been-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=are-you-now-or-have-you-ever-been-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T23:10:09.667Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-hedley-ii-regional-2026",
+    "title": "Review gap — \"King Hedley II\" missing 3 cited review(s)",
+    "description": "King Hedley II (king-hedley-ii-regional-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-hedley-ii-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-02T23:10:09.820Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-6736-mvzsox0r",
