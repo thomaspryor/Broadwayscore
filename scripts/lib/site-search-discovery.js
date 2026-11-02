@@ -835,6 +835,25 @@ const SITE_SEARCH_ENDPOINTS = {
     },
   },
 
+  'opera-today': {
+    name: 'Opera Today',
+    domain: 'operatoday.com',
+    requiresJs: false,
+    skipUrlFilter: true, // editorial slugs; wpPostMatchesShow below already validates the post title
+    applies: (show) => show.type === 'opera',
+    // Opera Today (BRO-6766) — UK/US opera reviews incl. Royal Opera House. WP REST is
+    // unauthenticated; same title-validation + house/year filters as the other WP opera outlets.
+    fetchAndParse: async (showTitle, market, openingDate, showId) => {
+      const q = encodeURIComponent(showTitle);
+      const url = `https://operatoday.com/wp-json/wp/v2/posts?search=${q}&per_page=10&_fields=link,title,date`;
+      const data = await fetchSSR(url);
+      const posts = _safeJsonArray(data, 'opera-today');
+      const titleWords = operaTitleWords(showTitle);
+      const urls = posts.filter(p => wpPostMatchesShow(p, titleWords)).map(p => p.link).filter(Boolean);
+      return filterOperaUrls(urls, 'opera-today', showId, openingDate);
+    },
+  },
+
   'the-new-criterion': {
     name: 'The New Criterion',
     domain: 'newcriterion.com',

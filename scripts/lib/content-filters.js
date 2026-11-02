@@ -216,6 +216,9 @@ const NON_MET_OPERA_URL_MARKERS = [
   'sf-opera', 'san-francisco-opera', 'seattle-opera', 'pittsburgh-opera',
   'washington-national-opera', 'la-opera-', 'los-angeles-opera',
   'santa-fe-opera', 'opera-philadelphia', 'wolf-trap',
+  // UK/US festival and regional companies (Opera Today covers them heavily; BRO-6766)
+  'glimmerglass', 'garsington', 'grange-park', 'opera-north', 'scottish-opera',
+  'welsh-national-opera', 'opera-holland-park', 'longborough', 'des-moines-metro',
   // Festivals
   'salzburg-festival', 'bayreuth', 'aix-festival',
   'adelaide-festival', 'edinburgh-festival',

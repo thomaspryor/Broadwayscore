@@ -68,3 +68,19 @@ test('old files, excluded files and too few files do not count', () => {
   ];
   assert.equal(zeroCharHosts(rows, 30, NOW).length, 0);
 });
+
+test('BRO-6491: a stored rejection only for missing byline/outlet is not a cv rejection', () => {
+  const { isCvRejected } = require('./audit-outlet-text-status.js');
+  const base = { criticName: 'Lane Williamson', outlet: 'Exeunt Magazine' };
+  const cv = (extra) => ({ isValid: false, wrongArticle: false, wrongProduction: false, isFilmTv: false, truncated: false, articleType: 'review', ...extra });
+  const absent = [
+    "Critic byline 'Lane Williamson' is not mentioned anywhere in the scraped text; cannot verify attribution to stated critic",
+    "Outlet attribution to 'Exeunt Magazine' cannot be verified from the scraped content",
+  ];
+  assert.equal(isCvRejected({ ...base, contentVerification: cv({ issues: absent }) }), false);
+  assert.equal(isCvRejected({ ...base, contentVerification: cv({ issues: [...absent, 'Text is truncated mid-sentence'] }) }), true);
+  assert.equal(isCvRejected({ ...base, contentVerification: cv({ truncated: true, issues: absent }) }), true);
+  assert.equal(isCvRejected({ ...base, contentVerification: cv({ issues: ['Critic byline is Jane Doe, not Lane Williamson'] }) }), true);
+  assert.equal(isCvRejected({ ...base, contentVerification: cv({ isValid: true, issues: [] }) }), false);
+  assert.equal(isCvRejected(base), false);
+});
