@@ -19,7 +19,8 @@ const SHOWS = {
   'jeezus-off-west-end-2026': { before: 6, floor: 6 },
   'burnt-up-love-off-west-end-2026': { before: 6, floor: 6 },
   'rheology-off-broadway-2026': { before: 7, floor: 8 },
-  'don-giovanni-off-broadway-2025': { before: 7, floor: 7 },
+  // BRO-6821: floor 7 -> 4. The May 2023 Met production's reviews (NYT, WSJ, FT, OperaWire/Salazar) are correctly excluded from the 2025 run; the 4 current-run reviews are the real coverage.
+  'don-giovanni-off-broadway-2025': { before: 7, floor: 4 },
 };
 
 const present = fs.existsSync(reviewsPath);
