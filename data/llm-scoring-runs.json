@@ -1112057,21 +1112057,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-02T22:50:32.403Z",
-    "completedAt": "2026-11-02T22:51:07.998Z",
+    "startedAt": "2026-11-02T22:49:49.681Z",
+    "completedAt": "2026-11-02T22:50:39.708Z",
     "totalReviews": 7,
     "processed": 7,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 44317,
-      "output": 2327,
-      "cacheRead": 26649,
-      "cacheWrite": 0,
-      "total": 109118
+      "input": 47192,
+      "output": 2365,
+      "cacheRead": 22842,
+      "cacheWrite": 3807,
+      "total": 113612
     },
-    "costUsd": 0.16751149999999998,
-    "runId": "41539505912",
+    "costUsd": 0.19002295,
+    "runId": "41539459977",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1125833,16 +1125833,6 @@
           "flat": 0,
           "down": 0,
           "total": 8
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "exit-the-king-regional-2026",
-        "ourDistribution": {
-          "up": 5,
-          "flat": 1,
-          "down": 1,
-          "total": 7
         },
         "hasDisagreement": false
       },
@@ -1142310,10 +1142300,20 @@
       {
         "showId": "primary-trust-regional-2024",
         "ourDistribution": {
-          "up": 13,
+          "up": 20,
           "flat": 0,
           "down": 0,
-          "total": 13
+          "total": 20
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "primary-trust-regional-2026",
+        "ourDistribution": {
+          "up": 20,
+          "flat": 0,
+          "down": 0,
+          "total": 20
         },
         "hasDisagreement": false
       },
@@ -1160817,8 +1160817,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-02T22:56:05.480Z",
-    "completedAt": "2026-11-02T22:56:05.482Z",
+    "startedAt": "2026-11-02T22:55:36.902Z",
+    "completedAt": "2026-11-02T22:55:36.904Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1160831,7 +1160831,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41539505912",
+    "runId": "41539459977",
     "source": "comparative-rescore",
     "errorDetails": []
   },
