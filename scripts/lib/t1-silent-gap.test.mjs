@@ -50,7 +50,20 @@ test('content present, never scored, past the grace window → unscored', () => 
   // dispatchable (BRO-2985): 'y'.repeat(1000) is substantive text the scorer's
   // selector would accept, so dispatching llm-ensemble-score.yml for it is
   // legitimate self-heal. Contrast the blocked case below.
-  assert.deepEqual(gap, { type: 'unscored', recoverable: false, dispatchable: true });
+  assert.deepEqual(gap, { type: 'unscored', recoverable: false, dispatchable: true, skipReason: null, fetchAbandoned: false });
+});
+
+// BRO-5166: a paywall stub with every fetch spent carries the scorer's reason
+// and the abandoned flag, so the health row can park it like other abandoned fetches.
+test('unscored paywall stub reports skipReason no_scorable_text and fetchAbandoned', () => {
+  const gap = classify({
+    url: 'https://www.washingtonpost.com/entertainment/theater/2026/10/22/some-review/', fullText: 'Loading... By A Critic. The old cemetery on the hill is not well kept these days. Moss grows on the stones, the gate is rusted, and the path down to the river is broken in places. ' .repeat(4),
+    contentTier: 'truncated', textFetchedAt: '2026-07-17T00:00:00Z', fetchDiscoveryAbandoned: true,
+  }, { tier: 1, show: { id: 'x', title: 'Some Opera Title' } });
+  assert.equal(gap.type, 'unscored');
+  assert.equal(gap.dispatchable, false);
+  assert.equal(gap.skipReason, 'no_scorable_text');
+  assert.equal(gap.fetchAbandoned, true);
 });
 
 test('unscored gap the scorer would refuse is reported but NOT dispatchable (BRO-2985)', () => {

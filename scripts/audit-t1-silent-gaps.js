@@ -485,6 +485,8 @@ async function main() {
         // scorer will never take this file". undefined for gap types where the
         // question doesn't apply (empty-body, rejected-unscoreable).
         dispatchable: gap.dispatchable,
+        // BRO-5166: unscored only; isFetchAbandonedAwaitingManual reads both.
+        ...(gap.type === 'unscored' ? { skipReason: gap.skipReason, fetchAbandoned: gap.fetchAbandoned } : {}),
         // BRO-6082: needsManualRecovery reads it (false = no automated re-fetch left).
         recoverable: gap.recoverable,
         url: d.url || null,

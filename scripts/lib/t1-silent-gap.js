@@ -43,7 +43,7 @@ const { isForumLinkRecoverable, isForumThreadUrl, FORUM_RECOVERY_CAP, FORUM_RECO
 // would skip cannot be self-healed by dispatching llm-ensemble-score.yml, so
 // the sweep must not keep dispatching for it (4x/day/show forever at
 // DISPATCH_RETRY_HOURS=6). Same predicate verify-all-scored.js uses.
-const { unscoredSkipReason } = require('./scoring-queue-counts');
+const { unscoredSkipReason, UNSCORED_SKIP } = require('./scoring-queue-counts');
 
 // Tiers considered "cannot silently miss". 1 = NYT/Times/Guardian class,
 // 2 = TheaterMania/Standard/Telegraph class.
@@ -145,14 +145,19 @@ function hasWrongUrlSignal(f) {
 
 // Can a scoring dispatch do anything for this file? Fails OPEN on a throw (BRO-2985).
 function isDispatchable(file, show, filePath) {
+  return scorerSkipReason(file, show, filePath) === null;
+}
+
+// The scorer's skip reason (null = it would take the file). Fails OPEN to null on a throw.
+function scorerSkipReason(file, show, filePath) {
   try {
     return unscoredSkipReason(file, {
       show,
       showTitle: show && show.title ? show.title : undefined,
       filePath,
-    }) === null;
+    });
   } catch {
-    return true;
+    return null;
   }
 }
 
@@ -222,9 +227,16 @@ function classifySilentGap({ file, show, tier, outletScored, now, filePath }) {
     // real problem the operator must see), but tell the caller whether a
     // scoring dispatch can do anything about it. Fail OPEN on a throw — a
     // missed opening-night score costs far more than a wasted dispatch.
-    const dispatchable = isDispatchable(file, show, filePath);
+    const skipReason = scorerSkipReason(file, show, filePath);
+    const dispatchable = skipReason === null;
     if (dispatchable === false && !file.rejectionReason && hasNonReviewUrl(file)) return null;
-    return { type: 'unscored', recoverable: false, dispatchable };
+    // BRO-5166: skipReason + fetchAbandoned let the health row tell a paywall stub
+    // (no scorable text, every fetch spent) from a scorer that refuses real text.
+    return {
+      type: 'unscored', recoverable: false, dispatchable, skipReason,
+      // With a URL only the refetch budget is terminal; without one, URL discovery is.
+      fetchAbandoned: file.url ? file.fetchDiscoveryAbandoned === true : file.serpDiscoveryAbandoned === true,
+    };
   }
 
   // Flag-excluded by the canonical predicate; only fetch-quality states
@@ -543,9 +555,18 @@ function hasNoAutomatedPath(entry) {
 // are a real problem the operator must see now (unscored the scorer will not
 // take, rejected-unscoreable), and fails open when the clocks are unstamped,
 // since needsManualRecovery can never fire for those.
+// BRO-5166: an unscored gap counts only when the scorer skips it for want of
+// text (no_scorable_text) AND every fetch path is spent: a paywall stub
+// (washpost/Lincoln in the Bardo held the row 7 days). A scorer that refuses
+// real text (other reasons, or a fetch still pending) stays visible.
+function isAbandonedStubUnscored(entry) {
+  return entry.type === 'unscored' && entry.dispatchable === false
+    && entry.skipReason === UNSCORED_SKIP.NO_SCORABLE_TEXT && entry.fetchAbandoned === true;
+}
 function isFetchAbandonedAwaitingManual(entry) {
   if (!hasNoAutomatedPath(entry)) return false;
-  if (entry.type === 'unscored' || entry.type === 'rejected-unscoreable') return false;
+  if (entry.type === 'rejected-unscoreable') return false;
+  if (entry.type === 'unscored' && !isAbandonedStubUnscored(entry)) return false;
   return !Number.isNaN(Date.parse(entry.firstSeen || '')) && !Number.isNaN(Date.parse(entry.gapSeenAt || ''));
 }
 

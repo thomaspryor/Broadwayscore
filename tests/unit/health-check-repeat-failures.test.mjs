@@ -587,6 +587,23 @@ test('silentGapBacklogResults: gaps with no automated path left never produce a 
   assert.equal(hasNoAutomatedPath(forumTryLeft), false);
 });
 
+// BRO-5166: a paywall stub the scorer skips for want of text, with every fetch
+// spent (washpost/Lincoln in the Bardo, 7 days on the row), is the same
+// abandoned-fetch class. A scorer refusing real text stays visible.
+test('silentGapBacklogResults: abandoned-fetch stub that is unscored never produces a row before the manual clock', () => {
+  const now = new Date('2026-10-28T02:00:00Z');
+  const base = { showId: 'lincoln', tier: 1, outletId: 'washpost', firstSeen: '2026-10-25T17:52:33Z', gapSeenAt: '2026-10-26T08:25:16Z', type: 'unscored', dispatchable: false };
+  const stub = { ...base, skipReason: 'no_scorable_text', fetchAbandoned: true };
+  assert.equal(isFetchAbandonedAwaitingManual(stub), true);
+  assert.deepEqual(silentGapBacklogResults({ gaps: [stub] }, now), []);
+  // Fetch still pending (HSM Daily Mail capsule: serp retry left) or another skip reason: real scorer problem.
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...stub, fetchAbandoned: false }] }, now).length, 1);
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...stub, skipReason: 'not_scoreable' }] }, now).length, 1);
+  assert.equal(silentGapBacklogResults({ gaps: [{ ...stub, dispatchable: true, skipReason: null }] }, now).length, 1);
+  // Older reports without the fields keep the old behaviour.
+  assert.equal(silentGapBacklogResults({ gaps: [base] }, now).length, 1);
+});
+
 // BRO-5166: a review discovered minutes ago is in flight, not silent.
 test('silentGapBacklogResults: files discovered under 24h ago are not counted', () => {
   const now = new Date('2026-10-13T02:00:00Z');
