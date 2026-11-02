@@ -11,6 +11,7 @@
  * Usage: node scripts/lib/pre-run-review-scan.js [--days=180] [--json]
  */
 const path = require('path');
+const { toDateMs } = require('./date-utils');
 const DAY = 86400000;
 
 function classify({ shows, reviews, days = 180 }) {
@@ -19,13 +20,13 @@ function classify({ shows, reviews, days = 180 }) {
   for (const r of reviews) {
     const s = byId.get(r.showId);
     if (!s || !r.publishDate) continue;
-    const start = Date.parse(s.previewsStartDate || s.openingDate || '');
-    const pub = Date.parse(r.publishDate);
+    const start = toDateMs(s.previewsStartDate || s.openingDate || '');
+    const pub = toDateMs(r.publishDate);
     if (!Number.isFinite(start) || !Number.isFinite(pub)) continue;
     if ((start - pub) / DAY <= days) continue;
     const runs = Array.isArray(s.priorRuns) ? s.priorRuns : [];
-    const inWindow = runs.find((p) => p && p.openingDate && pub >= Date.parse(p.openingDate) - 30 * DAY
-      && (!p.closingDate || pub <= Date.parse(p.closingDate) + 60 * DAY));
+    const inWindow = runs.find((p) => p && p.openingDate && pub >= toDateMs(p.openingDate) - 30 * DAY
+      && (!p.closingDate || pub <= toDateMs(p.closingDate) + 60 * DAY));
     let cls;
     if (s.type === 'opera' && runs.some((p) => p && p.id && typeof p.inheritReviews !== 'boolean')) cls = 'opera-unflagged';
     else if (r.inheritedFromShowId || inWindow) cls = 'carried-by-link';
