@@ -860,7 +860,10 @@ function headerSections(text, shows, ownShowId, publishDate) {
   if (heads.length < 2) {
     const { findSectionHeadings } = require('./multi-show-section-extract');
     const bys = findSectionHeadings(text);
-    if (bys.length >= 2) {
+    // A generic heading the bystander headings do not cover is a boundary the
+    // fallback would drop (ship-check): mixed formats are not cut.
+    const covered = heads.every((h) => bys.some((b) => h.at >= b.start && h.at - b.start < 300));
+    if (bys.length >= 2 && covered) {
       heads = bys.map((b) => {
         const title = b.title.split(/\s+at\s+/i)[0].trim();
         return { at: b.start, end: b.start, start: b.start, title, listing: false, bystander: true };
@@ -931,7 +934,14 @@ function headerSections(text, shows, ownShowId, publishDate) {
   const sections = [];
   const seen = new Set();
   heads.forEach((h, i) => {
-    const show = byTitle.get(normalizeTitle(h.title));
+    let show = byTitle.get(normalizeTitle(h.title));
+    // A bystander heading runs on into its venue ("Did You Eat? Ma-Yi Theater
+    // Company"): the one tracked title it starts with, as the extractor does.
+    if (!show && h.bystander) {
+      const n = normalizeTitle(h.title);
+      const hits = [...new Set([...byTitle.keys()].filter((k) => k.length >= 4 && n.startsWith(k + ' ')).map((k) => byTitle.get(k)))];
+      if (hits.length === 1) show = hits[0];
+    }
     if (!show || seen.has(show.id)) return;
     const sectionText = text.slice(h.start, i + 1 < heads.length ? heads[i + 1].start : text.length).trim();
     if (sectionText.length < MIN_SECTION_CHARS) return;

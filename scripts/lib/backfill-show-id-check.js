@@ -90,6 +90,11 @@ function backfillShowIdNearMisses(cmd, opts = {}) {
   if (!misses.length) return null;
   return {
     misses,
+    // Only a year-less id is certain to be wrong (no show id lacks its year).
+    // A title-prefix near miss may be a new production of a classic title
+    // (ship-check: 383 synthetic next-year/off-Broadway ids matched a
+    // regional id), so it warns at filing and never refuses a dispatch.
+    blocking: misses.some((x) => !HAS_YEAR_RE.test(x.id)),
     reason: `verify-data-backfill names show id(s) that do not exist: ${misses.map((x) => (x.suggestions.length ? `${x.id} (did you mean ${x.suggestions.join(' or ')}?)` : `${x.id} (not a show id: ids end in their year)`)).join('; ')}`,
   };
 }

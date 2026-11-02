@@ -48,15 +48,41 @@ test('other check forms and existing ids pass through', () => {
   assert.equal(backfillShowIdNearMisses('node scripts/lib/verify-data-backfill.js --show=the-ask-off-broadway-2026', { showIds: KNOWN }), null);
 });
 
-test('resolveCheckPaths refuses a near-miss id and fails open without shows.json', () => {
+test('resolveCheckPaths refuses only year-less ids; near misses warn at filing; no shows.json fails open', () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bsid-'));
-  const cmd = 'node scripts/lib/verify-data-backfill.js --show=dinosaurs-off-broadway-2026 --reviews=1';
-  assert.equal(resolveCheckPaths(cmd, { repoRoot: root }).ok, true);
+  const bare = 'node scripts/lib/verify-data-backfill.js --show=cats --reviews=1';
+  const near = 'node scripts/lib/verify-data-backfill.js --show=dinosaurs-off-broadway-2026 --reviews=1';
+  assert.equal(resolveCheckPaths(bare, { repoRoot: root }).ok, true);
   fs.mkdirSync(path.join(root, 'data'));
-  fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: KNOWN.map((id) => ({ id })) }));
-  const r = resolveCheckPaths(cmd, { repoRoot: root });
+  fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [...KNOWN, 'cats-west-end-2015'].map((id) => ({ id })) }));
+  const r = resolveCheckPaths(bare, { repoRoot: root });
   assert.equal(r.ok, false);
-  assert.match(r.reason, /the-dinosaurs-off-broadway-2026/);
+  assert.match(r.reason, /cats-west-end-2015/);
+  // A near miss may be a new production: dispatch is not refused.
+  assert.equal(resolveCheckPaths(near, { repoRoot: root }).ok, true);
+  const { armingWarning } = require('./card-arming-warning.js');
+  const w = armingWarning(`## Acceptance criteria\n\n\`${near}\``, { repoRoot: root });
+  assert.match(String(w), /the-dinosaurs-off-broadway-2026/);
+});
+
+// ship-check: the next-year and off-Broadway sibling of every real id must
+// never be refused at dispatch (383 were, under the first prefix rule).
+test('no new-production sibling of a real id is ever a blocking miss', () => {
+  let shows;
+  try { shows = require('../../data/shows.json'); } catch { return; }
+  const ids = (shows.shows || shows).map((s) => s.id);
+  const known = new Set(ids);
+  const blocked = [];
+  for (const id of ids) {
+    const m = /^(.*)-(\d{4})$/.exec(id);
+    if (!m) continue;
+    for (const sib of [`${m[1]}-${Number(m[2]) + 1}`, `${m[1].replace(/-(off-broadway|west-end|regional|tour)$/, '')}-off-broadway-${m[2]}`]) {
+      if (known.has(sib)) continue;
+      const r = backfillShowIdNearMisses(`node scripts/lib/verify-data-backfill.js --show=${sib}`, { showIds: ids });
+      if (r && r.blocking) blocked.push(sib);
+    }
+  }
+  assert.deepEqual(blocked, []);
 });
 
 // BRO-6396 / BRO-6716 / BRO-6794 shapes: titles, market names and "all" in place of ids.
