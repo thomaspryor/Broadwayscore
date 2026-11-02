@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T01:13:17.266Z",
+  "timestamp": "2026-11-02T01:32:03.628Z",
   "stats": {
-    "totalReviews": 79076,
-    "alreadyFlagged": 21894,
+    "totalReviews": 79078,
+    "alreadyFlagged": 21895,
     "dateGuardCatches": 245,
     "directorMismatch": 3401,
     "tvFilmSignals": 2248,
     "londonSignals": 3573,
     "offBroadwaySignals": 743,
     "yearMismatch": 344,
-    "noPublishDate": 8387
+    "noPublishDate": 8383
   },
   "findings": [
     {
@@ -17259,7 +17259,7 @@
       "file": "telegraph--marianka-swain.json",
       "score": 65,
       "publishDate": "2023-10-10",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-closing-time-national-theatre-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -17328,7 +17328,7 @@
       "file": "whatsonstage--sarah-crompton.json",
       "score": 84,
       "publishDate": "2023-10-16",
-      "url": null,
+      "url": "https://www.whatsonstage.com/news/death-of-england-closing-time-at-the-national-theatre-review_1536537/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21941,7 +21941,7 @@
       "file": "standard--fiona-mountford.json",
       "score": 91,
       "publishDate": "2019-03-28",
-      "url": null,
+      "url": "https://www.standard.co.uk/culture/theatre/fiddler-on-the-roof-review-sensitive-and-confident-musical-packs-a-real-emotional-wallop-a4102936.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35796,7 +35796,7 @@
       "file": "sunday-times--dominic-maxwell.json",
       "score": 26,
       "publishDate": "2024-02-18",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/just-for-one-day-theatre-review-old-vic-london-9b9xcn2g7",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -35866,7 +35866,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 77,
       "publishDate": "2024-06-16",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/kathy-and-stella-solve-a-murder-review-murder-most-fun-5dmbb2qdg?eafs_enabled=false",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -68117,7 +68117,7 @@
       "file": "sunday-times--patricia-nicol.json",
       "score": 63,
       "publishDate": "2017-01-15",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-the-kite-runner-29l5t9rsk",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -88951,7 +88951,7 @@
       "file": "theatre-weekly--greg-stewart.json",
       "score": 79,
       "publishDate": "2024-05-24",
-      "url": null,
+      "url": "https://theatreweekly.com/review-bluets-at-the-royal-court-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -91565,7 +91565,7 @@
       "file": "times-uk--ann-treneman.json",
       "score": 76,
       "publishDate": "2017-04-07",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/theatre-consent-at-the-dorfman-theatre-6xsktnttx",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -109076,7 +109076,7 @@
       "file": "broadwayworld--laura-jones.json",
       "score": 77,
       "publishDate": "2025-10-09",
-      "url": null,
+      "url": "https://www.broadwayworld.com/article/Review-MARY-PAGE-MARLOWE-Starring-Susan-Sarandon-Andrea-Risborough-20251009",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -113245,6 +113245,19 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "guardian--susannah-clapp.json",
+      "publishDate": "2025-01-19",
+      "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "i-paper--unknown.json",
       "score": 53,
       "publishDate": null,
@@ -113263,20 +113276,6 @@
       "score": 99,
       "publishDate": "2025-01-13",
       "url": "https://www.londontheatre.co.uk/reviews/oliver-review-gielgud-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"gielgud\""
-        }
-      ]
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "file": "observer--susannah-clapp.json",
-      "score": 83,
-      "publishDate": "2025-01-19",
-      "url": "https://www.theguardian.com/stage/2025/jan/19/the-week-in-theatre-oliver-lionel-bart-matthew-bourne-gielgud-theatre-review-the-devil-may-care-bernard-shaw-southwark-playhouse-mark-giesser-national-theatre-of-wales-michael-sheen",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
