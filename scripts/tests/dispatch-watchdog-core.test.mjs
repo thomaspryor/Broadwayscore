@@ -422,6 +422,34 @@ test('dispatch kill-switch = visibility only', () => {
   assert.equal(plan.retryable.length, 1, 'still classified — only the action is held');
 });
 
+// BRO-6430: 2026-10-29..31 the watchdog re-claimed and re-launched every
+// queued card every sweep while disk sat under bsc-runner's 5GB floor; the
+// runner refused all 730 (ABANDONED 'disk-pressure:', not a strike), so the
+// loop never ended and the headless success rate fell to 21%.
+test('BRO-6430: disk under the dispatch floor is a global hold — nothing claimed, a known policy pause', () => {
+  const entries = [
+    { ts: T(60), event: 'launch', taskId: 'linear:BRO-10', subject: 's', workspaceRef: 'workspace:5' },
+    { ts: T(30), event: 'dead', taskId: 'linear:BRO-10', workspaceRef: 'workspace:5' },
+  ];
+  const tasks = new Map([lin('BRO-10', 'pending')]);
+  const healthy = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE, diskFreeGB: 40, diskFloorGB: 5 });
+  assert.equal(healthy.toDispatch.length, 1, 'fixture sanity: with disk free the card dispatches');
+  assert.equal(healthy.budgets.globalHoldFlags.diskPressure, false);
+
+  const low = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE, diskFreeGB: 3.4, diskFloorGB: 5 });
+  assert.equal(low.toDispatch.length, 0);
+  assert.equal(low.retryable.length, 1, 'still classified — only the action is held');
+  assert.equal(low.budgets.globalHoldFlags.diskPressure, true);
+  assert.equal(low.budgets.pausedByPolicy, true);
+  assert.ok(low.budgets.globalHolds.some(h => h.startsWith('disk pressure (3.4GB free < 5GB')));
+  // A known hold, not a wedge: the dead-flow page must not fire on it.
+  assert.equal(core.stallDetectionDepth(low, { now: NOW, staleSlotMs: 6 * 3600 * 1000 }), 0);
+
+  // df unreadable (null) fails open, same contract as the runner's preflight.
+  const unknown = core.planSweep(entries, tasks, { now: NOW, liveTitles: LIVE, diskFreeGB: null, diskFloorGB: 5 });
+  assert.equal(unknown.toDispatch.length, 1);
+});
+
 test('tab title carries counts and the upd HH:MM freshness cue', () => {
   const plan = core.planSweep([], new Map(), { now: NOW, liveTitles: LIVE });
   const title = core.tabTitle(plan);

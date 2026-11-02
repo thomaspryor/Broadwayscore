@@ -388,7 +388,19 @@ function buildPlan(now) {
       sinceMs: now - UNLANDED_CHECK_WINDOW_MS,
       mainRepoCwd: require('./lib/bsc-runner.js').REPO,
     }),
+    // BRO-6430: the same free-disk reading and floor bsc-runner's dispatch
+    // preflight uses, so the sweep holds instead of claiming launches the
+    // runner is certain to refuse.
+    ...diskPressureInputs(),
   });
+}
+
+function diskPressureInputs() {
+  const runner = require('./lib/bsc-runner.js');
+  return {
+    diskFreeGB: runner.freeDiskGB(runner.REPO),
+    diskFloorGB: runner.parseDispatchFloorGB(process.env.BSC_DISPATCH_DISK_FLOOR_GB),
+  };
 }
 
 // ── actions ────────────────────────────────────────────────────────────────

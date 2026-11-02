@@ -53,6 +53,7 @@ const { computeSpendCircuitBreaker, DEFAULT_SPEND_THRESHOLD_USD, DEFAULT_CONCURR
 // identical "did MY dispatch turn into a job, and what did IT cost" question
 // — BRO-2542's shared reconcile loop, not a fourth hand-rolled fold).
 const dispatchReconcile = require('./dispatch-reconcile.js');
+const { shouldRefuseDispatch } = require('./worktree-gc-reclaim.js');
 
 // BRO-2648: the opening words of the session report dispatch-watchdog.js
 // posts (via linear-session.js cmdReport) when it parks a blocked headless
@@ -593,7 +594,7 @@ function stallDetectionDepth(plan, { now, staleSlotMs } = {}) {
   // A global hold this function does not know about (added to planSweep
   // without a flag here) must read as a policy pause, never as a failure:
   // an unknown hold can cost a missed page, never a false one.
-  const knownHolds = ['killSwitch', 'dayBudget', 'hourly', 'concurrency', 'claimOutage', 'spendHalt'].filter(k => f[k]).length;
+  const knownHolds = ['killSwitch', 'dayBudget', 'hourly', 'concurrency', 'claimOutage', 'spendHalt', 'diskPressure'].filter(k => f[k]).length;
   const unknownHold = Array.isArray(b.globalHolds) && b.globalHolds.length > knownHolds;
   // The spend breaker (BRO-3924 R5) reserves liveNow x median job cost for
   // open slots, so the same never-closed slots that make the concurrency cap
@@ -606,7 +607,10 @@ function stallDetectionDepth(plan, { now, staleSlotMs } = {}) {
   const spendFromStaleSlots = !!f.spendHalt && staleSlots > 0 &&
     Number.isFinite(sp.spentUSD) && Number.isFinite(sp.perJobUSD) && Number.isFinite(sp.thresholdUSD) &&
     sp.spentUSD - staleSlots * sp.perJobUSD < sp.thresholdUSD;
-  const policyBlocking = !!(unknownHold || f.killSwitch || f.dayBudget || f.hourly ||
+  // diskPressure (BRO-6430) is a known, deliberate hold: the 'Infra: disk
+  // space' health row is what alerts on it, so it must not ALSO read as a
+  // wedged dispatch flow.
+  const policyBlocking = !!(unknownHold || f.killSwitch || f.dayBudget || f.hourly || f.diskPressure ||
     (f.spendHalt && !spendFromStaleSlots) || (f.concurrency && !staleConcurrency));
   if (policyBlocking) return toDispatch;
   // Claims that never produced a launch are unfinished work the queue no
@@ -889,7 +893,7 @@ function hasNoFurtherDispatchWork(taskId, entries) {
  *     I/O), same injection pattern as liveTitles, so this stays pure.
  */
 function planSweep(entries, tasks, opts) {
-  const { now, liveTitles = null, recheckFailures = [], alreadyPasses = [], dispatchEnabled = true, unlandedJobDone = [] } = opts || {};
+  const { now, liveTitles = null, recheckFailures = [], alreadyPasses = [], dispatchEnabled = true, unlandedJobDone = [], diskFreeGB = null, diskFloorGB = null } = opts || {};
   if (!Number.isFinite(now)) throw new Error('planSweep requires now (ms epoch)');
   const cmuxObserved = liveTitles instanceof Map && liveTitles.size > 0;
 
@@ -1211,6 +1215,18 @@ function planSweep(entries, tasks, opts) {
   // R5: the shared breaker's own reason string, verbatim — no watchdog-
   // specific wording invented here.
   if (spendBreaker.halt) globalHolds.push(spendBreaker.reason);
+  // BRO-6430: bsc-runner's preflight refuses every dispatch while free disk
+  // is under its floor (ABANDONED 'disk-pressure:'), and ABANDONED is not a
+  // dead-attempt strike, so without this hold the watchdog re-claimed and
+  // re-launched every queued card on every sweep for the whole low-disk
+  // window: 944 claims / 730 refused launches over 2026-10-29..31, each a
+  // REDISPATCH row eating the day budget and a 'launch' row the headless
+  // success rate counted. Same floor and comparison as the runner
+  // (shouldRefuseDispatch); null diskFreeGB (df unreadable) never holds,
+  // matching the runner's fail-open contract.
+  const diskPressure = Number.isFinite(diskFreeGB) && Number.isFinite(diskFloorGB) &&
+    shouldRefuseDispatch({ freeGB: diskFreeGB, floorGB: diskFloorGB });
+  if (diskPressure) globalHolds.push(`disk pressure (${diskFreeGB.toFixed(1)}GB free < ${diskFloorGB}GB dispatch floor) — every launch would be refused; see the 'Infra: disk space' health row`);
   // Union — a NEW array, never an alias of globalHolds (an alias made every
   // cmux hold a global one again, which is the exact bug this split removes).
   // The narrative and every existing reader see the same list they always did;
@@ -1232,7 +1248,8 @@ function planSweep(entries, tasks, opts) {
     usedThisHour >= CAPS.perHour ||
     liveNow >= CAPS.watchdogConcurrent ||
     (autoTabs !== null && autoTabs >= CAPS.globalAutoTabs) ||
-    spendBreaker.halt;
+    spendBreaker.halt ||
+    diskPressure;
 
   let budget = 0;
   if (!globalHolds.length) {
@@ -1301,6 +1318,7 @@ function planSweep(entries, tasks, opts) {
         concurrency: liveNow >= CAPS.watchdogConcurrent,
         claimOutage: !!claimOutage,
         spendHalt: !!spendBreaker.halt,
+        diskPressure,
       },
       awaitingClaimCount: awaitingClaim.length,
       laneEligible: eligibleForLane.length,

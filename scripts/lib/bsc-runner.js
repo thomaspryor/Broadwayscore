@@ -552,5 +552,5 @@ module.exports = {
   gitSafeJobId,
   runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
-  DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB,
+  DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB, freeDiskGB,
 };
