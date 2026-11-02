@@ -1,32 +1,76 @@
 {
-  "updatedAt": "2026-11-02T18:18:52.696Z",
-  "processed": 94,
-  "failed": 56,
-  "successRate": "62.7%",
+  "updatedAt": "2026-11-02T18:25:24.691Z",
+  "processed": 32,
+  "failed": 13,
+  "successRate": "71.1%",
   "tierBreakdown": {
-    "playwright": 54,
+    "playwright": 9,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 6,
-    "archive": 19
+    "scrapingdog": 0,
+    "scrapingbee": 3,
+    "brightdata": 2,
+    "archiveToday": 3,
+    "archive": 16
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-11-02T17:38:45.755Z",
+      "t": "2026-11-02T18:14:18.563Z",
       "event": "bb-session",
-      "session": "72ac8cfc",
-      "url": "https://deadline.com/2026/03/hadestown-live-stage-movie-release-1236766458/"
+      "session": "812ad322",
+      "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-do"
     },
     {
-      "t": "2026-11-02T17:43:21.959Z",
+      "t": "2026-11-02T18:14:18.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-02T18:15:31.798Z",
       "event": "bb-session",
-      "session": "2d03d62e",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+      "session": "929c2f0f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-strange-loop-broadway-review-"
+    },
+    {
+      "t": "2026-11-02T18:15:39.707Z",
+      "event": "bb-session",
+      "session": "799c4b40",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-strange-loop-broadway-review-"
+    },
+    {
+      "t": "2026-11-02T18:17:36.493Z",
+      "event": "bb-session",
+      "session": "8a4e45aa",
+      "url": "https://www.wsj.com/articles/junk-review-bankrupting-entertainment-1509669000"
+    },
+    {
+      "t": "2026-11-02T18:17:36.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-02T18:19:03.834Z",
+      "event": "bb-session",
+      "session": "8265c041",
+      "url": "http://www.wsj.com/articles/cats-review-frisky-and-fragmented-1470336422"
+    },
+    {
+      "t": "2026-11-02T18:19:04.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-02T18:22:10.254Z",
+      "event": "bb-session",
+      "session": "89bca9bd",
+      "url": "http://online.wsj.com/article/SB10000872396390444799904578048520562125036.html"
+    },
+    {
+      "t": "2026-11-02T18:22:10.576Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
