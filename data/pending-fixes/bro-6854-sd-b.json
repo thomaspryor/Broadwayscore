@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-sd-b",
   "planId": "78e57b5f-e347-47e8-9963-dda618229daf",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T21:39:06.911Z",
   "submitter": {
     "name": null,
@@ -214,5 +214,49 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T23:37:23.704Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mensa-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added theatre-people-or-the-angel-next-door-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added come-from-away-moonlight-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dear-evan-hansen-cygnet-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added begin-again-old-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-black-billed-cuckoo-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added good-night-oscar-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ripcord-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
