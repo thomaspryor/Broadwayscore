@@ -1,7 +1,7 @@
 {
   "system": "freshness",
   "status": "pass",
-  "lastChecked": "2026-11-02T12:54:27.042Z",
+  "lastChecked": "2026-11-02T21:18:44.784Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -24,12 +24,12 @@
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "18h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -39,7 +39,7 @@
     {
       "name": "Freshness: lottery-rush.json",
       "status": "pass",
-      "message": "19h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: cast-changes.json",
@@ -49,12 +49,12 @@
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "19h old"
+      "message": "8h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "7h old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -84,17 +84,17 @@
     {
       "name": "Freshness: audit/imageless-scored-shows.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: audit/venue-date-mismatches.json",
       "status": "pass",
-      "message": "13h old"
+      "message": "21h old"
     },
     {
       "name": "Freshness: audit/alert-sender-inventory.json",
       "status": "pass",
-      "message": "17h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: audit/ob-closing-candidates.json",
@@ -104,22 +104,22 @@
     {
       "name": "Freshness: audit/same-title-confusion.json",
       "status": "pass",
-      "message": "18h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: audit/slug-misroute-audit.json",
       "status": "pass",
-      "message": "18h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: audit/open-backlog-acceptance-sweep.json",
       "status": "pass",
-      "message": "22h old"
+      "message": "8h old"
     },
     {
       "name": "Freshness: audit/progress-watch-state.json",
       "status": "pass",
-      "message": "24h old"
+      "message": "8h old"
     }
   ]
 }

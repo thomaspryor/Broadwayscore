@@ -1,15 +1,15 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-11-02T12:54:27.044Z",
+  "lastChecked": "2026-11-02T21:18:44.818Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
       "name": "Coverage: SERP census recall",
-      "status": "pass",
-      "message": "a plain Google search found 38%, reviews already collected found 74%, our targeted searches found 30% — across 5 recent opening(s); 53 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (7d ago)"
+      "status": "warn",
+      "message": "Review coverage dropped — our targeted searches now finds 12% vs 27% recently (across 5 recent opening(s); 61 review pages any of our searches could find). New shows may be going live with published reviews missing."
     },
     {
       "name": "Coverage: adversarial probe",
