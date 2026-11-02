@@ -88,7 +88,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41448970358",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41452712531",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -97,11 +97,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41448970358)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41452712531)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41444530940)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41448970358)"
       },
       {
         "name": "Consecutive failures",
@@ -112,7 +112,7 @@
         "value": "E2E Tests"
       }
     ],
-    "queuedAt": "2026-11-02T13:27:28.779Z"
+    "queuedAt": "2026-11-02T13:52:43.583Z"
   },
   {
     "conditionKey": "aggregator-health:thestage-roundups:workflow-failing:scrape-thestage-roundups.yml",
