@@ -106,11 +106,12 @@ async function main() {
       if (namedRefs.length && landDispatchLive) { console.log(`${issue.identifier}: keep (land ref while a dispatched Land run is in flight)`); continue; }
       const named = namedRefs.map((r) => ({ ref: r.ref, lastActivityAt: lastActivityAt(r) }));
       const d = reclaimDecision({ issue, comments: issue.comments.nodes, landRefs: named, nowMs });
-      tally[d.action === 'skip' ? `skip:${d.reason}` : d.action] = (tally[d.action === 'skip' ? `skip:${d.reason}` : d.action] || 0) + 1;
+      const tallyKey = d.action === 'skip' ? `skip:${d.reason}` : (d.staleBlocked ? 'backlog:stale-blocked' : d.action);
+      tally[tallyKey] = (tally[tallyKey] || 0) + 1;
       if (d.action === 'skip') { console.log(`${issue.identifier}: keep (${d.reason})`); continue; }
       const target = d.action === 'backlog' ? 'Backlog' : 'Todo';
       moved += 1;
-      if (dry) { console.log(`dry-run: would move ${issue.identifier} (${d.idleHours}h idle, ${d.reclaims} prior reclaims) to ${target}: ${issue.title.slice(0, 80)}`); continue; }
+      if (dry) { console.log(`dry-run: would move ${issue.identifier} (${d.idleHours}h idle, ${d.reclaims} prior reclaims${d.staleBlocked ? ', stale blocked report' : ''}) to ${target}: ${issue.title.slice(0, 80)}`); continue; }
       // Move first, then comment: the comment carries the reclaim marker, so a
       // failed move after a posted comment would count a reclaim that never happened.
       await linear.updateIssue(issue.id, { stateId: await stateId(target) });
@@ -123,7 +124,7 @@ async function main() {
   }
   console.log(`summary: ${JSON.stringify(tally)}`);
   // Every attempt failed (state missing, Linear refusing writes): fail the job so notify-failure fires.
-  if (tally.error && !tally.todo && !tally.backlog) process.exitCode = 1;
+  if (tally.error && !tally.todo && !tally.backlog && !tally['backlog:stale-blocked']) process.exitCode = 1;
 }
 
 main().catch((err) => {

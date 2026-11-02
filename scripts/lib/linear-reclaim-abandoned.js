@@ -194,7 +194,9 @@ function buildReclaimComment({ action, reclaims, staleRefs, idleHours, priorStat
   const lines = [
     `${RECLAIM_MARKER} ${day} (BRO-5100 hourly sweep)`,
     '',
-    `This card sat ${priorState || 'In Progress'} with no Linear activity for ${idleHours}h and no live land/ branch, so the session that claimed it is presumed dead.`,
+    staleBlocked
+      ? `This card sat ${priorState || 'In Progress'} with no Linear activity for ${idleHours}h and no live land/ branch.`
+      : `This card sat ${priorState || 'In Progress'} with no Linear activity for ${idleHours}h and no live land/ branch, so the session that claimed it is presumed dead.`,
   ];
   if (staleRefs && staleRefs.length) {
     lines.push(`Land branches older than ${ABANDONED_AFTER_DAYS} days still name it (not landed, nothing retries them): ${staleRefs.join(', ')}.`);

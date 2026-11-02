@@ -78,7 +78,14 @@ test('BRO-6864: a blocked In Progress card idle past STALE_BLOCKED_MS goes to Ba
   assert.equal(decide({ issue: { ...issue, description: 'NO-RECLAIM: tracker' }, comments: [report(old)] }).reason, 'opted-out');
   // In Review card with a blocked report is never released here
   const review = decide({ issue: { ...issue, state: { name: 'In Review', type: 'started' } }, comments: [report(old)] });
-  assert.equal(review.action, 'skip');
+  assert.equal(review.reason, 'in-review-reported');
+  // exact boundary releases; a recent human comment on an old card holds
+  assert.equal(decide({ issue: { updatedAt: ago(STALE_BLOCKED_MS) }, comments: [report(STALE_BLOCKED_MS)] }).action, 'backlog');
+  assert.equal(decide({ issue, comments: [report(old), { body: 'still on it', createdAt: ago(H) }] }).reason, 'recent-comment');
+  // the built comment trips the picker's real guard (no copied regex)
+  const { pausedHistorySkipReason } = require('./cloud-worker-pick.js');
+  const note = { body: buildReclaimComment(d, NOW), createdAt: ago(H) };
+  assert.equal(pausedHistorySkipReason([report(old), note], NOW, { priority: 3, pausedBacklog: true }), 'reclaimed-to-backlog');
 });
 
 test('a truncated comment thread is skipped', () => {
