@@ -4,693 +4,6 @@
   },
   "runs": [
     {
-      "runAt": "2026-05-11T08:25:50.174Z",
-      "script": "enrich-off-broadway-dates",
-      "mode": {
-        "dryRun": false,
-        "verify": false,
-        "force": false,
-        "fixUnconfirmed": true,
-        "initialBackfill": false,
-        "showFilter": null
-      },
-      "entries": [
-        {
-          "kind": "audit-only",
-          "showId": "im-almost-there-off-broadway-2026",
-          "title": "I'm Almost There",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-06-09",
-          "currentPreviews": "2026-06-09",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "im-almost-there-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "los-soles-truncos-off-broadway-2025",
-          "title": "LOS SOLES TRUNCOS",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2025-02-20",
-          "currentPreviews": "2025-02-20",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "los-soles-truncos-off-broadway-2025",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "la-llamada-off-broadway-2024",
-          "title": "La Llamada",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2024-05-01",
-          "currentPreviews": "2024-05-01",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "la-llamada-off-broadway-2024",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "drunk-romeo-and-juliet-off-broadway-2025",
-          "title": "Drunk Romeo & Juliet",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2025-05-29",
-          "currentPreviews": "2025-05-29",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "drunk-romeo-and-juliet-off-broadway-2025",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
-          "title": "La Breve y Maravillosa Vida de Oscar Wao",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2024-02-17",
-          "currentPreviews": "2024-02-17",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "la-ternura-off-broadway-2025",
-          "title": "LA TERNURA",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2025-05-29",
-          "currentPreviews": "2025-05-29",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "la-ternura-off-broadway-2025",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
-          "title": "El Último Sueño de Frida y Diego",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-05-14",
-          "currentPreviews": "2026-05-14",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "el-ultimo-sueno-de-frida-y-diego-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "the-saviors-off-broadway-2026",
-          "title": "The Saviors",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-06-11",
-          "currentPreviews": "2026-06-11",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "the-saviors-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "birthright-off-broadway-2026",
-          "title": "Birthright",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-06-04",
-          "currentPreviews": "2026-06-04",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "birthright-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "the-whoopi-monologues-off-broadway-2026",
-          "title": "The Whoopi Monologues",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-07-07",
-          "currentPreviews": "2026-07-07",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "the-whoopi-monologues-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-          "title": "Giulia: The Poison Queen of Palermo",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-06-28",
-          "currentPreviews": "2026-06-28",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "la-traviata-off-broadway-2026",
-          "title": "La Traviata",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-03-20",
-          "currentPreviews": "2026-03-20",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "la-traviata-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
-          "title": "Hugo Marchand | Artists at the Center",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-07-23",
-          "currentPreviews": "2026-07-23",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "hugo-marchand-artists-at-the-center-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "eugene-onegin-off-broadway-2026",
-          "title": "Eugene Onegin",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-04-20",
-          "currentPreviews": "2026-04-20",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "eugene-onegin-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "amaze-magic-off-broadway-2025",
-          "title": "AMAZE Magic",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2025-07-20",
-          "currentPreviews": "2025-07-20",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "page-title-or-year-mismatch",
-          "raw": {
-            "miss": {
-              "showId": "amaze-magic-off-broadway-2025",
-              "reason": "page-title-or-year-mismatch",
-              "url": "https://playbill.com/production/jamie-allans-amaze-off-broadway-new-world-stages-stage-5-2025"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "magic-mike-live-new-york-off-broadway-2026",
-          "title": "MAGIC MIKE LIVE New York",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-10-08",
-          "currentPreviews": "2026-10-08",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "magic-mike-live-new-york-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "spamalot-off-broadway-2026",
-          "title": "Spamalot",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-06-27",
-          "currentPreviews": "2026-06-27",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "spamalot-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "silverback-mountain-off-broadway-2026",
-          "title": "Silverback Mountain",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-05-30",
-          "currentPreviews": "2026-05-30",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "silverback-mountain-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "olga-pericet-baile-sonoro-off-broadway-2026",
-          "title": "Olga Pericet: Baile Sonoro",
-          "confidence": "phase3-miss",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-05-22",
-          "currentPreviews": "2026-05-22",
-          "currentSource": "ibdb",
-          "proposedOpening": null,
-          "proposedPreviews": null,
-          "reason": "no-playbill-production-url",
-          "raw": {
-            "miss": {
-              "showId": "olga-pericet-baile-sonoro-off-broadway-2026",
-              "reason": "no-playbill-production-url"
-            }
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "the-receptionist-off-broadway-2026",
-          "title": "The Receptionist",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": "2026-05-07",
-          "currentPreviews": "2026-04-15",
-          "currentSource": "playbill",
-          "proposedOpening": "2026-05-07",
-          "proposedPreviews": "2026-04-15",
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "THE RECEPTIONIST",
-              "firstPreview": "2026-04-15",
-              "opening": "2026-05-07",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "new-born-off-broadway-2026",
-          "title": "New Born",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": "2026-05-08",
-          "currentPreviews": null,
-          "currentSource": "ibdb",
-          "proposedOpening": "2026-05-08",
-          "proposedPreviews": null,
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "NEW BORN",
-              "firstPreview": null,
-              "opening": "2026-05-08",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "animal-wisdom-off-broadway-2022",
-          "title": "Animal Wisdom",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": null,
-          "currentPreviews": null,
-          "proposedOpening": "2026-05-16",
-          "proposedPreviews": "2026-05-05",
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "ANIMAL WISDOM",
-              "firstPreview": "2026-05-05",
-              "opening": "2026-05-16",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "the-maids-off-broadway-2026",
-          "title": "The Maids",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": "2026-05-17",
-          "currentPreviews": "2026-05-17",
-          "currentSource": "ibdb",
-          "proposedOpening": "2026-05-17",
-          "proposedPreviews": null,
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "THE MAIDS",
-              "firstPreview": null,
-              "opening": "2026-05-17",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "indian-princesses-off-broadway-2025",
-          "title": "Indian Princesses",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": null,
-          "currentPreviews": null,
-          "proposedOpening": "2026-05-19",
-          "proposedPreviews": "2026-04-30",
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "INDIAN PRINCESSES",
-              "firstPreview": "2026-04-30",
-              "opening": "2026-05-19",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "well-ill-let-you-go-off-broadway-2026",
-          "title": "Well, I'll Let You Go",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": "2026-04-30",
-          "currentPreviews": null,
-          "currentSource": "ibdb",
-          "proposedOpening": "2026-05-19",
-          "proposedPreviews": "2026-04-30",
-          "shiftDays": 19,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "WELL, I'LL LET YOU GO",
-              "firstPreview": "2026-04-30",
-              "opening": "2026-05-19",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "girls-chance-music-off-broadway-2024",
-          "title": "||: Girls :||: Chance :||: Music :||",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": null,
-          "currentPreviews": null,
-          "proposedOpening": "2026-05-28",
-          "proposedPreviews": "2026-05-12",
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "||: GIRLS :||: CHANCE :||: MUSIC :||",
-              "firstPreview": "2026-05-12",
-              "opening": "2026-05-28",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "jerome-off-broadway-2025",
-          "title": "Jerome",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": "2026-06-01",
-          "currentPreviews": "2026-05-14",
-          "currentSource": "ibdb",
-          "proposedOpening": "2026-06-02",
-          "proposedPreviews": "2026-05-14",
-          "shiftDays": 1,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "JEROME",
-              "firstPreview": "2026-05-14",
-              "opening": "2026-06-02",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "girl-interrupted-off-broadway-2026",
-          "title": "Girl, Interrupted",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": "2026-06-04",
-          "currentPreviews": "2026-05-13",
-          "currentSource": "playbill",
-          "proposedOpening": "2026-06-04",
-          "proposedPreviews": "2026-05-13",
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "GIRL, INTERRUPTED",
-              "firstPreview": "2026-05-13",
-              "opening": "2026-06-04",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "a-woman-among-women-off-broadway-2026",
-          "title": "A Woman Among Women",
-          "confidence": "single-source",
-          "sources": [
-            "playbill"
-          ],
-          "currentOpening": "2026-06-04",
-          "currentPreviews": "2026-05-16",
-          "currentSource": "playbill",
-          "proposedOpening": "2026-06-04",
-          "proposedPreviews": "2026-05-16",
-          "shiftDays": 0,
-          "reason": "single-source-and-not-same-date-fix",
-          "raw": {
-            "playbill": {
-              "title": "A WOMAN AMONG WOMEN",
-              "firstPreview": "2026-05-16",
-              "opening": "2026-06-04",
-              "source": "playbill"
-            },
-            "lortel": null
-          }
-        },
-        {
-          "kind": "audit-only",
-          "showId": "music-city-off-broadway-2026",
-          "title": "Music City",
-          "confidence": "single-source",
-          "sources": [
-            "playbill-production-page"
-          ],
-          "currentOpening": "2026-03-23",
-          "currentPreviews": "2026-03-23",
-          "currentSource": "ibdb",
-          "proposedOpening": "2026-06-24",
-          "proposedPreviews": "2026-06-15",
-          "shiftDays": 93,
-          "reason": "shift-too-large (93d > 60d cap) — likely cross-production",
-          "raw": {
-            "playbill-production-page": {
-              "title": "Music City",
-              "showId": "music-city-off-broadway-2026",
-              "firstPreview": "2026-06-15",
-              "opening": "2026-06-24",
-              "source": "playbill-production-page",
-              "url": "https://playbill.com/production/music-city-off-broadway-st-lukes-theatre-2026"
-            }
-          }
-        }
-      ]
-    },
-    {
       "runAt": "2026-05-14T09:15:55.361Z",
       "script": "enrich-off-broadway-dates",
       "mode": {
@@ -31345,6 +30658,710 @@
               "url": "https://playbill.com/production/drunk-romeo-juliet-off-broadway-ruby-theatre-2026"
             }
           }
+        }
+      ]
+    },
+    {
+      "runAt": "2026-11-02T08:49:58.631Z",
+      "script": "enrich-west-end-dates",
+      "mode": {
+        "dryRun": false,
+        "verify": false,
+        "force": false,
+        "fixUnconfirmed": true,
+        "showFilter": null
+      },
+      "entries": [
+        {
+          "kind": "applied",
+          "show": "The History Boys",
+          "slug": "the-history-boys-off-west-end",
+          "id": "the-history-boys-off-west-end-2027",
+          "changes": [
+            {
+              "field": "openingDate",
+              "old": null,
+              "new": "2027-04-19"
+            },
+            {
+              "field": "openingDateSource",
+              "old": null,
+              "new": "theatremonkey"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Ceilidh The Musical",
+          "slug": "ceilidh-the-musical-off-west-end",
+          "id": "ceilidh-the-musical-off-west-end-2026",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2026-10-22",
+              "new": "2026-10-22"
+            },
+            {
+              "field": "openingDate",
+              "old": "2026-10-22",
+              "new": "2026-10-29"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "previews-fallback",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "The Red Barn",
+          "slug": "the-red-barn-west-end-2016",
+          "id": "the-red-barn-west-end-2016",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2016-10-06",
+              "new": "2016-10-06"
+            },
+            {
+              "field": "openingDate",
+              "old": "2016-10-06",
+              "new": "2016-10-18"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "School of Rock",
+          "slug": "school-of-rock-west-end-2016",
+          "id": "school-of-rock-west-end-2016",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2016-10-22",
+              "new": "2016-10-22"
+            },
+            {
+              "field": "openingDate",
+              "old": "2016-10-22",
+              "new": "2016-11-14"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Half a Sixpence",
+          "slug": "half-a-sixpence-west-end-2016",
+          "id": "half-a-sixpence-west-end-2016",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2016-11-17",
+              "new": "2016-11-17"
+            },
+            {
+              "field": "openingDate",
+              "old": "2016-11-17",
+              "new": "2016-11-19"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "The Children",
+          "slug": "the-children-west-end-2016",
+          "id": "the-children-west-end-2016",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2016-11-17",
+              "new": "2016-11-17"
+            },
+            {
+              "field": "openingDate",
+              "old": "2016-11-17",
+              "new": "2016-11-25"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "The Girls",
+          "slug": "the-girls-west-end-2017",
+          "id": "the-girls-west-end-2017",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2017-01-28",
+              "new": "2017-01-28"
+            },
+            {
+              "field": "openingDate",
+              "old": "2017-01-28",
+              "new": "2017-02-21"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Who's Afraid of Virginia Woolf?",
+          "slug": "whos-afraid-of-virginia-woolf-west-end-2017",
+          "id": "whos-afraid-of-virginia-woolf-west-end-2017",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2017-02-22",
+              "new": "2017-02-22"
+            },
+            {
+              "field": "openingDate",
+              "old": "2017-02-22",
+              "new": "2017-03-09"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "The Goat, or Who is Sylvia?",
+          "slug": "the-goat-or-who-is-sylvia-west-end-2017",
+          "id": "the-goat-or-who-is-sylvia-west-end-2017",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2017-03-14",
+              "new": "2017-03-14"
+            },
+            {
+              "field": "openingDate",
+              "old": "2017-03-14",
+              "new": "2017-04-05"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Killology",
+          "slug": "killology-west-end-2017",
+          "id": "killology-west-end-2017",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2017-05-25",
+              "new": "2017-05-25"
+            },
+            {
+              "field": "openingDate",
+              "old": "2017-05-25",
+              "new": "2017-05-31"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Mosquitoes",
+          "slug": "mosquitoes-west-end-2017",
+          "id": "mosquitoes-west-end-2017",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2017-07-18",
+              "new": "2017-07-18"
+            },
+            {
+              "field": "openingDate",
+              "old": "2017-07-18",
+              "new": "2017-07-25"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Hay Fever",
+          "slug": "hay-fever-west-end-2012",
+          "id": "hay-fever-west-end-2012",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2012-02-10",
+              "new": "2012-02-10"
+            },
+            {
+              "field": "openingDate",
+              "old": "2012-02-10",
+              "new": "2012-02-26"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Long Day's Journey Into Night",
+          "slug": "long-days-journey-into-night-west-end-2012",
+          "id": "long-days-journey-into-night-west-end-2012",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2012-04-02",
+              "new": "2012-04-02"
+            },
+            {
+              "field": "openingDate",
+              "old": "2012-04-02",
+              "new": "2012-04-10"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "South Downs / The Browning Version",
+          "slug": "south-downs-the-browning-version-west-end-2012",
+          "id": "south-downs-the-browning-version-west-end-2012",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2012-04-19",
+              "new": "2012-04-19"
+            },
+            {
+              "field": "openingDate",
+              "old": "2012-04-19",
+              "new": "2012-04-26"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Timon of Athens",
+          "slug": "timon-of-athens-west-end-2012",
+          "id": "timon-of-athens-west-end-2012",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2012-07-10",
+              "new": "2012-07-10"
+            },
+            {
+              "field": "openingDate",
+              "old": "2012-07-10",
+              "new": "2012-07-18"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Pygmalion",
+          "slug": "pygmalion-west-end-2011",
+          "id": "pygmalion-west-end-2011",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2011-05-12",
+              "new": "2011-05-12"
+            },
+            {
+              "field": "openingDate",
+              "old": "2011-05-12",
+              "new": "2011-05-26"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Much Ado About Nothing",
+          "slug": "much-ado-about-nothing-west-end-2011",
+          "id": "much-ado-about-nothing-west-end-2011",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2011-05-16",
+              "new": "2011-05-16"
+            },
+            {
+              "field": "openingDate",
+              "old": "2011-05-16",
+              "new": "2011-06-01"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Frankenstein",
+          "slug": "frankenstein-west-end-2011",
+          "id": "frankenstein-west-end-2011",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2011-02-05",
+              "new": "2011-02-05"
+            },
+            {
+              "field": "openingDate",
+              "old": "2011-02-05",
+              "new": "2011-02-24"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Flare Path",
+          "slug": "flare-path-west-end-2011",
+          "id": "flare-path-west-end-2011",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2011-03-04",
+              "new": "2011-03-04"
+            },
+            {
+              "field": "openingDate",
+              "old": "2011-03-04",
+              "new": "2011-03-13"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "theatricalia-first-performance",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "applied",
+          "show": "Roleplay",
+          "slug": "roleplay-off-west-end",
+          "id": "roleplay-off-west-end-2026",
+          "changes": [
+            {
+              "field": "previewsStartDate",
+              "old": "2026-10-23",
+              "new": "2026-10-23"
+            },
+            {
+              "field": "openingDate",
+              "old": "2026-10-23",
+              "new": "2026-10-27"
+            },
+            {
+              "field": "openingDateSource",
+              "old": "previews-fallback",
+              "new": "inferred-from-reviews"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "An Oak Tree",
+          "slug": "an-oak-tree-off-west-end",
+          "id": "an-oak-tree-off-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2026-10-08",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Christmas Carol Goes Wrong",
+          "slug": "christmas-carol-goes-wrong-apollo-west-end",
+          "id": "christmas-carol-goes-wrong-apollo-west-end-2025",
+          "discrepancies": [
+            {
+              "field": "previewsStartDate",
+              "current": "2025-12-06",
+              "external": "2026-12-18",
+              "source": "theatremonkey"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Garry Starr: Classic Penguins",
+          "slug": "garry-starr-classic-penguins-garrick-west-end-2026",
+          "id": "garry-starr-classic-penguins-garrick-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "previewsStartDate",
+              "current": "2026-02-01",
+              "external": "2026-10-22",
+              "source": "theatremonkey"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Harry Potter and the Cursed Child",
+          "slug": "harry-potter-and-the-cursed-child-one-part-west-end",
+          "id": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2026-10-21",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Paranormal Activity",
+          "slug": "paranormal-activity-west-end",
+          "id": "paranormal-activity-west-end-2025",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2025-12-14",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Paranormal Activity",
+          "slug": "paranormal-activity-west-end",
+          "id": "paranormal-activity-west-end-2025",
+          "discrepancies": [
+            {
+              "field": "previewsStartDate",
+              "current": "2025-12-05",
+              "external": "2026-08-10",
+              "source": "theatremonkey"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Pride",
+          "slug": "pride-west-end",
+          "id": "pride-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "previewsStartDate",
+              "current": "2026-06-11",
+              "external": "2026-11-12",
+              "source": "both"
+            },
+            {
+              "field": "openingDate",
+              "current": "2026-06-25",
+              "external": "2026-11-23",
+              "source": "both"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "The Devil Wears Prada",
+          "slug": "the-devil-wears-prada-west-end",
+          "id": "the-devil-wears-prada-west-end-2024",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2024-12-05",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "The Guilty",
+          "slug": "the-guilty-west-end",
+          "id": "the-guilty-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "previewsStartDate",
+              "current": "2026-06-20",
+              "external": "2027-01-18",
+              "source": "theatremonkey"
+            },
+            {
+              "field": "openingDate",
+              "current": "2026-06-30",
+              "external": "2027-01-27",
+              "source": "theatremonkey"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "The Truth",
+          "slug": "the-truth-a-comedy-by-florian-zeller-west-end",
+          "id": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "previewsStartDate",
+              "current": "2026-06-09",
+              "external": "2027-07-29",
+              "source": "theatremonkey"
+            },
+            {
+              "field": "openingDate",
+              "current": "2026-06-24",
+              "external": "2027-08-05",
+              "source": "theatremonkey"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Titanique",
+          "slug": "titanique-west-end-2024",
+          "id": "titanique-west-end-2024",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2025-01-08",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Titanique",
+          "slug": "titanique-west-end-2024",
+          "id": "titanique-west-end-2024",
+          "discrepancies": [
+            {
+              "field": "previewsStartDate",
+              "current": "2024-11-01",
+              "external": "2024-12-09",
+              "source": "theatremonkey"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Affluenza",
+          "slug": "affluenza-off-west-end",
+          "id": "affluenza-off-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2026-10-05",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "The Pianist",
+          "slug": "the-pianist-off-west-end",
+          "id": "the-pianist-off-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2026-10-22",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
+        },
+        {
+          "kind": "discrepancy",
+          "show": "Hamlet Hail to the Thief",
+          "slug": "hamlet-hail-to-the-thief-off-west-end",
+          "id": "hamlet-hail-to-the-thief-off-west-end-2026",
+          "discrepancies": [
+            {
+              "field": "openingDate",
+              "current": "2026-11-12",
+              "external": null,
+              "source": "theatremonkey",
+              "reason": "independent-press-night-unavailable"
+            }
+          ]
         }
       ]
     }
