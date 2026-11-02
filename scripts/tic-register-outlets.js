@@ -22,13 +22,17 @@ const TIER3 = ['Chicago Reader', 'NewCity Chicago', 'Newcity', 'Third Coast Revi
 // established theatre sites are T2/T3, blogs T4.
 const DC_TIER2 = ['Washington City Paper', 'DC Theatre Scene', 'DCTheaterScene', 'Washingtonian'];
 const DC_TIER3 = ['Washington Blade', 'DC Theater Arts', 'MD Theatre Guide', 'Maryland Theatre Guide', 'Metro Weekly', 'Stage and Cinema', 'Washington Examiner', 'DCist', 'Axios', 'Variety', 'Hollywood Reporter', 'Capital Gazette', 'ARLnow', 'Bethesda Magazine', 'Montgomery Community Media', 'K Street Magazine', 'Broadway World', 'BroadwayWorld'];
+// Los Angeles (BRO-6855): the Times is registered already; Stage Raw and Stage Scene LA are the area's
+// standing theatre review sites (T2), the rest of the pro sites T3, neighbourhood papers and blogs T4.
+const LA_TIER2 = ['Stage Raw', 'Stage Scene LA', 'StageSceneLA'];
+const LA_TIER3 = ['Stage and Cinema', 'LA Theatrix', 'LATheatrix', 'ArtsBeatLA', 'Colorado Boulevard', 'Variety', 'Hollywood Reporter', 'Broadway World', 'BroadwayWorld', 'TheaterMania', 'LA Weekly', 'Deadline', 'Daily News', 'Orange County Register'];
 const getArg = (k) => { const a = process.argv.find((x) => x.startsWith(`--${k}=`)); return a ? a.slice(k.length + 3) : null; };
 const CITY = getArg('city') || 'chicago';
 if (CITY !== 'chicago' && !getArg('manifest')) { console.error('--city=' + CITY + ' needs --manifest=<staged manifest> (the default index is Chicago\'s)'); process.exit(1); }
-const REGION = CITY === 'dc' ? 'washington-dc' : 'chicago';
+const REGION = CITY === 'dc' ? 'washington-dc' : CITY === 'la' ? 'los-angeles' : 'chicago';
 const tierOf = (name) => {
   const n = norm(name);
-  const [t2, t3] = CITY === 'dc' ? [DC_TIER2, DC_TIER3] : [TIER2, TIER3];
+  const [t2, t3] = CITY === 'dc' ? [DC_TIER2, DC_TIER3] : CITY === 'la' ? [LA_TIER2, LA_TIER3] : [TIER2, TIER3];
   if (t2.some((x) => norm(x) === n)) return 2;
   if (t3.some((x) => norm(x) === n)) return 3;
   return 4;
