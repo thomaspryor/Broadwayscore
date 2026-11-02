@@ -24,12 +24,21 @@
     "opus": 92
   },
   "productionCheck": {
-    "verdict": "different",
+    "verdict": "same",
     "confidence": "high",
-    "reason": "Video posted 20260221, before this production's first performance (2026-03-01).",
-    "method": "date",
-    "checkedAt": "2026-09-29T14:54:48.388Z"
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video review explicitly mentions the musical 'Bigfoot' being performed in midtown Manhattan, which aligns with the assigned Off-Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-11-02T13:57:53.892Z"
   },
-  "wrongProduction": true,
-  "wrongProductionReason": "Video posted 20260221, before this production's first performance (2026-03-01)."
+  "excludedVideoIds": [],
+  "selection": {
+    "method": "single",
+    "candidateKey": "7609465591413493005",
+    "at": "2026-11-02T13:45:02.307Z"
+  },
+  "wrongProductionAutoCleared": "verify-productions: earlier run of the same production recorded",
+  "wrongProductionAutoClearedAt": "2026-11-02T13:57:53.892Z"
 }

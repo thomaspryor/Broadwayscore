@@ -10,8 +10,8 @@
   "wordCount": 185,
   "collectedAt": "2026-04-14T04:19:56.407Z",
   "fileName": "7229131334239784235.json",
-  "showId": null,
-  "showTitle": "Shadow Land",
+  "showId": "shadow-land-off-broadway-2023",
+  "showTitle": "Shadow/Land",
   "reviewType": "review",
   "classificationConfidence": "high",
   "classificationReason": "Creator saw the show at The Public Theater and provides detailed plot description and opinion, but this show is not on the provided list",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show reviewed",
   "reasoning": "The transcript is reviewing 'Shadow Land' at The Public Theater, not 'Classified' as specified in the prompt. The creator discusses seeing this play about Hurricane Katrina and family dynamics, but this doesn't match the target show for scoring.",
-  "scoredAt": "2026-04-14T04:48:01.160Z"
+  "scoredAt": "2026-04-14T04:48:01.160Z",
+  "rematch": {
+    "candidates": [
+      "shadow-land-off-broadway-2023"
+    ],
+    "result": "shadow-land-off-broadway-2023",
+    "reason": "The creator explicitly mentions seeing 'Shadow Land at the public' in NYC, matching the Off-Broadway production at The Public Theater, and the post date of 2023-05-04 falls within the run dates.",
+    "checkedAt": "2026-11-02T13:39:43.059Z"
+  },
+  "showIdSource": "rematch"
 }

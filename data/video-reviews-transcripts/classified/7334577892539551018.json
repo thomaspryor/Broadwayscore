@@ -10,7 +10,7 @@
   "wordCount": 232,
   "collectedAt": "2026-04-14T04:15:09.846Z",
   "fileName": "7334577892539551018.json",
-  "showId": null,
+  "showId": "public-obscenities-off-broadway-2024",
   "showTitle": "Public Obscenities",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show reviewed",
   "reasoning": "The transcript is reviewing 'Public Obscenities' at Theater for a New Audience, not 'Classified' as specified in the request.",
-  "scoredAt": "2026-04-14T04:57:18.478Z"
+  "scoredAt": "2026-04-14T04:57:18.478Z",
+  "rematch": {
+    "candidates": [
+      "public-obscenities-off-broadway-2024"
+    ],
+    "result": "public-obscenities-off-broadway-2024",
+    "reason": "The transcript explicitly mentions 'Public Obscenities at Theater for a New Audience' and the post date of 2024-02-12 falls within the production's run (2024-01-17 to 2024-02-25).",
+    "checkedAt": "2026-11-02T13:40:56.962Z"
+  },
+  "showIdSource": "rematch"
 }

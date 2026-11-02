@@ -10,7 +10,7 @@
   "wordCount": 153,
   "collectedAt": "2026-04-14T04:17:03.759Z",
   "fileName": "7295913555319311662.json",
-  "showId": null,
+  "showId": "daphne-off-broadway-2023",
   "showTitle": "Daphne",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show reviewed",
   "reasoning": "The transcript is reviewing a play called 'Daphne' at Lincoln Center, not 'Classified' as specified in the prompt.",
-  "scoredAt": "2026-04-14T04:53:40.337Z"
+  "scoredAt": "2026-04-14T04:53:40.337Z",
+  "rematch": {
+    "candidates": [
+      "daphne-off-broadway-2023"
+    ],
+    "result": "daphne-off-broadway-2023",
+    "reason": "The transcript confirms seeing 'Daphne' at Lincoln Center in late October 2023, matching the Claire Tow Theater (LCT3) Off-Broadway production's run dates and venue.",
+    "checkedAt": "2026-11-02T13:40:33.060Z"
+  },
+  "showIdSource": "rematch"
 }
