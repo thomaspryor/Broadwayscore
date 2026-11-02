@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-02T22:35:34.788Z",
+  "generatedAt": "2026-11-02T22:50:23.850Z",
   "windowDays": 21,
-  "targets": 22,
-  "auditedThisRun": 22,
-  "carriedForward": 1879,
+  "targets": 17,
+  "auditedThisRun": 17,
+  "carriedForward": 1883,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 624,
-    "missingCurrentRun": 1180,
+    "withGap": 625,
+    "missingCurrentRun": 1186,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 926,
     "totalRecoverable": 55,
     "totalRecovered": 96,
     "humanExcluded": 24,
-    "automatedExcluded": 968,
-    "automatedExcludedListed": 687,
-    "priorProductionCitations": 6308
+    "automatedExcluded": 978,
+    "automatedExcludedListed": 692,
+    "priorProductionCitations": 6279
   },
   "results": [
     {
@@ -12036,6 +12036,44 @@
       "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
+      "showId": "adrift-a-medieval-wayward-folly-regional-2026",
+      "title": "Adrift: A Medieval Wayward Folly",
+      "openingDate": "2026-07-24",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
+    },
+    {
       "showId": "advance-man-regional-2026",
       "title": "Advance Man",
       "openingDate": "2026-08-28",
@@ -13086,6 +13124,58 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:58:22.702Z"
+    },
+    {
+      "showId": "aguardiente-where-magic-transcends-borders-regional-2026",
+      "title": "Aguardiente: Where Magic Transcends Borders",
+      "openingDate": "2026-05-06",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://morristheatredc.com/theatre/review-aguardiente-gala-hispanic-theatre",
+          "host": "morristheatredc.com",
+          "file": "morris-theatre-dc--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "ai-yah-goy-vey-off-broadway-2026",
@@ -94671,11 +94761,11 @@
       "previewsStartDate": "2026-10-28",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://thecalibratedwrist.com/tag/erebus-watches/",
         "https://luxurygoodspartty.com/erebus-ascent-haq-review-max-edition/",
         "https://luxurygoodspartty.com/erebus-ascent-40-gmt-review-modern-design/",
         "https://luxurygoodspartty.com/erebus-ascent-haq-review-designer-design/",
-        "https://luxurygoodspartty.com/erebus-ascent-40-gmt-review-smart-casual/",
-        "https://thecalibratedwrist.com/tag/erebus-watches/"
+        "https://luxurygoodspartty.com/erebus-ascent-40-gmt-review-smart-casual/"
       ],
       "dirFiles": 3,
       "dirClean": 0,
@@ -94765,12 +94855,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Erebus\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Erebus\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Erebus\" review culture",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Erebus Culture Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Erebus Culture Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Erebus Culture Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 27,
+        "byReason": {
+          "non-review-host": 22,
+          "non-stage-review": 2,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -94889,7 +95042,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-02T19:36:38.932Z"
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "ernest-shackleton-loves-me-off-broadway-2017",
@@ -100638,6 +100791,44 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "feeling-afraid-as-if-something-terrible-is-going-to-happen-regional-2026",
+      "title": "Feeling Afraid As If Something Terrible Is Going to Happen",
+      "openingDate": "2026-06-15",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "fefu-and-her-friends-off-broadway-2019",
@@ -109426,12 +109617,76 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ghost Notes\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ghost Notes\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ghost Notes\" review family",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ghost Notes The Royal Family Performing Arts Space review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ghost Notes The Royal Family Performing Arts Space review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ghost Notes The Royal Family Performing Arts Space review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "aggregator-internal-nav": 7,
+          "non-review-host": 7,
+          "census-junk-host": 3,
+          "review-hub-page": 1,
+          "no-review-evidence": 1,
+          "non-review-path": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -109473,7 +109728,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-02T19:36:38.932Z"
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "ghost-of-john-mccain-off-broadway-2024",
@@ -180981,6 +181236,44 @@
       "computedAt": "2026-11-01T21:24:31.355Z"
     },
     {
+      "showId": "loot-regional-2026",
+      "title": "Loot",
+      "openingDate": "2026-06-11",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
+    },
+    {
       "showId": "lord-nil-7-deadly-sins-off-broadway-2025",
       "title": "Lord Nil: 7 Deadly Sins",
       "openingDate": "2025-07-27",
@@ -183033,6 +183326,695 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-31T20:08:59.197Z"
+    },
+    {
+      "showId": "ma-raineys-black-bottom-regional-2026-round-house-theatre",
+      "title": "Ma Rainey's Black Bottom",
+      "openingDate": "2026-09-21",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis",
+        "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+      ],
+      "aggregatorListedUrls": [
+        "https://film.avclub.com/ma-rainey-s-black-bottom-is-one-final-brilliant-showca-1845684357",
+        "https://www.bbc.com/culture/article/20201120-ma-raineys-black-bottom-review-chadwick-boseman-soars",
+        "https://www.bostonglobe.com/2020/11/24/arts/ma-raineys-black-bottom-triumph-tragedy-meet-true-greatness/",
+        "https://chicago.suntimes.com/movies-and-tv/2020/12/15/22175415/ma-raineys-black-bottom-review-netflix-chadwick-boseman-movie-viola-davis-glynn-turman-august-wilson",
+        "https://www.telegraph.co.uk/films/0/ma-raineys-black-bottom-reviewcinema-hits-steam-train-force/",
+        "https://www.empireonline.com/movies/reviews/ma-rainey-black-bottom/",
+        "https://ew.com/movies/movie-reviews/ma-raineys-black-bottom-netflix-movie-review-chadwick-boseman/",
+        "https://www.theguardian.com/film/2020/nov/20/ma-raineys-black-bottom-review-chadwick-boseman-viola-davis",
+        "https://www.hollywoodreporter.com/news/ma-raineys-black-bottom-film-review",
+        "https://www.indiewire.com/2020/11/ma-raineys-black-bottom-review-netflix-1234599878/",
+        "https://www.latimes.com/entertainment-arts/movies/story/2020-11-20/review-ma-raineys-black-bottom-netflix-boseman-davis",
+        "https://www.nbcnews.com/think/opinion/ma-rainey-s-black-bottom-showcases-triumphs-black-people-not-ncna1248839",
+        "https://nypost.com/2020/11/20/ma-raineys-black-bottom-review-chadwick-boseman-soars-in-final-film/",
+        "http://nystagereview.com/2020/12/15/ma-raineys-black-bottom-a-perfect-august-in-december/",
+        "https://www.nytimes.com/2020/12/17/movies/ma-raineys-black-bottom-review.html",
+        "https://observer.com/2020/11/ma-raineys-black-bottom-review-chadwick-boseman-viola-davis-netflix/",
+        "https://www.rogerebert.com/reviews/ma-raineys-black-bottom-movie-review-2020",
+        "https://www.rollingstone.com/movies/movie-reviews/viola-davis-chadwick-boseman-ma-raineys-black-bottom-netflix-1094120/",
+        "https://www.timeout.com/movies/ma-raineys-black-bottom",
+        "https://variety.com/2020/film/reviews/ma-raineys-black-bottom-review-chaswick-boseman-viola-davis-1234835504/",
+        "https://www.washingtonpost.com/goingoutguide/movies/ma-raineys-black-bottom-movie-review/2020/12/01/312f53ae-3355-11eb-a997-1f4c53d2a747_story.html",
+        "https://www.thewrap.com/ma-raineys-black-bottom-film-review-viola-davis-chadwick-boseman-netflix/",
+        "https://www.screendaily.com/reviews/ma-raineys-black-bottom-review-netflix/5155053.article",
+        "https://www.thrillist.com/entertainment/nation/ma-raineys-black-bottom-review-chadwick-boseman",
+        "https://splashreport.com/film-review-chadwick-boseman-primed-for-posthumous-oscar-with-ma-raineys-black-bottom/",
+        "http://hollywoodreporter.com/news/ma-raineys-black-bottom-film-review"
+      ],
+      "dirFiles": 6,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "https://film.avclub.com/ma-rainey-s-black-bottom-is-one-final-brilliant-showca-1845684357",
+          "host": "avclub.com",
+          "knownOutletId": "av-club",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.bbc.com/culture/article/20201120-ma-raineys-black-bottom-review-chadwick-boseman-soars",
+          "host": "bbc.com",
+          "knownOutletId": "bbc-news",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.bostonglobe.com/2020/11/24/arts/ma-raineys-black-bottom-triumph-tragedy-meet-true-greatness/",
+          "host": "bostonglobe.com",
+          "knownOutletId": "boston-globe",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/movies-and-tv/2020/12/15/22175415/ma-raineys-black-bottom-review-netflix-chadwick-boseman-movie-viola-davis-glynn-turman-august-wilson",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/films/0/ma-raineys-black-bottom-reviewcinema-hits-steam-train-force/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/ma-rainey-black-bottom/",
+          "host": "empireonline.com",
+          "knownOutletId": "empire",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/ma-raineys-black-bottom-netflix-movie-review-chadwick-boseman/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/film/2020/nov/20/ma-raineys-black-bottom-review-chadwick-boseman-viola-davis",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/news/ma-raineys-black-bottom-film-review",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.indiewire.com/2020/11/ma-raineys-black-bottom-review-netflix-1234599878/",
+          "host": "indiewire.com",
+          "knownOutletId": "indiewire",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2020-11-20/review-ma-raineys-black-bottom-netflix-boseman-davis",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nbcnews.com/think/opinion/ma-rainey-s-black-bottom-showcases-triumphs-black-people-not-ncna1248839",
+          "host": "nbcnews.com",
+          "knownOutletId": "nbcnews",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2020/11/20/ma-raineys-black-bottom-review-chadwick-boseman-soars-in-final-film/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://nystagereview.com/2020/12/15/ma-raineys-black-bottom-a-perfect-august-in-december/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2020/12/17/movies/ma-raineys-black-bottom-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2020/11/ma-raineys-black-bottom-review-chadwick-boseman-viola-davis-netflix/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.rogerebert.com/reviews/ma-raineys-black-bottom-movie-review-2020",
+          "host": "rogerebert.com",
+          "knownOutletId": "roger-ebert",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.rollingstone.com/movies/movie-reviews/viola-davis-chadwick-boseman-ma-raineys-black-bottom-netflix-1094120/",
+          "host": "rollingstone.com",
+          "knownOutletId": "rollingstone",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/movies/ma-raineys-black-bottom",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2020/film/reviews/ma-raineys-black-bottom-review-chaswick-boseman-viola-davis-1234835504/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/goingoutguide/movies/ma-raineys-black-bottom-movie-review/2020/12/01/312f53ae-3355-11eb-a997-1f4c53d2a747_story.html",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/ma-raineys-black-bottom-film-review-viola-davis-chadwick-boseman-netflix/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.screendaily.com/reviews/ma-raineys-black-bottom-review-netflix/5155053.article",
+          "host": "screendaily.com",
+          "knownOutletId": "screen-daily",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thrillist.com/entertainment/nation/ma-raineys-black-bottom-review-chadwick-boseman",
+          "host": "thrillist.com",
+          "knownOutletId": null,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://splashreport.com/film-review-chadwick-boseman-primed-for-posthumous-oscar-with-ma-raineys-black-bottom/",
+          "host": "splashreport.com",
+          "knownOutletId": null,
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://hollywoodreporter.com/news/ma-raineys-black-bottom-film-review",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "dctheaterarts.org",
+          "count": 1
+        },
+        {
+          "host": "mdtheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "morristheatredc.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "washingtoncitypaper.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 387,
+        "byReason": {
+          "aggregator-internal-nav": 284,
+          "not-http-url": 47,
+          "production-database-listing": 10,
+          "aggregator-section-root": 9,
+          "non-review-host": 35,
+          "non-stage-review": 1,
+          "podcast-episode": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-ma-raineys-black-bottom-starring-viola-davis",
+          "publishDate": "2020-11-23"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-MA-RAINEYS-BLACK-BOTTOM-on-Netflix-Starring-Viola-Davis-Chadwick-Boseman-20201217",
+          "publishDate": "2020-12-17"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://film.avclub.com/ma-rainey-s-black-bottom-is-one-final-brilliant-showca-1845684357",
+          "host": "avclub.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.bbc.com/culture/article/20201120-ma-raineys-black-bottom-review-chadwick-boseman-soars",
+          "host": "bbc.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.bostonglobe.com/2020/11/24/arts/ma-raineys-black-bottom-triumph-tragedy-meet-true-greatness/",
+          "host": "bostonglobe.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://chicago.suntimes.com/movies-and-tv/2020/12/15/22175415/ma-raineys-black-bottom-review-netflix-chadwick-boseman-movie-viola-davis-glynn-turman-august-wilson",
+          "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/films/0/ma-raineys-black-bottom-reviewcinema-hits-steam-train-force/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.empireonline.com/movies/reviews/ma-rainey-black-bottom/",
+          "host": "empireonline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/movies/movie-reviews/ma-raineys-black-bottom-netflix-movie-review-chadwick-boseman/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/film/2020/nov/20/ma-raineys-black-bottom-review-chadwick-boseman-viola-davis",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/news/ma-raineys-black-bottom-film-review",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.indiewire.com/2020/11/ma-raineys-black-bottom-review-netflix-1234599878/",
+          "host": "indiewire.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/movies/story/2020-11-20/review-ma-raineys-black-bottom-netflix-boseman-davis",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nbcnews.com/think/opinion/ma-rainey-s-black-bottom-showcases-triumphs-black-people-not-ncna1248839",
+          "host": "nbcnews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2020/11/20/ma-raineys-black-bottom-review-chadwick-boseman-soars-in-final-film/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://nystagereview.com/2020/12/15/ma-raineys-black-bottom-a-perfect-august-in-december/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2020/12/17/movies/ma-raineys-black-bottom-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2020/11/ma-raineys-black-bottom-review-chadwick-boseman-viola-davis-netflix/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.rogerebert.com/reviews/ma-raineys-black-bottom-movie-review-2020",
+          "host": "rogerebert.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.rollingstone.com/movies/movie-reviews/viola-davis-chadwick-boseman-ma-raineys-black-bottom-netflix-1094120/",
+          "host": "rollingstone.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/movies/ma-raineys-black-bottom",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2020/film/reviews/ma-raineys-black-bottom-review-chaswick-boseman-viola-davis-1234835504/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/goingoutguide/movies/ma-raineys-black-bottom-movie-review/2020/12/01/312f53ae-3355-11eb-a997-1f4c53d2a747_story.html",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/ma-raineys-black-bottom-film-review-viola-davis-chadwick-boseman-netflix/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.screendaily.com/reviews/ma-raineys-black-bottom-review-netflix/5155053.article",
+          "host": "screendaily.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thrillist.com/entertainment/nation/ma-raineys-black-bottom-review-chadwick-boseman",
+          "host": "thrillist.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://splashreport.com/film-review-chadwick-boseman-primed-for-posthumous-oscar-with-ma-raineys-black-bottom/",
+          "host": "splashreport.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://hollywoodreporter.com/news/ma-raineys-black-bottom-film-review",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "macbeth-an-undoing-off-broadway-2024",
@@ -222001,6 +222983,44 @@
       "computedAt": "2026-10-31T17:58:22.702Z"
     },
     {
+      "showId": "no-exit-regional-2026",
+      "title": "No Exit",
+      "openingDate": "2026-07-02",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
+    },
+    {
       "showId": "no-singing-in-the-navy-off-broadway-2026",
       "title": "No Singing in the Navy",
       "openingDate": "2026-03-29",
@@ -253672,6 +254692,44 @@
       "computedAt": "2026-11-01T15:05:11.876Z"
     },
     {
+      "showId": "purlie-victorious-regional-2026",
+      "title": "Purlie Victorious",
+      "openingDate": "2026-05-11",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
+    },
+    {
       "showId": "purpose-2025",
       "title": "Purpose",
       "openingDate": "2025-03-17",
@@ -259944,6 +261002,44 @@
         "candidateCount": 7
       },
       "computedAt": "2026-10-31T17:07:08.919Z"
+    },
+    {
+      "showId": "richard-obriens-the-rocky-horror-show-regional-2026",
+      "title": "Richard O'Brien's The Rocky Horror Show",
+      "openingDate": "2026-08-25",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "ride-the-cyclone-off-west-end-2026",
@@ -280457,6 +281553,44 @@
       "computedAt": "2026-10-31T19:29:46.681Z"
     },
     {
+      "showId": "somewhere-over-the-border-regional-2026",
+      "title": "Somewhere Over the Border",
+      "openingDate": "2026-09-15",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
+    },
+    {
       "showId": "soon-off-broadway-2026",
       "title": "Soon",
       "openingDate": "2026-10-05",
@@ -286565,6 +287699,108 @@
         "candidateCount": 6
       },
       "computedAt": "2026-11-02T03:05:16.434Z"
+    },
+    {
+      "showId": "stonewalls-bust-regional-2026",
+      "title": "Stonewall's Bust",
+      "openingDate": "2026-10-15",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Stonewall's Bust\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Stonewall's Bust\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Stonewall's Bust\" review writer",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Stonewall's Bust Writer's Center, Bethesda, MD review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Stonewall's Bust Writer's Center, Bethesda, MD review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Stonewall's Bust Writer's Center, Bethesda, MD review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 35,
+        "byReason": {
+          "aggregator-internal-nav": 3,
+          "non-review-host": 27,
+          "census-junk-host": 2,
+          "write-path-blocked": 1,
+          "ugc-platform": 1,
+          "review-hub-page": 1
+        }
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
@@ -316376,6 +317612,58 @@
       "computedAt": "2026-10-31T21:45:18.470Z"
     },
     {
+      "showId": "the-effect-of-gamma-rays-on-man-in-the-moon-marigolds-regional-2026",
+      "title": "The Effect of Gamma Rays on Man-in-the-Moon Marigolds",
+      "openingDate": "2026-05-17",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://morristheatredc.com/theatre/review-the-effects-of-gamma-rays-on-man-in-the-moon-marigolds-silver-spring-stage",
+          "host": "morristheatredc.com",
+          "file": "morris-theatre-dc--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=morristheatredc.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\nFetch failed: fetch failed: All scraping methods failed; no archive.org capture",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
+    },
+    {
       "showId": "the-effect-off-broadway-2024",
       "title": "The Effect",
       "openingDate": "2024-03-13",
@@ -339549,6 +340837,44 @@
       "computedAt": "2026-10-31T22:05:43.219Z"
     },
     {
+      "showId": "the-mannequin-regional-2026",
+      "title": "The Mannequin",
+      "openingDate": "2026-05-24",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
+    },
+    {
       "showId": "the-mark-regional-2025",
       "title": "The Mark",
       "openingDate": "2025-10-21",
@@ -356309,6 +357635,44 @@
         "candidateCount": 18
       },
       "computedAt": "2026-11-02T20:39:48.261Z"
+    },
+    {
+      "showId": "the-roaring-girl-regional-2026",
+      "title": "The Roaring Girl",
+      "openingDate": "2026-06-08",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "the-rocky-horror-show-2026",
@@ -378576,14 +379940,42 @@
       "previewsStartDate": "2026-10-30",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
+        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
         "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+        "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
+        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
         "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
       ],
-      "dirFiles": 6,
+      "dirFiles": 7,
       "dirClean": 2,
       "inReviewsJson": 2,
       "missing": [
+        {
+          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-10-01",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
           "host": "bachtrack.com",
@@ -378645,17 +380037,105 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tosca - English National Opera\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tosca - English National Opera\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tosca - English National Opera\" review london",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 32,
+        "byReason": {
+          "non-review-host": 21,
+          "census-junk-host": 2,
+          "no-review-evidence": 4,
+          "non-review-path": 2,
+          "event-listing": 1,
+          "ticketing-listing": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
+        {
+          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Article extraction returned 124 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
         {
           "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
           "host": "bachtrack.com",
@@ -378681,11 +380161,24 @@
             "outlet": "bachtrack",
             "critic": "Unknown",
             "stars": null,
+            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
             "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+            "outletId": "musicomh.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T12:45:30.098Z"
+          },
           {
             "url": "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
             "outletId": "cherylmarkosky.com",
@@ -378693,10 +380186,11 @@
             "firstSeenAt": "2026-10-31T23:09:19.251Z"
           },
           {
-            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-            "outletId": "musicomh.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T12:45:30.098Z"
+            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+            "outletId": "bachtrack",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T22:50:23.850Z"
           },
           {
             "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
@@ -378711,7 +380205,7 @@
         "liveCount": 2,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-02T19:36:38.932Z"
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -388225,6 +389719,44 @@
         "candidateCount": 27
       },
       "computedAt": "2026-10-31T15:38:14.152Z"
+    },
+    {
+      "showId": "venus-regional-2026",
+      "title": "Venus",
+      "openingDate": "2026-09-18",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T22:50:23.850Z"
     },
     {
       "showId": "very-blue-light-off-broadway-2026",
