@@ -1,5 +1,5 @@
 {
-  "_comment": "BRO-6833: THE city-hub registry. One entry per US city hub; src/lib/city-hub.ts, MarketNav, footer, getMarketStats, local-market (TS+JS), tic-cities and the app feed all read it. launched:false = staged (no menu/footer/sitemap/stats exposure; tic-daily --dry-run lists what it would add). Runbook: memory/add-us-city-hub.md. Wiring test: tests/unit/city-hub-wiring.test.ts. The metro slug must also be a place in data/venue-metros.json; the app mirrors slug+label in lib/market-filter.ts CITY_MARKETS.",
+  "_comment": "BRO-6833: THE city-hub registry. One entry per US city hub; src/lib/city-hub.ts, MarketNav, footer, getMarketStats, local-market (TS+JS), tic-cities and the app feed all read it. `launched` is REQUIRED and only an explicit true is live (a missing value is staged); launched:false = staged (no menu/footer/sitemap/stats exposure; tic-daily --dry-run lists what it would add). Runbook: memory/add-us-city-hub.md. Wiring test: tests/unit/city-hub-wiring.test.ts. The metro slug must also be a place in data/venue-metros.json; the app mirrors slug+label in lib/market-filter.ts CITY_MARKETS.",
   "hubs": {
     "chicago-il": {
       "name": "Chicago, IL",
@@ -218,7 +218,9 @@
           "hollywood bowl",
           "kia forum",
           "microsoft theat",
-          "greek theat"
+          "greek theat",
+          "segerstrom",
+          "bank of america performing"
         ],
         "venueCities": [
           [

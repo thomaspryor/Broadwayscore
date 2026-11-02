@@ -24,6 +24,14 @@ const { resolveMetro } = require('../../scripts/lib/venue-metro.js');
 const jsLocal = require('../../scripts/lib/local-market.js');
 const registry = JSON.parse(read('data/city-hubs.json')).hubs as Record<string, any>;
 
+test('registry schema: launched is an explicit boolean; tic keys are known (a typo would silently disable a filter)', () => {
+  const ticKeys = new Set(['key', 'base', 'host', 'files', 'since', 'tourHouses', 'venueCities', 'requireMetro', 'minOutlets', 'allowTypes']);
+  for (const [slug, h] of Object.entries(registry)) {
+    assert.equal(typeof h.launched, 'boolean', `${slug}.launched must be an explicit boolean`);
+    for (const k of Object.keys(h.tic || {})) assert.ok(ticKeys.has(k), `${slug}.tic.${k} is not a known key`);
+  }
+});
+
 test('registry has at least Chicago and DC, and HUB_CITIES is exactly the launched subset', () => {
   assert.ok(ALL_HUB_CITIES['chicago-il'] && ALL_HUB_CITIES['washington-dc']);
   assert.deepEqual(Object.keys(HUB_CITIES), Object.keys(ALL_HUB_CITIES).filter(s => registry[s].launched !== false));

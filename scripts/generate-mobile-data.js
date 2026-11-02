@@ -23,7 +23,7 @@ const { loadCoverageFloorInputs, coverageFloorOptsForShow } = require('./lib/cov
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { isLocalOnlyShow } = require('./lib/local-market');
-const CITY_HUB_SLUGS = new Set(Object.entries(require('../data/city-hubs.json').hubs).filter(([, h]) => h.launched !== false).map(([slug]) => slug));
+const CITY_HUB_SLUGS = new Set(Object.entries(require('../data/city-hubs.json').hubs).filter(([, h]) => h.launched === true).map(([slug]) => slug));
 const { isUpcomingTag } = require('./lib/opening-night-completeness');
 const { versionedImagePath } = require('./lib/versioned-image-path');
 

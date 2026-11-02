@@ -31,7 +31,7 @@ for (const [slug, hub] of Object.entries(registry.hubs)) {
     host: t.host,
     discoverySource: hub.discoverySource,
     metro: slug,
-    launched: hub.launched !== false,
+    launched: hub.launched === true,
     files: t.files,
     since: t.since || null,
     // null = no extra rules (Chicago keeps its original tour-house and IL/IN city logic in tic-stage.js).

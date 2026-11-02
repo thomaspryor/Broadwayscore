@@ -28,7 +28,7 @@ export interface HubCity {
 
 /** Every registry city, staged ones included. data/city-hubs.json is the one place a city is added (BRO-6833). */
 export const ALL_HUB_CITIES: Record<string, HubCity> = Object.fromEntries(
-  Object.entries(registry.hubs as Record<string, Partial<HubCity>>).map(([slug, h]) => [slug, { launched: true, ...h } as HubCity]),
+  Object.entries(registry.hubs as Record<string, Partial<HubCity>>).map(([slug, h]) => [slug, { ...h, launched: h.launched === true } as HubCity]),
 );
 
 /** Slugs of the launched metros that have a hub page. `home` is the trailing "City, ST" a venue drops on that hub's own page. */
