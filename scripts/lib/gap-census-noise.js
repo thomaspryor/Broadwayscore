@@ -23,6 +23,7 @@
  */
 
 const { isSyndicationHost } = require('./syndication-canonical');
+const { foldDiacritics } = require('./title-match');
 const { classifyTimeoutListingBlurb } = require('./timeout-capsule');
 const { isUrlMonthBeforeRun } = require('./gap-ingest-policy');
 
@@ -67,7 +68,7 @@ function ukTourLegUrl(url, show) {
   if (!/north american|us tour|national tour|american tour/i.test(`${show.venue || ''}`)) return false;
   let u;
   try { u = new URL(url); } catch { return false; }
-  const hay = `${u.hostname} ${decodeURIComponent(u.pathname)}`.toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+  const hay = foldDiacritics(`${u.hostname} ${decodeURIComponent(u.pathname)}`).toLowerCase().replace(/[^a-z0-9]+/g, ' ');
   const hostFlat = u.hostname.toLowerCase().replace(/[^a-z0-9]/g, '');
   return UK_TOUR_PLACES.some((p) => new RegExp(`(^| )${p.replace(/-/g, ' ')}( |$)`).test(hay)
     || (p.length >= 7 && hostFlat.includes(p.replace(/[- ]/g, ''))))
@@ -101,7 +102,7 @@ function titleExtendedInUrl(url, show, tokensOf) {
   if (tokens.length !== 1) return false;
   let path;
   try { path = decodeURIComponent(new URL(url).pathname).toLowerCase(); } catch { return false; }
-  const own = new Set(String(show.title).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
+  const own = new Set(foldDiacritics(String(show.title)).toLowerCase().split(/[^a-z0-9]+/).filter(Boolean));
   // Words within ONE path segment only: a folder before the slug ("/en/", "/reviews/")
   // is not part of the title.
   for (const seg of path.split('/').filter(Boolean)) {
@@ -175,11 +176,12 @@ function censusExclusionReason(m, kind, ctx = {}) {
  * @param {{fetchPage:(url:string)=>Promise<{content?:string}|null>}} deps
  * @returns {Promise<{missing:Array, nonReview:Array}>}
  */
-async function vetTimeoutListingCandidates(missing, show, deps) {
+async function vetTimeoutListingCandidates(missing, show, deps, budget) {
   const kept = [];
   const nonReview = [];
   for (const m of (missing || [])) {
-    if (!m || !isTimeoutListingShape(m.url)) { kept.push(m); continue; }
+    // Out of run budget: stop fetching; the rest stay candidates (fail open).
+    if (!m || !isTimeoutListingShape(m.url) || (budget && budget.exceeded())) { kept.push(m); continue; }
     let verdict = { verdict: 'unknown' };
     try {
       const page = await deps.fetchPage(m.url);
@@ -233,7 +235,7 @@ const PAGE_DATE_VET_CAP = 6;
  * @param {{fetchPage:Function}} deps
  * @returns {Promise<{missing:Array, nonReview:Array}>}
  */
-async function vetTourCandidatesByPageDate(missing, show, deps) {
+async function vetTourCandidatesByPageDate(missing, show, deps, budget) {
   const start = Date.parse((show && (show.previewsStartDate || show.openingDate)) || '');
   if (!show || !Number.isFinite(start)) return { missing: missing || [], nonReview: [] };
   const isTour = show.category === 'tour';
@@ -241,7 +243,7 @@ async function vetTourCandidatesByPageDate(missing, show, deps) {
   const nonReview = [];
   let fetched = 0;
   for (const m of (missing || [])) {
-    if (!m || m.serpCensus !== true || m.priorRun || fetched >= PAGE_DATE_VET_CAP || !(isTour || FESTIVAL_SLUG.test(m.url))) { kept.push(m); continue; }
+    if (!m || m.serpCensus !== true || m.priorRun || fetched >= PAGE_DATE_VET_CAP || (budget && budget.exceeded()) || !(isTour || FESTIVAL_SLUG.test(m.url))) { kept.push(m); continue; }
     fetched++;
     let ms = null;
     try {
