@@ -16,8 +16,8 @@
       "other",
       "original"
     ],
-    "count": 914,
-    "updatedAt": "2026-10-26T13:29:33.986Z"
+    "count": 916,
+    "updatedAt": "2026-11-02T16:31:46.661Z"
   },
   "shows": {
     "110-in-the-shade-2007": {
@@ -17674,6 +17674,56 @@
         "source": "play",
         "model": "gemini-2.5-flash"
       }
+    },
+    "springsteen-on-broadway-2017": {
+      "title": "Springsteen on Broadway",
+      "openingDate": "2017-10-12",
+      "path": [],
+      "pathNote": null,
+      "source": "book",
+      "sourceTitle": "Born to Run",
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-production/springsteen-on-broadway-515480",
+        "https://brucespringsteen.net/albums/springsteen-on-broadway/"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-11-02",
+      "check": {
+        "path": [],
+        "source": "book",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "music-catalog"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
+    },
+    "springsteen-on-broadway-2021": {
+      "title": "Springsteen on Broadway",
+      "openingDate": "2021-06-26",
+      "path": [],
+      "pathNote": null,
+      "source": "book",
+      "sourceTitle": "Born to Run",
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-production/springsteen-on-broadway-531787",
+        "https://brucespringsteen.net/news/2021/springsteen-on-broadway-returns-for-limited-summer-run-at-the-st-james-theatre/"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-11-02",
+      "check": {
+        "path": [],
+        "source": "book",
+        "model": "gemini-2.5-flash"
+      },
+      "firstAnswer": {
+        "path": [],
+        "source": "music-catalog"
+      },
+      "resolvedBy": "gpt-5.4-mini:medium"
     },
     "steel-magnolias-2005": {
       "title": "Steel Magnolias",
