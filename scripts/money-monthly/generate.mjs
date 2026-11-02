@@ -43,3 +43,4 @@ if (process.argv.includes('--write-snapshot')) {
 console.log(`subject: ${subject}`);
 console.log(`file: ${path.join(outDir, `${slug}.html`)}`);
 console.log(`counts: ${JSON.stringify(Object.fromEntries(Object.entries(issue.sections).map(([k, v]) => [k, v.length])))} baseline=${issue.hasBaseline}`);
+if (issue.undatedCapitalization.length) console.log(`WARN: capitalization added this window with an undated citation, left out (add the publication date to capitalizationSource): ${issue.undatedCapitalization.join(", ")}`);

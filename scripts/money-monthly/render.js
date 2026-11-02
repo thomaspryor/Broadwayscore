@@ -18,7 +18,7 @@ const monthName = (ym) => { const m = /^(\d{4})-(\d{2})$/.exec(ym || ''); return
 
 function intro(issue) {
   const w = issue.window;
-  if (issue.quiet) return `Nothing crossed our bar ${w.catchup ? w.label : `in ${w.label}`}: no new recoupments, no closings with a final label, and no big estimate moves.`;
+  if (issue.quiet) return `Nothing crossed our bar ${w.catchup ? w.label : `in ${w.label}`}: no new recoupments, no closings with a final label, no newly published capitalization figures, and no big estimate moves.`;
   return w.catchup ? `Here is what moved in the money data ${w.label}.` : `Here is what moved in the money data in ${w.label}.`;
 }
 
@@ -38,7 +38,7 @@ function renderHtml(issue, { unsubscribeUrl = '{{{RESEND_UNSUBSCRIBE_URL}}}', ca
     parts.push(section('New capitalization figures', s.capitalization.map((c) => row(c.url, c.title, `${esc(usd(c.capitalization))} capitalization, newly on the scorecard.`)).join('')));
   }
   if (issue.stat) {
-    parts.push(section('One number', `<div style="color:${T.text};font-size:15px;line-height:1.6">${issue.stat.recouped} of the ${issue.stat.total} closed Broadway shows we have a final money label for recouped (${issue.stat.pct}%).</div>`));
+    parts.push(section('One number', `<div style="color:${T.text};font-size:15px;line-height:1.6">Of the ${issue.stat.total} closed Broadway shows with a final money label, ${issue.stat.recouped} recouped (${issue.stat.pct}%).</div>`));
   }
   const html = `<!doctype html><html><body style="margin:0;background:${T.surface};font-family:-apple-system,Segoe UI,Helvetica,Arial,sans-serif">
 <table width="100%" cellpadding="0" cellspacing="0" style="background:${T.surface}"><tr><td align="center">

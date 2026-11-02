@@ -58,7 +58,7 @@ test('estimate moves need a baseline and ignore small or recouped shows', () => 
 test('capitalization: skips estimates, unsourced, "no verified source" and old closed shows', () => {
   const base = { firstAdded: '2026-10-05T00:00:00Z', capitalization: 5e6 };
   const commercial = {
-    ok: { ...base, capitalizationSource: 'SEC Form D' },
+    ok: { ...base, capitalizationSource: 'SEC Form D (filed Oct 3, 2026)' },
     nosrc: { ...base, capitalizationSource: 'No verified public source found' },
     est: { ...base, capitalizationSource: 'x', modelCapitalizationEstimate: 5e6 },
     oldclosed: { ...base, capitalizationSource: 'Playbill 2013' },
@@ -113,8 +113,8 @@ test('subject counts every item even when the list is capped at 5', () => {
   assert.match(L.buildSubject(issue), /7 recoupments/);
 });
 
-test('with a baseline, a brand-new production with a disclosed capitalization counts as new', () => {
-  const commercial = { newshow: { capitalization: 12e6, capitalizationSource: 'SEC Form D', firstAdded: '2026-09-10' } };
+test('with a baseline, a brand-new production whose source is dated in the window counts as new', () => {
+  const commercial = { newshow: { capitalization: 12e6, capitalizationSource: 'SEC Form D, filed Sep 9, 2026', firstAdded: '2026-09-10' } };
   const shows = [{ slug: 'newshow', title: 'New Show', market: 'broadway', status: 'open' }];
   const issue = L.buildIssue({ commercial, shows, snapshot: {}, window: L.resolveWindow({ today: '2026-10-02', month: '2026-09' }) });
   assert.equal(issue.sections.capitalization.length, 1);
@@ -154,4 +154,52 @@ test('readAllContactPages follows has_more so an unsubscribed contact on page 2 
 test('sync-audience never posts unsubscribed:false', () => {
   const src = require('node:fs').readFileSync(new URL('../../scripts/money-monthly/sync-audience.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(src, /unsubscribed:\s*false/);
+});
+
+test('capitalization: only figures published inside the window, whenever we added them (Oct 2026 issue)', () => {
+  const add = { firstAdded: '2026-10-17T07:48:36Z', capitalization: 3e7 };
+  const commercial = {
+    aug: { ...add, capitalizationSource: 'Broadway Journal (Philip Boroff, Aug 12, 2026): "X ($30 million)"' },
+    old: { ...add, capitalizationSource: 'SEC Form D/A (filed Jan 22, 2025): offering capitalized at $16,000,000' },
+    undated: { ...add, capitalizationSource: 'Broadway News' },
+    octLateAdd: { firstAdded: '2026-11-01T00:00:00Z', capitalization: 2e7, capitalizationSource: 'SEC Form D, filed 2026-10-20' },
+    cites: { ...add, capitalizationSource: 'Deadline (October 9, 2026), citing a SEC filing dated Mar 1, 2025' },
+  };
+  const shows = Object.keys(commercial).map((slug) => show({ slug, title: slug }));
+  const got = L.buildIssue({ commercial, shows, snapshot: {}, window: W }).sections.capitalization.map((c) => c.slug).sort();
+  assert.deepEqual(got, ['cites', 'octLateAdd']);
+  assert.equal(L.capitalizationPublishedDate('filed Jan 22, 2025 and Sept. 3, 2026'), '2025-01-22');
+  assert.equal(L.capitalizationPublishedDate('no date here 2024'), null);
+  assert.equal(L.capitalizationPublishedDate('Variety (Oct. 3rd, 2026), show opens April 18, 2027', '2026-10-31'), '2026-10-03');
+  assert.deepEqual(L.buildIssue({ commercial, shows, snapshot: {}, window: W }).undatedCapitalization, ['undated']);
+});
+
+test('one-number sentence reads cleanly', () => {
+  const commercial = {};
+  for (let i = 0; i < 25; i++) commercial['s' + i] = { designation: i < 5 ? 'Recouped' : 'Flop' };
+  const shows = Object.keys(commercial).map((slug) => show({ slug, title: slug, status: 'closed', closingDate: '2020-01-01' }));
+  const html = renderHtml(L.buildIssue({ commercial, shows, snapshot: null, window: W }));
+  assert.match(html, /Of the 25 closed Broadway shows with a final money label, 5 recouped \(20%\)\./);
+});
+
+test('capitalization date: primary (first) source wins, strict month names, real dates, more formats', () => {
+  const p = L.capitalizationPublishedDate;
+  assert.equal(p('The New York Times (Jun 8, 2026): $8M. The Hollywood Reporter (Aug 11, 2026) repeated it.'), '2026-06-08');
+  assert.equal(p('opens April 18, 2027; Variety (Oct 2, 2026)', '2026-10-31'), '2026-10-02');
+  assert.equal(p('Mayor 3, 2026; Marched 5, 2026; Octagon 4, 2026'), null);
+  assert.equal(p('Sep 31, 2026'), null);
+  assert.equal(p('Deadline Oct 3 2026'), '2026-10-03');
+  assert.equal(p('The Stage, 3 October 2026'), '2026-10-03');
+});
+
+test('capitalization: snapshot guard, late-ingest grace, catch-up gets no grace', () => {
+  const commercial = {
+    had: { capitalization: 1e7, capitalizationSource: 'Variety (Oct 5, 2026)', firstAdded: '2026-09-01' },
+    late: { capitalization: 1e7, capitalizationSource: 'Variety (Sep 28, 2026)', firstAdded: '2026-10-02' },
+    early: { capitalization: 1e7, capitalizationSource: 'Variety (Sep 2, 2026)', firstAdded: '2026-10-02' },
+  };
+  const shows = Object.keys(commercial).map((slug) => show({ slug, title: slug }));
+  const got = (snapshot, w) => L.buildIssue({ commercial, shows, snapshot, window: w }).sections.capitalization.map((c) => c.slug).sort();
+  assert.deepEqual(got({ had: { cap: 1e7 } }, W), ['late']);
+  assert.deepEqual(got(null, { ...W, catchup: true }), ['had']);
 });

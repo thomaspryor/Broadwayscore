@@ -58,6 +58,31 @@ function isRecoupmentNews(e, w) {
   return !w.catchup && !!fa && fa >= w.start && fa <= w.end && d === monthBefore(w.start.slice(0, 7));
 }
 
+const MONTH_NUM = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };
+const MONTH_RE = '(Jan(?:uary)?|Feb(?:ruary)?|Mar(?:ch)?|Apr(?:il)?|May|June?|July?|Aug(?:ust)?|Sept?(?:ember)?|Oct(?:ober)?|Nov(?:ember)?|Dec(?:ember)?)\\.?';
+const DATE_RE = new RegExp(`\\b${MONTH_RE} (\\d{1,2})(?:st|nd|rd|th)?,? (\\d{4})\\b|\\b(\\d{1,2}) ${MONTH_RE} (\\d{4})\\b|\\b(\\d{4})-(\\d{2})-(\\d{2})\\b`, 'gi');
+const realDate = (y, mo, d) => { const t = new Date(Date.UTC(+y, +mo - 1, +d)); return t.getUTCFullYear() === +y && t.getUTCMonth() === +mo - 1 && t.getUTCDate() === +d; };
+// Publication date of the source a capitalization figure came from, as YYYY-MM-DD, or null.
+// Citations name the primary source first ("NYT (Jun 8, 2026) ...; THR (Aug 11, 2026) repeated it"),
+// so the FIRST full date wins: later corroborating mentions must not make an old figure look new.
+// Dates after `notAfter` (e.g. an opening date the article mentions) are skipped.
+function capitalizationPublishedDate(src, notAfter) {
+  if (!src) return null;
+  for (const m of String(src).matchAll(DATE_RE)) {
+    const [y, mo, d] = m[1] ? [m[3], MONTH_NUM[m[1].slice(0, 3).toLowerCase()], m[2]]
+      : m[4] ? [m[6], MONTH_NUM[m[5].slice(0, 3).toLowerCase()], m[4]] : [m[7], m[8], m[9]];
+    if (!realDate(y, mo, d)) continue;
+    const iso = `${y}-${String(mo).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    if (!notAfter || iso <= notAfter) return iso;
+  }
+  return null;
+}
+
+// Last N days before the window: an article from then that we only ingested inside the window
+// (monthly issues only) still counts, so ingest lag cannot drop a figure from every issue.
+const CAP_GRACE_DAYS = 7;
+const daysBefore = (iso, n) => new Date(Date.parse(`${iso}T00:00:00Z`) - n * 864e5).toISOString().slice(0, 10);
+
 function bulkDays(commercial) {
   const counts = {};
   for (const e of Object.values(commercial)) {
@@ -85,6 +110,7 @@ function buildIssue({ commercial, shows, snapshot, window: w }) {
   const recoupments = [];
   const closings = [];
   const capitalization = [];
+  const undatedCapitalization = [];
   for (const [slug, e] of Object.entries(commercial)) {
     const show = bySlug.get(slug);
     if (!e || !show) continue;
@@ -94,13 +120,20 @@ function buildIssue({ commercial, shows, snapshot, window: w }) {
     if (show.status === 'closed' && show.closingDate >= w.start && show.closingDate <= w.end && isFinalDesignation(e.designation) && !e.nonprofitOrg) {
       closings.push({ slug, title: show.title, closed: show.closingDate, designation: e.designation, capitalization: e.modelCapitalizationEstimate ? null : (e.capitalization || null), url: link(slug) });
     }
+    // BRO-6871: a capitalization figure is news only when its source was published inside the
+    // window (Oct 2026 issue listed an Aug article and a Jan 2025 SEC filing as "new" because we
+    // happened to add them in October). No parseable date = not provably new = skipped.
+    const pub = capitalizationPublishedDate(e.capitalizationSource, w.end);
     const fa = e.firstAdded ? String(e.firstAdded).slice(0, 10) : null;
+    const lateIngest = !w.catchup && !!pub && !!fa && pub < w.start && pub >= daysBefore(w.start, CAP_GRACE_DAYS) && fa >= w.start && fa <= w.end;
+    const publishedInWindow = !!pub && ((pub >= w.start && pub <= w.end) || lateIngest);
     const prev = snapshot && snapshot[slug];
-    const addedInWindow = !!fa && fa >= w.start && fa <= w.end && !bulk.has(fa);
-    const newlyDisclosed = snapshot && prev ? prev.cap == null && addedInWindow : addedInWindow;
+    const alreadyHad = !!prev && prev.cap != null; // on the scorecard at the last issue: not new, whatever the citation says
     const current = show.status !== 'closed' || (show.closingDate >= w.start && show.closingDate <= w.end); // an old closed show added late is backfill, not news
-    if (newlyDisclosed && current && Number.isFinite(e.capitalization) && e.capitalizationSource && !/^no verified/i.test(e.capitalizationSource) && !e.modelCapitalizationEstimate && !e.nonprofitOrg) {
+    if (publishedInWindow && !alreadyHad && current && Number.isFinite(e.capitalization) && e.capitalizationSource && !/^no verified/i.test(e.capitalizationSource) && !e.modelCapitalizationEstimate && !e.nonprofitOrg) {
       capitalization.push({ slug, title: show.title, capitalization: e.capitalization, source: e.capitalizationSource, url: link(slug) });
+    } else if (!pub && current && fa && fa >= w.start && fa <= w.end && Number.isFinite(e.capitalization) && e.capitalizationSource && !/^no verified/i.test(e.capitalizationSource) && !e.modelCapitalizationEstimate) {
+      undatedCapitalization.push(slug); // added this window but citation has no date: cannot prove it is new
     }
   }
   const moves = [];
@@ -136,7 +169,7 @@ function buildIssue({ commercial, shows, snapshot, window: w }) {
     capitalization: capitalization.slice(0, MAX_ITEMS),
   };
   const newsCount = Object.values(totals).reduce((n, a) => n + a, 0);
-  return { window: w, sections, totals, stat, newsCount, quiet: newsCount === 0, hasBaseline: !!snapshot };
+  return { window: w, sections, totals, stat, newsCount, quiet: newsCount === 0, hasBaseline: !!snapshot, undatedCapitalization };
 }
 
 function buildSubject(issue) {
@@ -151,4 +184,4 @@ function buildSubject(issue) {
   return `Money Scorecard, ${m}: ${bits.join(' and ')}`;
 }
 
-module.exports = { resolveWindow, isRecoupmentNews, bulkDays, snapshotOf, buildIssue, buildSubject, usd, fmtDay, midOf, BULK_DAY_THRESHOLD, isFinalDesignation };
+module.exports = { capitalizationPublishedDate, resolveWindow, isRecoupmentNews, bulkDays, snapshotOf, buildIssue, buildSubject, usd, fmtDay, midOf, BULK_DAY_THRESHOLD, isFinalDesignation };
