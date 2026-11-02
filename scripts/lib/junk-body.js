@@ -59,11 +59,13 @@ function isRawHtmlBody(text) {
 // might be temporarily down..."). 38 stored bodies carry such a sentence, but in 28 it
 // is an iframe inside a real review, so only a body with almost nothing else counts.
 const BROWSER_ERROR_RE = /(?:the webpage at \S+ )?might be temporarily down or it may have moved permanently to a new web address\.?|this site can[’']t be reached[^.]*\.?|\bERR_[A-Z_]{4,}\b/gi;
+const BROWSER_ERROR_ANCHOR_RE = /might be temporarily down or it may have moved permanently to a new web address/i;
 const BROWSER_ERROR_MAX_REST = 300;
 function isBrowserErrorBody(text) {
   if (typeof text !== 'string' || !text) return false;
-  BROWSER_ERROR_RE.lastIndex = 0;
-  if (!BROWSER_ERROR_RE.test(text)) return false;
+  // The browser's own sentence must be there; a bare error code or a quoted
+  // "this site can't be reached" in a short excerpt is not enough.
+  if (!BROWSER_ERROR_ANCHOR_RE.test(text) && !(/this site can[’']t be reached/i.test(text) && /\bERR_[A-Z_]{4,}\b/.test(text))) return false;
   const rest = text.replace(BROWSER_ERROR_RE, ' ').replace(/https?:\/\/\S+/g, ' ').replace(/\s+/g, ' ').trim();
   return rest.length < BROWSER_ERROR_MAX_REST;
 }

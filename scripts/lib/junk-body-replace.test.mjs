@@ -156,3 +156,9 @@ test('junkBodyReason: browser error page body (TheWrap Imaginary Invalid) is jun
   assert.equal(junkBodyReason(`${review} ${errorBody}`), null);
   assert.equal(isCleanReplacementForJunk(errorBody, review), true);
 });
+
+test('a short excerpt quoting an error code or "this site can\'t be reached" is not a browser-error body', async () => {
+  const { junkBodyReason } = await import('./junk-body.js');
+  assert.notEqual(junkBodyReason('The second act turns on a phone screen reading ERR_CONNECTION_REFUSED, a gag that lands.'), 'browser-error');
+  assert.notEqual(junkBodyReason('"This site can\'t be reached," sighs the hero, and the audience roared.'), 'browser-error');
+});
