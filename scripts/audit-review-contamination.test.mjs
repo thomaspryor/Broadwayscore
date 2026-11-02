@@ -260,11 +260,10 @@ test('BRO-973: isAlreadyExcludedFromScoring skips ensemble-rejected, no-text stu
 // ── BRO-6842: class C / class G per-file skips ───────────────────────────────
 // The gate went red on a real class-A leak; the triage then chased 3 class-G
 // "older production live" hits that the rebuild already drops (a wrongProduction
-// flag next to a stale allowEarlyDate/allowCrossMarket bypass) and a class-C hit
-// on a crossOutletVerified freelancer cross-post. Both skips live in
-// lib/contamination-gate.js so they are tested here, not copied.
+// flag next to a stale allowEarlyDate/allowCrossMarket bypass). The skip lives in
+// lib/contamination-gate.js so it is tested here, not copied.
 {
-  const { isClassGExempt, isClassCVerifiedPairing } = require('./lib/contamination-gate.js');
+  const { isClassGExempt } = require('./lib/contamination-gate.js');
   const { olderProductionLiveReason } = require('./lib/older-production-live-guard.js');
   const show = { id: 'west-side-story-2009', title: 'West Side Story', market: 'broadway', category: 'broadway',
     openingDate: '2009-03-19', closingDate: '2011-01-02', status: 'closed', venue: 'Palace Theatre' };
@@ -293,6 +292,15 @@ test('BRO-973: isAlreadyExcludedFromScoring skips ensemble-rejected, no-text stu
     assert.equal(olderProductionLiveReason(leaked, show)?.kind, 'stale-wrong-verdict-tier');
   });
 
+  test('BRO-6842: the audit hands the rebuild predicate an absolute file path, as rebuild does', () => {
+    // A showId-relative path resolves against cwd, so the cross-outlet-cycle
+    // sibling read fails and the predicate reports a live file as excluded.
+    const src = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'audit-review-contamination.js'), 'utf8');
+    const calls = src.match(/(?:isAlreadyExcludedFromScoring|isClassGExempt)\(d, show, [^)]*\)/g) || [];
+    assert.ok(calls.length >= 3, `expected the A/C/D, E and G call sites, found ${calls.length}`);
+    for (const c of calls) assert.match(c, /path\.join\(sDir, f\)/, c);
+  });
+
   test('BRO-6842: G keeps its existing explicit skips', () => {
     for (const k of ['isRoundupArticle', 'wrongAttribution', 'isNonReview', 'nonReviewFlag', 'nonReviewContent']) {
       assert.equal(isClassGExempt({ ...live, [k]: true }, show, 'x/y.json'), true, k);
@@ -301,10 +309,4 @@ test('BRO-973: isAlreadyExcludedFromScoring skips ensemble-rejected, no-text stu
     assert.equal(isClassGExempt(null, show, 'x/y.json'), true);
   });
 
-  test('BRO-6842: C skips only an explicit crossOutletVerified === true', () => {
-    assert.equal(isClassCVerifiedPairing({ crossOutletVerified: true }), true);
-    assert.equal(isClassCVerifiedPairing({ crossOutletVerified: 'true' }), false);
-    assert.equal(isClassCVerifiedPairing({}), false);
-    assert.equal(isClassCVerifiedPairing(null), false);
-  });
 }
