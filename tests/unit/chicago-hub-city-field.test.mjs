@@ -23,7 +23,7 @@ test('local Chicago outlets are tagged with metro chicago-il in the registry', (
 });
 
 test('the hub is wired: /tours/[city] reads the hub sections and the archive route exists', () => {
-  const hub = read('src/lib/city-hub.ts');
+  const hub = read('data/city-hubs.json'); // the registry (BRO-6833) holds the slugs now
   assert.match(hub, /'chicago-il'/);
   assert.match(read('src/app/tours/[city]/page.tsx'), /sectionHubShows|getCityHubShows/);
   assert.ok(existsSync(new URL('src/app/tours/[city]/archive/page.tsx', root)));
