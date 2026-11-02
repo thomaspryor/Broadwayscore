@@ -20,14 +20,15 @@ name: Morning Digest
 #
 # CATCH-UP (handoff day 2026-11-02): GitHub started NONE of the three scheduled runs, and this repo
 # is known to drop most scheduled runs (BRO-4282, cron-redispatch.yml). Events are delivered reliably,
-# so the workflow also wakes on every finished Test Suite run on main (~100 a day). Each wake goes
-# through the same gate (handoff date, 07:45 to 12:00 ET) and then scripts/digest-sent-precheck.js
+# so the workflow also wakes on every finished Test Suite run on main (Test Suite runs on main about every 25 to 35 minutes on a working day; a fully quiet weekend morning could give no wake, and the pager is the backstop). Each wake goes
+# through the same gate (handoff date, 07:45 to 11:30 ET) and then scripts/digest-sent-precheck.js
 # (one Resend read; go only when no digest to the owner exists yet today), so a dropped cron costs
 # minutes, not the owner's morning email. Exactly one email a day still rests on the Resend
-# sent-today guard inside the send, and the concurrency group serialises the wakes.
+# sent-today guard inside the send, and the concurrency group serialises the wakes. Note: a pending
+# manual dispatch can be replaced by a newer pending wake in that group; re-dispatch if a test-send does not appear.
 #
 # Scheduled runs go through scripts/lib/digest-enable-gate.js: nothing before handoffDate and
-# nothing before 07:45 ET (or after 12:00 ET). The cron lines
+# nothing before 07:45 ET (or after 11:30 ET). The cron lines
 # cover both DST offsets (07:50 EDT = 11:50Z, 07:50 EST = 12:50Z, plus a retry), so no seasonal
 # edit is needed. ROLLBACK: push handoffDate far out (see above) or delete the schedule block below.
 #
@@ -138,7 +139,7 @@ jobs:
             --action=data/audit/morning-digest-preview.html --log="$RUNNER_TEMP/digest.log" \
             ${PUBKEY_B64:+--pubkey-b64="$PUBKEY_B64"}
 
-      - name: Scheduled-send gate (handoff date, 07:45 to 12:00 ET)
+      - name: Scheduled-send gate (handoff date, 07:45 to 11:30 ET)
         id: gate
         if: github.event_name == 'schedule' || github.event_name == 'workflow_run'
         run: |
