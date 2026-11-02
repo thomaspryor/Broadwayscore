@@ -13,6 +13,13 @@
  *   4. Other recent — opened in last 7 days, no action needed.
  *   5. Other upcoming — opens this week, OB/OWE (not in important list).
  *
+ * Every section is split into region blocks (NYC, London, Pre-Broadway &
+ * Regional, Chicago, Washington DC, National Tours, and an Other catch-all).
+ * Owner ask 2026-11-02: regional, tour, tryout and Chicago/DC openings were
+ * classified into an 'other' region that buildHtml() never rendered, so they
+ * silently vanished. regionOf() and REGION_ORDER below are the routing; the
+ * test pins that every row lands in a rendered block.
+ *
  * Standalone daily email, restored 2026-07-30 (owner ask): card #497 folded
  * this into the merged morning email, but the owner missed the standalone
  * version ("my fave email") and asked for it back. It sends directly again
@@ -41,6 +48,8 @@ const { getTier } = require('./lib/outlet-tiers');
 const { getMarketMinReviews, hasEnoughReviews } = require('./lib/min-reviews');
 const { computeCriticScore: canonicalComputeCriticScore } = require('./lib/compute-critic-score');
 const { rowConfidence } = require('./lib/score-confidence-gate'); // BRO-6623: raw lane rows keep confidence in llmScore
+const { isLocalOnlyShow } = require('./lib/local-market');
+const { isUkRegionalVenue } = require('./lib/market-label');
 const {
   TOKENS,
   esc,
@@ -155,7 +164,21 @@ function marketLabel(market) {
     'off-broadway': 'Off-Broadway',
     'off-west-end': 'Off-West-End',
     'opera': 'Opera',
+    'regional': 'Regional',
+    'tour': 'National tour',
   }[market] || market;
+}
+
+// Row label for the compact rows. Regional/tour rows name the kind of
+// production and the venue, since "Regional" alone says nothing.
+function rowMarketLabel(show, market) {
+  if (market === 'tour') return show.venue ? `National tour · ${show.venue}` : 'National tour';
+  if (market !== 'regional') return marketLabel(market);
+  let kind = 'Regional';
+  if (show.transferredTo || show.tourParent) kind = 'Pre-Broadway tryout';
+  else if (isLocalOnlyShow(show)) kind = 'Local';
+  else if (isUkRegionalVenue(show.venue)) kind = 'UK regional';
+  return show.venue ? `${kind} · ${show.venue}` : kind;
 }
 
 function showUrl(show) {
@@ -211,9 +234,15 @@ function loadExcludedMap() {
   return new Map(Object.entries((data && data.shows) || {}));
 }
 
-function regionOf(market) {
+// City hubs that get their own block (src/lib/city-hub.ts HUB_CITIES).
+const CITY_REGIONS = { 'chicago-il': 'chicago', 'washington-dc': 'dc' };
+
+function regionOf(market, show = {}) {
   if (market === 'broadway' || market === 'off-broadway') return 'nyc';
   if (market === 'west-end' || market === 'off-west-end') return 'london';
+  if (market === 'tour') return 'tour';
+  if (show.city && CITY_REGIONS[show.city]) return CITY_REGIONS[show.city];
+  if (market === 'regional') return 'regional';
   return 'other';
 }
 
@@ -340,8 +369,8 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
         date: s.openingDate,
         market,
         type: s.type || 'play',
-        region: regionOf(market),
-        marketLabel: marketLabel(market),
+        region: regionOf(market, s),
+        marketLabel: rowMarketLabel(s, market),
         isRevival: s.isRevival === true,
         excluded,
         excludedReason: excluded ? excludedMap.get(s.id) : null,
@@ -446,13 +475,12 @@ function classifyRows(rows, diagnose = null) {
   return { needsHelp, broadcastReady, comingUp, otherRecent, otherUpcoming };
 }
 
-// Split any list of rows into NYC + London (+ other) by region.
+// Split any list of rows into one list per rendered region. A region missing
+// from REGION_ORDER falls into 'other' so a new market can never vanish.
 function splitRegion(rows) {
-  return {
-    nyc: rows.filter(r => r.region === 'nyc'),
-    london: rows.filter(r => r.region === 'london'),
-    other: rows.filter(r => r.region !== 'nyc' && r.region !== 'london'),
-  };
+  const out = Object.fromEntries(REGION_ORDER.map(k => [k, []]));
+  for (const r of rows) (out[r.region] || out.other).push(r);
+  return out;
 }
 
 // ---------------------------------------------------------------------------
@@ -720,10 +748,27 @@ function buildSubject(sections) {
 
 // Per-region brand: NYC = Broadway gold (#d4a574), London = West End pink
 // (#f472b6). Source of truth: src/config/branding.ts MARKET_BRAND.
+// NYC and London always render (with a "no activity" note when empty); the
+// rest render only when they have rows. `hub` blocks cap their low-signal
+// sections, since a city's local theatre can open a dozen shows a week.
 const REGION_BRAND = {
-  nyc:    { label: '🗽 NYC',    color: '#d4a574', subtitle: 'Broadway · Off-Broadway' },
-  london: { label: '🇬🇧 London', color: '#f472b6', subtitle: 'West End · Off-West-End' },
+  nyc:      { label: '🗽 NYC',    color: '#d4a574', subtitle: 'Broadway · Off-Broadway', alwaysShow: true },
+  london:   { label: '🇬🇧 London', color: '#f472b6', subtitle: 'West End · Off-West-End', alwaysShow: true },
+  regional: { label: '🎭 Pre-Broadway & Regional', color: '#a78bfa', subtitle: 'Tryouts · Regional' },
+  chicago:  { label: 'Chicago',   color: '#60a5fa', subtitle: 'Tryouts · Local', hub: 'chicago-il' },
+  dc:       { label: 'Washington DC', color: '#f87171', subtitle: 'Tryouts · Local', hub: 'washington-dc' },
+  tour:     { label: '🚌 National Tours', color: '#34d399', subtitle: 'Tour launches' },
+  other:    { label: 'Other', color: '#9ca3af', subtitle: 'Other markets' },
 };
+const REGION_ORDER = Object.keys(REGION_BRAND);
+const HUB_SECTION_CAP = 10;
+
+function capRows(rows, brand) {
+  if (!brand.hub || rows.length <= HUB_SECTION_CAP) return { shown: rows, more: '' };
+  const extra = rows.length - HUB_SECTION_CAP;
+  const more = `<div style="margin:10px 0 0 0;font-size:12px;"><a href="${SITE_URL}/tours/${brand.hub}" style="color:${TOKENS.textMuted};">+${extra} more on the ${esc(brand.label)} page</a></div>`;
+  return { shown: rows.slice(0, HUB_SECTION_CAP), more };
+}
 
 function renderRegionBlock(regionKey, sections) {
   const brand = REGION_BRAND[regionKey];
@@ -743,6 +788,7 @@ function renderRegionBlock(regionKey, sections) {
     </table>`;
 
   if (total === 0) {
+    if (!brand.alwaysShow) return '';
     return `
       <div style="margin:40px 0 16px 0;">
         ${headerHtml}
@@ -754,8 +800,14 @@ function renderRegionBlock(regionKey, sections) {
   if (needsHelp.length) inner += renderSection('Needs help', needsHelp.length, renderTable(needsHelp, renderNeedsHelpRow));
   if (broadcastReady.length) inner += renderSection('Broadcast ready', broadcastReady.length, renderTable(broadcastReady, renderBroadcastReadyRow));
   if (comingUp.length) inner += renderSection('Coming up', comingUp.length, renderTable(comingUp, renderUpcomingRow));
-  if (otherRecent.length) inner += renderSection('Other recent (last 7 days)', otherRecent.length, renderTable(otherRecent, renderCompactRecentRow));
-  if (otherUpcoming.length) inner += renderSection('Other upcoming (next 7 days)', otherUpcoming.length, renderTable(otherUpcoming, renderCompactUpcomingRow));
+  if (otherRecent.length) {
+    const { shown, more } = capRows(otherRecent, brand);
+    inner += renderSection('Other recent (last 7 days)', otherRecent.length, renderTable(shown, renderCompactRecentRow) + more);
+  }
+  if (otherUpcoming.length) {
+    const { shown, more } = capRows(otherUpcoming, brand);
+    inner += renderSection('Other upcoming (next 7 days)', otherUpcoming.length, renderTable(shown, renderCompactUpcomingRow) + more);
+  }
   return `
     <div style="margin:40px 0 16px 0;">
       ${headerHtml}
@@ -771,23 +823,21 @@ function buildHtml({ needsHelp, broadcastReady, comingUp, otherRecent, otherUpco
     `${otherRecent.length + otherUpcoming.length} other`,
   ];
 
-  // Split every section into NYC vs London
-  const nycSections = {
-    needsHelp: splitRegion(needsHelp).nyc,
-    broadcastReady: splitRegion(broadcastReady).nyc,
-    comingUp: splitRegion(comingUp).nyc,
-    otherRecent: splitRegion(otherRecent).nyc,
-    otherUpcoming: splitRegion(otherUpcoming).nyc,
+  // Split every section by region, then render each region block in order.
+  const split = {
+    needsHelp: splitRegion(needsHelp),
+    broadcastReady: splitRegion(broadcastReady),
+    comingUp: splitRegion(comingUp),
+    otherRecent: splitRegion(otherRecent),
+    otherUpcoming: splitRegion(otherUpcoming),
   };
-  const londonSections = {
-    needsHelp: splitRegion(needsHelp).london,
-    broadcastReady: splitRegion(broadcastReady).london,
-    comingUp: splitRegion(comingUp).london,
-    otherRecent: splitRegion(otherRecent).london,
-    otherUpcoming: splitRegion(otherUpcoming).london,
-  };
-
-  let body = renderRegionBlock('nyc', nycSections) + renderRegionBlock('london', londonSections);
+  let body = REGION_ORDER.map(key => renderRegionBlock(key, {
+    needsHelp: split.needsHelp[key],
+    broadcastReady: split.broadcastReady[key],
+    comingUp: split.comingUp[key],
+    otherRecent: split.otherRecent[key],
+    otherUpcoming: split.otherUpcoming[key],
+  })).join('');
   if (!body) {
     body = `<div style="margin:48px 0;text-align:center;color:${TOKENS.textMuted};font-size:14px;">Nothing to report — no openings in the last or next 7 days.</div>`;
   }
@@ -954,6 +1004,10 @@ module.exports = {
   MIN_AUDIENCE_REVIEWS,
   buildSubject,
   buildDigestLead,
+  buildHtml,
+  regionOf,
+  rowMarketLabel,
+  REGION_ORDER,
   computeCriticScore,
   setOutletRegistryForTest: (r) => { outletRegistry = r; },
 };

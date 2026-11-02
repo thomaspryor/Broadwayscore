@@ -97,3 +97,33 @@ test('BRO-6799: prompts name the show\'s own house; no show keeps the Met wordin
   assert.match(c.getOperaWrongProductionContext(), /DIFFERENT MET RUN/);
   assert.equal(c.getOperaHouse({ venue: 'Royal Opera House' }).short, 'ROH');
 });
+
+import { buildWrongProductionUserPrompt } from '../../scripts/lib/classifier-prompts.js';
+
+test('BRO-6799: non-Met prompt lists only same-house prior runs and has no Met staging example', () => {
+  const p = buildWrongProductionUserPrompt({
+    show: { type: 'opera', venue: 'Royal Opera House', title: 'Parsifal' },
+    result: { showId: 'parsifal-off-west-end-2026', showYear: '2026', signals: ['x'] },
+    reviewData: { fullText: 'text' },
+    revivals: [
+      { id: 'parsifal-off-broadway-2013', openingDate: '2013-02-01', venue: 'Metropolitan Opera House' },
+      { id: 'parsifal-off-west-end-2018', openingDate: '2018-06-01', venue: 'Royal Opera House' },
+    ],
+  });
+  assert.match(p, /PRIOR ROH PRODUCTIONS OF THIS WORK:/);
+  assert.match(p, /parsifal-off-west-end-2018/);
+  assert.doesNotMatch(p, /parsifal-off-broadway-2013/);
+  assert.doesNotMatch(p, /Michael Mayer|Royal Opera's 2020/);
+});
+
+test('BRO-6799: Met prompt keeps PRIOR MET header, unfiltered revivals and original staging example', () => {
+  const p = buildWrongProductionUserPrompt({
+    show: { type: 'opera', venue: 'Metropolitan Opera House', title: 'Parsifal' },
+    result: { showId: 'parsifal-off-broadway-2026', showYear: '2026', signals: ['x'] },
+    reviewData: { fullText: 'text' },
+    revivals: [{ id: 'parsifal-off-west-end-2018', openingDate: '2018-06-01', venue: 'Royal Opera House' }],
+  });
+  assert.match(p, /PRIOR MET PRODUCTIONS OF THIS WORK:/);
+  assert.match(p, /parsifal-off-west-end-2018/);
+  assert.match(p, /Michael Mayer staging" when the filed run is a 2026 Yannick/);
+});

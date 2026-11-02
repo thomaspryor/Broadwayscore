@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T03:06:08.580Z",
+  "generatedAt": "2026-11-02T05:02:47.761Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -130,6 +130,14 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
@@ -138,12 +146,20 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
+    },
+    {
       "outletId": "slantmagazine",
       "error": "direct fetch returned a non-rss page"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "theupcoming",
+      "error": "Timeout fetching https://www.theupcoming.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -158,9 +174,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 777,
-  "matchedGaps": 10,
-  "possibleGaps": 12,
+  "itemsScanned": 641,
+  "matchedGaps": 8,
+  "possibleGaps": 10,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -193,27 +209,9 @@
       "showId": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "level": "matched",
-      "outletId": "theatre-weekly",
-      "url": "https://theatreweekly.com/review-the-lives-of-others-at-adelphi-theatre/",
-      "headline": "Review: The Lives of Others at Adelphi Theatre",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
       "outletId": "the-recs",
       "url": "https://therecs.co.uk/the-lives-of-others-%e2%98%85%e2%98%85%e2%98%85%e2%98%85/",
       "headline": "The Lives of Others ★★★★",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-the-lives-of-others-adelphi-theatre",
-      "headline": "Review: The Lives Of Others (Adelphi Theatre)",
       "publishDate": "2026-11-01"
     },
     {
@@ -328,28 +326,10 @@
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
-      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
-      "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
       "outletId": "west-end-best-friend",
       "url": "https://www.westendbestfriend.co.uk/news/review-birmingham-royal-ballets-swan-lake-sadlers-wells",
       "headline": "Review: Birmingham Royal Ballet’s SWAN LAKE, Sadler’s Wells",
       "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "possible",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html",
-      "headline": "The Lives of Others review: Keira Knightley&#x27;s return is revolutionary",
-      "publishDate": null
     },
     {
       "showId": "the-moth-off-west-end-2026",

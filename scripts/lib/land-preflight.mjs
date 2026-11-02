@@ -904,6 +904,42 @@ export function coordinatorWarnings({ root, src, target, seams = {} }) {
   }
 }
 
+/**
+ * BRO-5730: advisory. Claude worker lands were refused ~24% of the time (10/28-11/02; Codex,
+ * which runs the gauntlet first, ~7%), mostly by repo-wide test gates that
+ * scripts/lib/land-local-check.js catches before the push. Look up that check's recorded verdict
+ * for the pushed tip (scripts/lib/land-local-check-log.js, loaded from the working tree; an older
+ * tree without it is skipped). -> { status, warning }:
+ *   status: clean | new-failures | not-ready | skipped | none | no-code | unknown
+ *   warning: text for the session, or null. Never blocks.
+ */
+export function localCheckWarning({ root, src, base = 'origin/main', seams = {} }) {
+  try {
+    const codeRe = rc && rc.GATED_PATH_RE;
+    const changed = seams.changedFiles || out(git(root, ['diff', '--name-only', `${base}...${src}`])).split('\n').filter(Boolean);
+    if (codeRe && !changed.some((f) => codeRe.test(f))) return { status: 'no-code', warning: null };
+    const logFile = path.join(root, 'scripts', 'lib', 'land-local-check-log.js');
+    if (!seams.latestVerdict && !fs.existsSync(logFile)) return { status: 'unknown', warning: null };
+    const lib = seams.latestVerdict ? null : requireFrom(root, 'scripts/lib/land-local-check-log.js');
+    const sha = out(git(root, ['rev-parse', '--verify', '--quiet', `${src}^{commit}`]));
+    const tree = out(git(root, ['rev-parse', '--verify', '--quiet', `${src}^{tree}`]));
+    const rec = seams.latestVerdict ? seams.latestVerdict({ sha, tree }) : lib.latestVerdict({ sha, tree, file: lib.logPath(root) });
+    const status = rec ? rec.verdict : 'none';
+    if (status === 'clean') return { status, warning: null };
+    const run = 'run `node scripts/lib/land-local-check.js | tail -15` in the background (~20 min) and push after it exits 0';
+    const why = 'Most refused Claude worker lands fail on repo-wide test gates this check catches; each refusal costs a ~30 min land cycle.';
+    const text = {
+      none: `no land-local-check verdict for this tip (${sha.slice(0, 10)}). ${why} Before pushing, ${run}.`,
+      'new-failures': `land-local-check found NEW failures on this tip (${sha.slice(0, 10)}); land.yml will very likely refuse it. Fix them, then ${run}.`,
+      'not-ready': `land-local-check could not run on this tip (exit 3: uncommitted edits, or a worktree without local data; run ./scripts/setup-local-data.sh --link-only). ${why} Fix that, then ${run}.`,
+      skipped: `land-local-check gave up waiting for the container land-check mutex on this tip, so land.yml is the only check. ${why}`,
+    }[status];
+    return { status, warning: text || null };
+  } catch {
+    return { status: 'unknown', warning: null };
+  }
+}
+
 /** PreToolUse hook entry: command string + session cwd -> verdict. */
 export function runHook({ command, cwd, env = process.env, seams = {}, transcriptPath = null }) {
   if (env.LAND_PREFLIGHT_DISABLE === '1') return { decision: 'skip', reason: 'LAND_PREFLIGHT_DISABLE=1' };
@@ -948,10 +984,12 @@ export function runHook({ command, cwd, env = process.env, seams = {}, transcrip
     const checkTests = srcIsHead && dirty.length === 0;
     const v = judgeLand({ cwd: root, src: t.src || 'HEAD', target: t.dst, checkTests, seams });
     if (!checkTests) v.detail.tests = { status: 'skip', reason: srcIsHead ? `uncommitted test files: ${dirty.slice(0, 3).join(', ')}` : 'pushed ref is not HEAD' };
-    logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null });
+    const lc = localCheckWarning({ root, src: t.src || 'HEAD', seams: seams.localCheck || {} });
+    logEvent(root, { event: v.decision, target: t.dst, rebase: v.detail.rebase?.status, tests: v.detail.tests?.status, botOwned: v.detail.botOwned?.status, staleRevert: v.detail.staleRevert?.status, pendingPlans: v.detail.pendingPlans?.status, fetch: v.detail.fetch || null, skipReason: v.detail.rebase?.reason || null, localCheck: lc.status });
     if (v.decision !== 'block') {
       const cw = coordinatorWarnings({ root, src: t.src || 'HEAD', target: t.dst, seams });
       if (cw.length) v.warnings = [...(v.warnings || []), ...cw];
+      if (lc.warning) v.warnings = [...(v.warnings || []), lc.warning];
     }
     results.push(v);
   }

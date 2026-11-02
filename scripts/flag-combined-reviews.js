@@ -11,7 +11,7 @@ const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { baseSlug, normalizeArticleUrl, isBogusCombinedFlag, computeCombinedWith, shouldRecoverJointWrongShow } = require('./lib/combined-review-utils');
+const { baseSlug, normalizeArticleUrl, shouldClearUnjoinedCombinedFlag, computeCombinedWith, shouldRecoverJointWrongShow } = require('./lib/combined-review-utils');
 const { isCombinedReviewOfOtherMemberOnly } = require('./lib/review-guards');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { buildSiblingIndex } = require('./lib/market-routing');
@@ -42,6 +42,8 @@ function main() {
   const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true })
     .filter(d => d.isDirectory() && !d.name.startsWith('.'));
   const urlMap = new Map();
+  // Every folder carrying each key, skipped files included (BRO-5693).
+  const keyShows = new Map();
 
   for (const dir of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, dir.name);
@@ -50,6 +52,11 @@ function main() {
       const filePath = path.join(showDir, file);
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        const anyKey = data && data.url ? normalizeUrl(data.url) : null;
+        if (anyKey) {
+          if (!keyShows.has(anyKey)) keyShows.set(anyKey, new Set());
+          keyShows.get(anyKey).add(dir.name);
+        }
         // NOTE: wrongShow:true is INTENTIONALLY not skipped here. The
         // ensemble-scoreability-check rejects joint reviews as wrong_show
         // when the article spends most of its words on the OTHER show in the
@@ -84,12 +91,15 @@ function main() {
     if (uniqueShows.size < 2) {
       // BRO-6682: a flag stamped under the old collapsed URL key (LSA story.asp,
       // ~400-show combinedWith) must not outlive the key that produced it.
+      // BRO-5693: nor may any flag whose key no longer reaches another folder
+      // (Bloomberg /apps/news?sid=, Wolf ?record= collapsed into one key).
+      const keyShowCount = (keyShows.get(url) || new Set()).size;
       for (const entry of entries) {
         try {
           const data = JSON.parse(fs.readFileSync(entry.filePath, 'utf8'));
-          if (!isBogusCombinedFlag(data)) continue;
+          if (!shouldClearUnjoinedCombinedFlag(data, keyShowCount)) continue;
           staleFlagsCleared++;
-          if (DRY_RUN) { console.log(`  [would clear bogus isCombinedReview, ${data.combinedWith.length} shows] ${entry.showId}/${entry.file}`); continue; }
+          if (DRY_RUN) { console.log(`  [would clear unjoined isCombinedReview, ${(data.combinedWith || []).length} listed] ${entry.showId}/${entry.file}`); continue; }
           data.isCombinedReview = false;
           data.combinedWith = null;
           safeWriteReview(entry.filePath, data);

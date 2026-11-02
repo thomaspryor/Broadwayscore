@@ -119,8 +119,18 @@ function shouldRecoverJointWrongShow(data, showTitle) {
  * and stripping "?ID=N" collapsed all of them into one key, so
  * lighting-and-sound-america--david-barbour.json ended up with combinedWith
  * listing ~400 shows (BRO-6670 #27, BRO-6682).
+ *
+ * BRO-5693: the same collapse on other query-routed archives. Bloomberg's
+ * /apps/news?sid=<id> grouped four unrelated John Simon reviews as one "joint
+ * review" and stamped a wrongShowOverride on Godot's 9 to 5 excerpt. The others
+ * found by a corpus scan: Wolf Entertainment Guide ?record=, NYT treview ?res=,
+ * SFGate article.cgi ?f=, nytheatre.com ?t= / ?s=, Windy City Times ?aid=,
+ * BroadwayWorld viewblog ?blogid=, YouTube ?v=. These short names are also
+ * share/tracking params on slugged article URLs, so they count only when the
+ * path's last segment has no hyphen (a router like news, viewpage.aspx).
  */
 const ARTICLE_ID_PARAMS = ['id', 'p', 'page_id', 'story', 'storyid', 'story_id', 'article', 'articleid', 'article_id', 'post', 'nid'];
+const ROUTER_ID_PARAMS = ['sid', 'record', 'res', 'f', 't', 's', 'blogid', 'v'];
 function normalizeArticleUrl(url) {
   if (!url) return null;
   const base = String(url).trim().replace(/^https?:\/\//i, '').replace(/^www\./i, '').replace(/#.*$/, '');
@@ -129,8 +139,11 @@ function normalizeArticleUrl(url) {
   if (qi !== -1) {
     const params = new URLSearchParams(base.slice(qi + 1));
     const kept = [];
+    const lastSegment = pathPart.split('/').pop() || '';
+    const isRouter = !lastSegment.includes('-');
     for (const [k, v] of params) {
-      if (ARTICLE_ID_PARAMS.includes(k.toLowerCase()) && v) kept.push(`${k.toLowerCase()}=${v.toLowerCase()}`);
+      const key = k.toLowerCase();
+      if (v && (ARTICLE_ID_PARAMS.includes(key) || (isRouter && ROUTER_ID_PARAMS.includes(key)))) kept.push(`${key}=${v.toLowerCase()}`);
     }
     if (kept.length) pathPart += '?' + kept.sort().join('&');
   }
@@ -148,4 +161,17 @@ function isBogusCombinedFlag(data) {
     && data.combinedWith.length > MAX_PLAUSIBLE_COMBINED_SHOWS;
 }
 
-module.exports = { isBogusCombinedFlag, MAX_PLAUSIBLE_COMBINED_SHOWS, normalizeArticleUrl, baseSlug, areSameTitleSiblings, computeCombinedWith, shouldRecoverJointWrongShow };
+/**
+ * BRO-5693: clear an isCombinedReview flag whose URL key no longer joins the
+ * file to any other show. keyShowCount counts the distinct show folders whose
+ * files carry this key, INCLUDING files the flagging pass skips
+ * (wrongProduction, roundup, duplicate), so a real joint review whose partner
+ * copy is merely excluded keeps its flag. The >10 bogus-list rule (BRO-6682)
+ * is the special case of the same thing.
+ */
+function shouldClearUnjoinedCombinedFlag(data, keyShowCount) {
+  if (!data || data.isCombinedReview !== true) return false;
+  return isBogusCombinedFlag(data) || keyShowCount < 2;
+}
+
+module.exports = { isBogusCombinedFlag, shouldClearUnjoinedCombinedFlag, MAX_PLAUSIBLE_COMBINED_SHOWS, normalizeArticleUrl, baseSlug, areSameTitleSiblings, computeCombinedWith, shouldRecoverJointWrongShow };

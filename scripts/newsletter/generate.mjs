@@ -37,6 +37,8 @@ const { buildUnsubscribeUrl, resolveNewsletterEdition, buildAccountCtaHtml } = c
 const { reconcileClosure, reconcileClosureDateWithClosingDate } = cjsRequire(path.join(repo, 'scripts/lib/cast-changes-filters'));
 const { compareOpeningStories } = cjsRequire(path.join(repo, 'scripts/lib/opening-story-order'));
 const { showCardHtml, criticsTakeHtml } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-show-card'));
+const { announcedShowIds, loadSentShows, isNotableRevival } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-announced'));
+const { upcomingLinks } = cjsRequire(path.join(repo, 'scripts/lib/newsletter-upcoming-links'));
 const { classifyOpeningEvent } = cjsRequire(path.join(repo, 'scripts/lib/opening-events-for-week'));
 const { isBroadwayCategory } = cjsRequire(path.join(repo, 'scripts/lib/venue-classification'));
 const { classifyEntry } = await import('./section-credential-guard.mjs');
@@ -993,20 +995,17 @@ function upcomingOpeningsSection() {
       </td>
     </tr>${!isLast ? '<tr><td colspan="2" style="padding:0 16px;"><div style="border-top:1px solid rgba(255,255,255,0.05);"></div></td></tr>' : ''}`;
   }).join('');
-  // Link where the reader is actually going: an OB-only slate must not dead-end
-  // on the Broadway upcoming page (which draws from the Broadway pool only —
-  // /browse/upcoming-off-broadway-shows is the OB equivalent). Mixed slate gets
-  // both links.
-  const hasOB = top.some(it => it.show.category === 'off-broadway');
-  const seeAllRow = (_upcomingHasBroadway && hasOB)
+  // Link where the reader is actually going: one browse page per market in the
+  // slate (scripts/lib/newsletter-upcoming-links.js). A single-market slate
+  // gets one "See N more" link; a mixed slate gets a link per market.
+  const _links = upcomingLinks(top.map(it => it.show.category), SITE);
+  const seeAllRow = _links.length > 1
     ? `<tr><td colspan="9" style="padding:8px 16px 10px;border-top:1px solid rgba(255,255,255,0.05);">
-        <a href="${SITE}/browse/upcoming-broadway-shows" style="font-size:12px;color:#d4a574;text-decoration:none;font-weight:600;">All upcoming Broadway →</a>
-        <span style="color:#4b5563;padding:0 6px;">·</span>
-        <a href="${SITE}/browse/upcoming-off-broadway-shows" style="font-size:12px;color:#d4a574;text-decoration:none;font-weight:600;">Off-Broadway →</a>
+        ${_links.map(l => `<a href="${l.href}" style="font-size:12px;color:#d4a574;text-decoration:none;font-weight:600;">${l.label} →</a>`).join('<span style="color:#4b5563;padding:0 6px;">·</span>')}
       </td></tr>`
-    : seeAllLink(
-        `${SITE}/browse/${_upcomingHasBroadway ? 'upcoming-broadway-shows' : 'upcoming-off-broadway-shows'}`,
-        remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings');
+    : _links.length === 1
+      ? seeAllLink(_links[0].href, remaining > 0 ? `See ${remaining} more upcoming` : 'See all upcoming openings')
+      : '';
   const body = `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#1a1a24" class="cardbg">${rows}
     ${seeAllRow}
   </table>`;
@@ -2768,6 +2767,9 @@ const sectionOrder = IS_WE ? [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
   _slot('out-of-town-openings', otO.html),
+  // Tours sit with the other openings-type news, right after Out of Town
+  // (owner, 2026-11-02). Was after London/Opera openings.
+  _slot('new-tour-scores', tours),
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('award-score-movers', awardMover),
@@ -2778,7 +2780,6 @@ const sectionOrder = IS_WE ? [
   // split; London Openings now has one fixed home for every week.
   _slot('london-openings', lon),
   _slot('opera-openings', opera),
-  _slot('new-tour-scores', tours),
   _slot('box-office', box),
   _slot('recoupment', commercial),
   // Social Buzz removed 2026-07-05 pending fix: mention-volume metric is
@@ -2951,8 +2952,14 @@ const _NYC_OPENING_KINDS = new Set(['bw-opening', 'bw-reopening', 'ob-opening', 
 // counts are calendar counts (incl. openings too thinly reviewed to name) so
 // "just two openings" is never said of a week that had three.
 const _calendarOpenings = (cat) => openingEventsForWeek(cat).filter(e => !excludedShowIds.has(e.show.id)).length;
+// Broadway openings that already had their own opening-night email: the
+// voice leads with Off Broadway instead of repeating them (owner, 2026-11-02).
+const _announcedIds = announcedShowIds(loadSentShows(repo), bwEvents.map(e => e.show.id), 'broadway');
+const _notableObIds = new Set(obEvents.filter(e => isNotableRevival(e.show, shows)).map(e => e.show.id));
 const _weekVoice = (!IS_WE && process.env.NEWSLETTER_VOICE !== 'legacy' && _NYC_OPENING_KINDS.has(newsworthyCandidates[0]?.kind))
   ? composeWeekVoice({
+    announcedIds: _announcedIds,
+    notableIds: _notableObIds,
     bw: _dropSet.has('broadway-openings') ? [] : bwEvents.map(e => ({ show: e.show, agg: aggregateScore(e.show.id), isReopening: !!e.isReopening })),
     ob: _dropSet.has('offbroadway-openings') ? [] : obEvents.filter(e => inWeek(e.show.openingDate)).map(e => ({ show: e.show, agg: aggregateScore(e.show.id) })),
     counts: { bw: _calendarOpenings('broadway'), ob: _calendarOpenings('off-broadway') },

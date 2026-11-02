@@ -60,16 +60,28 @@ const scoreOf = (o) => {
  *   counts are the calendar's opening counts for the week (including shows
  *   too thinly reviewed to name), so "two openings" or "and 5 other shows"
  *   stay true when the email names fewer.
+ *   announcedIds: show ids that already got their own opening-night
+ *   broadcast. When every Broadway opening is in it, Off Broadway leads the
+ *   subject and lede: subscribers already had the Broadway news the morning
+ *   after it opened, so leading with it again reads as a duplicate (owner,
+ *   2026-11-02).
+ *   notableIds: Off-Broadway openings worth naming on recognition alone
+ *   (a revival of a title that has played Broadway, e.g. In the Heights at
+ *   City Center). See obHighlights().
  * @returns {null | { subject, sentences: string[], showRefs: Array<{id,slug,title}>, lead }}
  *   null when there is no New York opening to lead with.
  */
-export function composeWeekVoice({ bw = [], ob = [], counts = {} } = {}) {
+export function composeWeekVoice({ bw = [], ob = [], counts = {}, announcedIds = new Set(), notableIds = new Set() } = {}) {
   const bwScored = bw.filter(o => scoreOf(o) != null);
   const obScored = ob.filter(o => scoreOf(o) != null);
   if (!bwScored.length && !obScored.length) return null;
   const bwN = Math.max(counts.bw || 0, bwScored.length);
   const obN = Math.max(counts.ob || 0, obScored.length);
   const total = bwN + obN;
+  const bwAnnounced = bwScored.length > 0 && bwScored.every(o => announcedIds.has(o.show.id));
+  if (bwAnnounced && obScored.length) {
+    return composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds });
+  }
   // Broadway leads Off Broadway whenever it has an opening, same as the
   // newsworthiness weights.
   const [leadKey, list, other, otherKey, n, otherN] = bwScored.length
@@ -172,13 +184,98 @@ export function composeWeekVoice({ bw = [], ob = [], counts = {} } = {}) {
     const oVerb = o.isReopening ? 'reopens' : 'opens';
     const phrase = os < 65 ? `lands at ${os}` : `${oVerb} to ${VERDICT_VARIANTS[reviewVerdictTier(os, OM.category)][0]} (${os})`;
     const place = isSitp(o.show, OM) ? 'At Free Shakespeare in the Park' : OM.the.charAt(0).toUpperCase() + OM.the.slice(1);
-    sentences.push(otherN > 1
-      ? `${OM.the.charAt(0).toUpperCase() + OM.the.slice(1)}, ${word(otherN)} shows opened, led by ${o.show.title} (${os}).`
-      : `${place}, ${o.show.title} ${phrase}.`);
+    if (otherN > 1 && otherKey === 'off-broadway') {
+      const hl = obHighlights(other, notableIds);
+      hl.ids.forEach(id => named.add(id));
+      sentences.push(`Off Broadway, ${word(otherN)} shows opened. ${hl.text}`);
+    } else {
+      sentences.push(otherN > 1
+        ? `${OM.the.charAt(0).toUpperCase() + OM.the.slice(1)}, ${word(otherN)} shows opened, led by ${o.show.title} (${os}).`
+        : `${place}, ${o.show.title} ${phrase}.`);
+    }
   }
 
   const all = [...bwScored, ...obScored];
   const showRefs = [...named].map(id => all.find(o => o.show.id === id).show)
     .map(s => ({ id: s.id, slug: s.slug, title: s.title }));
   return { subject, sentences: sentences.slice(0, 5), showRefs, lead: lead.show };
+}
+
+// Minimum reviews before a show can be called the week's best-reviewed: a
+// 3-review 84 is not "the strongest reviews" next to an 8-review 81 (owner's
+// Oct 26 picks: I Became We over Hospital Hour).
+export const BEST_REVIEWED_MIN_REVIEWS = 5;
+
+const countOf = (o) => (typeof o.agg?.count === 'number' ? o.agg.count : 0);
+
+/**
+ * Up to three Off-Broadway highlights, in this order (owner, 2026-11-02):
+ *   1. the most-reviewed opening (list[0]: callers pass lead order),
+ *   2. the best-reviewed opening with BEST_REVIEWED_MIN_REVIEWS+ reviews,
+ *      when it scores 75+,
+ *   3. a notable revival (notableIds), named on recognition.
+ * Never says "most reviews" (owner, 2026-10-18: review count is the sort key,
+ * not news). Returns { text, ids }.
+ */
+export function obHighlights(list, notableIds = new Set()) {
+  const scored = list.filter(o => scoreOf(o) != null);
+  if (!scored.length) return { text: '', ids: [] };
+  const M = MARKETS['off-broadway'];
+  const first = scored[0];
+  const ids = [first.show.id];
+  const fs = scoreOf(first);
+  const parts = [fs < 65
+    ? `${first.show.title} lands at ${fs}`
+    : `${first.show.title} opens to ${VERDICT_VARIANTS[reviewVerdictTier(fs, M.category)][0]} (${fs})`];
+  const best = scored
+    .filter(o => !ids.includes(o.show.id) && countOf(o) >= BEST_REVIEWED_MIN_REVIEWS && scoreOf(o) >= 75)
+    .sort((a, b) => scoreOf(b) - scoreOf(a) || countOf(b) - countOf(a))[0];
+  if (best) {
+    ids.push(best.show.id);
+    parts.push(`${best.show.title} earned the strongest reviews (${scoreOf(best)})`);
+  }
+  const notable = scored.find(o => !ids.includes(o.show.id) && notableIds.has(o.show.id));
+  if (notable) {
+    ids.push(notable.show.id);
+    parts.push(`the ${notable.show.title} revival scored ${scoreOf(notable)}`);
+  }
+  const text = parts.length === 1
+    ? `${parts[0]}.`
+    : `${parts[0]}. ${capitalize(joinWithAnd(parts.slice(1)))}.`;
+  return { text, ids };
+}
+
+const capitalize = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+
+// Off Broadway leads; the already-announced Broadway opening(s) close the lede.
+function composeAnnouncedBroadwayWeek({ bwScored, obScored, bwN, obN, notableIds }) {
+  const bwTitles = bwScored.map(o => o.show.title);
+  const bwPart = bwScored.length <= 2 ? joinWithAnd(bwTitles) : `${word(bwScored.length)} Broadway shows`;
+  const subjectOptions = [
+    `${obN} off-Broadway shows + ${bwPart} opened this week`,
+    `${obN} off-Broadway shows + ${bwScored.length} on Broadway opened this week`,
+  ];
+  if (obN === 1) subjectOptions.unshift(`${obScored[0].show.title} + ${bwPart} opened this week`);
+  const subject = subjectOptions.find(x => x.length <= SUBJECT_MAX) || trimToWordBoundary(subjectOptions[subjectOptions.length - 1], SUBJECT_MAX);
+
+  const sentences = [];
+  sentences.push(obN >= 5
+    ? `A busy week Off Broadway, with ${word(obN)} openings.`
+    : obN === 1 ? 'One new show Off Broadway this week.' : `A steady week Off Broadway, with ${word(obN)} openings.`);
+  const hl = obHighlights(obScored, notableIds);
+  sentences.push(hl.text);
+  const bwSentence = bwScored.length === 1
+    ? (() => {
+      const o = bwScored[0]; const sc = scoreOf(o);
+      const v = o.isReopening ? 'reopened' : 'opened';
+      return `On Broadway, ${o.show.title} ${v} to ${VERDICT_VARIANTS[reviewVerdictTier(sc, 'broadway')][0]} (${sc}).`;
+    })()
+    : `On Broadway, ${joinWithAnd(bwScored.map(o => `${o.show.title} (${scoreOf(o)})`))} opened.`;
+  sentences.push(bwSentence);
+
+  const named = new Set([...hl.ids, ...bwScored.map(o => o.show.id)]);
+  const all = [...bwScored, ...obScored];
+  const showRefs = [...named].map(id => all.find(o => o.show.id === id).show)
+    .map(x => ({ id: x.id, slug: x.slug, title: x.title }));
+  return { subject, sentences: sentences.filter(Boolean).slice(0, 5), showRefs, lead: obScored[0].show };
 }

@@ -89,6 +89,24 @@ function buildAcceptSlugs(show, { titleWords = true } = {}) {
     const coreSlug = urlSlugify(core);
     if (coreSlug.length >= 3) slugs.add(coreSlug);
   }
+  // Presenter prefix and bare "Musical" tail (BRO-5693): critics write
+  // "Encores! The Wild Party" as "The Wild Party" and "The Spongebob Musical"
+  // as "SpongeBob". Whole-name matches only, like the core title above.
+  // Censored title ("Hatef*ck", BRO-5693): outlets spell the word out
+  // ("/hatefuck/"). Keep the star; slugPattern() reads it as 1-3 letters.
+  if (/[a-z]\*+[a-z]/i.test(title)) {
+    slugs.add(title.toLowerCase().replace(/\*+/g, '*').replace(/[^a-z0-9*]+/g, '-').replace(/^-+|-+$/g, ''));
+  }
+  // The prefix is dropped only when two or more words remain.
+  const variants = [title.replace(/^[^\s!]+!\s+(?=\S+\s+\S)/, '')];
+  if (/\S\s+musical$/i.test(title)) variants.push(title.replace(/^the\s+/i, '').replace(/\s+musical$/i, ''));
+  for (const variant of variants) {
+    const v = variant.trim();
+    if (v && v.toLowerCase() !== title.toLowerCase()) {
+      const vSlug = urlSlugify(v);
+      if (vSlug.length >= 4) slugs.add(vSlug);
+    }
+  }
   if (show.id) slugs.add(show.id.replace(/-\d{4}$/, '').toLowerCase());
 
   // Add aliases that map TO this show (reverse KNOWN_ALIASES lookup)
@@ -149,10 +167,16 @@ function escapeRegex(s) {
   return s.replace(/[-.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+// A slug as a regex source: literal, except a censor star stands for 1-3
+// letters (buildAcceptSlugs keeps it only for censored titles).
+function slugPattern(slug) {
+  return escapeRegex(slug).replace(/\\\*/g, '[a-z]{1,3}');
+}
+
 function urlMentionsAnySlug(urlSlug, acceptSlugs) {
   for (const slug of acceptSlugs) {
     // Word-boundary match against slug tokens (hyphen/space-delimited)
-    const re = new RegExp(`(^|[^a-z0-9])${escapeRegex(slug)}($|[^a-z0-9])`, 'i');
+    const re = new RegExp(`(^|[^a-z0-9])${slugPattern(slug)}($|[^a-z0-9])`, 'i');
     if (re.test(urlSlug)) return true;
   }
   return false;
@@ -233,7 +257,7 @@ function buildMentionRegex(show, opts) {
   const minWords = (opts && opts.minWords) || 1;
   const patterns = buildAcceptSlugs(show, opts)
     .filter(s => s.split(/[^A-Za-z0-9]+/).filter(Boolean).length >= minWords)
-    .map(s => escapeRegex(s).replace(/\\-/g, '[^A-Za-z0-9]*'))
+    .map(s => slugPattern(s).replace(/\\-/g, '[^A-Za-z0-9]*'))
     .filter(s => s.length >= 3);
   if (patterns.length === 0) return null;
   return new RegExp(`(^|[^A-Za-z0-9])(${patterns.join('|')})($|[^A-Za-z0-9])`, 'i');
@@ -244,13 +268,19 @@ function buildMentionRegex(show, opts) {
  * aggregator excerpts). Read lazily and only when a URL already failed the
  * slug test. A missing directory yields an empty map (nothing confirmed).
  */
-function loadSourceTextByUrl(reviewTextsRoot, showId) {
+function loadSourceTextByUrl(reviewTextsRoot, showId, extraShowIds = []) {
   const byUrl = new Map();
   byUrl.fullTexts = new Map();
   if (!reviewTextsRoot) return byUrl;
-  const dir = path.join(reviewTextsRoot, showId);
+  // extraShowIds: earlier runs whose reviews this show inherits (priorRuns,
+  // BRO-4759). Their texts live in the earlier run's folder (BRO-5693).
+  for (const id of [showId, ...extraShowIds]) readSourceTextDir(path.join(reviewTextsRoot, id), byUrl);
+  return byUrl;
+}
+
+function readSourceTextDir(dir, byUrl) {
   let files;
-  try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { return byUrl; }
+  try { files = fs.readdirSync(dir).filter(f => f.endsWith('.json')); } catch { return; }
   for (const f of files) {
     let d;
     try { d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch { continue; }
@@ -298,6 +328,66 @@ function fullTextNamesShowRepeatedly(fullTexts, mentionRe) {
   return fullTexts.some(t => typeof t === 'string' && (t.match(global) || []).length >= REPEAT_MENTIONS);
 }
 
+/**
+ * Regex for the show's venue name: the part before the first comma
+ * ("Theater Wit, Chicago, IL" -> "Theater Wit"), a leading "The" optional and
+ * Theatre/Theater interchangeable. null when the name is too short or is a
+ * generic word on its own ("Theatre"), so it can never confirm anything.
+ */
+// Generic venue words, and market words that make "Broadway Theatre" or
+// "West End Theatre" read as the phrase "a Broadway theater" (BRO-5693 review).
+const GENERIC_VENUE_WORDS = new Set(['the', 'theatre', 'theater', 'center', 'centre', 'stage', 'hall', 'house', 'playhouse', 'company', 'studio', 'space',
+  'broadway', 'off', 'west', 'end', 'london', 'new', 'york', 'city', 'music', 'opera', 'arts', 'performing', 'regional', 'chicago']);
+function buildVenueRegex(show) {
+  // "Signature Center/Romulus Linney Courtyard Theatre": either name counts.
+  const names = foldDiacritics(String((show && show.venue) || '').split(',')[0]).split('/');
+  const alts = [];
+  for (const raw of names) {
+    const words = raw.trim().replace(/^the\s+/i, '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+    if (words.length === 0 || words.join('').length < 5) continue;
+    if (words.every(w => GENERIC_VENUE_WORDS.has(w))) continue;
+    alts.push(words.map(w => (w === 'theatre' || w === 'theater') ? 'theat(?:re|er)' : escapeRegex(w)).join('[^A-Za-z0-9]+'));
+  }
+  if (alts.length === 0) return null;
+  return new RegExp(`(^|[^A-Za-z0-9])(${alts.join('|')})($|[^A-Za-z0-9])`, 'i');
+}
+
+/**
+ * True when a saved FULL text names the show's venue AND names the show beyond
+ * a single passing mention (BRO-5693). Some outlets keep the title only in the
+ * page header, which extraction drops, so the body uses the title's words
+ * instead. Rules, so a different show at the same venue still flags:
+ * - titles with fewer than two significant words never clear here (one word
+ *   such as "Company" or "Rent" is ordinary prose);
+ * - two or more whole-title mentions clear;
+ * - otherwise, with the whole-title mentions removed, two or more DISTINCT
+ *   significant title words must still appear ("Theater Wit, which staged
+ *   London Road last fall" names the title once and does not clear).
+ */
+function significantTitleWords(show) {
+  const title = foldDiacritics(String((show && show.title) || '')).toLowerCase();
+  const out = new Set();
+  for (const token of title.split(/[\s/]+/)) {
+    const clean = token.replace(/[^a-z0-9*]/g, '');
+    if (clean.replace(/\*/g, '').length >= 4 && !STOPWORDS.has(clean) && !/^\d+$/.test(clean)) out.add(clean);
+  }
+  return [...out];
+}
+
+function fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe) {
+  if (!venueRe || !fullTexts) return false;
+  const words = significantTitleWords(show);
+  if (words.length < 2) return false;
+  const wordRes = words.map(w => new RegExp(`(^|[^A-Za-z0-9])${slugPattern(w)}(s|es)?(?=$|[^A-Za-z0-9])`, 'i'));
+  const wholeRe = mentionRe ? new RegExp(mentionRe.source, 'gi') : null;
+  return fullTexts.some((t) => {
+    if (typeof t !== 'string' || !venueRe.test(t)) return false;
+    if (wholeRe && (t.match(wholeRe) || []).length >= REPEAT_MENTIONS) return true;
+    const rest = wholeRe ? t.replace(wholeRe, ' ') : t;
+    return wordRes.filter(re => re.test(rest)).length >= 2;
+  });
+}
+
 function run(show, context) {
   const reviews = context.reviewsDoc[show.id] || [];
   if (reviews.length === 0) {
@@ -318,6 +408,10 @@ function run(show, context) {
   // Repeat rule: multi-word names only, so "Chicago"/"Rent"/"Company" used
   // twice in prose never clears a URL (BRO-6524 review finding).
   const repeatRe = buildMentionRegex(show, { titleWords: false, minWords: 2 });
+  const venueRe = buildVenueRegex(show);
+  // Prior-run folders this show inherits reviews from (BRO-4759 rows carry
+  // inheritedFromShowId); the review's text was filed there (BRO-5693).
+  const inheritedFrom = [...new Set(reviews.map(r => r.inheritedFromShowId).filter(Boolean))];
   for (const review of reviews) {
     if (!review.url) continue;
     const urlSlug = urlSearchSlug(review.url);
@@ -328,10 +422,12 @@ function run(show, context) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;
     }
-    if (!sourceTextByUrl) sourceTextByUrl = loadSourceTextByUrl(context.reviewTextsRoot, show.id);
+    if (!sourceTextByUrl) sourceTextByUrl = loadSourceTextByUrl(context.reviewTextsRoot, show.id, inheritedFrom);
     const segs = sourceTextByUrl.get(review.url);
+    const fullTexts = sourceTextByUrl.fullTexts.get(review.url);
     if (sourceTextNamesShow(segs, mentionRe)
-        || fullTextNamesShowRepeatedly(sourceTextByUrl.fullTexts.get(review.url), repeatRe)) { textConfirmed++; continue; }
+        || fullTextNamesShowRepeatedly(fullTexts, repeatRe)
+        || fullTextNamesVenueAndTitleWords(fullTexts, show, venueRe, mentionRe)) { textConfirmed++; continue; }
     if ((!segs || segs.length === 0) && isIdOnlyCmsUrl(urlSlug)) {
       opaqueSkipped.push({ outletId: review.outletId, url: review.url });
       continue;
@@ -388,5 +484,6 @@ function run(show, context) {
 module.exports = {
   name, description, run, urlSearchSlug, buildAcceptSlugs, urlMentionsAnySlug,
   isOpaqueUrlSlug, isIdOnlyCmsUrl, buildMentionRegex, sourceTextNamesShow,
-  fullTextNamesShowRepeatedly,
+  fullTextNamesShowRepeatedly, buildVenueRegex, fullTextNamesVenueAndTitleWords,
+  loadSourceTextByUrl,
 };

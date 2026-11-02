@@ -30,7 +30,7 @@ const { humanScoreOutsideStarBand } = require('./lib/human-score-star-guard');
 const { shouldUseAnchoredMode, adjudicationStandsAgainstRating } = require('./lib/star-reliability');
 const { publishedScoreViolation } = require('./lib/published-score-star-band');
 const { canonicalizeUrlForDedup } = require('./lib/review-guards');
-const { canJudgePublished } = require('./lib/published-join-eligibility');
+const { publishedJoinMode } = require('./lib/published-join-eligibility');
 
 const ROOT = path.join(__dirname, '..');
 const tolArg = process.argv.find(a => a.startsWith('--tol='));
@@ -76,10 +76,12 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   // Duplicates and different-byline twins of a URL are not the published record (BRO-5927, published-join-eligibility.js).
   const key = d.url ? `${showId}|${canonicalizeUrlForDedup(d.url)}` : null;
   const joined = key ? published.get(key) : null;
-  const pub = canJudgePublished(d, joined, key ? siblingsByKey.get(key) : []) ? joined : null;
+  const mode = publishedJoinMode(d, joined, key ? siblingsByKey.get(key) : []);
+  const pub = mode ? joined : null;
   if (pub) {
     out.publishedJoined++;
-    const v = publishedScoreViolation(d, pub.score, { tol: TOL });
+    // A shadowed twin is judged on the critic's rating only: its model consensus is not the published record's (BRO-5927).
+    const v = publishedScoreViolation(d, pub.score, { tol: TOL, unanimousTol: mode === 'shadowed' ? Infinity : undefined });
     // A reasoned text dispute of a rating that the article does not print stands (getBestScore keeps it, BRO-4839).
     const standingDispute = pub.source === 'adjudicated' && adjudicationStandsAgainstRating(d);
     // A file already flagged needsRescore is being repaired by the drain; it is reported, not failed.
