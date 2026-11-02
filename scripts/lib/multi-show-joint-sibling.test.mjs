@@ -153,3 +153,23 @@ test('side-by-side reviews with no shared lede split (New Yorker Marjorie Prime 
   const compare = `Appropriately enough, “Marjorie Prime” has been here before. ${filler('prime', 14)} Unlike “Anna Christie,” it keeps quiet. ${filler('prime', 4)}`;
   assert.equal(planMultiShowFanout(base({ showId: 'marjorie-prime-x', fullText: compare, publishDate: '2025-12-14' }), SHOWS, { joint: true }), null);
 });
+
+// Interested Bystander post whose other heading names its venue with a
+// lowercase " at " ("Ma-Yi Theater Company at the Public"): the generic
+// "Label: Title At Venue" header pattern saw one heading, so the post stayed
+// whole under a wrong-production flag (Liberation, BRO-6736).
+test('bystander post with a lowercase-venue heading trims the flagged file to its own section', () => {
+  const shows = [...SHOWS, { id: 'liberation-x', title: 'Liberation', category: 'broadway', openingDate: '2025-10-28' }];
+  const post = [
+    `Did You Eat? (c) Emma ZordanTheater: Did You Eat? Ma-Yi Theater Company at the Public Theater ${filler('hunger', 8)}`,
+    `Liberation (c) Little FangBroadway: Liberation At the James Earl Jones Theatre ${filler('liberation', 8)}`,
+  ].join(' ');
+  const data = { ...base({ showId: 'liberation-x', url: 'https://www.interestedbystander.com/2025/10/x.html', publishDate: null }),
+    contentTier: 'invalid', isRoundupArticle: true, wrongProduction: true, fullText: '', wrongFullText: post };
+  const p = planMultiShowFanout(data, shows, { joint: true });
+  assert.ok(p, 'planned');
+  assert.equal(p.strategy, 'header');
+  assert.equal(p.ownSection.showId, 'liberation-x');
+  assert.match(p.ownSection.sectionText, /^Liberation \(c\) Little Fang/);
+  assert.doesNotMatch(p.ownSection.sectionText, /hunger/);
+});

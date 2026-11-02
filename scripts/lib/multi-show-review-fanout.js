@@ -852,11 +852,27 @@ function headerSections(text, shows, ownShowId, publishDate) {
     // One header style per article: a post mixing both is not a column we can cut.
     if (new Set(heads.map((h) => h.listing)).size > 1) return none;
   }
+  // Interested Bystander "<Title> (c) <Photographer>Theater: <Title> <venue>"
+  // headings whose venue is not "At <Venue>" ("... Ma-Yi Theater Company at the
+  // Public", BRO-6736: the Liberation post stayed whole under a wrong-production
+  // flag). The section extractor's own headings bound every section; the show
+  // name is the heading text before " at ".
+  if (heads.length < 2) {
+    const { findSectionHeadings } = require('./multi-show-section-extract');
+    const bys = findSectionHeadings(text);
+    if (bys.length >= 2) {
+      heads = bys.map((b) => {
+        const title = b.title.split(/\s+at\s+/i)[0].trim();
+        return { at: b.start, end: b.start, start: b.start, title, listing: false, bystander: true };
+      });
+    }
+  }
   heads.sort((a, b) => a.at - b.at);
   if (heads.length < 2) return none;
   // Pull each header back over the photo that opens its section: a
   // "<Title> (c) Photographer" caption, or a WordPress [caption]...[/caption].
   heads.forEach((h, i) => {
+    if (h.bystander) return; // already opens at its caption
     h.start = h.at;
     const floor = i ? heads[i - 1].end : 0;
     const before = text.slice(floor, h.at);
