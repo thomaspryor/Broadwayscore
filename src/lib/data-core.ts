@@ -6,6 +6,7 @@ import { pickRegionalShelf } from '@/lib/regional-shelf';
 import path from 'path';
 import { isLocalOnlyShow } from '@/lib/local-market';
 import { hubPhase } from '@/lib/city-hub';
+import { getTourCity } from './data-tour-cities';
 import { versionedImagePath } from './versioned-image-path';
 import {
   computeShowData,
@@ -404,7 +405,12 @@ export function getAllLondonShows(): ComputedShow[] {
 function hubMarketStats(metro: string): { shows: number; openShows: number } {
   const local = getAllShows().filter(s => s.city === metro && s.category === 'regional');
   const today = new Date().toISOString().slice(0, 10);
-  return { shows: local.length, openShows: local.filter(s => hubPhase(s, today) === 'now').length };
+  // "N playing now" in the market menu must match the hub's Now Playing list, which
+  // shows tour stops beside local productions (src/app/tours/[city]/page.tsx split()).
+  // getTourCity is only called here, at request time, so the data-tour-cities <->
+  // data-core import cycle never runs at module load.
+  const touring = (getTourCity(metro, today)?.stops ?? []).filter(st => st.start <= today && today <= st.end).length;
+  return { shows: local.length, openShows: local.filter(s => hubPhase(s, today) === 'now').length + touring };
 }
 
 export function getMarketStats() {
@@ -439,7 +445,7 @@ export function getMarketStats() {
       openShows: ukRegional.filter(s => s.status === 'open' || s.status === 'previews').length,
     },
     // City hubs (/tours/chicago-il BRO-6498, /tours/washington-dc BRO-6771): regional productions in the metro.
-    // Tour stops are counted on the hub itself, not here.
+    // openShows counts tour stops playing now too, like the hub's Now Playing list.
     chicago: hubMarketStats('chicago-il'),
     washingtonDc: hubMarketStats('washington-dc'),
   };
