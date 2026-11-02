@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6824",
   "planId": "45e8de0c-66f0-4b2b-9211-d38ffa542ec9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T13:08:37.297237Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "BRO-6824: recompute contentTier on the 7 rows (BRO-5356 file mode); all 7 verified locally to flip invalid to complete."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T14:55:09.180Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
