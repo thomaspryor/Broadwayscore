@@ -1,6 +1,6 @@
 # BRO-4989 cost history and investor-return model: rollout and revert
 
-Current status, checked 2026-10-29: BRO-5598 has since enabled `datedCosts` for
+Current status, checked 2026-11-02: BRO-5598 has since enabled `datedCosts` for
 musicals. The shadow-only description below records the original rollout. The
 BRO-5018 evidence requirement and its unresolved policy conflict are detailed
 in the dated research update at the end of this document.
@@ -48,7 +48,128 @@ queue.
 3. `node scripts/backtest-cost-index.js` exits 0.
 4. The before/after summary sent to the review session and its reply received.
 
-## BRO-5018 dated cost anchor research
+## BRO-5018 research update, November 2
+
+**Incomplete: 12 pairs, with 18 still missing.** Two reported capitalization
+comparisons were added to `data/cost-anchor-ledger.json`. All ten prior records
+are unchanged. No commercial records, model inputs, index values or live
+options were modified.
+
+| Earlier observation's era | Before | After | Still needed | Median absolute index error, before / after |
+| --- | ---: | ---: | ---: | ---: |
+| pre-2010 | 4 | 5 | 5 | 21.0% / 13.7% |
+| 2010-2019 | 4 | 4 | 6 | 9.1% / 9.1% |
+| 2020+ | 2 | 3 | 7 | 7.9% / 8.6% |
+
+The overall median absolute error moves from 11.2% to 9.8%. The existing
+per-era index check now passes, but coverage still fails. These small samples
+do not establish index accuracy. In particular, pre-2010 capitalization alone
+still has a 21.0% median absolute error; its pooled era median is lower because
+it also includes the existing Phantom running-cost comparison.
+
+### Added evidence and limitations
+
+* **Sunset Boulevard (1994):** [producer budget](https://www.latimes.com/archives/la-xpm-1994-04-24-ca-49624-story.html)
+  to [retrospectively reported original cost](https://www.broadwayjournal.com/p/sunset-boulevard-storms-the-palace-in-previews).
+  The latter reports $13M nominal, separately from $21M inflation-adjusted.
+  Its cost date is assigned to the end of mounting, the
+  [November 17, 1994 opening](https://playbill.com/article/celebrate-25-years-of-sunset-boulevard-with-a-look-back-at-the-original-broadway-production),
+  rather than the 2017 publication date or the separate 2017 revival.
+  The index predicts $12.19M, a signed error of -6.3%. Both financial articles
+  were readable directly. This is a development-budget comparison, not a
+  measurement of annual operating-cost inflation; the opening date convention
+  does not establish when individual expenditures occurred.
+* **Funny Girl (2022):** [June 14, 2023 interim report](https://www.broadwayjournal.com/p/eddie-redmayne-led-cabaret-will-transfer-to-broadway-in-2024-exclusive)
+  gives $15M capitalization; [August 7 recoupment announcement](https://playbill.com/article/funny-girl-on-broadway-recoups-its-investment)
+  gives $16.5M. The index predicts $15.09M, a signed error of -8.6%.
+  These are contemporary reports about the same production. They establish
+  a revision in the reported amount, not that $1.5M was spent between those
+  dates. A correction to the earlier report cannot be excluded. Broadway
+  Journal was readable directly; Playbill's amount and date were verified
+  in indexed article text because its direct page returned HTTP 403.
+
+The existing Phantom comparison is a control: its +10.8% error is unchanged.
+The two additions belong to the card's permitted capitalization category,
+but share the existing ledger's limitation that budget revisions are not
+isolated price inflation. The checker still needs to resolve the counting
+questions in the card, including development budgets, same-amount pairs and
+multiple intervals from one production. No ruling was assumed for Rebecca,
+which remains excluded because it never opened.
+
+### Additional leads excluded in this pass
+
+* **Sweeney Todd (2023):** the
+  [August 2022 budget](https://www.broadwayjournal.com/p/will-a-new-sweeney-todd-make-its-investors-a-killing-exclusive)
+  supplies $840,000 projected weekly costs, excluding royalties and percentage
+  rent. Jeffrey Seller's [April 2025 podcast](https://freakonomics.com/podcast/on-broadway-nobody-knows-nothing/)
+  supplies only a later lower bound above $900,000 and does not give the
+  interview date. Neither an exact later cost nor a comparable cost basis is
+  established. The $14.5M maximum capitalization is also a ceiling.
+* **King Kong:** [August 2018 financial papers](https://www.broadwayjournal.com/p/lavish-dolly-earns-modest-returns)
+  give a $33.5M to $36.5M capitalization range. Do not turn either endpoint
+  into a point budget to pair with a subsequent mounted cost.
+* **Frozen:** the [Denver review roundup](https://www.broadwayworld.com/article/Review-Roundup-What-Did-The-Critics-Think-of-Broadway-)
+  relays a $25M to $30M development-budget range, not two dated observations.
+* **Harry Potter:** [2018 expenses reported in 2019](https://www.broadwayjournal.com/p/harry-potter-the-cursed-box-office-yardstick)
+  are $1.1M weekly excluding royalties. The
+  [December 2025 report](https://www.broadwayjournal.com/p/harry-potters-cursed-returns)
+  gives only a bound above $1M, after the change from two parts to one.
+* **Phantom:** the [Financial Times article](https://www.ft.com/content/656482c3-339e-4655-8a90-c1518d89cad8)
+  linked by a September 2022 press digest was paywalled. Secondary reproductions
+  attribute $850,000 before the pandemic and approximately $950,000 afterward
+  to Mackintosh, but a sufficiently precise earlier cost period and the
+  primary publication date were not established here. No extra overlapping
+  interval was added to the existing Phantom comparison.
+* **Titanic and Victor/Victoria:** multiple trade articles repeat their
+  original capitalization. Republishing the same historical cost does not
+  establish another cost date, so those repetitions were not counted.
+
+### Verification and remaining work
+
+The real writer is the manually curated JSON: `loadLedger()` in
+`scripts/lib/cost-anchor-ledger.js` reads it and the existing
+`scripts/backtest-cost-index.js` calls both `loadLedger()` and `evaluateLedger()`.
+No new script, function, flag, API call, paid fetch, LLM call or cron was added.
+
+Before editing, the ledger, validator, carry function, backtest helper and
+acceptance test matched `origin/main` (`git diff origin/main -- ...` was empty).
+The acceptance command already passed all eight tests. The required
+`git log -S 'cost-anchor-ledger' --oneline -5` failed because fetching a missing
+partial-clone object tried to write to the read-only Git object directory;
+this did not prevent reading the current main ledger for the before/after
+comparison.
+
+Completion still requires both commands, with exit 0 from each:
+
+```sh
+node --test tests/unit/cost-anchor-ledger.test.mjs
+node scripts/backtest-cost-index.js
+```
+
+The first passes 8/8 before and after. The second exits 2 before and after;
+after these additions, coverage is the remaining failing check. The Linear
+VERIFY line was not edited by this unattended worker. The runner should add
+the second command to the card's verification requirements.
+
+Targeted regression verification: 88 tests passed, zero failures across the
+six existing test files that exercise the ledger or its carry dependencies:
+
+```sh
+node --test --test-timeout 300000 tests/unit/cost-anchor-ledger.test.mjs tests/unit/cost-for-week.test.mjs tests/unit/cost-history.test.mjs scripts/lib/commercial-conversion.test.mjs tests/unit/model-audit-invariants.test.mjs scripts/lib/deep-research-cleared-cost.test.mjs
+```
+
+`git diff --check` passed. No TypeScript, test files, scripts or workflow
+configuration changed, so TypeScript and workflow audit runs were not needed.
+
+Eighteen more qualifying pairs are still needed: five pre-2010, six for
+2010-2019 and seven for 2020+. Once coverage is met, rerun the index check and
+`node scripts/backtest-recoupment-ground-truth.js --opt=datedCosts`; require no
+category worse and zero new false recoupments. That conditional promotion
+backtest was not run while coverage remains incomplete. The owner or checker
+must also resolve the conflict with `MUSICAL_LIVE_OPTS.datedCosts: true` in
+`scripts/lib/recoupment-model.js`; live behavior is unchanged here.
+
+## BRO-5018 research update, October 29 (historical)
 
 Research date: 2026-10-29. **Incomplete: 10 pairs, with 20 still missing.**
 The before column is the eight-record ledger supplied for this research pass.
