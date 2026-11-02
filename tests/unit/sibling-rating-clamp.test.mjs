@@ -56,3 +56,20 @@ test('clamp uses the inherited rating; without it the score is untouched', () =>
   assert.ok(without.score > 70, `unclamped ${without.score}`);
   assert.ok(withSib.score >= 51 && withSib.score <= 70, `clamped ${withSib.score}`);
 });
+// BRO-5927: a URL-less canonical (Theatre Record ingest) publishes under its duplicate twin's carried URL.
+test('URL-less canonical inherits its duplicateOf twin rating (same byline)', () => {
+  const a = { url: null, outletId: 'broadwayworld', criticName: 'Ann Lee', llmScore: { score: 87, confidence: 'high' }, scoreSource: 'llm-v6' };
+  const f2 = { 'a.json': a, 'b.json': { url: URL, outletId: 'broadwayworld', criticName: 'Ann Lee', originalScore: '5/5', originalScoreSource: 'bww-star-image', duplicateOf: 'a.json' } };
+  const sib = pick('a.json', a, Object.keys(f2), (n) => f2[n]);
+  assert.equal(sib && sib.file, 'b.json');
+  const s = getBestScore({ ...a }, { siblingRating: sib }).score;
+  assert.ok(s >= 91, `clamped ${s}`);
+});
+test('URL-less canonical: no duplicateOf link, other byline, or flagged twin -> no inheritance', () => {
+  const a = { url: null, outletId: 'broadwayworld', criticName: 'Ann Lee', llmScore: { score: 87, confidence: 'high' }, scoreSource: 'llm-v6' };
+  const twin = { url: URL, outletId: 'broadwayworld', criticName: 'Ann Lee', originalScore: '5/5', originalScoreSource: 'bww-star-image' };
+  for (const b of [twin, { ...twin, duplicateOf: 'a.json', criticName: 'Bob Roe' }, { ...twin, duplicateOf: 'a.json', wrongProduction: true }]) {
+    const f2 = { 'a.json': a, 'b.json': b };
+    assert.equal(pick('a.json', a, Object.keys(f2), (n) => f2[n]), null);
+  }
+});

@@ -1,0 +1,117 @@
+{
+  "issueNumber": "bro-5927-d",
+  "planId": "7d81e98d-bb6f-4b85-b44c-9c53056bcca1",
+  "status": "pending",
+  "createdAt": "2026-11-02T03:12:02.080Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5927: fix 8 wrong ratings/scores behind 'published scores outside the critic's rating' (part 4)",
+    "steps": [
+      "Time Out blog review page (fetched 2026-11-02): byline David Cote, no star rating printed. The numeric 60 on this misattributed twin is not the critic's rating; clear it.",
+      "Observer week-in-theatre column (The Writer; Absolute Hell): the page prints 2 stars for Absolute Hell; the stored 4/5 is The Writer's rating. Published 60 then clamps into the 2/5 band.",
+      "Time Out page (fetched 2026-11-02): '3 out of 5 stars', author Adam Feldman; matches the same-URL twin's svg-star read and the aggregator relay. Stored 4/5 json-ld read was wrong. Published 58 is in band.",
+      "EW review text ends with its letter grade C (same as the same-URL twin's letter-grade read); stored B was wrong. Published 55 is in the C band.",
+      "The 78 was an auto-adjudication premised on 4/5 stars (a wrongShow Telegraph sibling's rating). This URL's Telegraph svg stars read 5/5 (duplicate twin) and the aggregator relay is 5/5: set in the 5-star band at the ensemble read (92).",
+      "note for the humanReviewScore below",
+      "published 40 was a word-stars read of a garbage page; set to the adjudicated 79 (DTLI thumb Up, all 3 models Positive)",
+      "note for the humanReviewScore below",
+      "legacy sentiment 88 vs 4-model Mixed 61 on the same article: set 61",
+      "non-review reason first (required before the flag)",
+      "New Yorker Culture Desk feature, not a review of Seminar: exclude it"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-front-page-2016/timeout--adam-feldman.json",
+        "field": "originalScore",
+        "oldValue": 60,
+        "newValue": null,
+        "description": "Time Out blog review page (fetched 2026-11-02): byline David Cote, no star rating printed. The numeric 60 on this misattributed twin is not the critic's rating; clear it."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "absolute-hell-west-end-2018/guardian--susannah-clapp.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "2/5 stars",
+        "description": "Observer week-in-theatre column (The Writer; Absolute Hell): the page prints 2 stars for Absolute Hell; the stored 4/5 is The Writer's rating. Published 60 then clamps into the 2/5 band."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "punch-2025/timeout--morgan-carter.json",
+        "field": "originalScore",
+        "oldValue": "4/5 stars",
+        "newValue": "3/5 stars",
+        "description": "Time Out page (fetched 2026-11-02): '3 out of 5 stars', author Adam Feldman; matches the same-URL twin's svg-star read and the aggregator relay. Stored 4/5 json-ld read was wrong. Published 58 is in band."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "side-show-2014/ew--thom-geier.json",
+        "field": "originalScore",
+        "oldValue": "B",
+        "newValue": "C",
+        "description": "EW review text ends with its letter grade C (same as the same-URL twin's letter-grade read); stored B was wrong. Published 55 is in the C band."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oliver-west-end-2024/telegraph--dominic-cavendish.json",
+        "field": "humanReviewScore",
+        "oldValue": 78,
+        "newValue": 92,
+        "description": "The 78 was an auto-adjudication premised on 4/5 stars (a wrongShow Telegraph sibling's rating). This URL's Telegraph svg stars read 5/5 (duplicate twin) and the aggregator relay is 5/5: set in the 5-star band at the ensemble read (92)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-life-in-the-theatre-2010/backstage--david-sheward.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: the published 40 came from a tier-1.5 recovery of a word-stars read off a scraper-garbage page (show not mentioned). Backstage prints no stars; DTLI thumb Up, 3 models Positive and the adjudication agree on 79.",
+        "description": "note for the humanReviewScore below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-life-in-the-theatre-2010/backstage--david-sheward.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 79,
+        "description": "published 40 was a word-stars read of a garbage page; set to the adjudicated 79 (DTLI thumb Up, all 3 models Positive)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soul-doctor-2013/staten-island-advance--michael-j-fressola.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5927: published 88 was a legacy keyword-sentiment score with no model read. The same article (same URL, the wrongAttribution-excluded typo twin) was read Mixed by all 4 models (61).",
+        "description": "note for the humanReviewScore below"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soul-doctor-2013/staten-island-advance--michael-j-fressola.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 61,
+        "description": "legacy sentiment 88 vs 4-model Mixed 61 on the same article: set 61"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "seminar-2011/newyorker--john-lahr.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): BRO-5927, content verification (high confidence) reads a Culture Desk feature on Theresa Rebeck and David Milch with no critical assessment of the production; it was published at a legacy placeholder 52.",
+        "description": "non-review reason first (required before the flag)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "seminar-2011/newyorker--john-lahr.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "New Yorker Culture Desk feature, not a review of Seminar: exclude it"
+      }
+    ]
+  }
+}

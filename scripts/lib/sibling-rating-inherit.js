@@ -35,6 +35,13 @@ function isTwin(file, data, name, d, sameCriticFuzzy) {
   return norm(data.criticName) === norm(d.criticName) || !!(sameCriticFuzzy && sameCriticFuzzy(data.criticName, d.criticName));
 }
 
+/** URL-less canonical: only a twin that names this file as its duplicateOf AND carries the same byline (or none) counts. */
+function urlLessTwin(file, data, d, sameCriticFuzzy) {
+  if (d.duplicateOf !== file) return false;
+  if (unknownCritic(data.criticName) || unknownCritic(d.criticName)) return true;
+  return norm(data.criticName) === norm(d.criticName) || !!(sameCriticFuzzy && sameCriticFuzzy(data.criticName, d.criticName));
+}
+
 /** The twin's record without aggregator relays: only the outlet's own rating may bind (relays must not). */
 function ownRatingOnly(d) {
   const { aggregatorStars, wetStars, ...rest } = d;
@@ -42,14 +49,18 @@ function ownRatingOnly(d) {
 }
 
 function siblingRatingForClamp(file, data, siblingFiles, load, canonicalUrl, detectBand, sameCriticFuzzy) {
-  if (!data || !data.url || ownRatingField(data) !== null || typeof data.originalScore === 'number') return null;
-  if (/tickets?-and-information|\/tickets\b/i.test(data.url) || data.originalScoreCleared) return null;
-  const url = canonicalUrl(data.url);
+  if (!data || ownRatingField(data) !== null || typeof data.originalScore === 'number') return null;
+  if ((data.url && /tickets?-and-information|\/tickets\b/i.test(data.url)) || data.originalScoreCleared) return null;
+  // BRO-5927: a URL-less canonical (Theatre Record ingest) publishes under the URL its duplicate twin carries
+  // (duplicate-fold-url.js inheritUrlFromDuplicateLosers), so that twin is matched by its duplicateOf link, not by URL.
+  const url = data.url ? canonicalUrl(data.url) : null;
   const found = new Map(); // "floor-ceiling" -> {file, data}
   for (const name of siblingFiles) {
     if (name === file) continue;
     const d = load(name);
-    if (!d || !d.url || canonicalUrl(d.url) !== url) continue;
+    if (!d || !d.url) continue;
+    if (url ? canonicalUrl(d.url) !== url : !urlLessTwin(file, data, d, sameCriticFuzzy)) continue;
+    if (/tickets?-and-information|\/tickets\b/i.test(d.url)) continue;
     if (d.wrongShow || d.wrongProduction || d.isRoundupArticle || d.originalScoreCleared) continue;
     if (!isTwin(file, data, name, d, sameCriticFuzzy)) continue;
     const rating = ownRatingField(d);
