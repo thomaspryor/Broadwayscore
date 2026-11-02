@@ -116,6 +116,10 @@ on:
       - 'scripts/backtest-codex-lane-health.js'
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
       - 'scripts/check-workflow-run-status.js'
+      - 'scripts/check-remote-branch-absent.js'
+      - 'scripts/audit-london-census-coverage.js'
+      - 'scripts/audit-url-critic-slug-filenames.js'
+      - 'scripts/export-cookies.js'
       # scripts/backtest-recoupment-ground-truth.js runs in unit-tests (advisory model backtest, BRO-4989)
       - 'scripts/backtest-recoupment-ground-truth.js'
       # scripts/backtest-cap-comparables.js is run by tests/unit/cap-comparables.test.mjs (BRO-5849)
