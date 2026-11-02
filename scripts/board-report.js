@@ -38,7 +38,7 @@ async function main(argv = process.argv.slice(2), { graphql = null, now = new Da
       bc.fetchFlow24h({ graphql: gql, now }).catch((err) => { console.error(`[board-report] WARN 24h flow unavailable: ${err.message}`); return null; }),
     ]);
     flow = f;
-    report = bc.categorizeBoard(issues, { now, secret: process.env.APPROVAL_HMAC_SECRET || null });
+    report = bc.categorizeBoard(issues, { now, secret: process.env.APPROVAL_HMAC_SECRET || null, lastRecheckStatusById: bc.readRecheckLedgerStatuses() });
   } catch (err) {
     console.error(`[board-report] FAILED: ${err.message}`);
     return 1;

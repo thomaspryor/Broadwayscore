@@ -59,6 +59,7 @@ const { selectRecheckTargets, summarize, decideAutoClose, describeResult, should
 // Linear candidate source (BRO-3373), the only source since BRO-3488 removed
 // the frozen Notion mirror's leg (mirror froze 2026-08-20, CLAUDE.md §6).
 const { closeCardAfterPass } = require('./lib/recheck-autoclose.js');
+const { decideHandoff, handoffCard } = require('./lib/recheck-handoff.js');
 const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates } = require('./lib/linear-recheck-source.js');
 
 const REPO = path.join(__dirname, '..');
@@ -74,7 +75,12 @@ const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 // per its own plist comment) the first time the two diverged. This path is
 // exclusively CI-owned and un-gitignored for exactly that reason.
 const RECHECK_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
-const MAX_CARDS = 10; // bounded work: this runs every night, not a backfill
+// BRO-6853: 10/night left 15 of 28 due cards never rechecked. The run's own time budget
+// (--time-budget-min, deferral at MIN_REMAINING_MS_TO_START) is the real bound; this cap only
+// stops a runaway list. Cards with no runnable test cost no checkout and are exempt (below).
+const MAX_CARDS = 30;
+// Hand-offs are Linear writes (a comment plus a state move) inside a shared CI step: cap them per night.
+const MAX_HANDOFFS = 25;
 // --backlog (BRO-6240): a manual one-off to clear the due backlog; the nightly run never sets it.
 const MAX_CARDS_BACKLOG = 80;
 // Below this much budget left, starting another check is worse than deferring
@@ -198,6 +204,8 @@ async function main(argv = process.argv.slice(2)) {
   // RECHECK_AUTOCLOSE_DISABLED (repo variable) is the off switch, like ACCEPTANCE_RECHECK_KILL_SWITCH:
   // no code change needed to stop closing cards.
   const autoclose = (!!args.autoclose || process.env.RECHECK_AUTOCLOSE === 'true') && process.env.RECHECK_AUTOCLOSE_DISABLED !== 'true';
+  // RECHECK_HANDOFF_DISABLED=true (repo variable) stops the worker hand-offs without a code change.
+  const handoffOn = process.env.RECHECK_HANDOFF_DISABLED !== 'true';
   const maxCards = args.backlog ? MAX_CARDS_BACKLOG : MAX_CARDS;
   const limit = Math.min(Number(args.limit) || maxCards, maxCards);
   const runId = `recheck-${new Date().toISOString().replace(/[:.]/g, '-')}`;
@@ -337,7 +345,16 @@ async function main(argv = process.argv.slice(2)) {
     seen.add(t.cardId);
     targets.push(t);
   }
+  // BRO-6853: a due Paused/Backlog card with no runnable test costs no checkout, so the cap must not
+  // leave it out: it is either handed to a worker tonight or at least gets a ledger row.
+  for (const t of pausedTargets) {
+    if (seen.has(t.cardId) || t.skip || t.verifyCmd) continue;
+    seen.add(t.cardId);
+    targets.push(t);
+  }
 
+  // Free (no-test) targets first: they cost no checkout, so a spent budget must never be what drops them.
+  targets.sort((a, b) => (a.skip || a.verifyCmd ? 1 : 0) - (b.skip || b.verifyCmd ? 1 : 0));
   console.error(`[recheck] ${targets.length} card(s) marked Done in the last ${windowHours}h have a dispatch record`);
   if (dropped.length) {
     console.error(`[recheck] ${dropped.length} card(s) in the window had no RECHECK-AFTER stamp and no runnable acceptance criteria — counted, not checked`);
@@ -374,6 +391,7 @@ async function main(argv = process.argv.slice(2)) {
   const results = [];
   const closed = [];
   const keptOpen = [];
+  const handedOff = [];
   const runUrl = process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY
     ? `${process.env.GITHUB_SERVER_URL || 'https://github.com'}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
     : null;
@@ -397,12 +415,13 @@ async function main(argv = process.argv.slice(2)) {
       // without one would recreate exactly the silent drop this file's big
       // comment says was already fixed once.
       const remainingMs = deadline - Date.now();
-      if (!t.skip && remainingMs < MIN_REMAINING_MS_TO_START) {
+      if (!t.skip && t.verifyCmd && remainingMs < MIN_REMAINING_MS_TO_START) {
         const deferred = targets.slice(targets.indexOf(t)).length;
         console.error(`[recheck] ${timeBudgetMinLabel}min budget spent — deferring ${deferred} card(s) to tomorrow so the morning email is not held up`);
         ledger.appendEntry({ event: 'recheck-deferred', runId, note: `${deferred} card(s) not re-checked: the run hit its ${timeBudgetMinLabel}min budget` }, RECHECK_LEDGER_PATH);
         break;
       }
+      let closeRefused = null;
       if (t.skip) r = { ...t, status: null };
       else if (!t.verifyCmd) r = { ...t, status: 'unverifiable', detail: t.reason };
       // Halve the remaining budget so BOTH attempts fit inside it. The retry
@@ -438,9 +457,22 @@ async function main(argv = process.argv.slice(2)) {
           console.error(`[recheck] ${t.cardId} stays open: ${verdict.reason}`);
         } else {
           const out = await closeCardAfterPass({ identifier: t.cardId, expectStateType: (cardsById.get(t.cardId) || {}).stateType, cmd: t.verifyCmd, sha: checkout && checkout.sha, runUrl });
-          if (out.closed) closed.push(t.cardId); else keptOpen.push({ cardId: t.cardId, reason: out.error });
+          if (out.closed) closed.push(t.cardId); else { keptOpen.push({ cardId: t.cardId, reason: out.error }); closeRefused = out.error; }
           ledger.appendEntry({ event: 'recheck-autoclose', runId, cardId: t.cardId, name: t.name, closed: out.closed, verifyCmd: t.verifyCmd, sha: (checkout && checkout.sha) || null, runUrl, note: out.closed ? 'closed on a passing real test' : `close refused: ${out.error}` }, RECHECK_LEDGER_PATH);
           console.error(`[recheck] ${t.cardId} ${out.closed ? 'CLOSED' : `close refused (${out.error})`}`);
+        }
+      }
+
+      // BRO-6853: a due card nothing above closed goes to a worker (decideHandoff is idempotent).
+      if (handoffOn && handedOff.length < MAX_HANDOFFS && (!t.verifyCmd || deadline - Date.now() >= MIN_REMAINING_MS_TO_START)) {
+        const card = cardsById.get(t.cardId);
+        const closeVerdict = !r.skip && r.status === 'pass' ? decideAutoClose({ card, target: t, result: r }) : null;
+        const h = decideHandoff({ card, target: t, result: r, closeVerdict, closeRefused });
+        if (h.handoff) {
+          const out = await handoffCard({ identifier: t.cardId, why: h.why });
+          if (out.handedOff) handedOff.push(t.cardId);
+          ledger.appendEntry({ event: 'recheck-handoff', runId, cardId: t.cardId, name: t.name, reason: h.reason, handedOff: out.handedOff, verifyCmd: t.verifyCmd || null, note: out.handedOff ? `handed to a worker: ${h.reason}` : `handoff refused: ${out.error}` }, RECHECK_LEDGER_PATH);
+          console.error(`[recheck] ${t.cardId} ${out.handedOff ? `handed to a worker (${h.reason})` : `handoff refused (${out.error})`}`);
         }
       }
     }
@@ -450,7 +482,7 @@ async function main(argv = process.argv.slice(2)) {
 
   const counts = summarize(results, { noCriteria: dropped.length });
   const closeNote = autoclose ? `; auto-close: ${closed.length} closed, ${keptOpen.length} passed but stayed open` : '';
-  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}` }, RECHECK_LEDGER_PATH);
+  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, handedOff, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}${handedOff.length ? `; ${handedOff.length} handed to a worker` : ''}` }, RECHECK_LEDGER_PATH);
   console.error(`[recheck] done: ${JSON.stringify(counts)}${autoclose ? ` autoclose=${JSON.stringify({ closed, keptOpen })}` : ''}`);
 }
 
