@@ -32,7 +32,13 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
   const showYear = result.showYear;
   const isOpera = isOperaShow(show);
 
-  const revivalLines = (revivals || []).map(r => {
+  // BRO-6799: a non-Met house only lists its own house's earlier runs as prior productions
+  // (a Met Parsifal is not a prior ROH run). Met keeps the unfiltered list, so Met prompts are unchanged.
+  const houseKey = isOpera ? getOperaHouse(show).short : null;
+  const priorRuns = houseKey && houseKey !== 'Met'
+    ? (revivals || []).filter(r => getOperaHouse(r).short === houseKey)
+    : revivals;
+  const revivalLines = (priorRuns || []).map(r => {
     const ry = r.openingDate ? new Date(r.openingDate).getFullYear() : '?';
     return `  - ${r.id} (${ry})`;
   }).join('\n');
@@ -80,7 +86,7 @@ OUTLET: ${result.outlet || 'Unknown'}
 CRITIC: ${result.criticName || 'Unknown'}
 PUBLISH DATE: ${result.publishDate || 'Unknown'}
 
-${isOpera ? 'PRIOR MET PRODUCTIONS OF THIS WORK:' : 'OTHER PRODUCTIONS OF THIS SHOW (any market — other Broadway/West End mountings, transfers, tours):'}
+${isOpera ? `PRIOR ${getOperaHouse(show).short.toUpperCase()} PRODUCTIONS OF THIS WORK:` : 'OTHER PRODUCTIONS OF THIS SHOW (any market — other Broadway/West End mountings, transfers, tours):'}
 ${revivalLines || '  (none known)'}
 
 AUDIT SIGNALS THAT FLAGGED THIS REVIEW:

@@ -37,6 +37,7 @@ const OPERA_HOUSES = [
   { re: /london coliseum|english national opera/i, full: 'English National Opera', house: 'London Coliseum', short: 'ENO' },
 ];
 const MET_HOUSE = { full: 'Metropolitan Opera', house: 'Metropolitan Opera House', short: 'Met' };
+const MET_STAGING_EXAMPLE = '"the 2018 Michael Mayer staging" when the filed run is a 2026 Yannick Nézet-Séguin run';
 
 /**
  * Which house a show belongs to (BRO-6799). No show or an unrecognised venue
@@ -73,8 +74,8 @@ function getOperaWrongProductionContext(show) {
 This is an opera production at the ${h.full}. Opera works (Tchaikovsky's "Eugene Onegin", Verdi's "La Traviata", Wagner's "Tristan und Isolde", etc.) are repertory pieces that the ${h.short === 'Met' ? 'Met' : h.full} has performed across many seasons with different casts and conductors, and that other opera companies (${h.short === 'Met' ? 'Royal Opera, La Scala, San Francisco Opera, Lyric Opera Chicago, Houston Grand Opera, San Diego Opera, any non-Met house or company' : others + ', any house other than the ' + h.full}) have performed independently.
 
 DISTINCTION (apply this rule strictly — leniency does NOT apply when there is a year mismatch):
-  - WRONG_PRODUCTION (flag this): the review evaluates a DIFFERENT ${h.short.toUpperCase()} RUN — different cast, conductor, or season at the ${h.house}. Cues: prior ${h.short} opening year named in the text, prior ${h.short} music director named, prior ${h.short} staging credited (e.g. "the 2018 Michael Mayer staging" when the filed run is a 2026 Yannick Nézet-Séguin run), publishDate more than ~6 months before the filed production's opening date with no other explanation.
-  - CORRECT (do not flag): the review evaluates the CURRENT ${h.short} production but mentions performances at other opera houses or prior productions as comparison/context. Mere mention of "I saw this at San Diego Opera in 2022" or "Royal Opera's 2020 production" is contextual reference, not evidence of wrong production.
+  - WRONG_PRODUCTION (flag this): the review evaluates a DIFFERENT ${h.short.toUpperCase()} RUN — different cast, conductor, or season at the ${h.house}. Cues: prior ${h.short} opening year named in the text, prior ${h.short} music director named, prior ${h.short} staging credited (e.g. ${h.short === 'Met' ? MET_STAGING_EXAMPLE : `"the 2018 ${h.short} staging" when the filed run is a later ${h.short} run`}), publishDate more than ~6 months before the filed production's opening date with no other explanation.
+  - CORRECT (do not flag): the review evaluates the CURRENT ${h.short} production but mentions performances at other opera houses or prior productions as comparison/context. Mere mention of "I saw this at San Diego Opera in 2022" or "${h.short === 'ROH' ? "the Met's" : "Royal Opera's"} 2020 production" is contextual reference, not evidence of wrong production.
 
 Decide based on what the review is EVALUATING, not what it mentions. Year-mismatched publishDates are a strong WRONG_PRODUCTION signal even when the text reads as a legitimate review.`;
 }

@@ -210,7 +210,7 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       contextParts.push(getTourPromptContext());
     }
     if (isOpera) {
-      contextParts.push('NOTE: This is an opera production at the Metropolitan Opera. Reviews discussing opera, the Met, conductors, sopranos/tenors/bass voices, libretto, arias, and musical performance ARE valid for this show — do NOT flag the review as wrong_show or wrong_production for being about opera at the Met.');
+      contextParts.push(`NOTE: This is an opera production at the ${getOperaHouse(review).full}. Reviews discussing opera, ${getOperaHouse(review).short === 'Met' ? 'the Met' : getOperaHouse(review).short}, conductors, sopranos/tenors/bass voices, libretto, arias, and musical performance ARE valid for this show — do NOT flag the review as wrong_show or wrong_production for being about opera at the ${getOperaHouse(review).short}.`);
     }
     // Note text lives in scripts/lib/prior-runs-note.js (pure, unit-tested; BRO-5299
     // added the return-engagement clause).
