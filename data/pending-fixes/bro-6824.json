@@ -1,0 +1,25 @@
+{
+  "issueNumber": "bro-6824",
+  "planId": "45e8de0c-66f0-4b2b-9211-d38ffa542ec9",
+  "status": "pending",
+  "createdAt": "2026-11-02T13:08:37.297237Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6824: recompute contentTier on 7 Bristol24/7 and WarwickshireWorld reviews tiered invalid by mid-article publisher chrome (member appeal, newsletter block); content-quality.js now strips it.",
+    "steps": [
+      "retier"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=a-family-business-tobacco-factory-regional-2024/bristol247--samuel-fletcher.json,loves-labours-lost-royal-shakespeare-regional-2024/warwickshireworld--peter-ormerod.json,malory-towers-royal-bath-regional-2026/bristol247--jill-bennett.json,starter-for-ten-bristol-old-vic-regional-2024/bristol247--toby-morse.json,the-complete-works-of-william-shakespeare-abridged-bristol-old-vic-regional-2026/bristol247--tom-dewey.json,the-new-real-royal-shakespeare-regional-2024/warwickshireworld--charles-essex.json,the-buddha-of-suburbia-royal-shakespeare-regional-2024/warwickshireworld--by-the-newsroom.json --apply",
+        "description": "BRO-6824: recompute contentTier on the 7 rows (BRO-5356 file mode); all 7 verified locally to flip invalid to complete."
+      }
+    ]
+  }
+}
