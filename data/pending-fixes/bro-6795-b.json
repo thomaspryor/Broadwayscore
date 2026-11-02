@@ -1,0 +1,164 @@
+{
+  "issueNumber": "bro-6795-b",
+  "planId": "441cb405-b6f2-4c62-9e25-a2b647b5a987",
+  "status": "pending",
+  "createdAt": "2026-11-02T03:54:05Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "riskLevel": "low",
+    "summary": "DC hub: fill real critic bylines (Maryland Theatre Guide, Georgetown Dish) and 3 missing publish dates",
+    "steps": [
+      "Set criticName from the article byline on each review",
+      "Set publishDate and dateSource for the three undated reviews"
+    ],
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Aidan O'Connor",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-regional-2026/thegeorgetowndish--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Peter Rosenstein",
+        "description": "Byline read from the article page (By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sally-and-tom-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Teniola Ayoola",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "some-like-it-hot-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Susan Brall",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "somewhere-over-the-border-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Aidan O'Connor",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-flying-lovers-of-vitebsk-regional-2026/thegeorgetowndish--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Peter Rosenstein",
+        "description": "Byline read from the article page (By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-fruits-of-our-labor-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-legend-of-sleepy-hollow-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Carolyn Kelemen",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-motion-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Jeanie Casison",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-score-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Peter Orvetti",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "venus-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "wish-you-were-here-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Aidan O'Connor",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-regional-2026/thebeacon--lynda-lantz.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-07-01",
+        "description": "Beacon page shows Posted on July 01, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-regional-2026/thebeacon--lynda-lantz.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "html-archive",
+        "description": "Date read from the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-regional-2026/thebeacon--lynda-lantz.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-06-16",
+        "description": "Beacon page shows Posted on June 16, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-regional-2026/thebeacon--lynda-lantz.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "html-archive",
+        "description": "Date read from the article page"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-regional-2026/thegeorgetowndish--unknown.json",
+        "field": "publishDate",
+        "oldValue": null,
+        "newValue": "2026-05-11",
+        "description": "Georgetown Dish page dateline May 11, 2026"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "purlie-victorious-regional-2026/thegeorgetowndish--unknown.json",
+        "field": "dateSource",
+        "oldValue": null,
+        "newValue": "html-archive",
+        "description": "Date read from the article page"
+      }
+    ]
+  }
+}

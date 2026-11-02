@@ -1,0 +1,164 @@
+{
+  "issueNumber": "bro-6795",
+  "planId": "566d9714-e9b3-471a-a6f4-e5309a08368c",
+  "status": "pending",
+  "createdAt": "2026-11-02T03:54:05Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "riskLevel": "low",
+    "summary": "DC hub: fill real critic bylines (Maryland Theatre Guide, Georgetown Dish) and 3 missing publish dates",
+    "steps": [
+      "Set criticName from the article byline on each review",
+      "Set publishDate and dateSource for the three undated reviews"
+    ],
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-gentlemans-guide-to-love-and-murder-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Kate Mankowski",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "aguardiente-where-magic-transcends-borders-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Teniola Ayoola",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-the-worlds-a-stage-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Alyssa Mutterperl",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bronte-sister-house-party-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Carolyn Kelemen",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "carla-hall-please-underestimate-me-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "coming-to-america-an-immigrant-cabaret-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Jeanie Casison",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frida-a-self-portrait-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Jeannette Mulherin",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frida-a-self-portrait-regional-2026/thegeorgetowndish--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Peter Rosenstein",
+        "description": "Byline read from the article page (By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "garbo-the-actor-who-saved-the-world-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ghost-limb-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Peter Orvetti",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gruesome-playground-injuries-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hundred-days-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Aidan O'Connor",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ma-raineys-black-bottom-regional-2026-round-house-theatre/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "merrily-we-roll-along-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Alyssa Mutterperl",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "monsters-of-the-villa-diodati-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Jennifer Georgia",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "paranormal-activity-dc-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Unknown",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Nancy Blum",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "precarious-regional-2026/maryland-theatre-guide--unknown.json",
+        "field": "criticName",
+        "oldValue": "Posted By",
+        "newValue": "Anne Valentino",
+        "description": "Byline read from the article page (Posted By line); collector stored a label, not the author."
+      }
+    ]
+  }
+}
