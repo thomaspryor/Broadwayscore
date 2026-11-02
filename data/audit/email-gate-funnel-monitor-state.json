@@ -1,77 +1,66 @@
 {
   "everReachedFloor": true,
-  "recentCaptures": [
-    3,
-    3,
-    0
-  ],
-  "lastRunAt": "2026-10-26T19:05:30.005Z",
+  "lastRunAt": "2026-11-02T22:14:32.195Z",
   "lastSummary": {
     "days": 7,
-    "impressions": 386,
-    "impressionEvents": 403,
-    "dismissed": 287,
-    "dismissRatePct": 74.35,
-    "captured": 0,
-    "capturedEvents": 0,
-    "convRatePct": 0,
-    "capturesPerWeek": 0,
-    "mobileBouncePct": 63.89,
+    "impressions": 402,
+    "impressionEvents": 413,
+    "dismissed": 278,
+    "dismissRatePct": 69.15,
+    "captured": 7,
+    "capturedEvents": 7,
+    "convRatePct": 1.74,
+    "capturesPerWeek": 7,
+    "inlineCaptures": 2,
+    "signIns": 48,
+    "signInsNew": 40,
+    "formspreeAuthJoins": 46,
+    "formspreeAuthJoinsStatus": "ok",
+    "totalJoins": 56,
+    "totalJoinsPerWeek": 56,
+    "mobileBouncePct": 64.2,
     "byTrigger": {
       "exit_intent": {
-        "n": 207,
-        "people": 195
+        "n": 220,
+        "people": 214
       },
       "scroll_depth": {
-        "n": 148,
-        "people": 145
+        "n": 132,
+        "people": 131
       },
       "return_visitor": {
-        "n": 48,
-        "people": 48
+        "n": 61,
+        "people": 61
       }
     },
     "byCopyVersion": {
       "v4-2026-10-08": {
         "shown": {
-          "n": 403,
-          "people": 386
+          "n": 413,
+          "people": 402
         },
         "dismissed": {
-          "n": 288,
-          "people": 286
+          "n": 278,
+          "people": 278
         },
         "captured": {
-          "n": 0,
-          "people": 0
+          "n": 7,
+          "people": 7
         },
-        "dismissRatePct": 74.09,
-        "convRatePct": 0
-      },
-      "v2-2026-08-10": {
-        "shown": {
-          "n": 0,
-          "people": 0
-        },
-        "dismissed": {
-          "n": 1,
-          "people": 1
-        },
-        "captured": {
-          "n": 0,
-          "people": 0
-        },
-        "dismissRatePct": null,
-        "convRatePct": null
+        "dismissRatePct": 69.15,
+        "convRatePct": 1.74
       }
     },
     "pageViewGuardrail": {
-      "checkedEvents": 24,
+      "checkedEvents": 413,
       "belowMinimumEvents": 0,
-      "unknownPageViewEvents": 379,
+      "unknownPageViewEvents": 0,
       "exemptEvents": 0,
       "violationsByTrigger": {}
     }
   },
-  "lastCollapseAlertAt": 1793041530004
+  "lastCollapseAlertAt": 1793041530004,
+  "recentJoins": [
+    56
+  ]
 }
