@@ -177,7 +177,10 @@ const useCheckpoint = args.includes('--checkpoint');
 const includeClosed = args.includes('--include-closed');
 // BRO-6687: budget slice held back for the due lane on targeted runs (min(5 min, a quarter of the budget)).
 const DUE_LANE_RESERVE_MS_DEFAULT = 5 * 60 * 1000;
+const { createRunBudget } = require('./lib/run-budget');
 const TIME_BUDGET_MS = parseInt(args.find(a => a.startsWith('--time-budget-min='))?.split('=')[1] || '20', 10) * 60 * 1000;
+// BRO-6804: page-fetch vetting stops at the same wall-clock budget as the show loop.
+const runBudget = createRunBudget(TIME_BUDGET_MS / 60000);
 const DUE_LANE_RESERVE_MS = Math.min(DUE_LANE_RESERVE_MS_DEFAULT, Math.floor(TIME_BUDGET_MS / 4));
 const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours='))?.split('=')[1] || '12', 10);
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
@@ -577,7 +580,7 @@ function roundupOwnerMap(shows = null, persistedRoundups = null) {
  */
 function narrowSharedRoundupOwners(map, shows) {
   const titleById = new Map((shows || []).map((s) => [s && s.id, s && s.title]));
-  const slugOf = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  const slugOf = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   for (const [k, owners] of map) {
     if (owners.size < 2) continue;
     const hay = `-${k.replace(/[^a-z0-9]+/g, '-')}-`;
@@ -601,6 +604,7 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
 }
 
 const { titleTokens } = require('./lib/show-title-tokens');
+const { foldDiacritics } = require('./lib/title-match');
 const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
 function urlMatchesShow(href, tokens) {
@@ -1522,9 +1526,9 @@ async function auditShow(show, opts = {}) {
   try {
     const vetted = await vetTimeoutListingCandidates(result.missing, show, {
       fetchPage: opts.fetchPageForVetting || ((u) => fetchPage(u, { skipVerify: true })),
-    });
+    }, runBudget);
     const fp = opts.fetchPageForVetting || ((u) => fetchPage(u, { skipVerify: true }));
-    const tourVetted = await vetTourCandidatesByPageDate(vetted.missing, show, { fetchPage: fp });
+    const tourVetted = await vetTourCandidatesByPageDate(vetted.missing, show, { fetchPage: fp }, runBudget);
     const nonReview = [...vetted.nonReview, ...tourVetted.nonReview];
     if (nonReview.length) {
       result.missing = tourVetted.missing;

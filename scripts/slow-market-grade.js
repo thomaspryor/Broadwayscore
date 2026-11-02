@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: venue is only read into an in-memory classifier context (BRO-6804), never persisted
 'use strict';
 /**
  * slow-market-grade.js (BRO-6687): grade review discovery for one or more

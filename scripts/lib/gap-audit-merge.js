@@ -30,6 +30,7 @@
  * become routine this needs the #784/#809 reconciler treatment.
  */
 
+// venue-write-guard-ok: venue is only read into an in-memory classifier context (BRO-6804), never persisted
 'use strict';
 
 // Retention must OUTLAST the longest re-audit skip a show can earn, or the file
