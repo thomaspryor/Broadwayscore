@@ -25,6 +25,7 @@ test('late start: window runs to embargo +5h', () => {
 
 test('skips non-broadway, bad inputs, and a night past embargo +5h', () => {
   assert.equal(planShadowDispatch({ ...base, market: 'west-end', nowMs: emb }).dispatch, false);
+  assert.equal(planShadowDispatch({ ...base, market: 'off-west-end', nowMs: emb }).dispatch, false);
   assert.equal(planShadowDispatch({ ...base, show: 'Bad Id', nowMs: emb }).dispatch, false);
   assert.equal(planShadowDispatch({ ...base, night: 'tonight', nowMs: emb }).dispatch, false);
   assert.equal(planShadowDispatch({ ...base, embargoAt: 'nope', nowMs: emb }).dispatch, false);
@@ -91,4 +92,10 @@ test('BRO-6074: probe step has a kill switch and also dedupes against a finished
   const step = y.slice(y.indexOf('- name: Start lane shadow'), y.indexOf('- name: Probe to embargo +2h'));
   assert.match(step, /vars\.LANE_SHADOW_AUTO != 'false'/);
   assert.match(step, /--status success/);
+});
+
+test('BRO-6802: off-Broadway press nights are shadow nights', () => {
+  const p = planShadowDispatch({ ...base, market: 'off-broadway', nowMs: emb - 30 * 60000 });
+  assert.equal(p.dispatch, true);
+  assert.match(p.reason, /off-broadway/);
 });

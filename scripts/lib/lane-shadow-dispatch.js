@@ -7,6 +7,9 @@
 //        --embargo-at=ISO [--active="title1\ntitle2"]   -> prints {dispatch, reason, windowMin}
 
 const SHADOW_END_AFTER_EMBARGO_MIN = 300; // shadow covers up to embargo +5h
+// BRO-6802: off-Broadway press nights are shadow nights too. Shadow takes no lease and publishes nothing, so it
+// measures the lane on real nights before the Broadway ones (BRO-5955 evidence needs >= 2 nights before 2026-11-09).
+const SHADOW_MARKETS = ['broadway', 'off-broadway'];
 const MAX_WINDOW_MIN = 320; // opening-night-lane-live.yml validates window_min 1-320
 
 /** Run title the lane-live workflow gets from its run-name (see opening-night-lane-live.yml). */
@@ -15,7 +18,7 @@ function shadowRunTitle(show, night) {
 }
 
 function planShadowDispatch({ show, night, market, embargoAt, nowMs = Date.now(), activeTitles = [] }) {
-  if (market !== 'broadway') return { dispatch: false, reason: `market ${market || '(none)'} is not broadway`, windowMin: 0 };
+  if (!SHADOW_MARKETS.includes(market)) return { dispatch: false, reason: `market ${market || '(none)'} is not a shadow market`, windowMin: 0 };
   if (!/^[a-z0-9][a-z0-9-]{0,127}$/.test(show || '')) return { dispatch: false, reason: 'bad show id', windowMin: 0 };
   if (!/^\d{4}-\d{2}-\d{2}$/.test(night || '')) return { dispatch: false, reason: 'bad night', windowMin: 0 };
   const embMs = Date.parse(embargoAt);
@@ -29,10 +32,10 @@ function planShadowDispatch({ show, night, market, embargoAt, nowMs = Date.now()
   if (activeTitles.some((t) => String(t).trim() === title)) {
     return { dispatch: false, reason: `shadow already queued or running for ${show} ${night}`, windowMin: 0 };
   }
-  return { dispatch: true, reason: 'broadway press night', windowMin };
+  return { dispatch: true, reason: `${market} press night`, windowMin };
 }
 
-module.exports = { planShadowDispatch, shadowRunTitle, SHADOW_END_AFTER_EMBARGO_MIN, MAX_WINDOW_MIN };
+module.exports = { planShadowDispatch, SHADOW_MARKETS, shadowRunTitle, SHADOW_END_AFTER_EMBARGO_MIN, MAX_WINDOW_MIN };
 
 if (require.main === module) {
   const arg = (k) => {
