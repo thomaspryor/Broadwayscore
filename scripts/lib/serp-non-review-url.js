@@ -6,7 +6,7 @@
  * had already been cleaned out once before (_superseded-misattributed).
  */
 
-const NON_REVIEW_HOSTS = /(^|\.)(letterboxd\.com|goodreads\.com|imdb\.com|rottentomatoes\.com|amazon\.[a-z.]+|bookshop\.org|waterstones\.com|wordery\.com|audible\.[a-z.]+)$|(^|\.)[a-z0-9-]*bookshop[a-z0-9-]*\./i;
+const NON_REVIEW_HOSTS = /(^|\.)(letterboxd\.com|goodreads\.com|imdb\.com|rottentomatoes\.com|amazon\.[a-z.]+|bookshop\.org|waterstones\.com|wordery\.com|audible\.[a-z.]+|discogs\.com|allmusic\.com|pitchfork\.com|loudersound\.com|rateyourmusic\.com|albumoftheyear\.org|musicbrainz\.org)$|(^|\.)[a-z0-9-]*bookshop[a-z0-9-]*\./i;
 // Announcement slugs ("full-details-announced-for ...", "casting announced") carry no review word.
 // Whole slug tokens only: a bare "casting" appears in real review slugs ("casting-ideal-material..."), and
 // "broadcasting" / "to-tourism" must not match.

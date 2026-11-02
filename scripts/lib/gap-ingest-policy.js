@@ -61,6 +61,34 @@ function articleRunIdentity(html, show, url) {
 }
 
 /**
+ * BRO-6804: month-precision sibling of isUrlYearOutOfWindow, for SERP-census
+ * hits only. A /YYYY/MM/ path segment more than one month before the run's
+ * first performance month (previews, else opening) is a write-up of an
+ * earlier production (Edinburgh Fringe August run, a UK tour leg, a prior
+ * staging): the year gate cannot see it because the year is the same. One
+ * month of grace covers early-press and first-night coverage. Fails open for
+ * a show that declares priorRuns (their months are legitimately earlier), for
+ * a URL with no month segment, and for an unparseable date.
+ * @param {string} url
+ * @param {object} show
+ * @returns {boolean}
+ */
+function isUrlMonthBeforeRun(url, show) {
+  if (!url || !show) return false;
+  if (Array.isArray(show.priorRuns) && show.priorRuns.length > 0) return false;
+  let pathname;
+  try { pathname = new URL(url).pathname; } catch { return false; }
+  const m = pathname.match(/\/((?:19|20)\d{2})\/(0[1-9]|1[0-2])(?:\/|$)/);
+  if (!m) return false;
+  const start = Date.parse(show.previewsStartDate || show.openingDate);
+  if (!Number.isFinite(start)) return false;
+  const d = new Date(start);
+  const runMonth = d.getUTCFullYear() * 12 + d.getUTCMonth();
+  const urlMonth = parseInt(m[1], 10) * 12 + (parseInt(m[2], 10) - 1);
+  return urlMonth < runMonth - 1;
+}
+
+/**
  * Cheap per-URL production-identity signal, no fetch required: many outlets
  * embed the publish year in the review URL path itself
  * (nytimes.com/2018/04/23/theater/...). A URL year older than this
@@ -392,4 +420,4 @@ function orderIngestCandidates(rows, priorIngestResults = [], priorSkippedByCap 
     .sort((a, b) => a.k[0] - b.k[0] || a.k[1] - b.k[1] || a.i - b.i).map(x => x.m);
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, isUrlMonthBeforeRun, showScoreUrlBlockReason, isShowScoreTileDateOutOfRun, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation, orderIngestCandidates };

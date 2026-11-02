@@ -121,4 +121,43 @@ function isTimeoutUrl(url) {
   try { return /(^|\.)timeout\.com$/i.test(new URL(url).hostname); } catch { return false; }
 }
 
-module.exports = { parseTimeoutPage, classifyTimeoutPage, keepsStoredTimeoutReview, isTimeoutUrl, CAPSULE_MAX_WORDS, LISTING_CAPSULE_FROM_YEAR };
+/**
+ * Pre-opening listing blurb vs authored review, from the page's JSON-LD (BRO-6804).
+ * Time Out serves a venue listing at the review URL shape before a show opens.
+ * It carries @type Review and a "Time Out says" block, but no author/creator, and
+ * datePublished and dateModified both fall before the opening date. A real review
+ * names its critic (author/creator). Anything inconclusive stays "unknown" so the
+ * URL remains a candidate (fail open to alerting).
+ * @param {{html?:string, openingDate?:string}} args
+ * @returns {{verdict:'listing_blurb'|'review'|'unknown', reason:string}}
+ */
+function classifyTimeoutListingBlurb({ html, openingDate } = {}) {
+  if (!html || !openingDate) return { verdict: 'unknown', reason: 'no-html-or-opening-date' };
+  const opening = Date.parse(openingDate);
+  if (!Number.isFinite(opening)) return { verdict: 'unknown', reason: 'bad-opening-date' };
+  const blocks = [...String(html).matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+  const nodes = [];
+  const walk = (n) => {
+    if (!n || typeof n !== 'object') return;
+    if (Array.isArray(n)) { n.forEach(walk); return; }
+    nodes.push(n);
+    if (n['@graph']) walk(n['@graph']);
+  };
+  for (const b of blocks) {
+    try { walk(JSON.parse(b[1])); } catch { /* skip malformed block */ }
+  }
+  const types = (n) => [].concat(n['@type'] || []);
+  const reviews = nodes.filter((n) => types(n).includes('Review'));
+  if (!reviews.length) return { verdict: 'unknown', reason: 'no-review-jsonld' };
+  for (const r of reviews) {
+    if (r.author || r.creator || r.reviewRating) return { verdict: 'review', reason: 'authored-or-rated' };
+  }
+  const r = reviews[0];
+  const pub = Date.parse(r.datePublished);
+  const mod = Date.parse(r.dateModified || r.datePublished);
+  if (!Number.isFinite(pub) || !Number.isFinite(mod)) return { verdict: 'unknown', reason: 'no-dates' };
+  if (pub < opening && mod < opening) return { verdict: 'listing_blurb', reason: 'unauthored-and-pre-opening' };
+  return { verdict: 'unknown', reason: 'post-opening-unauthored' };
+}
+
+module.exports = { classifyTimeoutListingBlurb, parseTimeoutPage, classifyTimeoutPage, keepsStoredTimeoutReview, isTimeoutUrl, CAPSULE_MAX_WORDS, LISTING_CAPSULE_FROM_YEAR };

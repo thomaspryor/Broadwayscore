@@ -42,6 +42,8 @@
 const { MAX_FRESHNESS_SKIP_MS } = require('./gap-audit-freshness');
 const { censusVerdict, CI_UNFETCHABLE_OUTLETS } = require('./review-census');
 const { classifyGapCandidateUrl } = require('./non-review-url-patterns');
+const { censusExclusionReason } = require('./gap-census-noise');
+const { titleTokens } = require('./show-title-tokens');
 const {
   CENSUS_SCHEMA,
   isPriorProductionCitation,
@@ -161,9 +163,22 @@ function censusVerdictFor(result, opts = {}) {
   //
   // They stay in result.missing/flaggedMisses with their priorRun tag —
   // dropped from the census, not from the file.
+  // BRO-6804: rows the audit already proved are not an owed review stay out of the
+  // census too, and are RECORDED in `excluded` (never silently dropped).
+  const excluded = [];
+  const noiseCtx = { show: { title: result.title, category: result.category, venue: result.venue, market: result.market, openingDate: result.openingDate, previewsStartDate: result.previewsStartDate, priorRuns: result.priorRuns }, tokensOf: titleTokens };
+  const exclude = (m, kind) => {
+    const reason = censusExclusionReason(m, kind, noiseCtx);
+    if (reason) excluded.push({ url: m.url || '', host: m.host || hostOf(m.url), reason });
+    return !!reason;
+  };
+  for (const m of (result.nonReviewCandidates || [])) {
+    excluded.push({ url: m.url || '', host: m.host || hostOf(m.url), reason: m.nonReviewVerdict || 'non-review' });
+  }
   for (const m of (result.missing || [])) {
     if (isPriorProductionCitation(m)) continue;
     if (!isCandidate(m.url)) continue;
+    if (exclude(m, 'missing')) continue;
     const id = identityFor(m);
     if (!id) continue;
     entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
@@ -171,6 +186,7 @@ function censusVerdictFor(result, opts = {}) {
   for (const m of (result.flaggedMisses || [])) {
     if (isPriorProductionCitation(m)) continue;
     if (!isCandidate(m.url)) continue;
+    if (exclude(m, 'flagged')) continue;
     const id = identityFor(m);
     if (!id) continue;
     entries.push({ outletId: id, outlet: m.knownOutletId || m.host || id, critic: 'Unknown', stars: null, url: m.url || '' });
@@ -187,6 +203,7 @@ function censusVerdictFor(result, opts = {}) {
   const v = censusVerdict(census, covered, censusOpts);
   // Stamped so a later run can tell a pre-v2 row from a current one.
   v.censusSchema = CENSUS_SCHEMA;
+  v.excluded = excluded;
   // PUBLIC counts are OUTLET-level, deliberately, even though `candidates` is
   // URL-level. The gap audit resolves coverage per HOST (its dirByHost map), so
   // two aggregator-listed URLs from one outlet are both stamped `live` off a
