@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T10:13:49.596Z",
+  "generatedAt": "2026-11-02T12:01:12.293Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -156,10 +156,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -172,8 +168,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 757,
-  "matchedGaps": 10,
+  "itemsScanned": 767,
+  "matchedGaps": 13,
   "possibleGaps": 11,
   "gaps": [
     {
@@ -184,6 +180,15 @@
       "url": "https://www.thereviewshub.com/ceilidh-shoreditch-town-hall-london/",
       "headline": "Ceilidh – Shoreditch Town Hall, London",
       "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "title": "Ceilidh The Musical",
+      "level": "matched",
+      "outletId": "theupcoming",
+      "url": "https://www.theupcoming.co.uk/2026/10/31/ceilidh-the-musical-at-shoreditch-town-hall-theatre-review/",
+      "headline": "Ceilidh the Musical at Shoreditch Town Hall &#124; Theatre review",
+      "publishDate": "2026-10-31"
     },
     {
       "showId": "girls-off-west-end-2026",
@@ -234,6 +239,15 @@
       "showId": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "level": "matched",
+      "outletId": "city-am",
+      "url": "https://www.cityam.com/the-lives-of-others-keira-knightley-stars-in-gripping-adaptation/",
+      "headline": "The Lives of Others: Keira Knightley stars in gripping adaptation",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
       "outletId": "londontheatre1",
       "url": "https://www.londontheatre1.com/reviews/the-lives-of-others-adelphi-theatre/",
       "headline": "The Lives of Others | Adelphi Theatre",
@@ -265,6 +279,15 @@
       "url": "https://www.london-unattached.com/tosca-english-national-opera/",
       "headline": "Tosca, English National Opera",
       "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "theupcoming",
+      "url": "https://www.theupcoming.co.uk/2026/10/31/tosca-at-london-coliseum-theatre-review/",
+      "headline": "Tosca at London Coliseum &#124; Theatre review",
+      "publishDate": "2026-10-31"
     },
     {
       "showId": "girls-off-west-end-2026",
