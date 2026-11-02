@@ -55,20 +55,14 @@ export default function FooterExploreCards() {
     </Link>
   );
 
-  const chicagoCard = (
-    <Link key="chicago" href="/tours/chicago-il" className="flex-auto p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-sky-400/30 hover:bg-sky-400/[0.03] transition-colors text-center group">
-      <div className="text-xl mb-1">&#127961;</div>
-      <div className="text-sm font-bold text-white group-hover:text-sky-400 transition-colors whitespace-nowrap">Chicago</div>
-      <div className="text-[10px] text-fg-muted">Chicago Theater</div>
+  // One card per launched registry city (data/city-hubs.json, BRO-6833).
+  const cityCards = Object.entries(HUB_CITIES).map(([slug, hub]) => (
+    <Link key={slug} href={`/tours/${slug}`} className="flex-auto p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-sky-400/30 hover:bg-sky-400/[0.03] transition-colors text-center group">
+      <div className="text-xl mb-1">{hub.emoji}</div>
+      <div className="text-sm font-bold text-white group-hover:text-sky-400 transition-colors whitespace-nowrap">{hub.cardLabel}</div>
+      <div className="text-[10px] text-fg-muted">{hub.short} Theater</div>
     </Link>
-  );
-  const dcCard = (
-    <Link key="dc" href="/tours/washington-dc" className="flex-auto p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-sky-400/30 hover:bg-sky-400/[0.03] transition-colors text-center group">
-      <div className="text-xl mb-1">&#127963;</div>
-      <div className="text-sm font-bold text-white group-hover:text-sky-400 transition-colors whitespace-nowrap">DC</div>
-      <div className="text-[10px] text-fg-muted">Washington DC Theater</div>
-    </Link>
-  );
+  ));
   const operaCard = (
     <Link key="opera" href="/opera" className="flex-auto p-3 sm:p-4 rounded-xl border border-white/[0.08] bg-white/[0.02] hover:border-amber-400/30 hover:bg-amber-400/[0.03] transition-colors text-center group">
       <div className="text-xl mb-1">&#127914;</div>
