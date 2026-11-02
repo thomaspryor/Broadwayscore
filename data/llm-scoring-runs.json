@@ -1161963,21 +1161963,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-02T23:11:34.102Z",
-    "completedAt": "2026-11-02T23:11:44.987Z",
-    "totalReviews": 2,
-    "processed": 2,
+    "startedAt": "2026-11-02T23:12:46.558Z",
+    "completedAt": "2026-11-02T23:13:11.613Z",
+    "totalReviews": 5,
+    "processed": 5,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 12168,
-      "output": 606,
-      "cacheRead": 3807,
-      "cacheWrite": 3807,
-      "total": 30453
+      "input": 31137,
+      "output": 1576,
+      "cacheRead": 19035,
+      "cacheWrite": 0,
+      "total": 77242
     },
-    "costUsd": 0.05894665,
-    "runId": "41542114518",
+    "costUsd": 0.11706949999999999,
+    "runId": "41542159458",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1170913,6 +1170913,16 @@
         },
         "hasDisagreement": true,
         "disagreementDetails": "DTLI: Flat thumbs differ by 44% (ours: 44%, theirs: 0%)"
+      },
+      {
+        "showId": "cassatt-regional-2026",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 1,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": false
       },
       {
         "showId": "cat-cohen-broad-strokes-off-broadway-2026",
@@ -1209296,16 +1209306,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "warsaw-regional-2026",
-        "ourDistribution": {
-          "up": 2,
-          "flat": 0,
-          "down": 0,
-          "total": 2
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "watch-me-walk-off-broadway-2026",
         "ourDistribution": {
           "up": 5,
@@ -1210773,8 +1210773,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-02T23:16:41.504Z",
-    "completedAt": "2026-11-02T23:16:41.505Z",
+    "startedAt": "2026-11-02T23:18:08.306Z",
+    "completedAt": "2026-11-02T23:18:08.307Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1210787,7 +1210787,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41542114518",
+    "runId": "41542159458",
     "source": "comparative-rescore",
     "errorDetails": []
   }
