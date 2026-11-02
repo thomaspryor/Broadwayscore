@@ -51,7 +51,7 @@ const PAGE_EXTRACTORS = {
   'the-spy-in-the-stalls': extractReviewedByLine,
 };
 const PAGE_ONLY_OUTLETS = new Set(Object.keys(PAGE_EXTRACTORS));
-const TEXT_OUTLETS = new Set(['south-london', 'theatreandtonic', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london']);
+const TEXT_OUTLETS = new Set(['south-london', 'theatreandtonic', 'all-that-dazzles-uk', 'talkinbroadway', 'nytg', 'timeout', 'timeout-london', 'artsdesk']);
 
 function isUnnamed(name) {
   return !name || /^(unknown|unnamed)$/i.test(String(name).trim()) || isJunkCriticName(name);

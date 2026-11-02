@@ -114,3 +114,21 @@ test('sameCriticName: one person under a first name, initial or diacritics; neve
   assert.equal(text.sameCriticName('Emmie Newitt', 'Annie'), false);
   assert.equal(text.sameCriticName('', 'Annie'), false);
 });
+
+// BRO-6716: The Lives of Others (2026) was filed under its set designer, read from body prose
+// ("Splendidly <a>designed </a>by Hildegard Bechtler"); 65 other artsdesk files were "Unknown".
+test('The Arts Desk: the "by <Name> <Weekday>, <date>" dateline names the critic', () => {
+  const t = 'A gripping Stasi drama loses some subtlety on stage by Helen Hawkins Thursday, 30 October 2026 Splendidly designed by Hildegard Bechtler, the set...';
+  assert.deepEqual(text.extractBylineFromText('artsdesk', t), { name: 'Helen Hawkins', known: true });
+  assert.equal(text.printedBylineOverride('artsdesk', t, 'https://theartsdesk.com/theatre/x', 'Hildegard Bechtler'), 'Helen Hawkins');
+  // a prose credit with no dateline after it is not a byline
+  assert.equal(text.extractBylineFromText('artsdesk', 'Book by Burt Shevelove, music by Stephen Sondheim. It sparkles.'), null);
+});
+
+test('The Arts Desk HTML: the class="author" link beats a prose "</a>by Name" in the body', () => {
+  const h = `<div class='author_date'><span class='author'>by&nbsp;<a href='/user/20705'>Helen Hawkins</a></span></div>
+    <p>Splendidly <a href="/x">designed </a>by Hildegard Bechtler, the set turns.</p>`;
+  assert.equal(html.extractByline(h, { outletId: 'artsdesk' }), 'Helen Hawkins');
+  // the prose form alone is not read as a byline
+  assert.notEqual(html.extractByline('<p>Splendidly <a href="/x">designed </a>by Hildegard Bechtler, the set.</p>', {}), 'Hildegard Bechtler');
+});
