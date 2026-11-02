@@ -605,7 +605,8 @@ export function describeDiscountTickets(title: string, lr: ShowLotteryRush, curr
   const parts = options.map(o => `${o.label} for ${formatTicketPrice(o.price, currency)}`);
   const list = parts.length === 1 ? parts[0] : `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`;
   const cheapest = Math.min(...options.map(o => o.price));
-  return `Yes. ${title} offers ${list}. The cheapest way in is ${formatTicketPrice(cheapest, currency)}. Prices and rules change, so check before you go.`;
+  const cheapestNote = options.length > 1 ? ` The cheapest way in is ${formatTicketPrice(cheapest, currency)}.` : '';
+  return `Yes. ${title} offers ${list}.${cheapestNote} Prices and rules change, so check before you go.`;
 }
 
 export function getShowFAQs(show: ComputedShow, consensusText?: string | null, tour?: TourNowNext | null, extras?: ShowFAQExtras | null): { question: string; answer: string }[] {

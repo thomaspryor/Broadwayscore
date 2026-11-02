@@ -63,6 +63,8 @@ test('London shows quote pounds; options with no price are dropped', () => {
   const uk = describeDiscountTickets('X', { ...lr, lottery: { ...lr.lottery!, price: undefined as unknown as number } }, '£');
   assert.ok(uk && !/lottery/.test(uk) && /£40/.test(uk));
   assert.equal(describeDiscountTickets('X', { lottery: null, rush: null, standingRoom: null }, '$'), null);
+  const one = describeDiscountTickets('X', { lottery: null, rush: null, standingRoom: { price: 30, time: '', instructions: '' } }, '£');
+  assert.ok(one && !/cheapest/.test(one), 'single option does not repeat its price');
   const t = getShowFAQs(show({ category: 'west-end', venue: 'Apollo Victoria' }), null, null, { lotteryRush: lr }).find(f => /cheap/.test(f.question));
   assert.match(t!.answer, /£49/);
 });
