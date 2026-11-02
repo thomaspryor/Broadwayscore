@@ -54,3 +54,14 @@ test('planRetry: open cards only, once, newest bounce decides, leave-alone list 
   assert.equal(R.codexBouncedRecently(posted, Date.parse('2026-10-24T00:00:00Z')), false);
   assert.ok(R.parseCodexRetry(posted).findings.includes('Missing test for the empty case'));
 });
+
+test('planRetry skips a card at the bounce cap (BRO-6857)', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { planRetry } = req('../../scripts/codex-retry-backfill.js');
+  const R = req('../../scripts/lib/codex-runner.js');
+  const mk = (at) => ({ body: `${R.BOUNCED_MARKER}\n## Codex runner: not landed\nfindings`, createdAt: at });
+  const now = Date.parse('2026-11-02T00:00:00Z');
+  const capped = planRetry({ identifier: 'BRO-1', stateType: 'unstarted', comments: [mk('2026-10-01T00:00:00Z'), mk('2026-10-20T00:00:00Z')], nowMs: now });
+  assert.deepEqual(capped, { skip: 'bounce cap reached' });
+});

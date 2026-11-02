@@ -510,6 +510,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  ASYNC_WAIT_RES,
   commentClearsOwnerGate,
   visualAskOpen,
   BLOCKERS,

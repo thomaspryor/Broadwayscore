@@ -833,6 +833,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       process.exit(0);
     }
   }
+  // BRO-6857: a session park that waits on time in prose ("no earlier than 2026-11-13", "needs a week of data") never
+  // resumes without a RECHECK-AFTER stamp. Session filers only: the cron filers' parks are stamped by their own paths.
+  if (typeof args.park === 'string' && typeof args.source !== 'string' && !process.env.GITHUB_WORKFLOW) {
+    const pw = require('./lib/prose-date-wait.js');
+    if (pw.proseDateWait(args.park)
+        && require('./lib/recheck-stamp.js').parseRecheckAfter(notes || '') == null) {
+      console.error(pw.PROSE_WAIT_REFUSAL);
+      process.exit(2);
+    }
+  }
   try {
     const result = await createLinearIssueFn({
       title,
