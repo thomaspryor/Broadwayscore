@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-02T03:50:00.501Z",
+  "generatedAt": "2026-11-02T04:13:24.476Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 310,
-  "clean": 307,
-  "defective": 3,
+  "clean": 305,
+  "defective": 5,
   "byType": {
-    "score-drift": 3
+    "score-drift": 5
   },
   "shows": [
     {
@@ -22,9 +22,25 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
+      "localCount": 9,
       "deployedCount": 9,
-      "firstDefectAt": "2026-11-02T03:49:55.403Z"
+      "firstDefectAt": "2026-11-02T04:13:18.990Z"
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.77 vs local 72.77 (Δ6)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-02T04:13:18.990Z"
     },
     {
       "showId": "are-you-now-or-have-you-ever-been-regional-2026",
@@ -38,9 +54,25 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 3,
+      "localCount": 4,
       "deployedCount": 4,
-      "firstDefectAt": "2026-11-02T03:49:55.403Z"
+      "firstDefectAt": "2026-11-02T04:13:18.990Z"
+    },
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "openingDate": "2026-10-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.59 vs local 86.47 (Δ0.12)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 15,
+      "deployedCount": 15,
+      "firstDefectAt": "2026-11-02T04:13:18.990Z"
     },
     {
       "showId": "the-bodyguard-tour-2026",
@@ -54,9 +86,9 @@
         }
       ],
       "missingFromProd": [],
-      "localCount": 3,
+      "localCount": 4,
       "deployedCount": 4,
-      "firstDefectAt": "2026-11-02T03:49:55.403Z"
+      "firstDefectAt": "2026-11-02T04:13:18.990Z"
     }
   ],
   "persistentDefective": 0,

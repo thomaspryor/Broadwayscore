@@ -1756,9 +1756,9 @@
     "queuedAt": "2026-11-02T03:23:27.161Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +12 more). Checked 2026-11-02.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-02.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
     "severity": "info",
     "url": null,
     "decision": false,
@@ -1767,6 +1767,6 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-02T04:03:15.933Z"
+    "queuedAt": "2026-11-02T04:13:04.724Z"
   }
 ]
