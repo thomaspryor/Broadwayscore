@@ -30217,7 +30217,7 @@
       "resolveReason": "stale-signature"
     },
     "tour-page-audit:review-count-mismatch": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "National tour pages show wrong information: 1 page problem(s) (review-count-mismatch)",
       "firstSeen": "2026-10-29T17:40:35.104Z",
@@ -30234,7 +30234,9 @@
         "runId": "40921564618",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40921564618"
       },
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-11-02T19:19:22.440Z",
+      "resolveReason": "audit-tour-pages: no longer reported"
     },
     "pending-unrecoverable:memoriam-off-west-end-2026": {
       "status": "resolved",
@@ -33934,7 +33936,7 @@
       "title": "National tour pages show wrong information: 31 page problem(s) (city-row-unknown-show)",
       "firstSeen": "2026-10-31T16:19:21.958Z",
       "incidentOpenedAt": "2026-10-31T16:19:21.958Z",
-      "lastSeen": "2026-11-01T17:20:36.205Z",
+      "lastSeen": "2026-11-02T19:19:22.458Z",
       "lastNotifiedAt": "2026-10-31T16:19:21.958Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -33946,7 +33948,7 @@
         "runId": "41218494854",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41218494854"
       },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-empty-cast:clifford-odets-waiting-for-lefty-off-broadway-2026": {
       "status": "open",
