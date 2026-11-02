@@ -27,6 +27,7 @@ const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage, stripLeadingJsonBlob } = require('./content-quality');
 const { stripConsentLayerPrefix } = require('./text-cleaning');
 const { buildClassifySample, applySampleMarkerCarveout, isSampled } = require('./classify-sample');
+const { applyAttributionAbsenceCarveout } = require('./attribution-absence-carveout');
 
 /**
  * Extract a sensible publication year from a URL path.
@@ -561,6 +562,17 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         isValid = markerCarve.isValid;
       }
 
+      // BRO-6491: a rejection whose every issue only says the byline/outlet is
+      // absent from the scraped body is restored; any other issue or flag keeps it.
+      const attributionCarve = applyAttributionAbsenceCarveout(
+        { isValid, issues: markerCarve.issues, truncated: markerCarve.truncated, wrongArticle: parsed.wrongArticle, wrongProduction: wpFlag, isFilmTv: filmTvFlag, articleType: parsed.articleType },
+        { criticName, outletName }
+      );
+      if (attributionCarve.applied) {
+        console.log(`    ✓ Attribution-absence carve-out: dropped ${attributionCarve.dropped.length} missing-byline/outlet issue(s), isValid→true`);
+        isValid = attributionCarve.isValid;
+      }
+
       if (urlYearConflict) {
         console.log(`    ⚠ URL-year/publishDate conflict: URL says ${urlYearConflict.urlYear}, publishDate says ${urlYearConflict.publishYear} (${urlYearConflict.gapYears}yr gap)`);
       }
@@ -568,9 +580,10 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
       return {
         isValid,
         confidence: wpFlag ? wpConfidence : filmTvFlag ? filmTvConfidence : (parsed.confidence || 'medium'),
-        issues: markerCarve.issues,
+        issues: attributionCarve.applied ? attributionCarve.issues : markerCarve.issues,
         truncated: markerCarve.truncated,
         sampleMarkerCarveoutApplied: markerCarve.applied,
+        attributionAbsenceCarveoutApplied: attributionCarve.applied,
         wrongArticle: parsed.wrongArticle || false,
         articleType: parsed.articleType || 'review',
         articleTypeConfidence: parsed.articleTypeConfidence || 'medium',
