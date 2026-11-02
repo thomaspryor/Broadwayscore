@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T04:09:00.662Z",
+  "timestamp": "2026-11-02T04:42:01.336Z",
   "stats": {
-    "totalReviews": 79165,
-    "alreadyFlagged": 21916,
+    "totalReviews": 79169,
+    "alreadyFlagged": 21918,
     "dateGuardCatches": 244,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
-    "londonSignals": 3577,
+    "londonSignals": 3580,
     "offBroadwaySignals": 742,
     "yearMismatch": 345,
-    "noPublishDate": 8380
+    "noPublishDate": 8378
   },
   "findings": [
     {
@@ -48321,7 +48321,7 @@
     },
     {
       "showId": "paranormal-activity-dc-regional-2026",
-      "file": "maryland-theatre-guide--unknown.json",
+      "file": "maryland-theatre-guide--anne-valentino.json",
       "score": 90,
       "publishDate": "2026-01-31",
       "url": "https://mdtheatreguide.com/2026/01/theatre-review-paranormal-activity-at-shakespeare-theatre-company/",
@@ -50144,7 +50144,7 @@
     },
     {
       "showId": "pippin-regional-2026",
-      "file": "maryland-theatre-guide--unknown.json",
+      "file": "maryland-theatre-guide--nancy-blum.json",
       "score": 91,
       "publishDate": "2026-05-23",
       "url": "https://mdtheatreguide.com/2026/05/theatre-review-pippin-at-signature-theatre/",
@@ -52308,7 +52308,7 @@
     },
     {
       "showId": "purlie-victorious-regional-2026",
-      "file": "maryland-theatre-guide--unknown.json",
+      "file": "maryland-theatre-guide--aidan-oconnor.json",
       "score": 85,
       "publishDate": "2026-05-13",
       "url": "https://mdtheatreguide.com/2026/05/theatre-review-purlie-victorious-a-non-confederate-romp-through-the-cotton-patch-at-studio-theatre/",
@@ -97499,7 +97499,7 @@
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-10-26",
       "url": "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
       "findings": [
@@ -97513,7 +97513,7 @@
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "times-uk--donald-hutera.json",
-      "score": 86,
+      "score": 89,
       "publishDate": "2026-02-02",
       "url": "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
       "findings": [
@@ -117211,7 +117211,7 @@
     {
       "showId": "roleplay-off-west-end-2026",
       "file": "theatreandtonic--eloise.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/roleplay-at-soho-theatre-review",
       "findings": [
@@ -128360,6 +128360,20 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
+      "file": "all-that-dazzles-uk--daz-gale.json",
+      "score": 80,
+      "publishDate": "2026-11-01",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-lives-of-others-adelphi-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
       "file": "britishtheatrecom--unknown.json",
       "publishDate": "2026-10-29",
       "url": "https://www.britishtheatre.com/vi/shows/the-lives-of-others",
@@ -128414,6 +128428,20 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "score": 82,
+      "publishDate": "2026-11-02",
+      "url": "https://www.londontheatre.co.uk/reviews/the-lives-of-others-review-adelphi-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
       "file": "londontheatredirect--jose-izcue-gana.json",
       "publishDate": null,
       "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
@@ -128436,6 +128464,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "shinylife--unknown.json",
+      "score": 89,
+      "publishDate": "2026-10-29",
+      "url": "https://www.shinylife.co.uk/2026/10/29/the-lives-of-others/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
         }
       ]
     },
