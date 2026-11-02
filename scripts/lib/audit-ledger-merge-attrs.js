@@ -67,6 +67,13 @@
 // file merge=union) rather than assuming it's stale.
 const EXEMPT_LEDGERS = [
   {
+    file: 'data/aeo/history.jsonl',
+    reason:
+      '2026-11-02 (BRO-6841): aeo-visibility-tracker.js upserts by date (a same-day re-run replaces ' +
+      'that day\'s row). A union merge would keep the superseded row beside the replacement and ' +
+      'double-count the week. Only aeo-visibility-weekly.yml writes it, under a concurrency group.',
+  },
+  {
     file: 'data/audit/claude-session-cost.jsonl',
     reason:
       '2026-10-29 (BRO-5671): claude-session-cost-writer.js upserts by (date, session), ' +

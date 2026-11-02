@@ -177,6 +177,7 @@ async function runGemini(prompt, { fetchImpl = fetch, apiKey = process.env.GEMIN
     body: JSON.stringify({
       contents: [{ parts: [{ text: `${prompt}\n\nSearch the web and cite your sources.` }] }],
       tools: [{ google_search: {} }],
+      generationConfig: { thinkingConfig: { thinkingBudget: 0 }, maxOutputTokens: 4096 },
     }),
   });
   const d = await res.json();
