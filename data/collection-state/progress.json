@@ -1402,7 +1402,10 @@
     "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
     "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
     "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json"
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "the-lives-of-others-west-end-2026/theatre-weekly--greg-stewart.json",
+    "the-lives-of-others-west-end-2026/standard--nick-curtis.json",
+    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json"
   ],
   "failed": [
     "rent-west-end-2026/financialtimes--sarah-hemming.json",
@@ -2004,7 +2007,6 @@
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
-    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
     "murder-cathedral-off-west-end-2026/plays-to-see--tim-hochstrasser.json",
     "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026/whatnightout--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
@@ -2129,7 +2131,8 @@
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
     "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
     "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
-    "love-me-off-broadway-2026/consequence--unknown.json"
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "murder-cathedral-off-west-end-2026/ahatalent--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -2965,7 +2968,9 @@
       "the-lives-of-others-west-end-2026/london-box-office--stuart-king.json",
       "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
       "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
-      "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json"
+      "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
+      "the-lives-of-others-west-end-2026/theatre-weekly--greg-stewart.json",
+      "the-lives-of-others-west-end-2026/standard--nick-curtis.json"
     ],
     "amp": [
       "data/review-texts/the-glass-menagerie-2017/chicagotribune--chris-jones.json",
@@ -3487,7 +3492,8 @@
       "data/review-texts/tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
       "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
       "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-      "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json"
+      "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+      "data/review-texts/murder-cathedral-off-west-end-2026/ahatalent--unknown.json"
     ],
     "archive": [
       "avenue-q-west-end-2026/telegraph--marianka-swain.json",
@@ -3948,7 +3954,7 @@
     ]
   },
   "startTime": "2026-11-01T03:36:50.252Z",
-  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+  "lastProcessed": "murder-cathedral-off-west-end-2026/ahatalent--unknown.json",
   "log": [
     {
       "t": "2026-11-01T04:08:37.792Z",
@@ -4199,26 +4205,28 @@
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-11-02T03:19:56.533Z",
+      "t": "2026-11-02T03:22:57.815Z",
       "event": "bb-session",
-      "session": "52409751",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+      "session": "41aa8952",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
     },
     {
-      "t": "2026-11-02T03:19:56.845Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-11-02T03:21:54.124Z",
+      "t": "2026-11-02T03:24:13.406Z",
       "event": "bb-session",
-      "session": "5136b2ef",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "06a88289",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
     },
     {
-      "t": "2026-11-02T03:21:54.411Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "t": "2026-11-02T03:26:12.545Z",
+      "event": "bb-session",
+      "session": "b98f476f",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-02T03:27:19.447Z",
+      "event": "bb-session",
+      "session": "1814aa37",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ],
   "recoveredAfterFailure": [
@@ -4226,6 +4234,7 @@
     "waiting-for-godot-2009/amny--matt-windman.json",
     "rancho-viejo-off-broadway-2016/the-clyde-fitch-report--unknown.json",
     "the-pianist-off-west-end-2026/jonathan-baz--helena-featherstone.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json"
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json"
   ]
 }
