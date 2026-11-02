@@ -545,6 +545,11 @@ function reviewHeaderMarkers(lines) {
  * parser fix can yield one. Non-zero with nothing for our show is a real
  * parser gap.
  */
+// An inline byline header, "Fiona Mountford, Evening Standard, 05.04.17":
+// a line that ends in a dd.mm.yy date after a comma or spaces. Prose dates
+// carry trailing punctuation ("25.11.52;") and do not match.
+const INLINE_REVIEW_DATE = /[,\s]\d{1,2}\.\d{1,2}\.\d{2,4}$/;
+
 function countReviewHeaders(text) {
   const lines = splitPdfLines(text).map(l => l.trim());
   const starts = new Set(reviewHeaderMarkers(lines).map(m => m.start));
@@ -553,7 +558,7 @@ function countReviewHeaders(text) {
   // dates that way, so a mixed-case or unknown masthead still counts.
   lines.forEach((l, i) => {
     if (l.length > 3 && /^[A-Z]/.test(l) && l === l.toUpperCase() && isDateLine(lines[i + 1] || '')) starts.add(i);
-    else if (DATE_SHORT.test(l)) starts.add(i);
+    else if (DATE_SHORT.test(l) || INLINE_REVIEW_DATE.test(l)) starts.add(i);
   });
   return starts.size;
 }

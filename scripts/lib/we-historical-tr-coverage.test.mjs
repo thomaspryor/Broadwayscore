@@ -42,12 +42,16 @@ test('listed-but-not-held and parser-zero are unexplained', () => {
 test('BRO-6507: no review header anywhere in the issue text is explained', () => {
   const pdf = (reviewHeaders) => ({ layoutChars: 996330, reviewHeaders });
   const c = (h) => classifyShow(show('a'), probe({ a: picked({ listed: 0, skippedExisting: 0, saved: 0, pdf: pdf(h) }) }), 2);
-  assert.deepEqual([c({ raw: 0, default: 0 }).status, c({ raw: 0, default: 0 }).reason], ['explained', 'no-review-text']);
+  const none = { layout: 0, raw: 0, default: 0 };
+  assert.deepEqual([c(none).status, c(none).reason], ['explained', 'no-review-text']);
+  // Layout mode found headers, or a probe from before layout was counted: unexplained.
+  assert.equal(c({ ...none, layout: 3 }).reason, 'parser-yielded-zero');
+  assert.equal(c({ raw: 0, default: 0 }).reason, 'parser-yielded-zero');
   // Headers exist but none were ours: a real parser gap.
-  assert.equal(c({ raw: 0, default: 14 }).reason, 'parser-yielded-zero');
-  assert.equal(c({ raw: 9, default: 0 }).reason, 'parser-yielded-zero');
+  assert.equal(c({ layout: 0, raw: 0, default: 14 }).reason, 'parser-yielded-zero');
+  assert.equal(c({ layout: 0, raw: 9, default: 0 }).reason, 'parser-yielded-zero');
   // Default text missing (null) or an old probe without the count proves nothing.
-  assert.equal(c({ raw: 0, default: null }).reason, 'parser-yielded-zero');
+  assert.equal(c({ layout: 0, raw: 0, default: null }).reason, 'parser-yielded-zero');
   assert.equal(c(undefined).reason, 'parser-yielded-zero');
 });
 

@@ -12,7 +12,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findHeldUnderRelatedOutlet, sameWeek } = require('./tr-held-review.js');
+const { findHeldUnderRelatedOutlet, isSisterCopy, sameWeek } = require('./tr-held-review.js');
 const { splitOutletForLabel } = require('./outlet-mismatch-heal.js');
 const { normalizeOutlet } = require('./review-normalization.js');
 
@@ -64,8 +64,36 @@ test('the parent-label rule still holds (no date check)', () => {
   assert.equal(hit.via, 'parent');
 });
 
-test('sameWeek treats an unknown date as compatible', () => {
-  assert.equal(sameWeek(null, '2017-04-09'), true);
+test('an --unknown sister file is not the same critic', () => {
+  const dir = showDir({ 'guardian--unknown.json': { ...clapp('2017-04-09'), criticName: 'Unknown' } });
+  assert.equal(findHeldUnderRelatedOutlet(dir, { ...ids('Observer', 'Susannah Clapp'), critic: 'Susannah Clapp', date: '2017-04-09' }), null);
+  // Nor does an unknown TR critic match a named sister file.
+  const named = showDir({ 'guardian--susannah-clapp.json': clapp('2017-04-09') });
+  assert.equal(findHeldUnderRelatedOutlet(named, { parentOutletId: 'observer', outletId: 'observer', critic: 'Unknown', date: '2017-04-09' }), null);
+});
+
+test('a sunday-times file is not a times-uk sister copy (alias, not the sister)', () => {
+  // TR "Sunday Times" -> sunday-times, sister times-uk. A lookup under times-uk
+  // can alias onto sunday-times-- files; only a real times-uk file counts.
+  const dir = showDir({ 'sunday-times--david-jays.json': { outletId: 'sunday-times', criticName: 'David Jays', publishDate: '2017-04-09', fullText: 'x'.repeat(400) } });
+  const hit = findHeldUnderRelatedOutlet(dir, { parentOutletId: 'sunday-times', outletId: 'sunday-times', critic: 'David Jays', date: '2017-04-09' },
+    (d, outlet) => (outlet === 'times-uk' ? { path: path.join(d, 'sunday-times--david-jays.json'), data: JSON.parse(fs.readFileSync(path.join(d, 'sunday-times--david-jays.json'), 'utf8')) } : null));
+  assert.equal(hit, null);
+  assert.equal(isSisterCopy({ data: { outletId: 'times-uk', criticName: 'David Jays', publishDate: '2017-04-09' } }, 'times-uk', 'David Jays', '2017-04-09'), true);
+});
+
+test('non-ISO dates parse; an unparseable or missing date is not held', () => {
+  const held = (publishDate) => findHeldUnderRelatedOutlet(showDir({ 'guardian--susannah-clapp.json': clapp(publishDate) }),
+    { ...ids('Observer', 'Susannah Clapp'), critic: 'Susannah Clapp', date: '2017-04-09' });
+  assert.ok(held('April 9th, 2017'));
+  assert.ok(held('9 April 2017'));
+  assert.equal(held('sometime in spring'), null);
+  assert.equal(held(null), null);
+});
+
+test('sameWeek needs both dates known and close', () => {
+  assert.equal(sameWeek(null, '2017-04-09'), false);
+  assert.equal(sameWeek('May 14th, 2025', '2025-05-15'), true);
   assert.equal(sameWeek('2017-04-04', '2017-04-09'), true);
   assert.equal(sameWeek('2017-03-01', '2017-04-09'), false);
 });

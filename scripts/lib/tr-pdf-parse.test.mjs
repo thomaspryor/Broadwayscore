@@ -674,7 +674,7 @@ test('countReviewHeaders: zero for an issue whose review pages carry no text', a
   const { countReviewHeaders } = require('./tr-pdf-parse.js');
   const fsm = await import('node:fs');
   const read = (id, m) => fsm.readFileSync(new URL(`../../data/audit/we-historical-tr-skeletons/${id}.${m}.txt`, import.meta.url), 'utf8');
-  for (const m of ['raw', 'default']) assert.equal(countReviewHeaders(read('no-mans-land-west-end-2016', m)), 0, m);
+  for (const m of ['layout', 'raw', 'default']) assert.equal(countReviewHeaders(read('no-mans-land-west-end-2016', m)), 0, m);
   assert.ok(countReviewHeaders(read('42nd-street-west-end-2017', 'raw')) > 0);
   assert.ok(countReviewHeaders(read('42nd-street-west-end-2017', 'default')) > 0);
   // Any header shape counts: known outlet with a date below, caps line over a date, bare dd.mm.yy line.
@@ -682,4 +682,8 @@ test('countReviewHeaders: zero for an issue whose review pages carry no text', a
   assert.ok(countReviewHeaders('SOME NEW PAPER\n04.04.17\nbody') > 0);
   assert.ok(countReviewHeaders('Evening Standard\n05.04.17\nbody') > 0);
   assert.equal(countReviewHeaders('listing line 20 Sep 16\n27 Oct 2016\nno headers here'), 0);
+  // Inline byline layout ("Name, Outlet, dd.mm.yy") counts; a prose date with punctuation does not.
+  assert.ok(countReviewHeaders('Fiona Mountford, Evening Standard, 05.04.17\nbody') > 0);
+  assert.ok(countReviewHeaders('Fiona Mountford  Evening Standard  05.04.17\nbody') > 0);
+  assert.equal(countReviewHeaders('first performed 25.11.52; at the Ambassadors'), 0);
 });

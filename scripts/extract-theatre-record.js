@@ -146,7 +146,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
   // BRO-6507: title-blind review headers in the whole issue. All zero = the
   // issue's text layer has no reviews (image pages), not a parser gap.
-  probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { reviewHeaders: { raw: countReviewHeaders(rawText), default: defaultText ? countReviewHeaders(defaultText) : null } }) });
+  probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { reviewHeaders: { layout: countReviewHeaders(text0), raw: countReviewHeaders(rawText), default: defaultText ? countReviewHeaders(defaultText) : null } }) });
   if (process.argv.some(a => a.startsWith('--probe-out='))) {
     // BRO-6154: where in the issue each mode's reviews sit (no prose).
     const diag = {
