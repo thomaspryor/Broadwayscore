@@ -1357,16 +1357,16 @@ jobs:
           # the count elevated. The cap check is the monitor; it must run
           # regardless of the archiver's exit, so rc is captured and surfaced.
           rc=0
-          timeout -k 5 135 node scripts/linear-archive-done.js || rc=$?
+          timeout -k 5 120 node scripts/linear-archive-done.js || rc=$?
           if [ "$rc" -ne 0 ]; then
             echo "::warning::linear-archive-done.js exited $rc (non-blocking: some Done issues were not archived)"
             echo "- WARNING: \`linear-archive-done.js\` exited $rc (non-blocking: some Done issues were not archived)" >> "$GITHUB_STEP_SUMMARY"
           fi
           cap_rc=0
-          timeout -k 5 90 node scripts/check-linear-cap.js --alert || cap_rc=$?
+          timeout -k 5 75 node scripts/check-linear-cap.js --alert || cap_rc=$?
           if [ "$cap_rc" -ne 0 ]; then
-            echo "::warning::check-linear-cap.js exited $cap_rc (non-blocking: Linear cap not checked this run)"
-            echo "- WARNING: \`check-linear-cap.js\` exited $cap_rc (non-blocking: Linear cap not checked this run)" >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::check-linear-cap.js exited $cap_rc (non-blocking: cap breached or check failed)"
+            echo "- WARNING: \`check-linear-cap.js\` exited $cap_rc (non-blocking: cap breached or check failed)" >> "$GITHUB_STEP_SUMMARY"
           fi
 
       # Digest snapshot artifact backup (Notion 3c4637c5-416f-8127 (run 32559247279 push-race), same BRO-386 pattern as
