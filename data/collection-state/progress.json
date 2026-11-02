@@ -90,7 +90,12 @@
     "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
     "operation-mincemeat-west-end-2024/guardian--emma-john.json",
     "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
-    "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json"
+    "abba-voyage-off-west-end-2026/times-uk--will-hodgkinson.json",
+    "tosca-off-broadway-2026/new-york-classical-review--unknown.json",
+    "tosca-off-broadway-2026/a-youngish-perspective--unknown.json",
+    "tosca-off-broadway-2026/thestage--unknown.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+    "in-the-heights-off-broadway-2026/nyt-theater--unknown.json"
   ],
   "failed": [
     "cats-west-end-2026/thewrap--robert-hofler.json",
@@ -151,7 +156,23 @@
     "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
-    "hamilton-west-end-2021/theatermania--zachary-stewart.json"
+    "hamilton-west-end-2021/theatermania--zachary-stewart.json",
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "msblackforpresident-off-broadway-2026/theatermania--zachary-stewart.json",
+    "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -208,7 +229,12 @@
       "paddington-the-musical-west-end-2025/west-end-wilma--unknown.json",
       "the-hunger-games-on-stage-west-end-2025/londontheatredirect--jane-keoghan.json",
       "titanique-west-end-2024/theatreboard--unknown.json",
-      "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json"
+      "abba-voyage-off-west-end-2026/fairypoweredproductions--unknown.json",
+      "tosca-off-broadway-2026/new-york-classical-review--unknown.json",
+      "tosca-off-broadway-2026/a-youngish-perspective--unknown.json",
+      "tosca-off-broadway-2026/thestage--unknown.json",
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+      "in-the-heights-off-broadway-2026/nyt-theater--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -237,7 +263,11 @@
       "data/review-texts/larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/myguidelondon--unknown.json",
       "data/review-texts/the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-to-see--olivia-hurton.json",
       "data/review-texts/kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
-      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json"
+      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
+      "data/review-texts/msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "data/review-texts/medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json"
     ],
     "archive": [
       "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
@@ -262,7 +292,7 @@
     ]
   },
   "startTime": "2026-11-02T19:33:38.616Z",
-  "lastProcessed": "hamilton-west-end-2021/theatermania--zachary-stewart.json",
+  "lastProcessed": "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
   "log": [
     {
       "t": "2026-11-02T19:38:51.723Z",
@@ -281,6 +311,23 @@
       "event": "bb-session",
       "session": "4563f27f",
       "url": "https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-"
+    },
+    {
+      "t": "2026-11-02T21:09:49.861Z",
+      "event": "bb-session",
+      "session": "1421b09a",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-02T21:14:09.775Z",
+      "event": "bb-session",
+      "session": "8b2b9a50",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T21:14:10.264Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
