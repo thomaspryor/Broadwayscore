@@ -24,7 +24,8 @@ const { holdReason } = require('./owner-decision-quiet-period.js');
 const { isAutomationParked, OWNER_HOLD_PARK_RE, visualAskOpen, commentClearsOwnerGate } = require('./headless-dispatchability.js');
 const { parseRecheckAfterFromCard } = require('./recheck-stamp.js');
 const { skipReason, historySkipReason } = require('./cloud-worker-pick.js');
-const { codexBouncedRecently } = require('./codex-runner.js');
+const { codexBouncedRecently, codexBounceCapped } = require('./codex-runner.js');
+const { proseDateWait } = require('./prose-date-wait.js');
 
 // Order matters: a card's exclusive category is the first one whose trait it has.
 const CATEGORIES = [
@@ -39,6 +40,7 @@ const CATEGORIES = [
   { key: 'parked-automatic', label: 'Parked: automatic alert or estimate check' },
   { key: 'parked-owner-wording', label: 'Parked: says it needs you but has no real question' },
   { key: 'parked-no-reason', label: 'Parked: no reason written' },
+  { key: 'parked-prose-wait', label: 'Parked: waits on time written in words, no date stamp (never resumes)' },
   { key: 'parked-other', label: 'Parked: other reason' },
   { key: 'paused', label: 'Paused' },
   { key: 'ready', label: 'Ready for a worker or Codex' },
@@ -133,13 +135,16 @@ function cardTraits(issue, { nowMs, secret = null, lastRecheckStatus = null } = 
   if (parked && (isAutomationParked(description) || MACHINE_FILED_RE.test(description) || MACHINE_TITLE_RE.test(issue.title || ''))) traits.add('parked-automatic');
   if (reasons.some((r) => OWNER_HOLD_PARK_RE.test(r))) traits.add('parked-owner-wording');
   if (stateName === 'Backlog' && !reasons.length) traits.add('parked-no-reason');
+  if (reasons.some((r) => proseDateWait(r)) && stamp == null) traits.add('parked-prose-wait');
   if (reasons.length) traits.add('parked-other');
   if (stateName === 'Paused') traits.add('paused');
 
   const tier = TIER_BY_PRIORITY[Number(issue.priority)];
   const skip = tier ? skipReason(issue, nowMs, { tier }) : 'no-priority';
   const history = historySkipReason(issue, comments, nowMs);
-  const bounced = codexBouncedRecently(comments, nowMs);
+  // Two Codex rejections hand the card to the Claude worker for good (BRO-6857): still ready, for that lane.
+  const capped = codexBounceCapped(comments, nowMs);
+  const bounced = !capped && codexBouncedRecently(comments, nowMs);
   if (!skip && !history && !bounced) traits.add('ready');
   if (COOLING_REASONS.has(skip) || COOLING_REASONS.has(history)) traits.add('cooling-off');
   if (bounced) traits.add('codex-bounced');

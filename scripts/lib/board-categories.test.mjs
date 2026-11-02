@@ -41,6 +41,7 @@ const FIXTURES = {
   'parked-automatic': () => card({ title: 'BSC Daily estimate check failed', description: `${VERIFY}\nPARKED: estimate drift` }),
   'parked-owner-wording': () => withDesc('PARKED: needs owner decision'),
   'parked-no-reason': () => card({ state: { name: 'Backlog', type: 'backlog' } }),
+  'parked-prose-wait': () => withDesc('PARKED: waits for 2 weeks of hit data'),
   'parked-other': () => withDesc('PARKED: waiting for upstream fix'),
   paused: () => card({ state: { name: 'Paused', type: 'backlog' } }),
   ready: () => card(),
@@ -162,7 +163,7 @@ test('formatMarkdown: plain table with every row, totals, no card ids', () => {
   board.push(card({ priority: 1, title: 'Prod is down' }));
   const md = bc.formatMarkdown(bc.categorizeBoard(board, { now: NOW, lastRecheckStatusById: STATUS }), { flow: null });
   for (const c of bc.CATEGORIES) assert.ok(md.includes(`| ${c.label} |`), c.label);
-  assert.match(md, /\| \*\*Total\*\* \| \*\*20\*\* \|/);
+  assert.ok(md.includes(`| **Total** | **${board.length}** |`));
   assert.match(md, /- Urgent: Prod is down \(Ready for a worker or Codex\)/);
   assert.doesNotMatch(md, /BRO-\d/);
   assert.match(md, /recognised from the card text only/);
@@ -245,6 +246,24 @@ test('an old RECHECK stamp on a Todo card is history: an Urgent one still shows 
   const r = bc.categorizeBoard([issue], { now: NOW });
   assert.ok(!r.cards[0].traits.includes('dated-past'));
   assert.equal(r.importantStuck.length, 1);
+});
+
+test('prose date waits: a stamp moves the card out of parked-prose-wait, a real block stays a real block (BRO-6857)', () => {
+  for (const reason of ['promote no earlier than 2026-11-13', 'needs about a week of per-lane data', 'waits for 2 weeks of hit data']) {
+    assert.equal(categoryOf(withDesc(`PARKED: ${reason}`)), 'parked-prose-wait', reason);
+  }
+  const stamped = withDesc('PARKED: promote no earlier than 2026-11-13\nRECHECK-AFTER: 2026-11-13', { state: { name: 'Paused', type: 'backlog' } });
+  assert.equal(categoryOf(stamped), 'dated-future');
+  assert.equal(categoryOf(withDesc('PARKED: needs an API key from the vendor')), 'parked-real-block');
+  assert.equal(categoryOf(withDesc('PARKED: waiting for upstream fix')), 'parked-other');
+});
+
+test('a card Codex rejected twice is ready for the Claude worker, not "Codex rejected it" (BRO-6857)', () => {
+  const b = (at) => ({ body: '<!-- codex-runner-bounced -->\nCodex could not finish this.', createdAt: at });
+  const two = card({ comments: { nodes: [b('2026-09-20T00:00:00Z'), b('2026-10-20T00:00:00Z')] } });
+  assert.equal(categoryOf(two), 'ready');
+  const one = card({ comments: { nodes: [b('2026-10-26T00:00:00Z')] } });
+  assert.equal(categoryOf(one), 'codex-bounced');
 });
 
 test('started with no update for 2+ days is its own row and counts as stuck when Urgent', () => {

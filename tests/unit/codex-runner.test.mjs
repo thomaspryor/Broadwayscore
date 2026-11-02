@@ -1525,3 +1525,28 @@ test('pruneDisk wiring: the runner prunes Claude worktrees and logs disk usage w
   assert.doesNotMatch(src, /'worktree', 'remove', '--force'/);
   assert.match(src, /logDiskUsage\(/);
 });
+
+test('codexBounceCapped (BRO-6857): two bounces cap the card, a retry note does not reset it, a person or CODEX-OK lifts it', () => {
+  const now = Date.parse('2026-11-02T00:00:00Z');
+  const c = (body, createdAt) => ({ body, createdAt });
+  const b = (at) => c(`${r.BOUNCED_MARKER}\nfindings`, at);
+  const retry = (at) => c(`${r.RETRY_MARKER}\nretry`, at);
+  assert.equal(r.BOUNCE_CAP, 2);
+  assert.equal(r.codexBounceCapped([b('2026-10-01T00:00:00Z')], now), false);
+  assert.equal(r.codexBounceCapped([b('2026-09-20T00:00:00Z'), b('2026-10-20T00:00:00Z')], now), true);
+  // bounce, retry, bounce: the retry was the second try, so the cap holds even after the 14-day ban expired
+  const looped = [b('2026-09-25T00:00:00Z'), retry('2026-10-01T00:00:00Z'), b('2026-10-05T00:00:00Z')];
+  assert.equal(r.codexBounceCapped(looped, now), true);
+  assert.equal(r.codexBouncedRecently(looped, now), true);
+  // one bounce then a retry: still offered to Codex
+  assert.equal(r.codexBounceCapped([b('2026-10-01T00:00:00Z'), retry('2026-10-02T00:00:00Z')], now), false);
+  // partial landings and runner crashes do not count
+  assert.equal(r.codexBounceCapped([c(`${r.BOUNCED_MARKER}\n## Codex runner: landed part of this card`, '2026-10-20T00:00:00Z'), c(`${r.BOUNCED_MARKER}\n## Codex runner: landed part of this card`, '2026-10-21T00:00:00Z')], now), false);
+  // outside the 60-day window
+  assert.equal(r.codexBounceCapped([b('2026-08-01T00:00:00Z'), b('2026-08-02T00:00:00Z')], now), false);
+  // lifted by CODEX-OK or a person's comment after the newest bounce; not by an automatic note
+  const two = [b('2026-10-01T00:00:00Z'), b('2026-10-05T00:00:00Z')];
+  assert.equal(r.codexBounceCapped([...two, c('CODEX-OK', '2026-10-06T00:00:00Z')], now), false);
+  assert.equal(r.codexBounceCapped([...two, c('Retry this one, the key is set now.', '2026-10-06T00:00:00Z')], now), false);
+  assert.equal(r.codexBounceCapped([...two, c('Claimed by https://claude.ai/code/session_x', '2026-10-06T00:00:00Z')], now), true);
+});

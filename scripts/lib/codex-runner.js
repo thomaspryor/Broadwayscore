@@ -33,6 +33,11 @@ const BOUNCE_MEMORY_MS = 14 * 24 * 3600_000;
 const PARTIAL_HEADING = '## Codex runner: landed part of this card';
 const PARTIAL_MEMORY_MS = 3 * 24 * 3600_000;
 const PARTIAL_MAX_PER_MEMORY = 2;
+// BRO-6857: the 14-day ban expired and the card went back to Codex, which bounced it again (113 open cards bounced
+// at least once, 8 three or more times). A card Codex has failed this many times inside STRUCTURAL_MEMORY_MS stays with
+// the Claude lane until a person comments or a CODEX-OK line follows the newest bounce. The retry note does not reset it:
+// the one retry per card (codex-retry-backfill) is the second try, so a bounce after it is the cap.
+const BOUNCE_CAP = 2;
 // BRO-6144: a card Codex cannot work for a structural reason (the work needs the owner, the Mac,
 // a credential the runner lacks, or files Codex may not edit; or it is already fixed) was offered
 // again whenever the 14-day timer ran out: 5 of 6 cards of the 2026-10-24 live run. The runner writes
@@ -534,7 +539,7 @@ function retryBody({ findings = '', reason = '' } = {}) {
  */
 function codexBouncedRecently(comments, nowMs) {
   const raw = Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : [];
-  if (structuralBounceHolds(raw, nowMs)) return true;
+  if (structuralBounceHolds(raw, nowMs) || codexBounceCapped(raw, nowMs)) return true;
   const all = sinceRetry(raw);
   const recent = all.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
   const isPartial = (c) => String(c.body || '').startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`);
@@ -548,6 +553,20 @@ function codexBouncedRecently(comments, nowMs) {
     || partials.length >= PARTIAL_MAX_PER_MEMORY
     || partials.some((c) => nowMs - Date.parse(c.createdAt) < PARTIAL_MEMORY_MS)
     || raw.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS && isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
+}
+
+/**
+ * BRO-6857. True when Codex has failed this card BOUNCE_CAP times (plain or structural bounce notes, not partial
+ * landings or runner crashes) within STRUCTURAL_MEMORY_MS and nothing has lifted it since: a person's comment or a
+ * CODEX-OK line after the newest bounce. Retry notes are ignored. Pure; `comments` are the card's comment nodes.
+ */
+function codexBounceCapped(comments, nowMs) {
+  const raw = (Array.isArray(comments) ? comments : []).filter((c) => c && Number.isFinite(Date.parse(c.createdAt)));
+  const isPartial = (c) => String(c.body || '').startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`);
+  const bounces = raw.filter((c) => isCodexBounce(c.body) && !isPartial(c) && nowMs - Date.parse(c.createdAt) < STRUCTURAL_MEMORY_MS);
+  if (bounces.length < BOUNCE_CAP) return false;
+  const newest = Math.max(...bounces.map((c) => Date.parse(c.createdAt)));
+  return !raw.some((c) => Date.parse(c.createdAt) > newest && (CODEX_OK_RE.test(String(c.body || '')) || isPersonComment(c.body)));
 }
 
 /**
@@ -1747,7 +1766,7 @@ module.exports = {
   dropDataDir,
   hasCredentialRemote,
   MAX_ATTEMPTS_SHIP_WITH_FIXES,
-  codexBouncedRecently,
+  codexBouncedRecently, codexBounceCapped, BOUNCE_CAP,
   isCodexBounce,
   MIN_FREE_DISK_BYTES,
   staleTmpEntries,

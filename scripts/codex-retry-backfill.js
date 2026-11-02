@@ -53,6 +53,8 @@ function planRetry({ identifier, stateType, comments, nowMs = Date.now(), issue 
   if (list.some((c) => Date.parse(c.createdAt) > at && R.isPersonComment(c.body))) return { skip: 'a written note answered the bounce' };
   // An older structural bounce still standing (owner decision, missing credential) keeps the card out.
   if (R.structuralBounceHolds(list, nowMs)) return { skip: 'an earlier structural bounce still holds' };
+  // At the cap the card stays with the Claude lane; a retry note would not return it to Codex (BRO-6857).
+  if (R.codexBounceCapped(list, nowMs)) return { skip: 'bounce cap reached' };
   const kind = retryKind(bounces[0].body);
   if (!kind) return { skip: `newest bounce is ${R.bounceClassOf(bounces[0].body) || 'not retryable'}` };
   // The runner would still pass it over (Mac-only, too broad, paused for a blocker): a note would change nothing.
