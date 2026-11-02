@@ -58,7 +58,7 @@ async function runWeeklyMonitor({ loadData, decideFn, statePath, dryRun, logData
   for (const a of alerts) {
     if (dryRun) { console.log(`[dry-run] would send ${a.kind}: ${a.title}`); continue; }
     if (a.logOnly) { console.log(`[log-only] ${a.kind}: ${a.description}`); continue; }
-    const delivered = await sendAlert({ title: a.title, description: a.description, severity: a.severity, email: a.email });
+    const delivered = await sendAlert({ title: a.title, description: a.description, severity: a.severity, email: a.email, subjectLabel: a.subjectLabel });
     if (a.email && !delivered && a.stampKey) {
       // Delivery failed (Resend down / env missing): revert the sent-stamp so
       // this alert RETRIES next week instead of being silently lost.

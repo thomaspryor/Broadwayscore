@@ -43,6 +43,9 @@ FROM exposed LEFT JOIN pages ON exposed.person_id = pages.person_id AND exposed.
 GROUP BY variant
 LIMIT 100`;
 
+const MAX_MISSING_SHARE = 0.10; // either arm
+const MAX_MISSING_SHARE_GAP = 0.05; // difference between arms
+
 function summarizeRelatedShows(rows, flagHealth, now = new Date()) {
   const problems = [];
   if (!Array.isArray(rows) || rows.length >= 100) throw new Error('Invalid or capped related-shows readout');
@@ -56,7 +59,6 @@ function summarizeRelatedShows(rows, flagHealth, now = new Date()) {
       || missing < 0 || missing > n || crossed < 0 || crossed > n) {
       problems.push('invalid person counts');
     }
-    if (missing > 0) problems.push('exposed people without a usable first-session pageview join');
     if (crossed > 0) problems.push('people exposed in multiple arms');
   }
   if (!flagHealth?.ok) problems.push('flag health failed or unavailable');
@@ -64,6 +66,16 @@ function summarizeRelatedShows(rows, flagHealth, now = new Date()) {
     const row = rows.find(r => r[0] === name) || [name, 0, 0, 0, 0, 0];
     return { name, n: row[1], conv: row[2], searchLanders: row[3], missingSession: row[4], crossVariantPeople: row[5] };
   });
+  // A few exposed people always lack a first-session pageview (ad blockers,
+  // dropped events). They stay in the denominator as non-converters in both
+  // arms, so a small gap is expected. Only a large or lopsided gap makes the
+  // result unreadable (BRO-6868).
+  const share = v => (v.n > 0 ? v.missingSession / v.n : 0);
+  const shares = variants.map(share);
+  if (Math.max(...shares) > MAX_MISSING_SHARE
+    || Math.abs(shares[0] - shares[1]) > MAX_MISSING_SHARE_GAP) {
+    problems.push('exposed people without a usable first-session pageview join');
+  }
   const primary = {
     metric: 'person-level first-exposed-session search show landing and second pageview / exposed people',
     p: null, z: null, suppressed: problems.length ? [...new Set(problems)].join('; ') : null, degenerate: null,
@@ -101,4 +113,4 @@ async function analyzeRelatedShows({ query = phQuery, fetchFlag, now } = {}) {
   return summarizeRelatedShows(await query(READOUT_QUERY), flagHealth, now);
 }
 
-module.exports = { ARMS, CUTOVER, STOPPING_N, FLOOR_N, READOUT_QUERY, summarizeRelatedShows, analyzeRelatedShows };
+module.exports = { MAX_MISSING_SHARE, MAX_MISSING_SHARE_GAP, ARMS, CUTOVER, STOPPING_N, FLOOR_N, READOUT_QUERY, summarizeRelatedShows, analyzeRelatedShows };

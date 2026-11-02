@@ -46,14 +46,16 @@ leaves the alert eligible to retry. State belongs in
 `data/audit/related-shows-ab-monitor-state.json`; dry runs send and save nothing.
 Neither command changes the flag or names a winner.
 
-**Scheduling still required:** the unattended worker cannot edit workflows.
-After infrastructure review, add the monitor to `monitor-gate-ab.yml` with
-`POSTHOG_PERSONAL_API_KEY`, `RESEND_API_KEY`, `OWNER_EMAIL`, and the existing
-dry-run input. Add its state file to the workflow's guarded commit loop.
-Add both top-level CLIs to `test.yml`'s push paths. The libraries and their
-colocated tests already fall under `scripts/lib/**`. This is an advisory
-monitor; it must not become a blocking experiment gate. Until this wiring
-lands, it does not run on a cron.
+**Scheduling:** runs weekly inside `monitor-gate-ab.yml` (state file in its
+guarded commit loop). Advisory only; it must not become a blocking gate.
+
+**Alert policy (BRO-6868):** a few percent of exposed people never have a
+first-session pageview (blockers, dropped events). They stay in the
+denominator as non-converters in both arms, so the result is suppressed only
+when either arm exceeds 10% or the arms differ by more than 5 points
+(`MAX_MISSING_SHARE`, `MAX_MISSING_SHARE_GAP`). A data problem below the
+planned sample is log-only (nobody is waiting on a readout). It emails, with
+the subject tag `ACTION NEEDED`, only once both arms reach 3,140.
 
 Cost per run: one read-only PostHog flag GET and one cumulative HogQL query
 (the shared query helper can retry three times). No scraper or LLM calls.
