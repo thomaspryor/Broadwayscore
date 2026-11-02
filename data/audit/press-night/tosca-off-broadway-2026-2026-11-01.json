@@ -7,25 +7,25 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-02T03:09:25.434Z",
-    "endedAt": null,
+    "endedAt": "2026-11-02T09:00:30.712Z",
     "intervalMin": 5,
-    "samples": 23,
+    "samples": 70,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-02T04:59:32.197Z",
-    "lastOkSampleAt": "2026-11-02T04:59:32.197Z"
+    "lastSampleAt": "2026-11-02T08:55:27.826Z",
+    "lastOkSampleAt": "2026-11-02T08:55:27.826Z"
   },
   "firstLiveAt": "2026-11-02T03:09:25.434Z",
   "firstLiveBaseline": true,
   "lastLiveAt": "2026-11-02T03:09:25.434Z",
-  "liveCount": 7,
+  "liveCount": 0,
   "liveCountAt": {
     "1h": 8,
-    "2h": null,
+    "2h": 7,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-02T04:04:28.906Z",
-    "2h": null,
+    "2h": "2026-11-02T05:05:16.590Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -45,7 +45,7 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": false
     },
     {
       "key": "the new york times|anthony tommasini",
@@ -57,7 +57,7 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": false
     },
     {
       "key": "the guardian|flora willson",
@@ -81,7 +81,7 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": false
     },
     {
       "key": "broadwayworld|richard sasanow",
@@ -93,7 +93,7 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": false
     },
     {
       "key": "observer|james jorden",
@@ -105,7 +105,7 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": false
     },
     {
       "key": "zeal nyc|herman spencer",
@@ -117,7 +117,7 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": false
     },
     {
       "key": "operawire|david salazar",
@@ -129,7 +129,7 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "prevOkSampleAt": null,
       "baseline": true,
-      "liveNow": true
+      "liveNow": false
     }
   ],
   "dropped": [
@@ -140,10 +140,126 @@
       "firstLiveAt": "2026-11-02T03:09:25.434Z",
       "droppedAt": "2026-11-02T04:24:30.042Z",
       "restoredAt": null
+    },
+    {
+      "key": "zeal nyc|herman spencer",
+      "outlet": "Zeal NYC",
+      "critic": "Herman Spencer",
+      "firstLiveAt": "2026-11-02T03:09:25.434Z",
+      "droppedAt": "2026-11-02T08:25:26.289Z",
+      "restoredAt": null
+    },
+    {
+      "key": "the new yorker|unknown",
+      "outlet": "The New Yorker",
+      "critic": null,
+      "firstLiveAt": "2026-11-02T03:09:25.434Z",
+      "droppedAt": "2026-11-02T08:45:27.239Z",
+      "restoredAt": null
+    },
+    {
+      "key": "the new york times|anthony tommasini",
+      "outlet": "The New York Times",
+      "critic": "Anthony Tommasini",
+      "firstLiveAt": "2026-11-02T03:09:25.434Z",
+      "droppedAt": "2026-11-02T08:45:27.239Z",
+      "restoredAt": null
+    },
+    {
+      "key": "huffpost|wilborn hampton",
+      "outlet": "HuffPost",
+      "critic": "Wilborn Hampton",
+      "firstLiveAt": "2026-11-02T03:09:25.434Z",
+      "droppedAt": "2026-11-02T08:45:27.239Z",
+      "restoredAt": null
+    },
+    {
+      "key": "broadwayworld|richard sasanow",
+      "outlet": "BroadwayWorld",
+      "critic": "Richard Sasanow",
+      "firstLiveAt": "2026-11-02T03:09:25.434Z",
+      "droppedAt": "2026-11-02T08:45:27.239Z",
+      "restoredAt": null
+    },
+    {
+      "key": "observer|james jorden",
+      "outlet": "Observer",
+      "critic": "James Jorden",
+      "firstLiveAt": "2026-11-02T03:09:25.434Z",
+      "droppedAt": "2026-11-02T08:45:27.239Z",
+      "restoredAt": null
+    },
+    {
+      "key": "operawire|david salazar",
+      "outlet": "Operawire",
+      "critic": "David Salazar",
+      "firstLiveAt": "2026-11-02T03:09:25.434Z",
+      "droppedAt": "2026-11-02T08:45:27.239Z",
+      "restoredAt": null
     }
   ],
   "reference": {
     "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 7,
+      "fetchedAt": "2026-11-02T09:00:27.120Z",
+      "asOf": "2026-11-02T05:00:00.000Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "discoveredAfter": [],
+      "excluded": [
+        {
+          "outletId": "nytimes",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        },
+        {
+          "outletId": "new-york-classical-review",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        },
+        {
+          "outletId": "operawire",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        }
+      ],
+      "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-02T09:00:27.120Z",
+      "censusNote": "no BWW roundup found",
+      "excluded": [
+        {
+          "outletId": "nytimes",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        },
+        {
+          "outletId": "new-york-classical-review",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        },
+        {
+          "outletId": "operawire",
+          "reason": "listing is another production's review (wrongProduction)",
+          "priorRunCandidate": true
+        }
+      ]
+    },
+    "2h-live": {
       "status": "no-census-yet",
       "source": null,
       "count": 0,
@@ -182,11 +298,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-02T09:00:27.205Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-02T05:00:28.405Z",
+    "capturedAt": "2026-11-02T09:00:30.651Z",
     "files": [
       {
         "file": "broadwayworld--alexandre-diaconu.json",
@@ -301,6 +423,19 @@
         "scoredAt": null,
         "publishDate": "October 5th, 2022",
         "url": "newyorkclassicalreview.com/2022/10/kurzak-provides-the-spark-in-mets-simmering-tosca",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "newyorker--unknown.json",
+        "outletId": "newyorker",
+        "outlet": "The New Yorker",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-11-02T06:42:46.697Z",
+        "scoredAt": null,
+        "publishDate": "2018-04-26",
+        "url": "newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2",
         "includable": false,
         "reason": "wrongProduction",
         "syndicatedUnder": null
@@ -431,8 +566,8 @@
         "scoredAt": "2026-10-07T13:20:28.052Z",
         "publishDate": null,
         "url": "zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met",
-        "includable": true,
-        "reason": null,
+        "includable": false,
+        "reason": "wrongProduction",
         "syndicatedUnder": null
       }
     ]
