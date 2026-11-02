@@ -329,10 +329,25 @@ const MID_TEXT_CHROME_BLOCKS = [
   // (West End) was tiered `invalid`.
   { name: 'express-reach-newsletter', maxGap: 900,
     start: 'Get the latest news and gossip from the Royal Family', end: 'You\\s+can\\s+unsubscribe\\s+at\\s+any\\s+time\\.\\s*(?:More\\s+Info\\s*\\.?|Read\\s+our\\s+Privacy\\s+Policy)' },
+  // BRO-6824: Bristol24/7 inlines a membership appeal after the first paragraphs and
+  // WarwickshireWorld (National World) inlines a newsletter signup + ad-lite offer; both
+  // tiered full 4-7K reviews `invalid` and tripped the outlet invalid-content health row.
+  { name: 'bristol247-member-appeal', maxGap: 300,
+    start: 'Independent journalism is needed now', end: 'Community\\s+member\\s+Find\\s+out\\s+more' },
+  { name: 'warwickshireworld-newsletter', maxGap: 600,
+    start: 'Sign up to our daily WarwickshireWorld Today newsletter', end: 'Google\\s+Privacy\\s+Notice\\s+and\\s+Terms\\s+of\\s+Service\\s+apply\\.' },
 ].map((b) => ({
   ...b,
   re: new RegExp(`${b.start}[\\s\\S]{0,${b.maxGap}}?${b.end}`, 'gi'),
 }));
+// BRO-6824: publisher footers that run from a fixed marker to the end of the text
+// (Bristol24/7: "Become a member of Bristol24/7 Share Share on Facebook ..." then the
+// newsletter picker). Sits before the last 40%, so the trailing-junk exemption misses it
+// and "Become a member" read as a paywall. Cut marker-to-end only when the exact
+// two-part marker matches and a review of at least MID_TEXT_CHROME_MIN_BODY chars precedes it.
+const TAIL_CHROME_CUTS = [
+  { name: 'bristol247-footer', re: /Become a member of Bristol24\/7\s+Share\s+Share on Facebook[\s\S]*$/i },
+];
 // Same floor as DOW_JONES_MIN_BODY: article text must follow the block, and what is left must still be a review.
 const MID_TEXT_CHROME_MIN_BODY = 300;
 
@@ -352,6 +367,10 @@ function stripMidTextChromeBlocks(text) {
   for (const { re } of MID_TEXT_CHROME_BLOCKS) {
     out = out.replace(re, (m, offset, whole) =>
       (whole.length - offset - m.length >= MID_TEXT_CHROME_MIN_BODY ? '\n' : m));
+  }
+  for (const { re } of TAIL_CHROME_CUTS) {
+    const m = re.exec(out);
+    if (m && m.index >= MID_TEXT_CHROME_MIN_BODY) out = out.slice(0, m.index);
   }
   if (out === text) return text;
   out = out.replace(/[ \t]*\n[ \t]*/g, '\n').replace(/\n{3,}/g, '\n\n').trim();
