@@ -1,37 +1,7 @@
 {
-  "generatedAt": "2026-11-02T13:01:55.650Z",
-  "bannerText": "181/200 Done(14d) verified on main · 8 FAILED · 0 vacuous · 14 stuck-but-done · 1 mis-armed, needs re-arming (BRO-6269)",
+  "generatedAt": "2026-11-02T21:38:20.253Z",
+  "bannerText": "129/147 Done(14d) verified on main · 8 FAILED · 0 vacuous · 17 stuck-but-done · 2 mis-armed, needs re-arming (BRO-6804, BRO-6269)",
   "items": [
-    {
-      "title": "FAILED BRO-6434 — BSC Daily: Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
-      "detail": "[check-health-row-absent] FAIL: \"Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)\" still listed in the 2026-11-02T12:54:30.750Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6434/bsc-daily-corpus-drift-one-show-score-url-mapped-to-2-showids-baseline"
-    },
-    {
-      "title": "FAILED BRO-6329 — 52 live show(s) carry art of another work",
-      "detail": "[check-alert-condition-absent] FAIL: \"live-show-art:wrong-work\" still firing — open, last fired 2026-10-26T13:17:13.050Z (167.8h ago, within 168h)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6329/52-live-shows-carry-art-of-another-work"
-    },
-    {
-      "title": "FAILED BRO-6323 — BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
-      "detail": "[check-health-row-absent] FAIL: \"main test.yml STILL red — auto-dispatch did not resolve it\" still listed in the 2026-11-02T12:54:30.750Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it"
-    },
-    {
-      "title": "FAILED BRO-6322 — BSC Daily: Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6322/bsc-daily-live-data-test-failing-bro-3887-repo-actions-cache-stays"
-    },
-    {
-      "title": "FAILED BRO-6318 — BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (1871/1750 reqs)",
-      "detail": "[check-health-row-absent] FAIL: \"Bright Data daily breaker TRIPPED: web_unlocker2 (1871/1750 reqs)\" still listed in the 2026-11-02T12:54:30.750Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6318/bsc-daily-bright-data-daily-breaker-tripped-web-unlocker2-18711750"
-    },
-    {
-      "title": "FAILED BRO-5818 — BSC Daily: Workflow repeat-failure: Test Suite",
-      "detail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Test Suite\" still listed in the 2026-11-02T12:54:30.750Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5818/bsc-daily-workflow-repeat-failure-test-suite"
-    },
     {
       "title": "FAILED BRO-6788 — UX audit: The 'Add a show' button in 'mobile__watchlist_grid' doesn't clearly indicate its interactivity.",
       "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
@@ -41,7 +11,37 @@
       "title": "FAILED BRO-6787 — UX audit: Inconsistent button label for adding a show. Uses '+ Add show' on 'desktop__watchlist_grid' and '+ Create a li",
       "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6787/ux-audit-inconsistent-button-label-for-adding-a-show-uses-add-show-on"
+    },
+    {
+      "title": "FAILED BRO-6767 — Opera: past premiere-run pages + reviews for current Met revivals",
+      "detail": "FAIL medea-met-2022: show missing; scored reviews 0 < 3 FAIL tosca-met-2017: show missing; scored reviews 0 < 3 FAIL otello-met-2015: show missing; scored reviews 0 < 3 FAIL der-r…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6767/opera-past-premiere-run-pages-reviews-for-current-met-revivals"
+    },
+    {
+      "title": "FAILED BRO-6766 — Opera expansion B: premieres at major houses beyond the Met (ROH first)",
+      "detail": "FAIL roh-new-prod-2026-27-1: show missing FAIL roh-new-prod-2026-27-2: show missing",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6766/opera-expansion-b-premieres-at-major-houses-beyond-the-met-roh-first"
+    },
+    {
+      "title": "FAILED BRO-6706 — BSC Daily: Data quality: revival-unverified lifetime sweep",
+      "detail": "[check-health-row-absent] FAIL: \"Data quality: revival-unverified lifetime sweep\" still listed in the 2026-11-02T21:18:56.694Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6706/bsc-daily-data-quality-revival-unverified-lifetime-sweep"
+    },
+    {
+      "title": "FAILED BRO-6434 — BSC Daily: Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
+      "detail": "[check-health-row-absent] FAIL: \"Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)\" still listed in the 2026-11-02T21:18:56.694Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6434/bsc-daily-corpus-drift-one-show-score-url-mapped-to-2-showids-baseline"
+    },
+    {
+      "title": "FAILED BRO-6323 — BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
+      "detail": "[check-health-row-absent] FAIL: \"main test.yml STILL red — auto-dispatch did not resolve it\" still listed in the 2026-11-02T21:18:56.694Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it"
+    },
+    {
+      "title": "FAILED BRO-6322 — BSC Daily: Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887\" still listed in the 2026…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6322/bsc-daily-live-data-test-failing-bro-3887-repo-actions-cache-stays"
     }
   ],
-  "moreCount": 14
+  "moreCount": 17
 }
