@@ -335,7 +335,17 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
         && isLandedAcked(rows, taskId, last)) outcome = 'done';
       else if (last.event === JOB_EVENTS.STOPPED_SHORT) outcome = 'stoppedShort';
       else if (last.event === JOB_EVENTS.STRANDED) outcome = 'stranded';
-      else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ABANDONED/RETRIED-with-no-successor-spawn-yet
+      // BRO-6430: ABANDONED means this attempt never ran (dispatch-ledger.js's
+      // own definition): bsc-runner refused it before spawning anything —
+      // disk under the dispatch floor, another live job already holding the
+      // task's lease, or the lease write itself throwing. No worker existed,
+      // so there is no outcome to judge; counting these as failures made a
+      // 3-day low-disk window (730 refused launches, 2026-10-29..31) read as
+      // a 21% success rate. Excluded from `resolved` like orphaned/blocked.
+      // The disk condition itself is alerted by health-check's 'Infra: disk
+      // space' row, and dispatch-watchdog now holds instead of re-launching.
+      else if (last.event === JOB_EVENTS.ABANDONED) outcome = 'abandoned';
+      else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/RETRIED-with-no-successor-spawn-yet
       else outcome = 'inFlight'; // SPAWNED — chain still open
 
       results.push({ taskId, launchTs: launch.tsIso || launch.ts, outcome });
@@ -350,6 +360,7 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
   // above for why `blocked` gets ORPHANED's "not evidence either way"
   // treatment while `stoppedShort`/`stranded` are real failures.
   const blocked = results.filter((r) => r.outcome === 'blocked').length;
+  const abandoned = results.filter((r) => r.outcome === 'abandoned').length;
   const stoppedShort = results.filter((r) => r.outcome === 'stoppedShort').length;
   const stranded = results.filter((r) => r.outcome === 'stranded').length;
   const inFlight = results.filter((r) => r.outcome === 'inFlight').length;
@@ -377,6 +388,7 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
     failed,
     orphaned,
     blocked,
+    abandoned,
     stoppedShort,
     stranded,
     inFlight,
@@ -387,6 +399,7 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
     failedTaskIds: [...new Set(results.filter((r) => r.outcome === 'failed').map((r) => r.taskId))],
     orphanedTaskIds: [...new Set(results.filter((r) => r.outcome === 'orphaned').map((r) => r.taskId))],
     blockedTaskIds: [...new Set(results.filter((r) => r.outcome === 'blocked').map((r) => r.taskId))],
+    abandonedTaskIds: [...new Set(results.filter((r) => r.outcome === 'abandoned').map((r) => r.taskId))],
     stoppedShortTaskIds: [...new Set(results.filter((r) => r.outcome === 'stoppedShort').map((r) => r.taskId))],
     strandedTaskIds: [...new Set(results.filter((r) => r.outcome === 'stranded').map((r) => r.taskId))],
   };
@@ -433,7 +446,7 @@ function computeHeadlessDispatchDigest({
   // so it must still be visible here — otherwise a supervisor that only ever
   // orphans jobs (never actually failing or succeeding them) would silently
   // sit outside minResolved forever with no sign anything is wrong.
-  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.blocked} blocked (owner decision needed, not counted as failure), ${stats.stoppedShort} stopped short, ${stats.stranded} stranded (unlanded work), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
+  const detail = `${stats.done}/${stats.resolved} resolved ${lane} launches succeeded (${span}; ${stats.launches} total, ${stats.orphaned} orphaned (supervisor lost track, not counted as failure), ${stats.blocked} blocked (owner decision needed, not counted as failure), ${stats.abandoned} refused before spawn (disk pressure or duplicate dispatch, not counted as failure), ${stats.stoppedShort} stopped short, ${stats.stranded} stranded (unlanded work), ${stats.inFlight} in-flight, ${stats.none} with no job event yet)`;
 
   // Orphan-rate gate FIRST, before the vacuous-gate (resolved===0) check
   // (Codex adversarial ship-check catch, 2nd pass): the vacuous-gate branch

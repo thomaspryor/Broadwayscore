@@ -518,3 +518,32 @@ test('landed-acked for a different jobId (or none) does not rescue the job', () 
     assert.equal(r.done, 0);
   }
 });
+
+// BRO-6430: 2026-10-29..31 bsc-runner refused 730 headless launches before
+// spawning (disk under the dispatch floor) and the rate read 21%. ABANDONED
+// means the attempt never ran — no worker, no verdict — so it sits outside
+// `resolved` like orphaned/blocked, and is still shown in the message.
+test('BRO-6430: pre-spawn refusals (job-abandoned) are not failures and stay visible', () => {
+  const abandoned = (ts, taskId, jobId, reason) => ({ ts, event: JOB_EVENTS.ABANDONED, taskId, jobId, reason });
+  const entries = [];
+  for (let i = 0; i < 10; i++) {
+    const t = `2026-08-0${4 + (i % 5)}T0${i % 10}:00:00.000Z`;
+    entries.push(hlLaunch(t, `ok-${i}`), hlSpawn(t, `ok-${i}`, `ok-${i}-j`), hlDone(t, `ok-${i}`, `ok-${i}-j`));
+  }
+  for (let i = 0; i < 40; i++) {
+    const t = `2026-08-09T${String(i % 24).padStart(2, '0')}:${String(i).padStart(2, '0')}:00.000Z`;
+    entries.push(hlLaunch(t, `disk-${i}`), abandoned(t, `disk-${i}`, `disk-${i}-j`, 'disk-pressure: disk free 3.4GB < floor 5GB after self-heal GC — refusing dispatch'));
+  }
+  entries.push(hlLaunch('2026-08-09T05:00:00.000Z', 'dup'), abandoned('2026-08-09T05:00:00.000Z', 'dup', 'dup-j', 'task already has a live job'));
+  entries.push(hlLaunch('2026-08-09T06:00:00.000Z', 'real'), hlSpawn('2026-08-09T06:00:00.000Z', 'real', 'real-j'), hlFailed('2026-08-09T06:30:00.000Z', 'real', 'real-j'));
+
+  const stats = computeJobLaneOutcomeRate(entries, { nowMs: NOW, lane: 'headless' });
+  assert.equal(stats.abandoned, 41);
+  assert.equal(stats.failed, 1, 'a spawned job that failed still counts');
+  assert.equal(stats.resolved, 11);
+  assert.ok(stats.abandonedTaskIds.includes('dup'));
+
+  const row = computeHeadlessDispatchDigest({ entries, nowMs: NOW });
+  assert.equal(row.status, 'pass', `10/11 resolved is over the 80% floor: ${row.message}`);
+  assert.match(row.message, /41 refused before spawn/);
+});

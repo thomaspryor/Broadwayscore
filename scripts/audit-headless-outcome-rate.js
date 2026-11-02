@@ -66,7 +66,7 @@ function main() {
   }
 
   console.log(`\nHeadless dispatch outcome rate — last ${windowDays}d (since ${headless.windowStartIso.slice(0, 16).replace('T', ' ')}Z)\n`);
-  console.log(`  ${headless.launches} headless launches: ${headless.done} done, ${headless.failed} failed, ${headless.orphaned} orphaned (supervisor lost track — not counted as failure), ${headless.blocked} blocked (owner decision needed — not counted as failure), ${headless.stoppedShort} stopped short (BRO-3442), ${headless.stranded} stranded (unlanded work, BRO-3442), ${headless.inFlight} in-flight, ${headless.none} with no job event yet`);
+  console.log(`  ${headless.launches} headless launches: ${headless.done} done, ${headless.failed} failed, ${headless.orphaned} orphaned (supervisor lost track — not counted as failure), ${headless.blocked} blocked (owner decision needed — not counted as failure), ${headless.abandoned} refused before spawn (disk pressure or duplicate dispatch — not counted as failure), ${headless.stoppedShort} stopped short (BRO-3442), ${headless.stranded} stranded (unlanded work, BRO-3442), ${headless.inFlight} in-flight, ${headless.none} with no job event yet`);
   if (headless.resolved === 0) {
     console.log('  success rate: unmeasurable (0 resolved launches — everything still in flight, orphaned, blocked, or unspawned)');
   } else {
@@ -83,6 +83,9 @@ function main() {
   }
   if (headless.orphanedTaskIds.length) {
     console.log(`  orphaned task(s) (${headless.orphanedTaskIds.length}, verify with reconcile-landed-but-open.js before treating as dead): ${headless.orphanedTaskIds.join(', ')}`);
+  }
+  if (headless.abandonedTaskIds.length) {
+    console.log(`  refused-before-spawn task(s) (${headless.abandonedTaskIds.length}, bsc-runner never started a worker — check the 'Infra: disk space' health row): ${headless.abandonedTaskIds.join(', ')}`);
   }
   if (headless.blockedTaskIds.length) {
     console.log(`  blocked task(s) (${headless.blockedTaskIds.length}, needs an owner decision — see the Linear card comment): ${headless.blockedTaskIds.join(', ')}`);
