@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T18:07:58.512Z",
+  "generatedAt": "2026-11-02T19:37:02.952Z",
   "windowDays": 45,
   "showsScanned": 224,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 192.24805361111112,
+      "fileAgeHours": 193.7400947222222,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 177.71170694444444,
+      "nonTerminalAgeHours": 179.1962736111111,
       "needsManualRecovery": true
     },
     {
@@ -37,17 +37,16 @@
       "recoverable": true,
       "url": "https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2",
       "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "[review-write-guard] date-implausible: an-evening-with-an-immigrant-off-west-end-2026/times-uk--clive-davis.json → quarantined to _pending/an-evening-with-an-immigrant-off-west-end-2026/times-uk--clive-davis.json (2202d before earliest date, not within priorRuns)\n\n❌ Write-guard refused the write — nothing changed on disk (date_implausible)\n   quarantined to: /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/_pending/an-evening-with-an-immigrant-off-west-end-2026/times-uk--clive-davis.json"
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 4.478148333333333,
+      "fileAgeHours": 5.9625275,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 2.949059166666667,
+      "nonTerminalAgeHours": 4.433625833333333,
       "needsManualRecovery": false
     }
   ],
