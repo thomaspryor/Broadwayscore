@@ -408,5 +408,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-02T17:50:45.626Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6841-aeo-visibility",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6841-aeo-visibility",
+    "description": "land.yml did not land land/bro-6841-aeo-visibility: the unit-tests-node gate went red at 4d39780288. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41494922584",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6841-aeo-visibility"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "4d397802883bbb251cbe782bf6c59e9ab9623a6f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41494922584"
+      }
+    ],
+    "queuedAt": "2026-11-02T18:18:17.385Z"
   }
 ]
