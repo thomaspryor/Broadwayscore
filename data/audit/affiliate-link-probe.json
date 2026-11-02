@@ -8,6 +8,27 @@
   "allDestinationsSkipped": false,
   "results": [
     {
+      "id": "a-few-good-men-2026",
+      "slug": "a-few-good-men",
+      "status": "open",
+      "todaytixId": 47264,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/a-few-good-men",
+      "verdict": "pass",
+      "linksFound": 7,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/47264-a-few-good-men",
+        "https://www.todaytix.com/nyc/shows/47264-a-few-good-men",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546021",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546022",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546023",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546024",
+        "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546027"
+      ]
+    },
+    {
       "id": "aladdin-2014",
       "slug": "aladdin",
       "status": "open",
@@ -15,45 +36,35 @@
       "expectLinks": true,
       "url": "https://broadwayscorecard.com/show/aladdin",
       "verdict": "pass",
-      "linksFound": 2,
+      "linksFound": 10,
       "clientOnly": false,
       "problems": [],
       "destinations": [
         "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470345",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470346",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470347",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470348",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470350",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470349",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470351",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470352",
         "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway"
       ]
     },
     {
-      "id": "and-juliet-2022",
-      "slug": "and-juliet",
+      "id": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
+      "slug": "austentatious-an-improvised-jane-austen-novel-west-end",
       "status": "open",
-      "todaytixId": 25598,
+      "todaytixId": 43897,
       "expectLinks": true,
-      "url": "https://broadwayscorecard.com/show/and-juliet",
+      "url": "https://broadwayscorecard.com/show/austentatious-an-improvised-jane-austen-novel-west-end",
       "verdict": "pass",
-      "linksFound": 4,
+      "linksFound": 1,
       "clientOnly": false,
       "problems": [],
       "destinations": [
-        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
-        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
-        "https://www.todaytix.com/nyc/shows/25598-&-juliet-on-broadway"
-      ]
-    },
-    {
-      "id": "angels-bone-west-end-2026",
-      "slug": "angels-bone-west-end",
-      "status": "open",
-      "todaytixId": 46928,
-      "expectLinks": true,
-      "url": "https://broadwayscorecard.com/show/angels-bone-west-end",
-      "verdict": "pass",
-      "linksFound": 2,
-      "clientOnly": false,
-      "problems": [],
-      "destinations": [
-        "https://www.todaytix.com/london/shows/46928-angel-bones",
-        "https://www.todaytix.com/london/shows/46928-angel-bones"
+        "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel"
       ]
     },
     {
@@ -64,21 +75,20 @@
       "expectLinks": true,
       "url": "https://broadwayscorecard.com/show/a-ghost-in-your-ear-off-broadway",
       "verdict": "pass",
-      "linksFound": 2,
+      "linksFound": 1,
       "clientOnly": false,
       "problems": [],
       "destinations": [
-        "https://www.todaytix.com/nyc/shows/47577-a-ghost-in-your-ear",
         "https://www.todaytix.com/nyc/shows/47577-a-ghost-in-your-ear"
       ]
     },
     {
-      "id": "as-you-like-it-globe-west-end-2026",
-      "slug": "as-you-like-it-globe-west-end",
+      "id": "fish-off-broadway-2026",
+      "slug": "fish-off-broadway",
       "status": "closed",
-      "todaytixId": 27568,
+      "todaytixId": 46801,
       "expectLinks": false,
-      "url": "https://broadwayscorecard.com/show/as-you-like-it-globe-west-end",
+      "url": "https://broadwayscorecard.com/show/fish-off-broadway",
       "verdict": "pass",
       "linksFound": 0,
       "clientOnly": false,
@@ -88,20 +98,20 @@
   ],
   "destChecks": [
     {
-      "dest": "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+      "dest": "https://www.todaytix.com/nyc/shows/47264-a-few-good-men",
       "verdict": "ok",
       "detail": "HTTP 200"
     },
     {
-      "dest": "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546021",
       "verdict": "ok",
       "detail": "HTTP 200"
     },
     {
-      "dest": "https://www.todaytix.com/nyc/shows/25598-&-juliet-on-broadway",
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=47264&showtimeId=2546022",
       "verdict": "ok",
       "detail": "HTTP 200"
     }
   ],
-  "updatedAt": "2026-10-26T18:57:10.073Z"
+  "updatedAt": "2026-11-02T22:01:44.962Z"
 }
