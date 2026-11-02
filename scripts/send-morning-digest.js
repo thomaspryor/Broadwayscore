@@ -1241,7 +1241,18 @@ async function main() {
   try {
     const linear = require('./lib/linear-client.js');
     const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
-    const issues = await withTimeout(linear.listOpenIssues(), LINEAR_BOARD_READ_TIMEOUT_MS, { message: `timed out after ${LINEAR_BOARD_READ_TIMEOUT_MS}ms` });
+    // BRO-6837: one retry here, before any section reads openIssues, so a
+    // single slow page does not blank the awaiting-owner, in-review and board
+    // sections or label every report-only row "no automatic fix confirmed".
+    const readBoard = () => withTimeout(linear.listOpenIssues(), LINEAR_BOARD_READ_TIMEOUT_MS, { message: `timed out after ${LINEAR_BOARD_READ_TIMEOUT_MS}ms` });
+    let issues;
+    try {
+      issues = await readBoard();
+    } catch (firstErr) {
+      console.error(`[digest] WARN open-board read failed, retrying once: ${String(firstErr.message).slice(0, 120)}`);
+      issues = await readBoard();
+      console.log(`[digest] open-board read retried and succeeded (${(issues || []).length} issue(s))`);
+    }
     openIssues = issues;
     const awaiting = (issues || []).filter(isAwaitingOwner);
     // BRO-420: "waiting since" is derived from linear-attach-approval.js's
@@ -1517,17 +1528,6 @@ async function main() {
   // 'tracked' so the email matches the Mac's "already has a fix ticket".
   if (noAutofix) try {
     const { planAutofix, markTrackedReportOnly, keepDecisionQueued, localRollupIssues } = require('./lib/digest-autofix.js');
-    // BRO-6837: report-only rows lean entirely on the board read for their
-    // status, so one slow page must not label every row "no automatic fix
-    // confirmed". Retry once before giving up.
-    if (!Array.isArray(openIssues)) {
-      try {
-        openIssues = await withTimeout(require('./lib/linear-client.js').listOpenIssues(), LINEAR_BOARD_READ_TIMEOUT_MS, { message: `timed out after ${LINEAR_BOARD_READ_TIMEOUT_MS}ms` });
-        console.log(`[digest] --no-autofix: open-board read retried and succeeded (${openIssues.length} issue(s))`);
-      } catch (err) {
-        console.error(`[digest] WARN --no-autofix: open-board retry failed: ${String(err.message).slice(0, 120)}`);
-      }
-    }
     const openTitles = Array.isArray(openIssues) ? new Set(openIssues.map((i) => i && i.title).filter(Boolean)) : null;
     const queued = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
     autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles);
