@@ -228,7 +228,7 @@ test('discoverArtifacts: newest non-expired main artifact per lane name, listed 
   };
   const got = discoverArtifacts({ repo: 'o/r', lookbackDays: 30, now: () => now, ghApi });
   assert.deepEqual(got.map((a) => a.id).sort(), [5, 7]);
-  assert.match(calls[0], /^repos\/o\/r\/actions\/workflows\/opening-night-lane-live\.yml\/runs\?branch=main&created=%3E%3D2026-10-10&/);
+  assert.match(calls[0], /^repos\/o\/r\/actions\/workflows\/opening-night-lane-live\.yml\/runs\?branch=main&created=%3E%3D2026-09-10&/);
   assert.ok(!calls.some((p) => /\/actions\/artifacts\?/.test(p)), 'the repo-wide artifact list truncates at per_page=100 and must not be used');
   assert.ok(!calls.some((p) => p.includes('/runs/103/')), 'a non-main run is never listed');
   assert.equal(calls.filter((p) => p.includes('/workflows/')).length, 1, 'a short page of runs stops paging');
@@ -239,7 +239,7 @@ test('every workflow that uploads a lane-recording-/lane-shadow- artifact is the
   const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../.github/workflows');
   const uploaders = fs.readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).filter((f) => {
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
-    return /^\s*name:\s*lane-(recording|shadow)-\$\{\{/m.test(src);
+    return /^\s*name:\s*['"]?lane-(recording|shadow)-\$\{\{/m.test(src);
   });
   assert.deepEqual(uploaders, [LANE_WORKFLOW]);
 });

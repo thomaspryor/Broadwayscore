@@ -46,7 +46,9 @@ const gh = (apiPath, binary = false) => execFileSync('gh', ['api', apiPath], { m
  */
 function discoverArtifacts({ repo, lookbackDays, ghApi = gh, now = Date.now, workflow = LANE_WORKFLOW }) {
   const cutoff = now() - lookbackDays * 86400000;
-  const since = new Date(cutoff).toISOString().slice(0, 10);
+  // Runs are listed from 30 days before the cutoff: a press-night run lasts up to ~12h and a re-run keeps its old
+  // created_at while uploading a fresh artifact. The exact cutoff is applied to each artifact's own created_at below.
+  const since = new Date(cutoff - 30 * 86400000).toISOString().slice(0, 10);
   const best = new Map();
   const perPage = 50;
   for (let page = 1; page <= 20; page++) {
@@ -63,6 +65,7 @@ function discoverArtifacts({ repo, lookbackDays, ghApi = gh, now = Date.now, wor
       }
     }
     if (runs.length < perPage) break;
+    if (page === 20) console.log(`::warning::lane run listing stopped at ${20 * perPage} runs; older runs in the window were not checked`);
   }
   return [...best.values()];
 }
