@@ -30,27 +30,55 @@ const { proseDateWait } = require('./prose-date-wait.js');
 // Order matters: a card's exclusive category is the first one whose trait it has.
 const CATEGORIES = [
   { key: 'waiting-owner', label: 'Waiting on your answer' },
-  { key: 'being-worked', label: 'Being worked now' },
-  { key: 'started-idle', label: 'Started, no update for 2+ days' },
-  { key: 'dated-future', label: 'Waiting on a future date' },
+  { key: 'being-worked', label: 'Being worked on now' },
+  { key: 'started-idle', label: 'Started, but no update for 2+ days' },
+  { key: 'dated-future', label: 'Waiting for a date in the future' },
   // BRO-6853: split by the recheck ledger's last verdict. Without a ledger every past-dated card is "waiting".
   { key: 'dated-past-failed', label: 'Date passed, its check failed' },
-  { key: 'dated-past', label: 'Date passed, waiting for a recheck or a real test' },
-  { key: 'parked-real-block', label: 'Parked: real block' },
-  { key: 'parked-automatic', label: 'Parked: automatic alert or estimate check' },
-  { key: 'parked-owner-wording', label: 'Parked: says it needs you but has no real question' },
-  { key: 'parked-no-reason', label: 'Parked: no reason written' },
-  { key: 'parked-prose-wait', label: 'Parked: waits on time written in words, no date stamp (never resumes)' },
-  { key: 'parked-other', label: 'Parked: other reason' },
+  { key: 'dated-past', label: 'Date passed, waiting for its check' },
+  { key: 'parked-real-block', label: 'Needs a password, money or your devices' },
+  { key: 'parked-automatic', label: 'Automatic alert or estimate' },
+  { key: 'parked-owner-wording', label: 'Says it needs you, but asks nothing' },
+  { key: 'parked-no-reason', label: 'Parked with no reason written' },
+  { key: 'parked-prose-wait', label: 'Waits on a time written in words, so never restarts' },
+  { key: 'parked-other', label: 'Parked for another reason' },
   { key: 'paused', label: 'Paused' },
-  { key: 'ready', label: 'Ready for a worker or Codex' },
-  { key: 'cooling-off', label: 'Cooling off' },
-  { key: 'codex-bounced', label: 'Codex rejected it, short cooldown' },
-  { key: 'owner-gated-no-question', label: 'Held for you, but no question written (needs a real question or release)' },
-  { key: 'app-repo', label: 'iPhone-app card (cloud workers cannot open the app repo)' },
-  { key: 'needs-safe-check', label: 'No safe check written yet (needs a VERIFY line; a daily job drafts these)' },
+  { key: 'ready', label: 'Ready, a worker will pick it up' },
+  { key: 'cooling-off', label: 'Cooling off after recent activity' },
+  { key: 'codex-bounced', label: 'Second-check reviewer rejected it, short wait' },
+  { key: 'owner-gated-no-question', label: 'Held for you, but no question written yet' },
+  { key: 'app-repo', label: 'iPhone-app card (automatic workers cannot open it)' },
+  { key: 'needs-safe-check', label: 'Needs a way to prove it works (a daily job drafts these)' },
   { key: 'other', label: 'Other' },
 ];
+// BRO-6870: the morning email shows the rows under four plain headings. Every
+// category key sits in exactly one group (tested), so subtotals add to the total.
+const GROUPS = [
+  { key: 'needs-you', title: 'Needs you', blurb: 'Waiting for a yes or no from you.',
+    keys: ['waiting-owner'] },
+  { key: 'moving', title: 'Moving', blurb: 'Nothing to do. Workers pick these up and dated ones restart on their own.',
+    keys: ['being-worked', 'ready', 'cooling-off', 'dated-future'] },
+  { key: 'stuck', title: 'Stuck, the system is handling it', blurb: 'A daily job reclaims, rechecks or asks again. Nothing to do unless one is Urgent.',
+    keys: ['started-idle', 'dated-past', 'dated-past-failed', 'needs-safe-check', 'codex-bounced', 'owner-gated-no-question', 'parked-owner-wording', 'parked-no-reason', 'parked-prose-wait'] },
+  { key: 'parked', title: 'Parked on purpose', blurb: 'Held until the block clears. Nothing to do.',
+    keys: ['parked-real-block', 'parked-automatic', 'parked-other', 'paused', 'app-repo', 'other'] },
+];
+
+/** PURE. The report's category rows under GROUPS, with subtotals. Throws if a category has no group. */
+function groupBoard(report) {
+  const byKey = new Map((report.categories || []).map((c) => [c.key, c]));
+  const placed = new Set();
+  const groups = GROUPS.map((g) => {
+    const rows = g.keys.map((k) => byKey.get(k)).filter(Boolean);
+    g.keys.forEach((k) => placed.add(k));
+    const uh = (c) => c.byPriority.urgent + c.byPriority.high;
+    return { key: g.key, title: g.title, blurb: g.blurb, rows, exclusive: rows.reduce((a, c) => a + c.exclusive, 0),
+      overlap: rows.reduce((a, c) => a + c.overlap, 0), urgentHigh: rows.reduce((a, c) => a + uh(c), 0) };
+  });
+  const lost = [...byKey.keys()].filter((k) => !placed.has(k));
+  if (lost.length) throw new Error(`board-categories: no group for ${lost.join(', ')}`);
+  return groups;
+}
 // Same idle window as linear-reclaim-abandoned.js RECLAIM_IDLE_MS.
 const STARTED_IDLE_MS = 48 * 60 * 60 * 1000;
 const COMMENT_FETCH_CAP = 100;
@@ -413,7 +441,7 @@ function parseReportArgs(argv) {
 }
 
 module.exports = {
-  CATEGORIES, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses,
+  CATEGORIES, GROUPS, groupBoard, REAL_BLOCK_RE, lastRecheckStatuses, readRecheckLedgerStatuses,
   cardTraits, categorizeBoard, importantAndStuck, ownerGatedNoQuestion, flowFromInflow, snapshotOf, compareReports,
   flowLine, formatMarkdown, formatCompareMarkdown, parseReportArgs,
   fetchOpenBoard, fetchFlow24h,

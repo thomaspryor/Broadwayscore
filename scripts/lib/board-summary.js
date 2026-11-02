@@ -168,7 +168,7 @@ function tile(big, label, note, esc, side) {
 function money(usd) { return `$${Math.round(usd)}`; }
 
 /** The four tiles: shipped, waiting on you, stuck, cost. Missing data reads "n/a", never 0. */
-function tilesFor(m) {
+function tilesFor(m, { startedIdle = null } = {}) {
   const lanes7 = m.lanes.d7;
   const lanes1 = m.lanes.d1;
   const shipped = lanes7 ? lanes7.codex + lanes7.claude : null;
@@ -185,19 +185,22 @@ function tilesFor(m) {
       lanes7 ? `last 7 days; ${lanes1 ? `${lanes1.codex + lanes1.claude} in the last day; ` : ''}Claude ${lanes7.claude}, Codex ${lanes7.codex}` : 'not available'],
     ['Waiting on you', m.waiting === null ? 'n/a' : m.waiting === 0 ? 'Nothing' : plural(m.waiting, 'decision'),
       m.waiting === null ? 'could not be read' : m.waiting ? 'listed at the top of this email' : 'no decisions pending'],
-    ['Stuck', m.stuckCards === null ? 'n/a' : `${m.stuckCards}${m.stuckCardsFloor ? '+' : ''} card${m.stuckCards === 1 && !m.stuckCardsFloor ? '' : 's'}`,
-      'started, no progress in 2+ days'],
+    // BRO-6870: with the board table present the tile IS its "Started, but no update for 2+ days" row (one number, two places).
+    Number.isFinite(startedIdle)
+      ? ['Stuck', plural(startedIdle, 'card'), 'started, no update for 2+ days (same as the table below)']
+      : ['Stuck', m.stuckCards === null ? 'n/a' : `${m.stuckCards}${m.stuckCardsFloor ? '+' : ''} card${m.stuckCards === 1 && !m.stuckCardsFloor ? '' : 's'}`,
+        'started, no progress in 2+ days'],
     ['Spent this week', costBig, costNote],
   ];
 }
 
 /** The owner-facing block. `daily` is fetchDailyFlow's days or null. */
-function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Date(), partial = false } = {}) {
+function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Date(), partial = false, startedIdle = null } = {}) {
   const v = boardVerdict(m, daily, { partial });
   const tone = v.tone === 'good'
     ? { bg: '#e8f6e8', dot: '#0ca30c', icon: '&#10003;' }
     : v.tone === 'warn' ? { bg: '#fdf3dc', dot: '#b97e00', icon: '!' } : { bg: '#f4f4f1', dot: MUTED, icon: '?' };
-  const t = tilesFor(m);
+  const t = tilesFor(m, { startedIdle });
   const tiles = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin:10px 0 0;">
 <tr>${tile(t[0][1], t[0][0], t[0][2], esc, 'left')}${tile(t[1][1], t[1][0], t[1][2], esc, 'right')}</tr>
 <tr>${tile(t[2][1], t[2][0], t[2][2], esc, 'left')}${tile(t[3][1], t[3][0], t[3][2], esc, 'right')}</tr></table>`;
@@ -233,25 +236,35 @@ function renderBoardCategoriesHtml(report, prev, esc = (s) => String(s)) {
   };
   const th = (s, align) => `<th style="font-size:11px;font-weight:600;color:${MUTED};text-align:${align};padding:4px 4px;border-bottom:1px solid #e4e4df;">${s}</th>`;
   const num = 'font-size:13px;color:#1a1a19;text-align:right;padding:4px 4px;white-space:nowrap;border-bottom:1px solid #f0f0ec;';
-  const rows = report.categories.map((c) => {
-    const uh = c.byPriority.urgent + c.byPriority.high;
-    return `<tr><td style="font-size:13px;color:${INK};padding:4px 4px;border-bottom:1px solid #f0f0ec;">${esc(c.label)}</td>`
-      + `<td style="${num}font-weight:700;">${c.exclusive}${delta(c.key, c.exclusive)}</td>`
-      + `<td style="${num}color:${MUTED};">${c.overlap}</td>`
-      + `<td style="${num}${uh ? '' : `color:${MUTED};`}">${uh}</td></tr>`;
+  const bump = (n, was) => (Number.isFinite(was) && n !== was ? ` <span style="font-size:11px;color:${MUTED};">(${n > was ? '+' : ''}${n - was})</span>` : '');
+  const groups = require('./board-categories.js').groupBoard(report);
+  const rows = groups.map((g) => {
+    const gBefore = g.rows.every((c) => before.has(c.key)) && hasPrev ? g.rows.reduce((a, c) => a + before.get(c.key), 0) : null;
+    const head = `<tr><td style="font-size:14px;font-weight:700;color:${INK};padding:12px 4px 2px;background-color:#f4f4f1;">${esc(g.title)}</td>`
+      + `<td style="${num}font-weight:700;padding-top:12px;background-color:#f4f4f1;">${g.exclusive}${bump(g.exclusive, gBefore)}</td>`
+      + `<td style="${num}padding-top:12px;background-color:#f4f4f1;color:${MUTED};">${g.overlap}</td>`
+      + `<td style="${num}padding-top:12px;background-color:#f4f4f1;${g.urgentHigh ? '' : `color:${MUTED};`}">${g.urgentHigh}</td></tr>`;
+    const blurb = `<tr><td colspan="4" style="font-size:12px;color:${MUTED};padding:0 4px 4px;background-color:#f4f4f1;">${esc(g.blurb)}</td></tr>`;
+    const body = g.rows.map((c) => {
+      const uh = c.byPriority.urgent + c.byPriority.high;
+      return `<tr><td style="font-size:13px;color:${INK};padding:4px 4px 4px 14px;border-bottom:1px solid #f0f0ec;">${esc(c.label)}</td>`
+        + `<td style="${num}font-weight:700;">${c.exclusive}${delta(c.key, c.exclusive)}</td>`
+        + `<td style="${num}color:${MUTED};">${c.overlap}</td>`
+        + `<td style="${num}${uh ? '' : `color:${MUTED};`}">${uh}</td></tr>`;
+    }).join('\n');
+    return `${head}\n${blurb}\n${body}`;
   }).join('\n');
   const tb = report.totals.byPriority;
   const openDelta = hasPrev && Number.isFinite(prev.open) && report.open !== prev.open
     ? ` <span style="font-size:11px;color:${MUTED};">(${report.open > prev.open ? '+' : ''}${report.open - prev.open})</span>` : '';
   const stuck = report.importantStuck || [];
-  const gated = require('./board-categories.js').ownerGatedNoQuestion(report);
   return `<div style="margin:0 0 18px;">
 ${title}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
 <tr>${th('', 'left')}${th('Only here', 'right')}${th('All with this', 'right')}${th('Urgent+High', 'right')}</tr>
 ${rows}
-<tr><td style="font-size:13px;font-weight:700;color:${INK};padding:6px 4px;">Total open</td><td style="${num}font-weight:700;border-bottom:0;">${report.totals.exclusive}${openDelta}</td><td style="${num}border-bottom:0;"></td><td style="${num}font-weight:700;border-bottom:0;">${tb.urgent + tb.high}</td></tr>
+<tr><td style="font-size:13px;font-weight:700;color:${INK};padding:8px 4px 6px;">Total open</td><td style="${num}font-weight:700;border-bottom:0;padding-top:8px;">${report.totals.exclusive}${openDelta}</td><td style="${num}border-bottom:0;"></td><td style="${num}font-weight:700;border-bottom:0;padding-top:8px;">${tb.urgent + tb.high}</td></tr>
 </table>
-<p style="font-size:12px;color:${MUTED};margin:6px 0 0;">Each card counts once, in the first row that fits${hasPrev ? '; numbers in brackets are the change since the last morning email' : ''}. "All with this" counts every card that fits the row. The questions at the top of this email also include ones from your Mac tabs, so that number can differ.${stuck.length ? ` ${stuck.length} Urgent or High ${stuck.length === 1 ? 'card has' : 'cards have'} nobody on ${stuck.length === 1 ? 'it' : 'them'}.` : ''}${gated ? ` ${gated} ${gated === 1 ? 'card in Other is' : 'cards in Other are'} held for you without a clear question.` : ''}</p>
+<p style="font-size:12px;color:${MUTED};margin:6px 0 0;">Each card counts once, in the first row that fits${hasPrev ? '; numbers in brackets are the change since the last morning email' : ''}. "All with this" counts every card that fits the row. The questions at the top of this email also include ones from your Mac tabs, so that number can differ.${stuck.length ? ` ${stuck.length} Urgent or High ${stuck.length === 1 ? 'card has' : 'cards have'} nobody on ${stuck.length === 1 ? 'it' : 'them'}.` : ''}</p>
 </div>`;
 }
 

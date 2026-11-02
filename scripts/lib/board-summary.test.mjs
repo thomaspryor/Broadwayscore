@@ -134,7 +134,7 @@ test('renderBoardCategoriesHtml: change since the last email when a snapshot exi
   const html = renderBoardCategoriesHtml(report, prev);
   assert.match(html, /change since the last morning email/);
   assert.match(html, /\(-2\)/); // paused 3 -> 1, open 5 -> 3
-  assert.equal((html.match(/\(-2\)/g) || []).length, 2);
+  assert.equal((html.match(/\(-2\)/g) || []).length, 3); // paused row, its group subtotal, open total
   assert.doesNotMatch(html, /\(\+0\)|\(0\)/);
 });
 
@@ -147,4 +147,25 @@ test('renderBoardCategoriesHtml: a malformed snapshot renders without deltas ins
   const html = renderBoardCategoriesHtml(sampleReport(), { categories: { nope: 1 }, open: 'x' });
   assert.match(html, /Every open card, once/);
   assert.doesNotMatch(html, /change since/);
+});
+
+// BRO-6870
+test('renderBoardCategoriesHtml: four group headings with subtotals that add to the total; no stale Other footnote', () => {
+  const r = sampleReport();
+  const html = renderBoardCategoriesHtml(r, null);
+  for (const g of bc.GROUPS) assert.ok(html.includes(g.title), g.title);
+  const groups = bc.groupBoard(r);
+  assert.equal(groups.reduce((a, g) => a + g.exclusive, 0), r.totals.exclusive);
+  assert.doesNotMatch(html, /in Other (is|are) held for you/);
+  assert.doesNotMatch(html, /VERIFY|Codex|cloud worker/i);
+});
+
+test('Stuck tile uses the board table started-idle number when the table exists', () => {
+  const { boardStartedIdle } = require('../send-morning-digest.js');
+  const r = bc.categorizeBoard([{ identifier: 'BRO-9', title: 't', priority: 3, description: '', createdAt: '2026-10-01T00:00:00Z', updatedAt: '2026-10-01T00:00:00Z', labels: { nodes: [] }, comments: { nodes: [] }, state: { name: 'In Progress', type: 'started' } }], { now: NOW });
+  assert.equal(boardStartedIdle(r), 1);
+  assert.equal(boardStartedIdle(null), null);
+  const tile = tilesFor(model({ stuckCards: 16, stuckCardsFloor: false }), { startedIdle: boardStartedIdle(r) })[2];
+  assert.equal(tile[1], '1 card');
+  assert.equal(tilesFor(model({ stuckCards: 16 }), { startedIdle: null })[2][1], '16 cards');
 });

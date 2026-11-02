@@ -164,7 +164,7 @@ test('formatMarkdown: plain table with every row, totals, no card ids', () => {
   const md = bc.formatMarkdown(bc.categorizeBoard(board, { now: NOW, lastRecheckStatusById: STATUS }), { flow: null });
   for (const c of bc.CATEGORIES) assert.ok(md.includes(`| ${c.label} |`), c.label);
   assert.ok(md.includes(`| **Total** | **${board.length}** |`));
-  assert.match(md, /- Urgent: Prod is down \(Ready for a worker or Codex\)/);
+  assert.match(md, /- Urgent: Prod is down \(Ready, a worker will pick it up\)/);
   assert.doesNotMatch(md, /BRO-\d/);
   assert.match(md, /recognised from the card text only/);
 });
@@ -419,7 +419,7 @@ test('BRO-6853: the board report prints the failed and waiting rows separately',
   const a = withDesc('RECHECK-AFTER: 2026-10-20', { state: { name: 'Paused', type: 'backlog' } });
   const md = bc.formatMarkdown(bc.categorizeBoard([a], { now: NOW, lastRecheckStatusById: new Map([[a.identifier, 'fail']]) }));
   assert.match(md, /Date passed, its check failed \| 1 \|/);
-  assert.match(md, /Date passed, waiting for a recheck or a real test \| 0 \|/);
+  assert.match(md, /Date passed, waiting for its check \| 0 \|/);
   assert.doesNotMatch(md, /check still failing/);
 });
 
@@ -427,4 +427,27 @@ test('BRO-6852: alert-router filing boilerplate ("Mac-side pass") is not read as
   const d = 'Filed by owner-alert-router for dispatch-at-filing (BRO-4054). The Mac-side red-first pass dispatches it headless within 5 minutes; it needs no owner triage unless the VERIFY line says owner-judgment.\nVERIFY: owner-judgment\n';
   const r = sweep.classifyHold(withDesc(d), { now: NOW });
   assert.notEqual(r.action, 'owner-question', r.why);
+});
+
+// ── BRO-6870: the email table groups rows under four plain headings ──────
+test('groups: every category is in exactly one group, so subtotals add to the open count', () => {
+  const keys = bc.GROUPS.flatMap((g) => g.keys);
+  assert.equal(new Set(keys).size, keys.length, 'a category is in two groups');
+  assert.deepEqual([...keys].sort(), bc.CATEGORIES.map((c) => c.key).sort());
+  const r = bc.categorizeBoard(Object.values(FIXTURES).map((f) => f()), { now: NOW, lastRecheckStatusById: STATUS });
+  const groups = bc.groupBoard(r);
+  assert.equal(groups.length, 4);
+  assert.equal(groups.reduce((a, g) => a + g.exclusive, 0), r.open);
+  assert.equal(groups.reduce((a, g) => a + g.rows.length, 0), bc.CATEGORIES.length);
+});
+
+test('groups: a category with no group throws instead of vanishing from the email', () => {
+  const r = bc.categorizeBoard([], { now: NOW });
+  r.categories.push({ key: 'brand-new', label: 'x', exclusive: 0, overlap: 0, byPriority: { urgent: 0, high: 0 } });
+  assert.throws(() => bc.groupBoard(r), /no group for brand-new/);
+});
+
+test('labels use plain words: no VERIFY, repo, cloud workers or Codex', () => {
+  for (const c of bc.CATEGORIES) assert.doesNotMatch(c.label, /VERIFY|repo\b|cloud worker|Codex/i, c.label);
+  for (const g of bc.GROUPS) assert.doesNotMatch(`${g.title} ${g.blurb}`, /VERIFY|repo\b|cloud worker|Codex/i, g.key);
 });
