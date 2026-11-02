@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T02:37:47.343Z",
+  "generatedAt": "2026-11-02T03:00:29.103Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2357,27 +2357,27 @@
       "slug": "tosca-english-national-opera-west-end",
       "thumbnail": "/images/shows/tosca-english-national-opera-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 87,
+      "liveScore": 59,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "reviewsNeeded": 5,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
+      "t3": 2,
       "positive": 1,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2508,6 +2508,18 @@
           "p": 1,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-02T03:00:29.103Z",
+          "rc": 2,
+          "s": 59,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 1,
+          "m": 0,
+          "n": 1,
           "bc": "waiting"
         }
       ]

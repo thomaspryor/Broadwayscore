@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-11-02T02:22:08.446Z",
+  "generatedAt": "2026-11-02T02:47:01.143Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 89,
+    "avgScoreDiff": 4
   },
   "syndicationPairs": [
     {
@@ -153,7 +153,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Samuel L. Leiter",
+      "showId": "thoughts-of-a-colored-man-2021",
+      "primaryOutlet": "theater-life",
+      "secondaryOutlet": "theatres-leiter-side",
+      "primaryFile": "theater-life--samuel-l-leiter.json",
+      "secondaryFile": "theatres-leiter-side--samuel-l-leiter.json",
+      "similarity": 89,
+      "primaryScore": 81,
+      "secondaryScore": 77,
+      "scoreDiff": 4
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
