@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5927-d",
   "planId": "7d81e98d-bb6f-4b85-b44c-9c53056bcca1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T03:12:02.080Z",
   "submitter": {
     "name": null,
@@ -113,5 +113,64 @@
         "description": "New Yorker Culture Desk feature, not a review of Seminar: exclude it"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T04:30:00.996Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-front-page-2016/timeout--adam-feldman.json originalScore: 60 -> null (retracted originalScoreCleared, originalScoreClearedReason, originalScoreCorrectedFrom)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "absolute-hell-west-end-2018/guardian--susannah-clapp.json originalScore: \"4/5 stars\" -> \"2/5 stars\" (retracted adjudicatedScore, adjudicatedScoreInvalidated, adjudicationHistory, adjudicationNote, originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "punch-2025/timeout--morgan-carter.json originalScore: \"4/5 stars\" -> \"3/5 stars\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "side-show-2014/ew--thom-geier.json originalScore: \"B\" -> \"C\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oliver-west-end-2024/telegraph--dominic-cavendish.json humanReviewScore: 78 -> 92"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-life-in-the-theatre-2010/backstage--david-sheward.json humanReviewNote: null -> \"BRO-5927: the published 40 came from a tier-1.5 recovery of a word-stars read off a scraper-garbage page (show not mentioned). Backstage prints no stars; DTLI thumb Up, 3 models Positive and the adjudication agree on 79.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-life-in-the-theatre-2010/backstage--david-sheward.json humanReviewScore: null -> 79"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soul-doctor-2013/staten-island-advance--michael-j-fressola.json humanReviewNote: null -> \"BRO-5927: published 88 was a legacy keyword-sentiment score with no model read. The same article (same URL, the wrongAttribution-excluded typo twin) was read Mixed by all 4 models (61).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soul-doctor-2013/staten-island-advance--michael-j-fressola.json humanReviewScore: null -> 61"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seminar-2011/newyorker--john-lahr.json isNonReviewReason: null -> \"manual (not a review): BRO-5927, content verification (high confidence) reads a Culture Desk feature on Theresa Rebeck and David Milch with no critical assessment of the production; it was published at a legacy placeholder 52.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "seminar-2011/newyorker--john-lahr.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
