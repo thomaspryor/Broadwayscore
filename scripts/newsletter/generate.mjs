@@ -2768,6 +2768,9 @@ const sectionOrder = IS_WE ? [
   _slot('broadway-openings', bwO.html),
   _slot('offbroadway-openings', obO.html),
   _slot('out-of-town-openings', otO.html),
+  // Tours sit with the other openings-type news, right after Out of Town
+  // (owner, 2026-11-02). Was after London/Opera openings.
+  _slot('new-tour-scores', tours),
   _slot('upcoming-openings', upcomingTop),
   _slot('biggest-movers', mover),
   _slot('award-score-movers', awardMover),
@@ -2778,7 +2781,6 @@ const sectionOrder = IS_WE ? [
   // split; London Openings now has one fixed home for every week.
   _slot('london-openings', lon),
   _slot('opera-openings', opera),
-  _slot('new-tour-scores', tours),
   _slot('box-office', box),
   _slot('recoupment', commercial),
   // Social Buzz removed 2026-07-05 pending fix: mention-volume metric is
