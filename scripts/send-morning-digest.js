@@ -675,6 +675,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     try {
       const bn = require('./lib/board-numbers.js');
       const m = bn.buildBoardNumbers({ data: boardNumbersData, waiting: sections.boardWaitingUnknown ? boardWaitingFallback(boardReport, view.decisions) : view.decisions, stuck: sections.boardStuckUnknown ? null : stuckCount, technicalInReview: sections.inReviewTechnicalCount });
+      // BRO-6870: one Stuck number everywhere: the table's started-idle row also feeds the Technical details line.
+      const idle = boardStartedIdle(boardReport);
+      if (idle !== null) { m.stuckCards = idle; m.stuckCardsFloor = false; }
       // BRO-6081: the owner reads a verdict, a 7-day chart and four tiles; the
       // full numbers table moves under Technical details.
       boardNumbersTableHtml = bn.renderBoardNumbersHtml(m, esc);

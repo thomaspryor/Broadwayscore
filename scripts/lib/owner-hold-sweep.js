@@ -5,7 +5,7 @@
  *
  * Pure planning only; scripts/owner-hold-sweep.js does the I/O. Nothing here
  * re-derives a rule: selection is board-categories.cardTraits (the two board
- * rows "Parked: says it needs you but has no real question" and "Held for you,
+ * rows "Says it needs you, but asks nothing" and "Held for you,
  * but no question written"), the owner-only / real-block / risky word lists are
  * the ones headless-dispatchability.js already owns, and "can a worker take it"
  * is asked of the real picker by simulating the release and re-running

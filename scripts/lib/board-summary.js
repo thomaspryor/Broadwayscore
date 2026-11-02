@@ -187,7 +187,7 @@ function tilesFor(m, { startedIdle = null } = {}) {
       m.waiting === null ? 'could not be read' : m.waiting ? 'listed at the top of this email' : 'no decisions pending'],
     // BRO-6870: with the board table present the tile IS its "Started, but no update for 2+ days" row (one number, two places).
     Number.isFinite(startedIdle)
-      ? ['Stuck', plural(startedIdle, 'card'), 'started, no update for 2+ days (same as the table below)']
+      ? ['Stuck', plural(startedIdle, 'card'), 'started, no update for 2+ days (the "Started, but no update" row below)']
       : ['Stuck', m.stuckCards === null ? 'n/a' : `${m.stuckCards}${m.stuckCardsFloor ? '+' : ''} card${m.stuckCards === 1 && !m.stuckCardsFloor ? '' : 's'}`,
         'started, no progress in 2+ days'],
     ['Spent this week', costBig, costNote],
