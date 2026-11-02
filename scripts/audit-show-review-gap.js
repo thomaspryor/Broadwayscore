@@ -180,7 +180,7 @@ const DUE_LANE_RESERVE_MS_DEFAULT = 5 * 60 * 1000;
 const { createRunBudget } = require('./lib/run-budget');
 const TIME_BUDGET_MS = parseInt(args.find(a => a.startsWith('--time-budget-min='))?.split('=')[1] || '20', 10) * 60 * 1000;
 // BRO-6804: page-fetch vetting stops at the same wall-clock budget as the show loop.
-const runBudget = createRunBudget(TIME_BUDGET_MS / 60000);
+let runBudget = createRunBudget(TIME_BUDGET_MS / 60000); // restarted with runStart in main()
 const DUE_LANE_RESERVE_MS = Math.min(DUE_LANE_RESERVE_MS_DEFAULT, Math.floor(TIME_BUDGET_MS / 4));
 const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours='))?.split('=')[1] || '12', 10);
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
@@ -2501,6 +2501,7 @@ async function main(argv = process.argv.slice(2)) {
   const results = [];
   const dispatched = new Set();
   const runStart = Date.now();
+  runBudget = createRunBudget(TIME_BUDGET_MS / 60000);
   let budgetHit = false;
   // Per-aggregator trust, measured from accumulated corroboration (start-of-run
   // snapshot — this run's observations inform the NEXT run's trust decisions).

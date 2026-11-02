@@ -68,7 +68,9 @@ function ukTourLegUrl(url, show) {
   if (!/north american|us tour|national tour|american tour/i.test(`${show.venue || ''}`)) return false;
   let u;
   try { u = new URL(url); } catch { return false; }
-  const hay = foldDiacritics(`${u.hostname} ${decodeURIComponent(u.pathname)}`).toLowerCase().replace(/[^a-z0-9]+/g, ' ');
+  let pathDecoded;
+  try { pathDecoded = decodeURIComponent(u.pathname); } catch { pathDecoded = u.pathname; }
+  const hay = foldDiacritics(`${u.hostname} ${pathDecoded}`).toLowerCase().replace(/[^a-z0-9]+/g, ' ');
   const hostFlat = u.hostname.toLowerCase().replace(/[^a-z0-9]/g, '');
   return UK_TOUR_PLACES.some((p) => new RegExp(`(^| )${p.replace(/-/g, ' ')}( |$)`).test(hay)
     || (p.length >= 7 && hostFlat.includes(p.replace(/[- ]/g, ''))))
