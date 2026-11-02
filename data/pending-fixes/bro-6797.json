@@ -1,0 +1,46 @@
+{
+  "issueNumber": "bro-6797",
+  "planId": "84da358c-121a-4b70-937f-e44d6b8392d5",
+  "status": "pending",
+  "createdAt": "2026-11-02T01:37:54.450556Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "riskLevel": "low",
+    "summary": "DC hub: correct Coming to America opening date and clear false wrongProduction flags on its two reviews",
+    "steps": [
+      "Run is Sep 30 to Oct 18 per the BroadwayWorld listing and the Oct 2 reviews; Oct",
+      "Title and venue (Coming to America: An Immigrant Cabaret, Atlas Performing Arts ",
+      "ExPats Theatre Coming to America at Atlas, Oct 2 2026 review matches the show; f"
+    ],
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "coming-to-america-an-immigrant-cabaret-regional-2026",
+        "field": "openingDate",
+        "oldValue": "2026-10-17",
+        "newValue": "2026-09-30",
+        "description": "Run is Sep 30 to Oct 18 per the BroadwayWorld listing and the Oct 2 reviews; Oct 17 was a mid-run date, which made both reviews look pre-opening"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "coming-to-america-an-immigrant-cabaret-regional-2026/broadwayworld--peter-rouleau.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Title and venue (Coming to America: An Immigrant Cabaret, Atlas Performing Arts Center) match the show; flag came from the wrong opening date"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "coming-to-america-an-immigrant-cabaret-regional-2026/dc-theater-arts--neal-learner.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ExPats Theatre Coming to America at Atlas, Oct 2 2026 review matches the show; flag came from the wrong opening date"
+      }
+    ]
+  }
+}
