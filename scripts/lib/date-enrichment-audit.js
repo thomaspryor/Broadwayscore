@@ -8,7 +8,8 @@ const path = require('path');
 const MAX_RUNS = 50;
 
 function appendAuditRun(auditPath, script, mode, entries, now = new Date()) {
-  if (!entries || entries.length === 0) return false;
+  // A completed run with no corrections still needs an audit row (BRO-3651).
+  if (!entries) return false;
   let existing = { _meta: { schema: 'date-enrichment-corrections v1' }, runs: [] };
   if (fs.existsSync(auditPath)) {
     try {

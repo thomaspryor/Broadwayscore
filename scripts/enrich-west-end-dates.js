@@ -19,9 +19,9 @@ const { maxPlausibleYear } = require('./lib/date-utils');
  *   node scripts/enrich-west-end-dates.js [options]
  *
  * Options:
- *   --dry-run            Show what would change without modifying files
+ *   --dry-run            Show what would change without modifying shows.json; writes audit
  *   --show=SLUG          Only process a specific show by slug
- *   --verify             Compare dates vs shows.json, report discrepancies (no writes)
+ *   --verify             Compare dates vs shows.json, report discrepancies; writes audit
  *   --force              Overwrite existing dates
  *   --fix-unconfirmed    Also process shows with unconfirmed openingDateSource
  *                        (todaytix, showscore, unknown) — used by daily cron
@@ -676,6 +676,7 @@ async function main() {
     // and never while the OLT phase has backfills to apply.
     if (!fixUnconfirmed && oltResult.changes.length === 0) {
       console.log('No changes to apply');
+      appendAudit([]);
       process.exit(0);
     }
     if (fixUnconfirmed) console.log('Continuing to Phase 4 (review-date inference) despite 0 scrape entries.');
