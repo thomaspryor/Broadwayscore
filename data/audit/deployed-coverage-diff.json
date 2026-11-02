@@ -1,46 +1,78 @@
 {
-  "generatedAt": "2026-11-02T01:00:27.392Z",
+  "generatedAt": "2026-11-02T02:41:14.488Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 311,
-  "clean": 309,
-  "defective": 2,
+  "checked": 310,
+  "clean": 306,
+  "defective": 4,
   "byType": {
-    "score-drift": 2
+    "score-drift": 4
   },
   "shows": [
     {
-      "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
-      "title": "Going Bacharach: The Songs of an Icon",
-      "openingDate": "2026-09-16",
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "openingDate": "2026-11-01",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 79.64 vs local 80.29 (Δ0.65)"
+          "detail": "deployed cs 61.9 vs local 61.28 (Δ0.62)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 11,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-02T01:00:23.700Z"
+      "localCount": 7,
+      "deployedCount": 8,
+      "firstDefectAt": "2026-11-02T02:41:10.496Z"
     },
     {
-      "showId": "heathers-the-musical-off-broadway-2025",
-      "title": "Heathers The Musical",
-      "openingDate": "2025-06-30",
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "openingDate": "2026-10-30",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 72.86 vs local 72.18 (Δ0.68)"
+          "detail": "deployed cs 76 vs local 75.55 (Δ0.45)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29,
-      "firstDefectAt": "2026-11-02T01:00:23.700Z"
+      "localCount": 9,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-11-02T02:41:10.496Z"
+    },
+    {
+      "showId": "beauty-and-the-beast-tour-2025",
+      "title": "Beauty and the Beast",
+      "openingDate": "2025-06-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.23 vs local 84.3 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 39,
+      "deployedCount": 40,
+      "firstDefectAt": "2026-11-02T02:41:10.496Z"
+    },
+    {
+      "showId": "and-juliet-tour-2024",
+      "title": "& Juliet",
+      "openingDate": "2024-09-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.95 vs local 83.84 (Δ0.89)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 45,
+      "deployedCount": 46,
+      "firstDefectAt": "2026-11-02T02:41:10.496Z"
     }
   ],
   "persistentDefective": 0,
