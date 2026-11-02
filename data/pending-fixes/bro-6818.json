@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-6818",
+  "planId": "13464cd5-bc86-4d72-b95e-593429cfa657",
+  "status": "pending",
+  "createdAt": "2026-11-02T10:45:35.159Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag 4 earlier-run reviews wrongProduction: An Evening with an Immigrant (2020 Bridge Theatre production), The Gruffalo (2019 and 2024 Lyric seasons), Gang of Three (May 2025 King's Head run)",
+    "steps": [
+      "an-evening-with-an-immigrant-off-west-end-2026/artsdesk--unknown.json: wrongProduction",
+      "the-gruffalo-west-end-2026/musical-theatre-review--scarlett-maxwell.json: wrongProduction",
+      "the-gruffalo-west-end-2026/curtain-call-reviews--unknown.json: wrongProduction",
+      "gang-of-three-off-west-end-2026/artsdesk--unknown.json: wrongProduction"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "an-evening-with-an-immigrant-off-west-end-2026/artsdesk--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "an-evening-with-an-immigrant-off-west-end-2026/artsdesk--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-gruffalo-west-end-2026/musical-theatre-review--scarlett-maxwell.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-gruffalo-west-end-2026/musical-theatre-review--scarlett-maxwell.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-gruffalo-west-end-2026/curtain-call-reviews--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "the-gruffalo-west-end-2026/curtain-call-reviews--unknown.json: wrongProduction"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gang-of-three-off-west-end-2026/artsdesk--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "gang-of-three-off-west-end-2026/artsdesk--unknown.json: wrongProduction"
+      }
+    ]
+  }
+}
