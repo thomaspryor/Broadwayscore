@@ -7,6 +7,7 @@ import os from 'node:os';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { createRequire } from 'node:module';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const rec = require('../../scripts/lib/opening-night-lane/fetch-recording.js');
@@ -203,20 +204,44 @@ test('CLI: an undecryptable recording fails once and is quiet-skipped until the 
   assert.ok(fs.existsSync(path.join(root, '_undecryptable', 'shadow-demo-2026-11-08.json')));
 });
 
-test('discoverArtifacts: newest non-expired main artifact per lane name inside the lookback, stops paging past it', () => {
+test('discoverArtifacts: newest non-expired main artifact per lane name, listed per lane-workflow run, never the repo-wide list', () => {
   const { discoverArtifacts } = require('../../scripts/lane-recording-import.js');
   const now = Date.parse('2026-11-09T12:00:00Z');
   const art = (id, name, created, over = {}) => ({ id, name, created_at: created, expired: false, workflow_run: { id: id * 10, head_branch: 'main' }, ...over });
-  const pages = [
-    { artifacts: [art(5, 'lane-shadow-demo-2026-11-08', '2026-11-09T06:00:00Z'), art(4, 'lane-shadow-demo-2026-11-08', '2026-11-09T05:00:00Z'), art(3, 'lane-recording-demo-2026-11-08', '2026-11-09T04:00:00Z', { expired: true }),
-      art(2, 'lane-recording-demo-2026-11-08', '2026-11-09T03:00:00Z', { workflow_run: { id: 1, head_branch: 'feature' } }), art(9, 'other-artifact', '2026-11-09T02:00:00Z')] },
-    { artifacts: [art(1, 'lane-recording-old-2026-09-01', '2026-09-01T00:00:00Z')] },
-    { artifacts: [art(0, 'lane-shadow-never-2026-09-01', '2026-09-01T00:00:00Z')] },
-  ];
-  let calls = 0;
-  const got = discoverArtifacts({ repo: 'o/r', lookbackDays: 30, now: () => now, ghApi: () => JSON.stringify(pages[calls++]) });
-  assert.deepEqual(got.map((a) => a.id), [5]);
-  assert.equal(calls, 2, 'stopped after the page that crossed the cutoff');
+  const runArtifacts = {
+    101: [art(5, 'lane-shadow-demo-2026-11-08', '2026-11-09T06:00:00Z'), art(9, 'other-artifact', '2026-11-09T02:00:00Z')],
+    102: [art(4, 'lane-shadow-demo-2026-11-08', '2026-11-09T05:00:00Z'), art(3, 'lane-recording-demo-2026-11-08', '2026-11-09T04:00:00Z', { expired: true })],
+    103: [art(2, 'lane-recording-demo-2026-11-08', '2026-11-09T03:00:00Z', { workflow_run: { id: 1, head_branch: 'feature' } })],
+    104: [art(1, 'lane-recording-old-2026-09-01', '2026-09-01T00:00:00Z')],
+    105: [art(7, 'lane-recording-demo-2026-11-08', '2026-11-08T23:00:00Z')],
+  };
+  const calls = [];
+  const ghApi = (p) => {
+    calls.push(p);
+    if (/\/actions\/workflows\//.test(p)) {
+      const page = Number(/page=(\d+)/.exec(p.replace('per_page', ''))[1]);
+      if (page > 1) return JSON.stringify({ workflow_runs: [] });
+      return JSON.stringify({ workflow_runs: [101, 102, 104, 105].map((id) => ({ id, head_branch: 'main' })).concat([{ id: 103, head_branch: 'feature' }]) });
+    }
+    const m = /\/actions\/runs\/(\d+)\/artifacts/.exec(p);
+    return JSON.stringify({ artifacts: runArtifacts[m[1]] || [] });
+  };
+  const got = discoverArtifacts({ repo: 'o/r', lookbackDays: 30, now: () => now, ghApi });
+  assert.deepEqual(got.map((a) => a.id).sort(), [5, 7]);
+  assert.match(calls[0], /^repos\/o\/r\/actions\/workflows\/opening-night-lane-live\.yml\/runs\?branch=main&created=%3E%3D2026-10-10&/);
+  assert.ok(!calls.some((p) => /\/actions\/artifacts\?/.test(p)), 'the repo-wide artifact list truncates at per_page=100 and must not be used');
+  assert.ok(!calls.some((p) => p.includes('/runs/103/')), 'a non-main run is never listed');
+  assert.equal(calls.filter((p) => p.includes('/workflows/')).length, 1, 'a short page of runs stops paging');
+});
+
+test('every workflow that uploads a lane-recording-/lane-shadow- artifact is the one discovery lists', () => {
+  const { LANE_WORKFLOW } = require('../../scripts/lane-recording-import.js');
+  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../.github/workflows');
+  const uploaders = fs.readdirSync(dir).filter((f) => /\.ya?ml$/.test(f)).filter((f) => {
+    const src = fs.readFileSync(path.join(dir, f), 'utf8');
+    return /^\s*name:\s*lane-(recording|shadow)-\$\{\{/m.test(src);
+  });
+  assert.deepEqual(uploaders, [LANE_WORKFLOW]);
 });
 
 test('hardening: a manifest sha that is not 64 hex chars, or a symlinked page, is never read', async () => {

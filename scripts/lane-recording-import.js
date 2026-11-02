@@ -35,23 +35,34 @@ const arg = (n, d = null) => {
 };
 const flag = (n) => process.argv.includes(`--${n}`);
 
+const LANE_WORKFLOW = 'opening-night-lane-live.yml'; // uploads both lane-recording-* and lane-shadow-*
 const gh = (apiPath, binary = false) => execFileSync('gh', ['api', apiPath], { maxBuffer: 256 * 1024 * 1024, ...(binary ? {} : { encoding: 'utf8' }) });
 
-/** Newest non-expired lane artifact per name from main runs inside the lookback, paging newest first. */
-function discoverArtifacts({ repo, lookbackDays, ghApi = gh, now = Date.now }) {
+/**
+ * Newest non-expired lane artifact per name from main runs inside the lookback. Both lane artifacts are uploaded only by
+ * the lane workflow, so this lists that workflow's main runs since the cutoff and then each run's own artifacts. The
+ * repo-wide artifact list (7,800+ rows) is not used: GitHub truncates its per_page=100 response ("unexpected end of JSON
+ * input"), which failed every scheduled run before Nov 2.
+ */
+function discoverArtifacts({ repo, lookbackDays, ghApi = gh, now = Date.now, workflow = LANE_WORKFLOW }) {
   const cutoff = now() - lookbackDays * 86400000;
+  const since = new Date(cutoff).toISOString().slice(0, 10);
   const best = new Map();
-  for (let page = 1; page <= 30; page++) {
-    const rows = JSON.parse(ghApi(`repos/${repo}/actions/artifacts?per_page=100&page=${page}`)).artifacts || [];
-    if (!rows.length) break;
-    for (const a of rows) {
-      if (a.expired || !imp.parseArtifactName(a.name)) continue;
-      if (!a.workflow_run || a.workflow_run.head_branch !== 'main') continue;
-      if (new Date(a.created_at).getTime() < cutoff) continue;
-      const prev = best.get(a.name);
-      if (!prev || a.created_at > prev.created_at) best.set(a.name, a);
+  const perPage = 50;
+  for (let page = 1; page <= 20; page++) {
+    const runs = JSON.parse(ghApi(`repos/${repo}/actions/workflows/${workflow}/runs?branch=main&created=%3E%3D${since}&per_page=${perPage}&page=${page}`)).workflow_runs || [];
+    for (const r of runs) {
+      if (r.head_branch !== 'main') continue;
+      const rows = JSON.parse(ghApi(`repos/${repo}/actions/runs/${r.id}/artifacts?per_page=100`)).artifacts || [];
+      for (const a of rows) {
+        if (a.expired || !imp.parseArtifactName(a.name)) continue;
+        if (!a.workflow_run || a.workflow_run.head_branch !== 'main') continue;
+        if (new Date(a.created_at).getTime() < cutoff) continue;
+        const prev = best.get(a.name);
+        if (!prev || a.created_at > prev.created_at) best.set(a.name, a);
+      }
     }
-    if (new Date(rows[rows.length - 1].created_at).getTime() < cutoff) break;
+    if (runs.length < perPage) break;
   }
   return [...best.values()];
 }
@@ -152,7 +163,7 @@ function main() {
   }
 }
 
-module.exports = { discoverArtifacts };
+module.exports = { discoverArtifacts, LANE_WORKFLOW };
 
 if (require.main === module) {
   Promise.resolve().then(main).then((code) => { process.exitCode = code; }, (e) => { console.error(`::error::${String((e && e.message) || e).slice(0, 200)}`); process.exitCode = 1; });
