@@ -1,17 +1,13 @@
 {
-  "generatedAt": "2026-11-02T09:52:44.927Z",
+  "generatedAt": "2026-11-02T16:12:51.367Z",
   "night": "2026-11-01",
   "counts": {
     "total": 3,
     "passed": 0,
-    "failed": 1,
-    "notGraded": 2
+    "failed": 0,
+    "notGraded": 3
   },
   "lines": [
-    {
-      "verdict": "FAIL",
-      "line": "Tosca: published by the regular pipeline; 1 of 1 review live by 12:00am; could not check the Reddit draft (the site's numbers could not be read). Failed."
-    },
     {
       "verdict": "UNKNOWN",
       "line": "Ms. Blakk for President: not graded, no reviews were published overnight."
@@ -19,14 +15,16 @@
     {
       "verdict": "UNKNOWN",
       "line": "The Blue Violinist Over West End Avenue: not graded, no reviews were published overnight."
+    },
+    {
+      "verdict": "UNKNOWN",
+      "line": "Tosca: published by the regular pipeline; 1 of 1 review live by 12:00am; could not check the Reddit draft (the site's numbers could not be read). Not graded: no reviews were published overnight."
     }
   ],
   "scoreboard": {
-    "graded": 9,
+    "graded": 8,
     "passed": 0,
     "passedOnOwn": 0
   },
-  "missFirstSeen": {
-    "tosca-off-broadway-2026|2026-11-01|review:other": "2026-11-02T09:52:44.927Z"
-  }
+  "missFirstSeen": {}
 }

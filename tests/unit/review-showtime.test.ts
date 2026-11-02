@@ -75,3 +75,18 @@ test('onlyPerformanceSlot picks the one show on a single-performance day, else n
   assert.equal(onlyPerformanceSlot('no-such-show', '2026-11-04'), null);
   assert.equal(scheduledShowtime('no-such-show', '2026-11-04', 'evening'), null);
 });
+
+// BRO-6835: the seat is owner-only. The shared diary (/seen/[token]) is built by a
+// SECURITY DEFINER RPC with an explicit column list; that list must never grow seat.
+test('shared-diary RPC and web loader never expose seat or showtime columns', () => {
+  const fs = require('node:fs') as typeof import('node:fs');
+  const path = require('node:path') as typeof import('node:path');
+  const root = path.join(__dirname, '../..');
+  const sql = fs.readFileSync(path.join(root, 'supabase/migrations/20261004_diary_shares.sql'), 'utf8');
+  assert.match(sql, /jsonb_build_object\('show_id', r\.show_id/); // anchor: still the explicit-list RPC
+  assert.doesNotMatch(sql, /\bseat\b|time_slot|curtain_time/);
+  for (const f of fs.readdirSync(path.join(root, 'src/lib/shared-diary'))) {
+    const src = fs.readFileSync(path.join(root, 'src/lib/shared-diary', f), 'utf8');
+    assert.doesNotMatch(src, /\bseat\b|time_slot|curtain_time/, f);
+  }
+});
