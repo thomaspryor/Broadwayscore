@@ -306,6 +306,46 @@
           "^comedy$"
         ]
       }
+    },
+    "san-diego-ca": {
+      "name": "San Diego, CA",
+      "short": "San Diego",
+      "home": "San Diego, CA",
+      "since": "2026-05-01",
+      "emoji": "🌴",
+      "cardLabel": "San Diego",
+      "menuSub": "reviews since May 2026",
+      "launched": false,
+      "appMarket": "sandiego",
+      "discoverySource": "cityfinder-san-diego",
+      "finder": {
+        "key": "san-diego",
+        "since": "2026-05-01",
+        "files": {
+          "seen": "data/audit/city-finder-seen-san-diego.json",
+          "added": "data/audit/city-finder-added-san-diego.json"
+        }
+      }
+    },
+    "boston-ma": {
+      "name": "Boston, MA",
+      "short": "Boston",
+      "home": "Boston, MA",
+      "since": "2026-05-01",
+      "emoji": "🦞",
+      "cardLabel": "Boston",
+      "menuSub": "reviews since May 2026",
+      "launched": false,
+      "appMarket": "boston",
+      "discoverySource": "cityfinder-boston",
+      "finder": {
+        "key": "boston",
+        "since": "2026-05-01",
+        "files": {
+          "seen": "data/audit/city-finder-seen-boston.json",
+          "added": "data/audit/city-finder-added-boston.json"
+        }
+      }
     }
   }
 }

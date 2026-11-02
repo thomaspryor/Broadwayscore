@@ -44,6 +44,14 @@
     "liverpool": {
       "name": "Liverpool",
       "country": "UK"
+    },
+    "san-diego": {
+      "name": "San Diego",
+      "country": "US"
+    },
+    "boston": {
+      "name": "Boston",
+      "country": "US"
     }
   },
   "metros": {
@@ -179,11 +187,13 @@
     },
     "boston-ma": {
       "name": "Boston",
-      "country": "US"
+      "country": "US",
+      "hub": "boston"
     },
     "san-diego-ca": {
       "name": "San Diego",
-      "country": "US"
+      "country": "US",
+      "hub": "san-diego"
     },
     "san-francisco-ca": {
       "name": "San Francisco",
@@ -294,7 +304,70 @@
     "Bowie, MD": "washington-dc",
     "Upper Marlboro, MD": "washington-dc",
     "Largo, MD": "washington-dc",
-    "Brentwood, MD": "washington-dc"
+    "Brentwood, MD": "washington-dc",
+    "Chula Vista, CA": "san-diego-ca",
+    "Escondido, CA": "san-diego-ca",
+    "Carlsbad, CA": "san-diego-ca",
+    "Oceanside, CA": "san-diego-ca",
+    "Solana Beach, CA": "san-diego-ca",
+    "Encinitas, CA": "san-diego-ca",
+    "Cardiff, CA": "san-diego-ca",
+    "Coronado, CA": "san-diego-ca",
+    "Poway, CA": "san-diego-ca",
+    "Vista, CA": "san-diego-ca",
+    "La Mesa, CA": "san-diego-ca",
+    "El Cajon, CA": "san-diego-ca",
+    "National City, CA": "san-diego-ca",
+    "Del Mar, CA": "san-diego-ca",
+    "San Marcos, CA": "san-diego-ca",
+    "Santee, CA": "san-diego-ca",
+    "Lemon Grove, CA": "san-diego-ca",
+    "Imperial Beach, CA": "san-diego-ca",
+    "Rancho Bernardo, CA": "san-diego-ca",
+    "Rancho Santa Fe, CA": "san-diego-ca",
+    "Ramona, CA": "san-diego-ca",
+    "Fallbrook, CA": "san-diego-ca",
+    "Point Loma, CA": "san-diego-ca",
+    "Mira Mesa, CA": "san-diego-ca",
+    "Spring Valley, CA": "san-diego-ca",
+    "Somerville, MA": "boston-ma",
+    "Watertown, MA": "boston-ma",
+    "Brookline, MA": "boston-ma",
+    "Newton, MA": "boston-ma",
+    "Waltham, MA": "boston-ma",
+    "Medford, MA": "boston-ma",
+    "Chelsea, MA": "boston-ma",
+    "Quincy, MA": "boston-ma",
+    "Lynn, MA": "boston-ma",
+    "Beverly, MA": "boston-ma",
+    "Norwell, MA": "boston-ma",
+    "Lowell, MA": "boston-ma",
+    "Needham, MA": "boston-ma",
+    "Dedham, MA": "boston-ma",
+    "Stoneham, MA": "boston-ma",
+    "Concord, MA": "boston-ma",
+    "Wellesley, MA": "boston-ma",
+    "Arlington, MA": "boston-ma",
+    "Malden, MA": "boston-ma",
+    "Everett, MA": "boston-ma",
+    "Revere, MA": "boston-ma",
+    "Hingham, MA": "boston-ma",
+    "Weymouth, MA": "boston-ma",
+    "Braintree, MA": "boston-ma",
+    "Woburn, MA": "boston-ma",
+    "Burlington, MA": "boston-ma",
+    "Lexington, MA": "boston-ma",
+    "Salem, MA": "boston-ma",
+    "Marblehead, MA": "boston-ma",
+    "Framingham, MA": "boston-ma",
+    "Natick, MA": "boston-ma",
+    "Hyde Park, MA": "boston-ma",
+    "Dorchester, MA": "boston-ma",
+    "Roxbury, MA": "boston-ma",
+    "Jamaica Plain, MA": "boston-ma",
+    "Allston, MA": "boston-ma",
+    "Charlestown, MA": "boston-ma",
+    "Mother Brook, MA": "boston-ma"
   },
   "venues": [
     {
