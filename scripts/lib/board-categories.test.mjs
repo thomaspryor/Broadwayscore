@@ -244,6 +244,99 @@ test('an old RECHECK stamp on a Todo card is history: an Urgent one still shows 
   assert.equal(r.importantStuck.length, 1);
 });
 
+// ── BRO-6852: owner-hold sweep (real functions, no copies) ───────────────
+const sweep = require('./owner-hold-sweep.js');
+const hdisp = require('./headless-dispatchability.js');
+
+const heldCard = (parked, over = {}) => card({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: ${parked}\n\n${VERIFY}`, ...over });
+const withComment = (issue, body) => ({ ...issue, comments: { nodes: [...issue.comments.nodes, { body, createdAt: '2026-10-30T00:00:00Z' }] } });
+
+test('sweep selects only the two hold rows', () => {
+  const held = heldCard('needs owner judgment on the wording');
+  const machine = heldCard('alert-router parked', { description: `PARKED: BSC Daily alert\n\n${VERIFY}\nFiled by: autofix` });
+  const asked = withDesc('DECISION NEEDED: Which colour should the header use?');
+  const plain = card();
+  const ids = sweep.selectHolds([held, machine, asked, plain], { now: NOW }).map((h) => h.issue.identifier);
+  assert.ok(ids.includes(held.identifier));
+  for (const other of [asked, plain]) assert.ok(!ids.includes(other.identifier));
+  // every selected card really is in one of the two board rows
+  for (const h of sweep.selectHolds([held, machine, asked, plain], { now: NOW })) {
+    assert.ok(['parked-owner-wording', 'owner-gated-no-question'].includes(categoryOf(h.issue)));
+  }
+});
+
+test('sweep releases worker work and the released card is picker-ready', () => {
+  const c = heldCard('needs owner judgment on the wording');
+  assert.equal(categoryOf(c), 'parked-owner-wording');
+  const r = sweep.classifyHold(c, { now: NOW });
+  assert.equal(r.action, 'release');
+  const view = sweep.releasedView(c, NOW);
+  assert.ok(bc.cardTraits(view, { nowMs: NOW.getTime() }).traits.has('ready'));
+  assert.equal(view.state.name, 'Todo');
+  assert.ok(!/^\s*PARKED:/im.test(view.description));
+});
+
+test('the release comment clears the owner gate and is not re-gated by its own words', () => {
+  assert.equal(hdisp.commentClearsOwnerGate([sweep.releaseComment(NOW)], 'plain description'), true);
+});
+
+test('sweep sends owner-only needs to a question and keeps real blocks and risky actions parked', () => {
+  assert.equal(sweep.classifyHold(heldCard('owner has to log in and renew the cookie'), { now: NOW }).action, 'owner-question');
+  assert.equal(sweep.classifyHold(heldCard('needs the Resend API key from owner'), { now: NOW }).action, 'leave');
+  assert.equal(sweep.classifyHold(heldCard('owner go-ahead before we send the email broadcast'), { now: NOW }).action, 'leave');
+});
+
+test('a card released by the sweep and held again goes to an owner question, not another release', () => {
+  const again = withComment(heldCard('needs owner judgment on the wording'), sweep.releaseComment(NOW));
+  assert.equal(sweep.classifyHold(again, { now: NOW }).action, 'owner-question');
+  assert.equal(sweep.classifyHold(again, { now: NOW }).why, 're-held-after-release');
+});
+
+test('an owner answer ends the wait named in the park line', () => {
+  const answered = card({ state: { name: 'Todo', type: 'unstarted' }, description: `PARKED: waits on owner colour choice\nANSWERED by the owner (see the "Owner decision" comment on this card).\n${VERIFY}` });
+  assert.equal(sweep.classifyHold(answered, { now: NOW }).action, 'release');
+});
+
+test('a card with no safe VERIFY is left, not released into a loop', () => {
+  const noVerify = heldCard('needs owner judgment on the wording', { description: 'PARKED: needs owner judgment on the wording\n\nNo check here.' });
+  assert.equal(sweep.classifyHold(noVerify, { now: NOW }).action, 'leave');
+});
+
+test('planSweep caps releases and questions, and only accepts real DECISION NEEDED blocks', () => {
+  const cards = [1, 2, 3].map(() => heldCard('needs owner judgment on the wording'));
+  const plan = sweep.planSweep(cards, { now: NOW, releaseCap: 2 });
+  assert.equal(plan.releases.length, 2);
+  assert.equal(plan.deferred.length, 1);
+  const login = heldCard('owner has to log in and renew the cookie');
+  assert.equal(sweep.planSweep([login], { now: NOW }).needsQuestion.length, 1);
+  const bad = sweep.planSweep([login], { now: NOW, questions: { [login.identifier]: 'please decide' } });
+  assert.equal(bad.questions.length, 0);
+  assert.equal(bad.needsQuestion.length, 1);
+  const q = 'DECISION NEEDED: Renew the cookie?\nWhy this is your call: only you have the login.\nOwner step 1: Log in.';
+  const ok = sweep.planSweep([login], { now: NOW, questions: { [login.identifier]: q } });
+  assert.equal(ok.questions.length, 1);
+  // the written block really lands the card in "Waiting on you"
+  const written = { ...login, description: sweep.withQuestion(login.description, q) };
+  assert.equal(categoryOf(written), 'waiting-owner');
+  const cap = sweep.planSweep([login, heldCard('owner has to log in again')], { now: NOW, questionCap: 1,
+    questions: { [login.identifier]: q } });
+  assert.equal(cap.questions.length, 1);
+});
+
+test('a park that waits on an event is left, not released', () => {
+  const r = sweep.classifyHold(heldCard('needs a real recorded night to curate the file; blocked until the first import has run'), { now: NOW });
+  assert.equal(r.action, 'leave');
+});
+
+test('taste, money and naming holds are asked about, never released (park line or notes only)', () => {
+  const V = '\n## Acceptance criteria\nVERIFY: node --test scripts/lib/foo.test.mjs';
+  const card = (d) => ({ identifier: 'BRO-1', title: 't', priority: 3, state: { name: 'Backlog', type: 'backlog' }, labels: { nodes: [] }, comments: { nodes: [] }, createdAt: '2026-10-01T00:00:00Z', updatedAt: '2026-10-01T00:00:00Z', description: d + V });
+  for (const d of ['PARKED: owner decision on the homepage color scheme', 'PARKED: owner sign-off on which pricing tier to offer',
+    'PARKED: awaiting owner: pick the new logo', 'PARKED: owner approval to buy the domain', 'owner-judgment\nDecide the homepage color scheme']) {
+    assert.equal(sweep.classifyHold(card(d), { now: NOW }).action, 'owner-question', d);
+  }
+});
+
 test('BRO-6853: a past-dated card is "failed" only when the ledger last said fail', () => {
   const mk = () => withDesc('RECHECK-AFTER: 2026-10-20', { state: { name: 'Paused', type: 'backlog' } });
   const a = mk(); const b = mk(); const c = mk();

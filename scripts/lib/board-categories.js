@@ -348,7 +348,7 @@ function formatCompareMarkdown(cmp) {
 const OPEN_BOARD_QUERY = `query OpenBoard($teamKey: String!, $after: String) {
   issues(filter: { team: { key: { eq: $teamKey } }, state: { type: { nin: ["completed", "canceled"] } } }, first: 100, after: $after) {
     pageInfo { hasNextPage endCursor }
-    nodes { identifier title description priority url createdAt updatedAt state { name type } labels { nodes { name } }
+    nodes { id identifier title description priority url createdAt updatedAt state { name type } labels { nodes { name } }
       comments(first: 100, orderBy: createdAt) { nodes { body createdAt } } }
   }
 }`;

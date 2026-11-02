@@ -6,6 +6,11 @@ name: Linear Unpark Drain
 # (scripts/linear-drain-parked.js via launchd) stopped on 2026-09-19.
 # Selection and limits live in scripts/linear-unpark-drain.js; this only runs
 # it. Kill switch: repo variable LINEAR_UNPARK_DRAIN_DISABLED=1.
+#
+# BRO-6852: the second step sweeps cards that say they need the owner but carry
+# no real question (scripts/owner-hold-sweep.js): worker-doable ones are released
+# to Todo, owner-only ones are listed. Dry run via the workflow_dispatch input.
+# Kill switch: repo variable OWNER_HOLD_SWEEP_DISABLED=1.
 
 on:
   schedule:
@@ -16,6 +21,10 @@ on:
         description: 'Most cards to move this run'
         required: false
         default: '25'
+      sweep_apply:
+        description: 'Owner-hold sweep writes (false = dry run only)'
+        required: false
+        default: 'true'
 
 permissions:
   contents: read
@@ -41,6 +50,16 @@ jobs:
           LINEAR_UNPARK_DRAIN_DISABLED: ${{ vars.LINEAR_UNPARK_DRAIN_DISABLED }}
           CAP: ${{ inputs.cap || '25' }}
         run: node scripts/linear-unpark-drain.js --apply --cap "$CAP"
+
+      - name: Release owner-worded holds that have no question
+        # Runs even when the drain step failed, so one failure does not hide the other.
+        if: always()
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          OWNER_HOLD_SWEEP_DISABLED: ${{ vars.OWNER_HOLD_SWEEP_DISABLED }}
+          APPLY: ${{ inputs.sweep_apply || 'true' }}
+        run: |
+          if [ "$APPLY" = "true" ]; then node scripts/owner-hold-sweep.js --apply; else node scripts/owner-hold-sweep.js; fi
 
       - name: Notify on failure
         if: failure()

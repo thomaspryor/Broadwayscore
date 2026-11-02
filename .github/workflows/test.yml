@@ -106,6 +106,8 @@ on:
       - 'scripts/check-grosses-integrity.js'
       # BRO-5626: daily unpark drain, tested by scripts/linear-unpark-drain.test.mjs.
       - 'scripts/linear-unpark-drain.js'
+      # BRO-6852: owner-hold sweep, tested by scripts/owner-hold-sweep.test.mjs.
+      - 'scripts/owner-hold-sweep.js'
       # BRO-6168: owner-reply drain, tested by tests/unit/decision-reply.test.mjs.
       - 'scripts/linear-decision-reply-drain.js'
       # BRO-6134: Codex lane health alarm, tested by tests/unit/codex-lane-health.test.mjs.
