@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T00:43:18.622Z",
+  "timestamp": "2026-11-02T01:13:17.266Z",
   "stats": {
-    "totalReviews": 79075,
+    "totalReviews": 79076,
     "alreadyFlagged": 21894,
     "dateGuardCatches": 245,
     "directorMismatch": 3401,
     "tvFilmSignals": 2248,
-    "londonSignals": 3572,
+    "londonSignals": 3573,
     "offBroadwaySignals": 743,
     "yearMismatch": 344,
-    "noPublishDate": 8388
+    "noPublishDate": 8387
   },
   "findings": [
     {
@@ -123687,6 +123687,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-collaboration-2022",
+      "file": "theatermania--david-gordon.json",
+      "score": null,
+      "publishDate": "2022-12-20",
+      "url": "https://www.theatermania.com/broadway/reviews/review-the-collaboration_94693.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
