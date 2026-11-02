@@ -64,3 +64,26 @@ test('--type: every listed show must carry the type; safe-form accepts it last',
   assert.deepEqual(results.map(r => r.ok), [false, true]);
   assert.deepEqual(results[0].problems, ['type play != musical']);
 });
+
+// BRO-6716: `--show=all` was a literal id that could never pass (card bounced twice).
+test('selector words are refused as show ids, by the probe and by the safe-form gate', () => {
+  for (const ids of ['all', 'a-2026,all', 'any', 'every', 'none']) {
+    assert.throws(() => parseArgs([`--show=${ids}`, '--reviews=1']), /explicit show ids/);
+    assert.equal(isSafeCheckCommand(`node scripts/lib/verify-data-backfill.js --show=${ids} --reviews=1`), false);
+  }
+  // Real ids that merely start with a selector word stay valid.
+  for (const ids of ['all-shook-up-2026', 'allegiance-2015,anything-goes-2022', 'every-brilliant-thing-2026']) {
+    assert.deepEqual(parseArgs([`--show=${ids}`]).showIds, ids.split(','));
+    assert.equal(isSafeCheckCommand(`node scripts/lib/verify-data-backfill.js --show=${ids}`), true);
+  }
+  assert.equal(main(['--show=all', '--reviews=1'], '/nonexistent'), 2);
+});
+
+test('slow-market-grade fixed-window gap check is a safe form, only in its exact shape', () => {
+  assert.equal(isSafeCheckCommand('node scripts/slow-market-grade.js --opened-from=2025-10-31 --opened-to=2026-10-31 --check-gaps'), true);
+  for (const c of [
+    'node scripts/slow-market-grade.js --opened-from=2025-10-31 --opened-to=2026-10-31',
+    'node scripts/slow-market-grade.js --opened-from=2025-10-31 --opened-to=2026-10-31 --check-gaps --json; echo',
+    'node scripts/slow-market-grade.js --show=a --check-gaps',
+  ]) assert.equal(isSafeCheckCommand(c), false, c);
+});

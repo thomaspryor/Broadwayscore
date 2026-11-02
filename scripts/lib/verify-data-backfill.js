@@ -14,12 +14,19 @@ const path = require('path');
 const { hasRealImage } = require('./show-images.js');
 const { hasHelpFlag } = require('./cli-help.js');
 
+// BRO-6716: a card filed `--show=all` meaning "every show". The id regex accepted it as
+// a literal id, so the check could only ever print "FAIL all: show missing" and the
+// card bounced. Selector words are never show ids; refuse them as invalid arguments.
+const RESERVED_SELECTOR_IDS = new Set(['all', 'any', 'every', 'none']);
+
 function parseArgs(args) {
   const command = args.join(' ');
   const match = /^--show=([a-z0-9]+(?:-[a-z0-9]+)*(?:,[a-z0-9]+(?:-[a-z0-9]+)*)*)( --images)?(?: --reviews=([1-9]\d*))?(?: --type=(musical|play|special|opera))?$/.exec(command);
   if (!match) throw new Error('Expected --show=ID[,ID] [--images] [--reviews=N] [--type=musical|play|special|opera]');
   const minReviews = match[3] ? Number(match[3]) : 0;
   if (!Number.isSafeInteger(minReviews)) throw new Error('Review minimum must be a safe integer');
+  const reserved = match[1].split(',').filter(id => RESERVED_SELECTOR_IDS.has(id));
+  if (reserved.length) throw new Error(`--show takes explicit show ids; "${reserved[0]}" is not one (for a whole window use node scripts/slow-market-grade.js --opened-from=YYYY-MM-DD --opened-to=YYYY-MM-DD --check-gaps)`);
   return { showIds: [...new Set(match[1].split(','))], images: !!match[2], minReviews, type: match[4] || null };
 }
 
@@ -64,4 +71,4 @@ function main(args = process.argv.slice(2), root = path.join(__dirname, '..', '.
 }
 
 if (require.main === module) process.exitCode = main();
-module.exports = { parseArgs, verifyBackfill, main };
+module.exports = { parseArgs, verifyBackfill, main, RESERVED_SELECTOR_IDS };

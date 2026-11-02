@@ -36,6 +36,11 @@
  *   node scripts/slow-market-grade.js --last-year --max-stale-pct=5
  *       # BRO-6751: the scheduler's last-year shows (gap-audit-freshness inLastYear);
  *       # exit 1 when stale (any grade) or never-audited rows are >= 5% of them
+ *   node scripts/slow-market-grade.js --opened-from=2025-10-31 --opened-to=2026-10-31 --check-gaps
+ *       # BRO-6716: a fixed opening-date window (inclusive), so an acceptance check does
+ *       # not drift as shows open; --check-gaps exits 1 on FAIL or NO-AUDIT only (a STALE
+ *       # row's last audit passed; closed shows recheck every 30 days, so --check over a
+ *       # year of shows can never pass)
  */
 const fs = require('fs');
 const path = require('path');
@@ -149,12 +154,35 @@ function staleBreach(out, maxPct) {
 }
 function notFresh(s) { return s.stale || s.grade === 'NO-AUDIT'; }
 
+/** Pure (BRO-6716): ids whose openingDate falls in [from, to] (YYYY-MM-DD, inclusive). */
+function openedBetweenIds(shows, from, to) {
+  return shows.filter((s) => {
+    const d = typeof s.openingDate === 'string' ? s.openingDate.slice(0, 10) : '';
+    return /^\d{4}-\d{2}-\d{2}$/.test(d) && d >= from && d <= to;
+  }).map((s) => s.id);
+}
+
+/** Pure (BRO-6716): --check-gaps verdict. FAIL (stale or not) and NO-AUDIT fail; PASS and STALE pass. */
+function hasGap(out) {
+  return out.some((s) => s.grade === 'FAIL' || s.grade === 'NO-AUDIT');
+}
+
+const DATE_ARG_RE = /^\d{4}-\d{2}-\d{2}$/;
+
 function main(argv = process.argv.slice(2)) {
   const showArg = argv.find((a) => a.startsWith('--show='));
   let ids = showArg ? showArg.split('=')[1].split(',').filter(Boolean) : [];
   const lastYear = argv.includes('--last-year');
-  if (!ids.length && !lastYear) {
-    console.error('usage: node scripts/slow-market-grade.js --show=<id[,id...]> | --last-year [--check] [--max-stale-pct=N] [--json]');
+  const fromArg = argv.find((a) => a.startsWith('--opened-from='));
+  const toArg = argv.find((a) => a.startsWith('--opened-to='));
+  const openedFrom = fromArg ? fromArg.split('=')[1] : null;
+  const openedTo = toArg ? toArg.split('=')[1] : null;
+  if ((fromArg || toArg) && !(DATE_ARG_RE.test(openedFrom || '') && DATE_ARG_RE.test(openedTo || '') && openedFrom <= openedTo)) {
+    console.error('--opened-from and --opened-to go together as YYYY-MM-DD dates, from <= to');
+    return 2;
+  }
+  if (!ids.length && !lastYear && !openedFrom) {
+    console.error('usage: node scripts/slow-market-grade.js --show=<id[,id...]> | --last-year | --opened-from=YYYY-MM-DD --opened-to=YYYY-MM-DD [--check | --check-gaps] [--max-stale-pct=N] [--json]');
     return 2;
   }
   const maxStaleArg = argv.find((a) => a.startsWith('--max-stale-pct='));
@@ -176,6 +204,11 @@ function main(argv = process.argv.slice(2)) {
   const shows = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
   const showById = new Map(shows.map((s) => [s.id, s]));
   if (lastYear) ids = [...new Set([...ids, ...lastYearIds(shows, nowMs)])];
+  if (openedFrom) ids = [...new Set([...ids, ...openedBetweenIds(shows, openedFrom, openedTo)])];
+  if (!ids.length) {
+    console.error('no shows selected');
+    return 1;
+  }
   let outletDomains = {};
   try {
     const reg = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
@@ -233,8 +266,9 @@ function main(argv = process.argv.slice(2)) {
     console.error(`stale-pct: ${stale}/${out.length} = ${pct}% stale or never audited (limit < ${maxStalePct}%) ${breach ? 'FAIL' : 'OK'}`);
     if (breach) return 1;
   }
+  if (argv.includes('--check-gaps') && hasGap(out)) return 1;
   return argv.includes('--check') && out.some((s) => s.grade !== 'PASS') ? 1 : 0;
 }
 
 if (require.main === module) process.exitCode = main();
-module.exports = { gradeShow, main, lastYearIds, staleBreach, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, GRIND_WINDOW_DAYS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };
+module.exports = { gradeShow, main, lastYearIds, openedBetweenIds, hasGap, staleBreach, displayGrade, isOverdue, OVERDUE_GRACE_HOURS, GRIND_WINDOW_DAYS, frequentOutletsFor, frequentMissing, FREQUENT_OUTLET_RATE, DEFAULT_MAX_AGE_HOURS };

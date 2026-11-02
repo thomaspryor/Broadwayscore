@@ -618,7 +618,7 @@ function isDataOutcomeCard(card) {
 function isDataVerifyCommand(command) {
   // The shared safety validator still vets every script and its exact flags.
   // A compiler, lint run or file-presence check cannot prove a data repair.
-  return /^node scripts\/(?:lib\/verify-data-backfill|audit-[\w-]+|validate-data)\.js(?: |$)/.test(command);
+  return /^node scripts\/(?:lib\/verify-data-backfill|audit-[\w-]+|validate-data|slow-market-grade)\.js(?: |$)/.test(command);
 }
 
 // The one retry (BRO-2546 defect 2). Same shape as triageCard's retry in
@@ -670,7 +670,8 @@ Respond with ONLY the same JSON object as before.`;
 function buildEnrichPrompt(card) {
   const dataOutcome = isDataOutcomeCard(card);
   const forms = dataOutcome ? `
-  - node scripts/lib/verify-data-backfill.js --show=ID[,ID] [--images] [--reviews=N] (existing read-only script; IDs must come from the card, never infer them from URLs; --images checks usable art, --reviews=N requires at least N scored reviews; flags in that order)
+  - node scripts/lib/verify-data-backfill.js --show=ID[,ID] [--images] [--reviews=N] (existing read-only script; IDs must come from the card, never infer them from URLs; --images checks usable art, --reviews=N requires at least N scored reviews; flags in that order; never --show=all: list real ids)
+  - node scripts/slow-market-grade.js --opened-from=YYYY-MM-DD --opened-to=YYYY-MM-DD --check-gaps (existing read-only script; review coverage for every show that opened in a fixed date window: exit 1 while any show has a cited review not live or was never gap-audited; use this for "every show opened in <window>" cards)
   - An existing vetted read-only node scripts/audit-*.js command, or node scripts/validate-data.js --strict, ONLY if it actually checks the card's specific data outcome.
 This is a DATA OUTCOME card. Never name node --test, npx tsx --test, a .test file, tsc, lint or test -f. Do not invent a blocking unit test that asserts live data. If no supported read-only probe proves the claim, return an empty command so the card stays unchanged.` : `
   - node --test <path>.test.mjs   (a real existing test, OR a new one this work would add; name it tests/unit/<short-name>.test.mjs, scripts/lib/<short-name>.test.mjs, or scripts/<short-name>.test.mjs, matching the file the card's Problem/Suggested-approach text is actually about)
