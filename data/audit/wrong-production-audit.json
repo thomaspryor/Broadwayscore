@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T01:32:03.628Z",
+  "timestamp": "2026-11-02T02:15:27.208Z",
   "stats": {
-    "totalReviews": 79078,
-    "alreadyFlagged": 21895,
+    "totalReviews": 79136,
+    "alreadyFlagged": 21898,
     "dateGuardCatches": 245,
-    "directorMismatch": 3401,
-    "tvFilmSignals": 2248,
-    "londonSignals": 3573,
+    "directorMismatch": 3421,
+    "tvFilmSignals": 2250,
+    "londonSignals": 3577,
     "offBroadwaySignals": 743,
-    "yearMismatch": 344,
-    "noPublishDate": 8383
+    "yearMismatch": 345,
+    "noPublishDate": 8380
   },
   "findings": [
     {
@@ -7140,6 +7140,19 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "the-show-report--theshowreport.json",
+      "publishDate": "2024-12-27",
+      "url": "https://www.theshowreport.org/post/review-back-to-the-future-the-musical-segerstrom-center-for-the-arts",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "wkrn--colleen-guerry.json",
       "score": 85,
       "publishDate": "2026-03-19",
@@ -8897,6 +8910,29 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "broadwayworld--jared-fessler.json",
+      "publishDate": "2024-12-11",
+      "url": "https://www.broadwayworld.com/minneapolis/article/Review-BOOK-OF-MORMON-at-Orpheum-Theatre-Minneapolis-20241211",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw and trey parker\" from the-book-of-mormon-west-end-2024"
         }
       ]
     },
@@ -27166,6 +27202,19 @@
     },
     {
       "showId": "hadestown-tour-2024",
+      "file": "burghvivant--timothy-ruppert.json",
+      "publishDate": "2026-10-29",
+      "url": "https://burghvivant.org/2026/10/29/a-world-of-thresholds-a-review-of-hadestown/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
       "file": "dc-theater-arts--zoe-winsky.json",
       "score": 94,
       "publishDate": "2025-11-21",
@@ -27287,6 +27336,19 @@
       "score": 91,
       "publishDate": "2024-10-30",
       "url": "https://www.theshowreport.org/post/review-hadestown-segerstrom-center-for-the-arts",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rachel chavkin\" from hadestown-2019"
+        }
+      ]
+    },
+    {
+      "showId": "hadestown-tour-2024",
+      "file": "trib-live--by-alexis-papalia.json",
+      "publishDate": "2026-10-28",
+      "url": "https://triblive.com/aande/theater-arts/review-hadestown-at-the-benedum-center-is-an-epically-great-show/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37946,6 +38008,24 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "epoch-times--betty-mohr.json",
+      "publishDate": "2024-12-22",
+      "url": "https://www.theepochtimes.com/bright/les-miserables-the-beloved-musical-visits-chicago-in-a-perfect-production-5780546",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "ladue-news--mark-bretz.json",
       "score": 88,
       "publishDate": "2025-11-24",
@@ -46466,6 +46546,19 @@
     },
     {
       "showId": "operation-mincemeat-tour-2026",
+      "file": "broadwayworld--samantha-wu.json",
+      "publishDate": "2026-10-30",
+      "url": "https://www.broadwayworld.com/toronto/article/Review-OPERATION-MINCEMEAT-at-Royal-Alexandra-Theatre-20261030",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
       "file": "chicago-reader--kerry-reid.json",
       "score": 91,
       "publishDate": "2026-10-02",
@@ -46536,6 +46629,19 @@
     },
     {
       "showId": "operation-mincemeat-tour-2026",
+      "file": "so-sumi--glenn-sumi.json",
+      "publishDate": "2026-10-31",
+      "url": "https://www.goaheadsumi.com/reviews-operation-mincemeat-mirvish-the-call-centre-of-cthulhu-eldritch/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
       "file": "stageandcinema--cj-fernandes.json",
       "score": 79,
       "publishDate": "2026-10-04",
@@ -46550,10 +46656,36 @@
     },
     {
       "showId": "operation-mincemeat-tour-2026",
+      "file": "the-globe-and-mail--aisling-murphy.json",
+      "publishDate": "2026-10-30",
+      "url": "https://www.theglobeandmail.com/culture/stage/article-operation-mincemeat-review-musical-slice-of-the-second-world-war/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
       "file": "third-coast-review--unknown.json",
       "score": 42,
       "publishDate": null,
       "url": "https://thirdcoastreview.com/stages/2026/10/01/review-broadway-in-chicagos-operation-mincemeat",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "toronto-star--joshua-chong.json",
+      "publishDate": "2026-11-01",
+      "url": "https://www.thestar.com/entertainment/stage/mirvish-s-wildly-entertaining-operation-mincemeat-is-one-of-the-best-musicals-since-hamilton/article_57730a97-ac57-4fc1-9e17-7c7688484769.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -54361,6 +54493,19 @@
     },
     {
       "showId": "shucked-tour-2024",
+      "file": "shaw-local--paul-lockwood.json",
+      "publishDate": "2025-01-12",
+      "url": "https://www.shawlocal.com/northwest-herald/2025/01/13/draft-shucked-musical-comedy-at-cibc-theatre-impressively-corny-in-chicago/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "shucked-tour-2024",
       "file": "stageandcinema--lynne-weiss.json",
       "score": 80,
       "publishDate": "2025-04-11",
@@ -55683,6 +55828,24 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "broadwayworld--albert-gutierrez.json",
+      "publishDate": "2024-12-19",
+      "url": "https://www.broadwayworld.com/orlando/article/Review-SOME-LIKE-IT-HOT-Sizzles-and-Shakes-at-Dr-Phillips-Center-20241219",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (3x) more than 2024 (0x). 2022 matches production: some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "broadwayworld--christine-swerczek.json",
       "score": 85,
       "publishDate": "2025-03-28",
@@ -55861,6 +56024,19 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "localnewsmatters--leslie-katz-bay-city-news.json",
+      "publishDate": "2025-01-10",
+      "url": "https://localnewsmatters.org/2025/01/10/review-some-like-it-hot-the-musical-is-a-swinging-treat/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "maryland-theatre-guide--unknown.json",
       "score": 87,
       "publishDate": "2025-11-27",
@@ -55940,6 +56116,19 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "piedmontexedra--leslie-katz.json",
+      "publishDate": "2025-01-10",
+      "url": "https://piedmontexedra.com/2025/01/review-some-like-it-hot-the-musical-is-a-swinging-treat",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "playbill--logan-culwell-block.json",
       "publishDate": "2026-04-24",
       "url": "https://playbill.com/article/some-like-it-hot-national-tour-sets-final-performance",
@@ -55967,6 +56156,45 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "san-francisco-chronicle--lily-janiak.json",
+      "publishDate": "2025-01-10",
+      "url": "https://www.sfchronicle.com/entertainment/theater/article/some-like-it-hot-broadwaysf-review-20013761.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "san-jose-mercury-news--chad-jones.json",
+      "publishDate": "2025-01-10",
+      "url": "https://www.mercurynews.com/2025/01/10/review-some-like-it-hot-musical-a-sizzling-success-in-sf/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "sfist--jay-barmann.json",
+      "publishDate": "2025-01-10",
+      "url": "https://sfist.com/2025/01/10/some-like-it-hot-marries-new-values-with-old-broadway-razzle-dazzle-at-sfs-orpheum/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
         }
       ]
     },
@@ -68629,6 +68857,25 @@
       ]
     },
     {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2026-11-01",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-lives-of-others-review-keira-knightley/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-lord-of-the-rings-a-musical-tale-regional-2024",
       "file": "chicago-reader--emily-mcclanathan.json",
       "score": 77,
@@ -71689,6 +71936,19 @@
       "file": "musical-theatre-review--angela-thomas.json",
       "publishDate": "2026-10-09",
       "url": "https://musicaltheatrereview.com/london-production-of-the-phantom-of-the-opera-to-be-captured-on-film-for-the-first-time/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "newsbreak--christianne-klein.json",
+      "publishDate": "2026-10-27",
+      "url": "https://www.newsbreak.com/foodfamilytravel-com-383594855/4970273828581-review-the-phantom-of-the-opera-brings-broadway-magic-to-las-vegas",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -79085,6 +79345,19 @@
       "score": 79,
       "publishDate": "2026-09-14",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-WATER-FOR-ELEPHANTS-at-Hollywood-Pantages-20260914",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "broadwayworld--herbert-paine.json",
+      "publishDate": "2026-10-28",
+      "url": "https://www.broadwayworld.com/phoenix/article/Review-WATER-FOR-ELEPHANTS-at-ASU-Gammage-20261028",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -107674,6 +107947,32 @@
     },
     {
       "showId": "mamma-mia-tour-2026",
+      "file": "broadwayworld--aidan-oconnor.json",
+      "publishDate": "2026-10-28",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-MAMMA-MIA-at-The-National-Theatre-20261028",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-tour-2026",
+      "file": "dc-theater-arts--natasha-parnian.json",
+      "publishDate": "2026-10-29",
+      "url": "https://dctheaterarts.org/2026/10/29/mamma-mia-on-tour-at-the-national-is-pure-electricity/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-tour-2026",
       "file": "hartford-courant--christopher-arnott.json",
       "publishDate": "2026-10-18",
       "url": "https://www.courant.com/2026/10/18/here-we-go-again-as-mamma-mia-tour-marks-a-quarter-century-of-abba-at-the-bushnell/",
@@ -128047,6 +128346,19 @@
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "guardian--unknown.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.theguardian.com/stage/2026/nov/02/the-lives-of-others-review-keira-knightley-brings-star-power-to-robert-ickes-stasi-drama",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
