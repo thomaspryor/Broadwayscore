@@ -18,8 +18,16 @@ name: Morning Digest
 # NOT here: the Action rows are report-only, and the Mac's existing morning-digest job runs them
 # (--autofix-only path after the handoff date, no install step).
 #
+# CATCH-UP (handoff day 2026-11-02): GitHub started NONE of the three scheduled runs, and this repo
+# is known to drop most scheduled runs (BRO-4282, cron-redispatch.yml). Events are delivered reliably,
+# so the workflow also wakes on every finished Test Suite run on main (~100 a day). Each wake goes
+# through the same gate (handoff date, 07:45 to 12:00 ET) and then scripts/digest-sent-precheck.js
+# (one Resend read; go only when no digest to the owner exists yet today), so a dropped cron costs
+# minutes, not the owner's morning email. Exactly one email a day still rests on the Resend
+# sent-today guard inside the send, and the concurrency group serialises the wakes.
+#
 # Scheduled runs go through scripts/lib/digest-enable-gate.js: nothing before handoffDate and
-# nothing before 07:45 ET. The cron lines
+# nothing before 07:45 ET (or after 12:00 ET). The cron lines
 # cover both DST offsets (07:50 EDT = 11:50Z, 07:50 EST = 12:50Z, plus a retry), so no seasonal
 # edit is needed. ROLLBACK: push handoffDate far out (see above) or delete the schedule block below.
 #
@@ -35,6 +43,10 @@ on:
     - cron: '50 11 * * *'
     - cron: '50 12 * * *'
     - cron: '50 13 * * *'
+  workflow_run:
+    workflows: ['Test Suite']
+    types: [completed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       send:
@@ -126,27 +138,35 @@ jobs:
             --action=data/audit/morning-digest-preview.html --log="$RUNNER_TEMP/digest.log" \
             ${PUBKEY_B64:+--pubkey-b64="$PUBKEY_B64"}
 
+      - name: Scheduled-send gate (handoff date, 07:45 to 12:00 ET)
+        id: gate
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_run'
+        run: |
+          # Own line so a bad handoff file turns the step red (a failure inside "$(...)" in an argument is swallowed).
+          d=$(node -p "require('./scripts/lib/digest-handoff.js').handoffDate()")
+          node scripts/lib/digest-enable-gate.js "$d"
+
+      - name: Catch-up pre-check (is today's digest already out?)
+        id: precheck
+        if: github.event_name == 'workflow_run' && steps.gate.outputs.go == 'true'
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/digest-sent-precheck.js
+
       # hygiene-cache-runid-ok: a rolling one-file snapshot (<1 KB) restored from the newest earlier entry; the key must be new each run because caches cannot be overwritten.
       # "+N since yesterday" board deltas read data/audit/board-report-snapshot.json, which is gitignored
       # and saved after a send; a fresh runner has none, so carry it between runs in the Actions cache.
       - name: Restore yesterday's board snapshot
-        if: github.event_name == 'schedule' || inputs.send
+        if: (github.event_name == 'schedule' && steps.gate.outputs.go == 'true') || (github.event_name == 'workflow_run' && steps.precheck.outputs.go == 'true') || (github.event_name == 'workflow_dispatch' && inputs.send)
         uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: data/audit/board-report-snapshot.json
           key: digest-board-snapshot-${{ github.run_id }}
           restore-keys: digest-board-snapshot-
 
-      - name: Scheduled-send gate (handoff date and 07:45 ET)
-        id: gate
-        if: github.event_name == 'schedule'
-        run: |
-          # Own line so a bad handoff file turns the step red (a failure inside "$(...)" in an argument is swallowed).
-          d=$(node -p "require('./scripts/lib/digest-handoff.js').handoffDate()")
-          node scripts/lib/digest-enable-gate.js "$d"
-
       - name: Send the digest to the owner
-        if: (github.event_name == 'schedule' && steps.gate.outputs.go == 'true') || (github.event_name == 'workflow_dispatch' && inputs.send)
+        if: (github.event_name == 'schedule' && steps.gate.outputs.go == 'true') || (github.event_name == 'workflow_run' && steps.precheck.outputs.go == 'true') || (github.event_name == 'workflow_dispatch' && inputs.send)
         # lint-allow-swallow: not swallowed; '|| status=$?' keeps the exit code, exit 3 (already sent today) is mapped to green below, everything else exits with it
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
@@ -171,5 +191,5 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Morning Digest (Action) Failed'
-          # Manual dry-runs warn; a scheduled run that fails can mean no digest today.
-          severity: ${{ github.event_name == 'schedule' && 'critical' || 'warning' }}
+          # Manual dry-runs warn; a scheduled or catch-up run that fails can mean no digest today.
+          severity: ${{ (github.event_name == 'schedule' || github.event_name == 'workflow_run') && 'critical' || 'warning' }}

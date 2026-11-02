@@ -8,9 +8,12 @@
 //  * before 07:45 ET: the workflow has cron lines for BOTH DST offsets (11:50/12:50/13:50 UTC) so
 //    no March/November edit is needed; the early one for the current season is a no-op here, and
 //    the Resend sent-today guard makes the later ones no-ops once the digest is out.
+//  * after 12:00 ET (SEND_UNTIL): only the catch-up trigger can run that late (the cron lines end by
+//    08:50 ET). A digest still missing at noon is the pager's job (check-morning-digest-sent.yml 12:30 ET).
 // Manual dispatch never goes through this gate.
 
 const SEND_FROM_MINUTES_ET = 7 * 60 + 45;
+const SEND_UNTIL_MINUTES_ET = 12 * 60;
 const DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 function etParts(now) {
@@ -30,6 +33,7 @@ function decideScheduledSend({ now = new Date(), enableFrom } = {}) {
   const { day, minutes } = etParts(now);
   if (day < enableFrom) return { go: false, reason: `ET day ${day} is before ENABLE_FROM ${enableFrom}: the Mac job may still send` };
   if (minutes < SEND_FROM_MINUTES_ET) return { go: false, reason: `ET time is before 07:45 (DST-offset cron line that is early this season)` };
+  if (minutes >= SEND_UNTIL_MINUTES_ET) return { go: false, reason: 'ET time is past 12:00: too late for an automatic send (the pager owns it from here)' };
   return { go: true, reason: `ET ${day} is on/after ENABLE_FROM ${enableFrom} and past 07:45` };
 }
 
@@ -39,4 +43,4 @@ if (require.main === module) {
   if (process.env.GITHUB_OUTPUT) require('fs').appendFileSync(process.env.GITHUB_OUTPUT, `go=${r.go}\n`);
 }
 
-module.exports = { decideScheduledSend, SEND_FROM_MINUTES_ET };
+module.exports = { decideScheduledSend, SEND_FROM_MINUTES_ET, SEND_UNTIL_MINUTES_ET };
