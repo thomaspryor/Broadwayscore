@@ -1549,6 +1549,33 @@
     "queuedAt": "2026-11-02T01:52:39.749Z"
   },
   {
+    "conditionKey": "llm-scoring:cost-breach",
+    "title": "LLM scoring spend over budget",
+    "description": "GitHub run 41374225491: cumulative LLM scoring cost $14.20 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). By invocation: index $14.20. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "GitHub run",
+        "value": "41374225491"
+      },
+      {
+        "name": "Cost",
+        "value": "$14.20"
+      },
+      {
+        "name": "Threshold",
+        "value": "$6.00"
+      }
+    ],
+    "queuedAt": "2026-11-02T02:10:00.506Z"
+  },
+  {
     "conditionKey": "land:land/bro-6782-cost",
     "title": "Landing blocked: rebase red on land/bro-6782-cost",
     "description": "land.yml did not land land/bro-6782-cost: the rebase gate went red at 49bd073dbe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41376088596",
@@ -1578,32 +1605,5 @@
       }
     ],
     "queuedAt": "2026-11-02T02:10:44.681Z"
-  },
-  {
-    "conditionKey": "llm-scoring:cost-breach",
-    "title": "LLM scoring spend over budget",
-    "description": "GitHub run 41373764018: cumulative LLM scoring cost $7.08 exceeds the $6.00 alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). By invocation: index $7.08. This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "GitHub run",
-        "value": "41373764018"
-      },
-      {
-        "name": "Cost",
-        "value": "$7.08"
-      },
-      {
-        "name": "Threshold",
-        "value": "$6.00"
-      }
-    ],
-    "queuedAt": "2026-11-02T02:08:57.603Z"
   }
 ]
