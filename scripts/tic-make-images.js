@@ -30,7 +30,8 @@ async function main() {
     if (only && !only.has(id)) continue;
     const dir = path.join(__dirname, '..', 'public', 'images', 'shows', id);
     if (fs.existsSync(path.join(dir, 'poster.webp'))) { skipped++; continue; }
-    if (!rec.poster) { skipped++; continue; }
+    // The Limelight sites serve one stock comedy-mask image (/images/theatre/generic.jpg) for shows with no art: that is a placeholder, not a poster (BRO-6660, BRO-6855).
+    if (!rec.poster || /\/images\/theatre\/generic\.jpg/i.test(rec.poster)) { skipped++; continue; }
     try {
       const res = await fetch(rec.poster.startsWith('http') ? rec.poster : `https://www.theatreinchicago.com${rec.poster}`, { signal: AbortSignal.timeout(30000) });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
