@@ -38,6 +38,7 @@ const { parseRating } = require('./score-conversion-rules');
 const { listShowDirs } = require('./list-show-dirs');
 const { isIntentionalClear } = require('./review-write-guard');
 const { detectBandFromReviewFile, isUncorroboratedGenericStar } = require('./star-reliability');
+const { getSyndicationPrimaries, hasLiveSyndicationPrimary } = require('./syndication-pairs');
 
 // A gap this large between an explicit critic rating and the site's independent
 // read almost always means the rating was mis-extracted (wrong show in a combined
@@ -116,6 +117,18 @@ function humanScoreResolvesBand(review) {
   if (!Number.isInteger(h) || h < 1 || h > 100 || review.humanReviewScoreProvisional === true) return false;
   const det = detectBandFromReviewFile(review);
   return !!(det && det.band && h >= det.band.floor && h <= det.band.ceiling);
+}
+
+// BRO-6779: a syndicated secondary copy (WhatsOnStage reprint of a TheaterMania
+// review, Tribune-group reprint, ...) is dropped at rebuild whenever its primary
+// ships, so its star can contradict nothing on the site. Same helpers the
+// rebuild's runtime syndication dedup uses (syndication-pairs.js); a secondary
+// whose primary is missing or excluded still alerts, because then it ships.
+function isShieldedSyndicatedCopy(review, showDir, fileNames) {
+  const critic = String((review && review.criticName) || '').toLowerCase().trim();
+  const primaries = getSyndicationPrimaries(critic, review && review.outletId);
+  if (!primaries.length) return false;
+  try { return hasLiveSyndicationPrimary(showDir, primaries, critic, { fileNames }); } catch { return false; }
 }
 
 /**
@@ -246,6 +259,7 @@ function scanReviewTexts(rootDir, opts = {}) {
       scanned++;
       const finding = evaluateReview(r, { threshold });
       if (!finding) continue;
+      if (isShieldedSyndicatedCopy(r, dir, files)) continue;
       if (cutoff !== null) {
         const ts = reviewTimestamp(r);
         if (ts === null || ts < cutoff) continue;
@@ -269,4 +283,5 @@ module.exports = {
   reviewTimestamp,
   keyOf,
   scanReviewTexts,
+  isShieldedSyndicatedCopy,
 };

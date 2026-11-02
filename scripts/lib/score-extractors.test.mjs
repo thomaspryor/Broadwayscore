@@ -384,3 +384,44 @@ test('BRO-305: extractUKStarRating itself skips <style> CSS stars (named export 
   assert.equal(extractUKStarRating(cssOnly, 'No rating printed.'), null, 'closing tag with whitespace');
   assert.equal(extractScore(cssOnly, 'No rating printed.', 'i-paper'), null);
 });
+
+// BRO-6779: the article "a" read as grade A, and a run-dates line read as a
+// star rating — both were stored as originalScore and served over the LLM.
+test('BRO-6779: lowercase article "a" next to grade/rating is not a letter grade', () => {
+  const { extractGenericLetterGrade, extractEWScore } = require('./score-extractors.js');
+  for (const t of [
+    'I turned to the lady in front of me and asked her for a grade: "56," she replied.',
+    'He is arguing with her about a grade.',
+    'There are times when posting a rating with a review is difficult.',
+    'In short, she plays Dolly like a grade-A meddler.',
+    'A grade school pageant goes wrong.',
+    'A rating of 56 from the woman in front of me.',
+  ]) {
+    assert.equal(extractGenericLetterGrade('', t), null, t);
+    assert.equal(extractScore('', t, 'theatres-leiter-side'), null, t);
+    assert.equal(extractEWScore('', t), null, `EW: ${t}`);
+  }
+  // Real grades still extract.
+  assert.equal(extractGenericLetterGrade('', 'Grade: B+').originalScore, 'B+');
+  assert.equal(extractGenericLetterGrade('', 'My rating: A-').originalScore, 'A-');
+  assert.equal(extractGenericLetterGrade('', 'An easy B+ grade from me.').originalScore, 'B+');
+  assert.equal(extractGenericLetterGrade('', 'GRADE: A').originalScore, 'A');
+  assert.equal(extractEWScore('', 'It packs a wallop. Grade: A-').originalScore, 'A-');
+  assert.equal(extractEWScore('', 'EW grade: B').originalScore, 'B');
+});
+
+test('BRO-6779: a month/day run date is not an x/5 star rating', () => {
+  const { extractGenericStarRating } = require('./score-extractors.js');
+  for (const t of [
+    'Botticelli in the Fire Through 11/5: Thu-Sat 8 PM, Sun 3 PM.',
+    'The Berlin Diaries Through 1/5: Fri-Sat 7:30 PM.',
+    'Open caption performance Sat 11/5 2:30 PM.',
+    'Jeff Daniels (through 11/3), Ed Harris (starting 11/5).',
+    'Runs until 2/5 at the Den.',
+  ]) {
+    assert.equal(extractGenericStarRating('', t), null, t);
+    assert.equal(extractScore('', t, 'chicago-reader'), null, t);
+  }
+  assert.equal(extractGenericStarRating('', 'Verdict: 4/5').originalScore, '4/5');
+  assert.equal(extractGenericStarRating('', 'Rating 3.5/5').originalScore, '3.5/5');
+});

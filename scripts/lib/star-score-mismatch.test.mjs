@@ -157,3 +157,28 @@ test('generic-pattern star: flagged only when the adjudication sided with the st
   assert.equal(evaluateReview({ ...base, adjudicatedScore: 78 }), null);
   assert.notEqual(evaluateReview({ ...base, adjudicatedScore: 25 }), null);
 });
+
+// BRO-6779: appropriate-2023's WhatsOnStage file (a Zachary Stewart reprint of
+// his TheaterMania review) alerted daily although the rebuild drops it in favour
+// of the TheaterMania primary. A secondary only stays quiet while that primary ships.
+test('BRO-6779: syndicated secondary is skipped only while its primary ships', async () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'star-score-synd-'));
+  const dir = path.join(root, 'appropriate-2023');
+  fs.mkdirSync(dir);
+  const text = 'The play was seen on UK shores at the Donmar Warehouse. '.repeat(10);
+  const secondary = { showId: 'appropriate-2023', outletId: 'whatsonstage', outlet: 'WhatsOnStage', criticName: 'Zachary Stewart',
+    originalScore: '5/5 stars', llmScore: { score: 40 }, assignedScore: 40, scoreSource: 'wos-star-images', fullText: text, contentTier: 'complete' };
+  const primary = { showId: 'appropriate-2023', outletId: 'theatermania', outlet: 'TheaterMania', criticName: 'Zachary Stewart',
+    llmScore: { score: 95 }, assignedScore: 95, fullText: text, contentTier: 'complete' };
+  fs.writeFileSync(path.join(dir, 'whatsonstage--zachary-stewart.json'), JSON.stringify(secondary));
+  assert.ok(evaluateReview(secondary), 'fixture is a real contradiction on its own');
+  assert.equal(scanReviewTexts(root).findings.length, 1, 'no primary on file: the secondary ships, so it alerts');
+  fs.writeFileSync(path.join(dir, 'theatermania--zachary-stewart.json'), JSON.stringify(primary));
+  assert.equal(scanReviewTexts(root).findings.length, 0, 'live primary shields the secondary');
+  fs.writeFileSync(path.join(dir, 'theatermania--zachary-stewart.json'), JSON.stringify({ ...primary, wrongProduction: true }));
+  assert.equal(scanReviewTexts(root).findings.length, 1, 'excluded primary does not shield');
+  fs.rmSync(root, { recursive: true, force: true });
+});
