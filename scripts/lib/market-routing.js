@@ -553,7 +553,7 @@ function classifyMarketRouting(args) {
         const target = sibData.siblings.find(s => s.id === reroute.targetShowId);
         // BRO-6716: show-aware, so a UK regional run pools with London here too.
         const targetIsLondon = target && getShowMarketPool(target) === 'london';
-        const currentIsLondon = getShowMarketPool({ category, venue: sibData.venue }) === 'london';
+        const currentIsLondon = getShowMarketPool({ ...sibData, category }) === 'london';
         const sameMarket = target && (targetIsLondon === currentIsLondon);
         const hasBroadwayUrlMarker = isBroadwayUrl(url, outletId) !== null;
         if (sameMarket || hasBroadwayUrlMarker) {
