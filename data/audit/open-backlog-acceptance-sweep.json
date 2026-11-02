@@ -1,40 +1,46 @@
 {
-  "generatedAt": "2026-11-02T13:01:42.671Z",
+  "generatedAt": "2026-11-02T21:38:04.899Z",
   "shadow": true,
-  "checkoutSha": "b67b7f250578557dcc964edb2ee406cb6b384105",
-  "totalCandidates": 410,
-  "eligibleCandidates": 110,
-  "checked": 23,
+  "checkoutSha": "061b40ccaf9682841f3e72265319346bc606e3d8",
+  "totalCandidates": 300,
+  "eligibleCandidates": 99,
+  "checked": 29,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 16,
+    "pass": 19,
     "fail": 3,
-    "unverifiable": 4
+    "unverifiable": 7
   },
   "alreadyDone": [
     {
-      "id": "BRO-6806",
-      "name": "Othello 2022 WhatsOnStage review links the 2025 Haymarket article (URL inherited from wrongProduction duplicate)",
-      "verifyCmd": "node --test scripts/lib/sibling-rating-inherit.test.js",
+      "id": "BRO-6837",
+      "name": "Morning digest 2026-11-02: false 'no automatic fix confirmed' rows + root fixes (baseline drift, domain moves)",
+      "verifyCmd": "node --test scripts/lib/scheduled-closings.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6803",
-      "name": "Opera: SFO The Monkey King has 3 unscored review files; score them or retire the row",
-      "verifyCmd": "test -f scripts/linear-brain.js",
+      "id": "BRO-6802",
+      "name": "P1: Broadway press-night race is failing (first review 87-100 min after embargo vs 30-min bar); lane cutover stalled; 6 Broadway openings Nov 9-19",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=here-there-are-blueberries-2026",
       "detail": null
     },
     {
       "id": "BRO-6801",
       "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
-      "verifyCmd": "node --test tests/unit/press-window-serp.test.mjs tests/unit/outlet-coverage-claim.test.mjs",
+      "verifyCmd": "node --test tests/unit/press-window-serp.test.mjs",
       "detail": null
     },
     {
       "id": "BRO-6785",
       "name": "Live in HD polish: keep date in meta description, fix post-expiry title/hero mismatch",
       "verifyCmd": "node --test tests/unit/live-in-hd.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6774",
+      "name": "Finish BRO-6759 cross-outlet repair: 42 different-critic flags still unverified or stale (unfetchable pages)",
+      "verifyCmd": "node scripts/audit-review-contamination.js --strict",
       "detail": null
     },
     {
@@ -50,9 +56,21 @@
       "detail": null
     },
     {
+      "id": "BRO-6763",
+      "name": "Owner email for each new Profitability Scorecard sign-up",
+      "verifyCmd": "node --test tests/unit/money-signup-notify.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-6762",
       "name": "Fix gaps at the source: reviews regular gathering still misses and only the after-the-fact gap audit catches",
       "verifyCmd": "node --test tests/unit/outlet-coverage-claim.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6761",
+      "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
+      "verifyCmd": "node scripts/lib/verify-data-backfill.js --show=appropriate-2023,and-juliet-2022 --reviews=2",
       "detail": null
     },
     {
@@ -121,7 +139,7 @@
       "id": "BRO-6590",
       "name": "Renew the NYT login cookie on the Mac Studio (NYT-S / nyt-a expired by 2026-10-27, poller NYT reviews cut at the paywall)",
       "verifyCmd": "node scripts/check-workflow-run-status.js --workflow=check-cookie-health.yml --expect=success",
-      "detail": "(gh not authenticated; read runs from the public GitHub API)\ncheck-cookie-health.yml: MISMATCH — most recent run concluded 'failure', expected 'success' (https://github.com/thomaspryor/Broadwayscore/actions/runs/41115619938)\n"
+      "detail": "gh not authenticated and public API fallback failed: GET https://api.github.com/repos/thomaspryor/Broadwayscore/actions/workflows/check-cookie-health.yml/runs?per_page=1 -> HTTP 403\n"
     },
     {
       "id": "BRO-6586",
@@ -132,6 +150,18 @@
   ],
   "unverifiable": [
     {
+      "id": "BRO-6800",
+      "name": "Opera hub page text still names only the Met and Royal Opera House (needs owner visual OK)",
+      "verifyCmd": "node --test tests/unit/opera-hub-text-expansion.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opera-hub-text-expansion.test.mjs"
+    },
+    {
+      "id": "BRO-6791",
+      "name": "Opera brand colour: site header is amber, social kit is rose-red",
+      "verifyCmd": "node --test scripts/opera-brand-colour.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/opera-brand-colour.test.mjs"
+    },
+    {
       "id": "BRO-6768",
       "name": "iOS nightly E2E failures reach no one: auto-file one Linear card when the scheduled Maestro run fails",
       "verifyCmd": "node --test tests/unit/e2e-failure-alert.test.mjs",
@@ -141,7 +171,7 @@
       "id": "BRO-6724",
       "name": "Pre-existing red checks seen during BRO-6716: cross-outlet attribution suspect tests + audit-regex-patterns --full overages",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 143657ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 139864ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6681",
@@ -150,19 +180,46 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/diary-share.test.mjs"
     },
     {
+      "id": "BRO-6674",
+      "name": "Audit the 15 workflows whose failure alert is low severity (digest only): which should file a fix card like verify-schema",
+      "verifyCmd": "node --test scripts/audit-low-severity-workflows.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-low-severity-workflows.test.mjs"
+    },
+    {
       "id": "BRO-6602",
       "name": "main test.yml red: Unit Tests / scripts/lib tests — matchSlugToShow 20 real fixtures + BRO-2281 Hackney Empire venue",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 79211ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 73904ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6806",
-      "name": "Othello 2022 WhatsOnStage review links the 2025 Haymarket article (URL inherited from wrongProduction duplicate)",
-      "branch": "land/codex-bro-6806",
-      "sha": "942b13bb60c11af5a1998f9efadf4e247869f902",
-      "landedAt": "2026-11-02T12:00:22.564Z"
+      "id": "BRO-6837",
+      "name": "Morning digest 2026-11-02: false 'no automatic fix confirmed' rows + root fixes (baseline drift, domain moves)",
+      "branch": "land/bro-6837-cost",
+      "sha": "455de11e11477db08301d81c21570bcb0739ae13",
+      "landedAt": "2026-11-02T18:17:01.354Z"
+    },
+    {
+      "id": "BRO-6802",
+      "name": "P1: Broadway press-night race is failing (first review 87-100 min after embargo vs 30-min bar); lane cutover stalled; 6 Broadway openings Nov 9-19",
+      "branch": "land/bro-6802-cost2",
+      "sha": "35b980a5d68060d193fc23c1c78589885a9ce67d",
+      "landedAt": "2026-11-02T05:56:05.079Z"
+    },
+    {
+      "id": "BRO-6801",
+      "name": "Make OB/OWE press-night search actually fire + prove Stagedoor fix on a real London opening",
+      "branch": "land/bro-6801-6687",
+      "sha": "0cdd2db73cfb83136911179c50411df59a94afa5",
+      "landedAt": "2026-11-02T17:40:19.636Z"
+    },
+    {
+      "id": "BRO-6774",
+      "name": "Finish BRO-6759 cross-outlet repair: 42 different-critic flags still unverified or stale (unfetchable pages)",
+      "branch": "land/bro-6774-cost",
+      "sha": "1abc3a1035de976ef438edd32bc72e9c5b187f2c",
+      "landedAt": "2026-11-01T20:01:56.269Z"
     },
     {
       "id": "BRO-6773",
@@ -174,9 +231,16 @@
     {
       "id": "BRO-6764",
       "name": "Mac-to-cloud Phase 2b: cut the morning digest over to the GitHub Action (one email a day, dated, reversible)",
-      "branch": "land/bro-6764-w2b",
-      "sha": "d5dab5a341a70ae10ff03ec30393215669ec2d5f",
-      "landedAt": "2026-11-01T18:52:51.307Z"
+      "branch": "land/bro-6764-catchup2",
+      "sha": "bd790fa6a63951095e42f3f87976ed70d18a95a5",
+      "landedAt": "2026-11-02T15:01:18.162Z"
+    },
+    {
+      "id": "BRO-6763",
+      "name": "Owner email for each new Profitability Scorecard sign-up",
+      "branch": "land/bro-6763-money-signup-notify",
+      "sha": "7d99bd00bd1b289f0927590b6aa3010f81dbc71a",
+      "landedAt": "2026-11-01T14:47:03.789Z"
     },
     {
       "id": "BRO-6762",
@@ -184,6 +248,13 @@
       "branch": "land/bro-6762-cost-row",
       "sha": "b8321d30fe59ebd3678a3d8a0886938f9d351bb7",
       "landedAt": "2026-11-01T16:26:01.820Z"
+    },
+    {
+      "id": "BRO-6761",
+      "name": "Older-years every-review sweep: gap-audit ~2,400 never-checked shows opened >1 year ago, Broadway first (owner chose A 2026-11-01)",
+      "branch": "land/bro-6761-cost2",
+      "sha": "c57259baf6503648673d2e58b7016d7e76ca8972",
+      "landedAt": "2026-11-01T21:32:17.532Z"
     },
     {
       "id": "BRO-6737",
