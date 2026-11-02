@@ -1,21 +1,74 @@
 {
   "processed": [
-    "tosca-off-broadway-2026/guardian--flora-willson.json"
+    "tosca-off-broadway-2026/guardian--flora-willson.json",
+    "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json"
   ],
-  "failed": [],
+  "failed": [
+    "medea-off-broadway-2026/express-uk--neil-norman.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json",
+    "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "i-became-we-off-broadway-2026/timeout--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "love-me-off-broadway-2026/consequence--unknown.json",
+    "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json"
+    ],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json"
+    ],
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "startTime": "2026-11-02T03:58:07.198Z",
-  "lastProcessed": "tosca-off-broadway-2026/guardian--flora-willson.json",
-  "log": []
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theatrely--emily-wyrwa.json",
+  "log": [
+    {
+      "t": "2026-11-02T04:27:23.936Z",
+      "event": "bb-session",
+      "session": "a70e9b3d",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-02T04:27:24.490Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-02T04:29:22.416Z",
+      "event": "bb-session",
+      "session": "ef0f4c5d",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-02T04:29:22.931Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    }
+  ]
 }
