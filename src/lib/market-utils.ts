@@ -107,6 +107,15 @@ export function getUkRegionalVenueCity(category?: string, venue?: string): strin
   return findUkRegionalVenue(category, venue)?.city;
 }
 
+/**
+ * The town of a US venue: "Arena Stage, Washington, DC" -> "Washington". Takes a
+ * two-letter state, "D.C." and a trailing ZIP; undefined when there is no state.
+ */
+export function getUsVenueCity(venue?: string): string | undefined {
+  const m = /,\s*([^,]+?),\s*(?:[A-Z]{2}|D\.C\.)(?:\s+\d{5})?\s*$/.exec(venue || '');
+  return m ? m[1].trim() : undefined;
+}
+
 /** Country code for a market category. `venue` disambiguates UK-regional shows. */
 export function getMarketCountry(category?: string, venue?: string): 'US' | 'GB' {
   if (isLondonMarket(category) || isUkRegionalVenue(category, venue)) return 'GB';

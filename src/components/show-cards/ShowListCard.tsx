@@ -91,7 +91,7 @@ const ShowListCard = memo(function ShowListCard({
   const canShowTicket = showTicketLink && primaryTicket && (show.status === 'open' || show.status === 'previews');
   const isOpera = isOperaShow(show);
   const marketLabel = isOpera ? getOperaMarketLabel(show) : getMarketLabel(category, show.venue);
-  const durationSuffix = isOpera ? getOperaHouseSuffix(show) : getDurationSuffix(category, show.venue);
+  const durationSuffix = isOpera ? getOperaHouseSuffix(show) : getDurationSuffix(category, show.venue, show.hubProduction);
   const cardHref = overrideHref ?? `/show/${show.slug}`;
 
   // Score computation
