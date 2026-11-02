@@ -1,0 +1,76 @@
+{
+  "issueNumber": "bro-6716-h",
+  "planId": "bd432281-2874-48e3-a8b8-3d8b58d358ae",
+  "status": "pending",
+  "createdAt": "2026-11-02T22:17:13.278Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6716: restore The Arts Desk Lives of Others review (false not_a_review, wrong critic) and refetch the TheWrap Imaginary Invalid review stored as a browser error page",
+    "steps": [
+      "BRO-6716: read the live page 2026-11-02: Helen Hawkins's Arts Desk review of the Adelphi run, rated 3/5 in the page's star widget; the ensemble not_a_review call (agree count 1) read a truncated body.",
+      "Clear the ensemble rejection after the manual-clear marker above (BRO-6716).",
+      "BRO-6716: the printed byline is \"by Helen Hawkins\"; Hildegard Bechtler is the set designer, read from body prose.",
+      "BRO-6716: the stored TheWrap body is a browser error page (\"might be temporarily down\"); refetch the review. junk-body now reads that body as junk, so a clean fetch replaces it and lifts the garbage_text rejection."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6716: read the live page 2026-11-02: Helen Hawkins's Arts Desk review of the Adelphi run, rated 3/5 in the page's star widget; the ensemble not_a_review call (agree count 1) read a truncated body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-11-02T02:48:56.248Z",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json",
+        "field": "rejectionReasoning",
+        "oldValue": "openai: The text provided is primarily promotional and does not contain evaluative content about the production.; gemini: The review text is truncated and ends mid-sentence, preventing a complete assessment of the critic's verdict on the show. It also contains navigation and subscription prompts.",
+        "newValue": null,
+        "description": "Clear the ensemble rejection after the manual-clear marker above (BRO-6716)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-lives-of-others-west-end-2026/artsdesk--hildegard-bechtler.json",
+        "field": "criticName",
+        "oldValue": "Hildegard Bechtler",
+        "newValue": "Helen Hawkins",
+        "description": "BRO-6716: the printed byline is \"by Helen Hawkins\"; Hildegard Bechtler is the set designer, read from body prose."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-imaginary-invalid-2026 --url=https://www.thewrap.com/creative-content/theater/the-imaginary-invalid-broadway-review-bill-irwin/ --outlet=thewrap --critic=\"Robert Hofler\"",
+        "description": "BRO-6716: the stored TheWrap body is a browser error page (\"might be temporarily down\"); refetch the review. junk-body now reads that body as junk, so a clean fetch replaces it and lifts the garbage_text rejection."
+      }
+    ]
+  }
+}
