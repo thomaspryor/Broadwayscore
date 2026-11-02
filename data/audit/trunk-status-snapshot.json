@@ -1,74 +1,30 @@
 {
-  "generatedAt": "2026-11-02T13:12:28.402Z",
+  "generatedAt": "2026-11-02T21:51:32.941Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "61bb64c7ae8a4fdc0abf7b04640e8ce3fe7d24be",
-  "state": "RED",
-  "consecutiveFailures": 35,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "9a7d7f17892a6bcce000cb2e570591d80b877271",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 14,
+  "greenSince": "2026-11-02T17:48:22Z",
+  "greenForHours": 4.053039166666666,
   "greenDurationIsFloor": false,
-  "redSince": "2026-11-01T23:18:08Z",
-  "redForHours": 13.905667222222222,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-11-01T23:09:39Z",
-  "latestFailedRunId": "41444530940",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41444530940",
+  "lastSuccessAt": "2026-11-02T21:05:34Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
   "decidedRuns": 98,
   "verdictLag": {
-    "verdictSha": "61bb64c7ae8a4fdc0abf7b04640e8ce3fe7d24be",
-    "verdictAt": "2026-11-02T12:25:09Z",
-    "verdictAgeHours": 0.7887227777777778,
-    "newerHeads": 1,
-    "runsInFlight": 1,
+    "verdictSha": "9a7d7f17892a6bcce000cb2e570591d80b877271",
+    "verdictAt": "2026-11-02T21:05:34Z",
+    "verdictAgeHours": 0.7663725,
+    "newerHeads": 2,
+    "runsInFlight": 2,
     "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit review contamination"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "E2E Tests",
-      "steps": [
-        "Run E2E tests"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/a.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "# ❌ REFUSED (own-verify-failed) — BRO-1 not moved to Done"
-    },
-    {
-      "path": "tests/unit/serp-discovery-backfill.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 14838 - don-giovanni-off-broadway-2025 keeps its backfilled coverage (was 7)"
-    },
-    {
-      "path": "tests/e2e/show-hero-score-cards.spec.ts",
-      "job": "E2E Tests",
-      "step": "Run E2E tests",
-      "evidence": "##[error]  1) [chromium] › tests/e2e/show-hero-score-cards.spec.ts:20:9 › hero score cards at 320px › labels and counts stay inside both cards"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
