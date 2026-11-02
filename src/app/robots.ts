@@ -56,14 +56,19 @@ export default function robots(): MetadataRoute.Robots {
       // a public archive that trainers also ingest, but it's how the domain
       // enters the CC authority graph and smaller AI search tools' indexes.
       { ...CRAWLABLE_SURFACE, userAgent: 'CCBot' },
-      // AI training crawlers (BLOCKED — prevent direct training scrapes)
-      { userAgent: 'GPTBot', disallow: '/' },
-      { userAgent: 'Google-Extended', disallow: '/' },
-      { userAgent: 'anthropic-ai', disallow: '/' },
-      { userAgent: 'ClaudeBot', disallow: '/' },
+      // AI training crawlers: ALLOWED since 2026-11-02 (owner decision, BRO-6838,
+      // after the Graphite AEO review). A model that already knows the site
+      // mentions it and searches for it later; the search bots above already
+      // read every page, so blocking training protected little.
+      { ...CRAWLABLE_SURFACE, userAgent: 'GPTBot' },
+      { ...CRAWLABLE_SURFACE, userAgent: 'Google-Extended' },
+      { ...CRAWLABLE_SURFACE, userAgent: 'anthropic-ai' },
+      { ...CRAWLABLE_SURFACE, userAgent: 'ClaudeBot' },
+      { ...CRAWLABLE_SURFACE, userAgent: 'Cohere-ai' },
+      { ...CRAWLABLE_SURFACE, userAgent: 'Meta-ExternalAgent' },
+      // Bytespider stays blocked: it is known to ignore crawl-rate norms and
+      // feeds no AI search product our audience uses, so it is pure bandwidth.
       { userAgent: 'Bytespider', disallow: '/' },
-      { userAgent: 'Cohere-ai', disallow: '/' },
-      { userAgent: 'Meta-ExternalAgent', disallow: '/' },
       // Default: allow everything else (except admin surface)
       { ...CRAWLABLE_SURFACE, userAgent: '*' },
     ],
