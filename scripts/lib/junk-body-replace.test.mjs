@@ -144,3 +144,15 @@ test('relocation skips a different critic or a human-flagged sibling', () => {
   assert.equal(read(dir, 'broadway-blog--other-person.json').fullText, HTML);
   assert.equal(read(dir, 'broadway-blog--jane-doe.json').fullText, HTML);
 });
+
+// BRO-6716: a browser error page stored as the body is junk; a real review with an error iframe is not.
+test('junkBodyReason: browser error page body (TheWrap Imaginary Invalid) is junk, an embedded error in a review is not', () => {
+  const { junkBodyReason, isCleanReplacementForJunk } = require('./junk-body.js');
+  const frame = 'https://trinitymedia.ai/player/trinity-player.php?pageURL=https%3A%2F%2Fwww.thewrap.com%2Fx&unitType=tts-player';
+  const errorBody = `The webpage at ${frame} might be temporarily down or it may have moved permanently to a new web address.`;
+  assert.equal(junkBodyReason(errorBody), 'browser-error');
+  assert.equal(junkBodyReason("This site can’t be reached ERR_NAME_NOT_RESOLVED"), 'browser-error');
+  const review = 'Bill Irwin is a clown of genius, and his Argan in The Imaginary Invalid is a physical marvel from first wheeze to last. '.repeat(6);
+  assert.equal(junkBodyReason(`${review} ${errorBody}`), null);
+  assert.equal(isCleanReplacementForJunk(errorBody, review), true);
+});

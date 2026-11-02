@@ -54,13 +54,28 @@ function isRawHtmlBody(text) {
   return tags >= 50 && tags * 12 > text.length * 0.2;
 }
 
+// BRO-6716: a browser error page stored as the body (TheWrap Imaginary Invalid: the
+// text of a failed embedded audio-player frame, "The webpage at https://trinitymedia.ai/...
+// might be temporarily down..."). 38 stored bodies carry such a sentence, but in 28 it
+// is an iframe inside a real review, so only a body with almost nothing else counts.
+const BROWSER_ERROR_RE = /(?:the webpage at \S+ )?might be temporarily down or it may have moved permanently to a new web address\.?|this site can[’']t be reached[^.]*\.?|\bERR_[A-Z_]{4,}\b/gi;
+const BROWSER_ERROR_MAX_REST = 300;
+function isBrowserErrorBody(text) {
+  if (typeof text !== 'string' || !text) return false;
+  BROWSER_ERROR_RE.lastIndex = 0;
+  if (!BROWSER_ERROR_RE.test(text)) return false;
+  const rest = text.replace(BROWSER_ERROR_RE, ' ').replace(/https?:\/\/\S+/g, ' ').replace(/\s+/g, ' ').trim();
+  return rest.length < BROWSER_ERROR_MAX_REST;
+}
+
 /**
  * Why a body is a page dump, or null when it reads as an article.
  * @param {string} text
- * @returns {'raw-html'|'consent-banner'|null}
+ * @returns {'raw-html'|'consent-banner'|'browser-error'|null}
  */
 function junkBodyReason(text) {
   if (isRawHtmlBody(text)) return 'raw-html';
+  if (isBrowserErrorBody(text)) return 'browser-error';
   const c = consentShare(text);
   if (c.share >= BANNER_MIN_SHARE && c.sentences >= BANNER_MIN_SENTENCES) return 'consent-banner';
   return null;
