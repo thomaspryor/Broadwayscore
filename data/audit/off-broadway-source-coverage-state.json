@@ -3,12 +3,12 @@
     "blind": false,
     "count": 1,
     "reason": "ok",
-    "at": "2026-11-01T14:40:03.128Z"
+    "at": "2026-11-02T12:40:14.355Z"
   },
   "venueReaders": {
-    "at": "2026-11-01T14:40:03.128Z",
+    "at": "2026-11-02T12:40:14.355Z",
     "readers": 54,
-    "active": 189,
+    "active": 190,
     "activeCovered": 112,
     "activeDated": 83,
     "uncovered": {
@@ -36,6 +36,10 @@
         "firstSeen": "2026-10-12T17:12:05.221Z",
         "venue": "Gene Frankel Theatre"
       },
+      "irish arts center": {
+        "firstSeen": "2026-11-02T12:40:14.355Z",
+        "venue": "Irish Arts Center"
+      },
       "paradise factory": {
         "firstSeen": "2026-10-28T12:31:12.035Z",
         "venue": "Paradise Factory Theater"
@@ -51,16 +55,12 @@
       "theatre row theatre 5": {
         "firstSeen": "2026-09-30T01:29:53.899Z",
         "venue": "Theatre Row, Theatre 5"
-      },
-      "theatre xiv": {
-        "firstSeen": "2026-10-22T13:21:39.540Z",
-        "venue": "Theatre XIV"
       }
     },
     "explained": [
       {
         "venue": "AMT Theater",
-        "recentShows": 6,
+        "recentShows": 7,
         "reason": "sells through Ludus behind a Cloudflare JS challenge; the Wix site lists shows as free text"
       },
       {
@@ -111,12 +111,16 @@
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-11-01T14:40:03.128Z",
+    "at": "2026-11-02T12:40:14.355Z",
     "readers": 23,
     "active": 99,
     "activeCovered": 32,
     "activeDated": 27,
     "uncovered": {
+      "royal opera house": {
+        "firstSeen": "2026-11-02T12:40:14.355Z",
+        "venue": "Royal Opera House"
+      },
       "greenwich": {
         "firstSeen": "2026-10-27T13:47:25.490Z",
         "venue": "Greenwich Theatre"
