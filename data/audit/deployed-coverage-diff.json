@@ -1,71 +1,13 @@
 {
-  "generatedAt": "2026-11-02T05:02:47.388Z",
+  "generatedAt": "2026-11-02T06:50:11.417Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 313,
-  "clean": 310,
-  "defective": 3,
-  "byType": {
-    "score-drift": 3,
-    "missing-from-prod": 1
-  },
-  "shows": [
-    {
-      "showId": "roleplay-off-west-end-2026",
-      "title": "Roleplay",
-      "openingDate": "2026-10-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: the-skinny"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.44 vs local 61.15 (Δ0.71)"
-        }
-      ],
-      "missingFromProd": [
-        "the-skinny"
-      ],
-      "localCount": 15,
-      "deployedCount": 14,
-      "firstDefectAt": "2026-11-02T05:02:37.434Z"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "openingDate": "2026-10-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 78.97 vs local 78.32 (Δ0.65)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-11-02T04:13:18.990Z"
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "title": "Oliver!",
-      "openingDate": "2024-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.57 vs local 82.61 (Δ0.96)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-11-02T05:02:37.434Z"
-    }
-  ],
+  "clean": 313,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

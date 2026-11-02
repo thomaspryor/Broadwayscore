@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-02T05:01:54.129Z",
+  "generatedAt": "2026-11-02T06:46:27.997Z",
   "windowDays": 1095,
-  "targets": 952,
-  "auditedThisRun": 25,
-  "carriedForward": 1841,
+  "targets": 946,
+  "auditedThisRun": 22,
+  "carriedForward": 1847,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 625,
-    "missingCurrentRun": 1213,
+    "missingCurrentRun": 1216,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 924,
     "totalRecoverable": 54,
     "totalRecovered": 92,
     "humanExcluded": 22,
-    "automatedExcluded": 977,
+    "automatedExcluded": 978,
     "automatedExcludedListed": 668,
-    "priorProductionCitations": 6305
+    "priorProductionCitations": 6299
   },
   "results": [
     {
@@ -1367,12 +1367,8 @@
       "category": "tour",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
-        "https://www.broadwayworld.com/jacksonville/article/Review-A-BEAUTIFUL-NOISE--THE-NEIL-DIAMOND-MUSICAL-at-Jacksonville-Center-For-The-Performing-Arts-20260417",
-        "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
         "https://www.greaterlansingtheatre.net/reviews/the-neil-diamond-musical-a-beautiful-noise",
         "https://simonparrismaninchair.com/2026/08/09/a-beautiful-noise-the-neil-diamond-musical-review-melbourne/",
-        "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
         "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/",
         "https://www.theatermania.com/news/review-neil-diamond-musical-a-beautiful-noise-is-so-meh-so-meh-so-meh_94623/",
         "https://www.theguardian.com/stage/2026/aug/09/a-beautiful-noise-the-neil-diamond-musical-review-finally-a-jukebox-musical-that-really-works",
@@ -1382,48 +1378,6 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
-          "host": "hotchka.com",
-          "knownOutletId": "hotchka",
-          "priorRun": true,
-          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/jacksonville/article/Review-A-BEAUTIFUL-NOISE--THE-NEIL-DIAMOND-MUSICAL-at-Jacksonville-Center-For-The-Performing-Arts-20260417",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "priorRun": true,
-          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
-          "host": "houstonchronicle.com",
-          "knownOutletId": "houston-chronicle",
-          "priorRun": true,
-          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.greaterlansingtheatre.net/reviews/the-neil-diamond-musical-a-beautiful-noise",
           "host": "greaterlansingtheatre.net",
@@ -1440,20 +1394,6 @@
           "url": "https://simonparrismaninchair.com/2026/08/09/a-beautiful-noise-the-neil-diamond-musical-review-melbourne/",
           "host": "simonparrismaninchair.com",
           "knownOutletId": "simon-parris-man-in-chair",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "priorRun": true,
-          "priorRunSource": "sibling-held:a-beautiful-noise-the-neil-diamond-musical-tour-2024",
           "sources": [
             {
               "source": "serp-census",
@@ -1516,111 +1456,22 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"A Beautiful Noise, The Neil Diamond Musical\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"A Beautiful Noise, The Neil Diamond Musical\" review american",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 4,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "A Beautiful Noise, The Neil Diamond Musical North American Tour review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 6,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 24,
-        "byReason": {
-          "non-review-host": 21,
-          "ticketing-reseller": 1,
-          "show-listing-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://hotchka.com/a-beautiful-noise-the-neil-diamond-musical-tour-review-baltimore-hippodrome",
-          "host": "hotchka.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/jacksonville/article/Review-A-BEAUTIFUL-NOISE--THE-NEIL-DIAMOND-MUSICAL-at-Jacksonville-Center-For-The-Performing-Arts-20260417",
-          "host": "broadwayworld.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.houstonchronicle.com/entertainment/theater/article/neil-diamond-musical-review-a-beautiful-noise-hou-21142192.php",
-          "host": "houstonchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://www.greaterlansingtheatre.net/reviews/the-neil-diamond-musical-a-beautiful-noise",
           "host": "greaterlansingtheatre.net",
           "priorRun": false,
           "reason": "unregistered-host",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.broadwayworld.com/kansas-city/article/Review-A-BEAUTIFUL-NOISE-Brings-the-Heart-of-Neil-Diamond-to-Life-at-KCs-Starlight-Theatre-20260712",
-          "host": "broadwayworld.com",
-          "priorRun": true,
-          "reason": "prior-run",
           "censusGateOn": true
         }
       ],
@@ -1638,7 +1489,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         },
         {
           "url": "https://limelight-arts.com.au/event/a-beautiful-noise-the-neil-diamond-musical-4/2026-12-26/",
@@ -1797,7 +1648,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-02T03:05:16.434Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "a-boy-called-christmas-chichester-festival-regional-2025",
@@ -16933,16 +16784,17 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 2,
+        "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-24T15:49:31.318Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "america-the-beautiful-chapter-1-off-west-end-2026",
@@ -51358,27 +51210,8 @@
       "openingDate": "2025-03-19",
       "status": "open",
       "category": "broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-did-critics-think-of-buena-vista-social-club-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-BUENA-VISTA-SOCIAL-CLUB-Launches-North-American-Tour-20260923",
-        "https://www.broadwayworld.com/article/Review-Roundup-BUENA-VISTA-SOCIAL-CLUB-Opens-at-Atlantic-Theater-Company-20231214"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theaterpizzazz.com/buena-vista-social-club/",
-        "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-off-broadway-review",
-        "https://nystagereview.com/2023/12/13/buena-vista-social-club-from-album-to-screen-to-triumphant-musical/",
-        "https://cititour.com/NYC_Broadway/Buena-Vista-Social-Club/1191",
-        "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
-        "https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/",
-        "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
-        "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-        "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
-        "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
-        "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
-        "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
-        "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
-        "https://buffalotheatreguide.com/2026/09/17/buena-vista-social-club-swings-into-sheas/",
-        "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
         "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
         "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review",
         "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html",
@@ -51386,34 +51219,16 @@
         "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/",
         "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/",
         "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/discover-the-musicians-of-buena-vista-social-club-on-broadway"
+        "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-off-broadway-review",
+        "https://cititour.com/NYC_Broadway/Buena-Vista-Social-Club/1191",
+        "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
+        "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
+        "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/"
       ],
-      "dirFiles": 40,
-      "dirClean": 24,
-      "inReviewsJson": 24,
-      "missing": [
-        {
-          "url": "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
-          "host": "buffalorising.com",
-          "knownOutletId": "buffalorising",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://buffalotheatreguide.com/2026/09/17/buena-vista-social-club-swings-into-sheas/",
-          "host": "buffalotheatreguide.com",
-          "knownOutletId": "buffalo-theatre-guide",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
-          "host": "jalanews.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirFiles": 47,
+      "dirClean": 33,
+      "inReviewsJson": 32,
+      "missing": [],
       "dirOnly": [
         {
           "host": "amny.com",
@@ -51425,6 +51240,14 @@
         },
         {
           "host": "chicagotribune.com",
+          "count": 1
+        },
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
           "count": 1
         },
         {
@@ -51440,6 +51263,10 @@
           "count": 1
         },
         {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
           "host": "newyorktheater.me",
           "count": 1
         },
@@ -51452,6 +51279,10 @@
           "count": 1
         },
         {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
           "host": "thekomisarscoop.com",
           "count": 1
         },
@@ -51460,165 +51291,27 @@
           "count": 1
         },
         {
+          "host": "theaterpizzazz.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "nyunews.com",
+          "count": 1
+        },
+        {
           "host": "washingtonpost.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theaterpizzazz.com/buena-vista-social-club/",
-          "host": "theaterpizzazz.com",
-          "knownOutletId": "theater-pizzazz",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theater-pizzazz--carol-rocamora.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theaterpizzazz.com/buena-vista-social-club/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-from-album-to-screen-to-triumphant-musical/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--bob-verini.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-que-gran-fiesta/"
-            },
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-how-to-make-beautiful-music-in-havana/"
-            },
-            {
-              "file": "nysr--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-que-gran-fiesta/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--bob-verini.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-que-gran-fiesta/"
-            },
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-how-to-make-beautiful-music-in-havana/"
-            },
-            {
-              "file": "nysr--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-que-gran-fiesta/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
-          "host": "nysun.com",
-          "knownOutletId": "new-york-sun",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "new-york-sun--elysa-gardner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2023/12/13/theater/buena-vista-social-club-review.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "observer--david-cote.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -51626,86 +51319,17 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 683,
-        "byReason": {
-          "aggregator-internal-nav": 524,
-          "not-http-url": 95,
-          "aggregator-section-root": 14,
-          "non-review-host": 50
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-did-critics-think-of-buena-vista-social-club-off-broadway",
-          "publishDate": "2023-12-14"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BUENA-VISTA-SOCIAL-CLUB-Launches-North-American-Tour-20260923",
-          "publishDate": "2026-09-23"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-BUENA-VISTA-SOCIAL-CLUB-Opens-at-Atlantic-Theater-Company-20231214",
-          "publishDate": "2023-12-14"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
-          "host": "buffalorising.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://buffalotheatreguide.com/2026/09/17/buena-vista-social-club-swings-into-sheas/",
-          "host": "buffalotheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
-          "host": "jalanews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-off-broadway-review",
-            "outletId": "newyorktheatreguide.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://cititour.com/NYC_Broadway/Buena-Vista-Social-Club/1191",
-            "outletId": "cititour.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
-            "outletId": "thedailybeast.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
-          {
-            "url": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
-            "outletId": "thewrap.com",
-            "state": "live",
-            "firstSeenAt": "2026-08-21T10:23:53.851Z"
-          },
           {
             "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
             "outletId": "nytimes.com",
@@ -51747,13 +51371,43 @@
             "outletId": "pagesonstages.com",
             "state": "live",
             "firstSeenAt": "2026-08-03T10:14:58.194Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Buena-Vista-Social-Club/1191",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
+          },
+          {
+            "url": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-21T10:23:53.851Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 11,
         "candidateCount": 11
       },
-      "computedAt": "2026-09-24T19:52:14.230Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
@@ -86087,20 +85741,20 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre",
-        "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
-        "https://www.timeout.com/london/theatre/dogstar-1",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
         "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+        "https://www.timeout.com/london/theatre/dogstar-1",
         "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/",
-        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar"
+        "https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre",
+        "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse"
       ],
       "dirFiles": 4,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
         {
-          "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
-          "host": "mariannebritsstrodl.co.uk",
+          "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+          "host": "theatrescotland.com",
           "knownOutletId": null,
           "sources": [
             {
@@ -86123,8 +85777,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
-          "host": "theatrescotland.com",
+          "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
+          "host": "mariannebritsstrodl.co.uk",
           "knownOutletId": null,
           "sources": [
             {
@@ -86137,6 +85791,35 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--alan-ingram.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/",
           "host": "theatreweekly.com",
@@ -86169,35 +85852,6 @@
           ],
           "serpCensus": true,
           "reverify": false
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--alan-ingram.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -86246,27 +85900,95 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Dogstar\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Dogstar\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Dogstar\" review hampstead",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Dogstar Hampstead Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Dogstar Hampstead Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Dogstar Hampstead Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "non-review-host": 14,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "non-review-path": 2,
+          "ticketing-listing": 4,
+          "write-path-blocked": 2,
+          "venue-production-page": 3,
+          "aggregator-internal-nav": 1,
+          "non-stage-review": 1,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
-          "host": "mariannebritsstrodl.co.uk",
+          "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+          "host": "theatrescotland.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
         },
         {
-          "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
-          "host": "theatrescotland.com",
+          "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
+          "host": "mariannebritsstrodl.co.uk",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -86294,11 +86016,11 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "mariannebritsstrodl.co.uk",
-            "outlet": "mariannebritsstrodl.co.uk",
+            "outletId": "theatrescotland.com",
+            "outlet": "theatrescotland.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse"
+            "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html"
           },
           {
             "outletId": "timeout-london",
@@ -86308,18 +86030,11 @@
             "url": "https://www.timeout.com/london/theatre/dogstar-1"
           },
           {
-            "outletId": "theatrescotland.com",
-            "outlet": "theatrescotland.com",
+            "outletId": "mariannebritsstrodl.co.uk",
+            "outlet": "mariannebritsstrodl.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/"
+            "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse"
           },
           {
             "outletId": "bestoftheatre",
@@ -86327,6 +86042,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/"
           }
         ],
         "suppressedMissing": [],
@@ -86338,8 +86060,8 @@
             "firstSeenAt": "2026-11-01T22:26:24.802Z"
           },
           {
-            "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
-            "outletId": "mariannebritsstrodl.co.uk",
+            "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
+            "outletId": "theatrescotland.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-31T23:09:19.251Z"
@@ -86352,18 +86074,11 @@
             "firstSeenAt": "2026-10-30T16:58:09.613Z"
           },
           {
-            "url": "https://www.theatrescotland.com/Scottish-theatre-writing/Reviews/dogstar.html",
-            "outletId": "theatrescotland.com",
+            "url": "https://www.mariannebritsstrodl.co.uk/review-dogstar-at-roundhouse",
+            "outletId": "mariannebritsstrodl.co.uk",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-31T23:09:19.251Z"
-          },
-          {
-            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/",
-            "outletId": "theatre-weekly",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-31T06:31:50.539Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-dogstar",
@@ -86371,13 +86086,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-30T16:58:09.613Z"
+          },
+          {
+            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-daisy-halls-dogstar-at-hampstead-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-31T06:31:50.539Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "doll-day-afternoon-off-broadway-2026",
@@ -95237,17 +94959,48 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.watchforum.com/threads/erebus-origin-gmt-classic-black.11588/",
+        "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
+        "https://www.the-wind-up.com/blog/erebus-watches-review",
+        "https://thecalibratedwrist.com/tag/erebus-watches/",
         "https://luxurygoodspartty.com/erebus-ascent-haq-review-max-edition/",
         "https://luxurygoodspartty.com/erebus-ascent-40-gmt-review-modern-design/",
         "https://luxurygoodspartty.com/erebus-ascent-haq-review-designer-design/",
         "https://luxurygoodspartty.com/erebus-ascent-40-gmt-review-smart-casual/",
-        "https://thecalibratedwrist.com/tag/erebus-watches/",
         "https://gearspace.com/threads/dreadbox-erebus-3.1214119/page-8"
       ],
       "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
+          "host": "watchcrunch.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-07-27",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.the-wind-up.com/blog/erebus-watches-review",
+          "host": "the-wind-up.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-09-10",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://luxurygoodspartty.com/erebus-ascent-haq-review-max-edition/",
           "host": "luxurygoodspartty.com",
@@ -95299,6 +95052,37 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.watchforum.com/threads/erebus-origin-gmt-classic-black.11588/",
+          "host": "watchforum.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "watchforum--unknown.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.watchforum.com/threads/erebus-origin-gmt-classic-black.11588/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-27",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://thecalibratedwrist.com/tag/erebus-watches/",
           "host": "thecalibratedwrist.com",
@@ -95365,17 +95149,94 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Erebus\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Erebus\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Erebus\" review culture",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Erebus Culture Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Erebus Culture Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Erebus Culture Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 15,
+        "byReason": {
+          "non-review-host": 9,
+          "census-junk-host": 2,
+          "ugc-platform": 1,
+          "no-review-evidence": 2,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.watchcrunch.com/WatchAlot2/posts/the-erebus-ascent-review-949436",
+          "host": "watchcrunch.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.the-wind-up.com/blog/erebus-watches-review",
+          "host": "the-wind-up.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://luxurygoodspartty.com/erebus-ascent-haq-review-max-edition/",
           "host": "luxurygoodspartty.com",
@@ -95502,7 +95363,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "ernest-shackleton-loves-me-off-broadway-2017",
@@ -151094,12 +150955,28 @@
         "https://culturesauce.com/in-the-heights-encores-off-broadway-review/",
         "https://newyorktheater.me/2026/10/30/in-the-heights-at-new-york-city-center/",
         "https://www.vulture.com/article/theater-review-in-the-heights-musical-encores-city-center-miranda-hudes.html",
+        "https://frontmezzjunkies.com/2026/05/07/a-modern-classic-in-the-heights-returns-home-to-ny-city-center-this-fall/",
+        "https://www.newyorktheatreguide.com/reviews/in-the-heights",
         "https://www.timeout.com/newyork/theater/in-the-heights-1"
       ],
       "dirFiles": 11,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/in-the-heights",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-09-22",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/newyork/theater/in-the-heights-1",
           "host": "timeout.com",
@@ -151114,29 +150991,130 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://frontmezzjunkies.com/2026/05/07/a-modern-classic-in-the-heights-returns-home-to-ny-city-center-this-fall/",
+          "host": "frontmezzjunkies.com",
+          "knownOutletId": "frontmezzjunkies",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frontmezzjunkies--ross.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://frontmezzjunkies.com/2026/05/07/a-modern-classic-in-the-heights-returns-home-to-ny-city-center-this-fall/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-05-07",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"In the Heights\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"In the Heights\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"In the Heights\" review york",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "In the Heights New York City Center review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "In the Heights New York City Center review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "In the Heights New York City Center review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 390,
+        "count": 412,
         "byReason": {
-          "roundup-page": 1,
-          "non-review-host": 36,
+          "non-review-host": 47,
+          "census-junk-host": 3,
+          "no-review-evidence": 4,
           "aggregator-internal-nav": 245,
-          "not-http-url": 76,
-          "production-database-listing": 9,
-          "aggregator-section-root": 10,
           "non-stage-review": 1,
-          "podcast-episode": 12
+          "ticketing-reseller": 2,
+          "not-http-url": 76,
+          "aggregator-section-root": 10,
+          "roundup-page": 3,
+          "podcast-episode": 12,
+          "production-database-listing": 9
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/in-the-heights",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/newyork/theater/in-the-heights-1",
@@ -151204,7 +151182,7 @@
         "liveCount": 4,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -154114,12 +154092,67 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ivy Day\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ivy Day\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ivy Day AMT Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ivy Day AMT Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ivy Day AMT Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 27,
+        "byReason": {
+          "non-review-host": 13,
+          "census-junk-host": 3,
+          "bare-host": 1,
+          "non-review-path": 1,
+          "venue-production-page": 3,
+          "aggregator-internal-nav": 5,
+          "review-hub-page": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -154132,7 +154165,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "jack-and-the-beanstalk-dundee-rep-regional-2025",
@@ -200753,26 +200786,29 @@
       "aggregatorListedUrls": [
         "https://newyorktheatrereview.blogspot.com/2015/10/wesley-doucette-on-medea-as-presented.html",
         "http://www.ayoungertheatre.com/review-medea-wilton-music-hall-teatro-patalogico/",
+        "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
+        "https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse",
+        "https://womanaroundtown.com/sections/playing-around/the-met-opens-season-with-cherubinis-medea-phenomenal-protagonist-but-questionable-mythic-power-ending/",
         "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
+        "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+        "https://slippedisc.com/2022/09/an-angry-woman-with-a-voice-for-the-ages-first-review-of-medea/",
+        "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
+        "https://www.timeout.com/newyork/theater/medea-4",
+        "https://parterre.com/works/medea/",
+        "https://www.nytimes.com/2022/10/21/arts/music/sondra-radvanovsky-medea-met-opera.html",
+        "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+        "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
+        "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
         "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
         "https://newyorkclassicalreview.com/2026/10/yoncheva-spyres-provide-adrenaline-injection-to-mets-medea-revival/",
         "https://operacanada.ca/the-metropolitan-opera-medea-sondra-radvanovsky-giving-one-of-the-most-fully-immersive-performances-ive-ever-seen-on-an-opera-stage/",
         "https://parterre.com/2022/09/28/how-do-you-solve-a-problem-like-medea-2/",
         "https://newyorkclassicalreview.com/2022/09/radvanovsky-triumphs-in-mets-season-opening-medea/",
-        "https://womanaroundtown.com/sections/playing-around/the-met-opens-season-with-cherubinis-medea-phenomenal-protagonist-but-questionable-mythic-power-ending/",
-        "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-        "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
-        "https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse",
-        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-        "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
         "https://indieopera.com/review-medea/",
-        "https://slippedisc.com/2022/09/an-angry-woman-with-a-voice-for-the-ages-first-review-of-medea/",
-        "https://www.timeout.com/newyork/theater/medea-4",
+        "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
         "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
         "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
         "https://www.nytimes.com/2022/09/25/arts/music/met-opera-medea.html",
-        "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-        "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
         "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
         "https://everything-theatre.co.uk/2026/10/review-the-musical-medea-upstairs-at-the-gatehouse/"
       ],
@@ -200809,18 +200845,8 @@
           "url": "https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse",
           "host": "adventuresintheatreland.com",
           "knownOutletId": "adventuresintheatreland",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-08-04",
           "sources": [
             {
               "source": "serp-census",
@@ -200854,9 +200880,73 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-10-14",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://www.timeout.com/newyork/theater/medea-4",
           "host": "timeout.com",
           "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://parterre.com/works/medea/",
+          "host": "parterre.com",
+          "knownOutletId": "parterre-box",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/10/21/arts/music/sondra-radvanovsky-medea-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "url-dated-in-prior-run",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
           "sources": [
             {
               "source": "serp-census",
@@ -200893,18 +200983,6 @@
           "url": "https://www.nytimes.com/2022/09/25/arts/music/met-opera-medea.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
           "sources": [
             {
               "source": "serp-census",
@@ -201008,12 +201086,78 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Medea\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Medea\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Medea\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Medea Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Medea Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Medea Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 28,
+        "byReason": {
+          "non-review-host": 17,
+          "census-junk-host": 2,
+          "no-review-evidence": 2,
+          "venue-production-page": 3,
+          "non-stage-review": 1,
+          "ticketing-reseller": 1,
+          "show-listing-page": 1,
+          "tag-index-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -201025,13 +201169,34 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
+        },
+        {
+          "url": "https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse",
+          "host": "adventuresintheatreland.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/medea-ardis-krainik-t-24993",
+          "host": "britishtheatreguide.info",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2022/10/21/arts/music/sondra-radvanovsky-medea-met-opera.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
         {
-          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
-          "host": "theatermania.com",
-          "outletId": "theatermania",
+          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -201041,12 +201206,12 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with theatermania--zachary-stewart.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2022-09-28\",\n  \"incomingUrl\": \"https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/\",\n  \"incomingPublishDate\": \"2022-09-28\"\n}\n\nMan"
+          "reason": "Article extraction returned 109 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
-          "host": "aroundthetownchicago.com",
-          "outletId": "around-the-town-chicago",
+          "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -201056,84 +201221,84 @@
           "expectedReason": "publish-date-unresolved",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "reason": "medea-off-broadway-2026: https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
-          "url": "https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse",
-          "host": "adventuresintheatreland.com",
-          "outletId": "adventuresintheatreland",
+          "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
+          "host": "the-tls.com",
+          "outletId": "the-tls",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
+          "host": "the-tls.com",
+          "outletId": "the-tls",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/medea-4",
+          "host": "timeout.com",
+          "outletId": "timeout",
           "provisional": false,
           "ok": false,
           "noop": true,
           "conflict": false,
           "conflictReason": null,
           "expected": true,
-          "expectedReason": "prior-production-quarantined",
+          "expectedReason": "timeout-listing-capsule",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse dated 2025-08-04 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://slippedisc.com/2022/09/an-angry-woman-with-a-voice-for-the-ages-first-review-of-medea/",
-          "host": "slippedisc.com",
-          "outletId": "slippedisc",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
-        },
-        {
-          "url": "https://www.nytimes.com/2022/09/25/arts/music/met-opera-medea.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+          "reason": "medea-off-broadway-2026: https://www.timeout.com/newyork/theater/medea-4 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review"
-        },
-        {
-          "url": "https://www.the-tls.com/arts/theatre/medea-sohoplace-phaedra-national-theatre-review-mary-beard",
-          "host": "the-tls.com",
-          "outletId": "the-tls"
-        },
-        {
-          "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
-          "host": "the-tls.com",
-          "outletId": "the-tls"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/medea-4",
-          "host": "timeout.com",
-          "outletId": "timeout"
-        },
-        {
           "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
           "host": "bachtrack.com",
           "outletId": "bachtrack"
+        },
+        {
+          "url": "https://parterre.com/works/medea/",
+          "host": "parterre.com",
+          "outletId": "parterre-box"
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/",
+          "host": "aroundthetownchicago.com",
+          "outletId": "around-the-town-chicago"
+        },
+        {
+          "url": "https://slippedisc.com/2022/09/an-angry-woman-with-a-voice-for-the-ages-first-review-of-medea/",
+          "host": "slippedisc.com",
+          "outletId": "slippedisc"
+        },
+        {
+          "url": "https://www.nytimes.com/2022/09/25/arts/music/met-opera-medea.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
+          "host": "theatermania.com",
+          "outletId": "theatermania"
         }
       ],
       "censusVerdict": {
@@ -201145,20 +201310,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://aroundthetownchicago.com/theatre-reviews/medea-reviewed-by-jacob-davis/"
-          },
-          {
-            "outletId": "adventuresintheatreland",
-            "outlet": "adventuresintheatreland",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse"
-          },
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022"
           },
           {
             "outletId": "the-tls",
@@ -201182,6 +201333,27 @@
             "url": "https://www.timeout.com/newyork/theater/medea-4"
           },
           {
+            "outletId": "parterre-box",
+            "outlet": "parterre-box",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://parterre.com/works/medea/"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022"
+          },
+          {
             "outletId": "musical-theatre-review",
             "outlet": "musical-theatre-review",
             "critic": "Unknown",
@@ -201203,13 +201375,6 @@
             "url": "https://www.nytimes.com/2022/09/25/arts/music/met-opera-medea.html"
           },
           {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022"
-          },
-          {
             "outletId": "theatermania",
             "outlet": "theatermania",
             "critic": "Unknown",
@@ -201227,10 +201392,28 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://womanaroundtown.com/sections/playing-around/the-met-opens-season-with-cherubinis-medea-phenomenal-protagonist-but-questionable-mythic-power-ending/",
+            "outletId": "womanaroundtown.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T16:17:39.675Z"
+          },
+          {
             "url": "https://www.nytimes.com/2022/09/28/arts/music/review-medea-met-opera.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T23:23:22.746Z"
+          },
+          {
+            "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
+            "outletId": "operawire.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T16:44:25.468Z"
+          },
+          {
+            "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
+            "outletId": "classicalsource.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T16:44:25.468Z"
           },
           {
             "url": "https://operawire.com/metropolitan-opera-2022-23-review-medea/",
@@ -201263,26 +201446,8 @@
             "firstSeenAt": "2026-11-01T10:24:15.703Z"
           },
           {
-            "url": "https://womanaroundtown.com/sections/playing-around/the-met-opens-season-with-cherubinis-medea-phenomenal-protagonist-but-questionable-mythic-power-ending/",
-            "outletId": "womanaroundtown.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T16:17:39.675Z"
-          },
-          {
-            "url": "https://operawire.com/metropolitan-operas-medea-heads-for-live-in-hd-this-weekend/",
-            "outletId": "operawire.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T16:44:25.468Z"
-          },
-          {
             "url": "https://indieopera.com/review-medea/",
             "outletId": "indieopera.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T16:44:25.468Z"
-          },
-          {
-            "url": "https://www.classicalsource.com/concert/metropolitan-operas-opening-night-david-mcvicars-production-of-cherubinis-medea-sondra-radvanovsky-janai-brugger-ekaterina-gubanova-matthew/",
-            "outletId": "classicalsource.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T16:44:25.468Z"
           },
@@ -201292,20 +201457,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
-            "url": "https://www.adventuresintheatreland.com/post/the-musical-medea-upstairs-at-the-gatehouse",
-            "outletId": "adventuresintheatreland",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T16:44:25.468Z"
           },
           {
             "url": "https://www.the-tls.com/arts/theatre/medea-metropolitan-opera-new-york-review-larry-wolff",
@@ -201329,6 +201480,27 @@
             "firstSeenAt": "2026-10-30T00:11:50.524Z"
           },
           {
+            "url": "https://parterre.com/works/medea/",
+            "outletId": "parterre-box",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+            "outletId": "bachtrack",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T16:44:25.468Z"
+          },
+          {
+            "url": "https://bachtrack.com/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
+            "outletId": "bachtrack",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T16:44:25.468Z"
+          },
+          {
             "url": "https://musicaltheatrereview.com/the-musical-medea-upstairs-at-the-gatehouse-2/",
             "outletId": "musical-theatre-review",
             "state": "GAP",
@@ -201350,13 +201522,6 @@
             "firstSeenAt": "2026-11-01T16:17:39.675Z"
           },
           {
-            "url": "https://bachtrack.com/fr_FR/review-cherubini-medea-radvanovsky-polenzani-mcvicar-metropolitan-opera-new-york-september-2022",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T16:44:25.468Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/review-a-messy-divorce-plays-out-in-public-in-medea-at-the-metropolitan-opera_94358/",
             "outletId": "theatermania",
             "state": "GAP",
@@ -201375,7 +201540,7 @@
         "liveCount": 8,
         "candidateCount": 18
       },
-      "computedAt": "2026-11-02T03:05:16.434Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -215893,6 +216058,7 @@
         "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
         "https://storefrontrebellion.substack.com/p/sr-review-ms-blakk-for-president",
         "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
+        "https://www.theatermania.com/news/tarell-alvin-mccraney-to-star-as-joan-jett-blakk-in-ms-blakk-for-president_88088/",
         "https://www.spotlightonlake.com/posts/ms-blakk-president-review-jeffrey-leibham",
         "https://www.theatermania.com/news/ato-blankson-wood-to-replace-wayne-brady-in-ms-blakk-for-president_1855437/"
       ],
@@ -215941,6 +216107,18 @@
           "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/",
           "host": "aroundthetownchicago.com",
           "knownOutletId": "around-the-town-chicago",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/tarell-alvin-mccraney-to-star-as-joan-jett-blakk-in-ms-blakk-for-president_88088/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
           "sources": [
             {
               "source": "serp-census",
@@ -216061,18 +216239,89 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ms. Blakk for President\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ms. Blakk for President\" review vineyard",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Ms. Blakk for President\" Landau review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ms. Blakk for President Vineyard Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ms. Blakk for President Vineyard Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ms. Blakk for President Vineyard Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 104,
+        "count": 152,
         "byReason": {
-          "non-review-host": 20,
-          "aggregator-internal-nav": 63,
-          "aggregator-section-root": 4,
-          "non-stage-review": 1,
+          "non-review-host": 50,
+          "write-path-blocked": 3,
+          "venue-production-page": 1,
+          "aggregator-internal-nav": 74,
+          "non-stage-review": 2,
           "not-http-url": 5,
-          "production-database-listing": 11
+          "aggregator-section-root": 4,
+          "roundup-page": 1,
+          "production-database-listing": 11,
+          "news-article": 1
         }
       },
       "dedupedVariants": [],
@@ -216101,6 +216350,21 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.theatermania.com/news/tarell-alvin-mccraney-to-star-as-joan-jett-blakk-in-ms-blakk-for-president_88088/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
         {
           "url": "https://variety.com/2026/legit/news/wayne-brady-starring-tina-landau-tarell-alvin-mccraney-ms-blakk-for-president-vineyard-theatre-1236736622/",
           "host": "variety.com",
@@ -216173,6 +216437,13 @@
             "url": "https://aroundthetownchicago.com/theatre-reviews/ms-blakk-for-president/"
           },
           {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/tarell-alvin-mccraney-to-star-as-joan-jett-blakk-in-ms-blakk-for-president_88088/"
+          },
+          {
             "outletId": "spotlightonlake",
             "outlet": "spotlightonlake",
             "critic": "Unknown",
@@ -216211,6 +216482,13 @@
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
+            "url": "https://www.theatermania.com/news/tarell-alvin-mccraney-to-star-as-joan-jett-blakk-in-ms-blakk-for-president_88088/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
             "url": "https://www.spotlightonlake.com/posts/ms-blakk-president-review-jeffrey-leibham",
             "outletId": "spotlightonlake",
             "state": "GAP",
@@ -216229,7 +216507,7 @@
         "liveCount": 0,
         "candidateCount": 5
       },
-      "computedAt": "2026-11-02T05:01:54.129Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
@@ -217447,16 +217725,17 @@
         "byReason": {}
       },
       "dedupedVariants": [],
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 2,
+        "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-09-24T23:04:09.984Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "murdoch-the-final-interview-off-broadway-2025",
@@ -265503,6 +265782,57 @@
       "computedAt": "2026-10-31T17:07:08.919Z"
     },
     {
+      "showId": "safe-space-chichester-festival-regional-2025",
+      "title": "Safe Space",
+      "openingDate": "2025-10-18",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/safe-space-review-minerva-theatre-chichester-festival-theatre-jamie-bogyo",
+          "host": "thestage.co.uk",
+          "file": "thestage--dave-fargnoli.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T06:46:27.997Z"
+    },
+    {
       "showId": "saint-joan-citizens-regional-2026",
       "title": "Saint Joan",
       "openingDate": "2026-02-18",
@@ -282445,12 +282775,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Specimen\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Specimen\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Specimen\" review axis",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Specimen Axis Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Specimen Axis Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Specimen Axis Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "non-review-host": 31,
+          "census-junk-host": 1,
+          "bare-host": 1,
+          "non-review-path": 1,
+          "venue-production-page": 3
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -282495,7 +282888,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-11-02T03:05:16.434Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "spellbound-off-broadway-2026",
@@ -306663,12 +307056,66 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 23,
+        "byReason": {
+          "non-review-host": 5,
+          "census-junk-host": 6,
+          "bare-host": 7,
+          "non-review-path": 1,
+          "review-hub-page": 3,
+          "aggregator-section-root": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -306712,7 +307159,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-02T05:01:54.129Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -329525,12 +329972,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Infinite Fright\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Infinite Fright\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Infinite Fright\" review asylum",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Infinite Fright Asylum NYC review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Infinite Fright Asylum NYC review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Infinite Fright Asylum NYC review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 17,
+        "byReason": {
+          "non-review-host": 7,
+          "no-review-evidence": 2,
+          "bare-host": 2,
+          "aggregator-internal-nav": 2,
+          "ticketing-reseller": 4
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -329543,7 +330053,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "the-infinite-wrench-off-broadway-2026",
@@ -340022,6 +340532,43 @@
       "computedAt": "2026-10-31T22:05:43.219Z"
     },
     {
+      "showId": "the-mark-regional-2025",
+      "title": "The Mark",
+      "openingDate": "2025-10-21",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T06:46:27.997Z"
+    },
+    {
       "showId": "the-master-builder-off-west-end-2026",
       "title": "The Master Builder",
       "openingDate": "2026-10-22",
@@ -341550,127 +342097,27 @@
       "aggregatorListedUrls": [
         "https://www.pinkprincetheatre.com/post/review-the-moth-finborough-theatre",
         "https://www.allthatdazzles.co.uk/post/review-the-moth-finborough-theatre",
-        "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
-        "https://broadwaybaby.com/shows/the-moth/839368",
         "https://www.londonboxoffice.co.uk/news/post/the-moth-finborough-theatre-review",
-        "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
-        "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
-        "https://quayslife.com/reviews/the-moth-review/",
-        "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
-        "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
         "https://readaboutstuff.com/2026/10/25/interview-paul-herzberg-discusses-the-moth/",
-        "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
-        "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
-        "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
         "https://firstnightmagazine.com/2026/10/30/review-of-the-moth-dusty-play-doesnt-emerge-from-its-cocoon/",
         "https://readaboutstuff.com/2026/10/31/review-the-moth-finborough-theatre-london/",
         "https://www.londonpubtheatres.com/review-the-moth-at-finborough-theatre-27-oct-21-nov-2026",
         "https://fringereview.co.uk/review/fringereview-uk/2026/the-moth/",
+        "https://www.thereviewshub.com/the-moth-finborough-theatre-london/",
+        "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
+        "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
         "https://www.timeout.com/london/theatre/the-moth",
         "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/",
+        "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
+        "https://broadwaybaby.com/shows/the-moth/839368",
         "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
         "https://andyjordanproductions.co.uk/the-moth/",
-        "https://www.jewishnews.co.uk/apartheid-era-play-the-moth-has-unsettling-parallels-to-todays-world/",
-        "https://www.thereviewshub.com/the-moth-finborough-theatre-london/"
+        "https://www.jewishnews.co.uk/apartheid-era-play-the-moth-has-unsettling-parallels-to-todays-world/"
       ],
-      "dirFiles": 17,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 18,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [
-        {
-          "url": "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://quayslife.com/reviews/the-moth-review/",
-          "host": "quayslife.com",
-          "knownOutletId": "quays-life",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-04-11",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2013-05-31",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
-          "host": "theblurb.com.au",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-06-01",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
-          "host": "northwestend.com",
-          "knownOutletId": "north-west-end",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2025-03-19",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2012-08-08",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://www.timeout.com/london/theatre/the-moth",
           "host": "timeout.com",
@@ -341698,6 +342145,39 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
           "host": "viewfromthegods.co.uk",
@@ -341765,37 +342245,6 @@
           "confirmedBasis": [
             "non-review"
           ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-06-23",
           "sources": [
             {
               "source": "serp-census",
@@ -341960,149 +342409,19 @@
         }
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Moth\" West End review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Moth\" West End review 2026",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 6,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Moth\" review finborough",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Moth Finborough Theatre review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Moth Finborough Theatre review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Moth Finborough Theatre review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 15,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 21,
+        "count": 2,
         "byReason": {
-          "non-review-host": 12,
-          "aggregator-internal-nav": 1,
-          "roundup-page": 1,
-          "write-path-blocked": 3,
-          "event-listing": 1,
-          "no-review-evidence": 2,
-          "ticketing-listing": 1
+          "write-path-blocked": 2
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://quayslife.com/reviews/the-moth-review/",
-          "host": "quayslife.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
-          "host": "britishtheatreguide.info",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
-          "host": "theblurb.com.au",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
-          "host": "northwestend.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
-          "host": "britishtheatreguide.info",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
       "ingestResults": [
-        {
-          "url": "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
         {
           "url": "https://www.timeout.com/london/theatre/the-moth",
           "host": "timeout.com",
@@ -342139,20 +342458,6 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/"
-          },
-          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -342165,6 +342470,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/"
           },
           {
             "outletId": "viewfromthegods",
@@ -342260,17 +342572,9 @@
           },
           {
             "url": "https://www.londontheatre1.com/reviews/the-moth-finborough-theatre/",
-            "outletId": "londontheatre1",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "outletId": "londontheatre1.com",
+            "state": "live",
             "firstSeenAt": "2026-11-02T03:05:16.434Z"
-          },
-          {
-            "url": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T04:55:45.004Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/the-moth",
@@ -342285,6 +342589,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://theatreweekly.com/elysium-theatre-company-brings-acclaimed-political-thriller-the-moth-to-londons-finborough-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T04:55:45.004Z"
           },
           {
             "url": "https://viewfromthegods.co.uk/2026/10/30/the-moth-finborough-theatre/",
@@ -342323,10 +342634,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 16
       },
-      "computedAt": "2026-11-02T03:05:16.434Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "the-mousetrap-west-end-2021",
@@ -358357,8 +358668,8 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://culturebean.co.uk/review-seance-royal-exchange-theatre/",
         "https://oazis.app/pl/event/the-seance-2026-10-31-2",
+        "https://culturebean.co.uk/review-seance-royal-exchange-theatre/",
         "https://www.alledinburghtheatre.com/the-seance-starter-kit-get-tae-collective-the-speakeasy-at-the-royal-scots-club-edfringe-2026-review/"
       ],
       "dirFiles": 2,
@@ -358489,12 +358800,79 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Séance\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Séance\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Séance\" review greenwich",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Séance Greenwich Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Séance Greenwich Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Séance Greenwich Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 29,
+        "byReason": {
+          "non-review-host": 13,
+          "census-junk-host": 2,
+          "ugc-platform": 1,
+          "no-review-evidence": 5,
+          "write-path-blocked": 2,
+          "aggregator-internal-nav": 1,
+          "review-hub-page": 1,
+          "roundup-page": 2,
+          "show-listing-page": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -358563,7 +358941,7 @@
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "the-seat-of-our-pants-off-broadway-2025",
@@ -361591,6 +361969,43 @@
         "candidateCount": 9
       },
       "computedAt": "2026-10-18T14:06:35.764Z"
+    },
+    {
+      "showId": "the-sporting-life-regional-2025",
+      "title": "The Sporting Life",
+      "openingDate": "2025-10-19",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "the-spy-who-came-in-from-the-cold-west-end-2025",
@@ -378826,33 +379241,18 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
-        "https://www.classicalsource.com/concert/english-national-opera-tosca/",
         "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
-        "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/",
         "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+        "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
         "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+        "https://www.classicalsource.com/concert/english-national-opera-tosca/",
         "https://www.london-unattached.com/tosca-english-national-opera-review/",
-        "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum",
-        "https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum",
-        "https://www.indiependent.co.uk/english-national-opera-to-present-uk-premiere-of-puccinis-tosca/"
+        "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum"
       ],
       "dirFiles": 6,
       "dirClean": 2,
-      "inReviewsJson": 1,
+      "inReviewsJson": 2,
       "missing": [
-        {
-          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
-          "host": "classicalsource.com",
-          "knownOutletId": "classical-source",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
         {
           "url": "https://theartsdesk.com/opera/tosca-english-national-opera-review-tale-two-eras",
           "host": "theartsdesk.com",
@@ -378868,11 +379268,11 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/",
+          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
           "host": "classicalsource.com",
           "knownOutletId": "classical-source",
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2011-11-26",
+          "priorRunSource": "pending-file-date:2010-05-18",
           "sources": [
             {
               "source": "serp-census",
@@ -378885,6 +379285,8 @@
           "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
           "host": "london-unattached.com",
           "knownOutletId": "london-unattached",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-10-01",
           "sources": [
             {
               "source": "serp-census",
@@ -378897,34 +379299,8 @@
           "url": "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum",
           "host": "britishtheatre.com",
           "knownOutletId": "britishtheatrecom",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum",
-          "host": "britishtheatre.com",
-          "knownOutletId": "britishtheatrecom",
           "priorRun": true,
           "priorRunSource": "pending-file-date:2025-02-06",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.indiependent.co.uk/english-national-opera-to-present-uk-premiere-of-puccinis-tosca/",
-          "host": "indiependent.co.uk",
-          "knownOutletId": "indiependent",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2022-09-09",
           "sources": [
             {
               "source": "serp-census",
@@ -378944,7 +379320,7 @@
           "recoverableFile": "bachtrack--clare-varney.json",
           "recoverableOutletId": "bachtrack",
           "recoverableCritic": "Clare Varney",
-          "recoverableCount": 0,
+          "recoverableCount": 1,
           "dirFlags": [
             {
               "file": "bachtrack--clare-varney.json",
@@ -379017,12 +379393,78 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tosca - English National Opera\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tosca - English National Opera\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tosca - English National Opera\" review london",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 36,
+        "byReason": {
+          "non-review-host": 19,
+          "census-junk-host": 2,
+          "no-review-evidence": 3,
+          "non-review-path": 5,
+          "event-listing": 1,
+          "ticket-seller-product-page": 2,
+          "ticketing-listing": 2,
+          "write-path-blocked": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -379036,74 +379478,28 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca-claire-rutter-as-tosca-directed-by-catherine-malfitano/",
+          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
           "host": "classicalsource.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         },
         {
-          "url": "https://www.britishtheatre.com/sv/shows/tosca-english-national-opera-at-the-london-coliseum",
-          "host": "britishtheatre.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.indiependent.co.uk/english-national-opera-to-present-uk-premiere-of-puccinis-tosca/",
-          "host": "indiependent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        }
-      ],
-      "ingestResults": [
-        {
           "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
           "host": "london-unattached.com",
-          "outletId": "london-unattached",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tosca-english-national-opera-west-end-2026: https://www.london-unattached.com/tosca-english-national-opera-review/ dated 2022-10-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum",
           "host": "britishtheatre.com",
-          "outletId": "britishtheatrecom",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tosca-english-national-opera-west-end-2026: https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum dated 2025-02-06 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
-          "host": "classicalsource.com",
-          "outletId": "classical-source",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tosca-english-national-opera-west-end-2026: https://www.classicalsource.com/concert/english-national-opera-tosca/ dated 2010-05-18 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "recoveryResults": [
         {
@@ -379115,7 +379511,7 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 124 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 1
+          "recoveryCount": 2
         },
         {
           "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-opera-october-2026",
@@ -379126,34 +379522,13 @@
           "provisional": false,
           "starFallback": false,
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 1,
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "classical-source",
-            "outlet": "classical-source",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/"
-          },
-          {
-            "outletId": "london-unattached",
-            "outlet": "london-unattached",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.london-unattached.com/tosca-english-national-opera-review/"
-          },
-          {
-            "outletId": "britishtheatrecom",
-            "outlet": "britishtheatrecom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum"
-          },
           {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
@@ -379177,27 +379552,6 @@
             "firstSeenAt": "2026-11-01T12:45:30.098Z"
           },
           {
-            "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
-            "outletId": "classical-source",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T23:09:19.251Z"
-          },
-          {
-            "url": "https://www.london-unattached.com/tosca-english-national-opera-review/",
-            "outletId": "london-unattached",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T23:09:19.251Z"
-          },
-          {
-            "url": "https://www.britishtheatre.com/cs/shows/tosca-english-national-opera-at-the-london-coliseum",
-            "outletId": "britishtheatrecom",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T23:09:19.251Z"
-          },
-          {
             "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -379207,9 +379561,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 2,
-        "candidateCount": 6
+        "candidateCount": 3
       },
-      "computedAt": "2026-11-02T02:40:23.651Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -379217,23 +379571,25 @@
       "openingDate": "2026-11-01",
       "status": "open",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
-        "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-        "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
-        "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
-        "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
-        "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+        "https://www.njarts.net/princeton-festival-production-effectively-conveys-the-essence-of-puccinis-tosca/",
         "https://groups.io/g/crusting-pipe/topic/tosca_review_it_s/119464695",
+        "https://indieopera.com/review-the-drama-of-tosca/",
         "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
+        "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+        "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2",
+        "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
+        "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+        "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
+        "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+        "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
+        "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629",
+        "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
+        "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
         "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
         "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
-        "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
         "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
-        "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
         "https://theatreweekly.com/review-tosca-at-london-coliseum/",
         "https://www.createastir.ca/articles/tosca-review-vancouver-opera",
         "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
@@ -379244,21 +379600,11 @@
       "inReviewsJson": 7,
       "missing": [
         {
-          "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-          "host": "aatmanvakil.substack.com",
-          "knownOutletId": null,
+          "url": "https://www.njarts.net/princeton-festival-production-effectively-conveys-the-essence-of-puccinis-tosca/",
+          "host": "njarts.net",
+          "knownOutletId": "njarts",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-06-19",
           "sources": [
             {
               "source": "serp-census",
@@ -379280,9 +379626,109 @@
           "serpCensus": true
         },
         {
+          "url": "https://indieopera.com/review-the-drama-of-tosca/",
+          "host": "indieopera.com",
+          "knownOutletId": "indie-opera",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-06-22",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
           "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
           "host": "aroundthetownchicago.com",
           "knownOutletId": "around-the-town-chicago",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2020-12-31",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+          "host": "aatmanvakil.substack.com",
+          "knownOutletId": null,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
+          "host": "classicalsource.com",
+          "knownOutletId": "classical-source",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
+          "host": "interclassical.com",
+          "knownOutletId": null,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
+          "host": "bachtrack.com",
+          "knownOutletId": "bachtrack",
           "sources": [
             {
               "source": "serp-census",
@@ -379314,21 +379760,17 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
-          "host": "interclassical.com",
-          "knownOutletId": null,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "newyorkclassicalreview.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
+          "count": 1
+        },
         {
           "host": "operawire.com",
           "count": 1
@@ -379338,19 +379780,15 @@
           "count": 1
         },
         {
-          "host": "newyorker.com",
-          "count": 1
-        },
-        {
           "host": "observer.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+          "host": "musicomh.com",
+          "knownOutletId": "musicomh",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -379358,9 +379796,38 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "guardian--flora-willson.json",
+              "file": "musicomh--keith-mcdonnell.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves"
+              "urlInDir": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "broadwayworld--aliya-al-hassan.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -379368,7 +379835,7 @@
             "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "flagged-file-date:venue-verified:the Coliseum, London",
+          "priorRunSource": "flagged-file-date:2026-06-29",
           "sources": [
             {
               "source": "serp-census",
@@ -379397,35 +379864,6 @@
           "exclusion": "automatedExcluded",
           "basis": [
             "rejectionReason"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-          "host": "musicomh.com",
-          "knownOutletId": "musicomh",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musicomh--keith-mcdonnell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
           ],
           "sources": [
             {
@@ -379564,36 +380002,88 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tosca\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tosca\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tosca\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tosca Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 101,
+        "count": 26,
         "byReason": {
-          "non-review-host": 20,
-          "roundup-page": 2,
-          "aggregator-internal-nav": 56,
-          "aggregator-section-root": 4,
-          "non-stage-review": 1,
-          "not-http-url": 8,
-          "production-database-listing": 10
+          "non-review-host": 13,
+          "census-junk-host": 2,
+          "no-review-evidence": 3,
+          "aggregator-internal-nav": 2,
+          "non-stage-review": 2,
+          "ticketing-reseller": 2,
+          "roundup-page": 1,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca",
-          "publishDate": "2018-01-02"
-        }
-      ],
       "automatedExcludedListed": 4,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-          "host": "aatmanvakil.substack.com",
-          "priorRun": false,
-          "reason": "unregistered-host",
+          "url": "https://www.njarts.net/princeton-festival-production-effectively-conveys-the-essence-of-puccinis-tosca/",
+          "host": "njarts.net",
+          "priorRun": true,
+          "reason": "prior-run",
           "censusGateOn": true
         },
         {
@@ -379604,8 +380094,22 @@
           "censusGateOn": true
         },
         {
-          "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
-          "host": "viewlogue.com",
+          "url": "https://indieopera.com/review-the-drama-of-tosca/",
+          "host": "indieopera.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
+          "host": "britishtheatreguide.info",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+          "host": "aatmanvakil.substack.com",
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
@@ -379616,15 +380120,22 @@
           "priorRun": false,
           "reason": "unregistered-host",
           "censusGateOn": true
+        },
+        {
+          "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
+          "host": "viewlogue.com",
+          "priorRun": false,
+          "reason": "unregistered-host",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
         {
-          "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack",
+          "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2",
+          "host": "newyorker.com",
+          "outletId": "newyorker",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -379632,7 +380143,37 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Article extraction returned 140 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "reason": null
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir"
+        },
+        {
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
+          "host": "classicalsource.com",
+          "outletId": "classical-source",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "tosca-off-broadway-2026: https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/ dated 2009-09-28 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
         },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
@@ -379650,7 +380191,7 @@
           "reason": "tosca-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
-          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
           "host": "bachtrack.com",
           "outletId": "bachtrack",
           "provisional": false,
@@ -379662,27 +380203,19 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Article extraction returned 124 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "reason": "Article extraction returned 140 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+          "host": "bachtrack.com",
+          "outletId": "bachtrack"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026"
-          },
-          {
-            "outletId": "aatmanvakil.substack.com",
-            "outlet": "aatmanvakil.substack.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan"
-          },
           {
             "outletId": "groups.io",
             "outlet": "groups.io",
@@ -379696,6 +380229,41 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428"
+          },
+          {
+            "outletId": "aatmanvakil.substack.com",
+            "outlet": "aatmanvakil.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan"
+          },
+          {
+            "outletId": "classical-source",
+            "outlet": "classical-source",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/"
+          },
+          {
+            "outletId": "interclassical.com",
+            "outlet": "interclassical.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/"
+          },
+          {
+            "outletId": "bachtrack",
+            "outlet": "bachtrack",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026"
           },
           {
             "outletId": "bachtrack",
@@ -379712,11 +380280,11 @@
             "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca"
           },
           {
-            "outletId": "interclassical.com",
-            "outlet": "interclassical.com",
+            "outletId": "musicomh",
+            "outlet": "musicomh",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/"
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum"
           },
           {
             "outletId": "broadwayworld",
@@ -379724,13 +380292,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031"
-          },
-          {
-            "outletId": "musicomh",
-            "outlet": "musicomh",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum"
           },
           {
             "outletId": "theatre-weekly",
@@ -379761,39 +380322,21 @@
             "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/"
           }
         ],
-        "suppressedMissing": [],
+        "suppressedMissing": [
+          {
+            "outletId": "newyorker",
+            "outlet": "newyorker",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2"
+          }
+        ],
         "candidates": [
-          {
-            "url": "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
-            "outletId": "newyorkclassicalreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-02T05:01:54.129Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-            "outletId": "nytimes.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-02T05:01:54.129Z"
-          },
           {
             "url": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
             "outletId": "zealnyc.com",
             "state": "live",
             "firstSeenAt": "2026-10-31T03:22:12.044Z"
-          },
-          {
-            "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
-            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-            "outletId": "aatmanvakil.substack.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
           },
           {
             "url": "https://groups.io/g/crusting-pipe/topic/tosca_review_it_s/119464695",
@@ -379810,6 +380353,48 @@
             "firstSeenAt": "2026-11-01T15:55:41.663Z"
           },
           {
+            "url": "https://www.newyorker.com/goings-on-about-town/classical-music/the-met-tosca-review-2",
+            "outletId": "newyorker",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
+            "outletId": "aatmanvakil.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T23:23:22.746Z"
+          },
+          {
+            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
+            "outletId": "classical-source",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
+            "outletId": "interclassical.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T05:20:32.260Z"
+          },
+          {
+            "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
+            "outletId": "bachtrack",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-01T23:23:22.746Z"
+          },
+          {
             "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
             "outletId": "bachtrack",
             "state": "GAP",
@@ -379824,11 +380409,11 @@
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
           },
           {
-            "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
-            "outletId": "interclassical.com",
+            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+            "outletId": "musicomh",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T05:20:32.260Z"
+            "firstSeenAt": "2026-11-01T23:23:22.746Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
@@ -379836,13 +380421,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-            "outletId": "musicomh",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
           },
           {
             "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
@@ -379874,10 +380452,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 3,
-        "candidateCount": 15
+        "liveCount": 1,
+        "candidateCount": 16
       },
-      "computedAt": "2026-11-02T05:01:54.129Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -380835,13 +381413,20 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://exeuntnyc.com/reviews/tristan-yseult/",
-        "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
+        "https://www.thestage.co.uk/reviews/tristan-and-yseult-review-at-national-theatre-cottesloe-london",
         "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/",
+        "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2",
         "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
-        "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+        "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
+        "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
+        "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
+        "https://www.theatermania.com/news/tristan-yseult_70778/",
         "https://www.thereviewshub.com/tristan-yseult-theatr-clwyd-mold/",
+        "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html",
         "https://fairypoweredproductions.com/tristan-yseult-review/",
+        "https://theartsdesk.com/theatre/tristan-yseult-shakespeares-globe-review-terrific-visual-and-musical-elan",
+        "https://exeuntnyc.com/reviews/tristan-yseult/",
+        "https://www.lisainthetheatre.com/post/tristan-yseult-review",
         "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/"
       ],
       "dirFiles": 5,
@@ -380849,9 +381434,45 @@
       "inReviewsJson": 0,
       "missing": [
         {
-          "url": "https://exeuntnyc.com/reviews/tristan-yseult/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
+          "url": "https://www.thestage.co.uk/reviews/tristan-and-yseult-review-at-national-theatre-cottesloe-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/",
+          "host": "ayoungertheatre.com",
+          "knownOutletId": "a-younger-theatre",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
           "sources": [
             {
               "source": "serp-census",
@@ -380873,9 +381494,63 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/",
-          "host": "ayoungertheatre.com",
-          "knownOutletId": "a-younger-theatre",
+          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2015-03-08",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/tristan-yseult_70778/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2014-11-24",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/tristan-yseult-shakespeares-globe-review-terrific-visual-and-musical-elan",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/tristan-yseult/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2014-11-29",
           "sources": [
             {
               "source": "serp-census",
@@ -380915,39 +381590,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
-          "host": "lisainthetheatre.com",
-          "knownOutletId": "lisa-in-the-theatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lisa-in-the-theatre--lisa-in-the-theatre.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.lisainthetheatre.com/post/tristan-yseult-review"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "ensemble-3-agree"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
         },
         {
           "url": "https://www.thereviewshub.com/tristan-yseult-theatr-clwyd-mold/",
@@ -381008,6 +381650,39 @@
           "reverify": true
         },
         {
+          "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+          "host": "lisainthetheatre.com",
+          "knownOutletId": "lisa-in-the-theatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "lisa-in-the-theatre--lisa-in-the-theatre.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.lisainthetheatre.com/post/tristan-yseult-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "ensemble-3-agree"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
           "host": "corrblimey.uk",
           "knownOutletId": "corrblimey",
@@ -381044,21 +381719,108 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tristan and Yseult\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tristan and Yseult\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tristan and Yseult\" review warehouse",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tristan and Yseult St. Ann's Warehouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tristan and Yseult St. Ann's Warehouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tristan and Yseult St. Ann's Warehouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 18,
+        "byReason": {
+          "non-review-host": 8,
+          "census-junk-host": 2,
+          "no-review-evidence": 2,
+          "non-review-path": 1,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 4
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 3,
       "unextractable": [],
-      "ingestResults": [
+      "weIngestBlocked": [
+        {
+          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
+          "host": "artsfuse.org",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/tristan-yseult_70778/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://exeuntnyc.com/reviews/tristan-yseult/",
           "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/tristan-and-yseult-review-at-national-theatre-cottesloe-london",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
           "provisional": false,
           "ok": false,
           "noop": true,
@@ -381068,12 +381830,27 @@
           "expectedReason": "prior-production-quarantined",
           "unclassified": false,
           "zeroChar": false,
-          "reason": "tristan-and-yseult-off-broadway-2026: https://exeuntnyc.com/reviews/tristan-yseult/ dated 2014-11-29 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "reason": "tristan-and-yseult-off-broadway-2026: https://www.thestage.co.uk/reviews/tristan-and-yseult-review-at-national-theatre-cottesloe-london dated 2005-04-20 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
         },
         {
-          "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
-          "host": "corrblimey.uk",
-          "outletId": "corrblimey",
+          "url": "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2",
+          "host": "newyorker.com",
+          "outletId": "newyorker",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "tristan-and-yseult-off-broadway-2026: https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
+          "host": "theguardian.com",
+          "outletId": "guardian",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -381083,41 +381860,60 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⛔ Refusing write: corrblimey--unknown.json is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first\n\n❌ Write-guard refused the write — nothing changed on disk (flagged-filename-collision)"
+          "reason": "⚠️  Cross-market reroute: tristan-and-yseult-off-broadway-2026 → tristan-and-yseult-royal-bath-regional-2026 (sibling-venue-in-url: \"theatre-royal-bath\")\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/tristan-and-yseult-royal-bath-regional-2026/guardian--arifa-akbar.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         },
+        {
+          "url": "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html",
+          "host": "latimes.com",
+          "outletId": "latimes",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "tristan-and-yseult-off-broadway-2026: https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html dated 2015-01-30 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/tristan-yseult-shakespeares-globe-review-terrific-visual-and-musical-elan",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "tristan-and-yseult-off-broadway-2026: https://theartsdesk.com/theatre/tristan-yseult-shakespeares-globe-review-terrific-visual-and-musical-elan dated 2017-06-16 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/",
           "host": "ayoungertheatre.com",
-          "outletId": "a-younger-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "outletId": "a-younger-theatre"
+        },
+        {
+          "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
+          "host": "corrblimey.uk",
+          "outletId": "corrblimey"
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
+            "outletId": "thestage",
+            "outlet": "thestage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://exeuntnyc.com/reviews/tristan-yseult/"
-          },
-          {
-            "outletId": "corrblimey",
-            "outlet": "corrblimey",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/"
+            "url": "https://www.thestage.co.uk/reviews/tristan-and-yseult-review-at-national-theatre-cottesloe-london"
           },
           {
             "outletId": "a-younger-theatre",
@@ -381127,18 +381923,39 @@
             "url": "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/"
           },
           {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice"
+          },
+          {
+            "outletId": "corrblimey",
+            "outlet": "corrblimey",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/"
+          },
+          {
+            "outletId": "latimes",
+            "outlet": "latimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html"
+          },
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/tristan-yseult-shakespeares-globe-review-terrific-visual-and-musical-elan"
+          },
+          {
             "outletId": "a-youngish-perspective",
             "outlet": "a-youngish-perspective",
             "critic": "Unknown",
             "stars": null,
             "url": "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/"
-          },
-          {
-            "outletId": "lisa-in-the-theatre",
-            "outlet": "lisa-in-the-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review"
           },
           {
             "outletId": "thereviewshub",
@@ -381155,6 +381972,13 @@
             "url": "https://fairypoweredproductions.com/tristan-yseult-review/"
           },
           {
+            "outletId": "lisa-in-the-theatre",
+            "outlet": "lisa-in-the-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review"
+          },
+          {
             "outletId": "corrblimey",
             "outlet": "corrblimey",
             "critic": "Unknown",
@@ -381162,21 +381986,22 @@
             "url": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/"
           }
         ],
-        "suppressedMissing": [],
+        "suppressedMissing": [
+          {
+            "outletId": "newyorker",
+            "outlet": "newyorker",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2"
+          }
+        ],
         "candidates": [
           {
-            "url": "https://exeuntnyc.com/reviews/tristan-yseult/",
-            "outletId": "exeunt-magazine",
+            "url": "https://www.thestage.co.uk/reviews/tristan-and-yseult-review-at-national-theatre-cottesloe-london",
+            "outletId": "thestage",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
-            "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
-            "outletId": "corrblimey",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
           },
           {
             "url": "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/",
@@ -381186,15 +382011,43 @@
             "firstSeenAt": "2026-11-01T15:05:11.876Z"
           },
           {
-            "url": "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
-            "outletId": "a-youngish-perspective",
+            "url": "https://www.newyorker.com/goings-on-about-town/theatre/tristan-yseult-2",
+            "outletId": "newyorker",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
+            "outletId": "corrblimey",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-01T23:23:22.746Z"
           },
           {
-            "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
-            "outletId": "lisa-in-the-theatre",
+            "url": "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html",
+            "outletId": "latimes",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/tristan-yseult-shakespeares-globe-review-terrific-visual-and-musical-elan",
+            "outletId": "artsdesk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-02T06:46:27.997Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/10/02/review-tristan-yseult/",
+            "outletId": "a-youngish-perspective",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-11-01T23:23:22.746Z"
@@ -381214,6 +382067,13 @@
             "firstSeenAt": "2026-11-01T15:05:11.876Z"
           },
           {
+            "url": "https://www.lisainthetheatre.com/post/tristan-yseult-review",
+            "outletId": "lisa-in-the-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-11-01T23:23:22.746Z"
+          },
+          {
             "url": "https://corrblimey.uk/2026/10/23/review-tristan-yseult-the-royal-lyceum-theatre/",
             "outletId": "corrblimey",
             "state": "IN_FLIGHT",
@@ -381223,9 +382083,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 11
       },
-      "computedAt": "2026-11-02T05:01:54.129Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
@@ -389482,12 +390342,77 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Violet’s Magic Glasses\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Violet’s Magic Glasses\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Violet’s Magic Glasses\" review 92ny",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 3,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Violet’s Magic Glasses 92NY Buttenwieser Hall review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 18,
+        "byReason": {
+          "non-review-host": 7,
+          "census-junk-host": 2,
+          "no-review-evidence": 2,
+          "bare-host": 3,
+          "ticketing-listing": 1,
+          "venue-production-page": 1,
+          "ticketing-reseller": 2
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -389500,7 +390425,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T05:01:54.129Z"
+      "computedAt": "2026-11-02T06:46:27.997Z"
     },
     {
       "showId": "vladimir-regional-2026",
@@ -404283,29 +405208,29 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-02T05:01:54.128Z",
+    "at": "2026-11-02T06:46:27.996Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
-      "austentatious-an-improvised-jane-austen-novel-west-end-2025",
-      "stranger-things-the-first-shadow-west-end-2023"
+      "amaze-magic-off-broadway-2025",
+      "buena-vista-social-club-2025",
+      "murder-she-didnt-write-west-end-2025"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "barriers-birmingham-rep-regional-2025",
-      "strange-cargo-the-doom-of-the-demeter-regional-2025",
-      "four-places-regional-2025"
+      "the-mark-regional-2025",
+      "the-sporting-life-regional-2025",
+      "safe-space-chichester-festival-regional-2025"
     ],
-    "neverAuditedDueAtStart": 659,
+    "neverAuditedDueAtStart": 656,
     "oldestDueRowAtStart": {
-      "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
-      "computedAt": "2026-09-22T22:44:43.064Z",
-      "ageHours": 966
-    },
-    "oldestDueRowAfterRun": {
       "showId": "amaze-magic-off-broadway-2025",
       "computedAt": "2026-09-24T15:49:31.318Z",
-      "ageHours": 925.2
+      "ageHours": 926.6
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "titanique-west-end-2024",
+      "computedAt": "2026-09-24T23:04:09.984Z",
+      "ageHours": 919.7
     }
   }
 }
