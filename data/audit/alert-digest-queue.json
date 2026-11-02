@@ -50,6 +50,37 @@
     "queuedAt": "2026-11-02T21:17:57.001Z"
   },
   {
+    "conditionKey": "land:land/bro-6858-press-night-hardening",
+    "title": "Landing blocked: rebase red on land/bro-6858-press-night-hardening",
+    "description": "land.yml did not land land/bro-6858-press-night-hardening: the rebase gate went red at ede95ec35f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41529373190",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6858-press-night-hardening"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "ede95ec35f27921575eba1b624030e7e9084f7dc"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41529373190"
+      }
+    ],
+    "queuedAt": "2026-11-02T21:35:46.356Z"
+  },
+  {
     "conditionKey": "land:land/bro-6855-data",
     "title": "Landing blocked: unit-tests-node red on land/bro-6855-data",
     "description": "land.yml did not land land/bro-6855-data: the unit-tests-node gate went red at 855c5f6f44. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41526812286",
