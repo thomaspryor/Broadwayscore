@@ -287,9 +287,10 @@ test('BRO-973: isAlreadyExcludedFromScoring skips ensemble-rejected, no-text stu
   test('BRO-6842: G still sees a live includable file (the Oliver! auto-clear shape)', () => {
     const fp = 'west-side-story-2009/variety--paul-harris.json';
     assert.equal(isClassGExempt(live, show, fp), false);
-    const leaked = { ...live, url: 'https://variety.com/2020/02/20/west-side-story-review/', publishDate: undefined };
+    // oliver-west-end-2024/thestage--dave-fargnoli.json: flag gone, stale tier reason, scored live.
+    const leaked = { ...live, contentTierReason: 'Wrong production' };
     assert.equal(isClassGExempt(leaked, show, fp), false);
-    assert.ok(olderProductionLiveReason(leaked, show), 'an includable out-of-window review still reports');
+    assert.equal(olderProductionLiveReason(leaked, show)?.kind, 'stale-wrong-verdict-tier');
   });
 
   test('BRO-6842: G keeps its existing explicit skips', () => {
