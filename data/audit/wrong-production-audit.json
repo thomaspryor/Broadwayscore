@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T07:09:27.294Z",
+  "timestamp": "2026-11-02T08:30:04.023Z",
   "stats": {
     "totalReviews": 79176,
-    "alreadyFlagged": 21924,
-    "dateGuardCatches": 244,
+    "alreadyFlagged": 21926,
+    "dateGuardCatches": 243,
     "directorMismatch": 3422,
     "tvFilmSignals": 2251,
     "londonSignals": 3580,
     "offBroadwaySignals": 742,
     "yearMismatch": 345,
-    "noPublishDate": 8376
+    "noPublishDate": 8375
   },
   "findings": [
     {
@@ -53713,19 +53713,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (4x) more than 2018 (0x). 2026 matches production: samson-et-dalila-off-broadway-2026"
-        }
-      ]
-    },
-    {
-      "showId": "samson-et-dalila-off-broadway-2026",
-      "file": "operawire--david-salazar.json",
-      "publishDate": "2018-09-25",
-      "url": "https://operawire.com/metropolitan-opera-208-19-season-review-samson-et-dalila/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 2985d before show (2018-09-25 vs 2026-11-27)"
         }
       ]
     },
