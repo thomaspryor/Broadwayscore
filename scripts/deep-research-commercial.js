@@ -295,7 +295,7 @@ Write a BRIEF summary (3-5 sentences max) of what you found, then a JSON block:
 \`\`\`json
 {
   "capitalization": <number in dollars or null>,
-  "capitalizationSource": "<source description>",
+  "capitalizationSource": "<Outlet (Mon D, YYYY): short quote of the figure. URL. Put the publication date of the article the figure comes from first; the monthly money email only counts a figure as new by that date>",
   "weeklyRunningCost": <number in dollars or null>,
   "costMethodology": "<sec-filing|trade-reported|industry-estimate|null>",
   "recouped": <true|false|null>,
