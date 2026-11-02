@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T21:47:03.812Z",
+  "timestamp": "2026-11-02T22:34:19.955Z",
   "stats": {
-    "totalReviews": 79272,
-    "alreadyFlagged": 21976,
+    "totalReviews": 79283,
+    "alreadyFlagged": 21975,
     "dateGuardCatches": 219,
     "directorMismatch": 3423,
-    "tvFilmSignals": 2252,
+    "tvFilmSignals": 2251,
     "londonSignals": 3585,
-    "offBroadwaySignals": 739,
-    "yearMismatch": 346,
-    "noPublishDate": 8379
+    "offBroadwaySignals": 734,
+    "yearMismatch": 347,
+    "noPublishDate": 8380
   },
   "findings": [
     {
@@ -11239,6 +11239,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "catch-me-if-you-can-2011",
+      "file": "faster-times--jonathan-mandell.json",
+      "score": 52,
+      "publishDate": "2011-04-10",
+      "url": "http://thefastertimes.com/newyorktheater/2011/04/10/catch-me-if-you-can-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (24x) more than 2011 (0x). 2026 matches production: catch-me-if-you-can-regional-2026"
         }
       ]
     },
@@ -34732,8 +34746,8 @@
       "showId": "john-proctor-is-the-villain-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 84,
-      "publishDate": null,
-      "url": null,
+      "publishDate": "2025-04-14",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=SV360K",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -68123,25 +68137,6 @@
       ]
     },
     {
-      "showId": "the-last-bimbo-of-the-apocalypse-off-broadway-2025",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 59,
-      "publishDate": null,
-      "url": "https://www.vulture.com/article/theater-reviews-goddess-the-last-bimbo-of-the-apocalypse.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 6\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
       "showId": "the-last-five-years-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 35,
@@ -89936,20 +89931,6 @@
       ]
     },
     {
-      "showId": "cabaret-2024",
-      "file": "vulture--sara-holdren.json",
-      "score": 49,
-      "publishDate": "April 21, 2024",
-      "url": "https://www.vulture.com/article/theater-review-cabaret-orlando-eddie-redmayne-bebe-neuwirth-taylor-mac.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
-        }
-      ]
-    },
-    {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "file": "london-theatre--suzy-evans.json",
       "score": 82,
@@ -95361,20 +95342,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "eurydice-off-broadway-2026",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 80,
-      "publishDate": null,
-      "url": "https://www.vulture.com/article/theater-review-sarah-ruhl-eurydice-nazareth-hassan-bowl-ep.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
         }
       ]
     },
@@ -134909,20 +134876,6 @@
       ]
     },
     {
-      "showId": "trophy-boys-off-broadway-2025",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 62,
-      "publishDate": "2025-06-25",
-      "url": "https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
       "showId": "trouble-in-mind-2021",
       "file": "guardian--arifa-akbar.json",
       "score": 62,
@@ -137228,20 +137181,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "yellow-face-2024",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 83,
-      "publishDate": "October 2, 2024",
-      "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
