@@ -64,21 +64,23 @@ const GROUPS = [
     keys: ['parked-real-block', 'parked-automatic', 'parked-other', 'paused', 'app-repo', 'other'] },
 ];
 
-/** PURE. The report's category rows under GROUPS, with subtotals. Throws if a category has no group. */
+/**
+ * PURE. The report's category rows under GROUPS, with subtotals. A category nobody put in a group
+ * lands in a last "Not sorted yet" group, so a new category can never blank the email table or lose cards
+ * (a test still requires every CATEGORIES key to have a real group).
+ */
 function groupBoard(report) {
   const byKey = new Map((report.categories || []).map((c) => [c.key, c]));
-  const placed = new Set();
-  const groups = GROUPS.map((g) => {
-    const rows = g.keys.map((k) => byKey.get(k)).filter(Boolean);
-    g.keys.forEach((k) => placed.add(k));
-    const uh = (c) => c.byPriority.urgent + c.byPriority.high;
-    return { key: g.key, title: g.title, blurb: g.blurb, rows, exclusive: rows.reduce((a, c) => a + c.exclusive, 0),
-      overlap: rows.reduce((a, c) => a + c.overlap, 0), urgentHigh: rows.reduce((a, c) => a + uh(c), 0) };
-  });
-  const lost = [...byKey.keys()].filter((k) => !placed.has(k));
-  if (lost.length) throw new Error(`board-categories: no group for ${lost.join(', ')}`);
+  const placed = new Set(GROUPS.flatMap((g) => g.keys));
+  const uh = (c) => c.byPriority.urgent + c.byPriority.high;
+  const make = (g, rows) => ({ key: g.key, title: g.title, blurb: g.blurb, rows, exclusive: rows.reduce((a, c) => a + c.exclusive, 0),
+    overlap: rows.reduce((a, c) => a + c.overlap, 0), urgentHigh: rows.reduce((a, c) => a + uh(c), 0) });
+  const groups = GROUPS.map((g) => make(g, g.keys.map((k) => byKey.get(k)).filter(Boolean)));
+  const lost = [...byKey.values()].filter((c) => !placed.has(c.key));
+  if (lost.length) groups.push(make({ key: 'unsorted', title: 'Not sorted yet', blurb: 'New kinds of card that have not been placed under a heading.' }, lost));
   return groups;
 }
+
 // Same idle window as linear-reclaim-abandoned.js RECLAIM_IDLE_MS.
 const STARTED_IDLE_MS = 48 * 60 * 60 * 1000;
 const COMMENT_FETCH_CAP = 100;

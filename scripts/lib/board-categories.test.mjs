@@ -441,10 +441,13 @@ test('groups: every category is in exactly one group, so subtotals add to the op
   assert.equal(groups.reduce((a, g) => a + g.rows.length, 0), bc.CATEGORIES.length);
 });
 
-test('groups: a category with no group throws instead of vanishing from the email', () => {
+test('groups: a category with no group goes to a last group instead of vanishing or blanking the table', () => {
   const r = bc.categorizeBoard([], { now: NOW });
-  r.categories.push({ key: 'brand-new', label: 'x', exclusive: 0, overlap: 0, byPriority: { urgent: 0, high: 0 } });
-  assert.throws(() => bc.groupBoard(r), /no group for brand-new/);
+  r.categories.push({ key: 'brand-new', label: 'x', exclusive: 2, overlap: 2, byPriority: { urgent: 1, high: 0 } });
+  const groups = bc.groupBoard(r);
+  assert.equal(groups.length, 5);
+  assert.equal(groups[4].exclusive, 2);
+  assert.equal(groups.reduce((a, g) => a + g.exclusive, 0), 2);
 });
 
 test('labels use plain words: no VERIFY, repo, cloud workers or Codex', () => {
