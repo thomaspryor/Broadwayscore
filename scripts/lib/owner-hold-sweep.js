@@ -44,6 +44,7 @@ const EVENT_WAIT_RE = /\b(?:blocked|waits?|waiting|held|hold)\b[^.;]{0,40}\b(?:u
 // pricing, spending, brand, sign-off. An unknown owner-worded reason goes to "needs a question", never to a worker.
 const TASTE_MONEY_RE = /\b(?:pric\w*|pay\w*|buy\w*|purchas\w*|domain|budget|cost\w*|subscri\w*|licen[cs]e\w*|pick|choose|colou?rs?|logo|brand\w*|design|taste|tier)\b/i;
 const AWAITING_LINE_RE = /owner-judgment|awaiting (?:the )?owner|needs the owner|owner (?:call|decision|sign-?off)/i;
+const MACHINE_FILING_RE = /^\s*Filed by owner-alert-router\b/i;
 const HOLD_TRAITS = ['parked-owner-wording', 'owner-gated-no-question'];
 
 const commentBodies = (issue) => ((issue && issue.comments && issue.comments.nodes) || []).filter(Boolean)
@@ -51,7 +52,8 @@ const commentBodies = (issue) => ((issue && issue.comments && issue.comments.nod
 
 /** Owner-worded lines of a card with no PARKED line, plus the line after each (the ask usually follows the marker). */
 function ownerLines(description) {
-  const lines = String(description || '').split('\n');
+  // The alert router's standard filing sentence mentions "the Mac-side pass"; that is machine text, not an owner need.
+  const lines = String(description || '').split('\n').filter((l) => !MACHINE_FILING_RE.test(l));
   const out = [];
   lines.forEach((l, i) => { if (hd.OWNER_HOLD_PARK_RE.test(l) || AWAITING_LINE_RE.test(l)) out.push(l, lines[i + 1] || ''); });
   return out.join(' ; ');

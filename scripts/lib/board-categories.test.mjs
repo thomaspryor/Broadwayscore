@@ -422,3 +422,9 @@ test('BRO-6853: the board report prints the failed and waiting rows separately',
   assert.match(md, /Date passed, waiting for a recheck or a real test \| 0 \|/);
   assert.doesNotMatch(md, /check still failing/);
 });
+
+test('BRO-6852: alert-router filing boilerplate ("Mac-side pass") is not read as an owner-only need', () => {
+  const d = 'Filed by owner-alert-router for dispatch-at-filing (BRO-4054). The Mac-side red-first pass dispatches it headless within 5 minutes; it needs no owner triage unless the VERIFY line says owner-judgment.\nVERIFY: owner-judgment\n';
+  const r = sweep.classifyHold(withDesc(d), { now: NOW });
+  assert.notEqual(r.action, 'owner-question', r.why);
+});
