@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6811",
   "planId": "a2caa8fa-230f-4ba2-82c3-c62b30259b1a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-02T07:00:02.394Z",
   "submitter": {
     "name": null,
@@ -193,5 +193,54 @@
         "description": "BRO-6811: Zeal NYC review has no publish date and was verified 2026-05-24, before the 2026-11-01 first preview; it reviews an earlier Met run of Tosca (Stikhina/Jagde cast), not the current revival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-02T07:52:03.727Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for tosca-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for samson-et-dalila-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for medea-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for maria-stuarda-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for otello-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for der-rosenkavalier-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for parsifal-off-broadway-2027"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "samson-et-dalila-off-broadway-2026/operawire--david-salazar.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-off-broadway-2026/zeal-nyc--herman-spencer.json wrongProduction: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
