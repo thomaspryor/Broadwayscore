@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (324 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (325 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -364,7 +364,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID` | 2 cross-repo writers (of 3 workflows using it): `opening-night-broadcast.yml`, `sync-followers.yml` |
 | `FT_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
 | `FT_PASSWORD` | 4 cross-repo writers (of 4 workflows using it) |
-| `GEMINI_API_KEY` | 32 cross-repo writers (of 47 workflows using it) |
+| `GEMINI_API_KEY` | 32 cross-repo writers (of 48 workflows using it) |
 | `GHA_BILLING_PAT` | 1 cross-repo writers (of 1 workflows using it): `opening-night-orchestrator.yml` |
 | `GH_DISPATCH_TOKEN` | 3 cross-repo writers (of 4 workflows using it): `process-feedback.yml`, `process-review-submission.yml`, `rebuild-fast.yml` |
 | `GITHUB_TOKEN` | 97 cross-repo writers (of 154 workflows using it) |
@@ -387,7 +387,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_COOKIES_META` | 1 cross-repo writers (of 1 workflows using it): `opening-night-express.yml` |
 | `NYT_EMAIL` | 8 cross-repo writers (of 9 workflows using it) |
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
-| `OPENAI_API_KEY` | 33 cross-repo writers (of 49 workflows using it) |
+| `OPENAI_API_KEY` | 33 cross-repo writers (of 50 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 15 workflows using it) |
 | `OWNER_EMAIL` | 68 cross-repo writers (of 148 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |

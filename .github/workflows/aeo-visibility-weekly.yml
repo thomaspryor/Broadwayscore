@@ -30,6 +30,7 @@ jobs:
           node-version: '22'
 
       - name: Run AI visibility tracker
+        id: run
         continue-on-error: true
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -50,7 +51,7 @@ jobs:
           fi
 
       - name: Notify on failure
-        if: failure()
+        if: failure() || steps.run.outcome == 'failure'
         uses: ./.github/actions/notify-failure
         with:
           title: 'AEO Visibility Weekly Failed'
