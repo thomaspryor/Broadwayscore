@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T00:27:41.391Z",
+  "timestamp": "2026-11-02T00:43:18.622Z",
   "stats": {
-    "totalReviews": 79071,
-    "alreadyFlagged": 21896,
+    "totalReviews": 79075,
+    "alreadyFlagged": 21894,
     "dateGuardCatches": 245,
-    "directorMismatch": 3400,
+    "directorMismatch": 3401,
     "tvFilmSignals": 2248,
     "londonSignals": 3572,
     "offBroadwaySignals": 743,
     "yearMismatch": 344,
-    "noPublishDate": 8430
+    "noPublishDate": 8388
   },
   "findings": [
     {
@@ -18069,7 +18069,7 @@
       "showId": "dirty-dancing-tour-2026",
       "file": "around-the-town-chicago--paul-lisnek.json",
       "score": 63,
-      "publishDate": null,
+      "publishDate": "9/23/2026",
       "url": "https://aroundthetownchicago.com/theatre-reviews/dirty-dancing-the-musical-reviewed-by-paul-lisnek/",
       "findings": [
         {
@@ -25052,7 +25052,7 @@
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "cititour--brian-scott-lipton.json",
       "score": 75,
-      "publishDate": null,
+      "publishDate": "1/13/2026",
       "url": "https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350",
       "findings": [
         {
@@ -29474,7 +29474,7 @@
       "showId": "heathers-the-musical-off-broadway-2025",
       "file": "cititour--brian-scott-lipton.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "7/11/2025",
       "url": "https://cititour.com/NYC_Broadway/Heathers/1313",
       "findings": [
         {
@@ -29827,6 +29827,20 @@
       "score": 91,
       "publishDate": "2025-07-11",
       "url": "https://www.theatermania.com/news/review-heathers-the-musical-predicted-americas-social-disintegration_1789455/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"andy fickman\" from heathers-the-musical-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "heathers-the-musical-off-broadway-2025",
+      "file": "theatrely--kobi-kassal.json",
+      "score": 88,
+      "publishDate": "7/10/2025",
+      "url": "https://www.theatrely.com/post/heathers-is-back-in-new-york-and-thank-goodness-for-that-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32390,7 +32404,7 @@
       "showId": "inter-alia-west-end-2026",
       "file": "everything-theatre--gabriel-wilding.json",
       "score": 98,
-      "publishDate": null,
+      "publishDate": "4/8/2026",
       "url": "https://everything-theatre.co.uk/2026/04/review-inter-alia-wyndhams-theatre/",
       "findings": [
         {
@@ -32586,7 +32600,7 @@
       "showId": "inter-alia-west-end-2026",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "4/8/2026",
       "url": "https://www.whatsonstage.com/news/inter-alia-west-end-review-rosamund-pike-is-supreme-in-a-well-judged-performance_1717504/",
       "findings": [
         {
@@ -69221,7 +69235,7 @@
       "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--angela-lin.json",
       "score": 59,
-      "publishDate": null,
+      "publishDate": "8/12/2026",
       "url": "https://www.broadwayworld.com/chicago/article/Review-THE-NOTEBOOK-Presented-by-Broadway-In-Chicago-20260806",
       "findings": [
         {
@@ -69240,7 +69254,7 @@
       "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--cheyenne-lewis.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "4/15/2026",
       "url": "https://www.broadwayworld.com/phoenix/article/Review-THE-NOTEBOOK-at-ASU-Gammage-20260408",
       "findings": [
         {
@@ -69259,7 +69273,7 @@
       "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--dc-felton.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "12/10/2025",
       "url": "https://www.broadwayworld.com/des-moines/article/Review-THE-NOTEBOOK-at-Des-Moines-Performing-Arts-20251205",
       "findings": [
         {
@@ -69316,7 +69330,7 @@
       "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--evan-henerson.json",
       "score": 66,
-      "publishDate": null,
+      "publishDate": "1/14/2026",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-NOTEBOOK-at-Pantages-Theatre-20260113",
       "findings": [
         {
@@ -69385,7 +69399,7 @@
       "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--rob-levy.json",
       "score": 75,
-      "publishDate": null,
+      "publishDate": "11/12/2025",
       "url": "https://www.broadwayworld.com/st-louis/article/Review-THE-NOTEBOOK-at-Fox-Theatre-St-Louis-20251109",
       "findings": [
         {
@@ -69783,7 +69797,7 @@
       "showId": "the-notebook-tour-2025",
       "file": "san-diego-jewish-world--sandi-masori.json",
       "score": 76,
-      "publishDate": null,
+      "publishDate": "4/22/2026",
       "url": "https://www.sdjewishworld.com/2026/04/17/the-notebook-prompts-tears-and-laughter-in-equal-measure/",
       "findings": [
         {
@@ -70017,7 +70031,7 @@
       "showId": "the-notebook-tour-2025",
       "file": "vegas-theatre-guide--echo-sinclair.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "4/8/2026",
       "url": "https://vegastheatrescene.com/notebook-review.html",
       "findings": [
         {
@@ -71632,7 +71646,7 @@
       "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "broadwayworld--tyler-hinton.json",
       "score": 86,
-      "publishDate": null,
+      "publishDate": "4/15/2026",
       "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-PHANTOM-OF-THE-OPERA-at-the-Eccles-Theater-is-Refreshed-with-Reverence-20260411",
       "findings": [
         {
@@ -71701,7 +71715,7 @@
       "showId": "the-phantom-of-the-opera-tour-2025",
       "file": "sandiegoville--sandiegoville.json",
       "score": 96,
-      "publishDate": null,
+      "publishDate": "9/9/2026",
       "url": "https://www.sandiegoville.com/2026/09/review-phantom-of-opera-at-san-diego.html",
       "findings": [
         {
@@ -79083,7 +79097,7 @@
       "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--jeffrey-kare.json",
       "score": 78,
-      "publishDate": null,
+      "publishDate": "12/31/2025",
       "url": "https://www.broadwayworld.com/raleigh/article/Review-WATER-FOR-ELEPHANTS-National-Tour-at-Durham-Performing-Arts-Center-20251217",
       "findings": [
         {
@@ -79139,7 +79153,7 @@
       "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--michael-rabice.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "4/22/2026",
       "url": "https://www.broadwayworld.com/buffalo/article/Review-WATER-FOR-ELEPHANTS-at-Sheas-Buffalo-Theatre-20260415",
       "findings": [
         {
@@ -79503,7 +79517,7 @@
       "showId": "water-for-elephants-tour-2025",
       "file": "south-florida-sun-sentinel--rod-stafford-hagwood.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "11/19/2025",
       "url": "https://www.sun-sentinel.com/2025/11/13/review-how-broadway-tour-of-water-for-elephants-at-broward-center-sticks-its-landing/",
       "findings": [
         {
@@ -114329,7 +114343,7 @@
       "showId": "paddington-the-musical-west-end-2025",
       "file": "musical-theatre-review--lisa-martlandbr.json",
       "score": 97,
-      "publishDate": null,
+      "publishDate": "11/30/2025",
       "url": "https://musicaltheatrereview.com/paddington-the-musical-savoy-theatre/",
       "findings": [
         {
@@ -117754,7 +117768,7 @@
       "showId": "schmigadoon-2026",
       "file": "cititour--brian-scott-lipton.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "4/20/2026",
       "url": "https://cititour.com/NYC_Broadway/Schmigadoon/1373",
       "findings": [
         {
@@ -124363,7 +124377,7 @@
       "file": "thereviewshub--andrew-houghton.json",
       "score": 97,
       "publishDate": "2024-11-07",
-      "url": null,
+      "url": "https://www.thereviewshub.com/the-curious-case-of-benjamin-button-ambassadors-theatre-london/#google_vignette",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
