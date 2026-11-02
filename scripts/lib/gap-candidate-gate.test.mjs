@@ -11,6 +11,7 @@ const { classifyGapCandidateUrl } = require('./non-review-url-patterns.js');
 const { censusVerdictFor } = require('./gap-audit-merge.js');
 const { urlYearOf } = require('./url-discovery.js');
 const { isUrlYearOutOfWindow } = require('./gap-ingest-policy.js');
+const { CENSUS_SCHEMA } = require('./prior-production-citations.js');
 
 const JUNK = [
   'https://www.show-score.com/off-broadway-shows/the-hope-theory',
@@ -88,7 +89,7 @@ test('censusVerdictFor: a rejected URL is neither covered nor a candidate (pre-s
   assert.deepStrictEqual(urls, [real]);
   assert.strictEqual(v.candidateCount, 1);
   assert.strictEqual(v.liveCount, 1);
-  assert.strictEqual(v.censusSchema, 3);
+  assert.strictEqual(v.censusSchema, CENSUS_SCHEMA);
 });
 
 test('urlYearOf reads BroadwayWorld compact dates, ignoring its 20010101 placeholder and bad dates', () => {
@@ -110,7 +111,7 @@ test('blast radius: a candidate drop against an older-rule row is not risky, a l
   const { riskStateMap, isRiskyGapChange } = require('./gap-audit-merge.js');
   const old = { showId: 's', aggregatorListedUrls: [], missing: [], censusVerdict: { verdict: 'incomplete', liveCount: 4, candidateCount: 9, censusSchema: 2 } };
   assert.match(riskStateMap([old]).s, /:prior-schema$/);
-  assert.doesNotMatch(riskStateMap([{ ...old, censusVerdict: { ...old.censusVerdict, censusSchema: 3 } }]).s, /prior-schema/);
+  assert.doesNotMatch(riskStateMap([{ ...old, censusVerdict: { ...old.censusVerdict, censusSchema: CENSUS_SCHEMA } }]).s, /prior-schema/);
   const prev = 'incomplete:4:9:prior-schema';
   assert.strictEqual(isRiskyGapChange(prev, 'incomplete:4:6'), false);
   assert.strictEqual(isRiskyGapChange(prev, 'incomplete:3:6'), true);
