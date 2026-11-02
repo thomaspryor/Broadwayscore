@@ -1,30 +1,37 @@
 {
-  "generatedAt": "2026-11-02T04:13:24.476Z",
+  "generatedAt": "2026-11-02T05:02:47.388Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 310,
-  "clean": 305,
-  "defective": 5,
+  "checked": 313,
+  "clean": 310,
+  "defective": 3,
   "byType": {
-    "score-drift": 5
+    "score-drift": 3,
+    "missing-from-prod": 1
   },
   "shows": [
     {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "openingDate": "2026-10-30",
+      "showId": "roleplay-off-west-end-2026",
+      "title": "Roleplay",
+      "openingDate": "2026-10-23",
       "ok": false,
       "defects": [
         {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: the-skinny"
+        },
+        {
           "type": "score-drift",
-          "detail": "deployed cs 56.16 vs local 55.06 (Δ1.1)"
+          "detail": "deployed cs 60.44 vs local 61.15 (Δ0.71)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 9,
-      "firstDefectAt": "2026-11-02T04:13:18.990Z"
+      "missingFromProd": [
+        "the-skinny"
+      ],
+      "localCount": 15,
+      "deployedCount": 14,
+      "firstDefectAt": "2026-11-02T05:02:37.434Z"
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
@@ -34,61 +41,29 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.77 vs local 72.77 (Δ6)"
+          "detail": "deployed cs 78.97 vs local 78.32 (Δ0.65)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8,
+      "localCount": 10,
+      "deployedCount": 11,
       "firstDefectAt": "2026-11-02T04:13:18.990Z"
     },
     {
-      "showId": "are-you-now-or-have-you-ever-been-regional-2026",
-      "title": "Are You Now or Have You Ever Been?",
-      "openingDate": "2026-10-24",
+      "showId": "oliver-west-end-2024",
+      "title": "Oliver!",
+      "openingDate": "2024-12-14",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 80.54 vs local 82.94 (Δ2.4)"
+          "detail": "deployed cs 83.57 vs local 82.61 (Δ0.96)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-02T04:13:18.990Z"
-    },
-    {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "title": "Garry Starr Classic Penguins",
-      "openingDate": "2026-10-23",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 86.59 vs local 86.47 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 15,
-      "deployedCount": 15,
-      "firstDefectAt": "2026-11-02T04:13:18.990Z"
-    },
-    {
-      "showId": "the-bodyguard-tour-2026",
-      "title": "The Bodyguard",
-      "openingDate": "2026-10-15",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.37 vs local 79.68 (Δ0.31)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 4,
-      "deployedCount": 4,
-      "firstDefectAt": "2026-11-02T04:13:18.990Z"
+      "localCount": 21,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-02T05:02:37.434Z"
     }
   ],
   "persistentDefective": 0,

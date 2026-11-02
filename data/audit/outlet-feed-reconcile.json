@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T04:13:24.730Z",
+  "generatedAt": "2026-11-02T05:02:47.761Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -130,12 +130,24 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -162,9 +174,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 761,
+  "itemsScanned": 641,
   "matchedGaps": 8,
-  "possibleGaps": 11,
+  "possibleGaps": 10,
   "gaps": [
     {
       "showId": "girls-off-west-end-2026",
@@ -309,15 +321,6 @@
       "url": "https://stageandcinema.com/2026/10/28/assimilation-word-for-word-z-below-san-francisco-review/",
       "headline": "Theater Review: ASSIMILATION (Word for Word / San Francisco)",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
-      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
-      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-heart-off-broadway-2026",
