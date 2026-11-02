@@ -42,6 +42,45 @@ const {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
+test('BRO-6491: missing attribution and excerpts omitted from samples are neutral', () => {
+  const { prompt } = buildVerificationPrompt({
+    scrapedText: 'The Example at Example Theatre. The acting is excellent. '.repeat(100),
+    showTitle: 'The Example',
+    outletName: 'Example Magazine',
+    criticName: 'Example Critic',
+    excerpt: 'A passage from the middle of the article.',
+  });
+  assert.match(prompt, /Missing attribution is neutral/);
+  assert.match(prompt, /Do not set isValid=false or add an issue solely because the critic byline or outlet name is absent/);
+  assert.match(prompt, /An excerpt absent from a sample is inconclusive/);
+  assert.match(prompt, /Explicit conflicting attribution/);
+  assert.match(prompt, /actual article ending/);
+});
+
+test('BRO-6491: attribution guidance preserves substantive LLM rejections', async () => {
+  for (const objection of [
+    { wrongArticle: true, issues: ['No expected byline; this is a different article by a different critic.'] },
+    { truncated: true, issues: ['Byline absent and the article is truncated mid-word.'] },
+    { articleType: 'listicle', issues: ['No outlet attribution; this is a roundup of several shows.'] },
+  ]) {
+    const verdict = {
+      isValid: false, confidence: 'high', wrongArticle: false,
+      wrongProduction: false, isFilmTv: false, truncated: false,
+      articleType: 'review', ...objection,
+    };
+    const result = await verifyContent({
+      scrapedText: 'The Example has excellent acting and direction. '.repeat(30),
+      showTitle: 'The Example', outletName: 'Example Magazine',
+      provider: { name: 'offline-regression', call: async () => JSON.stringify(verdict) },
+    });
+    assert.equal(result.isValid, false);
+    assert.deepEqual(result.issues, verdict.issues);
+    assert.equal(result.truncated, verdict.truncated);
+    assert.equal(result.wrongArticle, verdict.wrongArticle);
+    assert.equal(result.articleType, verdict.articleType);
+  }
+});
+
 // ============================================================
 // 0. Declared priorRuns / tourLegs reach the prompt
 // ============================================================

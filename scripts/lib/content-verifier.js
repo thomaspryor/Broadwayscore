@@ -888,11 +888,15 @@ ${wrongProdList}
 
 3. **Film/TV content**: Is this a review of a film adaptation, TV special, streaming version, or filmed stage production (not a live ${mc.label} performance)?
 
-4. **Truncation**: Does the text end mid-sentence, hit a paywall ("subscribe to read more"), or appear incomplete?
+4. **Truncation**: Does the actual article ending end mid-sentence, hit a paywall ("subscribe to read more"), or appear incomplete? For sampled content, judge the untouched ending, not an internal sample boundary or the "[...]" omission marker.
 
 5. **Junk content**: Is this mostly navigation, footer, cookie notices, or non-article content?
 
 **CRITICAL NUANCES — avoid known false positives:**
+
+- **Missing attribution is neutral.** Scraped article bodies often omit page headers, bylines and publication branding. Do not set isValid=false or add an issue solely because the critic byline or outlet name is absent. Explicit conflicting attribution (a different named critic or publication) remains evidence of a wrong article; missing attribution does not resolve any other content problem.
+
+- **An excerpt absent from a sample is inconclusive.** The known excerpt may occur in an omitted middle passage of the full article. When the scraped content is sampled, do not reject it or add an issue solely because the excerpt is not visible. This does not excuse an explicit different article, wrong production, film/TV review, roundup, junk or a genuinely truncated article ending.
 
 ${outletLocationGuidance}
 
