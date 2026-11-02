@@ -248,11 +248,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-11-02T12:54:09.106Z",
-      "lastSeen": "2026-11-02T12:54:09.106Z",
-      "lastNotifiedAt": "2026-11-02T12:54:09.106Z",
-      "lastSurfacedAt": "2026-11-02T12:54:09.106Z",
-      "notifyCount": 202,
+      "incidentOpenedAt": "2026-11-02T13:27:28.778Z",
+      "lastSeen": "2026-11-02T13:27:28.778Z",
+      "lastNotifiedAt": "2026-11-02T13:27:28.778Z",
+      "lastSurfacedAt": "2026-11-02T13:27:28.778Z",
+      "notifyCount": 203,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
@@ -6790,7 +6790,7 @@
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
       "incidentOpenedAt": "2026-11-01T14:42:51.732Z",
-      "lastSeen": "2026-11-02T12:54:09.091Z",
+      "lastSeen": "2026-11-02T13:27:28.760Z",
       "lastNotifiedAt": "2026-11-01T14:42:51.732Z",
       "lastSurfacedAt": null,
       "notifyCount": 18,
@@ -6803,7 +6803,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
       },
       "absentRunIds": [],
-      "silentRefires": 25
+      "silentRefires": 26
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -35206,7 +35206,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:fed1898c": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"don-giovanni-off-broadway-2025 keeps its backfilled coverage (was 7)\"",
       "firstSeen": "2026-11-02T12:54:08.696Z",
@@ -35216,7 +35216,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6821"
+      "linearIdentifier": "BRO-6821",
+      "resolvedAt": "2026-11-02T13:27:28.735Z",
+      "resolveReason": "job-green"
     }
   }
 }
