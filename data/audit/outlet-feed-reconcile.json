@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T20:43:43.546Z",
+  "generatedAt": "2026-11-02T22:18:10.096Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -145,6 +145,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -169,37 +173,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 770,
-  "matchedGaps": 17,
-  "possibleGaps": 10,
+  "itemsScanned": 761,
+  "matchedGaps": 6,
+  "possibleGaps": 9,
   "gaps": [
-    {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/11/02/review-of-ceilidh-unconventional-scottish-musical-isnt-that-brave-but-it-teems-with-heart/",
-      "headline": "Review of &#8216;Ceilidh&#8217;: &#8220;Unconventional Scottish musical isn&#8217;t that brave, but it teems with heart&#8221;",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "level": "matched",
-      "outletId": "liamodell",
-      "url": "https://liamodell.com/2026/11/02/ceilidh-musical-review-shoreditch-town-hall-what-is-burns-night-high-wycombe-eastbourne-fareham-brighton-guildford-aberdeen-bradford/",
-      "headline": "‘Ceilidh: A New Musical’ review &#8211; An ecstatic evening of Scottish dancing",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "level": "matched",
-      "outletId": "unmissabletheatre",
-      "url": "https://www.unmissabletheatre.co.uk/reviews/review-ceilidh-at-shoreditch-town-hall",
-      "headline": "Review: Ceilidh at Shoreditch Town Hall",
-      "publishDate": "2026-11-02"
-    },
     {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
@@ -208,33 +185,6 @@
       "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
       "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "matched",
-      "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/top-rated/girls/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=girls",
-      "headline": "GIRLS",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "level": "matched",
-      "outletId": "nyt-theater",
-      "url": "https://newyorktheater.me/2026/10/30/in-the-heights-at-new-york-city-center/",
-      "headline": "In The Heights at New York City Center",
-      "publishDate": "2026-10-30"
-    },
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/memoriam-southwark-playhouse-borough/",
-      "headline": "Memoriam &#8211; Southwark Playhouse Borough",
-      "publishDate": "2026-11-02"
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -267,54 +217,9 @@
       "showId": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "level": "matched",
-      "outletId": "the-recs",
-      "url": "https://therecs.co.uk/the-lives-of-others/",
-      "headline": "The Lives of Others ★★★★",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
-      "outletId": "city-am",
-      "url": "https://www.cityam.com/the-lives-of-others-keira-knightley-stars-in-gripping-adaptation/",
-      "headline": "The Lives of Others: Keira Knightley stars in gripping adaptation",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "level": "matched",
-      "outletId": "north-west-end",
-      "url": "https://northwestend.com/the-revlon-girl-park-theatre/",
-      "headline": "The Revlon Girl – Park Theatre",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "tosca-english-national-opera-west-end-2026",
-      "title": "Tosca - English National Opera",
-      "level": "matched",
-      "outletId": "london-unattached",
-      "url": "https://www.london-unattached.com/tosca-english-national-opera/",
-      "headline": "Tosca, English National Opera",
-      "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "a-youngish-perspective",
-      "url": "https://ayoungishperspective.co.uk/2026/11/02/review-tosca-2/",
-      "headline": "REVIEW: Tosca",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "new-york-classical-review",
-      "url": "https://newyorkclassicalreview.com/2026/11/with-hernandez-debut-big-voices-and-big-drama-in-metstosca/",
-      "headline": "With Hernández debut, big voices and big drama in Met&#8217;s &#8220;Tosca&#8221;",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/the-lives-of-others-adelphi-theatre-london/",
+      "headline": "The Lives of Others – Adelphi Theatre, London",
       "publishDate": "2026-11-02"
     },
     {
@@ -397,15 +302,6 @@
       "url": "https://www.westendbestfriend.co.uk/news/review-birmingham-royal-ballets-swan-lake-sadlers-wells",
       "headline": "Review: Birmingham Royal Ballet’s SWAN LAKE, Sadler’s Wells",
       "publishDate": "2026-10-29"
-    },
-    {
-      "showId": "the-moth-off-west-end-2026",
-      "title": "The Moth",
-      "level": "possible",
-      "outletId": "artsdesk",
-      "url": "https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell",
-      "headline": "The Moth, Finborough Theatre review - Apartheid&#039;s legacy lingering like a bad smell",
-      "publishDate": null
     },
     {
       "showId": "the-moth-off-west-end-2026",

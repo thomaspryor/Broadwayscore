@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T20:40:13.612Z",
+  "generatedAt": "2026-11-02T22:17:42.768Z",
   "windowDays": 45,
   "showsScanned": 224,
   "gaps": [
@@ -21,10 +21,33 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 194.79302361111112,
+      "fileAgeHours": 196.4178025,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 180.2492347222222,
+      "nonTerminalAgeHours": 181.87400027777778,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "openingDate": "2026-10-30",
+      "file": "artsdesk--unknown.json",
+      "outletId": "artsdesk",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-moth-off-west-end-2026 --url=https://theartsdesk.com/theatre/moth-finborough-theatre-review-apartheids-legacy-lingering-bad-smell --outlet=artsdesk   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T20:36:21.103Z",
+      "fileAgeHours": 1.6884955555555556,
+      "gapSeenAt": "2026-11-02T22:17:42.768Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
     },
     {
       "showId": "an-evening-with-an-immigrant-off-west-end-2026",
@@ -44,9 +67,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 7.0154733333333334,
+      "fileAgeHours": 8.640248055555556,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 5.486586944444444,
+      "nonTerminalAgeHours": 7.1113525,
       "needsManualRecovery": false
     }
   ],
