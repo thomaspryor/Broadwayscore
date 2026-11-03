@@ -288,6 +288,19 @@ function macLocalSkippedLine(alive) {
   return { text: `Sent from GitHub, not the Mac. Not in this email (Mac-only): ${MAC_LOCAL_SECTIONS}. ${mac}`, alarm: alive.state !== 'alive' };
 }
 
+// BRO-6839: open cards that declare `covers-digest-row: <row title>`, as a Set of number-free
+// titles. Fail-soft: null (unreadable) means no coverage is assumed.
+async function readCoveredRowTitles() {
+  try {
+    const { coveredRowTitles } = require('./lib/digest-autofix.js');
+    const issues = await withTimeout(require('./lib/linear-client.js').listOpenIssuesWithDescriptions(), LINEAR_BOARD_READ_TIMEOUT_MS, { message: 'covers-digest-row read timed out' });
+    return coveredRowTitles(issues);
+  } catch (err) {
+    console.error(`[digest] WARN covers-digest-row read failed: ${String(err.message).slice(0, 120)}`);
+    return null;
+  }
+}
+
 // BRO-6230: Resend-backed sent-today check. 'send' | 'already-sent' | 'cannot-tell'.
 // Fails closed: anything short of a complete read is 'cannot-tell', never 'send'.
 async function resendSentToday({ apiKey, recipient, now = new Date(), fetchEmails = null }) {
@@ -1546,7 +1559,8 @@ async function main() {
     const { planAutofix, markTrackedReportOnly, keepDecisionQueued, localRollupIssues } = require('./lib/digest-autofix.js');
     const openTitles = Array.isArray(openIssues) ? new Set(openIssues.map((i) => i && i.title).filter(Boolean)) : null;
     const queued = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
-    autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles);
+    const coveredTitles = await readCoveredRowTitles();
+    autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles, coveredTitles);
     if (sections.health && Array.isArray(sections.health.queued)) sections.health.queued = keepDecisionQueued(sections.health.queued, autofixRows);
     const tracked = autofixRows.filter((r) => r.state === 'tracked').length;
     console.log(`[digest] --no-autofix: report only, nothing filed or dispatched; ${tracked} of ${autofixRows.length} row(s) already have an open card${openTitles ? '' : ' (Linear unreadable)'}`);
@@ -1591,7 +1605,7 @@ async function main() {
     const openLinearTitles = Array.isArray(openIssues)
       ? new Set(openIssues.map((i) => i && i.title).filter(Boolean))
       : null;
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles });
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP, openLinearTitles, coveredLinearTitles: await readCoveredRowTitles() });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely

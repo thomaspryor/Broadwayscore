@@ -8,7 +8,7 @@
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
  *     [--dispatch | --self | --child "<what>" | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
  *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
- *     [--mac-only "<what needs the Mac and why>"]
+ *     [--mac-only "<what needs the Mac and why>"] [--covers-row "<digest row title>"]
  *
  * BRO-6080: --mac-only (with --dispatch) adds the 'mac-only' label and a "MAC-ONLY: <why>" line. The cloud
  * worker skips the card; the Mac's parked drain (linear-drain-parked.js, launchd) runs it headless on the Mac.
@@ -46,7 +46,7 @@ Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
     [--dispatch | --self | --child "<what>" | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
-    [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"]
+    [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"] [--covers-row "<digest row title>"]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
@@ -859,6 +859,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       newAnyway: newAnyway || undefined,
       noVerify: noVerify || undefined,
       macOnly: macOnly === undefined ? undefined : String(macOnly),
+      coversRow: typeof args['covers-row'] === 'string' ? args['covers-row'] : undefined,
       dedupeOptOut: typeof args['dedupe-opt-out'] === 'string' ? args['dedupe-opt-out'] : undefined,
     });
     console.log(JSON.stringify(result.issue, null, 2));

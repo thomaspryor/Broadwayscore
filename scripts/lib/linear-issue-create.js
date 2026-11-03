@@ -250,7 +250,7 @@ function vacuousVerifyReason(body, existsFn = defaultExistsOnOriginMain) {
     + 'check-workflow-run-status.js for a workflow, check-remote-branch-absent.js for a branch';
 }
 
-async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly, child }) {
+async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly, child, coversRow }) {
   if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
     throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
   }
@@ -267,6 +267,14 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
   const mode = disposition.mode === 'self' ? 'dispatch' : disposition.mode;
   const selfFiled = disposition.mode === 'self';
   let body = model == null ? (description || '') : stampModelHint(description, model);
+  // BRO-6839: declare which morning-digest row this card covers (a machine-readable
+  // line digest-autofix.js coveredRowTitles() reads), so the row reads 'tracked'.
+  if (coversRow !== undefined) {
+    if (typeof coversRow !== 'string' || !coversRow.trim() || /[\r\n]/.test(coversRow)) {
+      throw new Error('coversRow needs the digest row title on one line');
+    }
+    body = `${body}\n\ncovers-digest-row: ${coversRow.trim()}`.trim();
+  }
   // BRO-6080: a card only the Mac can do. Todo only (the Mac drain takes Todo
   // cards); the MAC-ONLY line goes first so every check below, and the cloud
   // picker, sees it even if the label write fails.

@@ -291,15 +291,43 @@ function persistenceKey(row) {
  * plan state, so the email never claims a fix nobody started. Mutates and
  * returns `plan`. Pure apart from that.
  */
-function markTrackedReportOnly(plan, openTitles) {
+function markTrackedReportOnly(plan, openTitles, coveredTitles = null) {
   if (!Array.isArray(plan)) return [];
-  if (!openTitles || !openTitles.size) return plan;
-  const free = new Set([...openTitles].map((t) => numberFreeTitle(t)));
+  const hasOpen = !!(openTitles && openTitles.size);
+  const hasCovered = !!(coveredTitles && coveredTitles.size);
+  if (!hasOpen && !hasCovered) return plan;
+  const free = new Set(hasOpen ? [...openTitles].map((t) => numberFreeTitle(t)) : []);
   for (const row of plan) {
     if (row.state !== 'needs-card') continue;
-    if (openTitles.has(row.title) || free.has(numberFreeTitle(row.title))) row.state = 'tracked';
+    if ((hasOpen && (openTitles.has(row.title) || free.has(numberFreeTitle(row.title)))) || rowIsCovered(row, coveredTitles)) row.state = 'tracked';
   }
   return plan;
+}
+
+/**
+ * BRO-6839: a work card can declare which digest row it covers with a
+ * description line `covers-digest-row: <row title>` (linear-brain.js create
+ * --covers-row writes it), so a row whose fix lives on a differently titled
+ * card still reads 'tracked'. Returns a Set of number-free row titles from
+ * open-issue descriptions; several lines per card are allowed. Pure.
+ */
+const COVERS_ROW_RE = /^[ \t]*covers-digest-row:[ \t]*(.+?)[ \t]*$/gim;
+function coveredRowTitles(issues) {
+  const out = new Set();
+  if (!Array.isArray(issues)) return out;
+  for (const i of issues) {
+    const d = i && typeof i.description === 'string' ? i.description : '';
+    if (!d) continue;
+    for (const m of d.matchAll(COVERS_ROW_RE)) out.add(numberFreeTitle(m[1]));
+  }
+  return out;
+}
+
+function rowIsCovered(row, coveredTitles) {
+  if (!row || !coveredTitles || !coveredTitles.size) return false;
+  // The email shows the plain name; plan titles carry the "BSC Daily: " prefix.
+  const stripped = typeof row.title === 'string' && row.title.startsWith(BSC_DAILY_TITLE_PREFIX) ? row.title.slice(BSC_DAILY_TITLE_PREFIX.length) : row.title;
+  return [row.title, stripped, row.name].some((t) => typeof t === 'string' && coveredTitles.has(numberFreeTitle(t)));
 }
 
 function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
@@ -1257,6 +1285,7 @@ function runAutofix({
   // BRO-5430: exact titles of open Linear issues (Set), or null when Linear
   // could not be read. Rows whose card already exists skip the persistence gate.
   openLinearTitles = null,
+  coveredLinearTitles = null,
   dispatchFn = dispatchDetached,
   fileCardFn = fileCard,
   // BRO-3412: shared defaults imported from scripts/backlog-drain.js
@@ -1270,6 +1299,9 @@ function runAutofix({
   spendThresholdUSD = DEFAULT_SPEND_THRESHOLD_USD,
 } = {}) {
   if (!Array.isArray(plan) || !plan.length) return [];
+  // BRO-6839: a row whose fix lives on a differently titled card (covers-digest-row marker) is
+  // tracked, not filed again.
+  for (const row of plan) if (row.state === 'needs-card' && rowIsCovered(row, coveredLinearTitles)) row.state = 'tracked';
   if (dryRun) {
     // Never file cards or spawn sessions on --dry-run — but show what WOULD
     // happen so the preview is honest about the new behavior. Does NOT model
@@ -1606,7 +1638,7 @@ module.exports = {
   keepDecisionQueued, localRollupIssues, ROLLUP_ROW_NAMES,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
-  persistenceKey, computePersistenceGate, markTrackedReportOnly, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
+  persistenceKey, computePersistenceGate, markTrackedReportOnly, coveredRowTitles, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
   fileCard, reattachedLiveState, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION, affectedNoun,
 };

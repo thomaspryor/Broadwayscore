@@ -1916,3 +1916,38 @@ test('BRO-6338: the _pending fold pattern still matches the REAL producer title 
   assert.ok(src.includes('title: `${entries.length} review(s) for ${showId} stuck in _pending with no text and no byline`'), 'producer title changed; update PER_SHOW_KIND_PATTERNS');
   assert.ok(splitOnShowSuffix('6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline'));
 });
+
+// BRO-6839: a card declaring `covers-digest-row:` marks a differently titled row tracked.
+test('markTrackedReportOnly marks a row tracked via a covers-digest-row marker', () => {
+  const req = createRequire(import.meta.url);
+  const { markTrackedReportOnly, coveredRowTitles } = req('./digest-autofix.js');
+  const covered = coveredRowTitles([
+    { title: 'Fix outlet credit bug', description: 'Body\n\ncovers-digest-row: Some reviews may be credited to the wrong outlet' },
+    { title: 'Other', description: 'no marker here' },
+    { title: 'Nulls', description: null },
+  ]);
+  const plan = [
+    { title: 'Some reviews may be credited to the wrong outlet', state: 'needs-card' },
+    { title: 'Unrelated row', state: 'needs-card' },
+    { title: 'Some reviews may be credited to the wrong outlet', state: 'watching' },
+  ];
+  markTrackedReportOnly(plan, new Set(['Fix outlet credit bug']), covered);
+  assert.equal(plan[0].state, 'tracked');
+  assert.equal(plan[1].state, 'needs-card');
+  assert.equal(plan[2].state, 'watching');
+  // no open titles, only coverage: still works; neither: untouched
+  const p2 = [{ title: 'Unrelated row', state: 'needs-card' }];
+  assert.equal(markTrackedReportOnly(p2, null, null)[0].state, 'needs-card');
+});
+
+test('covers-digest-row matches a real planAutofix row (prefixed title) by plain name', () => {
+  const req = createRequire(import.meta.url);
+  const { planAutofix, markTrackedReportOnly, coveredRowTitles } = req('./digest-autofix.js');
+  const plan = planAutofix({ health: { warns: [{ name: 'Some reviews may be credited to the wrong outlet' }], errors: [] }, tasks: [], queued: [] });
+  const covered = coveredRowTitles([{ title: 'x', description: 'covers-digest-row:\n\ncovers-digest-row: Some reviews may be credited to the wrong outlet' }]);
+  assert.equal(covered.size, 1); // empty marker line must not swallow the next line's neighbours
+  markTrackedReportOnly(plan, new Set(), covered);
+  assert.ok(plan.length >= 1);
+  assert.ok(plan.every((r) => r.state === 'tracked' || r.state !== 'needs-card'));
+  assert.ok(plan.some((r) => r.state === 'tracked'));
+});
