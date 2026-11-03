@@ -373,7 +373,7 @@ function getAudienceGrade(score) {
 function audienceChip(showId) {
   const buzz = audienceBuzz[showId];
   if (!buzz || buzz.combinedScore == null) return '';
-  const totalReviews = cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(buzz.sources);
+  const totalReviews = cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(buzz.sources, shows.find(s => s.id === showId));
   if (totalReviews < AUDIENCE_GRADE_CONFIG.minReviews) return ''; // shared with the site: src/config/audience-grade.json
   const g = getAudienceGrade(buzz.combinedScore);
   // 12% alpha bg + solid text color, 10px leading-none
@@ -1111,7 +1111,7 @@ function biggestMoverSection() {
     let before;
     try { before = JSON.parse(fs.readFileSync(path.join(snapDir, snapFile), 'utf8')); }
     catch { return []; }
-    const totalReviewsFor = d => cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(d.sources);
+    const totalReviewsFor = (d, show) => cjsRequire('../lib/audience-review-count.js').countVisibleAudienceReviews(d.sources, show);
     const GRADE_ORDER = ['A+','A','A-','B+','B','B-','C+','C','C-','D','F'];
     const grade = (s) => {
       if (s == null) return null;
@@ -1124,13 +1124,13 @@ function biggestMoverSection() {
     Object.entries(before.shows || {}).forEach(([id, b]) => {
       const n = audienceBuzz[id];
       if (!n || b.combinedScore == null || n.combinedScore == null) return;
-      const nReviews = totalReviewsFor(n);
-      const bReviews = totalReviewsFor(b);
       // Per-market review thresholds — Broadway shows pass at 15+, but Off-Broadway
       // needs 100+ to avoid niche shows where a few new reviews swing a small n
       // hard enough to cross a grade boundary.
       const show = shows.find(s => s.id === id);
       if (!show) return;
+      const nReviews = totalReviewsFor(n, show);
+      const bReviews = totalReviewsFor(b, show);
       if (lastMoverIds.has(id) || lastFeaturedIds.has(id) || !notFeatured(id)) return; // no week-over-week repeat; no recent-feature repeat; no cross-section dupe
       if (show.closingDate && show.closingDate < weekStartStr) return; // a run that closed before this week isn't a current "mover" (TRU backfill case)
       if (!isPrimaryMarket(show)) return;

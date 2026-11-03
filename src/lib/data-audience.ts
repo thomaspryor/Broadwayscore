@@ -23,7 +23,7 @@ interface AudienceBuzzFile {
 }
 
 const audienceBuzzRaw = audienceBuzzData as unknown as AudienceBuzzFile;
-const rawShows = partitionShowRows(showsData.shows).valid as Array<{ id: string; slug: string; category?: string }>;
+const rawShows = partitionShowRows(showsData.shows).valid as Array<{ id: string; slug: string; category?: string; status?: string; closingDate?: string | null }>;
 const showScoreUrls = (showScoreUrlsData as Record<string, unknown>).shows as Record<string, string> | undefined;
 
 /**
@@ -69,7 +69,7 @@ function stripWrongMarketSources(buzz: AudienceBuzzData, category: string | unde
   const clean: Record<string, typeof sources[string]> = {};
   for (const [key, data] of Object.entries(sources)) if (!drop(key)) clean[key] = data;
   // The stored combinedScore was blended from the dropped sources: recompute.
-  const { score } = calculateCombinedScore(clean, { category });
+  const { score } = calculateCombinedScore(clean, { ...buzz.showInfo, category });
   return {
     ...buzz,
     sources: clean,
@@ -79,10 +79,11 @@ function stripWrongMarketSources(buzz: AudienceBuzzData, category: string | unde
 }
 
 // Normalize once at module load so every accessor sees clean sources.
-const categoryById = new Map(rawShows.map(s => [s.id, s.category]));
+const showInfoById = new Map(rawShows.map(({ id, category, status, closingDate }) => [id, { category, status, closingDate }]));
 const normalizedShows: Record<string, AudienceBuzzData> = {};
 for (const [id, buzz] of Object.entries(audienceBuzzRaw.shows)) {
-  normalizedShows[id] = stripSuppressedSources(stripWrongMarketSources(buzz, categoryById.get(id)));
+  const showInfo = showInfoById.get(id);
+  normalizedShows[id] = stripSuppressedSources(stripWrongMarketSources({ ...buzz, showInfo }, showInfo?.category));
 }
 const audienceBuzz: AudienceBuzzFile = { ...audienceBuzzRaw, shows: normalizedShows };
 

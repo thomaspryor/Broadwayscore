@@ -191,7 +191,7 @@ function computeAudienceGoldForMarket(listType, membershipFilter, season, uncapp
     const show = showById[showId];
     if (!show || !membershipFilter(show) || getSeason(show.openingDate) !== season) continue;
     if (data.combinedScore == null || data.combinedScore < cfg.minScore) continue;
-    const audienceTotal = require('./lib/audience-review-count').countVisibleAudienceReviews(data.sources);
+    const audienceTotal = require('./lib/audience-review-count').countVisibleAudienceReviews(data.sources, show);
     if (audienceTotal < AUDIENCE_GRADE_CONFIG.fullConfidenceReviews) continue;
 
     results.push({
