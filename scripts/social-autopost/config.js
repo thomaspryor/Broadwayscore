@@ -89,6 +89,15 @@ const HIGH_PROFILE = {
 const SCORE_FLOORS = {
   'off-broadway': { total: 8, t1: 0, t2: 2, highConfidence: 6 },
 };
+// "All its reviews are in" floors (BRO-6932): a show under its SCORE_FLOORS still posts
+// when the review-coverage census says no known review is missing (slim cov.state
+// 'complete', scripts/lib/public-coverage-verdict.js) at least minDays after opening
+// (80% of Off-Broadway reviews land within 7 days), with a tier-1 critic among them so
+// the show is big enough to post (In the Heights, Two Girls). 6 Off-Broadway shows of
+// 2026 to date clear this and not the 8-review floor.
+const COMPLETE_COVERAGE_FLOORS = {
+  'off-broadway': { total: 5, t1: 1, t2: 0, highConfidence: 4, minDays: 7 },
+};
 
 const ELIGIBLE_CATEGORIES = Object.keys(MARKETS).filter(k => k !== 'opera'); // categories; opera is a market by type (marketOf)
 // House tag added to an opera post by the show's category (Met = off-broadway, Royal Opera House = off-west-end).
@@ -154,7 +163,7 @@ const BACKFILL = {
 
 module.exports = {
   WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL,
-  MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
+  MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, COMPLETE_COVERAGE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,
 };

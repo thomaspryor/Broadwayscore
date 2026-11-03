@@ -86,6 +86,23 @@ test('Off-Broadway needs 8 reviews and no tier-1 (BRO-6920); Off-West End uses t
   });
 });
 
+test('Off-Broadway under 8 reviews posts once every known review is in, a week on, with a tier-1 critic (BRO-6932)', () => {
+  const ob = show({ category: 'off-broadway', openingDate: '2026-11-05' });
+  const pub = cov => ({ [ob.id]: { cs: 78, rc: 6, ...(cov ? { cov: { state: cov, liveCount: 6, candidateCount: 6 } } : {}) } });
+  const ctx = (cov, rv, now) => ({ reviewsByShow: { [ob.id]: rv }, slim: pub(cov), getOutletTier, shows: [ob], now: Date.parse(now) });
+  const week = '2026-11-12T15:00:00Z', day3 = '2026-11-08T15:00:00Z';
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(2, 1, 3), week)).ok, true, 'In the Heights shape: 6 reviews, 2 tier-1, census complete');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(2, 1, 3), week)).gate.coverageComplete, true);
+  assert.equal(sel.scoreSettled(ob, ctx('incomplete', reviews(2, 1, 3), week)).ok, false, 'a known review is still missing');
+  assert.equal(sel.scoreSettled(ob, ctx(null, reviews(2, 1, 3), week)).ok, false, 'no census yet');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(2, 1, 3), day3)).ok, false, 'too soon: late reviews still land');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(0, 2, 4), week)).ok, false, 'no tier-1 critic: too small');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(1, 1, 2), week)).ok, false, '4 reviews is too few');
+  assert.equal(sel.scoreSettled(ob, ctx('complete', reviews(0, 2, 6), day3)).ok, true, '8 reviews needs no census');
+  const bw = show({ category: 'broadway', openingDate: '2026-11-05' });
+  assert.equal(sel.scoreSettled(bw, { ...ctx('complete', reviews(2, 1, 3), week), reviewsByShow: { [bw.id]: reviews(2, 1, 3) }, slim: { [bw.id]: { cs: 78, rc: 6, cov: { state: 'complete' } } } }).ok, false, 'Broadway keeps its floors');
+});
+
 test('Off-West End never posts to the Broadway accounts; main-stage West End still falls back until its own accounts exist (BRO-6932)', () => {
   const both = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'w1' } };
   const bwOnly = { broadway: { instagram: 'b1' }, 'west-end': {} };
