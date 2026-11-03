@@ -87,6 +87,10 @@ jobs:
 
       - name: Commit and push changes
         if: always() && steps.check_changes.outputs.has_changes == 'true'
+        env:
+          # BRO-6877: on a push conflict, union-merge show-schedule-history.json
+          # (core-data-merge-registry.js) so neither writer drops archived weeks.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"

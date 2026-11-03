@@ -67,7 +67,7 @@ const { mergeAwardsJson } = require('./merge-awards-json');
 const { mergeOpeningNightSent } = require('./merge-opening-night-sent');
 const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
-const { mergeShowScheduleHistory } = require('./show-schedule-history');
+const { mergeShowScheduleHistory } = require('./merge-show-schedule-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
 const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
 const { mergeExpressCompleted } = require('./merge-express-completed');
@@ -161,12 +161,10 @@ const CORE_DATA_MERGE_REGISTRY = [
     // BRO-6877: append-only past-week showtime archive. Two writers
     // (update-lottery-rush.yml, fetch-todaytix-showtimes.yml) with separate
     // concurrency groups both archive the outgoing week on a Monday rollover.
-    // On the normal path push-with-retry.sh rebases with -X theirs: the file
-    // is one show-week per line, so the other writer's new weeks survive and
-    // only a week both runs changed keeps ours. This union merger (per
-    // show-week, ours wins) runs on the API-fallback path only. The crons run
-    // at different hours, so collisions are rare, and a lost week can be
-    // rebuilt with scripts/backfill-show-schedule-history.js.
+    // Both push steps set PUSH_RECONCILE_MERGED_JSON=1, so on a conflict
+    // push-with-retry.sh re-applies this union merger (per show-week, ours
+    // wins) instead of keeping one side; the API-fallback path uses it too.
+    // A lost week can still be rebuilt with scripts/backfill-show-schedule-history.js.
     apiFallbackMerge: true,
   },
   {
