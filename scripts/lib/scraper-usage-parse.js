@@ -14,7 +14,9 @@
 const TAGS = { '[SD Call]': 'scrapingdog', '[BD Call]': 'brightdata', '[SB Call]': 'scrapingbee' };
 
 function isMemoSkip(rec) {
-  return rec && (rec.fn === 'run-memo-skip' || rec.status === 'run-memo-skip');
+  // A skip row that carries credits is billing activity, not bookkeeping: keep it
+  // counted so a future bug that logs spend under this sentinel cannot hide.
+  return !!rec && (rec.fn === 'run-memo-skip' || rec.status === 'run-memo-skip') && !(rec.credits > 0);
 }
 
 function parse(lines) {

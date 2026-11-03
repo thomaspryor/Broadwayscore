@@ -28,3 +28,10 @@ test('each provider tag routes to its own bucket; bad JSON and untagged lines ig
   ]);
   assert.deepEqual([p.scrapingdog.reqs, p.brightdata.reqs, p.brightdata.skips, p.scrapingbee.reqs], [1, 1, 1, 0]);
 });
+
+test('a memo-skip row that carries credits is still counted (cannot hide spend)', () => {
+  const p = parse([L('[SB Call]', { host: 'ew.com', fn: 'run-memo-skip', success: false, status: 'run-memo-skip', credits: 5 })]);
+  assert.equal(p.scrapingbee.reqs, 1);
+  assert.equal(p.scrapingbee.credits, 5);
+  assert.equal(p.scrapingbee.skips, 0);
+});

@@ -171,3 +171,9 @@ test('telegraph-search is disabled: no provider call is made (BRO-6898)', async 
   const r = await searchOutletSite('telegraph-search', 'Hamilton', { show: { type: 'musical' }, skipJs: false });
   assert.deepEqual(r, []);
 });
+
+test('telegraph section index stays selected while telegraph-search is excluded (BRO-6898)', () => {
+  const ids = selectApplicableSiteSearchOutlets('broadway', { type: 'musical' }, new Set(), true);
+  assert.ok(ids.includes('telegraph'));
+  assert.ok(!ids.includes('telegraph-search'));
+});
