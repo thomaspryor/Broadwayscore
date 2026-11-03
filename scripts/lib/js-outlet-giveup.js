@@ -1,6 +1,7 @@
 /**
  * js-outlet-giveup — per-show, per-outlet suppression for the poller's
- * JS-rendered (ScrapingBee render_js, 5 credits/attempt) site-search tier.
+ * JS-rendered (ScrapingBee render_js, 5 credits/attempt; ew tries a 1-credit Scrapingdog
+ * page first, BRO-6908) site-search tier.
  *
  * BRO-2941: missingJsIds (opening-night-poller.js) re-renders EVERY still-missing
  * requiresJs outlet on EVERY poll tick, forever — an outlet with no market/applies

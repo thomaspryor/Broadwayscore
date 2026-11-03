@@ -24,6 +24,10 @@ function recoverScoreFromHtml(html, text, outletId, showTitle) {
   if (!html || !outletId) return null;
   const { extractScore, OUTLET_EXTRACTORS } = require('./score-extractors');
   if (!OUTLET_EXTRACTORS[outletId]) return null;
+  // A bundled Daily Mail / Mail on Sunday page prints one star per show; when
+  // they disagree the first is not necessarily this review's (BRO-6900).
+  if ((outletId === 'daily-mail' || outletId === 'dailymail' || outletId === 'mail-on-sunday')
+    && require('./article-extractor').dailyMailVerdictValues(html).length > 1) return null;
   return extractScore(html, text || '', outletId, showTitle) || null;
 }
 

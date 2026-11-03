@@ -44,4 +44,62 @@ function laneNonReviewReason(row) {
   return null;
 }
 
-module.exports = { laneNonReviewReason };
+// Hosts whose critics file one column covering several shows (BRO-6880 column-section-extract.js COLUMN_POST_HOSTS;
+// copied, not required, so the lane code hash stays small; tests/unit/opening-night-lane-column-hold.test.mjs pins it).
+const COLUMN_POST_HOSTS = [/(^|\.)washingtonpost\.com$/i];
+const COLUMN_WINDOW_DAYS = 45;
+const COLUMN_MIN_OTHER_SHOWS = 2;
+const NYC_CATEGORIES = new Set(['broadway', 'off-broadway']);
+
+const normTitle = (s) => ` ${String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()} `;
+// Case kept: a title is matched as written ("The Heart" is not "at the heart of the play"). Accents fold to ASCII.
+const caseText = (s) => ` ${String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '').replace(/[^A-Za-z0-9]+/g, ' ').trim()} `;
+// The name critics write: no parenthetical subtitle ("Two Strangers (Carry a Cake Across New York)"), no leading article.
+const ARTICLE = /^(the|a|an) /i;
+const columnTitle = (title) => caseText(String(title || '').replace(/\([^)]*\)/g, ' ')).trim().replace(ARTICLE, '');
+
+function isColumnHost(url) {
+  try { return COLUMN_POST_HOSTS.some((re) => re.test(new URL(url).hostname.replace(/^www\./, ''))); } catch { return false; }
+}
+
+/**
+ * Titles of the other New York shows opening within COLUMN_WINDOW_DAYS of this one: the shows a same-week critic column
+ * would cover. Two-word titles and longer only ("Company" is everyday prose); none that contains the show's own title or
+ * is contained in it.
+ * @returns {string[]} titles as critics write them: case kept, no leading article or parenthetical subtitle
+ */
+function nearbyShowTitles(show, allShows = []) {
+  const at = Date.parse((show && show.openingDate) || '');
+  if (!show || !at) return [];
+  const own = normTitle(show.title);
+  const out = new Set();
+  for (const s of allShows || []) {
+    if (!s || s.id === show.id || !s.title || !NYC_CATEGORIES.has(s.category)) continue;
+    const t = Date.parse(s.openingDate || '');
+    if (!t || Math.abs(t - at) > COLUMN_WINDOW_DAYS * 86400000) continue;
+    // Two words or more once a leading article is dropped: "The Ask", "The Heart" and "Company" are everyday prose.
+    const n = columnTitle(s.title);
+    const low = normTitle(s.title);
+    if (n.split(' ').length < 2 || own.includes(low) || low.includes(own)) continue;
+    out.add(n);
+  }
+  return [...out];
+}
+
+/**
+ * A critic column on a column host that names two or more other shows opening the same weeks is several reviews in one
+ * page: scoring it whole gives this show the column's average (the 10-22 Washington Post column scored 74 as The
+ * Imaginary Invalid, BRO-6872). The lane cannot cut out one show's section from the flattened page text it fetches, so it
+ * holds the page unscored for the regular pipeline, whose verifier and section isolation (BRO-6880) handle it.
+ * Measured on the 305 stored Washington Post texts: 22 match, all multi-show columns or pages naming 2+ same-week shows.
+ * @returns {string|null}
+ */
+function multiShowColumnReason(row, otherTitles = []) {
+  if (!row || !row.fullText || !isColumnHost(row.url) || !otherTitles.length) return null;
+  const text = caseText(row.fullText);
+  const named = otherTitles.filter((t) => text.includes(` ${t} `));
+  if (named.length < COLUMN_MIN_OTHER_SHOWS) return null;
+  return `multi-show column (also names ${named.join(', ')}); held for the regular pipeline`;
+}
+
+module.exports = { laneNonReviewReason, multiShowColumnReason, nearbyShowTitles, COLUMN_POST_HOSTS };

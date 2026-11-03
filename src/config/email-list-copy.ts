@@ -33,7 +33,7 @@ export const EMAIL_LIST_COPY = {
 export const ACCOUNT_NUDGE_COPY = {
   /** Says plainly that the email list is not an account. */
   separate: "Emails aren't an account.",
-  pitch: 'Create a free account to save your ratings and build a watchlist.',
+  pitch: 'Create a free account to save your ratings and the shows you want to see.',
   button: 'Create a free account',
 } as const;
 
@@ -50,8 +50,8 @@ export const SHOW_EMAIL_COPY = {
 
 /** Footer box and link that promote the free account (BRO-4946). */
 export const ACCOUNT_PROMO_COPY = {
-  heading: (london: boolean) => `Your ${london ? 'theatre' : 'theater'} diary, free`,
-  pitch: 'Rate the shows you see, keep a watchlist and a diary, on any phone or computer.',
+  heading: (london: boolean) => `Your ${london ? 'theatre' : 'theater'} record, free`,
+  pitch: 'Rate the shows you’ve seen and save the ones you want to see, on any phone or computer.',
   signedOutButton: 'Create a free account',
   signedInButton: 'Go to My Shows',
   linkSignedOut: 'Create a free account',

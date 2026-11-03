@@ -34,7 +34,7 @@ test('both show-page surfaces use WatchlistPlanCard', () => {
 test('plan card and sheet controls are at least 44px tall', () => {
   assert.match(CARD, /function slotClass[\s\S]*?h-16/, 'showtime buttons must stay h-16');
   assert.match(CARD, /ariaLabel="Planned date"[\s\S]*?className="w-full h-12/, 'date field must stay h-12');
-  assert.match(CARD, /Remove from watchlist/);
+  assert.match(CARD, /Remove from To See/);
   assert.match(CARD, /className="btn btn-secondary w-full h-12 text-score-skip"/);
   assert.match(CARD, /className="card-interactive w-full flex items-center gap-3 p-3/, 'row is a full-width card');
 });

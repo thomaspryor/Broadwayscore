@@ -339,7 +339,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
               <h2 className="text-xl font-bold text-white leading-tight">
                 {step === 'shows' && 'Which shows have you seen?'}
                 {step === 'import' && 'Bring over your history'}
-                {step === 'done' && (showsAdded + imported > 0 ? 'Your diary is started' : "You're all set")}
+                {step === 'done' && (showsAdded + imported > 0 ? 'Your shows are in' : "You're all set")}
               </h2>
               {step === 'shows' && (
                 <p className="text-sm text-gray-400 mt-1">Tap any you&apos;ve seen. Stars are optional.</p>
@@ -484,7 +484,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                         disabled={saving}
                         className="btn-primary text-sm disabled:opacity-50"
                       >
-                        {saving ? 'Saving…' : `Add ${pickCount} to my diary`}
+                        {saving ? 'Saving…' : `Add ${pickCount} to Seen`}
                       </button>
                     </>
                   )}
@@ -497,7 +497,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
             <>
               <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-4">
                 {showsAdded > 0 && (
-                  <p className="text-sm text-status-open">Added {showsAdded} {showsAdded === 1 ? 'show' : 'shows'} to your diary.</p>
+                  <p className="text-sm text-status-open">Added {showsAdded} {showsAdded === 1 ? 'show' : 'shows'} to Seen.</p>
                 )}
                 {saveFailed > 0 && (
                   <p className="text-sm text-score-tepid">{saveFailed === 1 ? '1 show' : `${saveFailed} shows`} could not be saved. You can add {saveFailed === 1 ? 'it' : 'them'} later from My Shows.</p>
@@ -541,7 +541,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
               <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-3">
                 <p className="text-sm text-gray-300">{welcomeDoneMessage({ showsAdded, imported, unratedAdded })}</p>
                 <ul className="text-sm text-gray-400 space-y-1.5">
-                  <li>Your diary and watchlist live in My Shows.</li>
+                  <li>Shows you’ve seen and want to see live in My Shows.</li>
                   {imported === 0 && <li>Import from {importSourceNames()} there whenever you like.</li>}
                 </ul>
               </div>

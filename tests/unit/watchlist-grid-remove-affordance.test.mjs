@@ -71,5 +71,5 @@ test('the show page watchlist button removes the entry', () => {
 });
 
 test('list item remove button is defined and labeled', () => {
-  assert.match(extractFunctionBody(SOURCE, 'WatchlistListItem'), /aria-label="Remove from watchlist"/);
+  assert.match(extractFunctionBody(SOURCE, 'WatchlistListItem'), /aria-label="Remove from To See"/);
 });

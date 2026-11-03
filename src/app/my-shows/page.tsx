@@ -4,7 +4,7 @@ import MyShowsClient from './MyShowsClient';
 
 export const metadata: Metadata = {
   title: 'My Shows',
-  description: 'Your personal theater diary and watchlist on Broadway Scorecard.',
+  description: 'The shows you’ve seen and want to see, on Broadway Scorecard.',
   robots: { index: false, follow: false },
 };
 

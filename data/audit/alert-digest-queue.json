@@ -223,20 +223,6 @@
     "queuedAt": "2026-11-03T13:12:47.132Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:a-few-good-men-2026",
-    "title": "Review gap — \"A Few Good Men\" missing 4 cited review(s)",
-    "description": "A Few Good Men (a-few-good-men-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-few-good-men-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T14:15:11.090Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
     "title": "Review gap — \"King of the Yees\" missing 1 cited review(s) — escalated after 15 notifications",
     "description": "Filed BRO-6896 for owner triage after 15 repeats with no tracker.\n\nKing of the Yees (king-of-the-yees-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
@@ -397,20 +383,6 @@
     "queuedAt": "2026-11-03T17:21:07.762Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T17:21:42.909Z"
-  },
-  {
     "conditionKey": "land:land/bro-6734-tour-city-onboarding-lists",
     "title": "Landing blocked: unit-tests-node red on land/bro-6734-tour-city-onboarding-lists",
     "description": "land.yml did not land land/bro-6734-tour-city-onboarding-lists: the unit-tests-node gate went red at 1eab67e1fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41678750260",
@@ -454,20 +426,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T18:07:40.386Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T18:07:41.076Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-6886-mw0wu2u3",
@@ -532,6 +490,20 @@
     "queuedAt": "2026-11-03T17:53:22.742Z"
   },
   {
+    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
+    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 9.37 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T18:19:58.503Z"
+  },
+  {
     "conditionKey": "land:land/bro-6872-fix-plan-audit",
     "title": "Landing blocked: unit-tests-node red on land/bro-6872-fix-plan-audit",
     "description": "land.yml did not land land/bro-6872-fix-plan-audit: the unit-tests-node gate went red at 5d32c8b661. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41683909832",
@@ -561,5 +533,89 @@
       }
     ],
     "queuedAt": "2026-11-03T18:13:35.908Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T18:52:21.214Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-hedley-ii-regional-2026",
+    "title": "Review gap — \"King Hedley II\" missing 2 cited review(s)",
+    "description": "King Hedley II (king-hedley-ii-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-hedley-ii-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T19:34:01.509Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:the-bridge-off-west-end-2026",
+    "title": "Shipped review too short to verify on The Bridge",
+    "description": "thestage/Siobhan Murphy (thestage--siobhan-murphy.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T19:13:31.632Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:clifford-odets-waiting-for-lefty-off-broadway-2026",
+    "title": "1 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- talkinbroadway--1c15b69d.json (talkinbroadway): fetch failed: All scraping methods failed https://www.talkinbroadway.com/page/ob/11_02_26.html",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T20:14:33.279Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T20:15:28.814Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:lincoln-in-the-bardo-off-broadway-2026",
+    "title": "Review gap — \"Lincoln in the Bardo\" missing 1 cited review(s)",
+    "description": "Lincoln in the Bardo (lincoln-in-the-bardo-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lincoln-in-the-bardo-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T20:13:25.001Z"
   }
 ]

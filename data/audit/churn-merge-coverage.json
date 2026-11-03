@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-03T18:01:14.275Z",
+    "generatedAt": "2026-11-03T18:47:24.727Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -10,31 +10,26 @@
     "minChurn": 30,
     "flaggedCount": 0,
     "exemptCount": 1,
-    "coveredCount": 3,
-    "highChurnTracked": 4
+    "coveredCount": 2,
+    "highChurnTracked": 3
   },
   "flagged": [],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 57
+      "churn": 62
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 96,
+      "churn": 88,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 41,
+      "churn": 37,
       "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/deploy-watermark.json",
-      "churn": 31,
-      "mergeAttr": "ours"
     }
   ]
 }

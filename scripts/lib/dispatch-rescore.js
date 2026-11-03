@@ -22,12 +22,14 @@ const REPO_NAME = process.env.GITHUB_REPOSITORY?.split('/')?.[1] || 'Broadwaysco
 
 /**
  * @param {string} showId
- * @param {{ reason?: string }} [opts] reason prefix for the concurrency lane
- *   (default 'auto-rescore'); final rescore_reason is `${reason}-${showId}`.
+ * @param {{ reason?: string, token?: string }} [opts] reason prefix for the
+ *   concurrency lane (default 'auto-rescore'); final rescore_reason is
+ *   `${reason}-${showId}`. `token` overrides the env token (BRO-6886: the
+ *   press-night dispatcher retries with REVIEW_TEXTS_TOKEN after a 403).
  * @returns {Promise<{ok: boolean, error?: string}>} never throws
  */
-async function dispatchRescore(showId, { reason = 'auto-rescore' } = {}) {
-  const token = process.env.GITHUB_TOKEN || process.env.REVIEW_TEXTS_TOKEN;
+async function dispatchRescore(showId, { reason = 'auto-rescore', token: tokenOverride } = {}) {
+  const token = tokenOverride || process.env.GITHUB_TOKEN || process.env.REVIEW_TEXTS_TOKEN;
   if (!token) {
     return { ok: false, error: 'no-token' };
   }

@@ -69,8 +69,8 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
     resumedPending.current = true;
     clearPendingAction();
     addToWatchlist(showId)
-      .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
-      .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
+      .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success'))
+      .catch(() => showToast?.('Couldn’t add to To See.', 'error'));
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, user, showId]);
 
@@ -88,13 +88,13 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
     try {
       if (isWatchlisted(showId)) {
         await removeFromWatchlist(showId);
-        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'info');
+        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'info');
       } else {
         await addToWatchlist(showId);
-        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success');
       }
     } catch {
-      showToast?.('Failed to update watchlist.', 'error');
+      showToast?.('Couldn’t update To See.', 'error');
     } finally {
       setLoading(false);
     }
@@ -131,7 +131,7 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
           ? 'drop-shadow-md'
           : `${size === 'sm' ? 'sm:opacity-0 sm:group-hover:opacity-100 sm:focus-visible:opacity-100' : ''}`
       } ${loading ? 'opacity-50' : ''}`}
-      aria-label={watched ? 'Remove from watchlist' : 'Add to watchlist'}
+      aria-label={watched ? 'Remove from To See' : 'Add to To See'}
     >
       <svg className={`${s.icon} drop-shadow-lg`} viewBox="0 0 24 24">
         <path

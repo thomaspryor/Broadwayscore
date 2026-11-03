@@ -178,3 +178,57 @@ test('telegraph section index stays selected while telegraph-search is excluded 
   assert.ok(ids.includes('telegraph'));
   assert.ok(!ids.includes('telegraph-search'));
 });
+
+test('ew site-search tries Scrapingdog plain page first; others stay on ScrapingBee (BRO-6908)', async () => {
+  const { fetchJsSearchHtml } = require('./site-search-discovery.js');
+  const ew = SITE_SEARCH_ENDPOINTS.ew;
+  assert.equal(ew.fetchVia, 'scrapingdog-page');
+  assert.equal(ew.requiresJs, true); // still gated by skipJs and the JS tier
+  // Live test 2026-11-03: Scrapingdog cannot read these search pages. Reroute only with new evidence.
+  for (const id of ['hollywood-reporter', 'deadline', 'timeout']) {
+    assert.equal(SITE_SEARCH_ENDPOINTS[id].fetchVia, undefined, id);
+  }
+
+  const good = '<a href="https://ew.com/theater/hamilton-review-123">x</a>';
+  const calls = [];
+  const sb = async () => { calls.push('sb'); return 'SB-HTML'; };
+  const sdOk = async () => { calls.push('sd'); return { content: good, source: 'scrapingdog' }; };
+  assert.equal(await fetchJsSearchHtml(ew, 'u', { sdFetch: sdOk, sbFetch: sb }), good);
+  assert.deepEqual(calls, ['sd']);
+
+  for (const [name, sd] of [
+    ['null (capped or unavailable)', async () => null],
+    ['empty content', async () => ({ content: '' })],
+    ['shell with no matching link', async () => ({ content: '<html>loading</html>' })],
+    ['throws', async () => { throw new Error('boom'); }],
+  ]) {
+    calls.length = 0;
+    assert.equal(await fetchJsSearchHtml(ew, 'u', { sdFetch: sd, sbFetch: sb }), 'SB-HTML', name);
+    assert.ok(calls.includes('sb'), name);
+  }
+
+  calls.length = 0;
+  const sdNever = async () => { calls.push('sd'); return { content: good }; };
+  assert.equal(await fetchJsSearchHtml(SITE_SEARCH_ENDPOINTS.deadline, 'u', { sdFetch: sdNever, sbFetch: sb }), 'SB-HTML');
+  assert.deepEqual(calls, ['sb']);
+});
+
+test('ew Scrapingdog page needs the query echoed, and SCRAPER_USE_SCRAPINGDOG=0 skips it (BRO-6908)', async (t) => {
+  const { fetchJsSearchHtml } = require('./site-search-discovery.js');
+  const ew = SITE_SEARCH_ENDPOINTS.ew;
+  const url = 'https://ew.com/search/?q=Hamilton+broadway+review';
+  const nav = '<a href="https://ew.com/tv/tv-reviews-recommendations/">TV reviews</a> Hamilton';
+  const real = '<a href="https://ew.com/theater/hamilton-review-1">Hamilton review</a> Hamilton Hamilton';
+  const calls = [];
+  const sb = async () => { calls.push('sb'); return 'SB-HTML'; };
+  assert.equal(await fetchJsSearchHtml(ew, url, { sdFetch: async () => ({ content: nav }), sbFetch: sb }), 'SB-HTML');
+  assert.equal(await fetchJsSearchHtml(ew, url, { sdFetch: async () => ({ content: real }), sbFetch: sb }), real);
+  assert.deepEqual(calls, ['sb']);
+
+  const prev = process.env.SCRAPER_USE_SCRAPINGDOG;
+  t.after(() => { if (prev === undefined) delete process.env.SCRAPER_USE_SCRAPINGDOG; else process.env.SCRAPER_USE_SCRAPINGDOG = prev; });
+  process.env.SCRAPER_USE_SCRAPINGDOG = '0';
+  let sdCalled = false;
+  assert.equal(await fetchJsSearchHtml(ew, url, { sdFetch: async () => { sdCalled = true; return { content: real }; }, sbFetch: sb }), 'SB-HTML');
+  assert.equal(sdCalled, false);
+});

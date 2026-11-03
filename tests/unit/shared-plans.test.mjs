@@ -24,13 +24,13 @@ const { buildIcs } = require('../../src/lib/calendar');
 
 test('privacy policy explains opting into a revocable public plans link', () => {
   const html = renderToStaticMarkup(React.createElement(PrivacyPage));
-  const plans = html.match(/Watchlist and plans<\/h3><p>(.*?)<\/p>/s)?.[1].replace(/\s+/g, ' ');
-  assert.ok(plans, 'Watchlist and plans paragraph is rendered');
+  const plans = html.match(/To See and plans<\/h3><p>(.*?)<\/p>/s)?.[1].replace(/\s+/g, ' ');
+  assert.ok(plans, 'To See and plans paragraph is rendered');
   assert.match(plans, /private unless you turn on a shared link/i);
   assert.match(plans, /anyone with the link/i);
   assert.match(plans, /upcoming shows/i);
   assert.match(plans, /date and showtime you picked/i);
-  assert.match(plans, /not-yet-booked watchlist/i);
+  assert.match(plans, /not-yet-booked shows on your To See list/i);
   assert.match(plans, /without an account/i);
   assert.match(plans, /turning the link off stops access/i);
   assert.match(plans, /previews already sent.*stay visible/i);

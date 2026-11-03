@@ -21,7 +21,7 @@ async function pngSize(r: Response): Promise<number> {
 
 test('renderShareCard renders a non-empty PNG (no posters, long title)', async () => {
   const { renderShareCard } = await shareP;
-  const size = await pngSize(await renderShareCard({ title: `${'W'.repeat(30)}’s theater diary`, summary: '312 shows seen', posterUrls: [null, null] }));
+  const size = await pngSize(await renderShareCard({ title: `${'W'.repeat(30)} has seen`, summary: '312 shows seen', posterUrls: [null, null] }));
   assert.ok(size > 5000, `PNG only ${size} bytes`);
 });
 
@@ -45,6 +45,6 @@ test('diary card input never carries note text, even with notes shared', async (
     groups: [{ year: '2025', entries: [{ showId: 'x', title: 'X', href: '/show/x', posterUrl: '/p.jpg', venue: 'V', date: '2025-01-02', dateLabel: 'Jan 2', rating: 4, text: 'SECRET NOTE' }] }],
   };
   const input = diaryCardInput(view);
-  assert.deepEqual(input, { title: 'Chris’ theater diary', summary: '1 show seen', posterUrls: ['/p.jpg'] });
+  assert.deepEqual(input, { title: 'Shows Chris has seen', summary: '1 show seen', posterUrls: ['/p.jpg'] });
   assert.ok(!JSON.stringify(input).includes('SECRET'));
 });

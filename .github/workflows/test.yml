@@ -52,6 +52,10 @@ on:
       - 'scripts/press-night-watchdog-replay.js'
       - '.github/workflows/opening-night-lane-live.yml'
       - '.github/actions/read-lane-only-vars/**'
+      # BRO-6886: tests/unit/press-night-scoring-dispatch.test.mjs and
+      # push-review-texts-scoring-file-list.test.mjs cover these.
+      - 'scripts/score-new-press-night-reviews.js'
+      - '.github/actions/push-review-texts/**'
       # BRO-6622: tests/unit/lane-rollback.test.mjs runs the CLI refusals and pins the switch workflow.
       - 'scripts/lane-switch.js'
       - 'scripts/email/profitability-launch.mjs' # BRO-6772 launch email, tested by tests/unit/profitability-launch-email.test.mjs
@@ -454,6 +458,8 @@ on:
       - 'scripts/enrich-ob-dates-from-showscore.js'
       # tests/unit/promote-historical-auto.test.mjs
       - 'scripts/enrich-west-end-shows.js'
+      # tests/unit/applied-fix-plan-rows.test.mjs
+      - 'scripts/audit-applied-fix-plans.js'
       # tests/unit/exclusion-rule-consumption.test.mjs
       - 'scripts/exclusion-rule-census.js'
       # tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs

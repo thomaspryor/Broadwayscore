@@ -1774,7 +1774,7 @@ async function pollShow(show) {
   // DEFAULT_GIVEUP_THRESHOLD ticks in a row for THIS show — a market-agnostic
   // outlet (vulture, THR, deadline, timeout, ew; telegraph-search is disabled, BRO-6898) that will
   // never cover a given show (e.g. THR on an Off-Broadway transfer) would
-  // otherwise re-render at 5 SB credits on every single poll tick forever.
+  // otherwise re-render at 5 SB credits (ew: 1 Scrapingdog credit first, BRO-6908) on every single poll tick forever.
   //
   // Two carve-outs (ship-check/Codex review) keep this from misfiring:
   //   - Aggressive opening window: misses still ACCUMULATE (so suppression can

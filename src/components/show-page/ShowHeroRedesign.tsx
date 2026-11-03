@@ -277,8 +277,8 @@ function Inner({
     onOtherPendingAction: (pending) => {
       if (pending.type === 'watchlist') {
         addToWatchlist(show.id)
-          .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success'))
-          .catch(() => showToast?.('Failed to add to watchlist.', 'error'));
+          .then(() => showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success'))
+          .catch(() => showToast?.('Couldn’t add to To See.', 'error'));
       }
     },
   });
@@ -330,13 +330,13 @@ function Inner({
     try {
       if (onWatchlist) {
         await removeFromWatchlist(show.id);
-        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'info');
+        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'info');
       } else {
         await addToWatchlist(show.id);
-        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success');
       }
     } catch {
-      showToast?.('Failed to update watchlist.', 'error');
+      showToast?.('Couldn’t update To See.', 'error');
     }
   }, [isAuthenticated, authLoading, onWatchlist, show.id, addToWatchlist, removeFromWatchlist, toggleLocal, showToast]);
 
@@ -781,7 +781,7 @@ function Inner({
                   href="/my-shows?tab=watchlist"
                   className="text-brand/90 hover:text-brand transition-colors border-b border-dotted border-brand/30"
                 >
-                  Watchlist
+                  To See list
                 </Link>
               </>
             )}

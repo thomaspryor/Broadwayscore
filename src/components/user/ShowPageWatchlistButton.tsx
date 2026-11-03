@@ -56,13 +56,13 @@ export default function ShowPageWatchlistButton({
     try {
       if (isWatchlisted(showId)) {
         await removeFromWatchlist(showId);
-        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'info');
+        showToast?.(<>Removed from <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'info');
       } else {
         await addToWatchlist(showId);
-        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">Watchlist</a></>, 'success');
+        showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success');
       }
     } catch {
-      showToast?.('Failed to update watchlist. Please try again.', 'error');
+      showToast?.('Couldn’t update To See. Please try again.', 'error');
     } finally {
       setLoading(false);
     }

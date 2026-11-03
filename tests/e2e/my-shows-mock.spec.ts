@@ -49,12 +49,12 @@ test.describe('My Shows — Page Structure', () => {
     await expect(page.getByRole('heading', { name: 'My Shows', level: 1 })).toBeAttached();
   });
 
-  test('header is Diary / Watchlist / Lists with the List / Feed / Stats switch', async ({ page }) => {
+  test('header is Seen / To See / Lists with the List / Photos / Stats switch', async ({ page }) => {
     await goToMock(page);
     const sections = page.getByRole('tablist', { name: 'My Shows sections' });
-    await expect(sections.getByRole('tab')).toHaveText(['Diary', 'Watchlist', 'Lists']);
-    const views = page.getByRole('tablist', { name: 'Diary views' });
-    await expect(views.getByRole('tab')).toHaveText(['List', 'Feed', 'Stats']);
+    await expect(sections.getByRole('tab')).toHaveText(['Seen', 'To See', 'Lists']);
+    const views = page.getByRole('tablist', { name: 'My Shows views' });
+    await expect(views.getByRole('tab')).toHaveText(['List', 'Photos', 'Stats']);
     await expect(views.getByRole('tab', { name: 'List' })).toHaveAttribute('aria-selected', 'true');
     // No count badges and no "N to rate" line (owner, 2026-07-17 / 2026-10-25).
     await expect(page.getByText(/^\d+ to rate$/)).toHaveCount(0);
@@ -62,17 +62,17 @@ test.describe('My Shows — Page Structure', () => {
 
   test('Feed and Stats open from the Diary switch and keep Diary selected', async ({ page }) => {
     await goToMock(page);
-    const views = page.getByRole('tablist', { name: 'Diary views' });
+    const views = page.getByRole('tablist', { name: 'My Shows views' });
     await views.getByRole('tab', { name: 'Stats' }).click();
     await expect(page.locator('#panel-stats')).toBeVisible();
     await expect(page).toHaveURL(/tab=stats/);
-    await expect(page.getByRole('tab', { name: 'Diary' })).toHaveAttribute('aria-selected', 'true');
-    await views.getByRole('tab', { name: 'Feed' }).click();
+    await expect(page.getByRole('tab', { name: 'Seen' })).toHaveAttribute('aria-selected', 'true');
+    await views.getByRole('tab', { name: 'Photos' }).click();
     await expect(page.locator('#panel-feed')).toBeVisible();
     await expect(page).toHaveURL(/tab=feed/);
     // Watchlist hides the Diary switch.
-    await page.getByRole('tab', { name: 'Watchlist' }).click();
-    await expect(page.getByRole('tablist', { name: 'Diary views' })).toHaveCount(0);
+    await page.getByRole('tab', { name: 'To See' }).click();
+    await expect(page.getByRole('tablist', { name: 'My Shows views' })).toHaveCount(0);
   });
 
   test('no console errors on page load', async ({ page }) => {
@@ -109,11 +109,11 @@ test.describe('My Shows — Accessibility', () => {
     // tablist container
     await expect(page.getByRole('tablist', { name: 'My Shows sections' })).toBeVisible();
     // Diary tab with selected state
-    const diaryTab = page.getByRole('tab', { name: 'Diary' });
+    const diaryTab = page.getByRole('tab', { name: 'Seen' });
     await expect(diaryTab).toBeVisible();
     await expect(diaryTab).toHaveAttribute('aria-selected', 'true');
     // Watchlist tab not selected
-    const watchlistTab = page.getByRole('tab', { name: /Watchlist/ });
+    const watchlistTab = page.getByRole('tab', { name: /To See/ });
     await expect(watchlistTab).toBeVisible();
     await expect(watchlistTab).toHaveAttribute('aria-selected', 'false');
   });
@@ -128,7 +128,7 @@ test.describe('My Shows — Accessibility', () => {
     await goToMock(page);
     await expect(page.getByRole('combobox', { name: 'Sort diary' })).toBeVisible();
     // Switch to watchlist
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await page.getByRole('tab', { name: /To See/ }).click();
     await expect(page.getByRole('combobox', { name: 'Sort watchlist' })).toBeVisible();
   });
 
@@ -289,7 +289,7 @@ test.describe('My Shows — Tabs', () => {
   test('switching to Watchlist tab shows watchlist content', async ({ page }) => {
     await goToMock(page);
     // Click Watchlist tab
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await page.getByRole('tab', { name: /To See/ }).click();
     // URL should update
     await expect(page).toHaveURL(/tab=watchlist/);
     // Watchlist defaults to grid — poster cards for upcoming/undated entries;
@@ -307,9 +307,9 @@ test.describe('My Shows — Tabs', () => {
     // Change sort to Top Rated
     await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
     // Switch to Watchlist
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await page.getByRole('tab', { name: /To See/ }).click();
     // Switch back to Diary
-    await page.getByRole('tab', { name: 'Diary' }).click();
+    await page.getByRole('tab', { name: 'Seen' }).click();
     // Sort should still be Top Rated
     const sortValue = await page.getByRole('combobox', { name: 'Sort diary' }).inputValue();
     expect(sortValue).toBe('rating-desc');
@@ -353,11 +353,11 @@ test.describe('My Shows — View Toggle', () => {
     // Set diary to grid
     await page.getByRole('button', { name: 'Grid view' }).click();
     // Switch to watchlist (defaults to grid)
-    await page.getByRole('tab', { name: /Watchlist/ }).click();
+    await page.getByRole('tab', { name: /To See/ }).click();
     // Switch watchlist to list
     await page.getByRole('button', { name: 'List view' }).click();
     // Switch back to diary — should still be grid
-    await page.getByRole('tab', { name: 'Diary' }).click();
+    await page.getByRole('tab', { name: 'Seen' }).click();
     const gridBtn = page.getByRole('button', { name: 'Grid view' });
     const classes = await gridBtn.getAttribute('class');
     expect(classes).toContain('bg-white');
@@ -445,7 +445,7 @@ test.describe('My Shows — Watchlist', () => {
     await goToMock(page, 'watchlist');
     // Switch to list view for easier interaction
     await page.getByRole('button', { name: 'List view' }).click();
-    const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
+    const removeBtn = page.getByRole('button', { name: 'Remove from To See' }).first();
     await removeBtn.click();
     await expect(page.getByRole('button', { name: /Remove\?/ })).toBeVisible();
   });

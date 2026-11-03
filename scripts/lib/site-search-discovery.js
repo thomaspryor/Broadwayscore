@@ -315,6 +315,12 @@ const SITE_SEARCH_ENDPOINTS = {
     domain: 'ew.com',
     linkPattern: /href="(https:\/\/ew\.com\/[^"]*review[^"]*)"/gi,
     requiresJs: true,
+    // BRO-6908: the results are in the server HTML. Live test 2026-11-03: Scrapingdog's
+    // plain page (1 credit) gave the same review links as a ScrapingBee render (5 credits)
+    // on Hamilton, Oedipus and Cats; ScrapingBee succeeded on only 45% of EW renders.
+    // Do NOT copy this to hollywood-reporter, deadline or timeout: Scrapingdog returns
+    // byte-identical HTML with dynamic on or off there, and 0 links on Deadline and Time Out.
+    fetchVia: 'scrapingdog-page',
   },
 
   // --- Vulture (JS-rendered section page, needs ScrapingBee) ---
@@ -1353,6 +1359,46 @@ function fetchWithScrapingBee(url, timeoutMs = 30000) {
   });
 }
 
+/**
+ * Fetch the HTML of a requiresJs search page (BRO-6908).
+ *
+ * Endpoints marked fetchVia 'scrapingdog-page' try Scrapingdog's plain page first
+ * (1 credit) and fall back to the ScrapingBee render (5 credits) when Scrapingdog
+ * returns nothing (capped, quota, error) or HTML with no match for the endpoint's
+ * link pattern at all (a shell, as Scrapingdog returned for telegraph-search).
+ * Every other endpoint renders on ScrapingBee exactly as before.
+ *
+ * @param {Object} config - SITE_SEARCH_ENDPOINTS entry
+ * @param {string} url - fully built search URL
+ * @param {{sdFetch?: Function, sbFetch?: Function}} [deps] - injectable for tests
+ * @returns {Promise<string>} HTML
+ */
+async function fetchJsSearchHtml(config, url, deps = {}) {
+  const sbFetch = deps.sbFetch || fetchWithScrapingBee;
+  // SCRAPER_USE_SCRAPINGDOG=0 is the global Scrapingdog off switch (scraper.js); fetchWithScrapingdog
+  // itself does not read it, so honour it here. It is also the rollback for this reroute.
+  if (config.fetchVia !== 'scrapingdog-page' || process.env.SCRAPER_USE_SCRAPINGDOG === '0') return sbFetch(url);
+  const sdFetch = deps.sdFetch || ((u) => require('./scraper').fetchWithScrapingdog(u, { renderJs: false }));
+  let html = '';
+  try {
+    const res = await sdFetch(url);
+    html = res && typeof res.content === 'string' ? res.content : '';
+  } catch (_) {
+    html = '';
+  }
+  if (html) {
+    const probe = new RegExp(config.linkPattern.source, config.linkPattern.flags.replace('g', ''));
+    // A link match alone is not proof of results: site chrome links to section pages whose
+    // path contains "review". A real results page also echoes the query (EW live test
+    // 2026-11-03: 82 and 12 occurrences of the title word); a nav-only shell does not.
+    let word = '';
+    try { word = (new URL(url).searchParams.get('q') || '').toLowerCase().split(/[^a-z0-9]+/).find(w => w.length >= 3) || ''; } catch (_) { word = ''; }
+    const echoes = word ? html.toLowerCase().split(word).length - 1 : Infinity;
+    if (probe.test(html) && echoes >= 3) return html;
+  }
+  return sbFetch(url);
+}
+
 // urlLooksLikeReview imported from ./review-guards (pure function, tested in test-opening-night-fixes.js)
 
 /**
@@ -1454,7 +1500,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
 
       let html;
       if (config.requiresJs) {
-        html = await fetchWithScrapingBee(searchUrl);
+        html = await fetchJsSearchHtml(config, searchUrl);
       } else {
         html = await fetchSSR(searchUrl);
       }
@@ -1583,6 +1629,7 @@ module.exports = {
   searchOutletSite,
   selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
+  fetchJsSearchHtml,
   extractVultureTheaterArticleUrls,
   extractGuardianRssReviewUrls,
   extractSectionLinks,

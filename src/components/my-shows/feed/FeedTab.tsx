@@ -74,7 +74,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
     // diary photos (and their signed URLs) never reach the recorder.
     <div className="ph-no-capture">
       <div className="flex items-center justify-between gap-3 mb-4">
-        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-overlay text-xs font-semibold text-gray-400" title="Your Feed is private. Nobody else can see it.">
+        <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-overlay text-xs font-semibold text-gray-400" title="Your photos are private. Nobody else can see them.">
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
           </svg>
@@ -93,7 +93,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
       {mode === 'timeline' ? (
         groups.length === 0 ? (
           <EmptyState
-            title="Your Feed is empty"
+            title="No photos yet"
             body="Rate a show with the date you saw it and it lands here, month by month."
           />
         ) : (
@@ -115,7 +115,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
         <EmptyState
           title="No photos yet"
           body={groups.length > 0
-            ? 'Add photos from the night to any diary entry. Open the Timeline and tap “Add a photo” on an entry.'
+            ? 'Add photos from the night to any show you’ve seen. Open the Timeline and tap “Add a photo” on an entry.'
             : 'Rate a show with the date you saw it, then add photos from the night to that entry.'}
           icon="camera"
           action={groups.length > 0 ? { label: 'Go to Timeline', onClick: () => pickMode('timeline') } : undefined}
@@ -149,7 +149,7 @@ const MODES: { key: FeedMode; label: string }[] = [
 /** Same shell as the page's ViewModeToggle (toolbar height, inset ring), with text labels. */
 function FeedModeToggle({ mode, onChange }: { mode: FeedMode; onChange: (m: FeedMode) => void }) {
   return (
-    <div className="inline-flex items-stretch flex-shrink-0 h-11 sm:h-9 rounded-badge overflow-hidden bg-white/[0.06] ring-1 ring-inset ring-white/10" role="group" aria-label="Feed view">
+    <div className="inline-flex items-stretch flex-shrink-0 h-11 sm:h-9 rounded-badge overflow-hidden bg-white/[0.06] ring-1 ring-inset ring-white/10" role="group" aria-label="Photos view">
       {MODES.map(opt => (
         <button
           key={opt.key}

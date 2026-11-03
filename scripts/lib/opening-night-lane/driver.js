@@ -257,7 +257,7 @@ function wireLaneNight({
     const discovery = require('./discovery');
     const inline = require('./inline-score');
     const { laneAdapters } = require('./adapters');
-    const scoring = inline.createInlineScoring({ show, night, ledgerDir, now, fetchPage: laneFetch.fetchPage, ...(fetchPorts || inline.realFetchPorts({ fetchPage: laneFetch.fetchPage })), scoreText });
+    const scoring = inline.createInlineScoring({ show, night, ledgerDir, now, fetchPage: laneFetch.fetchPage, ...(fetchPorts || inline.realFetchPorts({ fetchPage: laneFetch.fetchPage })), scoreText, allShows: guards.allShows });
     return Promise.resolve().then(() => runLaneNight({
       show, night, openingDate, timeZone, ledgerDir, fetchText: recorder ? recorder.wrapFetchText(discovery.fetchTextFrom(laneFetch.fetchPage)) : discovery.fetchTextFrom(laneFetch.fetchPage), shouldStop, abandonPending,
       ...(windowMs > 0 ? { windowMs } : {}),

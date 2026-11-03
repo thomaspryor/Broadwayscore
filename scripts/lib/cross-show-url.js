@@ -109,6 +109,20 @@ function sameTitleModuloCredit(a, b) {
   return canonTitleSlug(a) === canonTitleSlug(b);
 }
 
+// Canonical slug of the title left after a possessive author credit of two to
+// four capitalised words ("Clifford Odets’ Waiting for Lefty" -> waiting-for-lefty,
+// "Irving Berlin's White Christmas" -> white-christmas), else null. A one-word
+// owner ("Hell's Kitchen", "Jake's Women") or one led by an article ("The Band's
+// Visit", "A Midsummer Night's Dream") is an ordinary possessive, not a credit,
+// and a remainder under 8 chars is too generic to trust.
+const ARTICLE_WORDS = new Set(['A', 'An', 'The', 'Our', 'My', 'Your', 'His', 'Her', 'Their']);
+function creditedTitleSlug(title) {
+  const m = String(title || '').match(/^((?:[A-Z][\w.\-]*\s+){1,3}[A-Z][\w.\-]*)[’']s?\s+(.+)$/);
+  if (!m || ARTICLE_WORDS.has(m[1].split(/\s+/)[0])) return null;
+  const rest = canonTitleSlug(slugify(m[2]));
+  return rest.length >= 8 ? rest : null;
+}
+
 /**
  * Build the {id,title,slug} index from a shows array (pure, no IO).
  */
@@ -232,6 +246,17 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       // the Pool", "4.48" vs "448", a leading "The") is the same play under
       // another production id, so its slug in the URL is not a different show.
       if (sameTitleModuloCredit(thisShow.slug, other.slug)) continue;
+      // An author credit on this title ("Clifford Odets’ Waiting for Lefty") over
+      // another show's bare title is the same play. When that other production
+      // closed before this review's year (or before this run began, if the review
+      // is undated), the URL's bare title can't mean it: Waiting for Lefty
+      // (regional, 2024) cost the 2026 Classic Stage run Vulture, NYSR, Theater
+      // Pizzazz and Cititour on its press night. A still-running or undated
+      // same-title production keeps the guard (and its reroute).
+      const credited = creditedTitleSlug(thisShow.title);
+      const yearNow = reviewYear != null ? reviewYear : thisShow.startYear;
+      if (credited && credited === canonTitleSlug(other.slug)
+          && other.endYear != null && yearNow != null && other.endYear < yearNow) continue;
       // Containment: the other show's title sits INSIDE this show's title ("Mean Girls" inside
       // "School Girls; Or, The African Mean Girls Play"), so a URL for this show naturally
       // carries the other show's slug. Only call it a mismatch when the URL carries none of
@@ -323,6 +348,7 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
 }
 
 module.exports = {
+  creditedTitleSlug,
   slugify,
   CROSS_SHOW_SLUG_EXCLUDE,
   buildShowSlugIndex,

@@ -76,8 +76,8 @@ test('view model groups by year (newest first), undated last, with pill labels a
 });
 
 test('titles', () => {
-  assert.equal(diaryTitle('Tom'), 'Tom’s theater diary');
-  assert.equal(diaryTitle('Chris '), 'Chris’ theater diary');
+  assert.equal(diaryTitle('Tom'), 'Shows Tom has seen');
+  assert.equal(diaryTitle('Chris '), 'Shows Chris has seen');
 });
 
 test('toSharedDiaryEntries orders like get_shared_diary and keeps the owner\'s own notes', () => {

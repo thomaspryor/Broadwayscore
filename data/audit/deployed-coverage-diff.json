@@ -1,81 +1,13 @@
 {
-  "generatedAt": "2026-11-03T17:25:15.816Z",
+  "generatedAt": "2026-11-03T20:14:25.097Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 321,
-  "clean": 317,
-  "defective": 4,
-  "byType": {
-    "score-drift": 3,
-    "unreachable": 1
-  },
-  "shows": [
-    {
-      "showId": "franky-off-west-end-2026",
-      "title": "Franky",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "title": "Oliver!",
-      "openingDate": "2024-12-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.89 vs local 83.57 (Δ0.32)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "title": "Cabaret at the Kit Kat Club",
-      "openingDate": "2021-12-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 87.42 vs local 87.79 (Δ0.37)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
-    },
-    {
-      "showId": "magic-mike-live-west-end-2021",
-      "title": "Magic Mike Live",
-      "openingDate": "2018-11-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.91 vs local 60.97 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
-    }
-  ],
+  "clean": 321,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

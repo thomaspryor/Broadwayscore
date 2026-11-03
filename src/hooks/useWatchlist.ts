@@ -241,7 +241,7 @@ export function useWatchlist(userId: string | null) {
         ...prev,
       ]);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Failed to add to watchlist';
+      const msg = e instanceof Error ? e.message : 'Couldn’t add to To See';
       setError(msg);
       throw new Error(msg);
     }
@@ -265,7 +265,7 @@ export function useWatchlist(userId: string | null) {
       invalidateWatchlistCache();
       commitEdit(prev => prev.filter(w => w.show_id !== showId));
     } catch (e) {
-      const msg = e instanceof Error ? e.message : 'Failed to remove from watchlist';
+      const msg = e instanceof Error ? e.message : 'Couldn’t remove from To See';
       setError(msg);
       throw new Error(msg);
     }
@@ -301,7 +301,7 @@ export function useWatchlist(userId: string | null) {
       // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
       // entry was removed in another tab) — that's a failed save, not success.
       // Same guard as the review-edit path in ShowHeroRedesign.handleSaveReview.
-      if (!data) throw new Error('This show is no longer on your watchlist.');
+      if (!data) throw new Error('This show is no longer on your To See list.');
 
       // Later fresh mounts must refetch, not read a cache with stale values.
       invalidateWatchlistCache();
