@@ -1,23 +1,40 @@
 {
-  "updatedAt": "2026-11-03T02:38:30.412Z",
-  "processed": 1,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-03T02:45:03.164Z",
+  "processed": 201,
+  "failed": 126,
+  "successRate": "61.5%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 95,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 27,
+    "archive": 57
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-11-03T02:38:09.956Z",
+      "t": "2026-11-03T02:03:20.501Z",
+      "event": "bb-session",
+      "session": "c6e16a85",
+      "url": "https://talkinbroadway.com/sources/sound/released.html"
+    },
+    {
+      "t": "2026-11-03T02:03:20.954Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T02:12:33.077Z",
+      "event": "bb-session",
+      "session": "b17eda0b",
+      "url": "https://deadline.com/2026/06/minions-and-monsters-review-pierre-coffin-allison-j"
+    },
+    {
+      "t": "2026-11-03T02:15:55.763Z",
       "event": "bb-session",
       "session": "b7925d1e",
       "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/23/stars-are-shinin"
@@ -25,7 +42,94 @@
     {
       "t": "2026-11-03T02:38:10.903Z",
       "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-03T02:07:24.635Z",
+      "event": "bb-session",
+      "session": "20bc99fe",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-11-03T02:07:25.114Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T02:10:03.787Z",
+      "event": "bb-session",
+      "session": "0f968b2c",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-03T02:10:12.000Z",
+      "event": "bb-session",
+      "session": "68b1c572",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-11-03T02:11:29.334Z",
+      "event": "bb-session",
+      "session": "5509b224",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-03T02:11:38.000Z",
+      "event": "bb-session",
+      "session": "aacceade",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-03T02:19:36.762Z",
+      "event": "bb-session",
+      "session": "7cf286f7",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-03T02:19:37.286Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-03T02:19:45.686Z",
+      "event": "bb-session",
+      "session": "92e6807e",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-11-03T02:19:46.106Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-11-03T02:23:23.432Z",
+      "event": "bb-session",
+      "session": "bd9566fd",
+      "url": "https://www.cityweekly.net/BuzzBlog/archives/2022/10/03/theater-review-the-lion-"
+    },
+    {
+      "t": "2026-11-03T02:37:02.799Z",
+      "event": "bb-session",
+      "session": "5c3b9132",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-03T02:37:10.880Z",
+      "event": "bb-session",
+      "session": "aa79b0e9",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-03T02:40:12.266Z",
+      "event": "bb-session",
+      "session": "64db7f20",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-03T02:41:18.786Z",
+      "event": "bb-session",
+      "session": "395c94c7",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
