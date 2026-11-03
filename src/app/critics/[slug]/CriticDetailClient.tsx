@@ -10,6 +10,7 @@ import Breadcrumb from '@/components/Breadcrumb';
 import { getReviewKey } from '../../../../scripts/lib/review-list-key';
 import { nestQuotes } from '@/lib/nest-quotes';
 import { getInitials } from '@/lib/name-initials';
+import { getCriticBio } from '@/config/critic-bios';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 type MarketFilter = 'all' | 'broadway' | 'west-end' | 'off-west-end' | 'off-broadway';
@@ -207,6 +208,11 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
             </div>
           </div>
         </div>
+
+        {/* Hand-written bio (src/config/critic-bios.ts) */}
+        {getCriticBio(critic.slug) && (
+          <p className="text-fg-muted text-sm mb-4">{getCriticBio(critic.slug)}</p>
+        )}
 
         {/* All outlets if multi */}
         {critic.outlets.length > 1 && (

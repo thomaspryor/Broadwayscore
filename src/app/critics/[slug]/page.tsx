@@ -4,6 +4,7 @@ import { getCriticBySlug } from '@/lib/data-reviews';
 import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema, BASE_URL } from '@/lib/seo';
 import { criticMarketLabel, showCountPhrase } from '@/lib/critic-market';
 import { isThinCriticPage } from '@/lib/seo-indexability';
+import { getCriticBio } from '@/config/critic-bios';
 import CriticDetailClient from './CriticDetailClient';
 
 export const revalidate = 43200;
@@ -16,7 +17,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
   const canonicalUrl = `${BASE_URL}/critics/${params.slug}`;
   const market = criticMarketLabel(critic.reviews);
-  const description = `${critic.name} (${critic.primaryOutlet}) has reviewed ${showCountPhrase(critic.reviewCount, market)} with an average score of ${critic.avgScore}/100. See their full review history and rankings.`;
+  const description = `${critic.name} (${critic.primaryOutlet}) has reviewed ${showCountPhrase(critic.reviewCount, market)} with an average score of ${critic.avgScore}/100. See their full review history and rankings.${getCriticBio(params.slug) ? ` ${getCriticBio(params.slug)}` : ''}`;
 
   return {
     title: `${critic.name} - ${market} Critic at ${critic.primaryOutlet}`,
@@ -57,6 +58,7 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     avgScore: critic.avgScore,
     outlets: critic.outlets,
     marketLabel: criticMarketLabel(critic.reviews),
+    bio: getCriticBio(critic.slug),
   });
 
   const faqSchema = generateCriticFAQSchema({
