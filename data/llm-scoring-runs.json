@@ -1,35 +1,5 @@
 [
   {
-    "startedAt": "2026-11-01T20:48:07.531Z",
-    "completedAt": "2026-11-01T20:53:15.095Z",
-    "totalReviews": 79262,
-    "processed": 385,
-    "skipped": 76543,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 2428208,
-      "output": 118602,
-      "cacheRead": 3807,
-      "cacheWrite": 1511244,
-      "total": 6067583
-    },
-    "costUsd": 7.154271400000001,
-    "runId": "41347977815",
-    "source": "index",
-    "errorDetails": [
-      {
-        "showId": "the-counter-off-broadway-2024",
-        "outletId": "vulture",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-11-01T20:53:26.791Z",
     "completedAt": "2026-11-01T20:53:39.343Z",
     "totalReviews": 4,
@@ -1171252,8 +1171222,27 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T02:02:33.732Z",
-    "completedAt": "2026-11-03T02:02:33.734Z",
+    "startedAt": "2026-11-03T02:02:32.786Z",
+    "completedAt": "2026-11-03T02:02:37.977Z",
+    "totalReviews": 19,
+    "processed": 1,
+    "skipped": 18,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5094,
+      "output": 323,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 13744
+    },
+    "costUsd": 0.020173,
+    "runId": "41562825893",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-03T02:07:35.192Z",
+    "completedAt": "2026-11-03T02:07:35.218Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1171266,7 +1171255,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41562822555",
+    "runId": "41562825893",
     "source": "comparative-rescore",
     "errorDetails": []
   }
