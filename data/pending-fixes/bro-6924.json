@@ -1,0 +1,223 @@
+{
+  "issueNumber": "bro-6924",
+  "planId": "244293f2-2aa1-47f3-8718-d4db82a82873",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:06:32.746Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6924: move 11 London ENO Tosca reviews off the Met Tosca and clear the flags that named the Met",
+    "steps": [
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text names English National Opera and the London Coliseum.",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (text names English National Opera and the London Coliseum).",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: BWW /westend/ URL names the London Coliseum.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder.",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text reviews the ENO staging at the Coliseum.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder.",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text reviews the ENO staging (Axelle Fanyo, Christopher Purves cast).",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (text reviews the ENO staging (Axelle Fanyo, Christopher Purves cast)).",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-review-london-coliseum.",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-review-london-coliseum).",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder.",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text reviews the English National Opera staging.",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder.",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-eno-review.",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-eno-review).",
+      "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder.",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug review-tosca-at-london-coliseum.",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug review-tosca-at-london-coliseum).",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug eno-tosca-london-coliseum.",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug eno-tosca-london-coliseum).",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-review-london-coliseum.",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-review-london-coliseum).",
+      "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-review-london-coliseum.",
+      "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-review-london-coliseum)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/a-youngish-perspective--unknown.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/a-youngish-perspective--unknown.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text names English National Opera and the London Coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/a-youngish-perspective--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (text names English National Opera and the London Coliseum)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/broadwayworld--gary-naylor.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: BWW /westend/ URL names the London Coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/financialtimes--richard-fairman.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text reviews the ENO staging at the Coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/guardian--flora-willson.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text reviews the ENO staging (Axelle Fanyo, Christopher Purves cast)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (text reviews the ENO staging (Axelle Fanyo, Christopher Purves cast))."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/london-theatre--cheryl-markosky.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-review-london-coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-review-london-coliseum)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/plays-to-see--rene-weis-frsa.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: text reviews the English National Opera staging."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/sunday-telegraph--nicholas-kenyon.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-eno-review."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-eno-review)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+        "field": "rejectionReason",
+        "oldValue": "wrong_production",
+        "newValue": null,
+        "description": "BRO-6924: the ensemble rejected it as wrong_production for the Met's Tosca; it is the ENO London production's own review, now in the ENO folder."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/theatre-weekly--unknown.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug review-tosca-at-london-coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug review-tosca-at-london-coliseum)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/thereviewshub--unknown.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug eno-tosca-london-coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug eno-tosca-london-coliseum)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/thestage--george-hall.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/thestage--george-hall.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-review-london-coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/thestage--george-hall.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-review-london-coliseum)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "tosca-off-broadway-2026/times-uk--richard-morrison.json",
+        "destPath": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+        "description": "BRO-6924: London ENO Tosca review (London Coliseum, opened 2026-10-30) filed under the Met's Tosca: URL slug tosca-review-london-coliseum."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-review-london-coliseum)."
+      }
+    ]
+  }
+}
