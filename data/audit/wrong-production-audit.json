@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T20:05:04.835Z",
+  "timestamp": "2026-11-03T20:42:57.052Z",
   "stats": {
-    "totalReviews": 79948,
-    "alreadyFlagged": 22057,
+    "totalReviews": 79953,
+    "alreadyFlagged": 22059,
     "dateGuardCatches": 216,
     "directorMismatch": 3457,
     "tvFilmSignals": 2262,
-    "londonSignals": 3587,
+    "londonSignals": 3590,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8505
+    "noPublishDate": 8513
   },
   "findings": [
     {
@@ -105304,6 +105304,19 @@
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "seatplan--unknown.json",
+      "publishDate": "2026-10-30",
+      "url": "https://seatplan.com/london/news/reasons-to-see-jesus-christ-superstar-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 78,
       "publishDate": "2026-07-08",
@@ -128942,6 +128955,20 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
+      "file": "londontheatredirect--unknown.json",
+      "score": 90,
+      "publishDate": "2026-11-02",
+      "url": "https://www.londontheatredirect.com/news/the-lives-of-others-review-2026?srsltid=AYCX9vIe9kZE3ufXHUL-sN13uAPRmD6uRKEcuIaxqF33uPQvVhIjgRZo",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
       "file": "plays-international--unknown.json",
       "score": 96,
       "publishDate": "2026-11-02",
@@ -128974,6 +129001,20 @@
       "score": 89,
       "publishDate": "2026-10-29",
       "url": "https://www.shinylife.co.uk/2026/10/29/the-lives-of-others/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "standard--unknown.json",
+      "score": 91,
+      "publishDate": "2026-11-02",
+      "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
