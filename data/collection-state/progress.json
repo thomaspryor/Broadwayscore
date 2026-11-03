@@ -156,7 +156,11 @@
     "paddington-the-musical-west-end-2025/rhombus-rota--west-end-live.json",
     "paddington-the-musical-west-end-2025/west-end-wilma--unknown.json",
     "the-hunger-games-on-stage-west-end-2025/london-box-office--emmie-newitt.json",
-    "the-hunger-games-on-stage-west-end-2025/londontheatredirect--jane-keoghan.json"
+    "the-hunger-games-on-stage-west-end-2025/londontheatredirect--jane-keoghan.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--ms-vanja-dobrich.json",
+    "the-bridge-off-west-end-2026/standard--nick-curtis.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "medea-off-broadway-2026/express-uk--neil-norman.json",
@@ -236,7 +240,12 @@
     "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
     "beetlejuice-west-end-2026/amny--matt-windman.json",
     "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
-    "black-is-the-color-of-my-voice-west-end-2026/telegraph--patrick-monahan.json"
+    "black-is-the-color-of-my-voice-west-end-2026/telegraph--patrick-monahan.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -317,7 +326,11 @@
       "paddington-the-musical-west-end-2025/londontheatredirect--london-theatre-direct.json",
       "paddington-the-musical-west-end-2025/rhombus-rota--west-end-live.json",
       "paddington-the-musical-west-end-2025/west-end-wilma--unknown.json",
-      "the-hunger-games-on-stage-west-end-2025/londontheatredirect--jane-keoghan.json"
+      "the-hunger-games-on-stage-west-end-2025/londontheatredirect--jane-keoghan.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--ms-vanja-dobrich.json",
+      "the-bridge-off-west-end-2026/standard--nick-curtis.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -325,7 +338,8 @@
       "data/review-texts/paranormal-activity-2026/nytimes--helen-shaw.json",
       "paranormal-activity-2026/nytimes--helen-shaw.json",
       "data/review-texts/dirty-dancing-tour-2026/nytimes--michael-paulson.json",
-      "dirty-dancing-tour-2026/nytimes--michael-paulson.json"
+      "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -399,7 +413,7 @@
     ]
   },
   "startTime": "2026-11-03T08:22:33.294Z",
-  "lastProcessed": "the-hunger-games-on-stage-west-end-2025/londontheatredirect--jane-keoghan.json",
+  "lastProcessed": "girls-off-west-end-2026/radio-times--molly-moss.json",
   "log": [
     {
       "t": "2026-11-03T08:24:52.729Z",
@@ -484,6 +498,36 @@
       "t": "2026-11-03T13:07:42.800Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-03T13:35:43.092Z",
+      "event": "bb-session",
+      "session": "cd6103a8",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-03T13:36:56.276Z",
+      "event": "bb-session",
+      "session": "ef6e3727",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-03T13:37:04.688Z",
+      "event": "bb-session",
+      "session": "a03aaffc",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-03T13:43:42.169Z",
+      "event": "bb-session",
+      "session": "778d4d65",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-03T13:44:27.071Z",
+      "event": "bb-session",
+      "session": "e4b5b944",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
