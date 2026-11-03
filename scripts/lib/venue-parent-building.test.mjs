@@ -52,3 +52,13 @@ test('prompt context tells the verifier the building name is not a different ven
   // alias rename context still wins for renamed houses
   assert.match(buildVenueContext("His Majesty's Theatre", 'west-end'), /Her Majesty's/);
 });
+
+test('generic stage names do not match other London venues; note does not list the venue as its own other stage', () => {
+  assert.equal(parentBuildingOf('Nottingham Playhouse Main House'), null);
+  assert.equal(parentBuildingOf('Jerwood Vanbrugh Theatre'), null);
+  assert.equal(parentBuildingOf('Young Vic (Main House)', 'off-west-end')?.parent, 'Young Vic');
+  assert.equal(parentBuildingOf('Royal Court Jerwood Theatre Upstairs')?.parent, 'Royal Court Theatre');
+  const n = buildParentBuildingNote('The Maria Theatre', 'off-west-end');
+  assert.match(n, /other stages: The Clare, Main House\)/);
+  assert.match(buildParentBuildingNote('Dorfman (Cottesloe)', 'west-end'), /other stages: Lyttelton Theatre, Olivier Theatre\)/);
+});

@@ -71,7 +71,7 @@ const ONLY_PARENT = opt('parent');
     } catch (e) { errors++; console.log(`[ERROR] ${c.show.id}/${c.file}: ${e.message}`); continue; }
     const clean = cv && cv.isValid === true && cv.wrongProduction !== true && cv.wrongArticle !== true
       && cv.isFilmTv !== true && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
-    console.log(`[${clean ? 'CLEAR' : 'UPHELD'}] ${c.show.id}/${c.file} (${c.parent}) valid=${cv?.isValid} wp=${cv?.wrongProduction} ${String(cv?.reasoning || '').slice(0, 100)}`);
+    console.log(`[${clean ? 'CLEAR' : 'UPHELD'}] ${c.show.id}/${c.file} (${c.parent}) valid=${cv?.isValid} wp=${cv?.wrongProduction}`);
     if (!clean) { upheld++; continue; }
     actions.push({
       type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProduction',

@@ -23,3 +23,7 @@ test('non-matching cases', () => {
   assert.equal(pick(girls, flagged('Young Victoria film')).candidate, false);
   assert.equal(pick(null, flagged('Young Vic')).candidate, false);
 });
+test('a human-confirmed flag (true) or human-cleared (false) is never a candidate', () => {
+  assert.equal(pick(girls, flagged('at the Young Vic', { humanReviewedWrongProduction: true })).candidate, false);
+  assert.equal(pick(girls, flagged('at the Young Vic', { humanReviewedWrongProduction: false })).candidate, false);
+});

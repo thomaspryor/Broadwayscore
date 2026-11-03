@@ -28,7 +28,7 @@ function parentBuildingFlagCandidate(show, record) {
   if (!p) return { candidate: false, why: 'venue is not a stage inside a bigger building' };
   if (!record || record.wrongProduction !== true) return { candidate: false, why: 'not flagged wrongProduction' };
   if (WRONG_PRODUCTION_CLEAR_MARKERS.some((k) => record[k] != null && record[k] !== false && record[k] !== '')
-      || record.humanReviewedWrongProduction === false) return { candidate: false, why: 'already cleared or human-reviewed' };
+      || typeof record.humanReviewedWrongProduction === 'boolean') return { candidate: false, why: 'already cleared or a human reviewed the flag' };
   const text = _reasonText(record);
   const hit = p.parentNames.find((n) => _mentions(text, n));
   if (!hit) return { candidate: false, why: 'flag reason does not name the parent building' };

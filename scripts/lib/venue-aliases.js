@@ -177,7 +177,7 @@ const PARENT_BUILDINGS = [
   { parent: 'Young Vic', region: 'london',
     parentNames: ['Young Vic', 'Young Vic Theatre'],
     stages: ['The Maria', 'The Clare', 'Main House'],
-    stageKeys: ['the maria', 'maria theatre', 'maria studio', 'the clare', 'clare theatre', 'clare studio', 'main house'] },
+    stageKeys: ['the maria', 'maria theatre', 'maria studio', 'the clare', 'clare theatre', 'clare studio', 'young vic main house', 'young vic (main house)'] },
   { parent: "Shakespeare's Globe", region: 'london',
     parentNames: ["Shakespeare's Globe", 'Shakespeares Globe'],
     stages: ['Sam Wanamaker Playhouse', "Shakespeare's Globe Theatre"],
@@ -197,7 +197,7 @@ const PARENT_BUILDINGS = [
   { parent: 'Royal Court Theatre', region: 'london',
     parentNames: ['Royal Court Theatre', 'Royal Court'],
     stages: ['Jerwood Theatre Downstairs', 'Jerwood Theatre Upstairs'],
-    stageKeys: ['jerwood'] },
+    stageKeys: ['jerwood theatre downstairs', 'jerwood theatre upstairs', 'royal court jerwood'] },
 ];
 
 function _stageKeyMatches(normVenue, key) {
@@ -207,6 +207,11 @@ function _stageKeyMatches(normVenue, key) {
   const before = i === 0 ? ' ' : normVenue[i - 1];
   const after = i + k.length >= normVenue.length ? ' ' : normVenue[i + k.length];
   return !/[a-z0-9]/.test(before) && !/[a-z0-9]/.test(after);
+}
+
+// "Dorfman (Cottesloe)" must not list "Dorfman Theatre" as an OTHER stage.
+function _stageCore(x) {
+  return _normalize(x).replace(/\b(the|theatre)\b/g, ' ').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function _regionOk(entry, market) {
@@ -254,7 +259,7 @@ function stagesOfBuilding(name, market) {
 function buildParentBuildingNote(venue, market) {
   const p = parentBuildingOf(venue, market);
   if (p) {
-    return `${venue} is one stage inside ${p.parent} (other stages: ${p.stages.filter((s) => _normalize(s) !== _normalize(venue)).join(', ')}). A review that names "${p.parent}" instead of the stage is NOT by itself evidence of a different venue or production; still check the title, cast and dates`;
+    return `${venue} is one stage inside ${p.parent} (other stages: ${p.stages.filter((s) => { const c = _stageCore(s); return !c || !_stageCore(venue).includes(c); }).join(', ')}). A review that names "${p.parent}" instead of the stage is NOT by itself evidence of a different venue or production; still check the title, cast and dates`;
   }
   const stages = stagesOfBuilding(venue, market);
   if (stages.length) {
