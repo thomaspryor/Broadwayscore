@@ -361,7 +361,7 @@ Extra pieces:
   so a sitemap shape can be tried without re-landing. The Guardian API,
   Telegraph, Standard, Independent and i enumerate this way; the other
   newspapers are `unreadable` (below).
-- **Enumeration status.** Every report regenerated in BRO-6488 (the 15 outlets listed here) carries `source.status` is `complete`,
+- **Enumeration status.** Every report regenerated in BRO-6488 (the 15 outlets listed here) carries `source.status`, which is `complete`,
   `incomplete` (a fetch failed, a page cap was hit, or `dated sitemaps: N
   failed`) or `unreadable` (with `source.reason`). A dated sitemap that answers
   404 counts as "not found", not as a failure. Unreadable reports still record
