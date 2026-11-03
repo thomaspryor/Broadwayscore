@@ -572,9 +572,38 @@ function expectedCities({ tours, schedules, listedIds, today, minTours = 3, inde
 }
 
 /**
- * `localShows`: regional productions (category 'regional'). A city hub page
- * (BRO-6517, data/city-hubs.json) lists the metro's own productions under the
- * tour stops; a row for one of those whose `city` is this page's slug is fine.
+ * Launched city hubs (BRO-6517, data/city-hubs.json `launched: true`) always
+ * have an indexable /tours/<slug> page, whatever their tour count (the route
+ * and sitemap add them unconditionally). Returns a copy of `expected` with
+ * every hub present, indexed, and tagged with its hub entry.
+ */
+function withHubs(expected, hubs) {
+  const out = new Map(expected);
+  for (const [slug, hub] of Object.entries(hubs || {})) {
+    const c = out.get(slug) || { slug, city: hub.name, stops: [] };
+    out.set(slug, { ...c, indexed: true, hub });
+  }
+  return out;
+}
+
+/**
+ * Where a hub's local production belongs today: 'now' | 'ahead' | 'past', or
+ * null when the page should not list it (closed before the hub's `since`).
+ * An independent statement of the rule src/lib/city-hub.ts hubPhase applies.
+ */
+function localSection(s, today, since) {
+  const closed = s.status === 'closed' || (!!s.closingDate && s.closingDate < today);
+  if (closed) return since && (s.openingDate || '') < since ? null : 'past';
+  if (s.status === 'previews') return 'now';
+  if ((s.openingDate && s.openingDate > today) || s.status === 'upcoming') return 'ahead';
+  return 'now';
+}
+
+/**
+ * `localShows`: regional productions (category 'regional'). A hub page
+ * (`expected.hub`, see withHubs) lists the metro's own productions under the
+ * tour stops; a row for one whose `city` is this page's slug is checked for
+ * its section instead of a tour stop.
  */
 function checkCityPage({ url, page, expected, tours, schedules, tickets, todays, inSitemap, localShows = [] }) {
   const out = [];
@@ -596,8 +625,14 @@ function checkCityPage({ url, page, expected, tours, schedules, tickets, todays,
     const show = byId.get(r.showId);
     if (!show) {
       const local = localById.get(r.showId);
-      if (local && local.city === expected.slug) continue;
-      if (local) err('city-row-wrong-city', `row links /show/${r.showId}, a ${local.city || 'city-less'} production, not ${expected.city}`);
+      if (local && expected.hub && local.city === expected.slug) {
+        const ok = todays.map(d => localSection(local, d, expected.hub.since));
+        if (ok.every(x => x === null)) err('city-row-local-hidden', `${local.title || local.id} closed before the hub's ${expected.hub.since} start but is listed`);
+        else if (!ok.includes(r.section)) err('city-row-section', `${local.title || local.id} is under "${r.section}", expected "${ok[ok.length - 1]}"`);
+        continue;
+      }
+      if (local && expected.hub) err('city-row-wrong-city', `row links /show/${r.showId}, a ${local.city || 'city-less'} production, not ${expected.city}`);
+      else if (local) err('city-row-local-not-hub', `row links /show/${r.showId}, a local production, on a city page that is not a hub`);
       else err('city-row-unknown-show', `row links /show/${r.showId}, not a tour or ${expected.city} production`);
       continue;
     }
@@ -701,6 +736,6 @@ async function runAlerts({ findings, router, runContext = {}, previousCodes = nu
 module.exports = {
   citySlug, nowNext, normTitle, addDays, unwrapTicketUrl,
   parseShowPage, parseListPage, parseCityPage, rangeMatchesStop,
-  checkTourData, checkShowPage, checkCityPage, expectedCities, isScoredSlim,
+  checkTourData, checkShowPage, checkCityPage, expectedCities, withHubs, localSection, isScoredSlim,
   validateEvent, eventsIn, runAlerts, CONDITION_PREFIX,
 };
