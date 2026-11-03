@@ -21,7 +21,8 @@
  * Facebook have clicks, Instagram has reach), but every network can send a visit.
  */
 
-const { backfillWindow, scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../social-autopost/select');
+const { backfillWindow, backfillDoneKeys, scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../social-autopost/select');
+const { postsToOwnSet } = require('../social-autopost/routing');
 const C = require('../social-autopost/config');
 
 const NETWORK_NAMES = { twitter: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube' };
@@ -330,13 +331,16 @@ function skippedShows({ ctx, ledger, now }) {
   if (!Number.isFinite(goLive)) return [];
   const showsById = new Map(ctx.shows.map((s) => [s.id, s]));
   const dctx = { ...ctx, done: doneKeys(ledger), now };
+  const bctx = { ...dctx, done: backfillDoneKeys(ledger) };
   const lookbackMs = C.SCORE_LOOKBACK_DAYS * DAY_MS;
+  const bf = C.BACKFILL && C.BACKFILL.enabled ? C.BACKFILL : null;
+  const backfillMs = bf ? bf.lookbackDays * DAY_MS : 0;
   const gaveUp = gaveUpIds(ledger);
   const out = [];
   for (const show of ctx.shows) {
     if (!isEligibleShow(show, { allowOpera: true })) continue;
     const slot = morningAfter(show);
-    if (slot > now || now - slot > lookbackMs + 7 * DAY_MS || slot + lookbackMs < goLive) continue;
+    if (slot > now || now - slot > Math.max(lookbackMs, backfillMs) + 7 * DAY_MS || slot + lookbackMs < goLive) continue;
     const d = scoreDecision(show, dctx);
     if (d.why === 'done' || d.why === 'not-yet') continue;
     if (gaveUp.has(show.id)) {
@@ -347,16 +351,25 @@ function skippedShows({ ctx, ledger, now }) {
     let reason; let final = false;
     if (d.why === 'too-old') {
       const u = scoreDecision(show, dctx, { ignoreAge: true });
+      const age = now - slot;
       if (backfillWindow(show, dctx)) {
         // BRO-6932: still owed a post; a quiet day picks it up once its score settles.
         reason = u.due
-          ? `its score settled after the ${C.SCORE_LOOKBACK_DAYS}-day window, so it will post on the next day with nothing else going out`
+          ? `its score settled after the ${C.SCORE_LOOKBACK_DAYS}-day window, so it will post on a quiet day (a day with nothing else going out)`
           : `not posted yet: ${plainReason(u)}. It will post on a quiet day once that changes`;
-      } else {
+      } else if (bf && age > backfillMs && show.status === 'open' && postsToOwnSet(show)) {
+        // Was owed a quiet-day post until bf.lookbackDays; reported once, the week it ages out.
+        reason = u.due
+          ? `no quiet day came up within ${bf.lookbackDays} days of opening, so it was never posted`
+          : `gave up ${bf.lookbackDays} days after opening: ${plainReason(u)}`;
+        final = true;
+      } else if (age <= lookbackMs + 7 * DAY_MS) {
         reason = u.due
           ? `has a score now, but it was not ready within ${C.SCORE_LOOKBACK_DAYS} days of opening`
           : `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
         final = true;
+      } else {
+        continue; // already reported the week it aged out
       }
     } else {
       reason = plainReason(d);
@@ -364,10 +377,16 @@ function skippedShows({ ctx, ledger, now }) {
     out.push({ title: showName(show), link: showLink(show), reason, final, category: show.category });
   }
   for (const p of posts) {
-    if (!p.skipped || !p.date || now - Date.parse(`${p.date}T12:00:00Z`) > 7 * DAY_MS) continue;
+    if (!p.skipped || !p.date) continue;
     const show = showsById.get(p.showId);
-    const reason = p.skipped === 'backlog at go-live' ? 'opened before automatic posting was switched on' : p.skipped;
-    out.push({ title: show ? showName(show) : p.showId, link: show ? showLink(show) : null, reason, final: true, category: show && show.category });
+    const backlog = p.skipped === 'backlog at go-live';
+    // BRO-6932: a backlog skip stays owed a quiet-day post (backfillDoneKeys ignores it) until it posts.
+    const owed = !!(backlog && show && backfillWindow(show, bctx));
+    if (!owed && now - Date.parse(`${p.date}T12:00:00Z`) > 7 * DAY_MS) continue;
+    const reason = owed
+      ? `opened before automatic posting was switched on; it will post on a quiet day${scoreDecision(show, bctx, { ignoreAge: true }).due ? '' : ' once its score settles'}`
+      : backlog ? 'opened before automatic posting was switched on' : p.skipped;
+    out.push({ title: show ? showName(show) : p.showId, link: show ? showLink(show) : null, reason, final: !owed, category: show && show.category });
   }
   const rank = (c) => (CATEGORY_ORDER.includes(c) ? CATEGORY_ORDER.indexOf(c) : CATEGORY_ORDER.length);
   return out.sort((a, b) => b.final - a.final || rank(a.category) - rank(b.category) || a.title.localeCompare(b.title))

@@ -32,8 +32,9 @@ const CHANNEL_SETS = {
   // West End Scorecard accounts (BRO-6378). Fill in the Buffer channel ids from
   // `node scripts/social-autopost/run.js --list-channels` once the owner has
   // connected them (guide: claude-outputs/west-end-social-accounts-guide.md).
-  // While this is empty, West End shows keep posting to the Broadway set
-  // (routing.js), so switching routing on is just adding ids here.
+  // While this is empty, main-stage West End shows keep posting to the Broadway set
+  // (BROADWAY_FALLBACK_CATEGORIES, routing.js) and Off-West End shows post nothing,
+  // so switching routing on is just adding ids here.
   'west-end': {
     // instagram: '', facebook: '', twitter: '', threads: '', bluesky: '',
   },
@@ -50,6 +51,10 @@ const CHANNELS = CHANNEL_SETS.broadway; // the original set; kept for callers th
 // Which channel set is a show's home. Broadway and Off-Broadway post to the Broadway
 // accounts, West End and Off-West End to the West End accounts.
 const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
+// Categories whose shows post to the Broadway accounts while their own set is not
+// configured. Off-West End is not one (owner, BRO-6932: fringe London shows do not
+// belong on the Broadway accounts); it waits for the West End accounts.
+const BROADWAY_FALLBACK_CATEGORIES = ['west-end'];
 
 // "High profile" rule for cross-posting to the OTHER market's accounts (BRO-6378;
 // proposal, the owner approves it). Also the rule for the video lane (BRO-6250):
@@ -149,7 +154,7 @@ const BACKFILL = {
 
 module.exports = {
   WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL,
-  MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
+  MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, BROADWAY_FALLBACK_CATEGORIES, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,
 };

@@ -162,8 +162,26 @@ test('skippedShows: a show that aged out but can still post on a quiet day is no
   settled.reviewsByShow = { aged: Array.from({ length: 9 }, (_, i) => ({ outletId: `o${i}`, assignedScore: 80, scoreConfidence: 'high' })) };
   settled.getOutletTier = (id) => (Number(id.slice(1)) < 3 ? 1 : 2);
   const r = skippedShows({ ctx: settled, ledger: liveLedger, now: NOW });
-  assert.match(r[0].reason, /will post on the next day with nothing else going out/);
+  assert.match(r[0].reason, /will post on a quiet day \(a day with nothing else going out\)/);
   assert.equal(r[0].final, false);
+});
+
+test('skippedShows: a show is called given up once, the week it ages out of the quiet-day window (BRO-6932)', () => {
+  const early = { posts: [{ type: 'score', showId: 'posted', dueAt: '2026-09-01T14:00:00Z', date: '2026-09-01' }] };
+  const ctx = selCtx([
+    show('outaged', '2026-09-14', 'off-broadway'), // 48 days: owed until day 45, so said once now
+    show('long-gone', '2026-09-01'), // 61 days: said weeks ago
+    { ...show('closed-mid', '2026-10-01'), status: 'closed' }, // 31 days, never owed: said the week it aged out of 10 days
+  ]);
+  const out = skippedShows({ ctx, ledger: early, now: NOW });
+  assert.deepEqual(out.map((x) => [x.title, x.final]), [['OUTAGED (Off-Broadway)', true]]);
+  assert.match(out[0].reason, /gave up 45 days after opening: no score on the site yet/);
+});
+
+test('skippedShows: a go-live backlog skip is still owed a quiet-day post, however long ago it was skipped (BRO-6932)', () => {
+  const ledger = { posts: [...liveLedger.posts, { type: 'score', date: '2026-10-21', showId: 'bl', skipped: 'backlog at go-live' }] };
+  const out = skippedShows({ ctx: selCtx([show('bl', '2026-10-19')]), ledger, now: NOW });
+  assert.deepEqual(out, [{ title: 'BL', link: 'https://broadwayscorecard.com/show/bl', reason: 'opened before automatic posting was switched on; it will post on a quiet day once its score settles', final: false }]);
 });
 
 test('skippedShows lists ledger skips from the last week in words', () => {

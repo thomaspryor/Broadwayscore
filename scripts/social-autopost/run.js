@@ -732,7 +732,8 @@ async function main() {
     const { post, skip } = splitBacklog(found, ctx.ledger, now);
     backlogSkipped = skip;
     const failures = ctx.ledger._meta.failures || {};
-    events = scheduleEvents(post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS)), ctx.ledger, now);
+    const posting = post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS));
+    events = scheduleEvents(posting, ctx.ledger, now);
     compareEvents = findLondonCompareEvents({ shows: ctx.shows, ledger: ctx.ledger, now, slim: ctx.slim })
       .filter(ev => !(failures[`london-compare:${ev.show.id}`] && failures[`london-compare:${ev.show.id}`].count >= MAX_SHOW_ATTEMPTS));
     // BRO-6413: each type runs only when its config.js flag is on (default off).
@@ -742,10 +743,13 @@ async function main() {
     if (CLOSING_SOON.enabled) closingEvents = findClosingSoonEvents({ ...found2, cfg: CLOSING_SOON }).filter(ev => !tooManyFailures(`closing-soon:${ev.show.id}`));
     // BRO-6932: nothing else is going out today, so post an older show that missed its window.
     if (BACKFILL.enabled) {
-      // A brief run posts the brief later in this run, so it counts as busy too.
-      const busy = !!brief || found.length + compareEvents.length + roundupEvents.length + closingEvents.length > 0;
       // A show held for want of a poster is tried at most once a day, so it cannot hold a slot all afternoon.
       const held = id => { const w = (ctx.ledger._meta.waitingForPoster || {})[id]; return !!w && now - Date.parse(w.at || w.since) < 20 * 3600e3; };
+      // Busy = something else really goes out: a brief (posted later in this run), a score post
+      // not held for a poster, or a roundup/closing card whose accounts exist (runRoundup and
+      // runClosingSoon go idle otherwise).
+      const busy = !!brief || posting.some(ev => !held(ev.show.id)) || compareEvents.length > 0
+        || roundupEvents.some(ev => ownSetConfigured(ev.set)) || closingEvents.some(ev => ownSetConfigured(homeSet(ev.show)));
       events.push(...scheduleEvents(findBackfillEvents({ ...found2, busy, blocked: id => tooManyFailures(id) || held(id), cfg: BACKFILL }), ctx.ledger, now));
     }
   }
@@ -845,7 +849,7 @@ async function main() {
   let failed = 0;
   // A held show that ages out of the lookback window stops being retried; drop its note.
   const waitingNotes = ctx.ledger._meta.waitingForPoster || {};
-  for (const [id, w] of Object.entries(waitingNotes)) if (now - Date.parse(w.since) > 14 * 864e5) delete waitingNotes[id];
+  for (const [id, w] of Object.entries(waitingNotes)) if (now - Date.parse(w.at || w.since) > 14 * 864e5) delete waitingNotes[id];
   // Counted per show across runs so one broken show alerts MAX_SHOW_ATTEMPTS times, not hourly for weeks.
   const failures = ctx.ledger._meta.failures = ctx.ledger._meta.failures || {};
   // Outages (hosting, Buffer down, network) are not the show's fault and do not use up its tries.
