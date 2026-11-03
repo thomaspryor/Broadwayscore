@@ -55,6 +55,82 @@ const { normalizeRoutingTitle: normalizeTitle } = require('./routing-title');
  * @param {Array<object>} shows
  * @returns {Map<string, { showYear: number|null, openingDate: Date|null, siblings: Array }>}
  */
+/**
+ * "Tosca - English National Opera" -> { head: "Tosca", label: "English National Opera" }.
+ * Only a spaced dash splits, so "Spider-Man" never does. Null when there is no label.
+ */
+function splitLabelledTitle(title) {
+  const m = String(title || '').match(/^(.+?)\s+[-–—]\s+(.+)$/);
+  if (!m) return null;
+  return { head: m[1].trim(), label: m[2].trim() };
+}
+
+const LABEL_STOPWORDS = new Set(['the', 'a', 'an', 'of', 'and', 'at', 'by', 'on', 'in']);
+/**
+ * Initials of a 3+ word label ("English National Opera" -> "eno"), the way press
+ * slugs name a company ("tosca-eno-review"). Null for a shorter label or one whose
+ * initials would be under 3 or over 5 letters (too common or never written).
+ */
+function labelInitials(label) {
+  const words = foldDiacritics(String(label || '')).toLowerCase().split(/[^a-z0-9]+/)
+    .filter(w => w && !LABEL_STOPWORDS.has(w));
+  if (words.length < 3) return null;
+  const initials = words.map(w => w[0]).join('');
+  return initials.length >= 3 && initials.length <= 5 ? initials : null;
+}
+
+/**
+ * Head-keyed siblings (BRO-6924): a show billed "<head> - <label>" and a show
+ * titled exactly <head> are the same work under two billings (the Met's "Tosca"
+ * and "Tosca - English National Opera"), but the exact-title grouping never
+ * pairs them. They are kept apart from .siblings: the head is often one common
+ * word ("Midnight", "Stories", "Legend") shared by unrelated works, so only the
+ * venue-in-URL rule, which needs the URL to name the other production's house,
+ * reads them. Date/year votes and same-title disambiguation stay exact-title.
+ * @returns {Map<string, Array<object>>} show id -> the other side's shows, each { show, labelPhrases }
+ */
+function buildLabelledPairs(shows, byTitle) {
+  const pairs = new Map();
+  const add = (id, entry) => {
+    if (!pairs.has(id)) pairs.set(id, []);
+    if (!pairs.get(id).some(e => e.show.id === entry.show.id)) pairs.get(id).push(entry);
+  };
+  for (const s of shows) {
+    const split = splitLabelledTitle(s.title);
+    if (!split) continue;
+    const head = normalizeTitle(split.head);
+    if (!head || head === normalizeTitle(s.title)) continue;
+    const heads = (byTitle.get(head) || []).filter(x => x.id !== s.id);
+    if (!heads.length) continue;
+    const initials = labelInitials(split.label);
+    for (const h of heads) {
+      add(h.id, { show: s, labelPhrases: initials ? [initials] : [] });
+      add(s.id, { show: h, labelPhrases: [] });
+    }
+  }
+  return pairs;
+}
+
+function siblingEntry(x, extra) {
+  const ym = String(x.id || '').match(/-(\d{4})$/);
+  const sibOpening = x.openingDate ? new Date(x.openingDate) : null;
+  const sibClosing = x.closingDate ? new Date(x.closingDate) : null;
+  return {
+    id: x.id,
+    year: ym ? parseInt(ym[1], 10) : null,
+    openingDate: sibOpening && !isNaN(sibOpening.getTime()) ? sibOpening : null,
+    closingDate: sibClosing && !isNaN(sibClosing.getTime()) ? sibClosing : null,
+    // pickRerouteTarget skips a sibling closed more than 2 years before the
+    // review's year (BRO-4404); without endYear that cap never applied here.
+    // Same derivation as review-guards' buildMultiProdYearGuard.
+    endYear: x.closingDate ? (parseInt(String(x.closingDate).slice(0, 4), 10) || null) : null,
+    category: x.category || null,
+    venue: x.venue || null,
+    title: x.title || null,
+    ...extra,
+  };
+}
+
 function buildSiblingIndex(shows) {
   const map = new Map();
   if (!Array.isArray(shows) || shows.length === 0) return map;
@@ -65,11 +141,15 @@ function buildSiblingIndex(shows) {
     if (!byTitle.has(t)) byTitle.set(t, []);
     byTitle.get(t).push(s);
   }
+  const labelledPairs = buildLabelledPairs(shows, byTitle);
   for (const s of shows) {
     const t = normalizeTitle(s.title);
     const group = byTitle.get(t) || [];
     const sibs = group.filter(x => x.id !== s.id);
-    if (sibs.length === 0) continue;
+    const labelled = (labelledPairs.get(s.id) || [])
+      .map(e => siblingEntry(e.show, { labelled: true, labelPhrases: e.labelPhrases }))
+      .filter(x => x.year || x.openingDate);
+    if (sibs.length === 0 && labelled.length === 0) continue;
     const yearMatch = String(s.id || '').match(/-(\d{4})$/);
     const showYear = yearMatch ? parseInt(yearMatch[1], 10) : null;
     const opening = s.openingDate ? new Date(s.openingDate) : null;
@@ -90,24 +170,9 @@ function buildSiblingIndex(shows) {
       title: s.title || null,
       category: s.category || null,
       venue: s.venue || null,
-      siblings: sibs.map(x => {
-        const ym = String(x.id || '').match(/-(\d{4})$/);
-        const sibOpening = x.openingDate ? new Date(x.openingDate) : null;
-        const sibClosing = x.closingDate ? new Date(x.closingDate) : null;
-        return {
-          id: x.id,
-          year: ym ? parseInt(ym[1], 10) : null,
-          openingDate: sibOpening && !isNaN(sibOpening.getTime()) ? sibOpening : null,
-          closingDate: sibClosing && !isNaN(sibClosing.getTime()) ? sibClosing : null,
-          // pickRerouteTarget skips a sibling closed more than 2 years before the
-          // review's year (BRO-4404); without endYear that cap never applied here.
-          // Same derivation as review-guards' buildMultiProdYearGuard.
-          endYear: x.closingDate ? (parseInt(String(x.closingDate).slice(0, 4), 10) || null) : null,
-          category: x.category || null,
-          venue: x.venue || null,
-          title: x.title || null,
-        };
-      }).filter(x => x.year || x.openingDate),
+      siblings: sibs.map(x => siblingEntry(x)).filter(x => x.year || x.openingDate),
+      // Head-keyed siblings (buildLabelledPairs): read by the venue-in-URL rule only.
+      labelledSiblings: labelled,
     });
   }
   return map;
@@ -304,9 +369,18 @@ function urlPathSlug(url) {
   return `-${foldDiacritics(noHost).toLowerCase().replace(/[‘’′']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}-`;
 }
 
+// Venue words that are also URL section names (/opera/, /music/): the Telegraph files
+// the ENO's Tosca under /opera/, which must not read as the Metropolitan Opera's own venue.
+const SECTION_VENUE_WORDS = new Set(['opera', 'music']);
+
 function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
   if (process.env.DISABLE_SIBLING_VENUE_ROUTING === 'true') return null;
-  if (!url || !sibData || !Array.isArray(sibData.siblings) || !sibData.siblings.length) return null;
+  if (!url || !sibData) return null;
+  const candidates = [
+    ...(Array.isArray(sibData.siblings) ? sibData.siblings : []),
+    ...(Array.isArray(sibData.labelledSiblings) ? sibData.labelledSiblings : []),
+  ];
+  if (!candidates.length) return null;
   const urlPath = urlPathSlug(url);
   // The filed-under show's own venue wins: any of its phrases, or any distinctive
   // whole word of its venue, in the URL means the review may be about it.
@@ -314,7 +388,7 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
   if (ownPhrases.some(p => urlNamesPhrase(urlPath, p))) return null;
   const ownWords = foldDiacritics(String(sibData.venue || '')).toLowerCase().replace(/[‘’′']/g, '')
     .split(/[^a-z0-9]+/)
-    .filter(w => w.length >= 5 && !VENUE_STOPWORDS.has(w) && !GENERIC_VENUE_SLUGS.has(w));
+    .filter(w => w.length >= 5 && !VENUE_STOPWORDS.has(w) && !GENERIC_VENUE_SLUGS.has(w) && !SECTION_VENUE_WORDS.has(w));
   if (ownWords.some(w => urlPath.includes(`-${w}-`))) return null;
 
   // A Date object is as good as a string; ignoring one would switch the date guards off.
@@ -323,7 +397,8 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
     : (typeof publishDate === 'string' ? publishDate : null);
   const reviewDate = parseDate(pubStr);
   const hits = [];
-  for (const sib of sibData.siblings) {
+  const currentPool = sibData.category ? getShowMarketPool(sibData) : null;
+  for (const sib of candidates) {
     if (visitedSet.has(sib.id)) continue;
     // A declared prior run whose reviews this entry inherits is its own, not a sibling's.
     if (sibData.inheritedRunIds && sibData.inheritedRunIds.has(sib.id)) continue;
@@ -331,7 +406,8 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
     // Regional city runs roll up under an umbrella entry (a national tour's regional parent, a tryout
     // family) by design: regional <-> regional is the tour-family layer's call, not a venue match.
     if (sibData.category === 'regional' && sib.category === 'regional') continue;
-    const phrase = venuePhrases(sib.venue).find(p => urlNamesPhrase(urlPath, p));
+    // A labelled sibling is also named by its label's initials ("tosca-eno-review").
+    const phrase = [...venuePhrases(sib.venue), ...(sib.labelPhrases || [])].find(p => urlNamesPhrase(urlPath, p));
     if (!phrase) continue;
     // A sibling with no opening date has no window, so it cannot claim a review.
     if (!sib.openingDate) continue;
@@ -344,7 +420,13 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
       // And the review must sit closer to the sibling's opening than to this show's:
       // press coverage clusters at press night, and an open-ended window alone would let
       // a tryout with no closing date keep claiming its transfer's reviews for 14 months.
-      if (sibData.openingDate
+      // Except across markets when the sibling itself opened within SIBLING_CLOSE_DAYS of the
+      // review: two houses' productions of one opera can open days apart (ENO's Tosca Oct 30,
+      // the Met's Nov 1), and a Nov 2 URL naming only the London house is London's (BRO-6924).
+      // A transfer's origin opened months earlier, so it stays out.
+      const crossMarket = currentPool && sib.category && getShowMarketPool(sib) !== currentPool;
+      const sibNear = Math.abs(reviewDate - sib.openingDate) <= SIBLING_CLOSE_DAYS * DAY;
+      if (sibData.openingDate && !(crossMarket && sibNear)
           && Math.abs(reviewDate - sibData.openingDate) < Math.abs(reviewDate - sib.openingDate)) continue;
     }
     hits.push({ id: sib.id, phrase, dist: reviewDate ? Math.abs(reviewDate - sib.openingDate) : Infinity });
@@ -497,10 +579,14 @@ function classifyMarketRouting(args) {
   // Every other rule works on non-tour siblings only, and never runs FOR a tour:
   // a tour and its Broadway run share title and market pool by design.
   const sibData = rawSibData && rawSibData.category === 'tour' ? null
-    : rawSibData && { ...rawSibData, siblings: rawSibData.siblings.filter(s => s.category !== 'tour') };
+    : rawSibData && {
+      ...rawSibData,
+      siblings: rawSibData.siblings.filter(s => s.category !== 'tour'),
+      labelledSiblings: (rawSibData.labelledSiblings || []).filter(s => s.category !== 'tour'),
+    };
 
   // --- Sibling venue named in the URL (BRO-5386): deterministic, so before the date votes ---
-  if (sibData && sibData.siblings.length) {
+  if (sibData && (sibData.siblings.length || sibData.labelledSiblings.length)) {
     const venueDecision = siblingVenueDecision(sibData, { url, publishDate, visitedSet });
     if (venueDecision) return venueDecision;
   }
@@ -717,6 +803,8 @@ module.exports = {
   tourDecision,
   tourTargetDecision,
   buildSiblingIndex,
+  splitLabelledTitle,
+  labelInitials,
   normalizeTitle,
   collectSameTitleSignals,
   venuePhrases,
