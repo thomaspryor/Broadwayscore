@@ -428,20 +428,6 @@
     "queuedAt": "2026-11-03T18:07:40.386Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T18:07:41.076Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-6886-mw0wu2u3",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6886-mw0wu2u3",
     "description": "land.yml did not land land/job/linear-BRO-6886-mw0wu2u3: the unit-tests-node gate went red at e0cf85930d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41681274265",
@@ -561,5 +547,19 @@
       }
     ],
     "queuedAt": "2026-11-03T18:13:35.908Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T18:52:21.214Z"
   }
 ]
