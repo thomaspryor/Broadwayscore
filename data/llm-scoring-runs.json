@@ -1214332,21 +1214332,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T00:16:12.646Z",
-    "completedAt": "2026-11-03T00:16:18.341Z",
-    "totalReviews": 1,
-    "processed": 1,
+    "startedAt": "2026-11-03T00:19:09.145Z",
+    "completedAt": "2026-11-03T00:19:24.804Z",
+    "totalReviews": 3,
+    "processed": 3,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 6952,
-      "output": 330,
-      "cacheRead": 3807,
+      "input": 15511,
+      "output": 931,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 16526
+      "total": 41575
     },
-    "costUsd": 0.0257429,
-    "runId": "41550805341",
+    "costUsd": 0.0608206,
+    "runId": "41551027025",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1215420,14 +1215420,14 @@
         "dtliDistribution": {
           "up": 7,
           "flat": 0,
-          "down": 4,
-          "total": 12
+          "down": 5,
+          "total": 13
         },
         "bwwDistribution": {
           "up": 7,
           "flat": 0,
           "down": 0,
-          "total": 15
+          "total": 16
         },
         "hasDisagreement": false
       },
@@ -1231037,6 +1231037,16 @@
           "flat": 1,
           "down": 0,
           "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "green-corridors-regional-2026-city-garage-theatre",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 2,
+          "down": 0,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -1263588,8 +1263598,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-03T00:21:14.623Z",
-    "completedAt": "2026-11-03T00:21:14.624Z",
+    "startedAt": "2026-11-03T00:24:22.212Z",
+    "completedAt": "2026-11-03T00:24:22.214Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1263602,7 +1263612,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41550805341",
+    "runId": "41551027025",
     "source": "comparative-rescore",
     "errorDetails": []
   }
