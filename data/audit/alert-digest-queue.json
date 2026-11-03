@@ -456,6 +456,37 @@
     "queuedAt": "2026-11-03T17:34:08.668Z"
   },
   {
+    "conditionKey": "land:land/job/linear-BRO-6886-mw0wu2u3",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6886-mw0wu2u3",
+    "description": "land.yml did not land land/job/linear-BRO-6886-mw0wu2u3: the unit-tests-node gate went red at e0cf85930d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41681274265",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6886-mw0wu2u3"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e0cf85930ded6d47e2fdbb14c990a1edf2090e40"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41681274265"
+      }
+    ],
+    "queuedAt": "2026-11-03T17:56:45.518Z"
+  },
+  {
     "conditionKey": "land:land/bro-6899-tab-names",
     "title": "Landing blocked: unit-tests-tsx red on land/bro-6899-tab-names",
     "description": "land.yml did not land land/bro-6899-tab-names: the unit-tests-tsx gate went red at 862fe8cb38. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41680466193",
