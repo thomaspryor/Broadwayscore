@@ -535,20 +535,6 @@
     "queuedAt": "2026-11-03T18:13:35.908Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T18:52:21.214Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:king-hedley-ii-regional-2026",
     "title": "Review gap — \"King Hedley II\" missing 2 cited review(s)",
     "description": "King Hedley II (king-hedley-ii-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-hedley-ii-regional-2026 --checkpoint --ingest-missing",
@@ -617,5 +603,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T20:13:25.001Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T20:13:56.324Z"
+  },
+  {
+    "conditionKey": "corpus-drift:orphaned-wrongprod-provenance",
+    "title": "Corpus drift: review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)",
+    "description": "check-corpus-drift.js audit \"orphaned-wrongprod-provenance\" (node scripts/audit-orphaned-wrongprod-provenance.js --gate) has been drifting. Latest output:\n\nScanned 80207 files: 1 orphaned (0 baselined, 1 NEW, 0 baseline entries now fixed)\nNEW orphaned wrongProduction provenance (flag dropped, file would score):\n  the-whoopi-monologues-off-broadway-2026/playbill--unknown.json\nFix: restore wrongProduction:true if the detection was right, else delete the wrongProduction* provenance fields.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T21:17:06.036Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T21:17:06.607Z"
   }
 ]
