@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T00:09:38.479Z",
+  "timestamp": "2026-11-03T00:24:52.633Z",
   "stats": {
-    "totalReviews": 79559,
-    "alreadyFlagged": 21983,
+    "totalReviews": 79600,
+    "alreadyFlagged": 21985,
     "dateGuardCatches": 219,
     "directorMismatch": 3432,
-    "tvFilmSignals": 2260,
-    "londonSignals": 3584,
+    "tvFilmSignals": 2261,
+    "londonSignals": 3585,
     "offBroadwaySignals": 734,
     "yearMismatch": 355,
-    "noPublishDate": 8432
+    "noPublishDate": 8426
   },
   "findings": [
     {
@@ -13357,6 +13357,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
+        }
+      ]
+    },
+    {
+      "showId": "come-from-away-moonlight-regional-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-09-10",
+      "url": "https://www.sandiegouniontribune.com/2026/09/10/review-moonlights-moving-come-from-away-a-balm-for-the-soul/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -108062,6 +108075,19 @@
     },
     {
       "showId": "mamma-mia-west-end-2021",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-10-29",
+      "url": "https://mdtheatreguide.com/2026/10/theatre-review-mamma-mia-at-the-national-theatre-2/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-west-end-2021",
       "file": "west-end-wilma--west-end-wilma.json",
       "score": 90,
       "publishDate": "2019-06-19",
@@ -128434,9 +128460,10 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "file": "guardian--ryan-gilbey.json",
-      "publishDate": "2026-10-13",
-      "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+      "file": "guardian--arifa-akbar.json",
+      "score": 51,
+      "publishDate": "2026-11-02",
+      "url": "https://www.theguardian.com/stage/2026/nov/02/the-lives-of-others-review-keira-knightley-brings-star-power-to-robert-ickes-stasi-drama",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -128447,10 +128474,9 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "file": "guardian--unknown.json",
-      "score": 51,
-      "publishDate": "2026-11-02",
-      "url": "https://www.theguardian.com/stage/2026/nov/02/the-lives-of-others-review-keira-knightley-brings-star-power-to-robert-ickes-stasi-drama",
+      "file": "guardian--ryan-gilbey.json",
+      "publishDate": "2026-10-13",
+      "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
