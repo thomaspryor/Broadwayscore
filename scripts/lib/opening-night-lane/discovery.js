@@ -29,7 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
-const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow, ALL_FEEDS } = require('../rss-discovery');
+const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow } = require('../rss-discovery');
 const { resolveOutletFromUrl, URL_HOST_ALIASES } = require('../review-normalization');
 
 // Old host -> current host for outlets that serve one article on both (BRO-6872: The Independent was scored twice,
@@ -37,6 +37,7 @@ const { resolveOutletFromUrl, URL_HOST_ALIASES } = require('../review-normalizat
 const HOST_ALIAS = new Map(URL_HOST_ALIASES);
 const { isFeatureSectionReviewPath } = require('../domain-filters');
 const { admitLaneCandidate } = require('./trust-model');
+const laneSources = require('./lane-sources');
 const ledger = require('./ledger');
 
 const SERP_AFTER_MS = 3 * 60 * 60 * 1000;
@@ -45,7 +46,10 @@ const SERP_NIGHT_MAX = 20;
 const DEFAULT_MAX_DATE_CHECKS = 10;
 const DEFAULT_FETCH_TIMEOUT_MS = 15000;
 const DEFAULT_PASS_DEADLINE_MS = 90000;
-const MAX_SOURCES_PER_ADAPTER = 12; // feeds or index pages per pass
+const MAX_SOURCES_PER_ADAPTER = 12; // index pages per pass (Talkin' Broadway, section indexes)
+// Feeds per pass, per kind: regular feeds (which may fall back to paid fetchers) keep the old cap of 12, and the lane's
+// direct-only feeds get 12 of their own, so the added feeds never raise paid fetches per pass (ship-check, BRO-6872).
+const MAX_FEEDS_PER_PASS = 12;
 const MAX_DATE_CHECK_ATTEMPTS = 3;
 const MAX_UNWRAP_TRIES = 3;
 // DTLI and Show Score hit the 15 s cap in 14 and 6 passes of the 2026-10-22 shadow; the pass deadline still bounds them.
@@ -461,27 +465,13 @@ function parseFeedEntries(xml) {
 }
 
 /**
- * The regular pipeline's review feeds (rss-discovery.js ALL_FEEDS) for the show's market: a feed tagged with the other
- * market is skipped, an untagged one (the entertainment feeds) is kept. The lane read no feed at all on 2026-10-29
- * (the shadow and the production driver both passed `feeds: []`), and New York Theater, which the regular pipeline
- * found through its own feed, was never discovered (BRO-6066).
+ * Feeds and section pages come from lane-sources.js (BRO-6872): ALL_FEEDS for the market as before (the lane read no feed
+ * at all on 2026-10-29 and missed New York Theater, BRO-6066), plus the outlet-listing poller's feeds and listing pages and
+ * the lane's own extras, so every outlet that publishes on opening night has a source the lane polls.
  */
 function defaultLaneFeeds(show) {
-  const market = /west[-\s]?end/i.test(`${(show && show.market) || ''} ${(show && show.category) || ''}`) ? 'west-end' : 'broadway';
-  return ALL_FEEDS.filter((f) => !f.market || f.market === market).map((f) => ({ url: f.url, outletId: f.outletId, name: f.name, ...(f.reviewsOnly ? { reviewsOnly: true } : {}) }));
+  return laneSources.laneFeeds(show);
 }
-
-// Explicit section URLs, never inferred from article URLs. Vulture and Variety reuse the
-// sections swept by site-search-discovery.js. The registry owns tiers and market coverage.
-const T1_SECTION_INDEXES = {
-  nytimes: 'https://www.nytimes.com/section/theater',
-  wsj: 'https://www.wsj.com/arts-culture',
-  vulture: 'https://www.vulture.com/theater/',
-  variety: 'https://variety.com/v/legit/reviews/',
-  guardian: 'https://www.theguardian.com/stage',
-  newyorker: 'https://www.newyorker.com/culture/the-theatre',
-  thestage: 'https://www.thestage.co.uk/reviews',
-};
 
 function defaultLaneMissingOutlets(show) {
   const london = /west[-\s]?end/i.test(`${show?.market || ''} ${show?.category || ''}`);
@@ -496,10 +486,21 @@ function defaultLaneMissingOutlets(show) {
 }
 
 function defaultLaneSectionIndexes(show) {
-  const eligible = new Set(defaultLaneMissingOutlets(show));
-  const registry = require('../../../data/outlet-registry.json').outlets;
-  return Object.entries(T1_SECTION_INDEXES).filter(([id]) => eligible.has(id) && registry[id].tier === 1)
-    .map(([outletId, indexUrl]) => ({ outletId, indexUrl }));
+  return laneSources.laneSectionIndexes(show, { eligibleT1: new Set(defaultLaneMissingOutlets(show)) });
+}
+
+/**
+ * The next window of at most `max` sources, moving on each call, so a list longer than the cap is read in turn, a window
+ * per pass, and every source is read within ceil(n / max) passes.
+ */
+function rotatingWindow(max) {
+  let turn = 0;
+  return (all) => {
+    if (max <= 0) return [];
+    if (all.length <= max) return all;
+    const start = (turn++ * max) % all.length;
+    return [...all, ...all].slice(start, start + max);
+  };
 }
 
 /** Shared by driver and shadow: only still-missing outlets can spend a SERP query. */
@@ -511,19 +512,22 @@ function laneMissingOutlets({ show, seen, adaptersConfig = {} }) {
     .filter(id => !have.has(id) && !haveDomains.has(registry[id]?.domain));
 }
 
-/** `feeds` omitted: defaultLaneFeeds(show). More feeds than MAX_SOURCES_PER_ADAPTER are read in turn, a window per pass. */
+/**
+ * `feeds` omitted: defaultLaneFeeds(show). Regular and direct-only feeds each rotate in their own window of
+ * MAX_FEEDS_PER_PASS, so every feed is read within ceil(n / MAX_FEEDS_PER_PASS) passes of its kind.
+ */
 function rssAdapter({ feeds } = {}) {
-  let turn = 0;
+  const nextRegular = rotatingWindow(MAX_FEEDS_PER_PASS);
+  const nextDirect = rotatingWindow(MAX_FEEDS_PER_PASS);
   return {
     name: 'rss', kind: 'feed', phase: 'cheap',
     async discover({ show, fetchText }) {
       const out = [];
       const all = feeds || defaultLaneFeeds(show);
-      const start = all.length > MAX_SOURCES_PER_ADAPTER ? (turn++ * MAX_SOURCES_PER_ADAPTER) % all.length : 0;
-      const batch = [...all, ...all].slice(start, start + Math.min(all.length, MAX_SOURCES_PER_ADAPTER));
-      // Side by side: one after another, twelve slow feeds could use up the pass deadline and starve the date checks that
+      const batch = [...nextRegular(all.filter((f) => !f.directOnly)), ...nextDirect(all.filter((f) => f.directOnly))];
+      // Side by side: one after another, a dozen slow feeds could use up the pass deadline and starve the date checks that
       // run after the adapters (ship-check). A dead feed never hides the others.
-      const bodies = await Promise.allSettled(batch.map((feed) => fetchText(feed.url)));
+      const bodies = await Promise.allSettled(batch.map((feed) => (feed.directOnly ? fetchText(feed.url, { directOnly: true }) : fetchText(feed.url))));
       for (const [i, feed] of batch.entries()) {
         if (bodies[i].status !== 'fulfilled') continue;
         let items;
@@ -542,15 +546,26 @@ function rssAdapter({ feeds } = {}) {
   };
 }
 
-/** Plain sweep of an outlet's own section index page(s): same-host links that name the show. Dates are confirmed per article. */
+/**
+ * Plain sweep of an outlet's own section index page(s): same-host links that name the show. Dates are confirmed per article.
+ * Pinned pages (tier-1 outlets) are read every pass; the rest rotate in the remaining MAX_SOURCES_PER_ADAPTER slots, a
+ * window per pass. The pass's pages are fetched side by side.
+ */
 function sectionIndexAdapter({ outlets } = {}) {
+  let nextWindow = null; let slots = null;
   return {
     name: 'section-index', kind: 'outlet-index', phase: 'cheap',
     async discover({ show, fetchText }) {
       const out = [];
-      for (const o of (outlets ?? defaultLaneSectionIndexes(show)).slice(0, MAX_SOURCES_PER_ADAPTER)) {
-        let html;
-        try { html = await fetchText(o.indexUrl, { directOnly: true }); } catch { continue; }
+      const all = outlets ?? defaultLaneSectionIndexes(show);
+      const pinned = all.filter((o) => o.pinned);
+      const free = Math.max(1, MAX_SOURCES_PER_ADAPTER - pinned.length);
+      if (slots !== free) { slots = free; nextWindow = rotatingWindow(free); }
+      const batch = [...pinned, ...nextWindow(all.filter((o) => !o.pinned))];
+      const pages = await Promise.allSettled(batch.map((o) => fetchText(o.indexUrl, { directOnly: true })));
+      for (const [i, o] of batch.entries()) {
+        if (pages[i].status !== 'fulfilled') continue;
+        const html = pages[i].value;
         const host = hostOf(o.indexUrl);
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
