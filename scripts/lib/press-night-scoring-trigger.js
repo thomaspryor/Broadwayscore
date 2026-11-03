@@ -21,7 +21,7 @@ const CLI = path.join(__dirname, '..', 'score-new-press-night-reviews.js');
 function listUnpushedReviewFiles(cwd) {
   try {
     const out = execFileSync('git', ['log', '--format=', '--name-only', 'origin/main..HEAD'], {
-      cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'],
+      cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024,
     });
     return [...new Set(out.split('\n').map((s) => s.trim()).filter(Boolean))];
   } catch {

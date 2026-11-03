@@ -29,7 +29,7 @@ test('listUnpushedReviewFiles lists files of local commits ahead of origin/main'
     assert.deepEqual(listUnpushedReviewFiles(rt), ['show-a/new.json']);
     assert.deepEqual(listUnpushedReviewFiles(path.join(tmp, 'missing')), [], 'fail-open');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -55,7 +55,7 @@ test('startPressNightScoring hands the file list to the real CLI and cleans up',
     assert.equal(seen.list, 'show-a/x.json\nshow-b/y.json\n');
     assert.deepEqual(fs.readdirSync(runnerTemp), [], 'list file removed');
   } finally {
-    fs.rmSync(runnerTemp, { recursive: true, force: true });
+    fs.rmSync(runnerTemp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
