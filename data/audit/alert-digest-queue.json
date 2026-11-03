@@ -467,5 +467,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T02:31:18.949Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6876-visual-ask-guard",
+    "title": "Landing blocked: rebase red on land/bro-6876-visual-ask-guard",
+    "description": "land.yml did not land land/bro-6876-visual-ask-guard: the rebase gate went red at c595d31e0c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6876-visual-ask-guard @ c595d31e0c (origin/land/bro-6876-visual-ask-guard) → origin/main @ 0999b8ac43 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 448a9ab7a2: Rebasing (1/6) Rebasing (2/6) Rebasing (3/6) error: could not apply 9b353bfe076... fix(lottery,visual-approval): keep named special programs through the scraper sanitize pass; review fixes (BRO-6862, BR Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41566106050",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6876-visual-ask-guard"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c595d31e0ce2261373a1b72c946c4d8c571024e3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41566106050"
+      }
+    ],
+    "queuedAt": "2026-11-03T02:55:08.398Z"
   }
 ]
