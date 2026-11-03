@@ -104,15 +104,24 @@ function newReviewCountFor(show, shows, showReviews) {
  * a score, the confidence gate passes and the show has enough reviews. {ok: true, gate} or
  * {ok: false, why, gate?} with why one of no-score, not-confident, too-few-reviews.
  */
-function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows }) {
+function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows, now = Date.now() }) {
   const pub = slim[show.id];
   if (!pub || !Number.isFinite(pub.cs) || !pub.rc) return { ok: false, why: 'no-score' };
   const showReviews = reviewsByShow[show.id] || [];
-  const gate = evaluateScoreConfidence({
+  const gateWith = floors => evaluateScoreConfidence({
     showReviews, category: show.category, getOutletTier,
     newReviewCount: newReviewCountFor(show, shows, showReviews),
-    floors: C.SCORE_FLOORS[show.category] || null,
+    floors,
   });
+  let gate = gateWith(C.SCORE_FLOORS[show.category] || null);
+  // BRO-6932: fewer reviews will do once every known review is in (COMPLETE_COVERAGE_FLOORS).
+  const alt = C.COMPLETE_COVERAGE_FLOORS && C.COMPLETE_COVERAGE_FLOORS[show.category];
+  if (!gate.ok && alt && pub.cov && pub.cov.state === 'complete'
+    && now - Date.parse(String(show.openingDate).slice(0, 10)) >= alt.minDays * DAY_MS) {
+    const { minDays, ...floors } = alt;
+    const g = gateWith(floors);
+    if (g.ok) gate = { ...g, coverageComplete: true };
+  }
   if (!gate.ok) return { ok: false, why: 'not-confident', gate };
   if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) return { ok: false, why: 'too-few-reviews', gate };
   return { ok: true, gate };
@@ -366,7 +375,7 @@ function roundupWindow(ymd, cfg = C.WEEKLY_ROUNDUP) {
  */
 function roundupCandidates(ymd, set, { shows, reviewsByShow, slim, getOutletTier }, cfg = C.WEEKLY_ROUNDUP) {
   const { first, last } = roundupWindow(ymd, cfg);
-  const ctx = { reviewsByShow, slim, getOutletTier, shows };
+  const ctx = { reviewsByShow, slim, getOutletTier, shows, now: Date.parse(`${ymd}T12:00:00Z`) }; // the post day, for COMPLETE_COVERAGE_FLOORS.minDays
   return shows.filter(s => isEligibleShow(s) && homeSet(s) === set)
     .filter(s => { const o = String(s.openingDate).slice(0, 10); return o >= first && o <= last; })
     .filter(s => scoreSettled(s, ctx).ok)
@@ -483,7 +492,7 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
     const last = addDaysYmd(closing, -cfg.minDays);
     if (last < addDaysYmd(today, -days) || first > addDaysYmd(today, cfg.maxDays)) continue;
     if (!['open', 'closed'].includes(show.status)) continue;
-    const settled = scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows });
+    const settled = scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows, now });
     const score = slim[show.id] && Number.isFinite(slim[show.id].cs) ? Math.round(slim[show.id].cs) : null;
     const firstDay = first < addDaysYmd(today, -days) ? addDaysYmd(today, -days) : first;
     out.push({ show, closing, firstDay, score, settled: settled.ok, done: done.has(`closing-soon:${show.id}`), wouldFire: settled.ok && score !== null && score >= cfg.minScore });
