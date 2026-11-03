@@ -423,5 +423,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T17:21:42.909Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6734-tour-city-onboarding-lists",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6734-tour-city-onboarding-lists",
+    "description": "land.yml did not land land/bro-6734-tour-city-onboarding-lists: the unit-tests-node gate went red at 1eab67e1fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41678750260",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6734-tour-city-onboarding-lists"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1eab67e1fe5238b003117cb4b93d489e5bd146b4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41678750260"
+      }
+    ],
+    "queuedAt": "2026-11-03T17:34:08.668Z"
   }
 ]
