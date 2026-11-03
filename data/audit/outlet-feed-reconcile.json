@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T03:35:09.183Z",
+  "generatedAt": "2026-11-03T04:05:36.349Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -140,12 +140,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "front-row-center",
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "outletId": "theater-pizzazz",
+      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -166,9 +166,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 765,
+  "itemsScanned": 720,
   "matchedGaps": 7,
   "possibleGaps": 9,
   "gaps": [
@@ -209,21 +213,21 @@
       "publishDate": "2026-11-02"
     },
     {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/the-lives-of-others-adelphi-theatre-london/",
-      "headline": "The Lives of Others – Adelphi Theatre, London",
-      "publishDate": "2026-11-02"
-    },
-    {
       "showId": "the-morbs-off-broadway-2026",
       "title": "The Morbs",
       "level": "matched",
       "outletId": "this-week-in-new-york",
       "url": "https://twi-ny.com/2026/11/02/the-morbs-jen-diamond-art-theatre/",
       "headline": "MEMORIES AND DREAMS: THE MORBS AT A.R.T.",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "operawire",
+      "url": "https://operawire.com/cast-change-vanessa-goikoetxea-natalya-romaniw-join-semperoper-dresdens-tosca/",
+      "headline": "Cast Change: Vanessa Goikoetxea &#038; Natalya Romaniw Join Semperoper Dresden&#8217;s &#8216;Tosca&#8217;",
       "publishDate": "2026-11-02"
     },
     {
