@@ -427,7 +427,14 @@ function executeRunScript(action) {
   try {
     const cmd = `node scripts/${script} ${safeArgs}`.trim();
     console.log(`Running: ${cmd}`);
-    execSync(cmd, { cwd: ROOT, stdio: 'inherit', timeout: 300000 }); // 5 min timeout
+    const outcome = require('./lib/ingest-outcome');
+    const outcomeFile = outcome.newOutcomeFile();
+    try {
+      execSync(cmd, { cwd: ROOT, stdio: 'inherit', timeout: 300000, env: { ...process.env, [outcome.ENV]: outcomeFile } }); // 5 min timeout
+      // BRO-6872: an ingest that only filed a retry stub exits 0, but no review reached the site.
+      const stubbed = outcome.stubProblem(outcome.readIngestOutcome(outcomeFile), script);
+      if (stubbed) return { ok: false, reason: stubbed };
+    } finally { outcome.removeOutcomeFile(outcomeFile); }
     return { ok: true, msg: `Ran ${script} successfully` };
   } catch (err) {
     return { ok: false, reason: `Script ${script} failed: ${err.message}` };

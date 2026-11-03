@@ -319,6 +319,7 @@ if (!show) {
     const tp = classifyTimeoutPage({ html, critic: criticArg, showYear: showYearM ? Number(showYearM[1]) : null });
     if (tp.verdict === 'listing_capsule' || tp.verdict === 'wrong_critic') {
       console.log(`⚠️  Skipped: timeout-listing-capsule — ${tp.reason} — ${url}`);
+      require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'skipped', reason: 'timeout-listing-capsule' });
       process.exit(0);
     }
   }
@@ -420,6 +421,7 @@ if (!show) {
     if (requirePublishDate && !publishDateArg) {
       // Expected, not a failure: exiting non-zero here would re-alarm every hourly audit run.
       console.log(`⚠️  Skipped: publish-date-unresolved — fetch failed (${reason}); no retry stub under --require-publish-date — ${url}`);
+      require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'skipped', reason: 'publish-date-unresolved' });
       process.exit(0);
     }
     const { buildRetryStubFields } = require('./lib/submission-retry-stub');
@@ -436,6 +438,8 @@ if (!show) {
       process.exit(1);
     }
     console.log(`⏳ Queued for retry (${reason}): ${stubResult.filepath || stubResult.reason || stubResult.action}`);
+    // BRO-6872: exit 0 keeps hourly callers quiet, but a fix plan must not read a stub as a recovered review.
+    require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'retry-stub', reason });
     process.exit(0);
   };
   if (fetchFailure) writeRetryStubAndExit(fetchFailure);
@@ -575,6 +579,7 @@ if (!show) {
   if (requirePublishDate && !publishDate) {
     // `Skipped: <reason>` is the ingest-skip-classify contract (expected rejection).
     console.log(`⚠️  Skipped: publish-date-unresolved — no publish date on the page and --require-publish-date is set — ${url}`);
+    require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'skipped', reason: 'publish-date-unresolved' });
     process.exit(0);
   }
 
@@ -582,6 +587,7 @@ if (!show) {
     const d = publishDate ? String(publishDate).slice(0, 10) : null;
     if (!d || d < dateWindow[0] || d > dateWindow[1]) {
       console.log(`⏭  Skipped: publish date ${d || 'unknown'} outside --date-window ${dateWindow[0]}..${dateWindow[1]} — ${url}`);
+      require('./lib/ingest-outcome').writeIngestOutcome({ outcome: 'skipped', reason: 'outside-date-window' });
       process.exit(0);
     }
   }
