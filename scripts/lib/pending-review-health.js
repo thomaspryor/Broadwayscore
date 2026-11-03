@@ -179,6 +179,14 @@ function mergePendingRecord(existing, incoming, nowIso = new Date().toISOString(
         'fetchMethod', 'textFetchedAt']) {
         if (existing[k] !== undefined) merged[k] = existing[k];
       }
+      // The page star read with that body (empty-body-retry, BRO-6900), unless
+      // the incoming record brings a rating of its own.
+      if (existing.scoreExtractedFrom === 'scraped-html' && existing.originalScore != null
+        && (incoming == null || incoming.originalScore == null)) {
+        for (const k of ['originalScore', 'originalScoreNormalized', 'originalScoreSource', 'scoreExtractedFrom']) {
+          if (existing[k] !== undefined) merged[k] = existing[k];
+        }
+      }
     }
   }
   if (!merged.firstSeenAt) merged.firstSeenAt = nowIso;

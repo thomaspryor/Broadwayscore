@@ -95,6 +95,14 @@ const THUMB_SCORES = {
   'Up': 80, 'Meh': 60, 'Flat': 60, 'Down': 35
 };
 
+// Spelled-out star ratings. "Rating: Four out of five stars" is the Daily
+// Mail's verdict line (BRO-6900): read its numerator first, and keep the bare
+// "five stars" pattern off its denominator, which read every such review as 5/5.
+const WORD_STAR_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+const GAP = '(?:\\s|&nbsp;|&#160;|<[^>]*>)+';
+const OUT_OF_FIVE_WORD_STARS = new RegExp(`\\b(one|two|three|four|five)${GAP}out${GAP}of${GAP}(?:five|5)${GAP}stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
+const BARE_WORD_STARS = new RegExp(`(?<!out${GAP}of${GAP})\\b(one|two|three|four|five)\\s+stars?\\s*(?:[!.,;:\\)<]|$)`, 'im');
+
 // Star rating to numeric (out of 5)
 function starsToNumeric(filled, total = 5) {
   return Math.round((filled / total) * 100);
@@ -1001,15 +1009,13 @@ function extractUKStarRating(html, text) {
   // at the 75% mark and corrupted iceboy-regional-2026's Allie and the After
   // Party rating (card #806, 2026-08-02).
   {
-    const wordMap = { one: 1, two: 2, three: 3, four: 4, five: 5 };
-    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/gim;
-    for (const source of [html, text]) {
+    for (const pat of [OUT_OF_FIVE_WORD_STARS, BARE_WORD_STARS]) for (const source of [html, text]) {
       const srcLen = source.length;
-      const wsMatches = [...source.matchAll(wordStarPat)];
+      const wsMatches = [...source.matchAll(new RegExp(pat.source, pat.flags + 'g'))];
       for (const wsMatch of wsMatches) {
         const pos = wsMatch.index;
         if (srcLen > 0 && !(pos <= srcLen * 0.15 || pos >= srcLen * 0.85)) continue;
-        const rating = wordMap[wsMatch[1].toLowerCase()];
+        const rating = WORD_STAR_NUM[wsMatch[1].toLowerCase()];
         if (rating) {
           return {
             originalScore: `${rating}/5 stars`,
@@ -1054,7 +1060,7 @@ function extractUKStarRating(html, text) {
   const textPatterns = [
     { re: /(\d(?:\.\d)?)\s*\/\s*5\b/g,            needsAnchor: true  },
     { re: /(\d(?:\.\d)?)\s*out\s*of\s*5\b/gi,    needsAnchor: false },
-    { re: /(?<![\d/]|\d\.)(\d(?:\.\d)?)\s*stars?\b/gi,   needsAnchor: false },
+    { re: /(?<![\d/]|\d\.|out\s+of\s+)(\d(?:\.\d)?)\s*stars?\b/gi,   needsAnchor: false },
   ];
   const len = text.length;
   for (const { re, needsAnchor } of textPatterns) {
@@ -1191,7 +1197,7 @@ function extractGenericStarRating(html, text) {
     // number or the denominator of a fraction/"out of" (handled above), and
     // needs a word boundary after "star(s)" so "1992 starring ..." and
     // "© 2014 StarTribune" are not "2 stars" / "4 stars" (BRO-5295).
-    /(?<!\d|\d\.|\d\s*\/\s*|\d\s*(?:out\s+)?of\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
+    /(?<!\d|\d\.|\d\s*\/\s*|\d\s*(?:out\s+)?of\s+|out\s+of\s+)(\d(?:\.\d)?)\s*stars?\b(?:\s*(?:out\s+of|\/)\s*5)?/i,
     // Unicode stars — visual, unambiguous
     /([★☆]{3,5})/
   ];
@@ -1225,11 +1231,10 @@ function extractGenericStarRating(html, text) {
 
   // Spelled-out star ratings: "Five stars!", "Three Stars</p>"
   {
-    const WORD_TO_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5 };
-    const wordStarPat = /\b(one|two|three|four|five)\s+stars?\s*(?:[!.,;:\)<]|$)/im;
-    const wsMatch = text.match(wordStarPat) || html.match(wordStarPat);
-    if (wsMatch) {
-      const rating = WORD_TO_NUM[wsMatch[1].toLowerCase()];
+    const ws = text.match(OUT_OF_FIVE_WORD_STARS) || html.match(OUT_OF_FIVE_WORD_STARS) ||
+      text.match(BARE_WORD_STARS) || html.match(BARE_WORD_STARS);
+    if (ws) {
+      const rating = WORD_STAR_NUM[ws[1].toLowerCase()];
       if (rating) {
         return {
           originalScore: `${rating}/5 stars`,

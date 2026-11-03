@@ -553,6 +553,66 @@ function extractTheatreWeeklyBody(html) {
   return stripHtml(cut);
 }
 
+/** The articleBody div of a Daily Mail page (balanced), or null. */
+function dailyMailArticleBody(html) {
+  const open = /<div[^>]*itemprop="articleBody"[^>]*>/.exec(String(html || ''));
+  if (!open) return null;
+  const start = open.index + open[0].length;
+  const tagRe = /<div\b[^>]*>|<\/div>/g;
+  tagRe.lastIndex = start;
+  let depth = 1;
+  let m;
+  while ((m = tagRe.exec(html))) {
+    depth += m[0] === '</div>' ? -1 : 1;
+    if (depth === 0) return html.slice(start, m.index);
+  }
+  return html.slice(start);
+}
+
+/**
+ * Daily Mail (dailymail.co.uk, dailymail.com and its subdomains): the review is
+ * the run of <p class="mol-para-with-font"> paragraphs in the articleBody div.
+ * The generic fallbacks read the page's inline scripts instead (120K chars of
+ * JavaScript on a live 2026-10 page), and the heading paragraphs that carry the
+ * verdict, "Rating: Four out of five stars", must survive so the star can be
+ * read (BRO-6900: Murder in the Cathedral, Marmion 4/5, was scored 62 from
+ * text missing that line).
+ */
+function extractDailyMailBody(html) {
+  const body = dailyMailArticleBody(html);
+  if (body == null) return '';
+  return [...body.matchAll(/<p[^>]*class="[^"]*mol-para[^"]*"[^>]*>([\s\S]*?)<\/p>/g)]
+    .map((m) => stripHtml(m[1]).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+    .join('\n\n');
+}
+
+const DM_WORD_STARS = { one: 1, two: 2, three: 3, four: 4, five: 5 };
+
+/**
+ * The distinct star values a Daily Mail article body prints: rating images,
+ * star widgets, star-glyph runs and "Rating: ..." lines. A bundled column
+ * (several shows, one verdict each) prints values that disagree, and its first
+ * star is often another show's; one review printing its star twice (an image
+ * plus a text line, src + data-src) is still one value (BRO-6900).
+ */
+function dailyMailVerdictValues(html) {
+  const body = dailyMailArticleBody(html);
+  if (body == null) return [];
+  const plain = stripHtml(body).replace(/\u00a0/g, ' ');
+  const values = new Set();
+  for (const m of body.matchAll(/rating_showbiz_(\d)/g)) values.add(Number(m[1]));
+  for (const m of body.matchAll(/class="rating-stars[^"]*"[^>]*>([\s\S]*?)<\/p>/g)) {
+    const n = (m[1].match(/rating-star selected/g) || []).length;
+    if (n) values.add(n);
+  }
+  for (const m of plain.matchAll(/★+[☆✩]*/g)) if (m[0].length >= 3) values.add((m[0].match(/★/g) || []).length);
+  for (const m of plain.matchAll(/\b(?:rating|stars?)\s*:?\s*(?:([1-5])\s*\/\s*5|(one|two|three|four|five)\s+(?:out\s+of|stars?))/gi)) {
+    values.add(m[1] ? Number(m[1]) : DM_WORD_STARS[m[2].toLowerCase()]);
+  }
+  return [...values];
+}
+
 /**
  * Nub News (nub.news, hyperlocal UK network, e.g. kingston.nub.news; BRO-5219).
  * The review body is <div id="article_content_block">; nothing usable carries
@@ -1051,6 +1111,14 @@ function extractArticleTextUnchecked(html, hostname, criticHint) {
     }
   }
 
+  // Daily Mail (BRO-6900). Not exclusive: a fetch whose markup lacks the
+  // mol-para run (a proxy's reshaped copy) falls through to the fallbacks
+  // below, which is what produced every stored DM body before this branch.
+  if (host.includes('dailymail.')) {
+    const dmText = extractDailyMailBody(html);
+    if (dmText.length >= 300) return dmText;
+  }
+
   // Zox News theme, detected by markup rather than host (any site on it has
   // the same auto-loaded-next-story bleed). See extractZoxNewsBody.
   const zoxText = extractZoxNewsBody(html);
@@ -1336,4 +1404,4 @@ function isDedicatedExtractorHost(urlOrHost) {
   return DEDICATED_EXTRACTOR_HOSTS.some((d) => h.includes(d));
 }
 
-module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody, extractCurtainUpBody };
+module.exports = { isDedicatedExtractorHost, extractArticleText, extractArticleTextFromUrl, extractPublishDate, stripHtml, extractLsaByline, extractZoxNewsBody, extractVarietyBody, extractNubNewsBody, extractLondonTheatreBody, extractToledoBladeBody, extractCurtainUpBody, extractDailyMailBody, dailyMailVerdictValues };
