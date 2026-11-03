@@ -857,3 +857,25 @@ test('google news searches press titles too, and a press-title-only headline nee
   const unwrapped = asked.filter((u) => u.startsWith('https://news.google.com/rss/articles/')).map((u) => decodeURIComponent(u.split('/articles/')[1]));
   assert.deepEqual(unwrapped, ['Review: 860, Billy Crystal’s grief-stricken Broadway tribute'], 'the running-shoe headline is never unwrapped');
 });
+
+test('DTLI sitemap pages: a title the sitemap has no match for falls back to listed word runs of the title', () => {
+  const sitemapSlugs = new Set(['860-2', 'billy-crystal.700-sundays-reviews', 'a-few-good-men', 'the-crucible-2']);
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, { title: 'Billy Crystal 860' }),
+    ['https://didtheylikeit.com/shows/860-2/'], 'only slugs the sitemap lists, never a guessed bare name');
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, { title: 'The Crucible Revisited' }),
+    ['https://didtheylikeit.com/shows/the-crucible-2/'], 'a leading run works too, longest first');
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, { title: 'The Show' }), [], 'a lone "the" never matches');
+  const common = new Set(['night', 'night-2', 'two', 'mother', 'mother-2', 'mother-3', 'mother-play']);
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs: common }, { title: 'A Moulin Rouge Night' }), [], 'a one-word run without a digit is never tried');
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs: common }, { title: 'Mother Play Revisited' }),
+    ['https://didtheylikeit.com/shows/mother-play/'], 'a multi-word run is tried; the lone common word is not');
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs: new Set(['860-bway']) }, { title: 'Billy Crystal 860' }),
+    ['https://didtheylikeit.com/shows/860-bway/'], 'every DTLI suffix the variant rule knows counts as listed');
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, { title: 'Hamlet' }), [], 'a one-word title has no runs');
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs: new Set(['2', '2-3', 'death-of', 'of-a']) }, { title: 'Death of a Act 2' }), [],
+    'a lone short digit or a run starting or ending on a filler word is never tried');
+  assert.deepEqual(d.dtliSitemapPages(null, { title: 'Billy Crystal 860' }), []);
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, {}), []);
+  assert.deepEqual(d.dtliSitemapPages({ candidates: [{ slug: 'a-few-good-men' }], sitemapSlugs }, { title: 'Billy Crystal 860' }),
+    ['https://didtheylikeit.com/shows/a-few-good-men/'], 'a real title match is used as before; the fallback only runs without one');
+});

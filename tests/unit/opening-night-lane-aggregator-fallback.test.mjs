@@ -73,6 +73,31 @@ test('DTLI: a sitemap miss is not asked again every pass, and a dated hit is kep
   assert.equal(hits, 1);
 });
 
+test('DTLI: a sitemap page dated at another opening is not fetched again; an undated one is retried', async () => {
+  const old = 'https://didtheylikeit.com/shows/860/';
+  const blank = 'https://didtheylikeit.com/shows/860-3/';
+  const asked = []; let lookups = 0;
+  const adapter = d.dtliAdapter({ findInSitemap: async () => { lookups++; return [old, blank]; } });
+  const base = fetchFrom({ 'https://didtheylikeit.com/': '', [old]: dated('2011-11-04T02:00:00Z'), [blank]: '<p>Just a moment...</p>' });
+  const fetchText = async (u) => { asked.push(u); return base(u); };
+  for (let i = 0; i < 11; i++) await adapter.discover({ show: SHOW, fetchText });
+  assert.equal(lookups, 3, 'three sitemap reads in eleven passes');
+  assert.equal(asked.filter((u) => u === old).length, 1, 'the page dated in 2011 is fetched once');
+  assert.equal(asked.filter((u) => u === blank).length, 3, 'the undated page is tried on every sitemap read');
+});
+
+test('DTLI: refused pages free the fetch cap for later sitemap pages', async () => {
+  const olds = [1, 2, 3, 4].map((n) => `https://didtheylikeit.com/shows/old-${n}/`);
+  const right = 'https://didtheylikeit.com/shows/860-2/';
+  const map = { 'https://didtheylikeit.com/': '', [right]: dated('2026-10-21T23:00:00-04:00') };
+  for (const u of olds) map[u] = dated('2011-11-04T02:00:00Z');
+  const asked = [];
+  const base = fetchFrom(map);
+  const adapter = d.dtliAdapter({ findInSitemap: async () => [...olds, right] });
+  for (let i = 0; i < 6; i++) await adapter.discover({ show: SHOW, fetchText: async (u) => { asked.push(u); return base(u); } });
+  assert.ok(asked.includes(right), 'the fifth page is reached on the next sitemap read');
+});
+
 test('DTLI: a failing sitemap is a quiet miss, not an adapter error', async () => {
   const out = await d.dtliAdapter().discover({ show: SHOW, fetchText: fetchFrom({ 'https://didtheylikeit.com/': '' }) });
   assert.deepEqual(out, []);

@@ -339,14 +339,41 @@ function pageDatedNear(html, openingDate, maxDays = FALLBACK_PAGE_MAX_DAYS) {
   return Number.isFinite(when) && Math.abs(when - open) <= maxDays * 86400e3;
 }
 
-/** DTLI show pages the sitemap offers for this show, newest-looking first: "<slug>-2", "<slug>-bway" before "<slug>". */
-function dtliSitemapPages(result) {
+const DTLI_SLUG_SUFFIX = /^-(?:\d{1,2}|bway|broadway|\d{4})$/;
+/**
+ * DTLI show pages the sitemap offers for this show, newest-looking first: "<slug>-2", "<slug>-bway" before "<slug>".
+ * With no title match, falls back to word runs of `show.title` that the sitemap lists (see below).
+ */
+function dtliSitemapPages(result, show) {
   const all = result && result.sitemapSlugs ? [...result.sitemapSlugs] : [];
   const out = [];
-  for (const c of (result && result.candidates) || []) {
-    const variants = all.filter((x) => x.startsWith(`${c.slug}-`) && /^-(?:\d{1,2}|bway|broadway|\d{4})$/.test(x.slice(c.slug.length)))
+  let candidates = (result && result.candidates) || [];
+  // No title match: DTLI may file the show under part of its title ("Billy Crystal 860" is "860-2"). Try the
+  // title's leading and trailing word runs that the sitemap really has, longest first. Each page is still kept only
+  // when it is dated at this opening, so an older show under that short name is never taken. A one-word run must
+  // carry a digit ("860"): a common word ("night", "two") could name another show opening the same week, and a
+  // dated page is admitted with its cited links. Not tried when a title match exists but is dated elsewhere.
+  if (!candidates.length && show && show.title) {
+    const words = require('../dtli-slug-discover').slugify(show.title).split('-').filter(Boolean);
+    const runs = [];
+    for (let n = words.length - 1; n >= 1; n--) runs.push(words.slice(0, n).join('-'), words.slice(words.length - n).join('-'));
+    const has = (slug) => all.some((x) => x === slug || (x.startsWith(`${slug}-`) && DTLI_SLUG_SUFFIX.test(x.slice(slug.length))));
+    // Multi-word: must not end on a filler word ("death-of"), nor start on one other than an article ("of-mice").
+    const filler = /^(the|a|an|and|of|in|on|at|to|for)$/;
+    const distinctive = (r) => {
+      const w = r.split('-');
+      if (w.length === 1) return /\d/.test(r) && r.length >= 3;
+      return !filler.test(w[w.length - 1]) && (/^(the|a|an)$/.test(w[0]) || !filler.test(w[0]));
+    };
+    candidates = runs.filter((r, i) => runs.indexOf(r) === i && distinctive(r) && has(r))
+      .map((slug) => ({ slug, listedOnly: true }));
+  }
+  for (const c of candidates) {
+    const variants = all.filter((x) => x.startsWith(`${c.slug}-`) && DTLI_SLUG_SUFFIX.test(x.slice(c.slug.length)))
       .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
-    for (const slug of [...variants, c.slug]) if (!out.includes(slug)) out.push(slug);
+    // A fallback run gets at most 2 pages, so one run cannot use up the fetch cap before a later run is tried.
+    const pages = c.listedOnly ? [...variants, c.slug].filter((x) => all.includes(x)).slice(0, 2) : [...variants, c.slug];
+    for (const slug of pages) if (!out.includes(slug)) out.push(slug);
   }
   return out.map((slug) => `https://didtheylikeit.com/shows/${slug}/`);
 }
@@ -366,19 +393,22 @@ function dtliAdapter({ homeUrl = 'https://didtheylikeit.com/', findInSitemap } =
       if (!/sitemap_index\.xml$/.test(u) && !indexOk) return { ok: false, body: '' };
       try { const body = await fetchText(u); const ok = Boolean(body); if (/sitemap_index\.xml$/.test(u)) indexOk = ok; return { ok, body: body || '' }; } catch { return { ok: false, body: '' }; }
     };
-    return dtliSitemapPages(await dtli.discoverDtliSlug(show, { fetchSlugs: () => dtli.fetchDtliShowSlugIndex({ httpGet }) }));
+    return dtliSitemapPages(await dtli.discoverDtliSlug(show, { fetchSlugs: () => dtli.fetchDtliShowSlugIndex({ httpGet }) }), show);
   });
-  let found = null; let missesSince = 0; let asked = false;
+  // A page dated at another opening keeps that publish date, so it is not fetched again on later sitemap retries.
+  // An undated body (a challenge or error page) stays retryable.
+  let found = null; let missesSince = 0; let asked = false; const refused = new Set();
   const fromSitemap = async (show, fetchText) => {
     if (found) return found;
     if (asked && ++missesSince < DTLI_SITEMAP_RETRY_PASSES) return null;
     asked = true; missesSince = 0;
     let pages = [];
     try { pages = [].concat((await lookup(show, fetchText)) || []); } catch { pages = []; }
-    for (const page of pages.slice(0, DTLI_SITEMAP_MAX_PAGES)) {
+    for (const page of pages.filter((p) => !refused.has(p)).slice(0, DTLI_SITEMAP_MAX_PAGES)) {
       let html = '';
       try { html = await fetchText(page); } catch { continue; }
       if (pageDatedNear(html, show.openingDate)) { found = { page, html }; return found; }
+      if (html && extractPublishDate(html)) refused.add(page);
     }
     return null;
   };
