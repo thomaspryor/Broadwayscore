@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6900-b",
   "planId": "bb1d97a6-3193-4166-a905-78f5a2179d32",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T17:15:42.499Z",
   "submitter": {
     "name": null,
@@ -104,5 +104,59 @@
         "description": "BRO-6900: provisional machine value copied from the 5/5 misread; set to the corrected 4/5 (stays provisional)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T20:34:45.909Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-comedy-about-spies-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"5/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-drifters-girl-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-importance-of-being-earnest-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-mirror-and-the-light-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-milk-wood-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "unicorn-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "we-will-rock-you-west-end-2023/daily-mail--patrick-marmion.json originalScore: null -> \"1/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "who-killed-marilyn-off-west-end-2026/daily-mail--patrick-marmion.json originalScore: null -> \"2/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json originalScore: \"5/5 stars\" -> \"4/5\" (retracted originalScoreCorrectedFrom, originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "schmigadoon-2026/la-voce-di-new-york--elise-nussbaum.json humanReviewScore: 100 -> 80"
+    }
+  ],
+  "executedIn": "ci"
 }
