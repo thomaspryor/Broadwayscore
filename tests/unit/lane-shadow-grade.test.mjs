@@ -192,3 +192,96 @@ test('the grade sets aside already-live rows on both sides and reads undated row
   assert.equal(rep.reviews[3].onTimeVerdict, undefined, 'the report itself is not modified');
   assert.match(grade.gradeMarkdown(g), /Not gated/);
 });
+
+// BRO-6872 finding 5: the 2026-10 replays flagged nytg 62/48 and theatermania 62/48 as 14-point gaps on complete text.
+// Both site rows are ensemble scores whose own three models were 18 and 13 points apart, so a rescore of the SAME text
+// moves that far: a gap inside the answer key's spread is model variance, not a lane text defect.
+test('a score gap inside the answer key’s own ensemble spread is not counted against the lane', () => {
+  const url = 'https://www.newyorktheatreguide.com/reviews/x';
+  const rep = { ...REPORT, reviews: [rev('both', { url, outlet: 'nytg', critic: 'A B', laneScore: 62, siteScore: 48, laneTextChars: 5000, laneContentTier: 'complete' })] };
+  const spread = new Map([[canonicalUrl(url), { spread: 18, agreement: '2/3 models agree: Negative', confidence: 'medium', source: 'llm-v6' }]]);
+  const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: spread });
+  assert.deepEqual(g.scoreGaps.map((d) => d.delta), [14], 'still reported');
+  assert.equal(g.scoreGaps[0].siteScoreSpread, 18);
+  assert.equal(g.scoreGaps[0].beyondEnsemble, false);
+  assert.deepEqual(g.scoreGapsBeyondEnsemble, []);
+  assert.ok(g.checks.find((c) => c.name === 'scoreGapsBeyondEnsemble').pass);
+  assert.match(grade.gradeMarkdown(g), /within ensemble/);
+});
+
+test('a gap wider than the spread, and a row with no spread at all, still count', () => {
+  const tight = 'https://www.newyorktheatreguide.com/reviews/tight';
+  const none = 'https://www.vulture.com/2026/10/no-spread.html';
+  const rep = { ...REPORT, reviews: [
+    rev('both', { url: tight, outlet: 'nytg', laneScore: 62, siteScore: 48 }),
+    rev('both', { url: none, outlet: 'vulture', laneScore: 80, siteScore: 60 }),
+  ] };
+  const spread = new Map([[canonicalUrl(tight), { spread: 4, agreement: '3/3 models agree: Positive', confidence: 'high', source: 'llm-v6' }]]);
+  const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: spread });
+  assert.deepEqual(g.scoreGapsBeyondEnsemble.map((d) => Math.abs(d.delta)).sort((a, b) => a - b), [14, 20]);
+  assert.equal(g.scoreGapsBeyondEnsemble.find((d) => d.url === none).siteScoreSpread, null, 'no spread: the flat 8-point rule');
+  assert.equal(g.checks.find((c) => c.name === 'scoreGapsBeyondEnsemble').pass, false, 'two beyond-ensemble gaps fail the gate');
+});
+
+test('loadSiteScoreSpread reads the ensemble spread of the live answer key (skips without local core data)', (t) => {
+  const fs = require('node:fs'); const path = require('node:path');
+  const { fileURLToPath } = require('node:url');
+  const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const p = path.join(root, 'data', 'reviews.json');
+  if (!fs.existsSync(p)) { t.skip('no local core data'); return; }
+  const m = grade.loadSiteScoreSpread(p, 'a-few-good-men-2026');
+  assert.ok(m.size > 0, 'the show has ensemble-scored reviews');
+  for (const v of m.values()) assert.ok(Number.isFinite(v.spread) && v.spread >= 0, 'every entry carries a numeric spread');
+  // An unknown show has no entries rather than throwing.
+  assert.equal(grade.loadSiteScoreSpread(p, 'no-such-show-9999').size, 0);
+});
+
+// Review finding: the spread rule needs the GAP_PTS floor FIRST. 1,026 llm rows in reviews.json have scoreDelta 0 and
+// 12,921 have 3 or less, and a fresh lane ensemble lands a few points off the same text, so without the floor two
+// such rows would fail the whole replay on noise the meanAbsScoreDiff check deliberately allows.
+test('a small gap never counts, even against a row whose models agreed exactly', () => {
+  const tight = 'https://www.nytimes.com/2026/10/29/theater/zero-spread.html';
+  const rep = { ...REPORT, reviews: [rev('both', { url: tight, outlet: 'nytimes', laneScore: 69, siteScore: 66, laneContentTier: 'complete' })] };
+  const spread = new Map([[canonicalUrl(tight), { spread: 0, agreement: '3/3 models agree: Mixed', confidence: 'high', source: 'llm-v6' }]]);
+  const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: spread });
+  assert.deepEqual(g.scoreGaps, [], '3 points is under the reporting bar');
+  assert.deepEqual(g.scoreGapsBeyondEnsemble, []);
+  assert.ok(g.checks.find((c) => c.name === 'scoreGapsBeyondEnsemble').pass);
+  assert.deepEqual(g.siteScoreSpread, { reviews: 1, matched: 1, ofDiffs: 1 });
+  assert.match(grade.gradeMarkdown(g), /spread known for 1 of 1/);
+});
+
+// The hole the reviewers pressed on: a paywall teaser scored 15 points off a row with an 18-point spread would be
+// excused as model variance. Incomplete lane text is evidence of a TEXT difference, so the spread cannot excuse it.
+test('a wide gap on text the lane did not get whole counts however wide the spread', () => {
+  const url = 'https://www.wsj.com/arts-culture/teaser.html';
+  const rep = { ...REPORT, reviews: [rev('both', { url, outlet: 'wsj', laneScore: 63, siteScore: 48, laneTextChars: 645, laneContentTier: 'truncated' })] };
+  const spread = new Map([[canonicalUrl(url), { spread: 18, agreement: '2/3 models agree: Negative', confidence: 'medium', source: 'llm-v6' }]]);
+  const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: spread });
+  assert.deepEqual(g.scoreGapsBeyondEnsemble.map((d) => d.delta), [15]);
+  assert.equal(g.checks.find((c) => c.name === 'scoreGapsBeyondEnsemble').pass, true, 'one such row is within the threshold');
+  // The same gap on complete text is model variance.
+  const whole = { ...REPORT, reviews: [rev('both', { url, outlet: 'wsj', laneScore: 63, siteScore: 48, laneTextChars: 7000, laneContentTier: 'complete' })] };
+  assert.deepEqual(grade.gradeShadowReport(whole, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: spread }).scoreGapsBeyondEnsemble, []);
+});
+
+test('duplicate rows for one URL keep the narrower spread, and the flat rule needs no reviews.json', () => {
+  const u = 'https://www.theatermania.com/reviews/dupe';
+  const rows = [
+    { showId: 's', url: u, scoreSource: 'llm-v6', scoreDelta: 20, modelAgreement: 'a', scoreConfidence: 'low' },
+    { showId: 's', url: `${u}?utm_source=x`, scoreSource: 'llm-v6', scoreDelta: 6, modelAgreement: 'b', scoreConfidence: 'high' },
+    { showId: 's', url: 'https://x.test/star', scoreSource: 'star-rating', scoreDelta: 30 },
+    { showId: 'other', url: 'https://x.test/other', scoreSource: 'llm-v6', scoreDelta: 2 },
+  ];
+  const fs = require('node:fs'); const os = require('node:os'); const path = require('node:path');
+  const p = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'spread-')), 'reviews.json');
+  fs.writeFileSync(p, JSON.stringify(rows));
+  const m = grade.loadSiteScoreSpread(p, 's');
+  assert.equal(m.get(canonicalUrl(u)).spread, 6, 'the narrower of the two duplicate rows');
+  assert.equal(m.size, 1, 'a star-rated row carries no ensemble spread');
+  // No file at all: an empty map, and the grade falls back to the flat rule without throwing.
+  const none = grade.loadSiteScoreSpread(path.join(path.dirname(p), 'missing.json'), 's');
+  assert.equal(none.size, 0);
+  const g = grade.gradeShadowReport(REPORT, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: none });
+  assert.deepEqual(g.scoreGapsBeyondEnsemble.map((d) => d.delta), [8], 'the flat rule gates the 8-point gap it reports');
+});

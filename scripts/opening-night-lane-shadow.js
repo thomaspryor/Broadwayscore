@@ -88,6 +88,9 @@ async function main() {
   // The regular pipeline's first sighting of each site review (firstSeenAt, sources), read from the private review
   // files (metadata only, the text is dropped), settles undated pages and reader submissions in the grade. A failed
   // read grades by publish dates alone and says so.
+  // The answer key's own ensemble spread per review: a lane/site gap smaller than it is model variance on the same
+  // text, not a lane defect (BRO-6872). Absent reviews.json, every gap falls back to the flat GAP_PTS rule.
+  const siteScoreSpread = replay ? grader.loadSiteScoreSpread(path.join(repoDir, 'data', 'reviews.json'), showId) : null;
   const siteMeta = replay ? await shadow.loadSiteMeta({ repoDir, showId, token: env.REVIEW_TEXTS_TOKEN }).catch((e) => { console.error(`shadow: site review metadata unavailable (${e.message}); grading by publish dates only`); return null; }) : null;
   const startedAt = now();
   let result = null; let endedAt = null;
@@ -95,7 +98,7 @@ async function main() {
     const rep = shadow.buildShadowReport({ show, night, ledgerDir, scores: scores.snapshot(), rows, live: live.snapshot(), startedAt, endedAt, result });
     const md = shadow.writeShadowReport(out, rep);
     if (!replay) return md;
-    return md + grader.writeGrade(out, grader.gradeShadowReport(rep, { replayAnchorAt: replay.anchorAt, sandbox: site.live(), siteMeta }));
+    return md + grader.writeGrade(out, grader.gradeShadowReport(rep, { replayAnchorAt: replay.anchorAt, sandbox: site.live(), siteMeta, siteScoreSpread }));
   };
   await live.poll();
   const timer = setInterval(() => {
