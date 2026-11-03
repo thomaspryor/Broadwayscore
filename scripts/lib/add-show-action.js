@@ -106,7 +106,7 @@ function newRowDuplicate(shows, show, distinctFrom, { ticketOnly = false } = {})
   return null;
 }
 
-function applyAddShow(shows, action, { isRetired } = {}) {
+function applyAddShow(shows, action, { isRetired, root } = {}) {
   const show = action && action.show;
   if (!show || typeof show !== 'object') return { ok: false, reason: 'add-show: missing show object' };
   // A Broadway production announced before its theater is booked has no venue yet
@@ -127,6 +127,15 @@ function applyAddShow(shows, action, { isRetired } = {}) {
   const retired = typeof isRetired === 'function' ? isRetired(show.id) : require('./retired-show-ids').isRetiredId(show.id);
   if (retired) return { ok: false, reason: `add-show: id "${show.id}" is in the retired-show registry (data/retired-show-ids.json); unretire it first if this is a deliberate re-add` };
   if (shows.some(s => s.slug === show.slug)) return { ok: false, reason: `add-show: slug "${show.slug}" already exists` };
+  // BRO-6881: a pointer to art that is not on disk fails validate-data --strict the moment the row lands
+  // (5 LA regional rows, BRO-6855). Given a repo root, refuse local pointers whose file is absent.
+  if (root && show.images && typeof show.images === 'object') {
+    for (const [k, v] of Object.entries(show.images)) {
+      if (typeof v === 'string' && v.startsWith('/images/') && !require('fs').existsSync(require('path').join(root, 'public', v))) {
+        return { ok: false, reason: `add-show: images.${k} ${v} is not on disk; land the art with the plan or leave images.${k} unset` };
+      }
+    }
+  }
 
   // Write-time duplicate gate (BRO-5789): audit-duplicate-shows.js found these
   // pairs only after the row shipped. Same detectors, run for the new row only.
