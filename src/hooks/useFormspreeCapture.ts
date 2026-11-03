@@ -3,7 +3,9 @@
 import { useState, useCallback, useEffect } from 'react';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
+import { usePathname } from 'next/navigation';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
+import { buildSignupBody } from '@/lib/signup-city';
 import { isFormspreeSubscribed, SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_FOLLOW_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_FOLLOW_FORM_ID || '';
@@ -18,6 +20,7 @@ interface FormspreeCaptureOptions {
   showId?: string;
   showTitle?: string;
   market?: Market;  // Override auto-detection from pathname
+  city?: string | null;    // Metro slug of the show being viewed (local shows); city hub pages are read from the pathname
 }
 
 interface FormspreeCaptureResult {
@@ -33,6 +36,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
   const marketId = useCurrentMarket();
+  const pathname = usePathname();
 
   // Infer market from URL pathname (including show slugs), with optional override
   const market: Market = options.market || (marketId === 'west-end' || marketId === 'off-west-end' ? 'west-end' : 'broadway');
@@ -77,17 +81,18 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
     }
 
     try {
-      const body: Record<string, string> = {
-        email: email.toLowerCase().trim(),
+      const body = buildSignupBody({
+        email,
         source: options.source,
         market,
         page: typeof window !== 'undefined' ? window.location.pathname : '/',
-      };
-      if (extra?.firstName) body.firstName = extra.firstName;
-      if (!isSubscriber && options.showId) {
-        body.showId = options.showId;
-        if (options.showTitle) body.showTitle = options.showTitle;
-      }
+        pathname,
+        city: options.city,
+        firstName: extra?.firstName,
+        showId: options.showId,
+        showTitle: options.showTitle,
+        isSubscriber,
+      });
 
       const res = await fetch(`https://formspree.io/f/${formId}`, {
         method: 'POST',
@@ -115,7 +120,7 @@ export function useFormspreeCapture(options: FormspreeCaptureOptions): Formspree
       setErrorMessage('Network error. Please try again.');
       return false;
     }
-  }, [options.source, options.userGroup, options.showId, options.showTitle, market]);
+  }, [options.source, options.userGroup, options.showId, options.showTitle, options.city, pathname, market]);
 
   return { status, errorMessage, submit, isSubscribed, market };
 }

@@ -30,6 +30,7 @@
  */
 
 import { isFormspreeSubscribed, SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
+import { buildSignupBody } from '@/lib/signup-city';
 
 const FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 
@@ -78,12 +79,14 @@ export async function autoSubscribeOnSignIn(email: string): Promise<void> {
       method: 'POST',
       keepalive: true,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: email.toLowerCase().trim(),
+      body: JSON.stringify(buildSignupBody({
+        email,
         source: 'auth-auto',
         market: 'broadway',
         page: typeof window !== 'undefined' ? window.location.pathname : '/',
-      }),
+        pathname: typeof window !== 'undefined' ? window.location.pathname : '/',
+        isSubscriber: true,
+      })),
     });
     if (!res.ok) {
       // Leave flags unset — a later sign-in retries. Popups are still

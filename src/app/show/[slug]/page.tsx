@@ -1147,7 +1147,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
 
       {/* Follow Show Banner */}
       {show.status !== 'closed' && (
-        <ShowFollowBanner showId={show.id} showTitle={show.title} />
+        <ShowFollowBanner showId={show.id} showTitle={show.title} city={show.city} />
       )}
     </>
   );
