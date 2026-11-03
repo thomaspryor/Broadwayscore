@@ -17,7 +17,8 @@
  *   node scripts/score-new-press-night-reviews.js --files=<path-list-file> [--dry-run]
  * Env:
  *   GITHUB_TOKEN, REVIEW_TEXTS_TOKEN  dispatch tokens (second is the fallback on 401/403/404)
- *   PRESS_NIGHT_SCORING_DISPATCH_DISABLED=true  kill switch
+ *   PRESS_NIGHT_SCORING_DISPATCH_DISABLED=true  kill switch; also read as a repo
+ *     Actions variable of the same name, so it works without a code change
  */
 'use strict';
 
@@ -46,6 +47,39 @@ async function listScoringRuns(token) {
   const url = `https://api.github.com/repos/${repo}/actions/workflows/llm-ensemble-score.yml/runs?per_page=50`;
   const body = await fetchGitHubJSON(url, { token, caller: 'score-new-press-night-reviews' });
   return (body && body.workflow_runs) || [];
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// Repo Actions variable kill switch. Read only when there is something to
+// dispatch. An unreadable variable means "not disabled" (the env var still works).
+async function disabledByRepoVariable(tokens) {
+  const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
+  const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
+  for (const token of tokens) {
+    try {
+      const v = await fetchGitHubJSON(`https://api.github.com/repos/${repo}/actions/variables/PRESS_NIGHT_SCORING_DISPATCH_DISABLED`, { token, caller: 'score-new-press-night-reviews' });
+      return String(v && v.value).trim() === 'true';
+    } catch (e) {
+      if (e && e.status === 404) return false;
+    }
+  }
+  return false;
+}
+
+// 401/403/404: try the next token. 429/5xx/network: retry the same token.
+async function dispatchWithRetry(dispatchRescore, showId, tokens) {
+  let result = null;
+  for (const token of tokens) {
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      result = await dispatchRescore(showId, { reason: LANE_REASON, token });
+      if (result.ok) return result;
+      const err = String(result.error || '');
+      if (/^(401|403|404)\b/.test(err)) break;
+      if (attempt < 3) await sleep(attempt * 5000);
+    }
+  }
+  return result;
 }
 
 async function main() {
@@ -86,24 +120,25 @@ async function main() {
   const tokens = [process.env.GITHUB_TOKEN, process.env.REVIEW_TEXTS_TOKEN].filter(Boolean);
   if (tokens.length === 0) { log('::warning::no GITHUB_TOKEN/REVIEW_TEXTS_TOKEN; cannot dispatch scoring'); return; }
 
+  if (await disabledByRepoVariable([process.env.REVIEW_TEXTS_TOKEN, process.env.GITHUB_TOKEN].filter(Boolean))) {
+    log('disabled by repo variable PRESS_NIGHT_SCORING_DISPATCH_DISABLED');
+    return;
+  }
+
   let runs = [];
   try {
     runs = await listScoringRuns(tokens[0]);
   } catch (e) {
-    // Fail open: an extra dispatch is absorbed by the per-show lane.
-    log(`::warning::could not list scoring runs (${String(e.message).slice(0, 120)}); dispatching without the waiting-run check`);
+    // Fail open: the per-show lane absorbs duplicates; the cap just can't apply.
+    log(`::warning::could not list scoring runs (${String(e.message).slice(0, 120)}); dispatching without the hourly cap`);
   }
-  const { dispatch, skipped } = lib.dropShowsWithWaitingRun(selected, runs);
-  for (const s of skipped) log(`  ${s.showId}: a scoring run is already waiting to start; it will see this push`);
+  const { dispatch, capped } = lib.capRecentDispatches(selected, runs);
+  for (const s of capped) log(`::warning::${s.showId}: ${lib.MAX_RUNS_PER_HOUR}+ scoring runs in the last hour; not dispatching again (verify-all-scored keeps watching)`);
 
   const { dispatchRescore } = require('./lib/dispatch-rescore');
   for (const s of dispatch) {
     if (dryRun) { log(`  [dry-run] would dispatch llm-ensemble-score.yml for ${s.showId}`); continue; }
-    let result = null;
-    for (const token of tokens) {
-      result = await dispatchRescore(s.showId, { reason: LANE_REASON, token });
-      if (result.ok || !/^(401|403|404)\b/.test(String(result.error || ''))) break;
-    }
+    const result = await dispatchWithRetry(dispatchRescore, s.showId, tokens);
     if (result && result.ok) log(`  dispatched llm-ensemble-score.yml for ${s.showId}`);
     else log(`::warning::scoring dispatch failed for ${s.showId}: ${result && result.error}`);
   }

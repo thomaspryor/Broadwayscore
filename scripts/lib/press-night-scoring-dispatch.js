@@ -24,8 +24,11 @@
  *   - only files rebuild would include, that have no score rebuild would use,
  *     and that the scorer would actually pick up (verify-all-scored.js's three
  *     predicates, reused as-is)
- *   - not when a scoring run for that show is already waiting to start: it
- *     checks out after this push and will see the file
+ *   - at most MAX_RUNS_PER_HOUR scoring runs per show in the last hour (a
+ *     file the scorer keeps failing on, re-pushed by rebuilds, must not loop).
+ *     Duplicate dispatches below the cap are absorbed by the per-show lane
+ *     (one running, one pending), so no "already waiting" check: a waiting
+ *     run can be a dry run or another lane, and skipping on it would be silent.
  */
 
 const path = require('path');
@@ -42,7 +45,7 @@ function showIdsFromRunTitle(title) {
   return title.slice(i + 3).split(',').map((s) => s.trim()).filter(Boolean);
 }
 
-const WAITING_STATUSES = new Set(['queued', 'waiting', 'pending', 'requested']);
+const MAX_RUNS_PER_HOUR = 4;
 
 /**
  * Parse a changed-path list into { showId, file } pairs. Paths are relative to
@@ -99,16 +102,22 @@ function selectShowsNeedingScoring({ changed, shows, now = new Date(), evidence 
   return [...result.entries()].map(([showId, files]) => ({ showId, files }));
 }
 
-/** Drop shows that already have a scoring run waiting to start. */
-function dropShowsWithWaitingRun(selected, runs) {
-  const waiting = new Set();
+/**
+ * Split selected shows into those to dispatch and those over the hourly cap.
+ * `runs` are llm-ensemble-score.yml runs (GitHub API shape: display_title,
+ * created_at); only runs naming the show count.
+ */
+function capRecentDispatches(selected, runs, { now = new Date(), windowMs = 60 * 60 * 1000, max = MAX_RUNS_PER_HOUR } = {}) {
+  const since = now.getTime() - windowMs;
+  const recent = new Map();
   for (const r of runs || []) {
-    if (!r || !WAITING_STATUSES.has(r.status)) continue;
-    for (const id of showIdsFromRunTitle(r.display_title || r.name)) waiting.add(id);
+    const t = Date.parse(r && r.created_at);
+    if (!Number.isFinite(t) || t < since) continue;
+    for (const id of showIdsFromRunTitle(r.display_title || r.name)) recent.set(id, (recent.get(id) || 0) + 1);
   }
   return {
-    dispatch: selected.filter((s) => !waiting.has(s.showId)),
-    skipped: selected.filter((s) => waiting.has(s.showId)),
+    dispatch: selected.filter((s) => (recent.get(s.showId) || 0) < max),
+    capped: selected.filter((s) => (recent.get(s.showId) || 0) >= max),
   };
 }
 
@@ -116,6 +125,6 @@ module.exports = {
   showIdsFromRunTitle,
   parseChangedFiles,
   selectShowsNeedingScoring,
-  dropShowsWithWaitingRun,
-  WAITING_STATUSES,
+  capRecentDispatches,
+  MAX_RUNS_PER_HOUR,
 };

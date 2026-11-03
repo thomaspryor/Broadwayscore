@@ -31,7 +31,7 @@ function listUnpushedReviewFiles(cwd) {
 
 /**
  * Run score-new-press-night-reviews.js for these files. Synchronous with a
- * 2-minute cap so a caller's checkpoint cadence is bounded. Returns true when
+ * 90-second cap so a caller's checkpoint cadence is bounded. Returns true when
  * the CLI ran (it is advisory and always exits 0).
  */
 function startPressNightScoring(files, { env = process.env, spawn = spawnSync } = {}) {
@@ -40,7 +40,7 @@ function startPressNightScoring(files, { env = process.env, spawn = spawnSync } 
   try {
     listFile = path.join(env.RUNNER_TEMP || os.tmpdir(), `press-night-scoring-${process.pid}-${Date.now()}.txt`);
     fs.writeFileSync(listFile, `${files.join('\n')}\n`);
-    const r = spawn(process.execPath, [CLI, `--files=${listFile}`], { env, stdio: 'inherit', timeout: 120000 });
+    const r = spawn(process.execPath, [CLI, `--files=${listFile}`], { env, stdio: 'inherit', timeout: 90000 });
     return !r.error;
   } catch {
     return false;

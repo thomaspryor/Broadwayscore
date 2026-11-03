@@ -38,14 +38,20 @@ runs:
         # checkpoint etc., scripts/lib/review-texts-pushed-marker.js) already
         # landed review-texts changes, so this job counts as having pushed even
         # if nothing is left to push below. Written first: later steps exit early.
+        # BRO-6886: a list left by an earlier call whose push failed (or that opted
+        # out of the scoring dispatch) must not leak into this call's dispatch.
+        if [ -n "${RUNNER_TEMP:-}" ]; then rm -f "${RUNNER_TEMP}/review-texts-pushed-files.txt"; fi
         if [ -n "${RUNNER_TEMP:-}" ] && [ -f "${RUNNER_TEMP}/review-texts-pushed.marker" ]; then
           echo "push-review-texts: earlier in-job review-texts push recorded; reporting pushed=true"
           printf 'pushed=true\n' >> "$GITHUB_OUTPUT"
           # BRO-6886: those mid-run pushes skipped this action, so list every file
-          # changed since the job's first checkout (oldest reflog entry) for the
-          # post-push scoring dispatch below. Over-inclusion is harmless there.
-          JOB_START=$(git reflog --format=%H 2>/dev/null | tail -1) || JOB_START=""
-          [ -z "$JOB_START" ] || git diff --name-only "$JOB_START" HEAD >> "${RUNNER_TEMP}/review-texts-pushed-files.txt" 2>/dev/null || true
+          # changed since the last listed point (first call: the clone SHA that
+          # checkout-review-texts records, else the oldest reflog entry) for the
+          # post-push scoring dispatch below, then move that point to HEAD so a
+          # later call in this job does not list the same files again.
+          LIST_BASE=$(cat "${RUNNER_TEMP}/review-texts-scoring-base" 2>/dev/null || cat "${RUNNER_TEMP}/review-texts-checkout-sha" 2>/dev/null || git reflog --format=%H 2>/dev/null | tail -1) || LIST_BASE=""
+          [ -z "$LIST_BASE" ] || git diff --name-only "$LIST_BASE" HEAD >> "${RUNNER_TEMP}/review-texts-pushed-files.txt" 2>/dev/null || true
+          git rev-parse HEAD > "${RUNNER_TEMP}/review-texts-scoring-base" 2>/dev/null || true
         fi
         # Configure git for this nested repo
         git config user.name "GitHub Action"
@@ -696,3 +702,4 @@ runs:
           || echo "::warning::score-new-press-night-reviews did not finish (advisory)"
         # A later call in the same job must not re-dispatch for these files.
         rm -f "$LIST"
+        git -C "${GITHUB_WORKSPACE}/data/review-texts" rev-parse HEAD > "${RUNNER_TEMP:-/tmp}/review-texts-scoring-base" 2>/dev/null || true

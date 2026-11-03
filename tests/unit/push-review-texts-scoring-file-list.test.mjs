@@ -107,6 +107,25 @@ test('nothing to push leaves no list', () => {
   } finally { cleanup(s); }
 });
 
+test('a stale list from an earlier failed call is cleared, and a second call does not re-list files', () => {
+  const s = setup();
+  try {
+    fs.writeFileSync(s.list, 'show-z/stale.json\n');
+    fs.writeFileSync(path.join(s.rt, 'show-a', 'first.json'), '{"f":1}\n');
+    let r = runAction(s);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.deepEqual(listed(s), ['show-a/first.json']);
+    // the post-push dispatch step consumes the list and records the base
+    fs.rmSync(s.list);
+    fs.writeFileSync(path.join(s.runnerTemp, 'review-texts-scoring-base'), git(s.rt, 'rev-parse', 'HEAD') + '\n');
+    fs.writeFileSync(path.join(s.runnerTemp, 'review-texts-pushed.marker'), 'x');
+    fs.writeFileSync(path.join(s.rt, 'show-a', 'second.json'), '{"s":1}\n');
+    r = runAction(s);
+    assert.equal(r.status, 0, r.stdout + r.stderr);
+    assert.deepEqual(listed(s), ['show-a/second.json']);
+  } finally { cleanup(s); }
+});
+
 test('the dispatch step runs only after a successful push and calls the real script', () => {
   const d = action.runs.steps.find((st) => /BRO-6886/.test(st.name || ''));
   assert.ok(d, 'dispatch step exists');
@@ -118,6 +137,13 @@ test('the dispatch step runs only after a successful push and calls the real scr
 
 test('the scoring workflow opts out, so it never re-dispatches itself', () => {
   const wf = yaml.load(fs.readFileSync(path.join(ROOT, '.github/workflows/llm-ensemble-score.yml'), 'utf8'));
+  const uses = Object.values(wf.jobs).flatMap((j) => j.steps || []).filter((st) => st.uses === './.github/actions/push-review-texts');
+  assert.ok(uses.length > 0);
+  for (const st of uses) assert.equal(String(st.with && st.with.dispatch_scoring), 'false');
+});
+
+test('Opening Night Express opts out too (it scores the files it pushes itself)', () => {
+  const wf = yaml.load(fs.readFileSync(path.join(ROOT, '.github/workflows/opening-night-express.yml'), 'utf8'));
   const uses = Object.values(wf.jobs).flatMap((j) => j.steps || []).filter((st) => st.uses === './.github/actions/push-review-texts');
   assert.ok(uses.length > 0);
   for (const st of uses) assert.equal(String(st.with && st.with.dispatch_scoring), 'false');

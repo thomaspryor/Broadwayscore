@@ -100,14 +100,22 @@ test('showIdsFromRunTitle: exact ids, multi-show, no title suffix', () => {
   assert.deepEqual(lib.showIdsFromRunTitle(undefined), []);
 });
 
-test('waiting run for the same show suppresses dispatch; running or substring-named runs do not', () => {
+test('hourly cap: 4 recent runs naming a show stop re-dispatch; old, substring and queued-other runs do not count', () => {
+  const now = new Date('2026-11-03T05:00:00Z');
   const selected = [{ showId: 'foo', files: ['x.json'] }, { showId: 'bar', files: ['y.json'] }];
+  const at = (min) => new Date(now.getTime() - min * 60000).toISOString();
   const runs = [
-    { status: 'queued', display_title: 'LLM Ensemble Score Reviews — foo-2' }, // substring only
-    { status: 'in_progress', display_title: 'LLM Ensemble Score Reviews — foo' }, // checked out before this push
-    { status: 'pending', display_title: 'LLM Ensemble Score Reviews — bar' },
+    ...[5, 15, 25, 35].map((m) => ({ created_at: at(m), display_title: 'LLM Ensemble Score Reviews — bar' })),
+    { created_at: at(5), display_title: 'LLM Ensemble Score Reviews — foo-2' }, // substring only
+    { created_at: at(5), display_title: 'LLM Ensemble Score Reviews — foo' },
+    { created_at: at(10), display_title: 'LLM Ensemble Score Reviews — foo' },
+    { created_at: at(15), display_title: 'LLM Ensemble Score Reviews — foo,baz' },
+    { created_at: at(90), display_title: 'LLM Ensemble Score Reviews — foo' }, // outside the hour
+    { created_at: at(3), display_title: 'LLM Ensemble Score Reviews' }, // unscoped batch run
   ];
-  const { dispatch, skipped } = lib.dropShowsWithWaitingRun(selected, runs);
+  const { dispatch, capped } = lib.capRecentDispatches(selected, runs, { now });
   assert.deepEqual(dispatch.map((s) => s.showId), ['foo']);
-  assert.deepEqual(skipped.map((s) => s.showId), ['bar']);
+  assert.deepEqual(capped.map((s) => s.showId), ['bar']);
+  assert.equal(lib.MAX_RUNS_PER_HOUR, 4);
+  assert.deepEqual(lib.capRecentDispatches(selected, [], { now }).dispatch.length, 2, 'no run list = no cap (fail open)');
 });

@@ -376,6 +376,8 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Opening Night Express — review texts for ${{ inputs.show_id }}"
+          # BRO-6886: Express scores these files itself right after this push.
+          dispatch_scoring: 'false'
 
       - name: Score reviews
         if: inputs.dry_run != true && inputs.skip_score != true
@@ -411,6 +413,8 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Opening Night Express — scored reviews for ${{ inputs.show_id }}"
+          # BRO-6886: Express scores these files itself right after this push.
+          dispatch_scoring: 'false'
 
       # GAP 2 BELT-AND-SUSPENDERS: Re-cancel any orchestrators/pollers that started
       # during the scoring window (which can take 10-30 min on opening night).
