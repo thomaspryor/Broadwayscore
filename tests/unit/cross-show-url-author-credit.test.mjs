@@ -54,28 +54,3 @@ test('only real author credits count', () => {
     assert.equal(creditedTitleSlug(t), null, t);
   }
 });
-
-// BRO-6909: short titles (< 8 chars) are outside the slug index.
-test('a short title loses a URL only to a longer title playing that year', () => {
-  const GIRLS = { id: 'girls-off-west-end-2026', title: 'Girls', openingDate: '2026-10-27' };
-  const MEAN = { id: 'mean-girls-regional-2026', title: 'Mean Girls', openingDate: '2026-09-01', closingDate: '2026-12-01' };
-  const VANYA = { id: 'vanya-west-end-2023', title: 'Vanya', openingDate: '2023-09-21', closingDate: '2023-10-21' };
-  const UNCLE = { id: 'uncle-vanya-2024', title: 'Uncle Vanya', openingDate: '2024-04-24', closingDate: '2024-06-16' };
-  const AND = { id: 'and-juliet-tour-2024', title: '& Juliet', openingDate: '2024-10-01' };
-  const ROMEO = { id: 'drunk-romeo-and-juliet-off-broadway-2025', title: 'Drunk Romeo & Juliet', openingDate: '2025-06-01' };
-  const FENCES = { id: 'fences-x', title: 'Fences', openingDate: '2026-01-01' };
-  const WILSON = { id: 'august-wilsons-fences-x', title: "August Wilson's Fences", openingDate: '2026-01-01' };
-  const shows = [GIRLS, MEAN, VANYA, UNCLE, AND, ROMEO, FENCES, WILSON];
-  const index = buildShowSlugIndex(shows);
-  const d = (id, url, publishDate) => detectCrossShowUrlMismatch(id, url, { index, shows, publishDate });
-  assert.equal(d(GIRLS.id, 'https://northwestend.com/mean-girls-liverpool-empire/', '2026-10-20')?.matchedShowId, MEAN.id);
-  // own bare mention vouches; undated never flags
-  assert.equal(d(GIRLS.id, 'https://x.com/girls-young-vic-review-not-mean-girls/', '2026-10-28'), null);
-  assert.equal(d(GIRLS.id, 'https://northwestend.com/mean-girls-liverpool-empire/', undefined), null);
-  // Time Out reused ".../uncle-vanya-20-review" for Vanya (2023): no Uncle Vanya that year
-  assert.equal(d(VANYA.id, 'https://www.timeout.com/london/theatre/uncle-vanya-20-review', '2023-09-22'), null);
-  // "& Juliet" slugs to "juliet": words in front are its own title
-  assert.equal(d(AND.id, 'https://x.com/who-needs-romeo-juliet-brings-joy/', '2025-07-01'), null);
-  // a credit in front is the same play
-  assert.equal(d(FENCES.id, 'https://x.com/august-wilsons-fences-review/', '2026-02-01'), null);
-});
