@@ -1,21 +1,72 @@
 {
-  "updatedAt": "2026-11-03T05:00:32.676Z",
-  "processed": 197,
-  "failed": 138,
-  "successRate": "58.8%",
+  "updatedAt": "2026-11-03T05:22:30.793Z",
+  "processed": 275,
+  "failed": 173,
+  "successRate": "61.4%",
   "tierBreakdown": {
-    "playwright": 89,
+    "playwright": 126,
     "amp": 0,
     "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 8,
-    "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 65
+    "scrapingdog": 20,
+    "scrapingbee": 11,
+    "brightdata": 1,
+    "archiveToday": 20,
+    "archive": 90
   },
   "browserbaseSessions": 6,
   "recentActivity": [
+    {
+      "t": "2026-11-03T02:50:06.496Z",
+      "event": "bb-session",
+      "session": "4af5c5ad",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-03T02:50:06.777Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-03T02:51:16.888Z",
+      "event": "bb-session",
+      "session": "dc0936f9",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-03T03:00:36.701Z",
+      "event": "bb-session",
+      "session": "77cc53fc",
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/23/stars-are-shinin"
+    },
+    {
+      "t": "2026-11-03T03:00:37.020Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-03T03:00:46.668Z",
+      "event": "bb-session",
+      "session": "eec7a186",
+      "url": "https://deadline.com/2026/10/billy-crystal-860-broadway-review-1237168548/"
+    },
+    {
+      "t": "2026-11-03T03:31:09.567Z",
+      "event": "bb-session",
+      "session": "2ee62aee",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-03T03:31:09.844Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T03:39:12.449Z",
+      "event": "bb-session",
+      "session": "2420afc1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
     {
       "t": "2026-11-03T03:39:12.726Z",
       "event": "bb-cookie-inject",
@@ -77,59 +128,6 @@
       "event": "bb-session",
       "session": "d3e7a1e1",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-11-03T04:31:29.353Z",
-      "event": "bb-session",
-      "session": "109ba24f",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
-    },
-    {
-      "t": "2026-11-03T04:34:11.776Z",
-      "event": "bb-session",
-      "session": "cdec2641",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-03T04:34:12.568Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-11-03T04:51:40.153Z",
-      "event": "bb-session",
-      "session": "484338cf",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
-    },
-    {
-      "t": "2026-11-03T04:52:45.566Z",
-      "event": "bb-session",
-      "session": "a49f2009",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
-    },
-    {
-      "t": "2026-11-03T04:52:54.005Z",
-      "event": "bb-session",
-      "session": "b4dbe0af",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
-    },
-    {
-      "t": "2026-11-03T04:57:04.386Z",
-      "event": "bb-session",
-      "session": "78011d1f",
-      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
-    },
-    {
-      "t": "2026-11-03T04:58:11.800Z",
-      "event": "bb-session",
-      "session": "6476e755",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
-    },
-    {
-      "t": "2026-11-03T04:58:50.460Z",
-      "event": "bb-session",
-      "session": "dc4f4984",
-      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
