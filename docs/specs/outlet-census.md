@@ -361,7 +361,7 @@ Extra pieces:
   so a sitemap shape can be tried without re-landing. The Guardian API,
   Telegraph, Standard, Independent and i enumerate this way; the other
   newspapers are `unreadable` (below).
-- **Enumeration status.** Every report's `source.status` is `complete`,
+- **Enumeration status.** Every report regenerated in BRO-6488 (the 15 outlets listed here) carries `source.status` is `complete`,
   `incomplete` (a fetch failed, a page cap was hit, or `dated sitemaps: N
   failed`) or `unreadable` (with `source.reason`). A dated sitemap that answers
   404 counts as "not found", not as a failure. Unreadable reports still record
@@ -430,7 +430,7 @@ broadwayworld 555/462 (Cloudflare; read per show by gather-reviews).
 Caveats: Telegraph's theatre sitemap starts in 2015, so earlier Telegraph
 reviews are not listed. Sitemap dates are soft (period or lastmod). The i's
 175 held-unmatched rows are reviews we hold whose slug headline did not match a
-show. The i run came from main's code, which does not split 404s from failed
+show. The i, Standard and Independent runs came from main's code, which does not split 404s from failed
 fetches; two runs listed the same 2109 URLs. Gaps are listed in each manifest
 and were not ingested.
 
