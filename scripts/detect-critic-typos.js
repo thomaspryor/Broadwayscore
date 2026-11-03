@@ -176,13 +176,10 @@ for (const fix of autoFixes) {
 // aliases them (displayCriticName applies them at the next rebuild). Skipped when
 // core data is not on this machine.
 try {
-  const { buildPages, findSplitPairs } = require('./audit-critic-splits');
+  const { buildPages, findSplitPairs, loadDistinct } = require('./audit-critic-splits');
   const rpath = path.join(__dirname, '..', 'data', 'reviews.json');
   if (fs.existsSync(rpath)) {
-    const dpath = path.join(__dirname, '..', 'data', 'audit', 'critic-distinct-people.json');
-    let distinct = new Set();
-    try { distinct = new Set(JSON.parse(fs.readFileSync(dpath, 'utf8')).pairs || []); } catch {}
-    const pairs = findSplitPairs(buildPages(JSON.parse(fs.readFileSync(rpath, 'utf8')).reviews || []), { distinct });
+    const pairs = findSplitPairs(buildPages(JSON.parse(fs.readFileSync(rpath, 'utf8')).reviews || []), { distinct: loadDistinct() });
     let extra = 0;
     for (const m of pairs.filter(x => x.verdict === 'merge')) {
       if (recordAlias(autoAliases.aliases, m.canonical.slug, m.variant.slug.replace(/-/g, ' ')).added) extra++;

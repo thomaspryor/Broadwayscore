@@ -101,6 +101,16 @@ function findSplitPairs(pages, opts = {}) {
       o.reason = 'joint byline: contains two critics\' names';
     }
   }
+  // A critic whose name is also an outlet (Carole Di Tosti's own blog) cannot be an alias
+  // key: critic-alias-picker.test.mjs forbids outlet-named keys. A human routes those.
+  const outletSlugs = new Set();
+  for (const p of pages.values()) for (const o of p.outlets) outletSlugs.add(criticProfileKey(o));
+  for (const o of out) {
+    if (o.verdict === 'merge' && outletSlugs.has(o.canonical.slug)) {
+      o.verdict = 'review';
+      o.reason = 'canonical name is also an outlet name';
+    }
+  }
   return out.sort((x, y) => (y.canonical.count + y.variant.count) - (x.canonical.count + x.variant.count));
 }
 
@@ -136,7 +146,7 @@ if (require.main === module) {
     console.log('data/reviews.json missing; nothing to audit (core data not attached).');
     process.exit(0);
   }
-  const distinct = new Set((readJson(DISTINCT, { pairs: [] }).pairs) || []);
+  const distinct = loadDistinct();
   const pairs = findSplitPairs(buildPages(reviews.reviews), { distinct });
   if (argv.includes('--update-baseline')) {
     fs.mkdirSync(path.dirname(BASELINE), { recursive: true });
@@ -164,4 +174,9 @@ if (require.main === module) {
   }
 }
 
-module.exports = { buildPages, findSplitPairs, applyMerges };
+/** The confirmed-different-people allowlist as a Set of "slugA|slugB". */
+function loadDistinct() {
+  return new Set((readJson(DISTINCT, { pairs: [] }).pairs) || []);
+}
+
+module.exports = { buildPages, findSplitPairs, applyMerges, loadDistinct };
