@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927",
   "planId": "82042a90-e529-4a2a-95d0-de5cf5a64ae6",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,134 @@
         "description": "BRO-6927 gap: Andrzej Lukowski (Time Out London) review of big-the-musical-west-end-2019, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:36:51.781Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=evening-all-afternoon-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/evening-all-afternoon-b1272389.html --critic=\"Nick Curtis\" --publish-date=2026-02-25"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=joseph-and-the-amazing-technicolor-dreamcoat-west-end-2019 --url=https://www.telegraph.co.uk/theatre/what-to-see/joseph-amazing-technicolor-dreamcoat-review-london-palladium/ --critic=\"Dominic Cavendish\" --publish-date=2019-07-11"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=les-miserables-west-end-2021 --url=https://www.standard.co.uk/culture/theatre/les-miserables-review-revamped-musical-opens-at-londons-sondheim-theatre-with-added-grit-a4336836.html --critic=\"Nick Curtis\" --publish-date=2020-01-17"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=les-miserables-west-end-2021 --url=https://www.telegraph.co.uk/theatre/what-to-see/les-miserables-sondheim-theatre-review-perfect-theatre-perfect/ --critic=\"Dominic Cavendish\" --publish-date=2020-01-16"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=mj-the-musical-west-end-2024 --url=https://www.thetimes.co.uk/article/mj-the-musical-review-24-carat-karaoke-anchored-by-sleek-dance-moves-xvqpkfltq --critic=\"Clive Davis\" --publish-date=2024-03-27"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=player-kings-west-end-2024 --url=https://www.thetimes.co.uk/article/player-kings-review-ian-mckellen-shines-in-overlong-shakespeare-reimagining-q0zkjzmmk --critic=\"Clive Davis\" --publish-date=2024-04-12"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=stranger-things-the-first-shadow-west-end-2023 --url=https://www.timeout.com/london/theatre/stranger-things-the-first-shadow-review --critic=\"Andrzej Lukowski\" --publish-date=2023-12-15"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-prince-of-egypt-west-end-2020 --url=https://www.standard.co.uk/culture/theatre/the-prince-of-egypt-review-two-mens-internal-struggles-overshadow-beefed-up-musical-a4370831.html --critic=\"Nick Curtis\" --publish-date=2020-02-26"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-prince-of-egypt-west-end-2020 --url=https://www.thetimes.co.uk/article/prince-of-egypt-review-moses-the-musical-plagued-by-lack-of-memorable-tunes-kx05qvtfj --critic=\"Clive Davis\" --publish-date=2020-02-26"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-time-travellers-wife-west-end-2023 --url=https://www.thetimes.co.uk/article/the-time-travellers-wife-apollo-theatre-review-5f9d0lst2 --critic=\"Clive Davis\" --publish-date=2023-11-02"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-unfriend-west-end-2023 --url=https://www.standard.co.uk/culture/theatre/the-unfriend-criterion-theatre-review-steven-moffat-mark-gatiss-amanda-abbington-b1054409.html --critic=\"Nick Curtis\" --publish-date=2023-01-20"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=under-milk-wood-west-end-2021 --url=https://www.standard.co.uk/culture/theatre/under-milk-wood-at-national-theatre-review-dylan-thomas-michael-sheen-b942368.html --critic=\"Nick Curtis\" --publish-date=2021-06-25"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=big-the-musical-west-end-2019 --url=https://www.timeout.com/london/theatre/big-the-musical-review --critic=\"Andrzej Lukowski\" --publish-date=2019-09-19"
+    }
+  ],
+  "executedIn": "ci"
 }
