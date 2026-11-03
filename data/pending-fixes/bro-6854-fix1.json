@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6854-fix1",
   "planId": "9e67fd7e-c709-4ea9-8af5-a44187e6d69c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T02:11:38.645Z",
   "submitter": {
     "name": null,
@@ -35,5 +35,24 @@
         "description": "West End review, not the North Coast Rep production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T02:47:11.814Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted good-night-oscar-regional-2026/independent--alice-saville.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted good-night-oscar-regional-2026/thestage--dave-fargnoli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted good-night-oscar-regional-2026/whatsonstage--alun-hood.json"
+    }
+  ],
+  "executedIn": "ci"
 }
