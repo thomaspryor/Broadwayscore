@@ -110,17 +110,104 @@ export function sanitizeProfileEdit(body: unknown, ownReviewKeys: ReadonlySet<st
   };
 }
 
-/** Claim form input; null fields mean invalid. */
-export function sanitizeClaimInput(body: unknown): { slug: string; contactEmail: string; workUrl: string | null; note: string | null } | { error: string } {
+export const MAX_SOCIALS = 3;
+export type SocialPlatform = 'instagram' | 'x' | 'bluesky' | 'threads' | 'tiktok' | 'linkedin' | 'facebook';
+export interface SocialLink { platform: SocialPlatform; url: string }
+
+/** Hosts accepted per platform, and how a bare @handle becomes a profile URL. */
+const SOCIAL_RULES: Record<SocialPlatform, { hosts: string[]; build: (h: string) => string }> = {
+  instagram: { hosts: ['instagram.com'], build: (h) => `https://instagram.com/${h}` },
+  x: { hosts: ['x.com', 'twitter.com'], build: (h) => `https://x.com/${h}` },
+  bluesky: { hosts: ['bsky.app'], build: (h) => `https://bsky.app/profile/${h.includes('.') ? h : `${h}.bsky.social`}` },
+  threads: { hosts: ['threads.net', 'threads.com'], build: (h) => `https://threads.net/@${h}` },
+  tiktok: { hosts: ['tiktok.com'], build: (h) => `https://tiktok.com/@${h}` },
+  linkedin: { hosts: ['linkedin.com'], build: (h) => `https://linkedin.com/in/${h}` },
+  facebook: { hosts: ['facebook.com', 'fb.com'], build: (h) => `https://facebook.com/${h}` },
+};
+export const SOCIAL_PLATFORMS = Object.keys(SOCIAL_RULES) as SocialPlatform[];
+
+/**
+ * One social account: a profile URL on that platform's own host, or an
+ * @handle (the profile URL is built for it). Anything else returns null.
+ */
+export function cleanSocialLink(platform: unknown, value: unknown): SocialLink | null {
+  if (typeof platform !== 'string' || !Object.prototype.hasOwnProperty.call(SOCIAL_RULES, platform)) return null;
+  const rule = SOCIAL_RULES[platform as SocialPlatform];
+  if (typeof value !== 'string') return null;
+  const v = value.trim();
+  if (!v || v.length > 200) return null;
+  if (/^https?:\/\//i.test(v)) {
+    const url = cleanUrl(v);
+    if (!url) return null;
+    const host = new URL(url).hostname.toLowerCase().replace(/^(www|m|mobile)\./, '');
+    if (!rule.hosts.includes(host)) return null;
+    if (new URL(url).pathname.replace(/\//g, '') === '') return null; // bare homepage is not a profile
+    return { platform: platform as SocialPlatform, url };
+  }
+  const handle = v.replace(/^@/, '');
+  if (!/^[A-Za-z0-9._-]{1,60}$/.test(handle)) return null;
+  return { platform: platform as SocialPlatform, url: rule.build(handle) };
+}
+
+export interface ClaimInput { slug: string; contactEmail: string; socials: SocialLink[]; workUrl: string | null; note: string | null }
+
+/**
+ * Claim form input. At least one (up to MAX_SOCIALS) primary social account
+ * is required; link to work and note stay optional.
+ */
+export function sanitizeClaimInput(body: unknown): ClaimInput | { error: string } {
   const b = (body && typeof body === 'object' ? body : {}) as Record<string, unknown>;
   const slug = typeof b.slug === 'string' ? b.slug : '';
   if (!SLUG_RE.test(slug)) return { error: 'Unknown critic page.' };
   const email = typeof b.contactEmail === 'string' ? b.contactEmail.trim() : '';
   if (!/^[^\s@]{1,64}@[^\s@]+\.[^\s@]{2,}$/.test(email) || email.length > 254) return { error: 'Please enter an email address we can reach you at.' };
+  const socials: SocialLink[] = [];
+  const raw = Array.isArray(b.socials) ? b.socials.slice(0, MAX_SOCIALS) : [];
+  for (const item of raw) {
+    const o = (item && typeof item === 'object' ? item : {}) as Record<string, unknown>;
+    if (typeof o.value === 'string' && !o.value.trim()) continue; // untouched empty row
+    const link = cleanSocialLink(o.platform, o.value);
+    if (!link) return { error: 'One of your social links is not valid. Use a profile link or an @handle.' };
+    if (!socials.some((x) => x.url === link.url)) socials.push(link);
+  }
+  if (socials.length === 0) return { error: 'Please add at least one social account so we can confirm it is you.' };
   const rawUrl = typeof b.workUrl === 'string' ? b.workUrl.trim() : '';
   const workUrl = rawUrl ? cleanUrl(rawUrl) : null;
   if (rawUrl && !workUrl) return { error: 'The link to your work must start with https://.' };
-  return { slug, contactEmail: email, workUrl, note: cleanText(b.note, 1000) };
+  return { slug, contactEmail: email, socials, workUrl, note: cleanText(b.note, 1000) };
+}
+
+export interface HintInput {
+  contactEmail: string;
+  accountEmail: string;
+  /** Domain of the critic's outlet (for example nytimes.com), when known. */
+  outletDomain?: string | null;
+  /** Statuses of OTHER claims on the same page. */
+  otherClaimStatuses: string[];
+}
+
+const PERSONAL_DOMAINS = new Set(['gmail.com', 'googlemail.com', 'yahoo.com', 'ymail.com', 'outlook.com', 'hotmail.com', 'live.com', 'msn.com', 'icloud.com', 'me.com', 'mac.com', 'aol.com', 'proton.me', 'protonmail.com', 'pm.me', 'hey.com', 'fastmail.com', 'gmx.com']);
+
+function domainOf(email: string): string {
+  const at = email.lastIndexOf('@');
+  return at < 0 ? '' : email.slice(at + 1).trim().toLowerCase();
+}
+
+/**
+ * Hints for the owner's manual check. They are information only: nothing here
+ * approves or declines a claim.
+ */
+export function claimHints(i: HintInput): string[] {
+  const hints: string[] = [];
+  const d = domainOf(i.contactEmail);
+  const od = (i.outletDomain || '').toLowerCase().replace(/^www\./, '');
+  if (od && d && (d === od || d.endsWith(`.${od}`))) hints.push(`Email domain matches their outlet (${d})`);
+  else if (PERSONAL_DOMAINS.has(d)) hints.push('Personal email (gmail etc.)');
+  else if (d) hints.push(`Email domain is ${d}, which is not a known personal provider and does not match their outlet`);
+  if (i.accountEmail && i.accountEmail.trim().toLowerCase() !== i.contactEmail.trim().toLowerCase()) hints.push('Signed-in account email differs from contact email');
+  if (i.otherClaimStatuses.includes('approved')) hints.push('Another claim on this page is approved');
+  else if (i.otherClaimStatuses.includes('pending')) hints.push('Another claim on this page is pending');
+  return hints;
 }
 
 export const FLAG_NOTE_MAX = 600;
