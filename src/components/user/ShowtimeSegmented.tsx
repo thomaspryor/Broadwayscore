@@ -70,7 +70,7 @@ export default function ShowtimeSegmented({
     valueAtLastDate.current = value;
     if (parentSetBoth) return;
     if (isMount && (!autoSelectOnMount || value.time_slot)) return;
-    const only = autoPick && date ? onlyPerformanceSlot(showId, date, history) : null;
+    const only = autoPick && date ? onlyPerformanceSlot(showId, date) : null;
     const next: Value = only
       ? { time_slot: only, curtain_time: toDbTime(timeFor(only)) }
       : { time_slot: null, curtain_time: null };
@@ -101,7 +101,7 @@ export default function ShowtimeSegmented({
   };
 
   const segment = (s: 'matinee' | 'evening', label: string) => {
-    const dark = !!date && isKnownDarkForSlot(showId, date, s, history);
+    const dark = !!date && isKnownDarkForSlot(showId, date, s);
     const selected = slot === s;
     return (
       <button
@@ -177,8 +177,8 @@ function captionFor(showId: string, date: string, v: Value, genericFallback: boo
     // Only a plan ever fills in the generic 2:00 / 7:00 PM; say so.
     return genericFallback ? `Curtain ${time} (usual time)` : `Curtain ${time}`;
   }
-  const darkM = !!date && isKnownDarkForSlot(showId, date, 'matinee', history);
-  const darkE = !!date && isKnownDarkForSlot(showId, date, 'evening', history);
+  const darkM = !!date && isKnownDarkForSlot(showId, date, 'matinee');
+  const darkE = !!date && isKnownDarkForSlot(showId, date, 'evening');
   if (darkM && darkE) return 'No performance listed that day';
   if (darkM) return 'No matinee that day';
   if (darkE) return 'No evening show that day';

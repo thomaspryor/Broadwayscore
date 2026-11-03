@@ -22,15 +22,17 @@ test('a covered past date resolves from the archive only when it is passed', () 
   assert.equal(scheduledShowtime('oh-mary-2024', '2026-05-16', 'matinee'), null, 'without the archive: unknown');
   assert.equal(scheduledShowtime('oh-mary-2024', '2026-05-16', 'matinee', om), '17:00');
   assert.equal(scheduledShowtime('oh-mary-2024', '2026-05-16', 'evening', om), '20:30');
-  assert.equal(isKnownDarkForSlot('oh-mary-2024', '2026-05-11', 'evening', om), true, 'Monday dark night');
-  assert.equal(isKnownDarkForSlot('oh-mary-2024', '2026-05-11', 'evening'), false, 'no archive, no dark claim');
-  assert.equal(onlyPerformanceSlot('oh-mary-2024', '2026-05-12', om), 'evening');
+  // The archive supplies times only: a past slot is never struck out as dark
+  // (an empty archived day can just mean the listing dropped it).
+  assert.equal(scheduledShowtime('oh-mary-2024', '2026-05-11', 'evening', om), null, 'Monday: no time');
+  assert.equal(isKnownDarkForSlot('oh-mary-2024', '2026-05-11', 'evening'), false, 'past date: no dark claim');
+  assert.equal(onlyPerformanceSlot('oh-mary-2024', '2026-05-12'), null, 'past date: no auto-pick');
 });
 
 test('a date before the archive still has no time', () => {
   const om = archive['oh-mary-2024'];
   assert.equal(scheduledShowtime('oh-mary-2024', '2026-02-14', 'evening', om), null);
-  assert.equal(isKnownDarkForSlot('oh-mary-2024', '2026-02-14', 'evening', om), false);
+  assert.equal(isKnownDarkForSlot('oh-mary-2024', '2026-02-14', 'evening'), false);
 });
 
 test('needsScheduleHistory: only started weeks the live file lacks', () => {

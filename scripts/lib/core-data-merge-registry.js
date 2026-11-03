@@ -161,9 +161,12 @@ const CORE_DATA_MERGE_REGISTRY = [
     // BRO-6877: append-only past-week showtime archive. Two writers
     // (update-lottery-rush.yml, fetch-todaytix-showtimes.yml) with separate
     // concurrency groups both archive the outgoing week on a Monday rollover.
-    // Union per show-week, ours wins; nothing is ever deleted except weeks
-    // that have not started, so a fallback push against an untouched remote
-    // re-adds nothing ours removed.
+    // On the normal path push-with-retry.sh rebases with -X theirs: the file
+    // is one show-week per line, so the other writer's new weeks survive and
+    // only a week both runs changed keeps ours. This union merger (per
+    // show-week, ours wins) runs on the API-fallback path only. The crons run
+    // at different hours, so collisions are rare, and a lost week can be
+    // rebuilt with scripts/backfill-show-schedule-history.js.
     apiFallbackMerge: true,
   },
   {

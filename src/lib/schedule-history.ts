@@ -46,7 +46,7 @@ export function useScheduleHistory(showId: string, date: string): { schedule?: S
     if (!needed) return;
     let live = true;
     loadScheduleHistory().then((h) => {
-      if (live) setHistory({ showId, schedule: h?.shows[showId] });
+      if (live) setHistory({ showId, schedule: h?.shows?.[showId] });
     });
     return () => { live = false; };
   }, [needed, showId]);

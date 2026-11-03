@@ -34,6 +34,19 @@ test('a leftover week older than the snapshot only fills gaps, never overwrites'
   assert.equal(h.shows['show-a'].weeks['20260518'][5].m, '14:00', 'missing week filled');
 });
 
+test('a mid-week rebuild never blanks days that already played (TodayTix, review P1)', () => {
+  const h = hist.emptyHistory();
+  const full = [day(null, null), day(null, null), day(null, null), day(null, null), day(null, '19:45'), day('15:00', '19:45'), day('13:00', '18:00')];
+  hist.mergeSnapshot(h, { lastUpdated: '2026-08-03T06:00:00Z', currentMonday: '20260803', shows: { abba: { weeks: { 20260803: full } } } });
+  // Sunday-morning run: TodayTix only lists today, so Fri/Sat come through empty.
+  const sunOnly = full.map((d, i) => (i === 6 ? d : day(null, null)));
+  hist.mergeSnapshot(h, { lastUpdated: '2026-08-09T06:00:00Z', currentMonday: '20260803', shows: { abba: { weeks: { 20260803: sunOnly } } } });
+  assert.deepEqual(h.shows.abba.weeks['20260803'], full, 'Fri/Sat kept');
+  // A later run can still mark an upcoming day dark.
+  hist.mergeSnapshot(h, { lastUpdated: '2026-08-08T06:00:00Z', currentMonday: '20260803', shows: { abba: { weeks: { 20260803: full.map((d, i) => (i === 6 ? day(null, null) : d)) } } } });
+  assert.deepEqual(h.shows.abba.weeks['20260803'][6], day(null, null), 'upcoming Sunday cancelled');
+});
+
 test('malformed weeks are skipped and create no show entry', () => {
   const h = hist.emptyHistory();
   hist.mergeSnapshot(h, snap('20260504', { 20260504: [day('14:00', null)], bogus: week(day(null, null)) }));

@@ -13,10 +13,11 @@
  * is archived too (a show removed mid-week, e.g. on closing, keeps its final
  * week); later refreshes overwrite it until it ends.
  *
- * Merge rule: a snapshot is authoritative for weeks on or after its own
- * currentMonday (live schedule data when it was taken), so a later snapshot
- * overwrites them. Weeks before a snapshot's currentMonday are leftovers
- * (TodayTix-sourced shows keep old weeks); they only fill gaps.
+ * Merge rule (per day): a snapshot is authoritative for days on or after the
+ * day it was taken, so a later snapshot overwrites them. For days already past
+ * when it was taken it only fills missing times, never blanks or replaces one. An
+ * empty day in the archive therefore means "no performance known", which the
+ * client never treats as a confirmed dark day.
  */
 const fs = require('fs');
 const path = require('path');
@@ -44,24 +45,46 @@ function normaliseWeek(week) {
   return week.map((d) => ({ m: d.m || null, e: d.e || null }));
 }
 
+/** YYYYMMDD of the day `i` days after week key `key` (calendar math, no timezone). */
+function dayKey(key, i) {
+  const d = new Date(Date.UTC(+key.slice(0, 4), +key.slice(4, 6) - 1, +key.slice(6, 8) + i));
+  return d.toISOString().slice(0, 10).replace(/-/g, '');
+}
+
+/** The calendar day a snapshot was taken (YYYYMMDD), or null if it doesn't say. */
+function snapshotDay(snapshot) {
+  const iso = String(snapshot.lastUpdated || '');
+  if (/^\d{4}-\d{2}-\d{2}/.test(iso)) return iso.slice(0, 10).replace(/-/g, '');
+  return WEEK_KEY.test(String(snapshot.currentMonday || '')) ? snapshot.currentMonday : null;
+}
+
 /**
- * Merge one show-schedules.json snapshot into history (mutates it). Only
- * weeks starting on/before uptoMonday are taken (default: all).
+ * Merge one show-schedules.json snapshot into history (mutates it), day by
+ * day. Only weeks starting on/before uptoMonday are taken (default: all).
+ *
+ * A snapshot is authoritative for days on/after the day it was taken (its
+ * latest knowledge of upcoming performances, including "dark"). For days
+ * already past when it was taken it only fills a missing time, never blanks
+ * or replaces one: TodayTix-sourced shows are rebuilt mid-week from today's
+ * listings, so their past days come through empty (BRO-6877 review P1).
  * Returns { added, updated } counts of show-weeks.
  */
 function mergeSnapshot(history, snapshot, uptoMonday = null) {
   const stats = { added: 0, updated: 0 };
   if (!snapshot || !snapshot.shows) return stats;
-  const snapMonday = WEEK_KEY.test(String(snapshot.currentMonday || '')) ? snapshot.currentMonday : null;
+  const asOf = snapshotDay(snapshot);
   for (const [showId, sched] of Object.entries(snapshot.shows)) {
     if (!sched || !sched.weeks) continue;
     for (const [key, week] of Object.entries(sched.weeks)) {
       if (!WEEK_KEY.test(key) || !isValidWeek(week)) continue;
       if (uptoMonday && key > uptoMonday) continue;
-      const authoritative = snapMonday ? key >= snapMonday : false;
+      const incoming = normaliseWeek(week);
       const existing = history.shows[showId]?.weeks[key];
-      if (existing && !authoritative) continue;
-      const next = normaliseWeek(week);
+      const next = existing ? existing.map((d) => ({ ...d })) : incoming.map(() => ({ m: null, e: null }));
+      incoming.forEach((d, i) => {
+        if (asOf && dayKey(key, i) >= asOf) next[i] = d;
+        else next[i] = { m: next[i].m || d.m, e: next[i].e || d.e };
+      });
       if (!existing) stats.added++;
       else if (JSON.stringify(existing) !== JSON.stringify(next)) stats.updated++;
       else continue;
@@ -154,6 +177,7 @@ module.exports = {
   emptyHistory,
   loadHistory,
   mergeSnapshot,
+  dayKey,
   pruneAfter,
   archiveOutgoingSchedule,
   mergeShowScheduleHistory,

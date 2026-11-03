@@ -104,8 +104,11 @@ export function resolveShowtimeDefault(showId: string, date: string, slot: 'mati
  * slot is explicitly dark — never true for an uncovered date (bwayrush's
  * rolling few-week window means "no data" is the common case, not "dark").
  */
-export function isKnownDarkForSlot(showId: string, date: string, slot: 'matinee' | 'evening', history?: ShowSchedule): boolean {
-  const day = dayFor(showId, date, history);
+export function isKnownDarkForSlot(showId: string, date: string, slot: 'matinee' | 'evening'): boolean {
+  // Live schedule only: an empty day in the past-week archive means "no
+  // performance known" (rebuilt mid-week listings drop past days), never a
+  // confirmed dark slot, so it must not strike out a performance (BRO-6877).
+  const day = dayFor(showId, date);
   if (!day) return false;
   return (slot === 'matinee' ? day.m : day.e) === null;
 }
@@ -119,11 +122,11 @@ export function scheduledShowtime(showId: string, date: string, slot: 'matinee' 
  * When the schedule covers this date and only one performance plays, that
  * slot (BRO-6783 auto-select); otherwise null.
  */
-export function onlyPerformanceSlot(showId: string, date: string, history?: ShowSchedule): 'matinee' | 'evening' | null {
-  const m = scheduledTime(showId, date, 'matinee', history);
-  const e = scheduledTime(showId, date, 'evening', history);
-  if (m && !e && isKnownDarkForSlot(showId, date, 'evening', history)) return 'matinee';
-  if (e && !m && isKnownDarkForSlot(showId, date, 'matinee', history)) return 'evening';
+export function onlyPerformanceSlot(showId: string, date: string): 'matinee' | 'evening' | null {
+  const m = scheduledTime(showId, date, 'matinee');
+  const e = scheduledTime(showId, date, 'evening');
+  if (m && !e && isKnownDarkForSlot(showId, date, 'evening')) return 'matinee';
+  if (e && !m && isKnownDarkForSlot(showId, date, 'matinee')) return 'evening';
   return null;
 }
 
