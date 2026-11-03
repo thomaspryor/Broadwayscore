@@ -29,6 +29,12 @@
 #
 # Self-skip if user-level master exists (local CLI scenario) -- same pattern
 # as every other hook in this directory.
+# Planning-tier check (CLAUDE.md §20, BRO-6249); before the self-skip so no kill switch but PLANNING_TIER_MODE=off hides it.
+input=$(cat) || exit 0
+if [ "$PLANNING_TIER_MODE" != "off" ] && printf '%s' "$input" | grep -q '"tool_name" *: *"Write"'; then
+  PT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}/scripts/lib/planning-tier-hook.js"
+  if [ -f "$PT" ] && command -v node >/dev/null 2>&1; then printf '%s' "$input" | node "$PT"; [ "$?" = "2" ] && exit 2; fi
+fi
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
   exit 0
 fi
@@ -38,7 +44,6 @@ fi
 command -v jq >/dev/null 2>&1 || exit 0
 command -v git >/dev/null 2>&1 || exit 0
 
-input=$(cat) || exit 0
 tool_name=$(printf '%s' "$input" | jq -r '.tool_name // empty' 2>/dev/null)
 
 # in_scope_path REL -- true (rel_path set) if REL (repo-root-relative) falls
