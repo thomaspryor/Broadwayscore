@@ -73,7 +73,7 @@ const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
-const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
+const { shouldTakeUrlOwnership, existingCopyYieldsUrl } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const { incomingCrossProductionReason, crossProductionMergeRefusal } = require('./lib/merge-date-guard');
@@ -3550,16 +3550,13 @@ function createReviewFile(showId, reviewData, options = {}) {
             && existingData.multiShowSplitChildShowIds.includes(showId))
           || (existingData.multiShowSplitChild === true && existingData.multiShowSplitParentShowId === showId);
         // Don't let invalid/wrong-content files block legitimate reviews
-        existingIsJunk = existingData.contentTier === 'invalid'
-          || existingData.wrongShow === true
-          || existingData.incompleteReason === 'wrong_content'
-          || existingData.incompleteReason === 'scraper_garbage'
-          || (existingData.contentVerification && existingData.contentVerification.wrongArticle === true);
+        // Junk, or already disowned by its own show as another production (BRO-6909).
+        existingIsJunk = existingCopyYieldsUrl(existingData);
       } catch (e) { /* file unreadable, treat as non-exception */ }
 
       if (existingIsJunk) {
         // Existing file is junk — let the new review through regardless
-        console.log(`    ⟳ Overriding ${existing.showId}/${existing.file} (junk: invalid/wrongContent) — allowing URL for ${showId}`);
+        console.log(`    ⟳ Overriding ${existing.showId}/${existing.file} (junk or disowned as wrong production) — allowing URL for ${showId}`);
         // Fall through to save
       } else if (!allowCrossShow) {
         // Instead of first-writer-wins, compare which production is correct.
