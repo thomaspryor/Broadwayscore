@@ -1296,3 +1296,51 @@ test('opera captions link the opera page and carry opera hashtags', () => {
   assert.match(r.instagram, /#RoyalOpera/);
   assert.doesNotMatch(r.instagram, /#MetOpera/);
 });
+
+// BRO-6932: quiet-day backfill of shows that missed the 10-day window.
+const BF = { enabled: true, fromHour: 14, maxPerDay: 2, lookbackDays: 45, minDaysLeft: 2 };
+const bShow = over => show({ id: 'bf-2026', category: 'off-broadway', openingDate: '2026-10-19', closingDate: '2026-11-15', ...over });
+const live = (dueAt, extra = {}) => ({ type: 'score', showId: 'other', dueAt, channels: { twitter: { postId: 'p1' } }, ...extra });
+const bFind = (over = {}) => {
+  const s = over.s || bShow();
+  return sel.findBackfillEvents({ ...base(s), now: Date.parse(over.now || '2026-11-03T19:05:00Z'), cfg: BF, ...(over.args || {}) }); // 14:05 New York
+};
+
+test('quiet-day backfill posts a settled show that aged out, from 14:00 New York (BRO-6932)', () => {
+  const ev = bFind();
+  assert.equal(ev.length, 1);
+  assert.equal(ev[0].backfill, true);
+  assert.equal(ev[0].type, 'score');
+  assert.equal(ev[0].dueAt.toISOString(), '2026-11-03T19:15:00.000Z');
+  assert.equal(bFind({ now: '2026-11-03T18:55:00Z' }).length, 0, '13:55 New York: too early');
+  assert.equal(sel.findScoreEvents({ ...base(bShow()), now: Date.parse('2026-11-03T19:05:00Z') }).length, 0, 'the normal score lane has given up on it');
+});
+
+test('quiet-day backfill stays off on a busy day, counts its own posts and respects maxPerDay', () => {
+  assert.equal(bFind({ args: { busy: true } }).length, 0, 'another post is due this run');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T15:00:00Z')] } } }).length, 0, 'a score post went out this morning');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T23:30:00Z')] } } }).length, 0, 'one is scheduled for this evening');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-02T15:00:00Z')] } } }).length, 1, 'yesterday does not count');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T15:00:00Z', { channels: { twitter: { postId: 'p1', result: 'cancelled' } } })] } } }).length, 1, 'a cancelled post does not count');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T19:00:00Z', { backfill: true }), live('2026-11-03T17:30:00Z', { backfill: true })] } } }).length, 0, 'two backfills today already');
+  assert.equal(bFind({ args: { ledger: { posts: [live('2026-11-03T17:30:00Z', { backfill: true })] } } }).length, 1, 'one backfill today: room for one more');
+  assert.equal(bFind({ args: { cfg: { ...BF, enabled: false } } }).length, 0, 'switched off');
+});
+
+test('quiet-day backfill candidates: open, not closing soon, recent, unposted, settled, newest first', () => {
+  assert.equal(bFind({ s: bShow({ status: 'closed' }) }).length, 0, 'closed');
+  assert.equal(bFind({ s: bShow({ closingDate: '2026-11-04' }) }).length, 0, 'closes tomorrow');
+  assert.equal(bFind({ s: bShow({ closingDate: '2026-11-05' }) }).length, 1, 'closes in two days');
+  assert.equal(bFind({ s: bShow({ openingDate: '2026-09-10' }) }).length, 0, 'opened more than 45 days ago');
+  assert.equal(bFind({ s: bShow({ openingDate: '2026-10-28' }) }).length, 0, 'still inside the 10-day window: the normal lane owns it');
+  assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', skipped: 'backlog at go-live' }] } } }).length, 0, 'already handled');
+  assert.equal(bFind({ args: { reviewsByShow: { 'bf-2026': reviews(0, 1, 3) } } }).length, 0, 'score not settled');
+  assert.equal(bFind({ args: { blocked: id => id === 'bf-2026' } }).length, 0, 'failed too often');
+  const a = bShow({ id: 'a-2026', openingDate: '2026-10-18' }), b = bShow({ id: 'z-2026', openingDate: '2026-10-22' }), c = bShow({ id: 'c-2026', openingDate: '2026-10-20' });
+  const ids = [a, b, c].map(x => x.id);
+  const ev = sel.findBackfillEvents({ shows: [a, b, c], ledger: empty, getOutletTier, now: Date.parse('2026-11-03T19:05:00Z'), cfg: BF,
+    slim: Object.fromEntries(ids.map(id => [id, { cs: 80, rc: 14 }])), reviewsByShow: Object.fromEntries(ids.map(id => [id, reviews(3, 3, 8)])) });
+  assert.deepEqual(ev.map(e => e.show.id), ['z-2026', 'c-2026'], 'newest two');
+  const ready = sel.scheduleEvents(ev, empty, Date.parse('2026-11-03T19:05:00Z'));
+  assert.deepEqual(ready.map(e => e.show.id), ['z-2026'], 'the newest goes first; the second waits 90 minutes for a later run');
+});

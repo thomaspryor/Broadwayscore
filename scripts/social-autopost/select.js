@@ -144,6 +144,60 @@ function findScoreEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTie
   return out;
 }
 
+/**
+ * True when a show can take a quiet-day backfill post (BRO-6932): still open, not closing
+ * within cfg.minDaysLeft New York days, opened within cfg.lookbackDays, aged out of
+ * SCORE_LOOKBACK_DAYS with no score post, and its score passes every other check now.
+ * ctx is scoreDecision's ({done, now, reviewsByShow, slim, getOutletTier, shows}).
+ * Shared with the weekly email (scripts/lib/social-report.js), so it says "will post on a
+ * quiet day" for exactly these shows.
+ */
+function backfillCandidate(show, ctx, cfg = C.BACKFILL) {
+  return backfillWindow(show, ctx, cfg) && scoreDecision(show, ctx, { ignoreAge: true }).due;
+}
+
+/** backfillCandidate without the score check: the show would post on a quiet day once its score settles. */
+function backfillWindow(show, ctx, cfg = C.BACKFILL) {
+  if (!cfg || !cfg.enabled || !isEligibleShow(show) || show.status !== 'open') return false;
+  const today = localParts(new Date(ctx.now), C.MARKETS.broadway.tz).ymd;
+  const closing = String(show.closingDate || '').slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(closing) && closing < addDaysYmd(today, cfg.minDaysLeft)) return false;
+  if (ctx.now - morningAfter(show) > cfg.lookbackDays * DAY_MS) return false;
+  return scoreDecision(show, ctx).why === 'too-old';
+}
+
+/**
+ * Quiet-day backfill (BRO-6932): score posts for shows that aged out of SCORE_LOOKBACK_DAYS
+ * before their score settled. Empty unless today (New York) is quiet: it is cfg.fromHour or
+ * later, `busy` is false (the caller found no other post due this run), and no live ledger
+ * post other than a backfill one is due on today's New York day. Candidates are the shows
+ * backfillCandidate accepts. Newest opening first, at most
+ * cfg.maxPerDay a day counting backfill posts already made today. blocked(id) drops a show
+ * (run.js passes the shows that failed MAX_SHOW_ATTEMPTS times).
+ */
+function findBackfillEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTier, busy = false, blocked = () => false, cfg = C.BACKFILL }) {
+  if (!cfg || !cfg.enabled || busy) return [];
+  const tz = C.MARKETS.broadway.tz;
+  const today = localParts(new Date(now), tz);
+  if (today.hour < cfg.fromHour) return [];
+  const live = p => !p.skipped && Object.values(p.channels || {}).some(c => c.postId && !['cancelled', 'missing', 'error'].includes(c.result));
+  const todays = (ledger && ledger.posts || []).filter(p => p.dueAt && live(p) && localParts(new Date(Date.parse(p.dueAt)), tz).ymd === today.ymd);
+  if (todays.some(p => !p.backfill)) return [];
+  const room = cfg.maxPerDay - todays.length;
+  if (room <= 0) return [];
+  const ctx = { done: doneKeys(ledger), now, reviewsByShow, slim, getOutletTier, shows };
+  const out = [];
+  for (const show of shows) {
+    if (blocked(show.id) || !backfillCandidate(show, ctx, cfg)) continue;
+    const d = scoreDecision(show, ctx, { ignoreAge: true });
+    out.push({ type: 'score', backfill: true, show, gate: d.gate });
+  }
+  out.sort((a, b) => String(b.show.openingDate).localeCompare(String(a.show.openingDate)) || a.show.id.localeCompare(b.show.id));
+  // One stagger apart in this order, so scheduleEvents (which sorts by dueAt) keeps the newest first.
+  const first = nextWindowSlot(now + 10 * MIN_MS, tz);
+  return out.slice(0, room).map((ev, i) => ({ ...ev, dueAt: new Date(first + i * C.STAGGER_MINUTES * MIN_MS) }));
+}
+
 /** True when the site shows a Critic Score for this show (the number a post would state). */
 function hasSiteScore(slim, id) {
   const pub = slim[id];
@@ -425,4 +479,4 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
   return out.sort((a, b) => a.firstDay.localeCompare(b.firstDay) || a.show.id.localeCompare(b.show.id));
 }
 
-module.exports = { scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { backfillCandidate, backfillWindow, findBackfillEvents, scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
