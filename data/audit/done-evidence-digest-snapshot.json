@@ -1,7 +1,17 @@
 {
-  "generatedAt": "2026-11-02T21:38:20.253Z",
-  "bannerText": "129/147 Done(14d) verified on main · 8 FAILED · 0 vacuous · 17 stuck-but-done · 2 mis-armed, needs re-arming (BRO-6804, BRO-6269)",
+  "generatedAt": "2026-11-03T09:45:24.757Z",
+  "bannerText": "146/161 Done(14d) verified on main · 7 FAILED · 0 vacuous · 14 stuck-but-done · 2 mis-armed, needs re-arming (BRO-6269, BRO-6804)",
   "items": [
+    {
+      "title": "FAILED BRO-6323 — BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
+      "detail": "[check-health-row-absent] FAIL: \"main test.yml STILL red — auto-dispatch did not resolve it\" still listed in the 2026-11-03T09:35:39.349Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it"
+    },
+    {
+      "title": "FAILED BRO-5749 — BSC Daily: Commercial model drift",
+      "detail": "[check-health-row-absent] --live FAIL: \"Commercial model drift\" still flagged (warn): modelDesignationFlag contradictions up 1 (2 → 3)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5749/bsc-daily-commercial-model-drift"
+    },
     {
       "title": "FAILED BRO-6788 — UX audit: The 'Add a show' button in 'mobile__watchlist_grid' doesn't clearly indicate its interactivity.",
       "detail": "FAIL UX resolution: LINEAR_API_KEY not set in .env or environment",
@@ -23,25 +33,15 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6766/opera-expansion-b-premieres-at-major-houses-beyond-the-met-roh-first"
     },
     {
-      "title": "FAILED BRO-6706 — BSC Daily: Data quality: revival-unverified lifetime sweep",
-      "detail": "[check-health-row-absent] FAIL: \"Data quality: revival-unverified lifetime sweep\" still listed in the 2026-11-02T21:18:56.694Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6706/bsc-daily-data-quality-revival-unverified-lifetime-sweep"
+      "title": "FAILED BRO-6464 — BSC Daily: Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
+      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-cont\" still listed in the 2026…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6464/bsc-daily-live-data-test-failing-no-class-a-cross-market-leaks-a-show"
     },
     {
-      "title": "FAILED BRO-6434 — BSC Daily: Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
-      "detail": "[check-health-row-absent] FAIL: \"Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)\" still listed in the 2026-11-02T21:18:56.694Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6434/bsc-daily-corpus-drift-one-show-score-url-mapped-to-2-showids-baseline"
-    },
-    {
-      "title": "FAILED BRO-6323 — BSC Daily: main test.yml STILL red — auto-dispatch did not resolve it",
-      "detail": "[check-health-row-absent] FAIL: \"main test.yml STILL red — auto-dispatch did not resolve it\" still listed in the 2026-11-02T21:18:56.694Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6323/bsc-daily-main-testyml-still-red-auto-dispatch-did-not-resolve-it"
-    },
-    {
-      "title": "FAILED BRO-6322 — BSC Daily: Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6322/bsc-daily-live-data-test-failing-bro-3887-repo-actions-cache-stays"
+      "title": "STUCK BRO-6386 — Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — an earlier all-market run started 5h ago does not cover us",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6386/time-bomb-test-armed-testsunitopening-night-orchestrator-crontestmjs"
     }
   ],
-  "moreCount": 17
+  "moreCount": 13
 }
