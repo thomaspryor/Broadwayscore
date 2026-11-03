@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T02:31:18.948Z",
+  "generatedAt": "2026-11-03T03:32:07.942Z",
   "windowDays": 45,
   "showsScanned": 248,
   "gaps": [
@@ -21,10 +21,34 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 200.64448388888889,
+      "fileAgeHours": 201.65808194444443,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 186.10071694444446,
+      "nonTerminalAgeHours": 187.11432638888888,
       "needsManualRecovery": true
+    },
+    {
+      "showId": "msblackforpresident-off-broadway-2026",
+      "title": "Ms. Blakk for President",
+      "openingDate": "2026-11-01",
+      "file": "backstage--unknown.json",
+      "outletId": "backstage",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/ --outlet=backstage   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-02T09:52:12.991Z",
+      "fileAgeHours": 17.664548888888888,
+      "gapSeenAt": "2026-11-03T03:32:07.942Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
     },
     {
       "showId": "an-evening-with-an-immigrant-off-west-end-2026",
@@ -44,9 +68,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 12.86696361111111,
+      "fileAgeHours": 13.880782222222223,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 11.338069166666667,
+      "nonTerminalAgeHours": 12.351678611111112,
       "needsManualRecovery": false
     }
   ],

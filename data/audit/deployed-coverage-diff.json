@@ -1,62 +1,30 @@
 {
-  "generatedAt": "2026-11-03T02:31:47.419Z",
+  "generatedAt": "2026-11-03T03:35:08.925Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 316,
-  "clean": 313,
-  "defective": 3,
+  "clean": 315,
+  "defective": 1,
   "byType": {
-    "score-drift": 3
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "openingDate": "2026-10-29",
+      "showId": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "openingDate": "2026-10-27",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 76.81 vs local 76.91 (Δ0.1)"
+          "detail": "deployed cs 71.34 vs local 70.88 (Δ0.46)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 22,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-03T00:26:20.314Z"
-    },
-    {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "openingDate": "2026-10-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 83.32 vs local 83.58 (Δ0.26)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 16,
-      "deployedCount": 17,
-      "firstDefectAt": "2026-11-03T02:31:40.820Z"
-    },
-    {
-      "showId": "a-ghost-in-your-ear-off-broadway-2026",
-      "title": "A Ghost In Your Ear",
-      "openingDate": "2026-10-14",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 71.05 vs local 70.72 (Δ0.33)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 21,
-      "firstDefectAt": "2026-11-03T02:31:40.820Z"
+      "localCount": 28,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-03T03:35:03.421Z"
     }
   ],
   "persistentDefective": 0,

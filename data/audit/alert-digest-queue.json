@@ -455,20 +455,6 @@
     "queuedAt": "2026-11-03T00:59:47.548Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T02:31:18.949Z"
-  },
-  {
     "conditionKey": "land:land/bro-6876-visual-ask-guard",
     "title": "Landing blocked: rebase red on land/bro-6876-visual-ask-guard",
     "description": "land.yml did not land land/bro-6876-visual-ask-guard: the rebase gate went red at c595d31e0c. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6876-visual-ask-guard @ c595d31e0c (origin/land/bro-6876-visual-ask-guard) → origin/main @ 0999b8ac43 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 448a9ab7a2: Rebasing (1/6) Rebasing (2/6) Rebasing (3/6) error: could not apply 9b353bfe076... fix(lottery,visual-approval): keep named special programs through the scraper sanitize pass; review fixes (BRO-6862, BR Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41566106050",
@@ -525,6 +511,20 @@
       }
     ],
     "queuedAt": "2026-11-03T03:07:32.438Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T03:32:07.943Z"
   },
   {
     "conditionKey": "opening-night-placeholder-synopsis-the-unbelievers-off-broadway-2026",
