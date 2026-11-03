@@ -19,7 +19,7 @@ const { publishedStampToLocalDate } = require('./local-date');
 const { normalizeTitle, foldDiacritics } = require('./title-match');
 const { COMMON_WORD_SHOW_TITLES } = require('./multi-show-splitter');
 const { toDateMs } = require('./date-utils');
-const { decodeEntities } = require('./uk-live-index');
+const { decodeHtmlEntities: decodeEntities } = require('./text-cleaning');
 
 /**
  * Escape a string for use inside a RegExp.
@@ -127,7 +127,9 @@ function namesShowCredit(combined, show, nowMs = Date.now()) {
 //    (all-caps), so the name "Jack" or "jack of all trades" does not count;
 //  - if another active show at the same venue matched by its own title, the
 //    venue belongs to that show, not to this one (decided in findMatchingShows).
-const GENERIC_VENUES = new Set(['theatre', 'theater', 'tbd', 'tba', 'various', 'off broadway', 'broadway', 'west end', 'london', 'new york', 'online', 'virtual']);
+// Tour "venues" (BRO-6921): any page about any tour says "the North American tour".
+const GENERIC_VENUES = new Set(['theatre', 'theater', 'tbd', 'tba', 'various', 'off broadway', 'broadway', 'west end', 'london', 'new york', 'online', 'virtual',
+  'tour', 'touring', 'national tour', 'north american tour', 'us tour', 'us national tour', 'uk tour', 'uk and ireland tour', 'uk ireland tour']);
 function venuePhrase(show) {
   const norm = hyphenSpaced(show && show.venue);
   if (!norm || GENERIC_VENUES.has(norm)) return '';
@@ -382,17 +384,27 @@ function pageText(html) {
 }
 
 /**
- * Does the article page name this production? One of its own credits
- * (creditNames: cast, director, a writer while the production is new) or its
- * venue as a whole phrase, and a title form, must appear in the page text.
+ * Does the article page name this production? A title form, plus one of its own
+ * credits (creditNames: cast, director, a writer while the production is new)
+ * as whole words. The venue counts only for a show with no credits on file,
+ * and only when no other running show shares that venue: the same rules
+ * namesShowVenue and findMatchingShows apply to a feed item.
+ *
+ * @param {string} text  visible page text (pageText)
+ * @param {object} show
+ * @param {{nowMs?: number, otherShows?: Array}} [opts] nowMs: when the item
+ *   was published (the young-production writer rule); otherShows: the shows
+ *   running now, for the shared-venue rule.
  */
-function pageConfirmsShow(text, show, nowMs = Date.now()) {
+function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = {}) {
   const hay = ` ${hyphenSpaced(String(text || '').replace(/[_/]+/g, ' '))} `;
   if (!titleForms(show).some((f) => formInHay(f, hay))) return false;
-  if (creditNames(show, nowMs).some((n) => hay.includes(` ${n} `) || hay.includes(` ${n}s `))) return true;
+  const credits = creditNames(show, nowMs);
+  if (credits.length) return credits.some((n) => hay.includes(` ${n} `) || hay.includes(` ${n}s `));
   const venue = venuePhrase(show);
   // A one-word venue ("JACK", "Signature") is too common a word to prove anything from a page.
-  return !!venue && venue.split(/\s+/).length >= 2 && hay.includes(` ${venue} `);
+  if (!venue || venue.split(/\s+/).length < 2 || !hay.includes(` ${venue} `)) return false;
+  return !otherShows.some((o) => o.id !== show.id && venuePhrase(o) === venue);
 }
 
 /**

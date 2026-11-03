@@ -139,7 +139,9 @@ const OUTLET_STRATEGY_CONFIG = {
   // TheReviewsHub: 100-item RSS covering all UK theater; no urlFilter needed — findMatchingShows guards FPs
   thereviewshub:       { strategy: 'rss', url: 'https://www.thereviewshub.com/feed/' },
   // Theater Scene: /plays/ and /musicals/ paths are reviews; /features/ /columns/ /multimedia/ are not
-  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', urlFilter: /\/(plays|musicals)\// },
+  // reviewsOnly (BRO-6921): every item after the filter is a review, so page
+  // confirmation needs no "review" word in the headline. Set only where true.
+  'theater-scene':     { strategy: 'rss', url: 'https://www.theaterscene.net/feed/', urlFilter: /\/(plays|musicals)\//, reviewsOnly: true },
   // Theatre Weekly (UK): review URLs have /review- prefix; drops news/industry pieces
   'theatre-weekly':    { strategy: 'rss', url: 'https://theatreweekly.com/feed', urlFilter: /\/review-/ },
   // Pages on Stages: theater review blog; no URL discriminator, findMatchingShows guards noise
@@ -174,7 +176,7 @@ const OUTLET_STRATEGY_CONFIG = {
   // nytg: /reviews redirects to /reviews/broadway; plain fetch gets 12 review links per page.
   // urlFilter: keep only individual review slugs (they all end in -review, dropping category pages)
   // BRO-6921: off-Broadway reviews sit on their own list (The Ask, ANON were never on /broadway).
-  nytg:              { strategy: 'listing-html', url: 'https://www.newyorktheatreguide.com/reviews/broadway', extraUrls: ['https://www.newyorktheatreguide.com/reviews/off-broadway'], urlFilter: /\/reviews\/[^/]+-review/, usePlainFetch: true },
+  nytg:              { strategy: 'listing-html', url: 'https://www.newyorktheatreguide.com/reviews/broadway', extraUrls: ['https://www.newyorktheatreguide.com/reviews/off-broadway'], urlFilter: /\/reviews\/[^/]+-review/, usePlainFetch: true, reviewsOnly: true },
   // thestage: SSR listing page; 18 reviews per page, BD fetches directly
   // urlFilter keeps /reviews/<slug> paths; drops /review-round-ups/ multi-show roundup pages
   thestage:          { strategy: 'listing-html', url: 'https://www.thestage.co.uk/reviews', urlFilter: /\/reviews\/[^/]+/ },
@@ -275,12 +277,15 @@ const WP_API_CONFIG = {
     params: 'per_page=50&orderby=date&order=desc',
     reviewsOnly: true,
   },
-  // TheaterMania (BRO-6921): custom post type "news"; reviews are /news/review-*.
-  // Replaces the 5-item listing page, which dropped reviews between polls.
+  // TheaterMania (BRO-6921): custom post type "news", category 157 = Reviews (the
+  // id scripts/lib/theatermania-discovery.js uses). Replaces the 5-item listing
+  // page, which dropped reviews between polls. Like every WP_API outlet there is
+  // no SERP fallback: an API error counts in "Outlets with errors".
   theatermania: {
     apiBase: 'https://www.theatermania.com/wp-json/wp/v2/news',
-    params: 'per_page=100&orderby=date&order=desc',
+    params: 'categories=157&per_page=100&_fields=link,date,title&orderby=date&order=desc',
     urlFilter: /\/news\/review-/,
+    reviewsOnly: true,
   },
   'nyt-theater': {
     apiBase: 'https://newyorktheater.me/wp-json/wp/v2/posts',
@@ -734,22 +739,46 @@ async function fetchArticleHtml(url) {
   return result && typeof result === 'object' ? result.content : result;
 }
 
+// A page that was fetched and did NOT confirm a show is not fetched again for
+// that show for a week (the poll's lookback), so a daily run does not re-spend
+// paid fetches on the same "Creation Stories" vs "Stories" page. Committed by
+// outlet-listing-poller.yml next to the feed-health snapshot.
+const UNCONFIRMED_CACHE = path.join(__dirname, '..', 'data', 'audit', 'outlet-page-confirm-unconfirmed.json');
+const UNCONFIRMED_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const unconfirmedKey = (url, showId) => `${normalizeUrl(url)}|${showId}`;
+function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now()) {
+  let raw = {};
+  try { raw = JSON.parse(fs.readFileSync(file, 'utf-8')).entries || {}; } catch { /* first run */ }
+  const live = {};
+  for (const [k, at] of Object.entries(raw)) if (nowMs - Date.parse(at) < UNCONFIRMED_TTL_MS) live[k] = at;
+  return live;
+}
+function isUnconfirmedCached(cache, url, showId) { return !!cache[unconfirmedKey(url, showId)]; }
+function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
+  fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days', entries: cache }, null, 2) + '\n');
+}
+
 /**
  * Fetch the article once and keep the candidate shows its text confirms
- * (pageConfirmsShow: a credit or the venue, plus a title form).
- * @param {(url: string) => Promise<string>} [fetcher] injectable for tests
+ * (pageConfirmsShow). Shows it does not confirm go into unconfirmedCache.
+ * @param {{fetcher?: (url: string) => Promise<string>, activeShows?: Array,
+ *   publishDate?: string|null, unconfirmedCache?: object}} [opts]
  */
-async function confirmOnPage(url, candidates, stats, fetcher = fetchArticleHtml) {
+async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], publishDate = null, unconfirmedCache = null } = {}) {
   if (stats.fetched >= PAGE_CONFIRM_MAX_FETCHES) { stats.overBudget += candidates.length; return []; }
   stats.fetched++;
   let html;
   try { html = await fetcher(url); } catch (err) { console.log(`  [page-confirm] fetch failed ${url}: ${err.message}`); }
   if (!html) { stats.failed++; return []; }
   const text = pageText(html);
+  const nowMs = publishDate ? (Date.parse(publishDate) || Date.now()) : Date.now();
   const out = [];
   for (const { show } of candidates) {
-    if (pageConfirmsShow(text, show)) { out.push(show); stats.confirmed++; }
-    else stats.unconfirmed++;
+    if (pageConfirmsShow(text, show, { nowMs, otherShows: activeShows })) { out.push(show); stats.confirmed++; }
+    else {
+      stats.unconfirmed++;
+      if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, show.id)] = new Date().toISOString();
+    }
   }
   return out;
 }
@@ -822,6 +851,7 @@ async function main() {
   // Per-outlet rss/sitemap feed health (BRO-6352), written to OUTLET_FEED_HEALTH_REL.
   const feedHealth = {};
   const pageConfirmStats = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
+  const unconfirmedCache = loadUnconfirmedCache();
   const feedHealthFor = (outletId, sc) => (feedHealth[outletId] = { strategy: sc.strategy, url: null, newestAny: null, oldestAny: null, newestFiltered: null, directBlocked: false });
 
   for (const outletId of qualifyingOutlets) {
@@ -834,6 +864,7 @@ async function main() {
     console.log(`\n--- ${displayName} (${outletId}) ---`);
 
     let articles = [];
+    let viaSerp = false; // SERP results are unfiltered, so never "reviews only"
 
     if (WP_API_CONFIG[outletId]) {
       // WordPress REST API — try directly, no SERP fallback (API errors are informative)
@@ -862,6 +893,7 @@ async function main() {
           console.warn(`  ⚠ ${sc.strategy} failed (${err.message}); falling back to SERP`);
           if (!domain) { outletsFailed++; continue; }
           try {
+            viaSerp = true;
             articles = await fetchViaSerp(outletId, domain, cutoff, opts);
           } catch (serpErr) {
             console.warn(`  ⚠ SERP fallback also failed: ${serpErr.message}`);
@@ -874,6 +906,7 @@ async function main() {
         // No outlet-specific strategy — SERP only (covers paywalled and uncharted outlets)
         if (!domain) { console.log(`  Skipping — no domain in registry`); continue; }
         try {
+          viaSerp = true;
           articles = await fetchViaSerp(outletId, domain, cutoff, opts);
         } catch (err) {
           console.warn(`  ⚠ SERP failed for ${outletId}: ${err.message}`);
@@ -907,11 +940,16 @@ async function main() {
 
       // BRO-6921: subtitled or short titles the headline alone cannot prove.
       const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
-      const reviewOnlyFeed = !!(outletCfg.reviewsOnly || outletCfg.urlFilter);
+      const reviewOnlyFeed = !viaSerp && !!outletCfg.reviewsOnly;
       const candidates = findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: matchedShows, reviewOnlyFeed })
-        .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id));
+        .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id)
+          && !isUnconfirmedCached(unconfirmedCache, url, c.show.id));
       if (candidates.length > 0) {
-        const confirmed = await confirmOnPage(url, candidates, pageConfirmStats);
+        const confirmed = await confirmOnPage(url, candidates, pageConfirmStats, {
+          activeShows, publishDate, unconfirmedCache,
+          // A dry run never spends paid scraper fetches: plain fetch only.
+          fetcher: opts.dryRun ? (u => fetchSimple(u, 20000)) : fetchArticleHtml,
+        });
         for (const show of confirmed) {
           console.log(`  Page-confirmed: "${(headline || url).slice(0, 80)}" → ${show.id}`);
           matchedShows.push(show);
@@ -959,6 +997,7 @@ async function main() {
   // --- Summary ---
   console.log(`\n=== Done ===`);
   console.log(`New stubs: ${totalNewStubs}`);
+  if (pageConfirmStats.overBudget > 0) console.warn(`⚠ Page-confirm budget (${PAGE_CONFIRM_MAX_FETCHES}) ran out: ${pageConfirmStats.overBudget} candidate(s) not checked this run`);
   console.log(`Page-confirm (BRO-6921): ${pageConfirmStats.fetched} pages fetched, ${pageConfirmStats.confirmed} confirmed, ${pageConfirmStats.unconfirmed} not confirmed, ${pageConfirmStats.overBudget} over budget, ${pageConfirmStats.failed} fetch failures`);
   if (outletsFailed > 0) console.warn(`Outlets with errors: ${outletsFailed}`);
   if (serpOnlyEmpty.length > 0) {
@@ -986,6 +1025,7 @@ async function main() {
   // next poll cycle skips them upfront. Skip in dry-run since recordRejection
   // is already gated above.
   if (!opts.dryRun) flushRejectedCache();
+  if (!opts.dryRun) saveUnconfirmedCache(unconfirmedCache);
 
   // Signal to GitHub Actions workflow
   if (process.env.GITHUB_OUTPUT) {
@@ -1062,6 +1102,6 @@ module.exports = {
   SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget,
   // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
   fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml, fetchViaListingConfig,
-  confirmOnPage,
+  confirmOnPage, loadUnconfirmedCache, isUnconfirmedCached,
   buildFeedHealthReport,
 };

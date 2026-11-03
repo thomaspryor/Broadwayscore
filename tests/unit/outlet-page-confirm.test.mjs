@@ -98,25 +98,25 @@ describe('findPageConfirmCandidates guards', () => {
 
 describe('pageConfirmsShow', () => {
   test('a credit on the page confirms', () => {
-    assert.equal(pageConfirmsShow('Fish, by Melis Aker, at WP Theater, is a comedy', FISH, NOW), true);
+    assert.equal(pageConfirmsShow('Fish, by Melis Aker, at WP Theater, is a comedy', FISH, { nowMs: NOW }), true);
   });
   test('the venue confirms a credit-less show (The Ask at Theater 555)', () => {
-    assert.equal(pageConfirmsShow('The Ask, now at Theater 555, stars', THE_ASK, NOW), true);
+    assert.equal(pageConfirmsShow('The Ask, now at Theater 555, stars', THE_ASK, { nowMs: NOW }), true);
   });
   test('the title alone does not confirm', () => {
-    assert.equal(pageConfirmsShow('Fish is a play about fish', FISH, NOW), false);
-    assert.equal(pageConfirmsShow('The Ask is a new play about asking', THE_ASK, NOW), false);
+    assert.equal(pageConfirmsShow('Fish is a play about fish', FISH, { nowMs: NOW }), false);
+    assert.equal(pageConfirmsShow('The Ask is a new play about asking', THE_ASK, { nowMs: NOW }), false);
   });
   test('a credit without the title does not confirm (different production)', () => {
-    assert.equal(pageConfirmsShow('Tatiana Pandiani directs a new play at WP Theater', FISH, NOW), false);
+    assert.equal(pageConfirmsShow('Tatiana Pandiani directs a new play at WP Theater', FISH, { nowMs: NOW }), false);
   });
   test('a one-word venue is not proof', () => {
     const s = { ...THE_ASK, venue: 'Signature' };
-    assert.equal(pageConfirmsShow('The Ask at Signature', s, NOW), false);
+    assert.equal(pageConfirmsShow('The Ask at Signature', s, { nowMs: NOW }), false);
   });
   test('a "Stories" slug on an Exeunt review of Creation Stories is not confirmed as the West End show', () => {
     const text = pageText('<h1>Creation Stories and All the Important Importants</h1><p>At La MaMa, a review.</p>');
-    assert.equal(pageConfirmsShow(text, STORIES_WE, NOW), false);
+    assert.equal(pageConfirmsShow(text, STORIES_WE, { nowMs: NOW }), false);
   });
   test('pageText drops scripts and decodes entities', () => {
     assert.equal(pageText('<script>var a="Melis Aker"</script><p>&#x27;Fish&#x27; &amp; more</p>').trim(), "'Fish' & more");
@@ -127,21 +127,21 @@ describe('confirmOnPage (poller)', () => {
   const stats = () => ({ fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 });
   test('confirms from the fetched page and counts it', async () => {
     const st = stats();
-    const out = await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }, { show: THE_ASK }], st,
-      async () => '<article><h1>Fish</h1><p>Melis Aker’s play</p></article>');
+    const out = await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }, { show: THE_ASK }], st, { fetcher:
+      async () => '<article><h1>Fish</h1><p>Melis Aker’s play</p></article>' });
     assert.deepEqual(ids(out), [FISH.id]);
     assert.deepEqual(st, { fetched: 1, confirmed: 1, unconfirmed: 1, overBudget: 0, failed: 0 });
   });
   test('a failed fetch confirms nothing', async () => {
     const st = stats();
-    const out = await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }], st, async () => { throw new Error('403'); });
+    const out = await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }], st, { fetcher: async () => { throw new Error('403'); } });
     assert.deepEqual(out, []);
     assert.equal(st.failed, 1);
   });
   test('stops fetching past the per-run cap', async () => {
     const st = { ...stats(), fetched: 10_000 };
     let called = false;
-    const out = await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }], st, async () => { called = true; return ''; });
+    const out = await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }], st, { fetcher: async () => { called = true; return ''; } });
     assert.deepEqual(out, []);
     assert.equal(called, false);
     assert.equal(st.overBudget, 1);
@@ -185,5 +185,47 @@ describe('sibling productions (corpus check, BRO-6921)', () => {
     assert.deepEqual(findPageConfirmCandidates(item, [legacy, newWorks], { reviewOnlyFeed: true, nowMs: Date.parse('2026-09-11') }).map((c) => c.show.id), ['alvin-ailey-new-works']);
     const bare = { url: 'https://x.com/review-alvin-ailey-american-dance-theater-at-sadlers-wells', headline: '', publishDate: '2026-09-10' };
     assert.deepEqual(findPageConfirmCandidates(bare, [legacy, newWorks], { reviewOnlyFeed: true, nowMs: Date.parse('2026-09-11') }), []);
+  });
+});
+
+describe('review findings (BRO-6921 second opinion)', () => {
+  test('the venue does not confirm a show that has credits on file', () => {
+    assert.equal(pageConfirmsShow('Fish at WP Theater is a comedy', FISH, { nowMs: NOW }), false);
+  });
+  test('a venue shared with another running show confirms neither', () => {
+    const PHYL = { id: 'phyl-off-broadway-2026', title: 'Phyl', status: 'open', openingDate: '2026-10-10', venue: 'Theatre Row' };
+    const VIOLIN = { id: 'the-blue-violinist-2026', title: 'The Blue Violinist', status: 'open', openingDate: '2026-10-12', venue: 'Theatre Row' };
+    assert.equal(pageConfirmsShow('Phyl at Theatre Row', PHYL, { nowMs: NOW, otherShows: [PHYL, VIOLIN] }), false);
+    assert.equal(pageConfirmsShow('Phyl at Theatre Row', PHYL, { nowMs: NOW, otherShows: [PHYL] }), true);
+  });
+  test('a tour "venue" is generic and confirms nothing', () => {
+    const TOUR = { id: 'the-ask-tour', title: 'The Ask', status: 'open', openingDate: '2026-10-01', venue: 'North American Tour' };
+    assert.equal(pageConfirmsShow('The Ask on its North American Tour', TOUR, { nowMs: NOW }), false);
+  });
+  test('reviewsOnly is set explicitly, only on review-only feeds', () => {
+    const { OUTLET_STRATEGY_CONFIG: S, WP_API_CONFIG: W } = poller;
+    assert.equal(W.theatermania.reviewsOnly, true);
+    assert.match(W.theatermania.params, /categories=157/);
+    assert.equal(W.nysr.reviewsOnly, true);
+    assert.equal(S['theater-scene'].reviewsOnly, true);
+    assert.equal(S.nytg.reviewsOnly, true);
+    assert.ok(!S.observer || !S.observer.reviewsOnly, 'observer feed mixes news');
+  });
+  test('a fetched page that does not confirm goes in the unconfirmed cache, and the cache expires', async () => {
+    const cache = {};
+    const st = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
+    await poller.confirmOnPage('https://x.com/ask', [{ show: THE_ASK }], st, { fetcher: async () => '<p>The Ask, a podcast</p>', unconfirmedCache: cache });
+    assert.equal(poller.isUnconfirmedCached(cache, 'https://x.com/ask', THE_ASK.id), true);
+    const fs = require('fs'); const os = require('os'); const path = require('path');
+    const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'uc-')), 'c.json');
+    const now = Date.parse('2026-10-20T00:00:00Z');
+    fs.writeFileSync(f, JSON.stringify({ entries: { 'a|x': '2026-10-19T00:00:00Z', 'b|x': '2026-10-10T00:00:00Z' } }));
+    assert.deepEqual(Object.keys(poller.loadUnconfirmedCache(f, now)), ['a|x']);
+    assert.deepEqual(poller.loadUnconfirmedCache(path.join(path.dirname(f), 'missing.json'), now), {});
+  });
+  test('the writer credit rule uses the publish date passed to confirmOnPage', async () => {
+    const st = { fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 };
+    const out = await poller.confirmOnPage('https://x.com/f', [{ show: FISH }], st, { fetcher: async () => '<p>Fish by Melis Aker</p>', publishDate: '2026-10-15' });
+    assert.deepEqual(ids(out), [FISH.id]);
   });
 });

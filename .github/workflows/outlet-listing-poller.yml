@@ -128,6 +128,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
           git add data/audit/outlet-feed-health.json 2>/dev/null || true
+          git add data/audit/outlet-page-confirm-unconfirmed.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
