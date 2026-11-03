@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T01:57:32.064Z",
+  "timestamp": "2026-11-03T02:33:52.862Z",
   "stats": {
-    "totalReviews": 79715,
-    "alreadyFlagged": 21994,
+    "totalReviews": 79716,
+    "alreadyFlagged": 22007,
     "dateGuardCatches": 219,
-    "directorMismatch": 3436,
+    "directorMismatch": 3439,
     "tvFilmSignals": 2261,
     "londonSignals": 3586,
     "offBroadwaySignals": 734,
-    "yearMismatch": 355,
-    "noPublishDate": 8459
+    "yearMismatch": 356,
+    "noPublishDate": 8440
   },
   "findings": [
     {
@@ -13362,6 +13362,25 @@
     },
     {
       "showId": "come-from-away-moonlight-regional-2026",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": "2026-09-08",
+      "url": "https://www.amny.com/entertainment/broadway/come-from-away-renewed-relevance-after-9-11/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher ashley\" from come-from-away-2017"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2017 (2x) more than 2026 (0x). 2017 matches production: come-from-away-2017"
+        }
+      ]
+    },
+    {
+      "showId": "come-from-away-moonlight-regional-2026",
       "file": "san-diego-union-tribune--pam-kragen.json",
       "score": 89,
       "publishDate": "2026-09-10",
@@ -18046,6 +18065,20 @@
       "score": 85,
       "publishDate": "2026-09-13",
       "url": "https://www.chicagotribune.com/2026/09/13/review-dirty-dancing-musical-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": null,
+      "publishDate": "2026-10-07",
+      "url": "https://cititour.com/NYC_News/Dirty-Dancing-The-Musical-to-Arrive-on-Broadway-in-February/11091",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42990,6 +43023,20 @@
       "score": 82,
       "publishDate": "June 22nd, 2026",
       "url": "https://www.whatsonstage.com/news/much-ado-about-nothing-at-shakespeares-globe-review_1725693/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-regional-2026",
+      "file": "theatermania--pete-hempstead.json",
+      "score": null,
+      "publishDate": "2026-10-30",
+      "url": "https://www.theatermania.com/news/watch-tom-hiddleston-and-hayley-atwell-are-ready-to-spar-in-much-ado-about-nothing_1858553/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -128626,6 +128673,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "the-recs--the-recs-sw.json",
+      "score": 78,
       "publishDate": "2026-11-01",
       "url": "https://therecs.co.uk/the-lives-of-others/",
       "findings": [
