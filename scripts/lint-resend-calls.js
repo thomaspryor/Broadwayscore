@@ -31,6 +31,8 @@ const ALLOWLIST = new Set([
   'scripts/lib/cloud-secrets-smoke.js', // BRO-6258: read-only GET /domains key check for check-cloud-secrets.js --smoke; sends nothing
   'scripts/lib/discord-notify.js', // sendAlert() — the shared human-disposition email path
   // KEEP — owner-confirmed product emails (email-consolidation-plan-2026-07-21.md)
+  'src/lib/critic-server.ts', // BRO-6895: one claim email to OWNER_EMAIL per critic page claim (owner-approved spec), reply-to the critic
+  'scripts/critic-opening-night-email.ts', // BRO-6895: opt-in transactional "your review is in" email to verified critics; dry-run default, needs --send --yes
   'scripts/send-morning-digest.js', // the ONE scheduled owner email/day (loop retired 2026-07-27)
   'scripts/send-daily-digest.js',
   'scripts/send-opening-digest.js',
