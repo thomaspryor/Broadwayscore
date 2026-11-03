@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T04:42:43.415Z",
+  "timestamp": "2026-11-03T05:19:36.641Z",
   "stats": {
-    "totalReviews": 79771,
-    "alreadyFlagged": 22016,
+    "totalReviews": 79782,
+    "alreadyFlagged": 22017,
     "dateGuardCatches": 219,
-    "directorMismatch": 3452,
+    "directorMismatch": 3451,
     "tvFilmSignals": 2262,
-    "londonSignals": 3587,
+    "londonSignals": 3586,
     "offBroadwaySignals": 735,
     "yearMismatch": 359,
-    "noPublishDate": 8433
+    "noPublishDate": 8435
   },
   "findings": [
     {
@@ -29269,24 +29269,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "hay-fever-west-end-2012",
-      "file": "timeout-london--unknown.json",
-      "publishDate": "2026-10-01",
-      "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"emily burns\" from hay-fever-west-end-2026"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
