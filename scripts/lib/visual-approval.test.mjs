@@ -203,3 +203,12 @@ test('showInlineHint names every crop by absolute path and says to render them i
   assert.match(hint, /display="render"/);
   assert.match(hint, /push land\/<name> yourself/);
 });
+
+test('BRO-6878: a request for a change with no UI files is refused; any UI file allows it', async () => {
+  const { isUiPath } = await import('./ui-paths.mjs');
+  const dataOnly = ['src/lib/data-lottery.ts', 'data/lottery-rush.json', 'scripts/scrape-lottery-rush.js'];
+  assert.match(va.nonUiRefusal(dataOnly, isUiPath), /touches no UI files/);
+  assert.match(va.nonUiRefusal([], isUiPath), /touches no UI files/);
+  assert.equal(va.nonUiRefusal([...dataOnly, 'src/components/LotteryRushCard.tsx'], isUiPath), null);
+  assert.equal(va.nonUiRefusal(['src/app/globals.css'], isUiPath), null);
+});

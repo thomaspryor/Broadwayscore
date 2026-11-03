@@ -35,6 +35,11 @@ async function request(argv) {
   const dir = arg(argv, 'dir') || path.join('.claude', 'visual-qa', branch);
 
   if (va.git(['status', '--porcelain'], { cwd })) { console.error('Refused: uncommitted changes. Commit first so the owner approves exactly what is saved.'); return 1; }
+  va.git(['fetch', 'origin', 'main', '--quiet'], { cwd });
+  const { isUiPath } = await import('./lib/ui-paths.mjs');
+  const changed = va.git(['diff', '--name-only', 'origin/main...HEAD'], { cwd }).split('\n').filter(Boolean);
+  const nonUi = va.nonUiRefusal(changed, isUiPath);
+  if (nonUi) { console.error(nonUi); return 1; }
   let verdict;
   try { verdict = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch { console.error(`Refused: no verdict.json in ${dir}. Run node scripts/visual-qa.mjs first.`); return 1; }
   if (!verdict.contentHash) { console.error('Refused: verdict.json has no contentHash.'); return 1; }

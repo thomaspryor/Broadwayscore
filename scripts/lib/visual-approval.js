@@ -147,8 +147,16 @@ function classifyStatus(description, comments) {
   return 'waiting';
 }
 
+// BRO-6878: a change that touches no UI file has nothing for the owner to look at.
+// BRO-6862's data-only fix (src/lib/*.ts, data, scripts) was sent for visual approval
+// anyway and the owner pushed back. Returns the refusal text, or null when a UI file changed.
+function nonUiRefusal(files, isUiPath) {
+  if ((files || []).some((f) => isUiPath(f))) return null;
+  return 'Refused: this change touches no UI files (src/**/*.{tsx,jsx,css,scss}, tailwind/postcss config, styles/), so the owner has nothing to approve visually. Land it with git push origin HEAD:refs/heads/land/<name>.';
+}
+
 function openVisualRequests(issues) {
   return issues.filter((i) => link.parseVisualApproval(i.description) && /DECISION NEEDED/i.test(i.description || '') && !/ANSWERED by the owner/.test(i.description || ''));
 }
 
-module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests, nonUiRefusal };
