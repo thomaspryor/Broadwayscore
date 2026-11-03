@@ -7,25 +7,25 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-03T02:30:04.756Z",
-    "endedAt": null,
+    "endedAt": "2026-11-03T09:00:41.837Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-03T04:55:11.314Z",
-    "lastOkSampleAt": "2026-11-03T04:55:11.314Z"
+    "lastSampleAt": "2026-11-03T08:57:10.664Z",
+    "lastOkSampleAt": "2026-11-03T08:57:10.664Z"
   },
   "firstLiveAt": "2026-11-03T04:45:10.928Z",
   "firstLiveBaseline": false,
-  "lastLiveAt": "2026-11-03T04:45:10.928Z",
-  "liveCount": 1,
+  "lastLiveAt": "2026-11-03T05:06:57.802Z",
+  "liveCount": 2,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 2,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-03T04:00:08.768Z",
-    "2h": null,
+    "2h": "2026-11-03T05:06:57.802Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -46,6 +46,18 @@
       "prevOkSampleAt": "2026-11-03T04:40:10.658Z",
       "baseline": false,
       "liveNow": true
+    },
+    {
+      "key": "new york theatre guide|gillian russo",
+      "outlet": "New York Theatre Guide",
+      "critic": "Gillian Russo",
+      "tier": 2,
+      "publishAt": "2026-11-02",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-03T05:06:57.802Z",
+      "prevOkSampleAt": "2026-11-03T04:55:11.314Z",
+      "baseline": false,
+      "liveNow": true
     }
   ],
   "dropped": [],
@@ -60,6 +72,17 @@
       "liveCount": 1,
       "fetchedAt": "2026-11-03T05:00:23.753Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 2,
+      "fetchedAt": "2026-11-03T09:00:37.355Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -72,11 +95,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-03T09:00:37.443Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-03T05:00:28.082Z",
+    "capturedAt": "2026-11-03T09:00:41.791Z",
     "files": [
       {
         "file": "nysr--roma-torre.json",
@@ -103,6 +132,30 @@
         "includable": true,
         "reason": null,
         "syndicatedUnder": null
+      }
+    ]
+  },
+  "laneShadow": {
+    "importedAt": "2026-11-03T09:00:33.061Z",
+    "runId": "41566492565",
+    "startedAt": "2026-11-03T02:33:05.903Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": null,
+    "discoveredByOutlet": {},
+    "bwwRoundupUrl": null,
+    "liveFirstSeen": [
+      {
+        "outlet": "New York Stage Review",
+        "url": "https://nystagereview.com/2026/11/02/waiting-for-lefty-the-play-has-aged-the-injustice-has-not/",
+        "at": "2026-11-03T04:45:08.208Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Theatre Guide",
+        "url": "https://www.newyorktheatreguide.com/reviews/waiting-for-lefty-off-broadway-review",
+        "at": "2026-11-03T05:03:08.888Z",
+        "baseline": false
       }
     ]
   }
