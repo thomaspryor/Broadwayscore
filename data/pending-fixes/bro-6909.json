@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6909",
   "planId": "00c3ab7d-0c28-4f08-8813-1a63bd1caa1d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T21:52:54.698Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,19 @@
         "description": "girls-off-west-end-2026/north-west-end--unknown.json: wrongShow"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T22:45:37.647Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "girls-off-west-end-2026/north-west-end--beth-easton.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "girls-off-west-end-2026/north-west-end--unknown.json wrongShow: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
