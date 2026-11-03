@@ -291,22 +291,94 @@ function requireKnownOutletLinks(links, pageUrl, name) {
 }
 
 function bwwRoundupAdapter({ homeUrl = 'https://www.broadwayworld.com/' } = {}) {
+  const refusedStored = new Set();
   return {
     name: 'bww-roundup', kind: 'aggregator', phase: 'cheap',
     async discover({ show, fetchText }) {
-      const roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title, { openingDate: show.openingDate, showId: show.id });
-      if (!roundup) return [];
-      const links = requireKnownOutletLinks(storyCitedLinks(await fetchText(roundup), roundup, BWW_STORY), roundup, 'bww-roundup');
+      // The homepage only lists the last few days. A show that has scrolled off (a busy week, a layout change, any replay
+      // older than a few days) falls back to the roundup URL the show already has on record (BRO-6872).
+      let roundup = findBWWRoundupLinkOnHomepage(await fetchText(homeUrl), show.title, { openingDate: show.openingDate, showId: show.id });
+      let html = null;
+      if (!roundup) {
+        // The stored URL is trusted only when the page itself is dated at this opening: a stored value can belong to
+        // another production (a copied record, a revival), and the links it cites skip the night window.
+        const stored = storedBwwRoundup(show);
+        if (!stored || refusedStored.has(stored)) return [];
+        html = await fetchText(stored);
+        if (!pageDatedNear(html, show.openingDate)) { refusedStored.add(stored); return []; }
+        roundup = stored;
+      }
+      const links = requireKnownOutletLinks(storyCitedLinks(html || await fetchText(roundup), roundup, BWW_STORY), roundup, 'bww-roundup');
       return citedCandidates(links, roundup, 'bwwExcerpt');
     },
   };
 }
 
-function dtliAdapter({ homeUrl = 'https://didtheylikeit.com/' } = {}) {
+function storedBwwRoundup(show) {
+  const u = String((show && show.bwwRoundupUrl) || '');
+  return /^https:\/\/(?:www\.)?broadwayworld\.com\/article\//i.test(u) ? u : null;
+}
+
+// An aggregator page reached by a fallback (not linked from today's homepage) counts only when it was published within
+// this many days of the show's opening: DTLI and BWW publish a show's page on its opening night, and an older
+// production's page under the same title is otherwise indistinguishable (BRO-6872 review: other-desert-cities-2026
+// resolved to DTLI's 2011 page). Its cited links are admitted with no per-link date check, so this is the only guard.
+const FALLBACK_PAGE_MAX_DAYS = 7;
+function pageDatedNear(html, openingDate, maxDays = FALLBACK_PAGE_MAX_DAYS) {
+  const open = Date.parse(String(openingDate || '').slice(0, 10));
+  if (!Number.isFinite(open)) return false;
+  const when = Date.parse(extractPublishDate(html) || '');
+  return Number.isFinite(when) && Math.abs(when - open) <= maxDays * 86400e3;
+}
+
+/** DTLI show pages the sitemap offers for this show, newest-looking first: "<slug>-2", "<slug>-bway" before "<slug>". */
+function dtliSitemapPages(result) {
+  const all = result && result.sitemapSlugs ? [...result.sitemapSlugs] : [];
+  const out = [];
+  for (const c of (result && result.candidates) || []) {
+    const variants = all.filter((x) => x.startsWith(`${c.slug}-`) && /^-(?:\d{1,2}|bway|broadway|\d{4})$/.test(x.slice(c.slug.length)))
+      .sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+    for (const slug of [...variants, c.slug]) if (!out.includes(slug)) out.push(slug);
+  }
+  return out.map((slug) => `https://didtheylikeit.com/shows/${slug}/`);
+}
+
+// How many passes a DTLI sitemap miss stands before the sitemap is asked again (the show page can appear mid-night).
+const DTLI_SITEMAP_RETRY_PASSES = 5;
+const DTLI_SITEMAP_MAX_PAGES = 4;
+function dtliAdapter({ homeUrl = 'https://didtheylikeit.com/', findInSitemap } = {}) {
+  // The homepage lists recent shows only. When it does not link this show, DTLI's own sitemap is asked (the lookup
+  // gather-reviews uses), at most once per DTLI_SITEMAP_RETRY_PASSES passes until a page dated at this opening is found.
+  // Through the lane's own fetch, so the reads are recorded and bounded; the numbered-sitemap probe (up to 20 paid
+  // fetches) is skipped when the sitemap index itself fails.
+  const lookup = findInSitemap || (async (show, fetchText) => {
+    const dtli = require('../dtli-slug-discover');
+    let indexOk = false;
+    const httpGet = async (u) => {
+      if (!/sitemap_index\.xml$/.test(u) && !indexOk) return { ok: false, body: '' };
+      try { const body = await fetchText(u); const ok = Boolean(body); if (/sitemap_index\.xml$/.test(u)) indexOk = ok; return { ok, body: body || '' }; } catch { return { ok: false, body: '' }; }
+    };
+    return dtliSitemapPages(await dtli.discoverDtliSlug(show, { fetchSlugs: () => dtli.fetchDtliShowSlugIndex({ httpGet }) }));
+  });
+  let found = null; let missesSince = 0; let asked = false;
+  const fromSitemap = async (show, fetchText) => {
+    if (found) return found;
+    if (asked && ++missesSince < DTLI_SITEMAP_RETRY_PASSES) return null;
+    asked = true; missesSince = 0;
+    let pages = [];
+    try { pages = [].concat((await lookup(show, fetchText)) || []); } catch { pages = []; }
+    for (const page of pages.slice(0, DTLI_SITEMAP_MAX_PAGES)) {
+      let html = '';
+      try { html = await fetchText(page); } catch { continue; }
+      if (pageDatedNear(html, show.openingDate)) { found = { page, html }; return found; }
+    }
+    return null;
+  };
   return {
     name: 'dtli', kind: 'aggregator', phase: 'cheap', fetchTimeoutMs: SLOW_AGGREGATOR_TIMEOUT_MS,
     async discover({ show, fetchText }) {
-      const page = findDTLIShowLinkOnHomepage(await fetchText(homeUrl), show);
+      const linked = findDTLIShowLinkOnHomepage(await fetchText(homeUrl), show);
+      const page = linked || (await fromSitemap(show, fetchText) || {}).page;
       if (!page) return [];
       return citedCandidates(extractCitedLinks(await fetchText(page), page), page, 'dtliExcerpt');
     },
@@ -358,7 +430,7 @@ function parseFeedEntries(xml) {
  */
 function defaultLaneFeeds(show) {
   const market = /west[-\s]?end/i.test(`${(show && show.market) || ''} ${(show && show.category) || ''}`) ? 'west-end' : 'broadway';
-  return ALL_FEEDS.filter((f) => !f.market || f.market === market).map((f) => ({ url: f.url, outletId: f.outletId, name: f.name }));
+  return ALL_FEEDS.filter((f) => !f.market || f.market === market).map((f) => ({ url: f.url, outletId: f.outletId, name: f.name, ...(f.reviewsOnly ? { reviewsOnly: true } : {}) }));
 }
 
 // Explicit section URLs, never inferred from article URLs. Vulture and Variety reuse the
@@ -422,7 +494,9 @@ function rssAdapter({ feeds } = {}) {
           if (!it.link) continue;
           // fuzzy: an outlet's own typo in headline + slug (CATERINA, BRO-4001).
           if (!titleMatchesShow(it.title, show.title, { fuzzy: true }) && !urlSlugMatchesShow(it.link, show.title, { fuzzy: true })) continue;
-          out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: hostOf(it.link) === hostOf(feed.url) ? feed.outletId : undefined });
+          const ownHost = hostOf(it.link) === hostOf(feed.url);
+          // A reviews-only feed's own item is a review whatever its headline says; a link off the feed's host is not vouched for.
+          out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: ownHost ? feed.outletId : undefined, ...(ownHost && feed.reviewsOnly ? { reviewSignalGiven: true } : {}) });
         }
       }
       return out;
@@ -989,7 +1063,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
+  nonReviewReason, hasReviewSignal, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

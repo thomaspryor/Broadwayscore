@@ -35,6 +35,9 @@ const { withinOneEdit, QUERY_NOISE_WORDS } = require('./show-search-match');
 // BroadwayWorld, TheaterMania and Forbes have no working feed (see
 // scripts/lib/commercial-source-coverage.js EXEMPT_HOSTS); Broadway News Reviews is a
 // reviews-tag feed (no recoupment news).
+// reviewsOnly: true marks a feed that carries nothing but reviews (a review-tag or reviews-category feed, or an outlet
+// that publishes only reviews). The opening-night lane takes a show-matched item from it as a review even when the
+// headline has no review word (BRO-6872: NY Stage Review's "860: Billy Crystal brings down the house" was dropped).
 const THEATER_FEEDS = [
   { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true, market: 'broadway', trackRecoupment: true },
   // playbill.com/feed is defunct (404 as of March 2026). The live news feed is in
@@ -42,14 +45,14 @@ const THEATER_FEEDS = [
   { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true, market: 'broadway' },
   // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
   // Use Guardian Open Platform API in site-search-discovery.js instead.
-  { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true, market: 'broadway' },
-  { url: 'https://nystagereview.com/feed/', outletId: 'nysr', name: 'NY Stage Review', needsFilter: true, market: 'broadway' },
+  { url: 'https://www.broadwaynews.com/tag/review/rss/', outletId: 'broadwaynews', name: 'Broadway News Reviews', needsFilter: true, market: 'broadway', reviewsOnly: true },
+  { url: 'https://nystagereview.com/feed/', outletId: 'nysr', name: 'NY Stage Review', needsFilter: true, market: 'broadway', reviewsOnly: true },
   // newyorktheater.me is Jonathan Mandell's single-author blog — stamp the byline so
   // RSS hits don't land in _pending/ with criticName='Unknown'. See feedback_rss_discovery_pending_strand.md.
   { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true, market: 'broadway', defaultCritic: 'Jonathan Mandell' },
   // Exeunt NYC (T2). The site-wide /feed/ is empty; the reviews category feed lists each review the night it posts.
   // No aggregator cited its 2026-10-22 Imaginary Invalid review and the Google News link never decoded (BRO-6872).
-  { url: 'https://exeuntnyc.com/reviews/feed/', outletId: 'exeunt-magazine', name: 'Exeunt Magazine', needsFilter: true, market: 'broadway' },
+  { url: 'https://exeuntnyc.com/reviews/feed/', outletId: 'exeunt-magazine', name: 'Exeunt Magazine', needsFilter: true, market: 'broadway', reviewsOnly: true },
 ];
 
 // West End theater feeds (verified March 2026)
