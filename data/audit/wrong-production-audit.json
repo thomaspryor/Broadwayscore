@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T20:42:57.052Z",
+  "timestamp": "2026-11-03T21:44:06.852Z",
   "stats": {
-    "totalReviews": 79953,
+    "totalReviews": 79963,
     "alreadyFlagged": 22059,
     "dateGuardCatches": 216,
     "directorMismatch": 3457,
     "tvFilmSignals": 2262,
-    "londonSignals": 3590,
+    "londonSignals": 3592,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8513
+    "noPublishDate": 8514
   },
   "findings": [
     {
@@ -101011,6 +101011,19 @@
     },
     {
       "showId": "harry-potter-2021",
+      "file": "front-row-center--tulis-mccall.json",
+      "publishDate": "2018-04-30",
+      "url": "http://thefrontrowcenter.com/2018/04/harry-potter-and-the-cursed-child/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-2021",
       "file": "ny1--roma-torre.json",
       "score": 81,
       "publishDate": "April 22, 2018",
@@ -105305,6 +105318,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "seatplan--unknown.json",
+      "score": 87,
       "publishDate": "2026-10-30",
       "url": "https://seatplan.com/london/news/reasons-to-see-jesus-christ-superstar-london/",
       "findings": [
@@ -135502,6 +135516,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "triumph-off-west-end-2026",
+      "file": "british-theatre--keith-mckenna.json",
+      "score": 72,
+      "publishDate": "2026-10-20",
+      "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
