@@ -196,19 +196,40 @@ test('email shows the screenshots', () => {
   assert.ok(!mail.html.includes('—'));
 });
 
+test('email: one small phone-width screenshot, the rest as links (BRO-6876)', () => {
+  const ev = ['1440', '414', '768'].map((w) => ({ label: `show ${w}`, url: `https://raw.githubusercontent.com/thomaspryor/Broadwayscore/visual-evidence/bro-7/show_${w}.png` }));
+  const d = va.buildBlock({ what: 'the card', patch: PATCH, verdict: VERDICT, hold: 'visual-hold/bro-7', evidence: ev, summary: 'ok' });
+  const q = link.markerLines(d)[0].question;
+  const mail = buildDecisionEmail({ decision: { identifier: 'BRO-7', title: 'UI', url: 'https://linear.app/x', question: q }, description: d, secret: S });
+  assert.equal((mail.html.match(/<img /g) || []).length, 1);
+  assert.ok(mail.html.includes(`<img src="${ev[1].url}"`), 'phone-width shot is the picture');
+  assert.ok(mail.html.includes(`href="${ev[0].url}"`) && mail.html.includes(`href="${ev[2].url}"`), 'others stay reachable as links');
+  assert.equal(va.pickEmailImage([]), null);
+});
+
+test('visualSurfaceFiles: data/scraper/lib diffs have no UI surface; tsx and css do; copy-only tsx does not (BRO-6876)', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'vsf-'));
+  const g = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8' });
+  g('init', '-q', '-b', 'main'); g('config', 'user.email', 'a@b.c'); g('config', 'user.name', 't');
+  execFileSync('mkdir', ['-p', path.join(dir, 'src/lib'), path.join(dir, 'src/components'), path.join(dir, 'data'), path.join(dir, 'scripts')]);
+  writeFileSync(path.join(dir, 'src/components/Card.tsx'), 'export const C = () => <p>Hello there friend.</p>;\n');
+  writeFileSync(path.join(dir, 'data/x.json'), '{}\n'); g('add', '-A'); g('commit', '-qm', 'base');
+  g('checkout', '-qb', 'data-only');
+  writeFileSync(path.join(dir, 'data/x.json'), '{"a":1}\n'); writeFileSync(path.join(dir, 'src/lib/data-lottery.ts'), 'export const x = 1;\n'); writeFileSync(path.join(dir, 'scripts/s.js'), 'x\n');
+  g('add', '-A'); g('commit', '-qm', 'data');
+  assert.deepEqual(va.visualSurfaceFiles('main...data-only', dir), []);
+  g('checkout', '-q', 'main'); g('checkout', '-qb', 'copy-only');
+  writeFileSync(path.join(dir, 'src/components/Card.tsx'), 'export const C = () => <p>Hello there pal.</p>;\n'); g('commit', '-qam', 'copy');
+  assert.deepEqual(va.visualSurfaceFiles('main...copy-only', dir), []);
+  g('checkout', '-q', 'main'); g('checkout', '-qb', 'ui');
+  writeFileSync(path.join(dir, 'src/components/Card.tsx'), 'export const C = () => <p className="mt-4">Hello there friend.</p>;\n'); g('commit', '-qam', 'ui');
+  assert.deepEqual(va.visualSurfaceFiles('main...ui', dir), ['src/components/Card.tsx']);
+});
+
 test('showInlineHint names every crop by absolute path and says to render them inline', async () => {
   const va = await import('./visual-approval.js').then((m) => m.default || m);
   const hint = va.showInlineHint(['.claude/visual-qa/b/a__1.png', '.claude/visual-qa/b/a__2.png'], '/repo');
   assert.match(hint, /SendUserFile files=\["\/repo\/\.claude\/visual-qa\/b\/a__1\.png","\/repo\/\.claude\/visual-qa\/b\/a__2\.png"\]/);
   assert.match(hint, /display="render"/);
   assert.match(hint, /push land\/<name> yourself/);
-});
-
-test('BRO-6878: a request for a change with no UI files is refused; any UI file allows it', async () => {
-  const { isUiPath } = await import('./ui-paths.mjs');
-  const dataOnly = ['src/lib/data-lottery.ts', 'data/lottery-rush.json', 'scripts/scrape-lottery-rush.js'];
-  assert.match(va.nonUiRefusal(dataOnly, isUiPath), /touches no UI files/);
-  assert.match(va.nonUiRefusal([], isUiPath), /touches no UI files/);
-  assert.equal(va.nonUiRefusal([...dataOnly, 'src/components/LotteryRushCard.tsx'], isUiPath), null);
-  assert.equal(va.nonUiRefusal(['src/app/globals.css'], isUiPath), null);
 });

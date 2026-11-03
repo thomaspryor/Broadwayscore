@@ -29,6 +29,21 @@ function patchId(base, head, cwd) {
   return out ? out.split(/\s+/)[0] : null;
 }
 
+/**
+ * Files in `range` that can change how the site looks: the push gate's UI path
+ * pattern (kept in sync with the hook by headless-dispatchability's test), minus
+ * code files whose diff is copy-only. Data, scraper, lib and script changes are
+ * never visual, even when the page they feed looks different afterwards: the
+ * existing components render the new data, so there is nothing for the owner to judge.
+ * Fails closed: a diff error keeps the file.
+ */
+function visualSurfaceFiles(range, cwd) {
+  const { UI_PATH_RE } = require('./headless-dispatchability.js'); // lazy: that module requires this one
+  const { filterFiles } = require('./visual-text-only-diff.js');
+  const files = git(['diff', '--name-only', range], { cwd }).split('\n').filter((f) => UI_PATH_RE.test(f));
+  return filterFiles(range, files, (r, f) => git(['diff', r, '--', f], { cwd }));
+}
+
 /** A hold is settled when its fetch failed or its diff against main is empty. */
 function holdSettled({ fetchOk, patchIdValue }) {
   return !fetchOk || patchIdValue === null;
@@ -68,6 +83,12 @@ function flatName(dir, file) {
 
 function labelFor(name) {
   return name.replace(/\.(png|jpe?g)$/i, '').replace(/__/g, ' ').replace(/[_-]+/g, ' ').replace(/\|/g, ' ').trim().slice(0, 80) || 'Screenshot';
+}
+
+/** The email needs one picture, not five: prefer a phone-width shot (the owner reads on a phone), else the first. */
+function pickEmailImage(evidence) {
+  const list = Array.isArray(evidence) ? evidence : [];
+  return list.find((e) => /\b(414|390|375|360)\b/.test(`${e.label} ${e.url}`)) || list[0] || null;
 }
 
 function buildBlock({ what, patch, verdict, hold, evidence, summary }) {
@@ -147,16 +168,8 @@ function classifyStatus(description, comments) {
   return 'waiting';
 }
 
-// BRO-6878: a change that touches no UI file has nothing for the owner to look at.
-// BRO-6862's data-only fix (src/lib/*.ts, data, scripts) was sent for visual approval
-// anyway and the owner pushed back. Returns the refusal text, or null when a UI file changed.
-function nonUiRefusal(files, isUiPath) {
-  if ((files || []).some((f) => isUiPath(f))) return null;
-  return 'Refused: this change touches no UI files (src/**/*.{tsx,jsx,css,scss}, tailwind/postcss config, styles/), so the owner has nothing to approve visually. Land it with git push origin HEAD:refs/heads/land/<name>.';
-}
-
 function openVisualRequests(issues) {
   return issues.filter((i) => link.parseVisualApproval(i.description) && /DECISION NEEDED/i.test(i.description || '') && !/ANSWERED by the owner/.test(i.description || ''));
 }
 
-module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests, nonUiRefusal };
+module.exports = { visualSurfaceFiles, pickEmailImage, MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, showInlineHint, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };

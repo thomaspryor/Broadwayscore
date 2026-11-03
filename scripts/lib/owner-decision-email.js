@@ -7,6 +7,7 @@
  */
 
 const { parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks } = require('../../src/lib/owner-decision-link.js');
+const { pickEmailImage } = require('./visual-approval.js');
 
 const BASE_URL = 'https://broadwayscorecard.com';
 const SUBJECT_MAX = 90;
@@ -60,7 +61,7 @@ function buildDecisionEmail({ decision, description, secret, now = Date.now(), b
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'Waiting on you'}. Work on this is paused until you answer.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
 ${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(decision.title))}</p>` : ''}
-${(block.evidence || []).map((e) => `<p style="margin:0 0 10px;"><a href="${esc(e.url)}"><img src="${esc(e.url)}" alt="${esc(noDash(e.label))}" style="display:block;width:100%;max-width:520px;height:auto;border:1px solid #ddd;border-radius:8px;"></a><span style="font-size:13px;color:#666;">${esc(noDash(e.label))}</span></p>`).join('')}
+${evidenceHtml(block.evidence)}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why this is your call:</strong> ${esc(noDash(block.why))}</p>` : ''}
 ${optionHtml}
 ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendation:</strong> ${esc(noDash(block.recommendation))}</p>` : ''}
@@ -71,6 +72,17 @@ ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
 <p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
+}
+
+// BRO-6876: one small picture (phone width) plus text links to the rest. Five full-width shots made a
+// quick yes/no look like a report. Tapping the picture or a link opens the full size.
+function evidenceHtml(evidence) {
+  const list = Array.isArray(evidence) ? evidence : [];
+  if (!list.length) return '';
+  const first = pickEmailImage(list);
+  const rest = list.filter((e) => e !== first);
+  return `<p style="margin:0 0 10px;"><a href="${esc(first.url)}"><img src="${esc(first.url)}" alt="${esc(noDash(first.label))}" style="display:block;width:100%;max-width:280px;height:auto;border:1px solid #ddd;border-radius:8px;"></a><span style="font-size:13px;color:#666;">${esc(noDash(first.label))}</span></p>`
+    + (rest.length ? `<p style="margin:0 0 12px;font-size:13px;color:#666;">Other sizes: ${rest.map((e) => `<a href="${esc(e.url)}" style="color:#666;">${esc(noDash(e.label))}</a>`).join(', ')}</p>` : '');
 }
 
 // The task body: why it needs the owner, the numbered steps, then Done /

@@ -35,11 +35,6 @@ async function request(argv) {
   const dir = arg(argv, 'dir') || path.join('.claude', 'visual-qa', branch);
 
   if (va.git(['status', '--porcelain'], { cwd })) { console.error('Refused: uncommitted changes. Commit first so the owner approves exactly what is saved.'); return 1; }
-  va.git(['fetch', 'origin', 'main', '--quiet'], { cwd });
-  const { isUiPath } = await import('./lib/ui-paths.mjs');
-  const changed = va.git(['diff', '--name-only', 'origin/main...HEAD'], { cwd }).split('\n').filter(Boolean);
-  const nonUi = va.nonUiRefusal(changed, isUiPath);
-  if (nonUi) { console.error(nonUi); return 1; }
   let verdict;
   try { verdict = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch { console.error(`Refused: no verdict.json in ${dir}. Run node scripts/visual-qa.mjs first.`); return 1; }
   if (!verdict.contentHash) { console.error('Refused: verdict.json has no contentHash.'); return 1; }
@@ -47,6 +42,13 @@ async function request(argv) {
   if (verdict.headSha && verdict.headSha !== va.git(['rev-parse', 'HEAD'], { cwd })) { console.error('Refused: the verdict was made on a different commit than HEAD. Re-run node scripts/visual-qa.mjs.'); return 1; }
 
   va.git(['fetch', 'origin', 'main', '--quiet'], { cwd });
+  // BRO-6876: only a change to a UI file is the owner's to judge. A data/scraper/lib fix that makes a page
+  // look different is rendered by components nobody touched; asking costs the owner an email and a pause for nothing.
+  const surface = va.visualSurfaceFiles('origin/main...HEAD', cwd);
+  if (!surface.length) {
+    console.error('Refused: this change touches no UI file (src/**/*.tsx|jsx|css|scss, tailwind/postcss config), so there is nothing visual for the owner to approve. Do NOT ask. Verify the page renders it (load it, check the output), then land it: git push origin HEAD:refs/heads/land/<name>. Copy-only edits are exempt too.');
+    return 1;
+  }
   const patch = va.patchId('origin/main', 'HEAD', cwd);
   if (!patch) { console.error('Refused: no difference from origin/main.'); return 1; }
   const crops = va.pickCrops(dir);
