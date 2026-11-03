@@ -602,7 +602,7 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
   });
 }
 
-const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings } = require('./lib/show-title-tokens');
+const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings, proofInSegments } = require('./lib/show-title-tokens');
 const { foldDiacritics } = require('./lib/title-match');
 const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
@@ -720,7 +720,9 @@ function urlPathSegments(href) {
 function matchingTitleVariants(href, show, { context = 'census' } = {}) {
   const row = fullShowRow(show);
   const out = [];
-  for (const v of titleVariantInfo(row)) {
+  const variants = titleVariantInfo(row);
+  const head = variants.find(o => o.labelHead);
+  for (const v of variants) {
     const tokens = titleTokens(v.title);
     if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show, null, tokens)) continue;
     if (v.kind !== 'billed' && !urlHasPhrase(href, v.title)) continue;
@@ -729,10 +731,17 @@ function matchingTitleVariants(href, show, { context = 'census' } = {}) {
     // labelled production's venue or initials, and not this show's venue, is its.
     if (v.kind === 'billed' && context !== 'article-link') {
       const own = venueTokens(row).some(w => segs.has(w));
-      if (!own && labelledSiblings(row).some(x => x.proof.some(w => segs.has(w)))) continue;
+      if (!own && labelledSiblings(row).some(x => proofInSegments(x.proof, segs))) continue;
+      // "Tosca - English National Opera" passes the n-1 token gate on
+      // "tosca-welsh-national-opera": three of four words. When a labelled
+      // title matches with a word missing, it needs this show's venue or label
+      // as well. A URL with every word ("school-of-rock-review" for "School of
+      // Rock – The Musical") is the full name and needs nothing more.
+      if (head && !tokens.every(w => segs.has(w))
+          && !proofInSegments([...venueTokens(row), ...(head.proofTokens || [])], segs)) continue;
     }
     if (v.clashIds.length) {
-      const venueHit = [...venueTokens(row), ...(v.proofTokens || [])].some(w => segs.has(w));
+      const venueHit = proofInSegments([...venueTokens(row), ...(v.proofTokens || [])], segs);
       const ok = venueHit || context === 'article-link'
         // A one-word head ("Stories", "Tosca") is too common to pass on dates alone.
         || (context === 'article' && !v.fromVenue && !(v.labelHead && tokens.length < 2)

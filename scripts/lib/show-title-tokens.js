@@ -60,6 +60,9 @@ function titleTokens(title) {
 //     "Pride and Prejudice* (*sort of)").
 // Each shortened variant keeps >= 2 significant tokens, so a one-word remainder
 // ("Seussical", "Motherfucker") never widens the gate to another production.
+// Words that make a "Title - Label" suffix a description of the work, not a company.
+const DESCRIPTIVE_LABEL_WORDS = new Set(['musical', 'musicals', 'music', 'story', 'play', 'new', 'original',
+  'sensation', 'concert', 'tribute', 'experience', 'show', 'comedy', 'spectacular', 'by']);
 const CREDIT_LEAD_WORDS = new Set(['a', 'an', 'the', 'our', 'my', 'your', 'his', 'her', 'their']);
 const normName = (n) => String(n || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
 function creditNames(show) {
@@ -150,6 +153,15 @@ function titleVariantInfo(showOrTitle, opts = {}) {
     const v = out.find(o => o.title === String(sub[1]).trim() && o.kind === 'derived');
     if (v) v.labelHead = true;
     if (v && words.length >= 3 && initials.length >= 3) v.proofTokens = [initials];
+    // A company label spelled out counts too, as ALL its words together
+    // ("review-tosca-english-national-opera-london", Bachtrack). One word of it
+    // alone ("national", "opera") names too many houses. A descriptive subtitle
+    // is not proof: "The Live Aid Musical" and "A New Musical" are how critics
+    // describe every production of the work (Just For One Day's 2024 Old Vic
+    // reviews, The Notebook on Broadway and on tour).
+    if (v && words.length >= 2 && !words.some(w => DESCRIPTIVE_LABEL_WORDS.has(w))) {
+      v.proofTokens = [...(v.proofTokens || []), words.join(' ')];
+    }
   }
   return out;
 }
@@ -177,6 +189,17 @@ function labelledSiblings(show) {
   return (_labelled.get(normName(show && show.title)) || []).filter(x => x.id !== (show && show.id));
 }
 
+/**
+ * Does a URL's slug-word set carry a proof entry? A one-word entry ("coliseum",
+ * "eno") needs that word; a multi-word entry ("english national opera") needs
+ * every one of its words.
+ * @param {string[]} proof
+ * @param {Set<string>} segs
+ */
+function proofInSegments(proof, segs) {
+  return (proof || []).some(p => String(p).split(' ').every(w => w && segs.has(w)));
+}
+
 /** @returns {string[]} the full title first, then each variant */
 function titleVariants(showOrTitle, opts = {}) {
   return titleVariantInfo(showOrTitle, opts).map(o => o.title);
@@ -187,4 +210,4 @@ function titleTokenSets(showOrTitle) {
   return titleVariants(showOrTitle).map(titleTokens);
 }
 
-module.exports = { titleTokens, titleVariants, titleVariantInfo, titleTokenSets, venueTokens, labelledSiblings };
+module.exports = { titleTokens, titleVariants, titleVariantInfo, titleTokenSets, venueTokens, labelledSiblings, proofInSegments };
