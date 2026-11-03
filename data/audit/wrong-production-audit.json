@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T21:44:06.852Z",
+  "timestamp": "2026-11-03T22:35:24.900Z",
   "stats": {
     "totalReviews": 79963,
-    "alreadyFlagged": 22059,
+    "alreadyFlagged": 22064,
     "dateGuardCatches": 216,
     "directorMismatch": 3457,
-    "tvFilmSignals": 2262,
+    "tvFilmSignals": 2263,
     "londonSignals": 3592,
-    "offBroadwaySignals": 735,
+    "offBroadwaySignals": 734,
     "yearMismatch": 361,
-    "noPublishDate": 8514
+    "noPublishDate": 8497
   },
   "findings": [
     {
@@ -5024,7 +5024,7 @@
     {
       "showId": "an-american-in-paris-west-end-2017",
       "file": "guardian--michael-billington.json",
-      "score": 98,
+      "score": 97,
       "publishDate": "2017-03-21",
       "url": "https://www.theguardian.com/stage/2017/mar/21/an-american-in-paris-five-star-review-minnelli-musical-dominion-london",
       "findings": [
@@ -5066,7 +5066,7 @@
     {
       "showId": "an-american-in-paris-west-end-2017",
       "file": "standard--henry-hitchings.json",
-      "score": 80,
+      "score": 76,
       "publishDate": "2018-01-08",
       "url": "https://www.standard.co.uk/culture/theatre/an-american-in-paris-theatre-review-gorgeous-blend-of-ballet-and-musical-theatre-a3495821.html",
       "findings": [
@@ -19162,7 +19162,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "nydailynews--joe-dziemianowicz.json",
-      "score": null,
+      "score": 62,
       "publishDate": null,
       "url": "https://www.nydailynews.com/entertainment/theater-arts/lupita-nyong-brilliant-bleak-blunt-eclipsed-article-1.2397495",
       "findings": [
@@ -19503,7 +19503,7 @@
     {
       "showId": "end-of-the-rainbow-west-end-2010",
       "file": "independent--matilda-battersby.json",
-      "score": null,
+      "score": 85,
       "publishDate": null,
       "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/end-of-the-rainbow-trafalgar-studios-london-2144093.html",
       "findings": [
@@ -22080,6 +22080,7 @@
     {
       "showId": "finians-rainbow-off-broadway-2016",
       "file": "broadway-and-me--janice-c-simpson.json",
+      "score": 44,
       "publishDate": "December 28th, 2016",
       "url": "http://broadwayandme.blogspot.com/2016/12/why-finians-rainbow-doesnt-glow-for-me.html",
       "findings": [
@@ -26883,7 +26884,7 @@
     {
       "showId": "hadestown-off-broadway-2016",
       "file": "act-three-the-reviews--doug-marino.json",
-      "score": null,
+      "score": 87,
       "publishDate": "May 11th, 2016",
       "url": "https://dougmarino.blogspot.com/2016/05/hadestown.html",
       "findings": [
@@ -26911,7 +26912,7 @@
     {
       "showId": "hadestown-off-broadway-2016",
       "file": "broadway-and-me--janice-c-simpson.json",
-      "score": null,
+      "score": 78,
       "publishDate": "June 1st, 2016",
       "url": "https://broadwayandme.blogspot.com/2016/06/is-helluva-fine-destination.html",
       "findings": [
@@ -28180,6 +28181,7 @@
     {
       "showId": "hangmen-off-broadway-2018",
       "file": "broadway-blog--samuel-l-leiter.json",
+      "score": 87,
       "publishDate": "February 16th, 2018",
       "url": "http://thebroadwayblog.com/hangmen-atlantic-theater-company/",
       "findings": [
@@ -40899,6 +40901,20 @@
     },
     {
       "showId": "mcneal-2024",
+      "file": "daily-mail--cassie-carpenter.json",
+      "score": null,
+      "publishDate": "2024-10-01",
+      "url": "https://www.dailymail.com/tvshowbiz/article-13910235/Matt-Damon-Paul-Rudd-attend-Broadway-opening-McNeal.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "mcneal-2024",
       "file": "thewrap--robert-hofler.json",
       "score": 36,
       "publishDate": "September 30, 2024",
@@ -49513,6 +49529,7 @@
     {
       "showId": "people-places-and-things-off-broadway-2017",
       "file": "huffpost--david-finkle.json",
+      "score": 87,
       "publishDate": "November 3rd, 2017",
       "url": "https://www.huffingtonpost.com/entry/must-sees-duncan-macmillans-people-places-things_us_59fcf29ee4b076eaaae26f88",
       "findings": [
@@ -103249,7 +103266,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-10-21",
       "url": "https://www.broadwayworld.com/westend/article/Review-ILFORD-BOY-Donmar-Warehouse-20261021",
       "findings": [
@@ -103291,7 +103308,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2026-10-21",
       "url": "https://www.londontheatre.co.uk/reviews/ilford-boy-review-donmar-warehouse",
       "findings": [
@@ -103416,7 +103433,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 82,
+      "score": 77,
       "publishDate": "2026-10-22",
       "url": "https://www.standard.co.uk/culture/theatre/ilford-boy-donmar-review-b1301897.html",
       "findings": [
@@ -105346,7 +105363,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 94,
+      "score": 97,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -110452,20 +110469,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"minetta lane\""
-        }
-      ]
-    },
-    {
-      "showId": "mcneal-2024",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "score": 45,
-      "publishDate": "2024-10-07",
-      "url": "https://www.theatrereviews.com/broadway-review-mcneal-at-the-vivian-beaumont-theater-through-sunday-november-24-2024/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
@@ -128984,7 +128987,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2026-11-02",
       "url": "https://playsinternational.org.uk/the-lives-of-others-adelphi-theatre/",
       "findings": [
