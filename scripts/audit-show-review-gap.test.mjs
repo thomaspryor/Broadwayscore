@@ -1293,7 +1293,8 @@ test('BRO-5732: a prior-census URL is not re-judged on a bare URL; multilingual 
     const walk = (dir) => {
       for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
         const p = path.join(dir, e.name);
-        if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); continue; }
+        // Skip dot-directories: other tests make temp dirs next to the scripts and delete them mid-scan.
+        if (e.isDirectory()) { if (e.name !== 'node_modules' && !e.name.startsWith('.')) walk(p); continue; }
         if (!/\.(c|m)?js$/.test(e.name) || /\.test\./.test(e.name)) continue;
         if (/\bsource:\s*['"]submit-review-form['"]/.test(fs.readFileSync(p, 'utf8'))) offenders.push(path.relative(scriptsDir, p));
       }

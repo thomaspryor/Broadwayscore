@@ -1,15 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { countResolvableUnknowns } = require('./audit-unknown-outlets.js');
 
 function corpus(t, records) {
-  const dir = fs.mkdtempSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '.unknown-outlets-'));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'unknown-outlets-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const showDir = path.join(dir, 'show-2026');
   fs.mkdirSync(showDir);
