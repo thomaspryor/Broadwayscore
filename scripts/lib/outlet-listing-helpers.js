@@ -19,6 +19,7 @@ const { publishedStampToLocalDate } = require('./local-date');
 const { normalizeTitle, foldDiacritics } = require('./title-match');
 const { COMMON_WORD_SHOW_TITLES } = require('./multi-show-splitter');
 const { toDateMs } = require('./date-utils');
+const { decodeEntities } = require('./uk-live-index');
 
 /**
  * Escape a string for use inside a RegExp.
@@ -278,6 +279,105 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
     || !matches.some((o) => o !== show && !venueOnly.has(o) && venuePhrase(o) === venuePhrase(show)));
 }
 
+// --- Page-confirmed matches (BRO-6921) ---
+// findMatchingShows needs the WHOLE stored title in the headline or slug, and a
+// one-word title under 5 letters also needs a credit there. Real off-Broadway
+// review items carry neither: NYSR's "Copperfield! Top-Drawer Musical Take on
+// the Dickens Classic" (stored title "Copperfield! The New Musical"), Vulture's
+// slug "anon-play-washburn-mcc-theater-review" ("ANON – a tempest at our kitchen
+// table"), TheaterMania's "Review: Fish, a Coming-of-Age Comedy About ISIS" and
+// Theater Scene's bare "Fish". Each was in the outlet's own feed and matched
+// nothing, so it reached the site only when a person ingested it.
+// Such an item becomes a CANDIDATE when a title form (the full title, or the
+// main title before a subtitle separator) appears as whole words, the item reads
+// as a review, and it was published inside the show's run window. A candidate
+// is filed only after the article page itself names one of the show's own
+// production credits (cast, director; a writer while the production is new) or
+// its venue: the same evidence the feed-only rule asks for, read from the page.
+
+// "ANON – a tempest…", "Copperfield! The New Musical", "Sweeney Todd: The Demon
+// Barber". The separator must be followed by more title, so "Oh, Mary!" keeps
+// its full form only.
+const SUBTITLE_SEP_RE = /\s+[-‐‑‒–—]\s+|[:!?;]\s+/;
+function titleForms(show) {
+  const full = hyphenSpaced(String((show && show.title) || '').replace(/[_/]+/g, ' '));
+  const forms = full ? [full] : [];
+  const parts = String((show && show.title) || '').split(SUBTITLE_SEP_RE);
+  if (parts.length > 1) {
+    const main = hyphenSpaced(parts[0].replace(/[_/]+/g, ' '));
+    if (main && main !== full && main.replace(/\s+/g, '').length >= 3 && !COMMON_WORD_SHOW_TITLES.has(main)) forms.push(main);
+  }
+  return forms;
+}
+
+// Whole-word, and an "&"-led form may not follow another word (findMatchingShows' rule).
+function formInHay(form, hay) {
+  const first = form.split(/\s+/)[0];
+  let at = hay.indexOf(` ${form} `);
+  while (at !== -1) {
+    if (!(first === 'and' && at > 0)) return true;
+    at = hay.indexOf(` ${form} `, at + 1);
+  }
+  return false;
+}
+
+/**
+ * Shows a feed item may be about that findMatchingShows could not file on the
+ * item alone. Each still needs pageConfirmsShow() on the article page.
+ *
+ * @param {object} item {headline, url, publishDate, description}
+ * @param {Array} activeShows
+ * @param {{alreadyMatched?: Array, reviewOnlyFeed?: boolean, nowMs?: number}} [opts]
+ *   reviewOnlyFeed: the outlet's feed (after its urlFilter) carries only reviews,
+ *   so a headline with no "review" word still counts as one (NYSR, Theater Scene).
+ * @returns {Array<{show: object, form: string}>}
+ */
+function findPageConfirmCandidates(item, activeShows, { alreadyMatched = [], reviewOnlyFeed = false, nowMs = Date.now() } = {}) {
+  const headline = String((item && item.headline) || '');
+  let slug = '';
+  try { slug = new URL(item.url).pathname; } catch { slug = String((item && item.url) || ''); }
+  if (looksLikeBookReview(headline, slug)) return [];
+  const hay = ` ${hyphenSpaced(headline.replace(/[_/]+/g, ' ') + ' ' + slug.replace(/[/_.]+/g, ' '))} `;
+  const rawText = `${headline} ${slug} ${(item && item.description) || ''}`;
+  const skip = new Set(alreadyMatched.map((s) => s.id));
+  const out = [];
+  for (const show of activeShows) {
+    if (skip.has(show.id)) continue;
+    const forms = titleForms(show);
+    if (!forms.length || COMMON_WORD_SHOW_TITLES.has(forms[0])) continue;
+    const form = forms.find((f) => formInHay(f, hay));
+    if (!form) continue;
+    // A review: the review-only feed, the word "review", or a headline that is the bare title.
+    const bare = forms.some((f) => hyphenSpaced(headline.replace(/[_/]+/g, ' ')) === f);
+    if (!reviewOnlyFeed && !bare && !REVIEW_WORD_RE.test(rawText)) continue;
+    // Dated by the feed, or (listing pages carry no date) by the poll itself.
+    if (!publishedInRunWindow(show, item.publishDate || new Date(nowMs).toISOString().slice(0, 10))) continue;
+    out.push({ show, form });
+  }
+  return out;
+}
+
+/** Visible text of an article page, entity-decoded, scripts and styles dropped. */
+function pageText(html) {
+  return decodeEntities(String(html || '')
+    .replace(/<(script|style|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<[^>]+>/g, ' '));
+}
+
+/**
+ * Does the article page name this production? One of its own credits
+ * (creditNames: cast, director, a writer while the production is new) or its
+ * venue as a whole phrase, and a title form, must appear in the page text.
+ */
+function pageConfirmsShow(text, show, nowMs = Date.now()) {
+  const hay = ` ${hyphenSpaced(String(text || '').replace(/[_/]+/g, ' '))} `;
+  if (!titleForms(show).some((f) => formInHay(f, hay))) return false;
+  if (creditNames(show, nowMs).some((n) => hay.includes(` ${n} `) || hay.includes(` ${n}s `))) return true;
+  const venue = venuePhrase(show);
+  // A one-word venue ("JACK", "Signature") is too common a word to prove anything from a page.
+  return !!venue && venue.split(/\s+/).length >= 2 && hay.includes(` ${venue} `);
+}
+
 /**
  * Build the list of qualifying outlets from reviews.json + shows.json.
  * Returns outletIds for outlets that reviewed ≥minShowCount distinct shows
@@ -467,7 +567,7 @@ function parseWpApiPosts(posts, cutoff) {
     // post.date is the site's local wall-clock stamp (no zone): its date part IS the calendar date.
     // Only the date_gmt fallback is UTC and needs converting (BRO-5499).
     const publishDate = post.date ? String(post.date).slice(0, 10) : publishedStampToLocalDate(`${String(post.date_gmt).slice(0, 19)}Z`, url);
-    items.push({ url, headline: headline.replace(/<[^>]+>/g, '').trim(), publishDate });
+    items.push({ url, headline: decodeEntities(headline.replace(/<[^>]+>/g, '')).trim(), publishDate });
   }
   return items;
 }
@@ -557,7 +657,7 @@ function extractListingUrls(html, domain) {
     if (path === '/' || path === '' || path.split('/').filter(Boolean).length < 2) continue;
     if (/\/(tag|category|author|page|search|about|contact|advertise|subscribe|calendar)\//i.test(path)) continue;
 
-    const headline = rawText.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim();
+    const headline = decodeEntities(rawText.replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim();
     if (!headline || headline.length < 5) continue;
 
     // Dedup after headline check: image-only anchors (empty headline) must not
@@ -650,6 +750,10 @@ module.exports = {
   namesShowVenue,
   looksLikeBookReview,
   findMatchingShows,
+  findPageConfirmCandidates,
+  pageConfirmsShow,
+  pageText,
+  titleForms,
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,
   parseRssFeed,
