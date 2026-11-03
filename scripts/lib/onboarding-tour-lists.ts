@@ -88,7 +88,7 @@ export function cityLists(i: CityListsInput): { seen: HitRow[]; want: WantRow[];
   const stops = i.tours.reduce((n, t) => n + here(t).filter(s => s.end >= i.windowStart).length, 0);
 
   // Seen: tours with a stop here that has started, grouped by title (Beetlejuice toured twice).
-  const byTitle = new Map<string, { title: string; tours: { t: TourIn; first: string; last: string; venue: string | null }[] }>();
+  const byTitle = new Map<string, { title: string; tours: { t: TourIn; first: string; last: string }[] }>();
   for (const t of i.tours) {
     const played = here(t).filter(s => s.start <= i.today && s.end >= i.windowStart);
     if (played.length === 0) continue;
@@ -96,7 +96,7 @@ export function cityLists(i: CityListsInput): { seen: HitRow[]; want: WantRow[];
     const last = played.reduce((m, s) => (s.end > m ? s.end : m), played[0].end);
     const key = t.title.toLowerCase();
     const g = byTitle.get(key) ?? { title: t.title, tours: [] };
-    g.tours.push({ t, first, last, venue: played[played.length - 1].venue ?? null });
+    g.tours.push({ t, first, last });
     byTitle.set(key, g);
   }
   const tourSeen: HitRow[] = [];
