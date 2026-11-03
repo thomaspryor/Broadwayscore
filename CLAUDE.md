@@ -37,11 +37,11 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **When adding new shared components or tokens**, update `memory/design-system.md`.
 
 ### 5. Visual QA (MANDATORY for UI Changes — gate ENFORCES)
-**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` until the owner replies a plain "yes / ship it". Never ask for a hash or `APPROVED:`. Owner in the chat: their "yes"/"Approved" IS the approval; push `land/<name>` yourself, never send them to tap, then `record-owner-answer.js BRO-N --choice void` on any held ask. No owner (worker): `visual-approval.js request --issue=BRO-N --what=...`. Score badges sacred (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
+**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` until the owner replies a plain "yes / ship it". Never ask for a hash. In chat: their "yes"/"Approved" IS the approval; push `land/<name>` yourself, never send them to tap, then `record-owner-answer.js BRO-N --choice void` on any held ask. No owner (worker): `visual-approval.js request --issue=BRO-N --what=...`. **Data/scraper-only diffs: no approval** (`request` refuses them). Score badges sacred (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
 **Linear is the source of truth, never Notion cards.** Notion is retired (froze 2026-08-20); its cards have no Linear twin. Flow: `memory/linear-board-workflow.md`.
-- **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. `--self` = you do it now (In Progress); technical `--park` refused. **End:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Paused/refused: `linear-session.js report --status=paused`.
+- **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. `--self` = you do it now (In Progress); technical `--park` refused. **End:** comment the Outcome (what/why) + Key Files, then `linear-brain.js update BRO-N --state Done`. Paused/refused: `linear-session.js report --status=paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
 - **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log. Cap ~8/session.
@@ -141,6 +141,6 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 ## Cloud sessions
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
 **Multi-repo cloud session:** hooks load only via the setup-script install (CLOUD.md § Multi-repo).
-**Pre-authorized, never ask:** landing (`land/<name>`), building what was asked, fixing what you find, merging main in, requesting visual approval. Offer endings ("say the word", "shall I") are blocked. Design choices: show screenshots or an Artifact, never text alone.
+**Pre-authorized, never ask:** landing (`land/<name>`), building what was asked, fixing what you find, merging main in, requesting visual approval. Offer endings ("shall I") are blocked. Design choices: show screenshots or an Artifact, never text alone.
 **Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
 **Start important work yourself** with `create_session` (CLOUD.md § Starting a worker session); the worker queue takes weeks. Last line: SAFE TO ARCHIVE / KEEP OPEN / ACTION NEEDED FROM YOU.
