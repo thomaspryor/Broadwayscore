@@ -269,3 +269,19 @@ test('consultScrapingdog: a cleared breaker (yesterday\'s trip) does not block t
   const env = { SD_BREAKER_STATE_PATH: withStateFile(TRIPPED('2026-08-01')) };
   assert.equal(consultScrapingdog({ env, now: new Date('2026-08-11T12:00:00Z') }).allowed, true);
 });
+
+test('pressNightSpentUsd ignores zero-credit memo-skip rows but counts credit-bearing ones (BRO-6898)', () => {
+  const purpose = 'press-night:some-show:2026-11-03';
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pn-cap-'));
+  const ledgerPath = path.join(dir, 'ledger.jsonl');
+  const table = { scrapingdog: { usdPerUnit: 0.01 } };
+  const row = (extra) => JSON.stringify({ provider: 'scrapingdog', purpose, success: true, credits: 1, ...extra });
+  fs.writeFileSync(ledgerPath, [
+    row({}),
+    row({ fn: 'run-memo-skip', status: 'run-memo-skip', success: false, credits: 0 }),
+    row({ fn: 'run-memo-skip', success: false, credits: 4 }),
+  ].join('\n') + '\n');
+  // 1 real call (1 unit) + 1 credit-bearing skip row (4 units); the zero-credit skip row adds nothing.
+  assert.equal(caps.pressNightSpentUsd(purpose, { ledgerPath, table }), 0.05);
+  fs.rmSync(dir, { recursive: true, force: true });
+});

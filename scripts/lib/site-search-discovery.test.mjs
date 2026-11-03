@@ -56,23 +56,24 @@ test('west-end market returns Telegraph/WhatsOnStage/The Stage, excludes broadwa
 });
 
 test('already-found outlets are excluded via their EFFECTIVE id (outletIdOverride)', () => {
-  // 'telegraph-search' overrides to canonical 'telegraph' — if an aggregator already
-  // found telegraph, the sibling search-index endpoint must not re-fire either.
-  const withoutFound = selectApplicableSiteSearchOutlets('west-end', { id: 'x', type: 'play' }, new Set());
-  assert.ok(withoutFound.includes('telegraph-search') || withoutFound.includes('telegraph'));
+  // 'vulture-opera' overrides to canonical 'vulture' — if an aggregator already found
+  // vulture, the sibling endpoint must not re-fire either. (telegraph-search used to
+  // carry this test; it is disabled since BRO-6898, so use the live registry sibling.)
+  const opera = { id: 'x', type: 'opera' };
+  const withoutFound = selectApplicableSiteSearchOutlets('broadway', opera, new Set());
+  assert.ok(withoutFound.includes('vulture-opera'), 'positive control: sibling fires when nothing is found');
 
-  const alreadyFound = new Set(['telegraph']);
-  const withFound = selectApplicableSiteSearchOutlets('west-end', { id: 'x', type: 'play' }, alreadyFound);
-  assert.ok(!withFound.includes('telegraph'), 'canonical telegraph must be excluded once found');
-  assert.ok(!withFound.includes('telegraph-search'), 'sibling telegraph-search must also be excluded once telegraph is found');
+  const withFound = selectApplicableSiteSearchOutlets('broadway', opera, new Set(['vulture']));
+  assert.ok(!withFound.includes('vulture'), 'canonical vulture must be excluded once found');
+  assert.ok(!withFound.includes('vulture-opera'), 'sibling vulture-opera must also be excluded once vulture is found');
 });
 
 test('opera-gated outlets only fire when applies(show) passes', () => {
   const nonOpera = selectApplicableSiteSearchOutlets('broadway', { id: 'x', type: 'play' }, new Set());
   const opera = selectApplicableSiteSearchOutlets('broadway', { id: 'x', type: 'opera' }, new Set());
-  const operaOnlyIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => typeof SITE_SEARCH_ENDPOINTS[id].applies === 'function');
-  assert.ok(operaOnlyIds.length > 0, 'sanity: registry has at least one applies()-gated outlet');
-  for (const id of operaOnlyIds) {
+  const gatedIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => typeof SITE_SEARCH_ENDPOINTS[id].applies === 'function');
+  assert.ok(gatedIds.length > 0, 'sanity: registry has at least one applies()-gated outlet');
+  for (const id of gatedIds) {
     assert.ok(!nonOpera.includes(id), `${id} is applies()-gated and must not fire for a non-opera show`);
   }
 });

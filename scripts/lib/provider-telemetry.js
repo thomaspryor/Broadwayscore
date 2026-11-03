@@ -283,10 +283,19 @@ function _inScope(ts, scope) {
  * @param {string} day - "YYYY-MM-DD"
  * @returns {{[provider: string]: number}}
  */
+// BRO-6898: scraper.js _recordRunMemo writes a zero-credit, success:false ledger row
+// when its run memo latches a tier off. It is bookkeeping, not a provider call, so
+// call counts, top-caller shares, tier-skip drift and spend caps must not count it.
+// A skip row that carries credits is billing activity and stays counted.
+const RUN_MEMO_SKIP = 'run-memo-skip';
+function isMemoSkip(rec) {
+  return !!rec && (rec.fn === RUN_MEMO_SKIP || rec.status === RUN_MEMO_SKIP) && !(rec.credits > 0);
+}
+
 function countCallsByProvider(ledgerRecords, day) {
   const counts = {};
   for (const r of ledgerRecords || []) {
-    if (!r || !_inScope(r.ts, day)) continue;
+    if (!r || !_inScope(r.ts, day) || isMemoSkip(r)) continue;
     counts[r.provider] = (counts[r.provider] || 0) + 1;
   }
   return counts;
@@ -299,7 +308,7 @@ function countCallsByProvider(ledgerRecords, day) {
 function topCallers(ledgerRecords, day, provider, n = 5) {
   const counts = {};
   for (const r of ledgerRecords || []) {
-    if (!r || !_inScope(r.ts, day) || r.provider !== provider) continue;
+    if (!r || !_inScope(r.ts, day) || r.provider !== provider || isMemoSkip(r)) continue;
     const key = r.script || 'unknown';
     counts[key] = (counts[key] || 0) + 1;
   }
@@ -457,6 +466,8 @@ module.exports = {
   recordSbCall,
   recordSdCall,
   recordBbCall,
+  RUN_MEMO_SKIP,
+  isMemoSkip,
   countCallsByProvider,
   topCallers,
   creditsByProvider,

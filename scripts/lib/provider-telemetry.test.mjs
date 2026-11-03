@@ -64,3 +64,18 @@ test('withSpendFallback tags fallback_from and keeps the surrounding showId (BRO
   assert.deepEqual([outside.fallback_from, outside.detail], [null, { msg: 'm' }]);
   fs.rmSync(LEDGER, { force: true });
 });
+
+test('countCallsByProvider and topCallers ignore memo-skip rows but keep credit-bearing ones (BRO-6898)', async () => {
+  const { createRequire } = await import('node:module');
+  const t = createRequire(import.meta.url)('./provider-telemetry.js');
+  const ts = '2026-11-03T05:00:00Z';
+  const rows = [
+    { ts, provider: 'brightdata', script: 'a.js', fn: 'page', success: true },
+    { ts, provider: 'brightdata', script: 'a.js', fn: 'run-memo-skip', status: 'run-memo-skip', success: false, credits: 0 },
+    { ts, provider: 'brightdata', script: 'b.js', fn: 'run-memo-skip', success: false, credits: 3 },
+  ];
+  assert.equal(t.countCallsByProvider(rows, '2026-11-03').brightdata, 2);
+  assert.deepEqual(t.topCallers(rows, '2026-11-03', 'brightdata'), [{ script: 'a.js', count: 1 }, { script: 'b.js', count: 1 }]);
+  assert.equal(t.isMemoSkip(rows[1]), true);
+  assert.equal(t.isMemoSkip(rows[2]), false);
+});

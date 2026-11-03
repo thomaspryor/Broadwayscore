@@ -38,6 +38,7 @@ const path = require('path');
 const { utcDay, isExemptCaller, DEFAULT_EXEMPT_SCRIPTS } = require('./brightdata-caps');
 const { isNextUtcDay } = require('./provider-spend-core');
 const { parsePressNightPurpose } = require('./spend-purpose');
+const { isMemoSkip } = require('./provider-telemetry'); // BRO-6898
 
 /**
  * LEGACY daily credit ceiling — since BRO-2943 (2026-09-07) this is only the
@@ -379,6 +380,7 @@ function pressNightSpentUsd(purpose, { ledgerPath, table } = {}) {
     let row;
     try { row = JSON.parse(line); } catch { continue; } // a partial line must not deny every show
     if (!row || row.purpose !== purpose) continue;
+    if (isMemoSkip(row)) continue; // zero-credit bookkeeping row: ledgerRowUsd would price it as 1 unit
     usd += ledgerRowUsd(row, table);
   }
   return usd;

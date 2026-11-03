@@ -39,7 +39,7 @@ const {
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { readEnvKeys } = require('./load-env');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
-const { sdBilledCredits } = require('./provider-telemetry');
+const { sdBilledCredits, RUN_MEMO_SKIP } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats, pressNightCapStatus } = require('./scrapingdog-caps');
@@ -1814,7 +1814,7 @@ function _recordRunMemo(host, outcomes) {
     for (const { tier, failures } of _runMemo.recordOutcome(host, outcomes)) {
       console.log(`  ⏭️  run memo: ${tier} failed ${failures}x on ${host} while a later tier succeeded — skipping it for the rest of this run`);
       const record = _RUN_MEMO_RECORDERS[tier];
-      if (record) record({ host, fn: 'run-memo-skip', success: false, status: 'run-memo-skip', credits: 0 });
+      if (record) record({ host, fn: RUN_MEMO_SKIP, success: false, status: RUN_MEMO_SKIP, credits: 0 });
     }
   } catch (err) {
     console.warn(`[scraper] run memo error (ignored): ${err.message}`);

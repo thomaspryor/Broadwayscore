@@ -4,7 +4,7 @@
  *
  * BRO-2941: missingJsIds (opening-night-poller.js) re-renders EVERY still-missing
  * requiresJs outlet on EVERY poll tick, forever — an outlet with no market/applies
- * restriction (vulture, hollywood-reporter, deadline, timeout, ew, telegraph-search)
+ * restriction (vulture, hollywood-reporter, deadline, timeout, ew; telegraph-search is disabled, BRO-6898)
  * fires for shows it will never cover (e.g. THR on an Off-Broadway transfer), and
  * data/audit/poller-backoff shows shows sitting at consecutiveNoOp 50-85 with no
  * per-outlet cap — each tick still pays the full JS-render outlet set.

@@ -11,13 +11,9 @@
  * but they still must not be counted as calls). They are tallied in `skips`.
  */
 
-const TAGS = { '[SD Call]': 'scrapingdog', '[BD Call]': 'brightdata', '[SB Call]': 'scrapingbee' };
+const { isMemoSkip } = require('./provider-telemetry'); // one definition, next to the writer
 
-function isMemoSkip(rec) {
-  // A skip row that carries credits is billing activity, not bookkeeping: keep it
-  // counted so a future bug that logs spend under this sentinel cannot hide.
-  return !!rec && (rec.fn === 'run-memo-skip' || rec.status === 'run-memo-skip') && !(rec.credits > 0);
-}
+const TAGS = { '[SD Call]': 'scrapingdog', '[BD Call]': 'brightdata', '[SB Call]': 'scrapingbee' };
 
 function parse(lines) {
   const prov = {
