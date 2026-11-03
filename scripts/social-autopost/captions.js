@@ -182,12 +182,13 @@ const HOOK_BANNED = [
 // Audience reception is a letter grade, never a number (VOICE.md rule 8, BRO-6922). Numbers may be digits or
 // spoken words (voiceover prompts spell them out). A count of audience reviews is allowed; a score or a
 // critic-versus-audience point gap is not.
-const NUM = '(?:\\d{1,3}%?|(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)(?:-[a-z]+)?|(?:one|two|three|four|five)\\s+stars?)';
+const NUM = '(?:(?:\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten)\\s+(?:out\\s+of|in)\\s+(?:ten|10)|\\d{1,3}(?:,\\d{3})*(?:%|\\s+percent)?|(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)(?:-[a-z]+)?|(?:one|two|three|four|five)\\s+stars?)';
 const AUD = '(?:audiences?|crowds?)';
 const AUDIENCE_NUMBER = [
   new RegExp(`\\b${AUD}\\b[^.\\n]{0,40}?\\b${NUM}(?!\\w)`, 'i'),
   new RegExp(`\\b${NUM}\\s+(?:[a-z]+\\s+){0,2}?(?:from|with|among|by|for|of)\\s+(?:the\\s+)?${AUD}\\b`, 'i'),
   new RegExp(`\\b${NUM}[- ]points?\\b[^.\\n]{0,40}?\\b${AUD}\\b`, 'i'),
+  new RegExp(`\\b(?:\\d{1,3}|one|two|three|four|five|six|seven|eight|nine|ten)\\s+(?:out\\s+of|in)\\s+(?:ten|10)\\b[^.\\n]{0,25}?\\b${AUD}\\b`, 'i'),
 ];
 const AUDIENCE_COUNT = new RegExp(`\\b${NUM}\\s+audience\\s+(?:reviews?|ratings?)\\b`, 'gi');
 /** The phrase that gives audiences a number, or null. */

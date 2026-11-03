@@ -1155,12 +1155,13 @@ test('voice: audiences get a letter grade, never a number, in captions, hooks an
   const { audienceNumber, validateHook } = require('./social-autopost/captions.js');
   for (const bad of ['Critic Score of 61 from 26 reviews, but audiences give it 82.', 'Audiences are happier than either: 90, against 79.',
     'And audiences give it eighty-two.', 'Audiences say ninety.', 'It scores an 82 with audiences.', 'Critics are 9 points warmer than audiences.',
-    '82% of audiences liked it.', 'Four stars from audiences.', 'A 9 out of 10 from audiences.', 'Crowd-pleasing 82.']) {
+    '82% of audiences liked it.', 'Four stars from audiences.', 'A 9 out of 10 from audiences.', 'Crowd-pleasing 82.',
+    'Nine out of ten audiences love it.', '82 percent of audiences liked it.']) {
     assert.ok(audienceNumber(bad), `should block: ${bad}`);
   }
   for (const ok of ['Critic Score 61 from 26 reviews. Audiences give it an A-.', "Critic Score of 84 from 32 critics' reviews, and audiences give it an A+.",
     'Audiences give it an A- from 120 audience reviews.', 'Same show, two cities, an 8-point gap. Why do you think London critics warmed to it more?',
-    "One of the season's hits, and audiences give it an A-.", 'Two of the critics loved it. Audiences give it a B.']) {
+    "One of the season's hits, and audiences give it an A-.", 'Two of the critics loved it. Audiences give it a B.', 'Audiences give it an A from 1,200 audience reviews.']) {
     assert.equal(audienceNumber(ok), null, `should allow: ${ok}`);
   }
   assert.match(validateHook('Audiences give it eighty-two') || '', /audiences a number/);
