@@ -66,7 +66,7 @@ jobs:
     # the Sunday deep run adds ~35min of per-show Google fallback ahead of it,
     # so worst case ~46min-in + 900s(15min) deadline = ~61min — over the old
     # 60min budget. 75min leaves ~14min of headroom for that worst case.
-    timeout-minutes: 75
+    timeout-minutes: 100 # 75->100: +25 for the Los Angeles pickup (15) and ingest (10) steps (BRO-6855)
 
     steps:
       - name: Checkout repository
