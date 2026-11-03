@@ -50,7 +50,7 @@ export default function ShowtimeSegmented({
   const [moreOpen, setMoreOpen] = useState(value.time_slot === 'custom');
   const slot = value.time_slot;
   // Past dates (before the live window) read the lazily fetched archive (BRO-6877).
-  const history = useScheduleHistory(showId, date);
+  const { schedule: history, loading: historyLoading } = useScheduleHistory(showId, date);
 
   const timeFor = (s: 'matinee' | 'evening'): string | null =>
     genericFallback ? resolveShowtimeDefault(showId, date, s, history) : scheduledShowtime(showId, date, s, history);
@@ -125,7 +125,7 @@ export default function ShowtimeSegmented({
     );
   };
 
-  const caption = captionFor(showId, date, value, genericFallback, history);
+  const caption = captionFor(showId, date, value, genericFallback, history, historyLoading);
 
   return (
     <div data-testid="showtime-segmented">
@@ -167,12 +167,12 @@ function toDbTime(hhmm: string | null): string | null {
   return hhmm ? `${hhmm}:00` : null;
 }
 
-function captionFor(showId: string, date: string, v: Value, genericFallback: boolean, history?: ShowSchedule): string {
+function captionFor(showId: string, date: string, v: Value, genericFallback: boolean, history?: ShowSchedule, historyLoading = false): string {
   const time = v.curtain_time ? formatTime(v.curtain_time.slice(0, 5)) : null;
   if (v.time_slot === 'custom') return time ? `Curtain ${time}` : 'Pick a time';
   if (v.time_slot === 'matinee' || v.time_slot === 'evening') {
     const fromSchedule = !!date && scheduledShowtime(showId, date, v.time_slot, history) === v.curtain_time?.slice(0, 5);
-    if (!time) return 'Time not listed for that date';
+    if (!time) return historyLoading ? 'Looking up the time…' : 'Time not listed for that date';
     if (fromSchedule) return `Curtain ${time}, from the schedule`;
     // Only a plan ever fills in the generic 2:00 / 7:00 PM; say so.
     return genericFallback ? `Curtain ${time} (usual time)` : `Curtain ${time}`;

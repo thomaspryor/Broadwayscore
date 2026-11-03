@@ -35,10 +35,11 @@ export function loadScheduleHistory(): Promise<HistoryFile | null> {
 
 /**
  * The archived weeks for this show, loaded only when the live schedule
- * can't cover the picked date (see needsScheduleHistory). Undefined while loading, when not needed,
- * or when the archive has nothing for the show.
+ * can't cover the picked date (see needsScheduleHistory). `schedule` is
+ * undefined while loading, when not needed, or when the archive has nothing
+ * for the show; `loading` is true only while a needed fetch is in flight.
  */
-export function useScheduleHistory(showId: string, date: string): ShowSchedule | undefined {
+export function useScheduleHistory(showId: string, date: string): { schedule?: ShowSchedule; loading: boolean } {
   const needed = needsScheduleHistory(showId, date);
   const [history, setHistory] = useState<{ showId: string; schedule?: ShowSchedule } | null>(null);
   useEffect(() => {
@@ -49,5 +50,6 @@ export function useScheduleHistory(showId: string, date: string): ShowSchedule |
     });
     return () => { live = false; };
   }, [needed, showId]);
-  return needed && history?.showId === showId ? history.schedule : undefined;
+  const ready = history?.showId === showId;
+  return { schedule: needed && ready ? history.schedule : undefined, loading: needed && !ready };
 }
