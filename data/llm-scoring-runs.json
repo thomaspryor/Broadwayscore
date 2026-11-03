@@ -1214332,21 +1214332,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T00:15:58.764Z",
-    "completedAt": "2026-11-03T00:16:04.290Z",
-    "totalReviews": 4,
+    "startedAt": "2026-11-03T00:16:12.646Z",
+    "completedAt": "2026-11-03T00:16:18.341Z",
+    "totalReviews": 1,
     "processed": 1,
-    "skipped": 3,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 6119,
-      "output": 315,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 15325
+      "input": 6952,
+      "output": 330,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 16526
     },
-    "costUsd": 0.03633755,
-    "runId": "41550693747",
+    "costUsd": 0.0257429,
+    "runId": "41550805341",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1224729,16 +1224729,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "conscience-regional-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "consent-west-end-2017",
         "ourDistribution": {
           "up": 24,
@@ -1234218,6 +1234208,16 @@
           "flat": 4,
           "down": 1,
           "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -1263588,8 +1263588,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-03T00:21:01.311Z",
-    "completedAt": "2026-11-03T00:21:01.312Z",
+    "startedAt": "2026-11-03T00:21:14.623Z",
+    "completedAt": "2026-11-03T00:21:14.624Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1263602,7 +1263602,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41550693747",
+    "runId": "41550805341",
     "source": "comparative-rescore",
     "errorDetails": []
   }
