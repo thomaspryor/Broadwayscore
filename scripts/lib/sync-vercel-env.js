@@ -20,7 +20,15 @@ const API = 'https://api.vercel.com';
 // here and map its secret in sync-vercel-env.yml together.
 // GMAIL_CLIENT_ID (BRO-3712) is public by OAuth design; its client secret is
 // deliberately NOT here and stays in GitHub Actions only.
-const ALLOWED = new Set(['LINEAR_API_KEY', 'GMAIL_CLIENT_ID']);
+// BRO-6895 critic claims: OWNER_EMAIL is an address (not secret) that
+// src/lib/critic-server.ts mails the Approve link to. SUPABASE_SERVICE_ROLE_KEY
+// bypasses row-level security, so it is CREATED as a Vercel "sensitive" var (a PATCH of an existing entry keeps its old type; read the type= log line)
+// (write-only, not readable from the dashboard or `vercel pull`); only
+// server-only modules read it (critic-server.ts, admin-money-signups.ts) and
+// the critics API routes.
+const ALLOWED = new Set(['LINEAR_API_KEY', 'GMAIL_CLIENT_ID', 'OWNER_EMAIL', 'SUPABASE_SERVICE_ROLE_KEY']);
+// Names created as type "sensitive" instead of "encrypted".
+const SENSITIVE = new Set(['SUPABASE_SERVICE_ROLE_KEY']);
 
 function parseNames(argv) {
   const arg = argv.find(a => a.startsWith('--names='));
@@ -38,7 +46,7 @@ function parseNames(argv) {
 function planUpsert(existing, key, value) {
   const match = (existing || []).find(e => e.key === key && (e.target || []).includes('production'));
   if (match) return { action: 'patch', id: match.id, body: { value } };
-  return { action: 'create', body: { key, value, type: 'encrypted', target: ['production'] } };
+  return { action: 'create', body: { key, value, type: SENSITIVE.has(key) ? 'sensitive' : 'encrypted', target: ['production'] } };
 }
 
 async function vercel(token, method, url, body) {
@@ -86,7 +94,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { parseNames, planUpsert, PROJECT_ID, ALLOWED };
+module.exports = { parseNames, planUpsert, PROJECT_ID, ALLOWED, SENSITIVE };
 
 if (require.main === module) {
   main().then(code => process.exit(code), err => { console.error(err.message); process.exit(1); });
