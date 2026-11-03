@@ -121,6 +121,48 @@ test('WarwickshireWorld newsletter block mid-article is not garbage', () => {
   assert.ok(!/newsletter\s+sign/i.test(stripMidTextChromeBlocks(t)));
 });
 
+// BRO-6824 follow-up: the same National World widget on other titles (Portsmouth News,
+// The Scotsman) with a different newsletter name and a "premium content" pitch.
+const nwBlock = (name, pub) => `Sign up to our ${name} newsletter Sign up Thank you for signing up! Did you know with a Digital Subscription to ${pub}, you can get unlimited access to the website including our premium content, as well as benefiting from fewer ads, loyalty rewards and much more. Subscription Offers Sorry, there seem to be some issues. Please try again later. Submitting... This site is protected by reCAPTCHA and the Google Privacy Notice and Terms of Service apply.`;
+const PORTSMOUTH = nwBlock('daily', 'The News');
+const SCOTSMAN = nwBlock('Arts and Culture', 'The Scotsman');
+
+for (const [label, block, url] of [
+  ['Portsmouth News', PORTSMOUTH, 'https://www.portsmouth.co.uk/arts-and-culture/theatre-and-stage/review-x-4521310'],
+  ['The Scotsman', SCOTSMAN, 'https://www.scotsman.com/arts-and-culture/theatre-and-stage/x-review-4521310'],
+]) {
+  test(`National World newsletter block (${label}) mid-article is complete, not a paywall`, () => {
+    const t = `Home Review | X at Minerva Theatre ${PROSE} ${block} ${PROSE} Continue Reading Related topics: Chichester`;
+    assert.equal(isGarbageContent(t).isGarbage, false);
+    const stripped = stripMidTextChromeBlocks(t);
+    assert.ok(!/premium content|signing up/i.test(stripped));
+    const r = classifyContentTier({ fullText: t, url });
+    assert.equal(r.contentTier, 'complete', r.tierReason);
+  });
+
+  test(`negatives: National World block (${label}) at the end of a teaser stays a paywall`, () => {
+    assert.equal(isGarbageContent(`Review ${block}`).isGarbage, true);
+    const teaser = `${PROSE} ${block}`;
+    assert.equal(stripMidTextChromeBlocks(teaser), teaser);
+  });
+}
+
+test('National World "Continue Reading Related topics:" tag footer is cut so the real ending counts', () => {
+  const t = `${PROSE}An entertaining and relevant adaptation. Until Saturday, June 1. Continue Reading Related topics: Chichester GCSEs TikTok`;
+  const out = stripMidTextChromeBlocks(t);
+  assert.ok(out.endsWith('Until Saturday, June 1.'), out.slice(-60));
+});
+
+test('negatives: "Related topics:" followed by a sentence is not cut', () => {
+  const t = `${PROSE}Related topics: the play covers grief, memory and loss. ${PROSE}`;
+  assert.equal(stripMidTextChromeBlocks(t), t);
+});
+
+test('negatives: a plain "Sign up to our newsletter" footer (Time Out) is not cut as National World chrome', () => {
+  const t = `${PROSE} Sign up to our newsletter to enjoy London without spending a thing. Google Privacy Notice and Terms of Service apply. ${PROSE}`;
+  assert.equal(stripMidTextChromeBlocks(t), t);
+});
+
 test('negatives: Bristol/Warwickshire blocks as the whole text stay garbage', () => {
   assert.equal(isGarbageContent(`Review ${BRISTOL}`).isGarbage, true);
   assert.equal(isGarbageContent(`Review ${WARWICK}`).isGarbage, true);
