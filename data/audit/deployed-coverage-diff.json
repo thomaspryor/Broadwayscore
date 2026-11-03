@@ -1,46 +1,37 @@
 {
-  "generatedAt": "2026-11-03T18:36:54.694Z",
+  "generatedAt": "2026-11-03T19:36:13.584Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 321,
-  "clean": 319,
-  "defective": 2,
+  "clean": 320,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "missing-from-prod": 1,
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "openingDate": "2026-10-29",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "openingDate": "2026-11-03",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 79.09 vs local 78.76 (Δ0.33)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 24,
-      "firstDefectAt": "2026-11-03T18:36:47.630Z"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: thestage"
+        },
         {
           "type": "score-drift",
-          "detail": "deployed cs 77.73 vs local 77.44 (Δ0.29)"
+          "detail": "deployed cs 74.09 vs local 74.52 (Δ0.43)"
         }
       ],
-      "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-11-03T18:36:47.630Z"
+      "missingFromProd": [
+        "thestage"
+      ],
+      "localCount": 10,
+      "deployedCount": 9,
+      "firstDefectAt": "2026-11-03T19:36:05.441Z"
     }
   ],
   "persistentDefective": 0,

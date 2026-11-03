@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T18:36:32.374Z",
+  "generatedAt": "2026-11-03T19:35:42.954Z",
   "windowDays": 45,
   "showsScanned": 248,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 216.73202527777778,
+      "fileAgeHours": 217.6957936111111,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 202.18777972222222,
+      "nonTerminalAgeHours": 203.17405194444444,
       "needsManualRecovery": true
     },
     {
@@ -41,9 +41,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/ --outlet=backstage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T09:52:12.991Z",
-      "fileAgeHours": 32.7379225,
+      "fileAgeHours": 33.701722777777775,
       "gapSeenAt": "2026-11-03T07:11:27.100Z",
-      "nonTerminalAgeHours": 11.418131666666667,
+      "nonTerminalAgeHours": 12.404403888888888,
       "needsManualRecovery": false
     }
   ],
