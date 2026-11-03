@@ -1,19 +1,38 @@
 {
-  "updatedAt": "2026-11-03T22:04:56.167Z",
-  "processed": 2,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-11-03T23:26:08.278Z",
+  "processed": 7,
+  "failed": 9,
+  "successRate": "43.8%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-11-03T23:17:32.707Z",
+      "event": "bb-session",
+      "session": "be1a4ad0",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-03T23:17:40.536Z",
+      "event": "bb-session",
+      "session": "b6eaf319",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-03T23:25:32.563Z",
+      "event": "bb-session",
+      "session": "997bf5a1",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    }
+  ]
 }
