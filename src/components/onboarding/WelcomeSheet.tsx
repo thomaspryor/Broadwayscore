@@ -339,7 +339,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
               <h2 className="text-xl font-bold text-white leading-tight">
                 {step === 'shows' && 'Which shows have you seen?'}
                 {step === 'import' && 'Bring over your history'}
-                {step === 'done' && (showsAdded + imported > 0 ? 'Your diary is started' : "You're all set")}
+                {step === 'done' && (showsAdded + imported > 0 ? 'Your shows are in' : "You're all set")}
               </h2>
               {step === 'shows' && (
                 <p className="text-sm text-gray-400 mt-1">Tap any you&apos;ve seen. Stars are optional.</p>

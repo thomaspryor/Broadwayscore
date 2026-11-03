@@ -53,7 +53,7 @@ test.describe('My Shows — Page Structure', () => {
     await goToMock(page);
     const sections = page.getByRole('tablist', { name: 'My Shows sections' });
     await expect(sections.getByRole('tab')).toHaveText(['Seen', 'To See', 'Lists']);
-    const views = page.getByRole('tablist', { name: 'Diary views' });
+    const views = page.getByRole('tablist', { name: 'My Shows views' });
     await expect(views.getByRole('tab')).toHaveText(['List', 'Photos', 'Stats']);
     await expect(views.getByRole('tab', { name: 'List' })).toHaveAttribute('aria-selected', 'true');
     // No count badges and no "N to rate" line (owner, 2026-07-17 / 2026-10-25).
@@ -62,7 +62,7 @@ test.describe('My Shows — Page Structure', () => {
 
   test('Feed and Stats open from the Diary switch and keep Diary selected', async ({ page }) => {
     await goToMock(page);
-    const views = page.getByRole('tablist', { name: 'Diary views' });
+    const views = page.getByRole('tablist', { name: 'My Shows views' });
     await views.getByRole('tab', { name: 'Stats' }).click();
     await expect(page.locator('#panel-stats')).toBeVisible();
     await expect(page).toHaveURL(/tab=stats/);
@@ -72,7 +72,7 @@ test.describe('My Shows — Page Structure', () => {
     await expect(page).toHaveURL(/tab=feed/);
     // Watchlist hides the Diary switch.
     await page.getByRole('tab', { name: 'To See' }).click();
-    await expect(page.getByRole('tablist', { name: 'Diary views' })).toHaveCount(0);
+    await expect(page.getByRole('tablist', { name: 'My Shows views' })).toHaveCount(0);
   });
 
   test('no console errors on page load', async ({ page }) => {

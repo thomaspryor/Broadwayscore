@@ -207,7 +207,7 @@ function StatsTabContent({ reviews, showMap }: StatsTabProps) {
         </div>
         <h3 className="text-lg font-bold text-white">Log {MIN_ENTRIES_FOR_STATS - logged} more to open your Scorecard</h3>
         <p className="text-sm text-gray-400 mt-2">
-          Stats need at least {MIN_ENTRIES_FOR_STATS} shows in your diary. You have {logged}.
+          Stats need at least {MIN_ENTRIES_FOR_STATS} shows in Seen. You have {logged}.
         </p>
       </div>
     );

@@ -55,7 +55,7 @@ const DIARY_VIEWS: { tab: MyShowsTab; label: string }[] = [
 /** App-style List / Photos / Stats segmented control under Seen: the page's second text level. */
 export function DiarySegmented({ active, onSelect }: { active: MyShowsTab; onSelect: (tab: MyShowsTab) => void }) {
   return (
-    <div role="tablist" aria-label="Diary views" className="flex gap-1 p-1 mt-4 mb-3 rounded-xl bg-surface-raised border border-white/10">
+    <div role="tablist" aria-label="My Shows views" className="flex gap-1 p-1 mt-4 mb-3 rounded-xl bg-surface-raised border border-white/10">
       {DIARY_VIEWS.map(v => {
         const on = active === v.tab;
         return (

@@ -12,9 +12,9 @@ const EMAIL = 'someone@example.com';
 test('subject and preheader match the approved copy', () => {
   const { subject, html } = w.buildWelcomeEmail({ displayName: 'Ada Lovelace', email: EMAIL });
   assert.equal(subject, 'Welcome to Broadway Scorecard');
-  assert.equal(w.PREHEADER, "Your diary, your watchlist, and how to bring over the shows you've already logged.");
+  assert.equal(w.PREHEADER, "The shows you've seen, the ones you want to see, and how to bring over the shows you've already logged.");
   // Preheader is the hidden div right after <body>; escapeHtml leaves apostrophes alone.
-  assert.match(html, /<div style="display:none[^"]*">Your diary, your watchlist, and how to bring over the shows you've already logged\.<\/div>/);
+  assert.match(html, /<div style="display:none[^"]*">The shows you've seen, the ones you want to see, and how to bring over the shows you've already logged\.<\/div>/);
 });
 
 test('renders with a name: first word of the display name', () => {
@@ -44,7 +44,7 @@ test('escapes the name and the email', () => {
 
 test('contains all three steps, the button, sign-off and footer', () => {
   const { html, text } = w.buildWelcomeEmail({ displayName: 'Ada', email: EMAIL });
-  for (const s of ["Rate the shows you've seen", 'Bring your history over', 'Keep a watchlist',
+  for (const s of ["Rate the shows you've seen", 'Bring your history over', 'Keep a To See list',
     'Three ways to start', 'Open My Shows', 'Accounts are brand new, and Broadway Scorecard is a labor of love',
     'reply to this email and tell me. It comes straight to me', 'Ideas are welcome too.',
     'Show Score, Mezzanine or Theatr?', 'Follow Broadway Scorecard']) {

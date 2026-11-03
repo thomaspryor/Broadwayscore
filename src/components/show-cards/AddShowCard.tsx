@@ -24,7 +24,7 @@ export function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'd
           ? 'w-full min-h-[72px] gap-3 px-4 py-3'
           : 'self-start aspect-[2/3] flex-col gap-2 p-3'
       }`}
-      aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
+      aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to To See'}
     >
       <svg className="w-8 h-8 shrink-0 text-brand" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />

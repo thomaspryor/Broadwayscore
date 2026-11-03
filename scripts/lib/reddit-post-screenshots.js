@@ -119,7 +119,7 @@ async function captureShowImages(url, outDir, { chromium = null, executablePath 
     // going network-idle, which would burn the timeout for no images.
     await page.goto(url, { waitUntil: 'load', timeout: 45_000 });
     // Cookie/consent banners and sticky bars would sit on top of the card.
-    await page.addStyleTag({ content: '[role="dialog"], [data-testid*="cookie" i], [data-testid*="consent" i], [aria-label="Add to watchlist"], [aria-label="Remove from watchlist"], [aria-label^="Your rating"] { display: none !important; }' });
+    await page.addStyleTag({ content: '[role="dialog"], [data-testid*="cookie" i], [data-testid*="consent" i], [aria-label$="To See"], [aria-label$="To See list"], [aria-label^="Remove from To See"], [aria-label^="Your rating"] { display: none !important; }' });
     await page.waitForTimeout(800);
     const out = [];
     for (const shot of SHOTS) {

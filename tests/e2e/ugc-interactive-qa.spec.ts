@@ -300,7 +300,7 @@ test.describe('Layout consistency — mobile (390px)', () => {
       // the grid used to stretch it to the tallest card in the row. The old
       // version of this test looked up a label that no longer existed, so it
       // never ran.
-      const add = page.getByRole('button', { name: tab === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist' });
+      const add = page.getByRole('button', { name: tab === 'diary' ? 'Rate a new show' : 'Add a new show to To See' });
       await expect(add).toBeVisible();
       const poster = page.getByTestId('my-shows-grid').filter({ has: add }).getByTestId('poster-grid-image').first();
       const [a, p] = [await add.boundingBox(), await poster.boundingBox()];
