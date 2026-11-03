@@ -29,6 +29,19 @@
 #
 # Self-skip if user-level master exists (local CLI scenario) -- same pattern
 # as every other hook in this directory.
+# Three-tier planning check (CLAUDE.md §20, BRO-6249). Folded in here because the
+# hook-file budget forbids another top-level hook. Runs before the self-skip and the
+# worktree kill switch so neither silences it; its own switch is PLANNING_TIER_MODE=off.
+# Warns (stdout JSON) now, blocks from 2026-11-07 for substantial new systems; fails open.
+input=$(cat) || exit 0
+if printf '%s' "$input" | grep -q '"tool_name" *: *"Write"' && [ "$PLANNING_TIER_MODE" != "off" ]; then
+  PT_ROOT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}"
+  PT_HOOK="$PT_ROOT/scripts/lib/planning-tier-hook.js"
+  if [ -n "$PT_ROOT" ] && [ -f "$PT_HOOK" ] && command -v node >/dev/null 2>&1; then
+    printf '%s' "$input" | node "$PT_HOOK"
+    [ "$?" = "2" ] && exit 2
+  fi
+fi
 if [ -f "$HOME/.claude/hooks/$(basename "$0")" ]; then
   exit 0
 fi
@@ -38,21 +51,7 @@ fi
 command -v jq >/dev/null 2>&1 || exit 0
 command -v git >/dev/null 2>&1 || exit 0
 
-input=$(cat) || exit 0
 tool_name=$(printf '%s' "$input" | jq -r '.tool_name // empty' 2>/dev/null)
-
-# Three-tier planning check (CLAUDE.md §20, BRO-6249). Folded in here because the
-# hook-file budget forbids another top-level hook. Warns (stdout JSON) now, blocks
-# from 2026-11-07 for substantial new systems; fails open on any error.
-if [ "$tool_name" = "Write" ]; then
-  PT_ROOT="${CLAUDE_PROJECT_DIR:-$(git rev-parse --show-toplevel 2>/dev/null)}"
-  PT_HOOK="$PT_ROOT/scripts/lib/planning-tier-hook.js"
-  if [ -n "$PT_ROOT" ] && [ -f "$PT_HOOK" ] && command -v node >/dev/null 2>&1; then
-    printf '%s' "$input" | node "$PT_HOOK"
-    pt_rc=$?
-    [ "$pt_rc" = "2" ] && exit 2
-  fi
-fi
 
 # in_scope_path REL -- true (rel_path set) if REL (repo-root-relative) falls
 # under CLAUDE.md §1's scope list.

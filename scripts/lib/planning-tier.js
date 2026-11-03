@@ -4,7 +4,7 @@
 //   substantial = plan + /plan-review + owner yes   (a new system is a product decision)
 //   moderate    = quick /second-opinion              (nudge only, never blocks)
 //   simple      = go
-// Pure decision functions; the PreToolUse hook (.claude/hooks/planning-tier-hook.js)
+// Pure decision functions; the PreToolUse hook (scripts/lib/planning-tier-hook.js)
 // feeds them facts from git. Tested by scripts/tests/planning-tier.test.mjs.
 
 const { findFreshPlanVerdict, VERDICT_TTL_MS } = require('./infra-review-scope.js');
@@ -82,6 +82,7 @@ function isApproved({ verdicts = [], sessionId = null, now = Date.now(), transcr
 
 // -> { action: 'allow'|'warn'|'block', message }
 function decide({ tier, triggers = [], approved = false, now = Date.now(), mode = 'auto', enforceAfter = ENFORCE_AFTER_MS }) {
+  if (mode === 'off') return { action: 'allow', message: '' };
   if (tier === 'simple' || approved) return { action: 'allow', message: '' };
   const why = triggers.join('; ');
   if (tier === 'moderate') {

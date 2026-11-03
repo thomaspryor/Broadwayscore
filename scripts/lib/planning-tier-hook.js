@@ -10,10 +10,19 @@ function git(args, cwd) {
   return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 4000 });
 }
 
+// A dir is "new" if origin/main (not the index: staged/committed files must not hide it) has nothing under it.
+function existsOnMain(top, d) {
+  let ref = 'origin/main';
+  try { git(['rev-parse', '--verify', '-q', ref], top); } catch { ref = 'HEAD'; }
+  try { return git(['ls-tree', '-r', '--name-only', ref, '--', d + '/'], top).split('\n').filter(Boolean).length > 0; } catch { return true; }
+}
+
 function gather(input) {
   const file = input.tool_input && input.tool_input.file_path;
   if (!file) return null;
-  const top = git(['rev-parse', '--show-toplevel'], path.dirname(file).replace(/^$/, '.')).trim();
+  let cwd = path.dirname(path.resolve(file));
+  while (!fs.existsSync(cwd) && cwd !== path.dirname(cwd)) cwd = path.dirname(cwd); // new nested dir: nearest existing ancestor
+  const top = git(['rev-parse', '--show-toplevel'], cwd).trim();
   const abs = path.resolve(file);
   const rel = path.relative(top, abs);
   if (rel.startsWith('..')) return null;
@@ -27,7 +36,7 @@ function gather(input) {
     let rootDir = null;
     for (let i = 1; i <= parts.length; i++) {
       const d = parts.slice(0, i).join('/');
-      if (git(['ls-files', '--', d + '/'], top).split('\n').filter(Boolean).length === 0) { rootDir = d; break; }
+      if (existsOnMain(top, d)) continue; rootDir = d; break;
     }
     if (rootDir) {
       let ignored = false;
