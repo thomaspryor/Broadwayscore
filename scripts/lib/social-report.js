@@ -324,6 +324,11 @@ function gaveUpIds(ledger) {
   const failures = (ledger && ledger._meta && ledger._meta.failures) || {};
   return new Set(Object.keys(failures).filter((id) => failures[id] && failures[id].count >= MAX_SHOW_ATTEMPTS));
 }
+// True when the show's closing date fell within the last week or is under bf.minDaysLeft away.
+function closedRecently(show, now, bf) {
+  const closing = Date.parse(`${String(show.closingDate || '').slice(0, 10)}T12:00:00Z`);
+  return Number.isFinite(closing) && closing > now - 7 * DAY_MS && closing < now + bf.minDaysLeft * DAY_MS;
+}
 function skippedShows({ ctx, ledger, now }) {
   if (!ctx) return [];
   const posts = (ledger && ledger.posts) || [];
@@ -340,9 +345,12 @@ function skippedShows({ ctx, ledger, now }) {
   for (const show of ctx.shows) {
     if (!isEligibleShow(show, { allowOpera: true })) continue;
     const slot = morningAfter(show);
-    if (slot > now || now - slot > Math.max(lookbackMs, backfillMs) + 7 * DAY_MS || slot + lookbackMs < goLive) continue;
+    if (slot > now || now - slot > Math.max(lookbackMs, backfillMs) + 7 * DAY_MS) continue;
+    // Aged out before go-live: only the quiet-day backfill can still post it.
+    if (slot + lookbackMs < goLive && !backfillWindow(show, bctx)) continue;
     const d = scoreDecision(show, dctx);
     if (d.why === 'done' || d.why === 'not-yet') continue;
+    if (bctx.done.has(`score:${show.id}`)) continue; // a brief or closing-soon card covered it
     if (gaveUp.has(show.id)) {
       out.push({ title: showName(show), link: showLink(show), reason: 'posting failed 3 times in a row, so it stopped trying (needs a look)', final: true, category: show.category });
       continue;
@@ -352,7 +360,7 @@ function skippedShows({ ctx, ledger, now }) {
     if (d.why === 'too-old') {
       const u = scoreDecision(show, dctx, { ignoreAge: true });
       const age = now - slot;
-      if (backfillWindow(show, dctx)) {
+      if (backfillWindow(show, bctx)) {
         // BRO-6932: still owed a post; a quiet day picks it up once its score settles.
         reason = u.due
           ? `its score settled after the ${C.SCORE_LOOKBACK_DAYS}-day window, so it will post on a quiet day (a day with nothing else going out)`
@@ -362,6 +370,12 @@ function skippedShows({ ctx, ledger, now }) {
         reason = u.due
           ? `no quiet day came up within ${bf.lookbackDays} days of opening, so it was never posted`
           : `gave up ${bf.lookbackDays} days after opening: ${plainReason(u)}`;
+        final = true;
+      } else if (bf && age <= backfillMs && closedRecently(show, now, bf) && postsToOwnSet(show)) {
+        // Was owed a quiet-day post until it closed (or got too close to closing); said the week that happens.
+        if (u.due) reason = 'closed before a quiet day came up, so it was never posted';
+        else if (age <= lookbackMs + 7 * DAY_MS) reason = `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
+        else reason = `gave up when it closed: ${plainReason(u)}`;
         final = true;
       } else if (age <= lookbackMs + 7 * DAY_MS) {
         reason = u.due

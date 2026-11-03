@@ -748,7 +748,8 @@ async function main() {
       // Busy = something else really goes out: a brief (posted later in this run), a score post
       // not held for a poster, or a roundup/closing card whose accounts exist (runRoundup and
       // runClosingSoon go idle otherwise).
-      const busy = !!brief || posting.some(ev => !held(ev.show.id)) || compareEvents.length > 0
+      // A channel retry owed from an earlier day also goes out this run.
+      const busy = !!brief || posting.some(ev => !held(ev.show.id)) || compareEvents.length > 0 || pendingRetries(ctx.ledger, now).length > 0
         || roundupEvents.some(ev => ownSetConfigured(ev.set)) || closingEvents.some(ev => ownSetConfigured(homeSet(ev.show)));
       events.push(...scheduleEvents(findBackfillEvents({ ...found2, busy, blocked: id => tooManyFailures(id) || held(id), cfg: BACKFILL }), ctx.ledger, now));
     }

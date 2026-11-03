@@ -144,10 +144,12 @@ test('skippedShows: waiting, aged out and pre-launch shows, each with a plain re
     show('london', '2026-10-30', 'west-end'),
   ]);
   const out = skippedShows({ ctx, ledger: liveLedger, now: NOW });
-  assert.deepEqual(out.map((x) => [x.title, x.final]), [['AGED', true], ['WAITING', false], ['LONDON (West End)', false]]);
+  // prelaunch aged out of 10 days before go-live, but the quiet-day backfill still owes it (BRO-6932)
+  assert.deepEqual(out.map((x) => [x.title, x.final]), [['AGED', true], ['PRELAUNCH', false], ['WAITING', false], ['LONDON (West End)', false]]);
   assert.match(out[0].reason, /gave up 10 days after opening: no score on the site yet/);
-  assert.equal(out[1].reason, 'no score on the site yet');
-  assert.equal(out[2].link, 'https://westendscorecard.com/show/london');
+  assert.match(out[1].reason, /will post on a quiet day once that changes/);
+  assert.equal(out[2].reason, 'no score on the site yet');
+  assert.equal(out[3].link, 'https://westendscorecard.com/show/london');
   assert.deepEqual(skippedShows({ ctx, ledger: { posts: [] }, now: NOW }), []); // not live yet
   assert.deepEqual(skippedShows({ ctx: null, ledger: liveLedger, now: NOW }), []);
 });
@@ -176,6 +178,24 @@ test('skippedShows: a show is called given up once, the week it ages out of the 
   const out = skippedShows({ ctx, ledger: early, now: NOW });
   assert.deepEqual(out.map((x) => [x.title, x.final]), [['OUTAGED (Off-Broadway)', true]]);
   assert.match(out[0].reason, /gave up 45 days after opening: no score on the site yet/);
+});
+
+test('skippedShows: owed shows that aged out before go-live are listed; closed or already-covered ones get one final line or none (BRO-6932)', () => {
+  const settled = { cs: 80, rc: 9 };
+  const ctx = selCtx([
+    show('pre', '2026-10-01', 'off-broadway'), // 10-day window ended before go-live (Oct 20), still in the 45-day one
+    { ...show('shut', '2026-10-12', 'off-broadway'), status: 'closed', closingDate: '2026-10-30' }, // settled, closed while owed
+    { ...show('shut-unscored', '2026-10-12', 'off-broadway'), status: 'closed', closingDate: '2026-10-31' },
+    show('carded', '2026-10-12', 'off-broadway'), // had a closing-soon card
+  ], { shut: settled, carded: settled });
+  ctx.reviewsByShow = Object.fromEntries(['shut', 'carded'].map((id) => [id, Array.from({ length: 9 }, (_, i) => ({ outletId: `o${i}`, assignedScore: 80, scoreConfidence: 'high' }))]));
+  ctx.getOutletTier = (id) => (Number(id.slice(1)) < 3 ? 1 : 2);
+  const ledger = { posts: [...liveLedger.posts, { type: 'closing-soon', showId: 'carded', showIds: ['carded'], date: '2026-10-27', channels: { twitter: { postId: 'c1' } } }] };
+  const out = skippedShows({ ctx, ledger, now: NOW });
+  assert.deepEqual(out.map((x) => [x.title, x.final]), [['SHUT (Off-Broadway)', true], ['SHUT-UNSCORED (Off-Broadway)', true], ['PRE (Off-Broadway)', false]]);
+  assert.equal(out[0].reason, 'closed before a quiet day came up, so it was never posted');
+  assert.equal(out[1].reason, 'gave up when it closed: no score on the site yet');
+  assert.match(out[2].reason, /will post on a quiet day once that changes/);
 });
 
 test('skippedShows: a go-live backlog skip is still owed a quiet-day post, however long ago it was skipped (BRO-6932)', () => {
