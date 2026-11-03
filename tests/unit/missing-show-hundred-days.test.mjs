@@ -12,7 +12,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
-const { isWestEndVenue, marketForCategory } = require('../../scripts/lib/venue-classification.js');
+const { isKnownOffBroadwayVenue, isWestEndVenue, marketForCategory } = require('../../scripts/lib/venue-classification.js');
 
 const ID = 'hundred-days-off-broadway-2017';
 const plan = JSON.parse(readFileSync(path.join(root, 'data/pending-fixes/bro-6348.json'), 'utf8'));
@@ -31,6 +31,7 @@ test('venue classifier agrees with the plan category', () => {
   assert.equal(isWestEndVenue(s.venue), false);
   assert.equal(s.market, marketForCategory(s.category));
   assert.equal(s.category, 'off-broadway');
+  assert.equal(isKnownOffBroadwayVenue(s.venue), true);
 });
 
 test('live shows.json has the row, matching the plan', { skip: !existsSync(showsPath) && 'core data not present' }, () => {
