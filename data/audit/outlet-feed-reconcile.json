@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-02T23:10:57.758Z",
+  "generatedAt": "2026-11-03T00:26:28.628Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,11 +7,6 @@
       "id": "in-the-heights-off-broadway-2026",
       "title": "In the Heights",
       "openingDate": "2026-10-28"
-    },
-    {
-      "id": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27"
     },
     {
       "id": "the-lives-of-others-west-end-2026",
@@ -54,19 +49,9 @@
       "openingDate": "2026-10-29"
     },
     {
-      "id": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "openingDate": "2026-10-27"
-    },
-    {
       "id": "the-moth-off-west-end-2026",
       "title": "The Moth",
       "openingDate": "2026-10-30"
-    },
-    {
-      "id": "i-became-we-off-broadway-2026",
-      "title": "I Became We",
-      "openingDate": "2026-10-27"
     },
     {
       "id": "the-heart-off-broadway-2026",
@@ -82,6 +67,11 @@
       "id": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
       "title": "Kelly McCaughan: Catholic Guilt",
       "openingDate": "2026-10-29"
+    },
+    {
+      "id": "rope-off-broadway-2026",
+      "title": "Rope",
+      "openingDate": "2026-11-03"
     },
     {
       "id": "the-morbs-off-broadway-2026",
@@ -114,11 +104,6 @@
       "openingDate": "2026-10-29"
     },
     {
-      "id": "roleplay-off-west-end-2026",
-      "title": "Roleplay",
-      "openingDate": "2026-10-27"
-    },
-    {
       "id": "all-the-worlds-a-stage-regional-2026",
       "title": "All The World's A Stage",
       "openingDate": "2026-10-28"
@@ -144,7 +129,7 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "rope-off-broadway-2026",
+      "showId": "parcel-from-america-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
     {
@@ -154,6 +139,10 @@
   ],
   "feedsChecked": 73,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -179,19 +168,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 771,
-  "matchedGaps": 6,
-  "possibleGaps": 9,
+  "itemsScanned": 760,
+  "matchedGaps": 5,
+  "possibleGaps": 7,
   "gaps": [
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
-      "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
-      "publishDate": "2026-10-28"
-    },
     {
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
@@ -236,24 +216,6 @@
       "url": "https://www.london-unattached.com/tosca-english-national-opera/",
       "headline": "Tosca, English National Opera",
       "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "possible",
-      "outletId": "nytg",
-      "url": "https://newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
-      "headline": "‘School Girls; Or, the African Mean Girls Play’ Broadway review — pageant queens and queen bees face off",
-      "publishDate": null
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "possible",
-      "outletId": "standard",
-      "url": "https://standard.co.uk/culture/theatre/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-b1296202.html",
-      "headline": "For Colored Girls Who have Considered Suicide/When the Rainbow is Enuf",
-      "publishDate": null
     },
     {
       "showId": "the-heart-off-broadway-2026",
