@@ -1001,21 +1001,20 @@
       "resolvedAt": "2026-10-13T16:45:36.950Z"
     },
     "bd-circuit-breaker-web_unlocker2": {
-      "status": "resolved",
-      "disposition": "digest",
+      "status": "open",
+      "disposition": "auto",
       "requestedDisposition": "human",
-      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2082/1750 reqs)",
+      "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (2019/1750 reqs)",
       "firstSeen": "2026-08-12T18:43:27.704Z",
-      "incidentOpenedAt": "2026-11-01T19:57:09.316Z",
-      "lastSeen": "2026-11-01T19:57:09.316Z",
-      "lastNotifiedAt": "2026-11-01T19:57:09.316Z",
-      "lastSurfacedAt": "2026-11-01T19:57:09.316Z",
-      "notifyCount": 44,
+      "incidentOpenedAt": "2026-11-03T10:11:49.916Z",
+      "lastSeen": "2026-11-03T10:11:49.916Z",
+      "lastNotifiedAt": "2026-11-03T10:11:49.916Z",
+      "lastSurfacedAt": "2026-11-03T10:11:49.916Z",
+      "notifyCount": 45,
       "cardId": null,
-      "linearIdentifier": null,
+      "linearIdentifier": "BRO-6885",
       "notifyCountAtRelease": 30,
-      "sweptTracker": "BRO-5544",
-      "resolvedAt": "2026-11-02T02:54:58.708Z"
+      "sweptTracker": "BRO-5544"
     },
     "bd-circuit-breaker-serp_api1": {
       "status": "resolved",
