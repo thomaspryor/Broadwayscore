@@ -742,7 +742,8 @@ async function main() {
     if (CLOSING_SOON.enabled) closingEvents = findClosingSoonEvents({ ...found2, cfg: CLOSING_SOON }).filter(ev => !tooManyFailures(`closing-soon:${ev.show.id}`));
     // BRO-6932: nothing else is going out today, so post an older show that missed its window.
     if (BACKFILL.enabled) {
-      const busy = found.length + compareEvents.length + roundupEvents.length + closingEvents.length > 0;
+      // A brief run posts the brief later in this run, so it counts as busy too.
+      const busy = !!brief || found.length + compareEvents.length + roundupEvents.length + closingEvents.length > 0;
       // A show held for want of a poster is tried at most once a day, so it cannot hold a slot all afternoon.
       const held = id => { const w = (ctx.ledger._meta.waitingForPoster || {})[id]; return !!w && now - Date.parse(w.at || w.since) < 20 * 3600e3; };
       events.push(...scheduleEvents(findBackfillEvents({ ...found2, busy, blocked: id => tooManyFailures(id) || held(id), cfg: BACKFILL }), ctx.ledger, now));
