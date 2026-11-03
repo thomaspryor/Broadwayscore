@@ -238,9 +238,75 @@ function idsClearedSinceLastRun(prevById, hasImageById) {
   return [...prev.keys()].filter((id) => hasImage.get(id) === true);
 }
 
+/**
+ * How many shows ONE self-heal dispatch carries. Was 5, which at the ~4 real
+ * runs/day (GitHub drifts the every-4-hours cron) drained ~20 shows/day against a
+ * 771-show backlog of closed regional/West End/Broadway rows: >5 weeks, and the
+ * twice-weekly sweep the old comment leaned on never touches closed shows
+ * (`--missing` drops them unless --include-closed). fetch-all-image-formats.yml
+ * runs a batch at concurrency 5 in roughly 1.5 min/show inside a 180 min job, so
+ * 30 is ~10-15 min of work: far from the timeout, and ~90-150 shows/day.
+ */
+const SELF_HEAL_BATCH_SIZE = 30;
+
+/** An untouched show waiting longer than this means the drain is not keeping up. */
+const BACKLOG_STALL_DAYS = 10;
+
+/**
+ * Self-heal queue order: shows never dispatched first, newest-first inside each
+ * attempt count. Pure newest-first starved the backlog: the newest shows are the
+ * ones whose search keeps failing (short generic titles like "Iron"/"Contact"),
+ * so after each 12h cooldown they re-took the front slots and the older, easily
+ * healed shows never got a turn (761 of 771 flagged rows had zero attempts).
+ *
+ * @param {Array<{id:string,sinceMs:number}>} flagged
+ * @param {Map<string, object>|Object<string, object>} prevById ledger rows by id
+ */
+function orderFlaggedForSelfHeal(flagged, prevById) {
+  const prev = prevById instanceof Map ? prevById : new Map(Object.entries(prevById || {}));
+  const attempts = (f) => (prev.get(f.id) && prev.get(f.id).dispatchAttempts) || 0;
+  // Among never-attempted rows, serve the longest-waiting first (oldest firstFlaggedAt). That is the
+  // same clock findStalledBacklog alerts on, so a healthy drain cannot trip the stall alert. Rows
+  // with no ledger entry yet (flagged this run) sort last; ties fall back to newest sinceMs.
+  const flaggedAt = (f) => {
+    const t = Date.parse((prev.get(f.id) && prev.get(f.id).firstFlaggedAt) || '');
+    return Number.isNaN(t) ? Infinity : t;
+  };
+  return [...(flagged || [])].sort((a, b) => {
+    const byAttempts = attempts(a) - attempts(b);
+    if (byAttempts) return byAttempts;
+    if (attempts(a) === 0) {
+      const fa = flaggedAt(a), fb = flaggedAt(b);
+      if (fa !== fb) return fa < fb ? -1 : 1;
+    }
+    return (b.sinceMs || 0) - (a.sinceMs || 0);
+  });
+}
+
+/**
+ * Ledger rows that have never been dispatched and have been waiting longer than
+ * stallDays. Non-empty means the drain rate is below the arrival rate (or the
+ * dispatcher is broken in a way that does not fail loudly).
+ *
+ * @param {Array<{id:string,title?:string,dispatchAttempts?:number,firstFlaggedAt?:string}>} entries
+ * @returns {Array<{id:string,title?:string,waitingDays:number}>} longest-waiting first
+ */
+function findStalledBacklog(entries, nowMs, stallDays = BACKLOG_STALL_DAYS) {
+  const out = [];
+  for (const e of entries || []) {
+    if ((e.dispatchAttempts || 0) > 0) continue;
+    const since = Date.parse(e.firstFlaggedAt || '');
+    if (Number.isNaN(since)) continue;
+    const waitingDays = Math.floor((nowMs - since) / 86400000);
+    if (waitingDays >= stallDays) out.push({ id: e.id, title: e.title, waitingDays });
+  }
+  return out.sort((a, b) => b.waitingDays - a.waitingDays);
+}
+
 // BRO-5496: one rollup alert per kind per run instead of one card per show.
 const IMAGELESS_DISPATCH_FAILED_KEY = 'imageless-scored-show:dispatch-failed:all';
 const IMAGELESS_STILL_IMAGELESS_KEY = 'imageless-scored-show:still-imageless:all';
+const IMAGELESS_BACKLOG_STALLED_KEY = 'imageless-scored-show:backlog-stalled:all';
 const imagelessName = (s) => s.title || s.id;
 
 /** items: [{id, title}] shown in the failed batch; error: dispatch error text. */
@@ -273,9 +339,30 @@ function buildStillImagelessAlert(items) {
   });
 }
 
+/** items: [{id, title, waitingDays}] never dispatched for >= BACKLOG_STALL_DAYS. */
+function buildBacklogStalledAlert(items) {
+  const { buildRollupAlert } = require('./rollup-alert');
+  return buildRollupAlert({
+    key: IMAGELESS_BACKLOG_STALLED_KEY,
+    items,
+    itemBlock: (s) => `- ${imagelessName(s)} (${s.id}): waiting ${s.waitingDays} days, never attempted`,
+    title: (xs) => `${xs.length} imageless show(s) have waited ${BACKLOG_STALL_DAYS}+ days without a single fetch attempt`,
+    intro: (xs) => `The image self-heal is draining slower than shows arrive: ${xs.length} show(s) with reviews have no image and have never been dispatched (batch size ${SELF_HEAL_BATCH_SIZE}). Either the dispatcher is not running, or the batch size needs raising.`,
+    hint: () => 'node scripts/audit-imageless-scored-shows.js --dry-run   # inspect the queue; check the Audit Imageless Scored Shows workflow runs',
+    severity: 'warn',
+    cooldownHours: 48,
+  });
+}
+
 module.exports = {
   IMAGELESS_DISPATCH_FAILED_KEY,
   IMAGELESS_STILL_IMAGELESS_KEY,
+  IMAGELESS_BACKLOG_STALLED_KEY,
+  SELF_HEAL_BATCH_SIZE,
+  BACKLOG_STALL_DAYS,
+  orderFlaggedForSelfHeal,
+  findStalledBacklog,
+  buildBacklogStalledAlert,
   buildDispatchFailedAlert,
   buildStillImagelessAlert,
   buildImageDispatchInputs,

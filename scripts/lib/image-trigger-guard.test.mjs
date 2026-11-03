@@ -9,6 +9,11 @@ const {
   planSelfHealDispatch,
   executeSelfHealDispatch,
   findImagelessScoredShows,
+  orderFlaggedForSelfHeal,
+  findStalledBacklog,
+  buildBacklogStalledAlert,
+  SELF_HEAL_BATCH_SIZE,
+  BACKLOG_STALL_DAYS,
   DEFAULT_THRESHOLD_HOURS,
 } = require('./image-trigger-guard.js');
 
@@ -315,4 +320,104 @@ test('BRO-5506: a tour is healed by dispatching its parent, and the tour is cred
   assert.equal(by.get('plain-show').dispatchAttempts, 1);
   assert.equal(by.get('cooling-show').dispatchAttempts, 1, 'cooling show not credited');
   assert.deepEqual(res.dispatched.sort(), ['company-tour-2023', 'plain-show']);
+});
+
+// --- Regional/closed backlog starvation (2026-11-03): 761 of 771 flagged rows never attempted ---
+
+test('orderFlaggedForSelfHeal: never-attempted shows go ahead of repeat failures, even newer ones', () => {
+  const flagged = [
+    { id: 'new-but-failing', sinceMs: 3000 },
+    { id: 'old-untouched', sinceMs: 1000 },
+    { id: 'mid-untouched', sinceMs: 2000 },
+  ];
+  const prev = new Map([['new-but-failing', { dispatchAttempts: 7 }]]);
+  const ids = orderFlaggedForSelfHeal(flagged, prev).map((f) => f.id);
+  assert.deepEqual(ids, ['mid-untouched', 'old-untouched', 'new-but-failing']);
+});
+
+test('orderFlaggedForSelfHeal: equal attempts stay newest-first, input is not mutated', () => {
+  const flagged = [{ id: 'a', sinceMs: 1 }, { id: 'b', sinceMs: 9 }];
+  const out = orderFlaggedForSelfHeal(flagged, {});
+  assert.deepEqual(out.map((f) => f.id), ['b', 'a']);
+  assert.deepEqual(flagged.map((f) => f.id), ['a', 'b']);
+});
+
+test('orderFlaggedForSelfHeal: among never-attempted rows the longest-waiting (oldest firstFlaggedAt) goes first', () => {
+  const flagged = [
+    { id: 'newest-show-old-wait', sinceMs: 9000 },
+    { id: 'oldest-show-new-wait', sinceMs: 1000 },
+    { id: 'just-flagged', sinceMs: 5000 },
+  ];
+  const prev = new Map([
+    ['newest-show-old-wait', { dispatchAttempts: 0, firstFlaggedAt: '2026-10-25T00:00:00Z' }],
+    ['oldest-show-new-wait', { dispatchAttempts: 0, firstFlaggedAt: '2026-11-02T00:00:00Z' }],
+  ]);
+  assert.deepEqual(orderFlaggedForSelfHeal(flagged, prev).map((f) => f.id),
+    ['newest-show-old-wait', 'oldest-show-new-wait', 'just-flagged']);
+});
+
+test('draining the backlog at the planned rate never trips the backlog-stalled alert', () => {
+  // The alert clock is firstFlaggedAt, so the queue must serve the longest waiters first.
+  // Reviewer simulation 2026-11-03: newest-first ordering put 123 rows past 10 days mid-drain.
+  const day = 86400000;
+  const start = Date.parse('2026-11-03T00:00:00Z');
+  const ledger = new Map();
+  const flagged = [];
+  for (let i = 0; i < 770; i++) {
+    const age = Math.floor((i / 770) * 9); // 0..8 days old, none stale yet
+    const id = `s${i}`;
+    ledger.set(id, { id, dispatchAttempts: 0, firstFlaggedAt: new Date(start - age * day).toISOString() });
+    flagged.push({ id, sinceMs: start - (i % 50) * day });
+  }
+  for (let run = 0; run < 4 * 7; run++) {
+    const nowMs = start + (run / 4) * day;
+    const queue = orderFlaggedForSelfHeal(flagged.filter((f) => (ledger.get(f.id).dispatchAttempts || 0) === 0), ledger);
+    for (const f of queue.slice(0, SELF_HEAL_BATCH_SIZE)) ledger.get(f.id).dispatchAttempts = 1;
+    assert.deepEqual(findStalledBacklog([...ledger.values()], nowMs), [], `stall alert fired at run ${run}`);
+  }
+});
+
+test('a batch drains the untouched backlog even while repeat failures sit inside their cooldown', () => {
+  // 3 newest rows fail forever and re-enter after cooldown; 40 older rows are untouched.
+  const now = Date.now();
+  const flagged = [
+    ...['f1', 'f2', 'f3'].map((id, i) => ({ id, sinceMs: now - i * 1000 })),
+    ...Array.from({ length: 40 }, (_, i) => ({ id: `old-${i}`, sinceMs: now - 1e9 - i * 1000 })),
+  ];
+  const prev = new Map(['f1', 'f2', 'f3'].map((id) => [id, { dispatchAttempts: 7, lastDispatchedAt: new Date(now - 13 * 3600e3).toISOString() }]));
+  const plan = planSelfHealDispatch({
+    orderedFlagged: orderFlaggedForSelfHeal(flagged, prev),
+    prevById: prev, nowMs: now, cooldownHours: 12, maxDispatchesPerRun: SELF_HEAL_BATCH_SIZE,
+  });
+  assert.equal(plan.due.length, SELF_HEAL_BATCH_SIZE);
+  const untouchedDue = plan.due.filter((f) => f.id.startsWith('old-')).length;
+  assert.equal(untouchedDue, SELF_HEAL_BATCH_SIZE - 0, 'repeat failures must not take slots while untouched rows wait');
+});
+
+test('SELF_HEAL_BATCH_SIZE drains a 770-show backlog within the stall window at 3 runs/day', () => {
+  // 3 runs/day is below what the cron really delivers; if this fails the batch is too small
+  // for a backlog of this size and the stall alert would fire anyway.
+  const days = Math.ceil(770 / (SELF_HEAL_BATCH_SIZE * 3));
+  assert.ok(days <= BACKLOG_STALL_DAYS, `770 shows would take ${days} days, stall window is ${BACKLOG_STALL_DAYS}`);
+});
+
+test('findStalledBacklog: only never-attempted rows past the stall window, longest wait first', () => {
+  const now = Date.parse('2026-11-20T00:00:00Z');
+  const day = 86400000;
+  const entries = [
+    { id: 'fresh', dispatchAttempts: 0, firstFlaggedAt: new Date(now - 2 * day).toISOString() },
+    { id: 'stalled-short', dispatchAttempts: 0, firstFlaggedAt: new Date(now - 11 * day).toISOString() },
+    { id: 'stalled-long', title: 'Long', dispatchAttempts: 0, firstFlaggedAt: new Date(now - 30 * day).toISOString() },
+    { id: 'tried', dispatchAttempts: 1, firstFlaggedAt: new Date(now - 30 * day).toISOString() },
+    { id: 'no-date', dispatchAttempts: 0 },
+  ];
+  const out = findStalledBacklog(entries, now);
+  assert.deepEqual(out.map((e) => e.id), ['stalled-long', 'stalled-short']);
+  assert.equal(out[0].waitingDays, 30);
+});
+
+test('buildBacklogStalledAlert: null when nothing stalled, a rollup keyed per kind otherwise', () => {
+  assert.equal(buildBacklogStalledAlert([]), null);
+  const opts = buildBacklogStalledAlert([{ id: 'x', title: 'X', waitingDays: 12 }]);
+  assert.ok(opts && /backlog-stalled/.test(opts.key || opts.conditionKey || JSON.stringify(opts)));
 });

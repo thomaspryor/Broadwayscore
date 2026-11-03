@@ -13,9 +13,24 @@ test('Signature Theatre resolves to its own site', () => {
 });
 
 test('no image-only venue is also a feeder venue (the two tables must not overlap)', () => {
+  // The invariant is per venue STRING (a venue matched by both tables would be classified one way
+  // and image-sourced another), not per domain: Egg Theatre shares Theatre Royal Bath's site.
   for (const v of IMAGE_ONLY_VENUES) {
-    assert.equal(REGIONAL_FEEDER_VENUES.some((f) => f.domain === v.domain), false, v.domain);
+    assert.ok(v.sample, `${v.domain} needs a sample venue string`);
+    assert.ok(v.re.test(v.sample), `${v.domain} sample "${v.sample}" must match its own regex`);
+    assert.equal(REGIONAL_FEEDER_VENUES.some((f) => f.re.test(v.sample)), false, `${v.sample} is also a feeder venue`);
   }
+});
+
+test('imageless UK/Chicago/DC venues (2026-11-03 audit) resolve to a site, and no look-alike is captured', () => {
+  for (const [venue, domain] of [
+    ['HOME, Manchester', 'homemcr.org'], ['Octagon Theatre, Bolton', 'octagonbolton.co.uk'],
+    ['Egg Theatre, Bath', 'theatreroyal.org.uk'], ['Ustinov, Bath', 'theatreroyal.org.uk'],
+    ['A Red Orchid Theatre, Chicago, IL', 'aredorchidtheatre.org'], ['The Skokie, Skokie, IL', 'northlight.org'],
+    ['Keegan Theatre, Washington, DC', 'keegantheatre.com'], ['Silver Spring Stage, Silver Spring, MD', 'ssstage.org'],
+  ]) assert.equal(imageOnlyVenue(venue)?.domain, domain, venue);
+  for (const other of ['Home for the Holidays Theatre', 'Hope Mill Theatre, Manchester', 'Steppenwolf Theatre, Chicago, IL', 'The Egg, Albany'])
+    assert.equal(imageOnlyVenue(other), null, other);
 });
 
 test('Signature page url: season from the opening date, slug from the title', () => {
