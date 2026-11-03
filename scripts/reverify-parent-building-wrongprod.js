@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// venue-write-guard-ok: venue is passed to the verifier as read-only prompt context; nothing is written to data.
 /**
  * BRO-6923: re-verify wrongProduction flags on shows filed at a stage inside a
  * bigger building (The Maria / Young Vic, Lyttelton / National Theatre ...)
