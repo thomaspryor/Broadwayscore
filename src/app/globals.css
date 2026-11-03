@@ -809,3 +809,29 @@ body.btc-standalone > div > main {
     inset: -13px -6px;
   }
 }
+
+/*
+ * OS "Increase Contrast" (BRO-6567): lift muted text to >= 10:1 on every surface
+ * (#e5e7eb: 10.2:1 on surface.elevated, 15.4:1 on surface). Unlayered and last in the
+ * file so it beats the .text-fg-muted utility. Every component class that
+ * `@apply`s text-fg-muted must be listed here; tests/unit/high-contrast-muted.test.mjs
+ * enforces that and the ratio. Placeholders stay on fg-placeholder (deliberately dimmer).
+ */
+@media (prefers-contrast: more) {
+  .text-fg-muted,
+  .score-none,
+  .score-grid-label,
+  .nav-link,
+  .tier-3 {
+    color: #e5e7eb;
+  }
+  /* .nav-link hovers to gray-300, which would now be dimmer than its resting color */
+  .nav-link:hover {
+    color: #ffffff;
+  }
+}
+@media (prefers-contrast: more) and (min-width: 640px) {
+  .sm\:before\:text-fg-muted::before {
+    color: #e5e7eb;
+  }
+}
