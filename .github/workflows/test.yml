@@ -454,6 +454,8 @@ on:
       - 'scripts/enrich-ob-dates-from-showscore.js'
       # tests/unit/promote-historical-auto.test.mjs
       - 'scripts/enrich-west-end-shows.js'
+      # tests/unit/applied-fix-plan-rows.test.mjs
+      - 'scripts/audit-applied-fix-plans.js'
       # tests/unit/exclusion-rule-consumption.test.mjs
       - 'scripts/exclusion-rule-census.js'
       # tests/unit/extract-stagedoor-preserves-exclusion-flags.test.mjs

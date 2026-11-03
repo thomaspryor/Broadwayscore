@@ -492,8 +492,10 @@ jobs:
         # (gitignored, written by the rebuild above): without a show's list the dedup and no-score
         # passes are invisible and the audit reports a legitimate drop. Every inclusion rule is
         # delegated to review-guards explainExclusion, never re-implemented. Advisory (rule 19).
-        timeout-minutes: 3
-        run: node scripts/audit-applied-fix-plans.js --strict
+        # Bounded in the shell, not with timeout-minutes: a step-level timeout reports the step as
+        # cancelled rather than failed (.github/workflows/CLAUDE.md), and its minutes count against
+        # this job's step budget, which audit-push-retry-budgets.js already has near zero margin on.
+        run: timeout 180 node scripts/audit-applied-fix-plans.js --strict
         continue-on-error: true
 
       - name: Opening-night drop + completeness check
