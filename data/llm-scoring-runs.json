@@ -1140876,56 +1140876,40 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T22:02:24.966Z",
-    "completedAt": "2026-11-03T22:06:27.892Z",
-    "totalReviews": 80217,
-    "processed": 233,
-    "skipped": 79978,
-    "errors": 3,
+    "startedAt": "2026-11-03T22:17:32.215Z",
+    "completedAt": "2026-11-03T22:17:47.725Z",
+    "totalReviews": 6,
+    "processed": 2,
+    "skipped": 4,
+    "errors": 233,
     "tokensUsed": {
-      "input": 1025894,
-      "output": 69203,
-      "cacheRead": 715626,
-      "cacheWrite": 182411,
-      "total": 2978865
+      "input": 27024,
+      "output": 972,
+      "cacheRead": 11421,
+      "cacheWrite": 7569,
+      "total": 70047
     },
-    "costUsd": 2.394635575,
-    "runId": "41725621178",
+    "costUsd": 0.12300164999999999,
+    "runId": "41728204722",
     "source": "index",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      }
-    ]
+    "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T22:06:44.673Z",
-    "completedAt": "2026-11-03T22:07:28.700Z",
-    "totalReviews": 16,
-    "processed": 16,
+    "startedAt": "2026-11-03T22:22:43.569Z",
+    "completedAt": "2026-11-03T22:22:43.578Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 38495,
-      "output": 3477,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 41972
+      "total": 0
     },
-    "costUsd": 0.10791329999999999,
-    "runId": "41725621178",
+    "costUsd": 0,
+    "runId": "41728204722",
     "source": "comparative-rescore",
     "errorDetails": []
   }
