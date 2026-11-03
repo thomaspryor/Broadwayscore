@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-h",
+  "planId": "86b0c4e3-8329-42d0-b8f6-be6f9bdcaf0d",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 8/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=if-i-forget-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/kid-victory-forget-theater-review-article-1.2979716 --critic=\"Joe Dziemianowicz\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=if-i-forget-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/i-forget-theater-review-978461 --critic=\"Frank Scheck\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=if-i-forget-off-broadway-2017 --url=https://newyorktheater.me/2017/03/05/if-i-forget-review-jewish-family-argues-about-identity-and-dad/ --critic=\"Jonathan Mandell\" --publish-date=2017-03-05",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=if-i-forget-off-broadway-2017 --url=http://www.thewrap.com/if-i-forget-theater-review-steve-levenson/ --critic=\"Robert Hofler\" --publish-date=2017-03-01",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=if-i-forget-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/58adf7cce4b0ea6ee3d034e1 --critic=\"Steven Suskin\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=if-i-forget-off-broadway-2017 --url=http://www.ny1.com/nyc/all-boroughs/theater-reviews/2017/02/22/theater-review---if-i-forget-.html --critic=\"Roma Torre\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Roma Torre (NY1) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://www.theaterscene.net/musicals/offbway/kid-victory/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-03-06",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=https://www.timeout.com/newyork/blog/theater-review-kid-victory-explores-dark-musical-territory-022217 --critic=\"Adam Feldman\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Adam Feldman (Time Out New York) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/kid-victory_80106.html --critic=\"Zachary Stewart\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-PDCJOK --critic=\"David Barbour\" --publish-date=2017-02-23",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/kid-victory-forget-theater-review-article-1.2979716 --critic=\"Joe Dziemianowicz\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/kid-victory-review-978172 --critic=\"Frank Scheck\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://dctheatrescene.com/2017/02/22/kid-victory-review-kander-musical-aftermath-kidnapping/ --critic=\"Jonathan Mandell\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://slleiter.blogspot.co.uk/2017/02/139-review-kid-victory-seen-february-21.html --critic=\"Samuel L. Leiter\" --publish-date=2017-02-23",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://www.thewrap.com/kid-victory-theater-review-john-kander-musical/ --critic=\"Robert Hofler\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=kid-victory-off-broadway-2017 --url=http://thefrontrowcenter.com/2017/02/kid-victory/ --critic=\"Tulis McCall\" --publish-date=2017-02-23",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of kid-victory-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://www.theaterscene.net/musicals/lazarus/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2015-12-25",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://www.timeout.com/newyork/theater/lazarus --critic=\"David Cote\" --publish-date=2015-12-07",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://www.theaterpizzazz.com/lazarus/ --critic=\"Brian Scott Lipton\" --publish-date=2015-12-09",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Theater Pizzazz) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://www.theatermania.com/off-broadway/reviews/lazarus_75219.html --critic=\"Zachary Stewart\" --publish-date=2015-12-07",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=VJM1BY --critic=\"David Barbour\" --publish-date=2015-12-09",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://nypost.com/2015/12/08/david-bowie-wrote-a-musical-and-its-confusing-as-hell/ --critic=\"Elisabeth Vincentelli\" --publish-date=2015-12-08",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (New York Post) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://www.nydailynews.com/entertainment/theater-arts/david-bowie-jukebox-musical-lazarus-trippy-article-1.2457636 --critic=\"Joe Dziemianowicz\" --publish-date=2015-12-07",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://dctheatrescene.com/2015/12/11/michael-c-hall-lazarus-review-bowies-first-musical/ --critic=\"Jonathan Mandell\" --publish-date=2015-12-11",
+        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lazarus-off-broadway-2015 --url=http://www.thewrap.com/lazarus-theater-review-david-bowie-revisits-the-man-who-fell-to-earth/ --critic=\"Robert Hofler\" --publish-date=2015-12-07",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of lazarus-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

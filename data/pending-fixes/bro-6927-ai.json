@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-ai",
+  "planId": "3e9d2c81-291d-4e50-b158-7ae85021f9f8",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 33/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-the-body-of-the-world-off-broadway-2018 --url=https://www.hollywoodreporter.com/review/in-the-body-of-the-world-theater-1081887 --critic=\"Frank Scheck\" --publish-date=2018-02-06",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of in-the-body-of-the-world-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-the-body-of-the-world-off-broadway-2018 --url=https://newyorktheater.me/2018/02/07/in-the-body-of-the-world-review-eve-ensler-fighting-cancer-and-injustice-ranting-riffing-raging-revealing/ --critic=\"Jonathan Mandell\" --publish-date=2018-02-07",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of in-the-body-of-the-world-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-the-body-of-the-world-off-broadway-2018 --url=https://slleiter.blogspot.com/2018/02/156-2017-2018-review-in-body-of-world.html --critic=\"Samuel L. Leiter\" --publish-date=2018-02-10",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of in-the-body-of-the-world-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-the-body-of-the-world-off-broadway-2018 --url=https://www.nytimes.com/2018/02/06/theater/in-the-body-of-the-world-review-eve-ensler.html --critic=\"Jesse Green\" --publish-date=2018-02-06",
+        "description": "BRO-6927 gap: Jesse Green (The New York Times) review of in-the-body-of-the-world-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-the-body-of-the-world-off-broadway-2018 --url=http://theaterlife.com/in-the-body-of-the-world-he-brought-her-heart-back-in-a-box/ --critic=\"David Sheward\" --publish-date=2018-02-08",
+        "description": "BRO-6927 gap: David Sheward (Theater Life) review of in-the-body-of-the-world-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-the-body-of-the-world-off-broadway-2018 --url=http://www.vulture.com/2018/02/theater-returning-to-reims-and-in-the-body-of-the-world.html --critic=\"Sara Holdren\" --publish-date=2018-02-11",
+        "description": "BRO-6927 gap: Sara Holdren (New York Magazine / Vulture) review of in-the-body-of-the-world-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=in-the-body-of-the-world-off-broadway-2018 --url=http://www.ny1.com/nyc/all-boroughs/news/2018/02/07/roma-torre-review-in-the-body-of-the-world-eve-ensler-monologue --critic=\"Roma Torre\" --publish-date=2018-02-06",
+        "description": "BRO-6927 gap: Roma Torre (NY1) review of in-the-body-of-the-world-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/Jesus-Hopped-the-A-Train/302 --critic=\"Brian Scott Lipton\" --publish-date=2017-10-23",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/jesus-hopped-the-a-train_82856.html --critic=\"Zachary Stewart\" --publish-date=2017-10-23",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=3EXELW --critic=\"David Barbour\" --publish-date=2017-10-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/jesus-hopped-a-train-theater-review-1051080 --critic=\"Frank Scheck\" --publish-date=2017-10-23",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://dctheatrescene.com/2017/10/23/jesus-hopped-train-review-killers-finding-god/ --critic=\"Jonathan Mandell\" --publish-date=2017-10-23",
+        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://slleiter.blogspot.com/2017/10/93-2017-2018-review-jesus-hopped-a.html --critic=\"Samuel L. Leiter\" --publish-date=2017-10-27",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://www.nytimes.com/2017/10/23/theater/jesus-hopped-the-a-train-review.html?_r=0 --critic=\"Jesse Green\" --publish-date=2017-10-23",
+        "description": "BRO-6927 gap: Jesse Green (The New York Times) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://www.thewrap.com/jesus-hopped-the-a-train-theater-review-a-prison-drama-that-cant-be-contained/ --critic=\"Thom Geier\" --publish-date=2017-10-23",
+        "description": "BRO-6927 gap: Thom Geier (The Wrap) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=http://thefrontrowcenter.com/2017/10/jesus-hopped-train/ --critic=\"Tulis McCall\" --publish-date=2017-10-24",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240 --critic=\"Steven Suskin\" --publish-date=2017-10-24",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://www.theaterpizzazz.com/love-money/ --critic=\"Brian Scott Lipton\" --publish-date=2015-08-24",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Theater Pizzazz) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://www.theatermania.com/off-broadway/reviews/love-and-money_73979.html --critic=\"Zachary Stewart\" --publish-date=2015-08-24",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://nypost.com/2015/08/25/new-play-love-money-is-padded-and-full-of-plot-holes/ --critic=\"Elisabeth Vincentelli\" --publish-date=2015-08-25",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (New York Post) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://www.nydailynews.com/entertainment/theater-arts/gurney-short-love-money-article-1.2335558 --critic=\"Joe Dziemianowicz\" --publish-date=2015-08-24",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://newyorktheater.me/2015/08/24/love-and-money-review-a-r-gurneys-new-play-about-a-feisty-rich-wasp/ --critic=\"Jonathan Mandell\" --publish-date=2015-08-24",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://slleiter.blogspot.com/2015/08/49-review-of-love-money-seen-august-22.html --critic=\"Samuel L. Leiter\" --publish-date=2015-08-24",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://www.newyorktheatreguide.com/reviews/loveandmoney15.htm --critic=\"Tulis McCall\" --publish-date=2015-08-25",
+        "description": "BRO-6927 gap: Tulis McCall (New York Theatre Guide) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://www.nytimes.com/2015/08/25/theater/review-in-a-r-gurneys-love-money-a-grandson-materializes-to-claim-his-fortune.html?_r=0 --critic=\"Charles Isherwood\" --publish-date=2015-08-24",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

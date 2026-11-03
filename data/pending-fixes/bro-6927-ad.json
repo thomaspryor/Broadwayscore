@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-ad",
+  "planId": "60ab6e70-ebd8-4aca-84b5-d0bbdcb997b1",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 28/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=john-off-broadway-2015 --url=http://www.newyorktheatreguide.com/reviews/john15.htm --critic=\"Tulis McCall\" --publish-date=2015-08-13",
+        "description": "BRO-6927 gap: Tulis McCall (New York Theatre Guide) review of john-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=john-off-broadway-2015 --url=http://www.nytimes.com/2015/08/12/theater/review-in-john-pondering-lifes-mysteries-from-gettysburg.html?_r=0 --critic=\"Charles Isherwood\" --publish-date=2015-08-11",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of john-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=john-off-broadway-2015 --url=http://www.clydefitchreport.com/2015/08/annie-baker-sam-gold-john-off-broadway/ --critic=\"David Finkle\" --publish-date=2015-08-11",
+        "description": "BRO-6927 gap: David Finkle (The Clyde Fitch Report) review of john-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-liz-off-broadway-2015 --url=http://www.ny1.com/nyc/all-boroughs/theater-reviews/2015/08/4/theater-review---king-liz-.html --critic=\"David Cote\" --publish-date=2015-08-05",
+        "description": "BRO-6927 gap: David Cote (NY1) review of king-liz-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-liz-off-broadway-2015 --url=http://www.nydailynews.com/entertainment/theater-arts/karen-pittman-commands-basketball-soap-king-liz-article-1.2303362 --critic=\"Joe Dziemianowicz\" --publish-date=2015-07-27",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of king-liz-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-liz-off-broadway-2015 --url=http://newyorktheater.me/2015/07/27/king-liz-review-like-jerry-maguire-but-black-and-female/ --critic=\"Jonathan Mandell\" --publish-date=2015-07-27",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of king-liz-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-liz-off-broadway-2015 --url=http://www.nytimes.com/2015/07/28/theater/review-king-liz-at-the-top-of-her-game-and-wanting-more.html?_r=0 --critic=\"Charles Isherwood\" --publish-date=2015-07-27",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of king-liz-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=https://www.timeout.com/newyork/blog/theater-review-master-haroldand-the-boys-returns-off-broadway-110716 --critic=\"David Cote\" --publish-date=2016-11-07",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=https://cititour.com/NYC_Broadway/Master-Haroldand-the-Boys/917 --critic=\"Brian Scott Lipton\" --publish-date=2016-11-07",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://www.theatermania.com/off-broadway/reviews/-master-haroldand-the-boys_79051.html --critic=\"Zachary Stewart\" --publish-date=2016-11-07",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=V5ASH1 --critic=\"David Barbour\" --publish-date=2016-11-14",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://www.hollywoodreporter.com/review/master-harold-and-boys-944706 --critic=\"Frank Scheck\" --publish-date=2016-11-07",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://dctheatrescene.com/2016/11/10/fugards-master-harold-boys-review-effects-trickle-racism/ --critic=\"Jonathan Mandell\" --publish-date=2016-11-10",
+        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://thebroadwayblog.com/2016/11/08/15598-review-master-harold-and-the-boys --critic=\"Samuel L. Leiter\" --publish-date=2016-11-08",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://www.vulture.com/2016/11/theater-review-master-haroldand-the-boys.html --critic=\"Jesse Green\" --publish-date=2016-11-07",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://www.nytimes.com/2016/11/08/theater/master-harold-and-the-boys-review.html --critic=\"Charles Isherwood\" --publish-date=2016-11-07",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://www.amny.com/news/master-harold-and-the-boys-a-smart-look-at-the-racial-divide-1.12595221 --critic=\"Matt Windman\" --publish-date=2016-11-09",
+        "description": "BRO-6927 gap: Matt Windman (AM New York) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=master-harold-and-the-boys-off-broadway-2016 --url=http://www.clydefitchreport.com/2016/11/athol-fugard-master-harold-signature-theatre/ --critic=\"David Finkle\" --publish-date=2016-11-10",
+        "description": "BRO-6927 gap: David Finkle (The Clyde Fitch Report) review of master-harold-and-the-boys-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=people-places-and-things-off-broadway-2017 --url=https://www.villagevoice.com/2017/11/07/denise-gough-is-pure-acting-ecstasy-in-rehab-drama-people-places-things/ --critic=\"David Cote\" --publish-date=2017-11-07",
+        "description": "BRO-6927 gap: David Cote (Village Voice) review of people-places-and-things-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=people-places-and-things-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=HS2DX7 --critic=\"David Barbour\" --publish-date=2017-10-26",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of people-places-and-things-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=people-places-and-things-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/denise-gough-burns-bright-people-places-article-1.3588370 --critic=\"Joe Dziemianowicz\" --publish-date=2017-10-25",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of people-places-and-things-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=people-places-and-things-off-broadway-2017 --url=https://newyorktheater.me/2017/10/25/people-places-things-review-an-alcoholic-actress-steps-up-in-rehab/ --critic=\"Jonathan Mandell\" --publish-date=2017-10-25",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of people-places-and-things-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=people-places-and-things-off-broadway-2017 --url=http://thebroadwayblog.com/people-places-and-things-review/ --critic=\"Samuel L. Leiter\" --publish-date=2017-10-29",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of people-places-and-things-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=people-places-and-things-off-broadway-2017 --url=https://www.thewrap.com/people-places-things-theater-review-great-acting-best-kind-high/ --critic=\"Robert Hofler\" --publish-date=2017-10-25",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of people-places-and-things-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=people-places-and-things-off-broadway-2017 --url=https://www.nytimes.com/2017/10/25/theater/people-places-things-review.html --critic=\"Jesse Green\" --publish-date=2017-10-25",
+        "description": "BRO-6927 gap: Jesse Green (The New York Times) review of people-places-and-things-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

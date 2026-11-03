@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-m",
+  "planId": "e83f41e8-aeb4-4bfc-80b2-312864f43235",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 13/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://www.theatermania.com/off-broadway/reviews/perfect-arrangement_74561.html --critic=\"Zachary Stewart\" --publish-date=2015-10-15",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=TKG594 --critic=\"David Barbour\" --publish-date=2015-10-16",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://newyorktheater.me/2015/10/15/perfect-arrangement-review-comedy-about-gay-persecution-in-the-1950s/ --critic=\"Jonathan Mandell\" --publish-date=2015-10-15",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://slleiter.blogspot.com/2015/10/82-review-perfect-arrangement-seen.html --critic=\"Samuel L. Leiter\" --publish-date=2015-10-15",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://thefrontrowcenter.com/2015/10/perfect-arrangement/ --critic=\"Tulis McCall\" --publish-date=2015-10-16",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://www.huffingtonpost.com/david-finkle/first-nighter-topher-payn_b_8307828.html --critic=\"David Finkle\" --publish-date=2015-10-15",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rothschild-and-sons-off-broadway-2015 --url=http://www.theaterscene.net/musicals/rothschild-and-sons/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2015-10-31",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of rothschild-and-sons-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rothschild-and-sons-off-broadway-2015 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-CPG3RI --critic=\"David Barbour\" --publish-date=2015-10-19",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of rothschild-and-sons-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rothschild-and-sons-off-broadway-2015 --url=http://thebroadwayblog.com/2015/10/18/13388-review-rothschild-sons --critic=\"Samuel L. Leiter\" --publish-date=2015-10-19",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of rothschild-and-sons-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rothschild-and-sons-off-broadway-2015 --url=http://www.huffingtonpost.com/steven-suskin/aisle-view-mayers-boys_b_8331278.html --critic=\"Steven Suskin\" --publish-date=2015-10-19",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of rothschild-and-sons-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rothschild-and-sons-off-broadway-2015 --url=http://www.clydefitchreport.com/2015/10/rothschilds-dames-at-sea-broadway/ --critic=\"David Finkle\" --publish-date=2015-10-23",
+        "description": "BRO-6927 gap: David Finkle (The Clyde Fitch Report) review of rothschild-and-sons-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=runboyrun-and-in-old-age-off-broadway-2019 --url=http://www.theaterscene.net/plays/offbway-plays/runboy-run-and-in-old-age/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2019-10-09",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of runboyrun-and-in-old-age-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=runboyrun-and-in-old-age-off-broadway-2019 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-E300FW --critic=\"David Barbour\" --publish-date=2019-10-02",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of runboyrun-and-in-old-age-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=runboyrun-and-in-old-age-off-broadway-2019 --url=https://thebroadwayblog.com/runboyrun/ --critic=\"Samuel L. Leiter\" --publish-date=2019-09-28",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of runboyrun-and-in-old-age-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.theaterscene.net/plays/smart-people/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-02-24",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.timeout.com/newyork/theater/smart-people --critic=\"Adam Feldman\" --publish-date=2016-02-11",
+        "description": "BRO-6927 gap: Adam Feldman (Time Out New York) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://cititour.com/NYC_Broadway/Smart-People/610 --critic=\"Brian Scott Lipton\" --publish-date=2016-02-15",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.theatermania.com/off-broadway/reviews/smart-people_75944.html --critic=\"Zachary Stewart\" --publish-date=2016-02-11",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-SCD4S3 --critic=\"David Barbour\" --publish-date=2016-02-16",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://nypost.com/2016/02/12/mike-birbiglias-hilarious-thank-god-for-jokes-is-a-must-see/ --critic=\"Elisabeth Vincentelli\" --publish-date=2016-02-13",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (New York Post) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/smart-people-hobbled-script-joshua-jackson-article-1.2528135 --critic=\"Joe Dziemianowicz\" --publish-date=2016-02-11",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.theaterpizzazz.com/race-bait-smart-people/ --critic=\"Samuel L. Leiter\" --publish-date=2016-02-17",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theater Pizzazz) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.thewrap.com/smart-people-theater-review-joshua-jackson-tessa-thomson-gets-caught-in-racial-crossfire/ --critic=\"Robert Hofler\" --publish-date=2016-02-11",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.vulture.com/2016/02/theater-review-smart-peoples-schematic.html# --critic=\"Jesse Green\" --publish-date=2016-02-11",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=smart-people-off-broadway-2016 --url=http://www.newyorktheatreguide.com/reviews/smartpeople16.htm --critic=\"Tulis McCall\" --publish-date=2016-02-22",
+        "description": "BRO-6927 gap: Tulis McCall (New York Theatre Guide) review of smart-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

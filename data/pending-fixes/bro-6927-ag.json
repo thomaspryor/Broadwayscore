@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-ag",
+  "planId": "62d8647a-2dac-4129-a59f-43997b3131cc",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 31/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bella-bella-off-broadway-2019 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=X2HGLB --critic=\"David Barbour\" --publish-date=2019-10-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of bella-bella-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fulfillment-center-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/Fulfillment-Center/920 --critic=\"Brian Scott Lipton\" --publish-date=2017-06-20",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of fulfillment-center-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fulfillment-center-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/fulfillment-center_81496.html --critic=\"Zachary Stewart\" --publish-date=2017-06-20",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of fulfillment-center-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fulfillment-center-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=48KEV9 --critic=\"David Barbour\" --publish-date=2017-07-05",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of fulfillment-center-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fulfillment-center-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/fulfillment-center-theater-1015110 --critic=\"Frank Scheck\" --publish-date=2017-06-20",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of fulfillment-center-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fulfillment-center-off-broadway-2017 --url=http://theaterlife.com/fulfillment-center/ --critic=\"David Sheward\" --publish-date=2017-06-24",
+        "description": "BRO-6927 gap: David Sheward (Theater Life) review of fulfillment-center-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://cititour.com/NYC_Broadway/Hadestown/346 --critic=\"Brian Scott Lipton\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.theatermania.com/off-broadway/reviews/hadestown-_77163.html --critic=\"Zachary Stewart\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-RNLI6N --critic=\"David Barbour\" --publish-date=2016-06-02",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.hollywoodreporter.com/review/anais-mitchells-hadestown-theater-review-896631 --critic=\"Frank Scheck\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=https://newyorktheater.me/2016/05/23/hadestown-review/ --critic=\"Jonathan Mandell\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://thebroadwayblog.com/2016/05/31/14764-review-hadestown-nytw --critic=\"Samuel L. Leiter\" --publish-date=2016-05-31",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.thewrap.com/hadestown-review-anais-mitchell-orpheus-eurydice/ --critic=\"Robert Hofler\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.vulture.com/2016/05/theater-review-hadestown.html --critic=\"Jesse Green\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://thefrontrowcenter.com/2016/05/hadestown/ --critic=\"Tulis McCall\" --publish-date=2016-05-31",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.nytimes.com/2016/05/24/theater/review-hadestown-reanimates-a-well-known-myth.html --critic=\"Charles Isherwood\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.huffingtonpost.com/steven-suskin/aisle-view-its-hotter-in_b_10112258.html --critic=\"Steven Suskin\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hadestown-off-broadway-2016 --url=http://www.amny.com/entertainment/hadestown-review-a-folk-music-take-on-an-ancient-greek-tale-1.11831751 --critic=\"Matt Windman\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Matt Windman (AM New York) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=http://www.theaternewsonline.com/NYTheaterReviews/GIVINGUPTHENOOSE.cfm --critic=\"Brian Scott Lipton\" --publish-date=2018-02-05",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Theater News Online) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=IFB8RX --critic=\"David Barbour\" --publish-date=2018-02-06",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=http://www.nydailynews.com/entertainment/theater-arts/hangmen-review-martin-mcdonagh-play-opens-atlantic-article-1.3800877 --critic=\"Joe Dziemianowicz\" --publish-date=2018-02-05",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=https://newyorktheater.me/2018/03/07/hangmen-review/ --critic=\"Jonathan Mandell\" --publish-date=2018-03-07",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=http://thebroadwayblog.com/hangmen-atlantic-theater-company/ --critic=\"Samuel L. Leiter\" --publish-date=2018-02-16",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=https://www.thewrap.com/hangmen-theater-review-martin-mcdonagh-gleefully-explores-habit-murder/ --critic=\"Robert Hofler\" --publish-date=2018-02-05",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=hangmen-off-broadway-2018 --url=http://theaterlife.com/hangmen-1-2/ --critic=\"David Sheward\" --publish-date=2018-02-15",
+        "description": "BRO-6927 gap: David Sheward (Theater Life) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-aj",
+  "planId": "ce0e0e81-4738-46c9-b4b6-d39c1ce99da3",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 34/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://www.huffingtonpost.com/david-finkle/first-nighter-a-r-gurneys_b_8034344.html --critic=\"David Finkle\" --publish-date=2015-08-24",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-and-money-off-broadway-2015 --url=http://www.timeout.com/newyork/theater/love-money --critic=\"Helen Shaw\" --publish-date=2015-08-26",
+        "description": "BRO-6927 gap: Helen Shaw (Time Out New York) review of love-and-money-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-love-love-off-broadway-2016 --url=https://cititour.com/NYC_Broadway/Love-Love-Love/678 --critic=\"Brian Scott Lipton\" --publish-date=2016-10-20",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of love-love-love-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=love-love-love-off-broadway-2016 --url=http://www.thewrap.com/love-love-love-theater-review-richard-armitage-amy-ryan/ --critic=\"Robert Hofler\" --publish-date=2016-10-19",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of love-love-love-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=purlie-victorious-2023 --url=https://cititour.com/NYC_Broadway/Purlie-Victorious/1169 --critic=\"Brian Scott Lipton\" --publish-date=2023-09-27",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of purlie-victorious-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=purlie-victorious-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-FYDNYT --critic=\"David Barbour\" --publish-date=2023-09-29",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of purlie-victorious-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=red-roses-green-gold-off-broadway-2017 --url=http://theaterpizzazz.com/red-roses-green-gold/ --critic=\"Brian Scott Lipton\" --publish-date=2017-10-29",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Theater Pizzazz) review of red-roses-green-gold-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=red-roses-green-gold-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-OHRA0U --critic=\"David Barbour\" --publish-date=2017-10-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of red-roses-green-gold-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=red-roses-green-gold-off-broadway-2017 --url=https://www.nytimes.com/2017/10/30/theater/red-roses-green-gold-grateful-dead-review.html?_r=0 --critic=\"Elisabeth Vincentelli\" --publish-date=2017-10-30",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (The New York Times) review of red-roses-green-gold-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=red-roses-green-gold-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/red-roses-green-gold-theater-1052771 --critic=\"Frank Scheck\" --publish-date=2017-10-29",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of red-roses-green-gold-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=red-roses-green-gold-off-broadway-2017 --url=https://www.huffingtonpost.com/entry/teresa-rebecks-pushy-office-hour-the-grateful-dead_us_5a03a3ade4b055de8d096a76 --critic=\"David Finkle\" --publish-date=2017-11-08",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of red-roses-green-gold-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=scene-partners-off-broadway-2023 --url=https://cititour.com/NYC_Broadway/Scene-Partners/1180 --critic=\"Brian Scott Lipton\" --publish-date=2023-11-15",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of scene-partners-off-broadway-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=scene-partners-off-broadway-2023 --url=https://theaterlife.com/scene-partners-stereophonic/ --critic=\"David Sheward\" --publish-date=2023-11-24",
+        "description": "BRO-6927 gap: David Sheward (Theater Life) review of scene-partners-off-broadway-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-hector-i-miss-him-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/Tell-Hector-I-Miss-Him/567 --critic=\"Brian Scott Lipton\" --publish-date=2017-01-24",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of tell-hector-i-miss-him-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-hector-i-miss-him-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/tell-hector-i-miss-him_79782.html --critic=\"Zachary Stewart\" --publish-date=2017-01-23",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of tell-hector-i-miss-him-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-hector-i-miss-him-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-SYVOPN --critic=\"David Barbour\" --publish-date=2017-02-09",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of tell-hector-i-miss-him-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-hector-i-miss-him-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/hector-feel-real-life-theater-review-article-1.2953610 --critic=\"Joe Dziemianowicz\" --publish-date=2017-01-23",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of tell-hector-i-miss-him-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-hector-i-miss-him-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/tell-hector-i-miss-him-967568 --critic=\"Frank Scheck\" --publish-date=2017-01-23",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of tell-hector-i-miss-him-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-hector-i-miss-him-off-broadway-2017 --url=http://dctheatrescene.com/2017/01/23/tell-hector-miss-love-puzzles-puerto-rico/ --critic=\"Jonathan Mandell\" --publish-date=2017-01-23",
+        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of tell-hector-i-miss-him-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=tell-hector-i-miss-him-off-broadway-2017 --url=https://www.nytimes.com/2017/01/23/theater/tell-hector-i-miss-him-review.html?_r=0 --critic=\"Charles Isherwood\" --publish-date=2017-01-23",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of tell-hector-i-miss-him-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-match-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/The-Last-Match/494 --critic=\"Brian Scott Lipton\" --publish-date=2017-10-24",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of the-last-match-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-match-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-2Y5FJW --critic=\"David Barbour\" --publish-date=2017-10-25",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of the-last-match-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-match-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/last-match-theater-1051144 --critic=\"Frank Scheck\" --publish-date=2017-10-24",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of the-last-match-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-match-off-broadway-2017 --url=https://newyorktheater.me/2017/10/28/the-last-match-review-awkward-tennis-appealing-love/ --critic=\"Jonathan Mandell\" --publish-date=2017-10-28",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of the-last-match-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-match-off-broadway-2017 --url=https://slleiter.blogspot.com/2017/10/92-2017-2018-review-last-match-seen.html --critic=\"Samuel L. Leiter\" --publish-date=2017-10-26",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of the-last-match-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-ab",
+  "planId": "745a6efe-c1df-411a-a243-8c30ef46f934",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 26/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=book-of-mormon-2011 --url=http://www.timeout.com/newyork/theater/the-book-of-mormon-on-broadway-tickets-reviews-and-video --critic=\"David Cote\" --publish-date=2015-01-08",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of book-of-mormon-2011, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=https://www.timeout.com/newyork/blog/theater-review-everybody-gives-a-medieval-morality-tale-a-few-modern-twists-022117 --critic=\"David Cote\" --publish-date=2017-02-21",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://theaterpizzazz.com/everybody/ --critic=\"Brian Scott Lipton\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Theater Pizzazz) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/everybody_80081.html --critic=\"Zachary Stewart\" --publish-date=2017-02-21",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=OM55QW --critic=\"David Barbour\" --publish-date=2017-03-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/kid-victory-forget-theater-review-article-1.2979716 --critic=\"Joe Dziemianowicz\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/everybody-review-977967 --critic=\"Frank Scheck\" --publish-date=2017-02-21",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=https://newyorktheater.me/2017/02/23/everybody-review-morality-meets-mortality-600-years-later/ --critic=\"Jonathan Mandell\" --publish-date=2017-02-23",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.thewrap.com/everybody-theater-review-whats-really-old-is-almost-new-again/ --critic=\"Robert Hofler\" --publish-date=2017-02-21",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.vulture.com/2017/02/theater-review-branden-jacobs-jenkinss-everybody-is-a-600-year-old-play-brought-up-to-the-moment.html --critic=\"Jesse Green\" --publish-date=2017-02-21",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://theaterlife.com/sunset-boulevard-everybody/ --critic=\"David Sheward\" --publish-date=2017-02-26",
+        "description": "BRO-6927 gap: David Sheward (Theater Life) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://thefrontrowcenter.com/2017/02/everybody/ --critic=\"Tulis McCall\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/58ac4843e4b03250fc905f16 --critic=\"Steven Suskin\" --publish-date=2017-02-21",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=everybody-off-broadway-2017 --url=http://www.clydefitchreport.com/2017/02/everybody-jacobs-jenkins-signature-play/ --critic=\"David Finkle\" --publish-date=2017-02-22",
+        "description": "BRO-6927 gap: David Finkle (The Clyde Fitch Report) review of everybody-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fade-off-broadway-2017 --url=https://www.timeout.com/newyork/blog/theater-review-fade-finds-comedy-in-latinx-class-tension-from-hollywood-020817 --critic=\"David Cote\" --publish-date=2017-02-08",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of fade-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fade-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/fade_79938.html --critic=\"Zachary Stewart\" --publish-date=2017-02-08",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of fade-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fade-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=VKDHJQ --critic=\"David Barbour\" --publish-date=2017-02-09",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of fade-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fade-off-broadway-2017 --url=https://newyorktheater.me/2017/02/08/fade-play-review-latina-tv-writer-on-how-horrible-tv-is/ --critic=\"Jonathan Mandell\" --publish-date=2017-02-08",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of fade-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fade-off-broadway-2017 --url=http://slleiter.blogspot.com/2017/02/131-review-fade-seen-february-10-2017.html --critic=\"Samuel L. Leiter\" --publish-date=2017-02-10",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of fade-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fade-off-broadway-2017 --url=http://www.huffingtonpost.com/david-finkle/first-nighter-tanya-sarac_b_14670012.html --critic=\"David Finkle\" --publish-date=2017-02-09",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of fade-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=henry-iv-off-broadway-2015 --url=http://www.timeout.com/newyork/theater/henry-iv-2 --critic=\"David Cote\" --publish-date=2015-11-12",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of henry-iv-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=henry-iv-off-broadway-2015 --url=http://www.theatermania.com/off-broadway/reviews/henry-iv_75000.html --critic=\"Zachary Stewart\" --publish-date=2015-11-17",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of henry-iv-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=henry-iv-off-broadway-2015 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=4F2QLY --critic=\"David Barbour\" --publish-date=2015-11-12",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of henry-iv-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=henry-iv-off-broadway-2015 --url=http://www.hollywoodreporter.com/review/henry-iv-theater-review-839693 --critic=\"Frank Scheck\" --publish-date=2015-11-12",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of henry-iv-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=henry-iv-off-broadway-2015 --url=http://www.vulture.com/2015/11/theater-review-women-in-prison-in-henry-iv.html# --critic=\"Jesse Green\" --publish-date=2015-11-12",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of henry-iv-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

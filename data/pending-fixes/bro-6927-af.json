@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-af",
+  "planId": "a4202f7f-0bc9-43d0-ba1b-e16273658651",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 30/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-babylon-line-off-broadway-2016 --url=http://www.hollywoodreporter.com/review/babylon-line-review-953071 --critic=\"David Rooney\" --publish-date=2016-12-05",
+        "description": "BRO-6927 gap: David Rooney (The Hollywood Reporter) review of the-babylon-line-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-light-years-off-broadway-2017 --url=https://www.timeout.com/newyork/blog/theater-review-the-light-years-shines-a-bright-light-on-old-weird-americana-031317 --critic=\"David Cote\" --publish-date=2017-03-13",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of the-light-years-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-light-years-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/the-light-years_80351.html --critic=\"Zachary Stewart\" --publish-date=2017-03-13",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of the-light-years-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-light-years-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-O0CIE --critic=\"David Barbour\" --publish-date=2017-03-23",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of the-light-years-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-light-years-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/transcend-happy-marriage-946-theater-review-article-1.3003564 --critic=\"Joe Dziemianowicz\" --publish-date=2017-03-20",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of the-light-years-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-light-years-off-broadway-2017 --url=http://slleiter.blogspot.com/2017/03/159-review-light-years-seen-march-22.html --critic=\"Samuel L. Leiter\" --publish-date=2017-03-22",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of the-light-years-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-light-years-off-broadway-2017 --url=http://thefrontrowcenter.com/2017/03/the-light-years/ --critic=\"Tulis McCall\" --publish-date=2017-03-14",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of the-light-years-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-light-years-off-broadway-2017 --url=http://www.thedailybeast.com/articles/2017/03/15/off-broadway-reaches-for-the-stars-reviews-of-the-light-years-and-the-outer-space.html --critic=\"Tim Teeman\" --publish-date=2017-03-15",
+        "description": "BRO-6927 gap: Tim Teeman (Daily Beast) review of the-light-years-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-royale-off-broadway-2016 --url=http://www.timeout.com/newyork/theater/the-royale --critic=\"David Cote\" --publish-date=2016-03-08",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of the-royale-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-royale-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=QLJ5VS --critic=\"David Barbour\" --publish-date=2016-03-16",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of the-royale-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-royale-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/royale-draws-life-boxing-champ-jack-johnson-article-1.2555782 --critic=\"Joe Dziemianowicz\" --publish-date=2016-03-07",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of the-royale-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-royale-off-broadway-2016 --url=http://www.hollywoodreporter.com/review/royale-theater-review-873232 --critic=\"Frank Scheck\" --publish-date=2016-03-07",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of the-royale-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-royale-off-broadway-2016 --url=http://newyorktheater.me/2016/03/10/the-royale-review-black-boxing-champ-fighting-racism-convention/ --critic=\"Jonathan Mandell\" --publish-date=2016-03-10",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of the-royale-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-royale-off-broadway-2016 --url=http://www.theaterpizzazz.com/the-royale-a-play-that-comes-out-swinging/ --critic=\"Samuel L. Leiter\" --publish-date=2016-03-07",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theater Pizzazz) review of the-royale-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-royale-off-broadway-2016 --url=http://www.thewrap.com/the-royale-theater-review-jack-johnson-lives-to-fight-again-despite-doubts/ --critic=\"Robert Hofler\" --publish-date=2016-03-07",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of the-royale-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=wicked-2003 --url=http://www.timeout.com/newyork/theater/wicked-on-broadway-tickets-and-information --critic=\"David Cote\" --publish-date=2015-01-08",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of wicked-2003, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/All-the-Fine-Boys/682 --critic=\"Brian Scott Lipton\" --publish-date=2017-03-01",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/all-the-fine-boys_80200.html --critic=\"Zachary Stewart\" --publish-date=2017-03-01",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=MUJVMH --critic=\"David Barbour\" --publish-date=2017-03-02",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/sweeney-todd-fine-boys-wakey-wakey-theater-review-article-1.2985734 --critic=\"Joe Dziemianowicz\" --publish-date=2017-03-01",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/all-fine-boys-theater-review-981983 --critic=\"Frank Scheck\" --publish-date=2017-03-01",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=https://newyorktheater.me/2017/03/06/all-the-fine-boys-review-abigail-breslin-in-half-a-horror-play-of-lost-virginity/ --critic=\"Jonathan Mandell\" --publish-date=2017-03-06",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=http://slleiter.blogspot.com/2017/03/148-review-all-fine-boys-seen-march-8.html --critic=\"Samuel L. Leiter\" --publish-date=2017-03-10",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=all-the-fine-boys-off-broadway-2017 --url=http://www.thewrap.com/fine-boys-theater-review-abigail-breslin-grows/ --critic=\"Robert Hofler\" --publish-date=2017-03-01",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of all-the-fine-boys-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bella-bella-off-broadway-2019 --url=http://www.theaternewsonline.com/NYTheaterReviews/OVERCOMINGADVERSITY.cfm --critic=\"Brian Scott Lipton\" --publish-date=2019-10-22",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Theater News Online) review of bella-bella-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

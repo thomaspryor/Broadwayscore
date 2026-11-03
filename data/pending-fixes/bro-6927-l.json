@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-l",
+  "planId": "987bebfd-2802-45c5-abe5-fab7b639ed82",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 12/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=OW87CJ --critic=\"David Barbour\" --publish-date=2017-09-13",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/shore-wide-world-1037928 --critic=\"Frank Scheck\" --publish-date=2017-09-12",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=https://slleiter.blogspot.com/2017/09/67-2017-2018-review-on-shore-of-wide.html --critic=\"Samuel L. Leiter\" --publish-date=2017-09-15",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=https://www.culturalweekly.com/uneven-shore-line-off-broadway/ --critic=\"David Sheward\" --publish-date=2017-09-13",
+        "description": "BRO-6927 gap: David Sheward (Cultural Weekly) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=http://www.thewrap.com/shore-of-wide-world-theater-review-simon-stephens-blair-brown/ --critic=\"Thom Geier\" --publish-date=2017-09-12",
+        "description": "BRO-6927 gap: Thom Geier (The Wrap) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=http://www.vulture.com/2017/09/theater-on-the-shore-of-the-wide-world-and-fucking-a.html --critic=\"Sara Holdren\" --publish-date=2017-09-12",
+        "description": "BRO-6927 gap: Sara Holdren (New York Magazine / Vulture) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/59b8606be4b02c642e4a124f --critic=\"Steven Suskin\" --publish-date=2017-09-12",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=on-the-shore-of-the-wide-world-off-broadway-2017 --url=http://www.thedailybeast.com/whod-want-to-be-old-reviews-of-for-peter-pan-on-her-70th-birthday-and-on-the-shore-of-the-wide-world --critic=\"Tim Teeman\" --publish-date=2017-09-15",
+        "description": "BRO-6927 gap: Tim Teeman (Daily Beast) review of on-the-shore-of-the-wide-world-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=http://www.theaterscene.net/plays/party-people/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-12-03",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=https://www.timeout.com/newyork/blog/theater-review-party-people-stirs-up-a-funky-revolution-at-the-public-111516 --critic=\"David Cote\" --publish-date=2016-11-15",
+        "description": "BRO-6927 gap: David Cote (Time Out New York) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=http://www.theatermania.com/off-broadway/reviews/party-people_79124.html --critic=\"Zachary Stewart\" --publish-date=2016-11-15",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=E6IPRO --critic=\"David Barbour\" --publish-date=2016-11-18",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=https://newyorktheater.me/2016/11/15/party-people-review-the-black-panthers-and-young-lordsviewed-50-years-later/ --critic=\"Jonathan Mandell\" --publish-date=2016-11-15",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=http://slleiter.blogspot.com/2016/11/98-review-party-people-seen-november-13.html --critic=\"Samuel L. Leiter\" --publish-date=2016-11-15",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=http://www.vulture.com/2016/11/theater-the-death-of-the-last-black-man.html --critic=\"Jesse Green\" --publish-date=2016-11-15",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=party-people-off-broadway-2016 --url=http://www.huffingtonpost.com/david-finkle/first-nighter-party-peopl_b_13002298.html --critic=\"David Finkle\" --publish-date=2016-11-15",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://www.theaterscene.net/plays/peer-gynt/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-05-31",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://www.timeout.com/newyork/theater/peer-gynt-2 --critic=\"Adam Feldman\" --publish-date=2016-05-25",
+        "description": "BRO-6927 gap: Adam Feldman (Time Out New York) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://www.theatermania.com/off-broadway/reviews/peer-gynt_77198.html --critic=\"Zachary Stewart\" --publish-date=2016-05-25",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=B7R0QO --critic=\"David Barbour\" --publish-date=2016-05-31",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/paramour-unlovable-article-1.2651181 --critic=\"Joe Dziemianowicz\" --publish-date=2016-05-28",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peer-gynt-off-broadway-2016 --url=http://bobs-theater-blog.blogspot.com/2016/05/peer-gynt.html --critic=\"Samuel L. Leiter\" --publish-date=2016-05-26",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of peer-gynt-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://www.theaterscene.net/plays/perfect-arrangement/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2015-11-01",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://www.timeout.com/newyork/theater/perfect-arrangement --critic=\"Adam Feldman\" --publish-date=2015-10-15",
+        "description": "BRO-6927 gap: Adam Feldman (Time Out New York) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=perfect-arrangement-off-broadway-2015 --url=http://cititour.com/NYC_Broadway/Perfect-Arrangement/906 --critic=\"Brian Scott Lipton\" --publish-date=2015-10-16",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of perfect-arrangement-off-broadway-2015, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

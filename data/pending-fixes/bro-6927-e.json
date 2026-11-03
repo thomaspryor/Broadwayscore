@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-e",
+  "planId": "3c64d4cc-aced-4ea6-b965-ac608dfcf668",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 5/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cardinal-off-broadway-2018 --url=http://thefrontrowcenter.com/2018/01/cardinal/ --critic=\"Tulis McCall\" --publish-date=2018-01-31",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of cardinal-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cardinal-off-broadway-2018 --url=https://www.thedailybeast.com/the-veep-star-literally-painting-the-town-red-review-of-cardinal --critic=\"Tim Teeman\" --publish-date=2018-01-30",
+        "description": "BRO-6927 gap: Tim Teeman (Daily Beast) review of cardinal-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.theaterscene.net/plays/offbway-plays/charm/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-09-28",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/charm_82456.html --critic=\"Zachary Stewart\" --publish-date=2017-09-18",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=TR4NKL --critic=\"David Barbour\" --publish-date=2017-10-10",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.towleroad.com/2017/09/broadway-charm/ --critic=\"Naveen Kumar\" --publish-date=2017-09-19",
+        "description": "BRO-6927 gap: Naveen Kumar (Towleroad) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/charm-shines-light-lgbt-lives-theater-review-article-1.3504812 --critic=\"Joe Dziemianowicz\" --publish-date=2017-09-18",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=https://slleiter.blogspot.com/2017/09/70-2017-2018-review-charm-seen.html --critic=\"Samuel L. Leiter\" --publish-date=2017-09-18",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=https://www.nytimes.com/2017/09/18/theater/review-charm-play-philip-dawkins.html --critic=\"Jesse Green\" --publish-date=2017-09-18",
+        "description": "BRO-6927 gap: Jesse Green (The New York Times) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.thewrap.com/charm-theater-review-emily-post-transgender-miss-gloria-allen/ --critic=\"Thom Geier\" --publish-date=2017-09-18",
+        "description": "BRO-6927 gap: Thom Geier (The Wrap) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.vulture.com/2017/09/theater-review-charm-is-an-uplifting-lgtbq-fairy-tale.html --critic=\"Sara Holdren\" --publish-date=2017-09-18",
+        "description": "BRO-6927 gap: Sara Holdren (New York Magazine / Vulture) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=charm-off-broadway-2017 --url=http://www.thedailybeast.com/inside-chicagos-etiquette-class-for-transgender-youth-review-of-charm-at-mcc-theater --critic=\"Tim Teeman\" --publish-date=2017-09-18",
+        "description": "BRO-6927 gap: Tim Teeman (Daily Beast) review of charm-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=church-and-state-off-broadway-2017 --url=http://www.theaterscene.net/plays/offbway-plays/church-state/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-04-04",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of church-and-state-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=church-and-state-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/church-and-state_80512.html --critic=\"Zachary Stewart\" --publish-date=2017-03-28",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of church-and-state-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=church-and-state-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=BJ3LBU --critic=\"David Barbour\" --publish-date=2017-03-31",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of church-and-state-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=church-and-state-off-broadway-2017 --url=http://thebroadwayblog.com/2017/03/31/16291-church-state-off-broadway --critic=\"Samuel L. Leiter\" --publish-date=2017-03-31",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of church-and-state-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=http://www.theaterscene.net/musicals/offbway/ernest-shackleton-loves/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-05-12",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=http://www.talkinbroadway.com/page/ob/5_07_17.html --critic=\"Howard Miller\" --publish-date=2017-05-07",
+        "description": "BRO-6927 gap: Howard Miller (Talkin' Broadway) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/Ernest-Shackleton-Loves-Me/919 --critic=\"Brian Scott Lipton\" --publish-date=2017-05-07",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=645MHP --critic=\"David Barbour\" --publish-date=2017-05-08",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=https://newyorktheater.me/2017/06/05/ernest-shackleton-loves-me-review-an-antarctic-explorer-in-a-brooklyn-refrigerator/ --critic=\"Jonathan Mandell\" --publish-date=2017-06-05",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=http://thebroadwayblog.com/2017/05/08/16471-ernest-shackleton-loves-me --critic=\"Samuel L. Leiter\" --publish-date=2017-05-08",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=http://www.villagevoice.com/2017/05/17/ernest-shackleton-loves-me-ties-polar-exploration-with-rom-com-trappings/ --critic=\"Michael Sommers\" --publish-date=2017-05-17",
+        "description": "BRO-6927 gap: Michael Sommers (Village Voice) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=http://www.thewrap.com/ernest-shackleton-loves-theater-review-new-musical-thats-twee-treat/ --critic=\"Thom Geier\" --publish-date=2017-05-07",
+        "description": "BRO-6927 gap: Thom Geier (The Wrap) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ernest-shackleton-loves-me-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/val-vigoda-is-a-fiddling-firecracker-in-ernest-shackleton_us_590fcdeae4b046ea176aecc4 --critic=\"David Finkle\" --publish-date=2017-05-07",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of ernest-shackleton-loves-me-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

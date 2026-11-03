@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-c",
+  "planId": "4ea44107-22f1-4ccc-a2a0-a9ec64a7bb87",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 3/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lehman-trilogy-west-end-2023 --url=https://www.telegraph.co.uk/theatre/what-to-see/lehman-trilogy-gillian-lynne-theatre-review-sam-mended-directs/ --critic=\"Dominic Cavendish\" --publish-date=2023-02-09",
+        "description": "BRO-6927 gap: Dominic Cavendish (The Telegraph (UK)) review of the-lehman-trilogy-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=to-kill-a-mockingbird-west-end-2022 --url=https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/ --critic=\"Dominic Cavendish\" --publish-date=2022-03-31",
+        "description": "BRO-6927 gap: Dominic Cavendish (The Telegraph (UK)) review of to-kill-a-mockingbird-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=broken-glass-off-west-end-2026 --url=https://www.whatsonstage.com/news/broken-glass-at-the-young-vic-review_1713998/ --critic=\"Sarah Crompton\" --publish-date=2026-03-04",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of broken-glass-off-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=broken-glass-off-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/broken-glass-review-young-vic-arthur-miller-b2931621.html --critic=\"Alice Saville\" --publish-date=2026-03-04",
+        "description": "BRO-6927 gap: Alice Saville (The Independent (UK)) review of broken-glass-off-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=john-proctor-is-the-villain-west-end-2026 --url=https://www.whatsonstage.com/news/john-proctor-is-the-villain-review-the-crucible-on-trial-at-the-royal-court_1716579/ --critic=\"Sarah Crompton\" --publish-date=2026-03-27",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of john-proctor-is-the-villain-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=maggots-off-west-end-2026 --url=https://www.whatsonstage.com/news/maggots-at-the-park-theatre-review_1710935/ --critic=\"Sarah Crompton\" --publish-date=2026-02-03",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of maggots-off-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oliver-west-end-2024 --url=https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/ --critic=\"Sarah Crompton\" --publish-date=2025-01-14",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of oliver-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rockets-and-blue-lights-west-end-2021 --url=https://www.whatsonstage.com/london-theatre/reviews/rockets-and-blue-lights-national_54823.html --critic=\"Sarah Crompton\" --publish-date=2021-09-03",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of rockets-and-blue-lights-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=starlight-express-west-end-2024 --url=https://www.whatsonstage.com/news/starlight-express-review-not-first-class-but-a-technical-rollercoaster-ride_1610072/ --critic=\"Sarah Crompton\" --publish-date=2024-06-30",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of starlight-express-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-shitheads-west-end-2026 --url=https://www.whatsonstage.com/news/the-shtheads-at-the-royal-court-review_1712175/ --critic=\"Sarah Crompton\" --publish-date=2026-02-13",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of the-shitheads-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-starry-messenger-west-end-2019 --url=https://www.whatsonstage.com/london-theatre/reviews/the-starry-messenger-wyndhams-broderick_49159.html --critic=\"Sarah Crompton\" --publish-date=2019-05-30",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of the-starry-messenger-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=titanique-west-end-2024 --url=https://www.whatsonstage.com/news/titanique-in-the-west-end-review-a-riotous-voyage-with-celine-dion_1659577/ --critic=\"Sarah Crompton\" --publish-date=2025-01-09",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of titanique-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=man-of-la-mancha-west-end-2019 --url=https://esdating.standard.co.uk/culture/theatre/man-of-la-mancha-review-kelsey-grammer-fails-to-stand-out-in-strange-musical-revival-a4131056.html --critic=\"Fiona Mountford\" --publish-date=2019-05-01",
+        "description": "BRO-6927 gap: Fiona Mountford (The London Evening Standard) review of man-of-la-mancha-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=300-paintings-off-broadway-2024 --url=https://www.theaterscene.net/plays/solo-plays/300-paintings/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2025-01-20",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of 300-paintings-off-broadway-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=300-paintings-off-broadway-2024 --url=https://pagesonstages.com/2025/02/08/300-paintings/ --critic=\"Mason Pilevsky\" --publish-date=2025-02-04",
+        "description": "BRO-6927 gap: Mason Pilevsky (Pages on Stages) review of 300-paintings-off-broadway-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=http://www.theaterscene.net/plays/offbway-plays/amy-and-the-orphans/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2018-03-13",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=https://www.talkinbroadway.com/page/ob/03_01_18.html --critic=\"Howard Miller\" --publish-date=2018-03-01",
+        "description": "BRO-6927 gap: Howard Miller (Talkin' Broadway) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=https://cititour.com/NYC_Broadway/Amy-and-the-Orphans/798 --critic=\"Brian Scott Lipton\" --publish-date=2018-03-01",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-UMQGEU --critic=\"David Barbour\" --publish-date=2018-03-02",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=http://www.nydailynews.com/entertainment/theater-arts/amy-orphans-review-family-drama-roundabout-article-1.3849563 --critic=\"Joe Dziemianowicz\" --publish-date=2018-03-01",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=https://www.hollywoodreporter.com/review/amy-orphans-theater-review-1089837 --critic=\"Frank Scheck\" --publish-date=2018-03-01",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=https://newyorktheater.me/2018/03/06/amy-and-the-orphans-review-the-truth-about-down-syndrome-packaged-in-a-familiar-comedy/ --critic=\"Jonathan Mandell\" --publish-date=2018-03-06",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=https://slleiter.blogspot.com/2018/03/174-2017-2018-review-amy-and-orphans.html --critic=\"Samuel L. Leiter\" --publish-date=2018-03-09",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=https://www.thewrap.com/amy-and-orphans-theater-review-jamie-brewer-american-horror-story-down-syndrome/ --critic=\"Robert Hofler\" --publish-date=2018-03-01",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=amy-and-the-orphans-off-broadway-2018 --url=https://www.villagevoice.com/2018/03/05/amy-and-the-orphans-take-audiences-on-a-swift-trip-to-greater-awareness/ --critic=\"Michael Sommers\" --publish-date=2018-03-05",
+        "description": "BRO-6927 gap: Michael Sommers (Village Voice) review of amy-and-the-orphans-off-broadway-2018, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-ao",
+  "planId": "89279a03-0146-4b17-b0a9-a2187f19ad09",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 39/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=just-in-time-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-ECYTB4 --critic=\"David Barbour\" --publish-date=2025-05-08",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of just-in-time-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=left-on-tenth-2024 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-4KL7GF --critic=\"David Barbour\" --publish-date=2024-10-31",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of left-on-tenth-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=make-believe-off-broadway-2019 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-G00XWA --critic=\"David Barbour\" --publish-date=2019-08-16",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of make-believe-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=make-believe-off-broadway-2019 --url=https://www.hollywoodreporter.com/review/make-believe-1230919 --critic=\"Frank Scheck\" --publish-date=2019-08-15",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of make-believe-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=make-believe-off-broadway-2019 --url=https://newyorktheater.me/2019/08/15/make-believe-review-bess-wohls-elliptical-look-at-child-neglect/ --critic=\"Jonathan Mandell\" --publish-date=2019-08-15",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of make-believe-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mary-gets-hers-off-broadway-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=OW8POC --critic=\"David Barbour\" --publish-date=2023-09-22",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of mary-gets-hers-off-broadway-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mary-jane-2024 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=GN41RJ --critic=\"David Barbour\" --publish-date=2024-05-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of mary-jane-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mcneal-2024 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-GJAPJ --critic=\"David Barbour\" --publish-date=2024-10-08",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of mcneal-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=meat-suit-or-the-stshow-of-motherhood-off-broadway-2026 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-SRUKAB --critic=\"David Barbour\" --publish-date=2026-02-26",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of meat-suit-or-the-stshow-of-motherhood-off-broadway-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=money-talks-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=NWG9SY --critic=\"David Barbour\" --publish-date=2017-07-24",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of money-talks-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=money-talks-off-broadway-2017 --url=https://slleiter.blogspot.com/2017/07/the-buck-stops-here-benjamin-franklin.html --critic=\"Samuel L. Leiter\" --publish-date=2017-07-25",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of money-talks-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=money-talks-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/money-talks-the-musical-me-ella-musicals-to_us_59752950e4b0f1feb89b44a6 --critic=\"David Finkle\" --publish-date=2017-07-23",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of money-talks-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mother-russia-off-broadway-2026 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-30XRX --critic=\"David Barbour\" --publish-date=2026-02-25",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of mother-russia-off-broadway-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mother-russia-off-broadway-2026 --url=https://newyorktheater.me/2026/02/23/mother-russia-review/ --critic=\"Jonathan Mandell\" --publish-date=2026-02-23",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of mother-russia-off-broadway-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mother-russia-off-broadway-2026 --url=https://theaterlife.com/mother-russia-1-2/ --critic=\"Samuel L. Leiter\" --publish-date=2026-02-23",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theater Life) review of mother-russia-off-broadway-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-Q3Y34H --critic=\"David Barbour\" --publish-date=2025-04-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of othello-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-the-remix-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=UWJB6D --critic=\"David Barbour\" --publish-date=2016-11-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of othello-the-remix-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-the-remix-off-broadway-2016 --url=https://newyorktheater.me/2016/11/16/othello-the-remix-review-a-rap-adaptation/ --critic=\"Jonathan Mandell\" --publish-date=2016-11-16",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of othello-the-remix-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-the-remix-off-broadway-2016 --url=http://www.vulture.com/2016/12/theater-review-a-pair-of-othellos.html --critic=\"Jesse Green\" --publish-date=2016-12-12",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of othello-the-remix-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-the-remix-off-broadway-2016 --url=http://www.nytimes.com/2016/11/17/theater/othello-the-remix-review.html --critic=\"Charles Isherwood\" --publish-date=2016-11-16",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of othello-the-remix-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-the-remix-off-broadway-2016 --url=http://www.huffingtonpost.com/david-finkle/first-nighter-terms-of-en_b_13078058.html --critic=\"David Finkle\" --publish-date=2016-11-18",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of othello-the-remix-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=pen-pals-off-broadway-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-YLW7OA --critic=\"David Barbour\" --publish-date=2024-12-16",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of pen-pals-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=pirates-the-penzance-musical-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=SVLM9L --critic=\"David Barbour\" --publish-date=2025-05-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of pirates-the-penzance-musical-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ring-twice-for-miranda-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=9ROTCG --critic=\"David Barbour\" --publish-date=2017-02-13",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of ring-twice-for-miranda-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ring-twice-for-miranda-off-broadway-2017 --url=http://thebroadwayblog.com/2017/02/14/16022-review-ring-twice-for-miranda --critic=\"Samuel L. Leiter\" --publish-date=2017-02-14",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of ring-twice-for-miranda-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

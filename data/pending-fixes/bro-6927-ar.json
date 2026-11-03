@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-ar",
+  "planId": "33cbcc8f-a3b6-492c-988b-cf2460a8dcf6",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 42/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-devil-wears-prada-west-end-2024 --url=https://www.thetimes.com/article/8f457a78-ae1d-4ee0-afe2-1f22ff7c4904 --critic=\"Clive Davis\" --publish-date=2024-12-06",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-devil-wears-prada-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-glow-west-end-2022 --url=https://www.thetimes.co.uk/article/the-glow-review-jerwood-theatre-downstairs-royal-court-23jp06d67 --critic=\"Clive Davis\" --publish-date=2022-01-28",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-glow-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-mirror-and-the-light-west-end-2021 --url=https://www.thetimes.co.uk/article/the-mirror-and-the-light-review-cogs-of-courtly-life-feel-too-mechanical-3dvwx89j5 --critic=\"Clive Davis\" --publish-date=2021-10-07",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-mirror-and-the-light-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-pillowman-west-end-2023 --url=https://www.thetimes.co.uk/article/the-pillowman-review-tale-of-art-and-suffering-is-a-struggle-to-sit-through-dzn92lwrh --critic=\"Clive Davis\" --publish-date=2023-06-22",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-pillowman-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-seagull-west-end-2022 --url=https://www.thetimes.co.uk/article/the-seagull-review-game-of-thrones-emilia-clarke-cant-rescue-this-airless-chekhov-2z63g2zrl --critic=\"Clive Davis\" --publish-date=2022-07-08",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-seagull-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-tempest-west-end-2024 --url=https://www.thetimes.com/article/890670f5-3b75-41f3-b137-ae7a03528931 --critic=\"Clive Davis\" --publish-date=2024-12-20",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-tempest-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-years-west-end-2025 --url=https://www.thetimes.com/article/b924b786-7679-4a35-9c28-8743f2b7d059 --critic=\"Clive Davis\" --publish-date=2025-02-10",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-years-west-end-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=translations-west-end-2019 --url=https://www.thetimes.co.uk/article/translations-review-very-close-to-melodrama-n23c3bjp2 --critic=\"Clive Davis\" --publish-date=2019-10-22",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of translations-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=underdog-the-other-other-bronte-west-end-2024 --url=https://www.thetimes.co.uk/article/underdog-the-other-other-bronte-review-hyperactive-literary-burlesque-ffxbqmtfk --critic=\"Clive Davis\" --publish-date=2024-04-05",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of underdog-the-other-other-bronte-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=walden-west-end-2021 --url=https://www.thetimes.co.uk/article/walden-review-gemma-arterton-gets-a-bit-lost-in-woods-of-eco-drama-5dhxw8fwl --critic=\"Clive Davis\" --publish-date=2021-05-31",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of walden-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=word-play-west-end-2023 --url=https://www.thetimes.co.uk/article/word-play-review-another-blandly-middle-class-flop-for-the-royal-court-8w2ls59v7 --critic=\"Clive Davis\" --publish-date=2023-07-27",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of word-play-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ava-the-secret-conversations-off-broadway-2025 --url=https://www.nytimes.com/2025/08/07/theater/downton-abbey-elizabeth-mcgovern-ava-gardner.html --critic=\"Elisabeth Vincentelli\" --publish-date=2025-08-07",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (The New York Times) review of ava-the-secret-conversations-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=eclipsed-2016 --url=http://nypost.com/2016/03/10/lupita-nyongo-and-michelle-williams-star-in-amazing-broadway-shows-about-strong-women/ --critic=\"Elisabeth Vincentelli\" --publish-date=2016-03-10",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (New York Post) review of eclipsed-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=eclipsed-2016 --url=http://www.vulture.com/2016/03/theater-reviews-eclipsed.html --critic=\"Jesse Green\" --publish-date=2016-03-06",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of eclipsed-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=long-days-journey-into-night-2016 --url=http://nypost.com/2016/04/28/jessica-langes-post-american-horror-story-comeback-is-epic/ --critic=\"Elisabeth Vincentelli\" --publish-date=2016-04-28",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (New York Post) review of long-days-journey-into-night-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=nothing-can-take-you-from-the-hand-of-god-off-broadway-2025 --url=https://www.nytimes.com/2025/10/09/theater/jen-tullock-severance-hand-of-god.html --critic=\"Elisabeth Vincentelli\" --publish-date=2025-10-09",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (The New York Times) review of nothing-can-take-you-from-the-hand-of-god-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=nothing-can-take-you-from-the-hand-of-god-off-broadway-2025 --url=https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/ --critic=\"Jonathan Mandell\" --publish-date=2025-10-29",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of nothing-can-take-you-from-the-hand-of-god-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=between-two-knees-off-broadway-2024 --url=https://www.nytimes.com/2024/02/14/theater/between-two-knees-review.html --critic=\"Naveen Kumar\" --publish-date=2024-02-14",
+        "description": "BRO-6927 gap: Naveen Kumar (The New York Times) review of between-two-knees-off-broadway-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=call-me-izzy-2025 --url=https://www.washingtonpost.com/entertainment/theater/2025/06/12/call-me-izzy-angry-alan-jean-smart-john-krasinski/ --critic=\"Naveen Kumar\" --publish-date=2025-06-12",
+        "description": "BRO-6927 gap: Naveen Kumar (The Washington Post) review of call-me-izzy-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cost-of-living-2022 --url=https://variety.com/2022/legit/reviews/cost-of-living-review-broadway-play-1235391743/ --critic=\"Naveen Kumar\" --publish-date=2022-10-03",
+        "description": "BRO-6927 gap: Naveen Kumar (Variety) review of cost-of-living-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=masquerade-off-broadway-2025 --url=https://www.washingtonpost.com/entertainment/theater/2025/09/29/masquerade-phantom-review/ --critic=\"Naveen Kumar\" --publish-date=2025-09-29",
+        "description": "BRO-6927 gap: Naveen Kumar (The Washington Post) review of masquerade-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=masquerade-off-broadway-2025 --url=https://culturesauce.com/2025/09/29/masquerade-phantom-opera-off-broadway-review/ --critic=\"Thom Geier\" --publish-date=2025-09-29",
+        "description": "BRO-6927 gap: Thom Geier (Culture Sauce) review of masquerade-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mj-2022 --url=https://variety.com/2022/legit/reviews/mj-review-michael-jackson-broadway-musical-1235168798/ --critic=\"Naveen Kumar\" --publish-date=2022-02-01",
+        "description": "BRO-6927 gap: Naveen Kumar (Variety) review of mj-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=spring-awakening-2015 --url=http://www.towleroad.com/2015/09/spring-awakening-2/ --critic=\"Naveen Kumar\" --publish-date=2015-09-28",
+        "description": "BRO-6927 gap: Naveen Kumar (Towleroad) review of spring-awakening-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=thoughts-of-a-colored-man-2021 --url=https://variety.com/2021/legit/reviews/thoughts-of-a-colored-man-review-broadway-1235088174/ --critic=\"Naveen Kumar\" --publish-date=2021-10-13",
+        "description": "BRO-6927 gap: Naveen Kumar (Variety) review of thoughts-of-a-colored-man-2021, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

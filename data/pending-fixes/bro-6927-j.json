@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-j",
+  "planId": "cba4ba39-8f2a-4372-bba4-aaea6b8fb75b",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 10/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-FWKBJ9 --critic=\"David Barbour\" --publish-date=2016-09-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=http://www.hollywoodreporter.com/review/marie-rosetta-theater-review-928519 --critic=\"Frank Scheck\" --publish-date=2016-09-14",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=https://newyorktheater.me/2016/09/14/marie-and-rosetta-review-rock-n-roll-pioneer-sister-rosetta-tharpe/ --critic=\"Jonathan Mandell\" --publish-date=2016-09-14",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=http://thebroadwayblog.com/2016/09/20/15346-review-marie-and-rosetta --critic=\"Samuel L. Leiter\" --publish-date=2016-09-20",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=http://www.vulture.com/2016/09/theater-review-marie-and-rosetta.html --critic=\"Jesse Green\" --publish-date=2016-09-14",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=http://thefrontrowcenter.com/2016/09/marie-and-rosetta/ --critic=\"Tulis McCall\" --publish-date=2016-09-16",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=http://www.nytimes.com/2016/09/15/theater/marie-and-rosetta-review.html --critic=\"Charles Isherwood\" --publish-date=2016-09-14",
+        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marie-and-rosetta-off-broadway-2016 --url=http://www.ny1.com/nyc/all-boroughs/on-stage/2016/09/28/theater-review---marie-and-rosetta-.html --critic=\"Roma Torre\" --publish-date=2016-09-28",
+        "description": "BRO-6927 gap: Roma Torre (NY1) review of marie-and-rosetta-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marry-harry-off-broadway-2017 --url=http://www.theaterscene.net/musicals/offbway/marry-harry/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-05-08",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of marry-harry-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marry-harry-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=645MHP --critic=\"David Barbour\" --publish-date=2017-05-08",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of marry-harry-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marry-harry-off-broadway-2017 --url=http://slleiter.blogspot.com/2017/05/3-2016-2017-review-marry-harry-seen-may.html --critic=\"Samuel L. Leiter\" --publish-date=2017-05-06",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of marry-harry-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marry-harry-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/j-b-priestleys-rediscovered-the-roundabout-a-must_us_590c9c03e4b0f711807243ef --critic=\"David Finkle\" --publish-date=2017-05-05",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of marry-harry-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=marry-harry-off-broadway-2017 --url=http://www.broadstreetreview.com/theater/york-theatre-presents-michael-biello-and-dan-martins-marry-harry# --critic=\"Elysa Gardner\" --publish-date=2017-05-04",
+        "description": "BRO-6927 gap: Elysa Gardner (Broad Street Review) review of marry-harry-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mindplay-off-broadway-2025 --url=https://www.theaterscene.net/plays/offbway-plays/mindplay/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2025-01-22",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of mindplay-off-broadway-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=http://www.theaterscene.net/plays/offbway-plays/napoli-brooklyn/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-07-14",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=http://www.talkinbroadway.com/page/ob/6_27_17.html --critic=\"Howard Miller\" --publish-date=2017-06-27",
+        "description": "BRO-6927 gap: Howard Miller (Talkin' Broadway) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/Napoli-Brooklyn/527 --critic=\"Brian Scott Lipton\" --publish-date=2017-06-27",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/napoli-brooklyn_81574.html --critic=\"Zachary Stewart\" --publish-date=2017-06-27",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-B54BW --critic=\"David Barbour\" --publish-date=2017-07-05",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/napoli-brooklyn-1017046 --critic=\"Frank Scheck\" --publish-date=2017-06-27",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=https://slleiter.blogspot.fr/2017/07/40-2017-2018-review-napoli-brooklyn.html --critic=\"Samuel L. Leiter\" --publish-date=2017-07-07",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=https://www.nytimes.com/2017/06/27/theater/napoli-brooklyn-review.html?_r=0 --critic=\"Jesse Green\" --publish-date=2017-06-27",
+        "description": "BRO-6927 gap: Jesse Green (The New York Times) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=http://www.thewrap.com/napoli-brooklyn-theater-review-italian-american-saga-extra-kick-sauce/ --critic=\"Thom Geier\" --publish-date=2017-06-27",
+        "description": "BRO-6927 gap: Thom Geier (The Wrap) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=napoli-brooklyn-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/5952c515e4b0c85b96c65d68 --critic=\"Steven Suskin\" --publish-date=2017-06-27",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of napoli-brooklyn-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=nice-fish-off-broadway-2016 --url=http://www.theaterscene.net/plays/offbway-plays/nice-fish/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-03-07",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of nice-fish-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

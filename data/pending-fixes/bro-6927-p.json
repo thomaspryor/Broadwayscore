@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-p",
+  "planId": "8e225c12-c852-4dc0-b0e0-7a3ed0032bf1",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:40:29.461Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 16/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/the-whirligig_81166.html --critic=\"Zachary Stewart\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-V1A3TJ --critic=\"David Barbour\" --publish-date=2017-05-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.newsday.com/entertainment/theater/the-whirligig-review-hamish-linklater-s-study-of-a-family-wrecked-by-drugs-1.13649877 --critic=\"Elisabeth Vincentelli\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: Elisabeth Vincentelli (Newsday) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.nydailynews.com/entertainment/theater-arts/whirligig-spins-story-troubled-family-theater-review-article-1.3179977 --critic=\"Joe Dziemianowicz\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/whirligig-1005802 --critic=\"Frank Scheck\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=https://newyorktheater.me/2017/05/21/the-whirligig-review-hamish-linklaters-forlorn-funny-play-about-a-dying-girl/ --critic=\"Jonathan Mandell\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://thebroadwayblog.com/2017/05/28/16587-whirlgig-review-off-broadway --critic=\"Samuel L. Leiter\" --publish-date=2017-05-28",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.thewrap.com/whirligig-theater-review-zosia-mamet-climbs-tree-guilt-trip/ --critic=\"Robert Hofler\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://theaterlife.com/the-whirligig-building-the-wall-12/ --critic=\"David Sheward\" --publish-date=2017-05-30",
+        "description": "BRO-6927 gap: David Sheward (Theater Life) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://thefrontrowcenter.com/2017/05/the-whirligig/ --critic=\"Tulis McCall\" --publish-date=2017-05-22",
+        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/59234223e4b0b28a33f62ea3 --critic=\"Steven Suskin\" --publish-date=2017-05-22",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.clydefitchreport.com/2017/05/whirligig-hamish-linklater/ --critic=\"David Finkle\" --publish-date=2017-05-21",
+        "description": "BRO-6927 gap: David Finkle (The Clyde Fitch Report) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-whirligig-off-broadway-2017 --url=http://www.ny1.com/nyc/all-boroughs/on-stage/2017/05/26/theater-review-the-whirligig.html --critic=\"Roma Torre\" --publish-date=2017-05-26",
+        "description": "BRO-6927 gap: Roma Torre (NY1) review of the-whirligig-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-woodsman-off-broadway-2016 --url=http://www.theaterscene.net/plays/the-woodsman/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-02-15",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of the-woodsman-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-woodsman-off-broadway-2016 --url=http://www.hollywoodreporter.com/review/woodsman-theater-review-862944 --critic=\"Frank Scheck\" --publish-date=2016-02-08",
+        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of the-woodsman-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-woodsman-off-broadway-2016 --url=http://newyorktheater.me/2016/02/08/the-woodsman-review-how-the-tin-man-of-oz-lost-his-heart/ --critic=\"Jonathan Mandell\" --publish-date=2016-02-08",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of the-woodsman-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-woodsman-off-broadway-2016 --url=http://thebroadwayblog.com/2016/02/12/14018-beyond-the-rainbow-the-woodsman --critic=\"Samuel L. Leiter\" --publish-date=2016-02-12",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of the-woodsman-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-woodsman-off-broadway-2016 --url=http://www.vulture.com/2015/01/theater-review-the-woodsman.html --critic=\"Jesse Green\" --publish-date=2016-02-10",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of the-woodsman-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=therese-raquin-2015 --url=http://www.theaterscene.net/plays/therese-raquin/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2015-11-09",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of therese-raquin-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=therese-raquin-2015 --url=http://www.towleroad.com/2015/10/keira-knightley-therese-raquin/ --critic=\"Naveen Kumar\" --publish-date=2015-10-30",
+        "description": "BRO-6927 gap: Naveen Kumar (Towleroad) review of therese-raquin-2015, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=titanique-off-broadway-2022 --url=http://www.theaterscene.net/musicals/offbway/titanique/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2022-08-22",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of titanique-off-broadway-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=titanique-off-broadway-2022 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=HFY1K1 --critic=\"David Barbour\" --publish-date=2022-06-28",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of titanique-off-broadway-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=vanity-fair-off-broadway-2017 --url=http://www.theaterscene.net/plays/offbway-plays/vanity-fair/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-04-11",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of vanity-fair-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=vanity-fair-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-RLM4B2 --critic=\"David Barbour\" --publish-date=2017-04-06",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of vanity-fair-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=vanity-fair-off-broadway-2017 --url=http://slleiter.blogspot.com/2017/04/165-review-vanity-fair-seen-march-31.html --critic=\"Samuel L. Leiter\" --publish-date=2017-04-02",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of vanity-fair-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}
