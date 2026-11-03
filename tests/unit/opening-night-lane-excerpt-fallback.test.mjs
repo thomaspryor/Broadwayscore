@@ -143,7 +143,7 @@ test('200-299 chars: the scorer refuses even a partial copy, so the last attempt
         assert.equal(got.fullText, '', 'text the scorer would refuse is not sent');
         assert.match(lf.readFailures(dir, SHOW.id, NIGHT).failures.at(-1).reason, /scoring the aggregator excerpt/);
       } else {
-        await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /under the 300 a partial copy needs/.test(e.message));
+        await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /paywall teaser, held unscored/.test(e.message));
         assert.deepEqual(scored, [], 'never sent to a scorer that would refuse it');
       }
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
@@ -296,5 +296,22 @@ test('open site: a fully fetched review keeps its aggregator excerpts on the row
     const out = await sc.fetchReview({ url: TB, key: d.canonicalUrl(TB), excerpts: ex });
     assert.deepEqual(out.excerpts, ex);
     assert.ok(out.fullText.length > 1000);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+// BRO-6872 review: the open-site 200-299 case keeps its own check now that the WSJ case above holds instead.
+test('open site, 200-299 chars, no fallback: fails for good on the last attempt as before', async () => {
+  const dir = tmp();
+  try {
+    let t = NOW;
+    const sc = inl.createInlineScoring({
+      show: SHOW, night: NIGHT, ledgerDir: dir, now: () => t, retryMs: [1000],
+      fetchPage: async () => ({ content: 'x' }), extractArticle: () => 'A short cut of an open-site review page. '.repeat(7).slice(0, 250),
+      scoreText: async () => ({ score: 70 }),
+    });
+    const cand = { url: 'https://deadline.com/2026/10/open-site-broadway-review-1/' };
+    await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
+    t += 1000;
+    await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /under the 300 a partial copy needs/.test(e.message));
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

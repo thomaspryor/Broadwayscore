@@ -10,6 +10,8 @@
  * dropped without a trace. A paywalled page with no extractable text is not a failure when the aggregator gave a thumb
  * or stars (the trust model's low-confidence fallback score), or printed an excerpt beside its link (scored as
  * excerpt-only, the regular pipeline's path for a paywalled review); with none of them it is a failure.
+ * A paywall host's page under the scorer's body gate is the teaser, never scored as page text: it waits for an excerpt
+ * or score. Between the gate and the host's floor (WSJ 2500) the scorer sees it and its not_a_review is held the same way.
  *
  * Timing: the runner re-offers a failed candidate on its next pass (every 2 minutes), so the backoff steps below are
  * floors and the effective retry granularity is the pass interval. One transient failure therefore costs about one pass
@@ -173,8 +175,9 @@ function createInlineScoring({
       if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score or paywall excerpt to fall back on`);
       // Under the scorer's body gate the scorer rejects the text for good (body_too_short), so a teaser or a page the
       // extractor cut short is a FETCH problem: fetch again on the backoff (BRO-6066: Deadline's 956-char extraction and
-      // WSJ's teaser were each lost after one attempt). On the last attempt what we have is scored as a partial copy
+      // WSJ's teaser were each lost after one attempt). On an open site the last attempt scores what it has as a partial copy
       // (contentTier 'truncated'), the owner's call for 300-999-char partials (scorable-text.js isShortPartialReview).
+      // A paywall host's short page is a teaser and is never scored as page text (see paywallTeaser below).
       // Under 300 chars the scorer refuses even a partial copy, so the aggregator excerpt is scored instead, or, with
       // none, the review fails rather than being sent to a scorer that will reject it.
       // An aggregator thumb or stars still takes a paywall's empty page at once (the trust model's fallback). An excerpt
@@ -191,7 +194,13 @@ function createInlineScoring({
         const sameAsBefore = shortLen.get(key) === text.length;
         shortLen.set(key, text.length);
         if (attempt < maxAttempts && !sameAsBefore) fail('fetch', key, new Error(`${why}; fetching again`));
-        const partialOk = text.length >= MIN_SHORT_PARTIAL_CHARS;
+        // On a paywall host (WSJ, NYT, ...) a short page is the teaser, not a partial copy of the review: the lane's fetch
+        // has no subscriber login (production gets WSJ through collect-review-texts' logged-in Browserbase), so scoring
+        // it would score a headline and a paragraph. It is held unscored, on the backoff, until an aggregator excerpt or
+        // score arrives; when the retries run out the regular pipeline collects it in full (BRO-6872).
+        const paywallTeaser = excerptMayScore(candidate.url);
+        const partialOk = !paywallTeaser && text.length >= MIN_SHORT_PARTIAL_CHARS;
+        if (!partialOk && !canFallBack && paywallTeaser) fail('fetch', key, new Error(`${why}: a paywall teaser, held unscored until an aggregator excerpt or score arrives`));
         if (!partialOk && !canFallBack) fail('fetch', key, new Error(`${why}, under the ${MIN_SHORT_PARTIAL_CHARS} a partial copy needs, and no aggregator score or paywall excerpt`), true);
         const using = partialOk ? 'scoring it as a partial copy' : (thumbScore ? 'using the aggregator score' : 'scoring the aggregator excerpt');
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'fetch', reason: `${why}; ${using}`, attempt, terminal: false, at: now() });

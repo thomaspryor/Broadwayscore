@@ -647,3 +647,69 @@ test('BRO-6073: a fetch that hangs is abandoned at its deadline and its page clo
   await new Promise((r) => setImmediate(r));
   assert.equal(st.closed, 1);
 });
+
+// BRO-6872: the lane's fetch has no WSJ subscriber login, so a short WSJ page is the teaser. It was scored as a 300-999
+// char "partial copy" on the last attempt; it is now held unscored until an aggregator excerpt or score arrives.
+test('a paywall teaser with no excerpt is held unscored, never scored as a partial copy', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6872-wsj-hold-'));
+  try {
+    let t = NIGHT_START; const scored = [];
+    const sc = inl.createInlineScoring({
+      show: { id: 'wsj-hold-2026', title: 'Hold' }, night: '2026-10-18', ledgerDir: dir, now: () => t, retryMs: [1000, 1000],
+      fetchPage: async () => ({ content: 'x' }), extractArticle: () => 'The same WSJ teaser paragraph every time. '.repeat(16), // ~670 chars
+      scoreText: async (text, ctx) => { scored.push(ctx.contentTier); return { score: 70 }; },
+    });
+    const cand = { url: 'https://www.wsj.com/arts-culture/theater/hold-broadway-review-abc123' };
+    await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
+    t += 1000;
+    // Same length twice: an open site would be scored as a partial copy here. The teaser is held instead.
+    await assert.rejects(sc.fetchReview(cand), (e) => e instanceof inl.LaneRetryError && /paywall teaser, held unscored/.test(e.message));
+    t += 1000;
+    await assert.rejects(sc.fetchReview(cand), inl.LanePermanentError, 'bounded: the retries run out, the regular pipeline collects it');
+    assert.deepEqual(scored, [], 'the teaser never reaches the scorer');
+    const recs = lf.readFailures(dir, 'wsj-hold-2026', '2026-10-18').failures;
+    assert.equal(recs.length, 3);
+    assert.ok(recs.every((f) => !/scoring it as a partial copy/.test(f.reason)));
+    assert.match(recs[1].reason, /paywall teaser, held unscored/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('a paywall teaser with an aggregator excerpt scores the excerpt, not the teaser text', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6872-wsj-excerpt-'));
+  try {
+    let t = NIGHT_START;
+    const sc = inl.createInlineScoring({
+      show: { id: 'wsj-ex-2026', title: 'Excerpt' }, night: '2026-10-18', ledgerDir: dir, now: () => t, retryMs: [1000],
+      fetchPage: async () => ({ content: 'x' }), extractArticle: () => 'The WSJ teaser paragraph again. '.repeat(20),
+      scoreText: async () => ({ score: 70 }),
+    });
+    const cand = { url: 'https://www.wsj.com/arts-culture/theater/excerpt-broadway-review-def456',
+      excerpts: { bwwExcerpt: 'The critic wrote that the revival is a sharp, funny and moving evening of theater.' } };
+    await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
+    t += 1000;
+    const got = await sc.fetchReview(cand);
+    assert.equal(got.fullText, '', 'the teaser text is not kept for scoring');
+    assert.equal(got.contentTier, 'excerpt');
+    assert.ok(got.excerpts && got.excerpts.bwwExcerpt);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('a held paywall teaser takes an aggregator excerpt that arrives on a later pass', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6872-wsj-late-'));
+  try {
+    let t = NIGHT_START;
+    const sc = inl.createInlineScoring({
+      show: { id: 'wsj-late-2026', title: 'Late' }, night: '2026-10-18', ledgerDir: dir, now: () => t, retryMs: [1000, 1000, 1000],
+      fetchPage: async () => ({ content: 'x' }), extractArticle: () => 'The WSJ teaser paragraph once more. '.repeat(18),
+      scoreText: async () => ({ score: 70 }),
+    });
+    const url = 'https://www.wsj.com/arts-culture/theater/late-broadway-review-jkl012';
+    await assert.rejects(sc.fetchReview({ url }), inl.LaneRetryError);
+    t += 1000;
+    await assert.rejects(sc.fetchReview({ url }), /paywall teaser, held unscored/);
+    t += 1000;
+    const got = await sc.fetchReview({ url, excerpts: { dtliExcerpt: 'The critic called the production a confident, beautifully acted revival.' } });
+    assert.equal(got.fullText, '');
+    assert.equal(got.contentTier, 'excerpt');
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
