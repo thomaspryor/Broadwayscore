@@ -1816,6 +1816,7 @@ on:
       # coverage audit. Colocated *.test.mjs run in the lib-test glob;
       # path-listed so a solo edit triggers CI.
       - 'scripts/audit-critic-coverage.js'
+      - 'scripts/audit-critic-splits.js'
       - 'scripts/monitor-outlet-recency.js'
       - 'tests/unit/outlet-recency-monitor.test.mjs'
       # Card #1498: same correction-merge bug in the separate review-submission
