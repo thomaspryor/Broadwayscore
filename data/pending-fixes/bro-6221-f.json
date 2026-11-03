@@ -1,0 +1,468 @@
+{
+  "issueNumber": "bro-6221-f",
+  "planId": "54e0269e-3740-4586-8df6-d943fd4becab",
+  "status": "pending",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 6 of 9)",
+    "steps": [
+      "shows.json: my-one-and-only-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: dance-a-little-closer-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: wallys-cafe-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: scenes-and-revelations-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-supporting-cast-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: a-talent-for-murder-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: einstein-and-the-polar-bear-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: crimes-of-the-heart-1981.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: ned-and-jack-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-dresser-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: oh-brother-1981.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: mass-appeal-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-west-side-waltz-1981.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: grown-ups-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: kingdoms-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: duet-for-one-1981.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-little-prince-and-the-aviator-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: little-me-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: little-johnny-jones-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: agnes-of-god-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: solomons-child-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: is-there-life-after-high-school-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: beyond-therapy-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: do-black-patent-leather-shoes-really-reflect-up-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: going-up-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "my-one-and-only-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/my-one-and-only-1983/thumbnail.jpg",
+          "poster": "/images/shows/my-one-and-only-1983/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: my-one-and-only-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dance-a-little-closer-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dance-a-little-closer-1983/thumbnail.jpg",
+          "poster": "/images/shows/dance-a-little-closer-1983/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: dance-a-little-closer-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wallys-cafe-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wallys-cafe-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: wallys-cafe-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "scenes-and-revelations-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/scenes-and-revelations-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: scenes-and-revelations-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-supporting-cast-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-supporting-cast-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-supporting-cast-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-talent-for-murder-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-talent-for-murder-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-talent-for-murder-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "einstein-and-the-polar-bear-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/einstein-and-the-polar-bear-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: einstein-and-the-polar-bear-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "crimes-of-the-heart-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/crimes-of-the-heart-1981/thumbnail.jpg",
+          "poster": "/images/shows/crimes-of-the-heart-1981/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: crimes-of-the-heart-1981.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ned-and-jack-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ned-and-jack-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: ned-and-jack-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-dresser-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-dresser-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-dresser-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-brother-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/oh-brother-1981/thumbnail.jpg",
+          "poster": "/images/shows/oh-brother-1981/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: oh-brother-1981.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "mass-appeal-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/mass-appeal-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: mass-appeal-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-west-side-waltz-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-west-side-waltz-1981/thumbnail.jpg",
+          "poster": "/images/shows/the-west-side-waltz-1981/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-west-side-waltz-1981.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grown-ups-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/grown-ups-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: grown-ups-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "kingdoms-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/kingdoms-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: kingdoms-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "duet-for-one-1981",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/duet-for-one-1981/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: duet-for-one-1981.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-little-prince-and-the-aviator-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-little-prince-and-the-aviator-1982/thumbnail.jpg",
+          "poster": "/images/shows/the-little-prince-and-the-aviator-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-little-prince-and-the-aviator-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-me-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/little-me-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: little-me-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "little-johnny-jones-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/little-johnny-jones-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: little-johnny-jones-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "agnes-of-god-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/agnes-of-god-1982/thumbnail.jpg",
+          "poster": "/images/shows/agnes-of-god-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: agnes-of-god-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "solomons-child-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/solomons-child-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: solomons-child-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "is-there-life-after-high-school-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/is-there-life-after-high-school-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: is-there-life-after-high-school-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beyond-therapy-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/beyond-therapy-1982/thumbnail.jpg",
+          "poster": "/images/shows/beyond-therapy-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: beyond-therapy-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "do-black-patent-leather-shoes-really-reflect-up-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/do-black-patent-leather-shoes-really-reflect-up-1982/thumbnail.jpg",
+          "poster": "/images/shows/do-black-patent-leather-shoes-really-reflect-up-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: do-black-patent-leather-shoes-really-reflect-up-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "going-up-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/going-up-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: going-up-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  }
+}

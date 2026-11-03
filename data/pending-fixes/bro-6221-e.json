@@ -1,0 +1,468 @@
+{
+  "issueNumber": "bro-6221-e",
+  "planId": "29c90d7b-05db-4a90-ab82-4a2501a50c77",
+  "status": "pending",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 5 of 9)",
+    "steps": [
+      "shows.json: play-me-a-country-song-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: seven-brides-for-seven-brothers-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: ghosts-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: your-arms-too-short-to-box-with-god-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: a-dolls-life-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-queen-and-the-rebels-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: good-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-wake-of-jamey-foster-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: rock-n-roll-the-first-5000-years-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: foxfire-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: 84-charing-cross-road-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: steaming-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: monday-after-the-miracle-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: a-little-family-business-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: almost-an-eagle-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: whodunnit-1982.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: plenty-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: angels-fall-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: merlin-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: moose-murders-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: on-your-toes-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: k2-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: alls-well-that-ends-well-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: teaneck-tanzi-the-venus-flytrap-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: total-abandon-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "play-me-a-country-song-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/play-me-a-country-song-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: play-me-a-country-song-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seven-brides-for-seven-brothers-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/seven-brides-for-seven-brothers-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: seven-brides-for-seven-brothers-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ghosts-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ghosts-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: ghosts-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "your-arms-too-short-to-box-with-god-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/your-arms-too-short-to-box-with-god-1982/thumbnail.jpg",
+          "poster": "/images/shows/your-arms-too-short-to-box-with-god-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: your-arms-too-short-to-box-with-god-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-dolls-life-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-dolls-life-1982/thumbnail.jpg",
+          "poster": "/images/shows/a-dolls-life-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-dolls-life-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-queen-and-the-rebels-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-queen-and-the-rebels-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-queen-and-the-rebels-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "good-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/good-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: good-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-wake-of-jamey-foster-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-wake-of-jamey-foster-1982/thumbnail.jpg",
+          "poster": "/images/shows/the-wake-of-jamey-foster-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-wake-of-jamey-foster-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rock-n-roll-the-first-5000-years-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/rock-n-roll-the-first-5000-years-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: rock-n-roll-the-first-5000-years-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "foxfire-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/foxfire-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: foxfire-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "84-charing-cross-road-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/84-charing-cross-road-1982/thumbnail.jpg",
+          "poster": "/images/shows/84-charing-cross-road-1982/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: 84-charing-cross-road-1982.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "steaming-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/steaming-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: steaming-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "monday-after-the-miracle-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/monday-after-the-miracle-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: monday-after-the-miracle-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-little-family-business-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-little-family-business-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-little-family-business-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "almost-an-eagle-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/almost-an-eagle-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: almost-an-eagle-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "whodunnit-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/whodunnit-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: whodunnit-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "plenty-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/plenty-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: plenty-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "angels-fall-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/angels-fall-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: angels-fall-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "merlin-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/merlin-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: merlin-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "moose-murders-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/moose-murders-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: moose-murders-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "on-your-toes-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/on-your-toes-1983/thumbnail.jpg",
+          "poster": "/images/shows/on-your-toes-1983/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: on-your-toes-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "k2-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/k2-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: k2-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "alls-well-that-ends-well-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/alls-well-that-ends-well-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: alls-well-that-ends-well-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "teaneck-tanzi-the-venus-flytrap-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/teaneck-tanzi-the-venus-flytrap-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: teaneck-tanzi-the-venus-flytrap-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "total-abandon-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/total-abandon-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: total-abandon-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  }
+}

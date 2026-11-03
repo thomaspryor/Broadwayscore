@@ -1,0 +1,468 @@
+{
+  "issueNumber": "bro-6221-d",
+  "planId": "049f8cd5-60ce-4614-9f72-84de6be2ac03",
+  "status": "pending",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 4 of 9)",
+    "steps": [
+      "shows.json: pack-of-lies-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-octette-bridge-club-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-loves-of-anatol-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: requiem-for-a-heavyweight-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: joe-egg-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: biloxi-blues-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: leader-of-the-pack-1985.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: grind-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: arent-we-all-1985.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: as-is-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: doubles-1985.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-corn-is-green-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: edmund-kean-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: amen-corner-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: la-tragedie-de-carmen-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: doonesbury-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: peg-1983.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-tap-dance-kid-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: ian-mckellen-acting-shakespeare-1984.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: open-admissions-1984.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-human-comedy-1984.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: beethovens-tenth-1984.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: play-memory-1984.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: a-woman-of-independent-means-1984.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-best-little-whorehouse-in-texas-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pack-of-lies-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/pack-of-lies-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: pack-of-lies-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-octette-bridge-club-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-octette-bridge-club-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-octette-bridge-club-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-loves-of-anatol-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-loves-of-anatol-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-loves-of-anatol-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "requiem-for-a-heavyweight-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/requiem-for-a-heavyweight-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: requiem-for-a-heavyweight-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "joe-egg-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/joe-egg-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: joe-egg-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "biloxi-blues-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/biloxi-blues-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: biloxi-blues-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "leader-of-the-pack-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/leader-of-the-pack-1985/thumbnail.jpg",
+          "poster": "/images/shows/leader-of-the-pack-1985/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: leader-of-the-pack-1985.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "grind-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/grind-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: grind-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "arent-we-all-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/arent-we-all-1985/thumbnail.jpg",
+          "poster": "/images/shows/arent-we-all-1985/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: arent-we-all-1985.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "as-is-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/as-is-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: as-is-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doubles-1985",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/doubles-1985/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: doubles-1985.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-corn-is-green-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-corn-is-green-1983/thumbnail.jpg",
+          "poster": "/images/shows/the-corn-is-green-1983/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-corn-is-green-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "edmund-kean-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/edmund-kean-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: edmund-kean-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "amen-corner-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/amen-corner-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: amen-corner-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "la-tragedie-de-carmen-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/la-tragedie-de-carmen-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: la-tragedie-de-carmen-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doonesbury-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/doonesbury-1983/thumbnail.jpg",
+          "poster": "/images/shows/doonesbury-1983/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: doonesbury-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "peg-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/peg-1983/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: peg-1983.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-tap-dance-kid-1983",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-tap-dance-kid-1983/thumbnail.jpg",
+          "poster": "/images/shows/the-tap-dance-kid-1983/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-tap-dance-kid-1983.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ian-mckellen-acting-shakespeare-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ian-mckellen-acting-shakespeare-1984/thumbnail.jpg",
+          "poster": "/images/shows/ian-mckellen-acting-shakespeare-1984/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: ian-mckellen-acting-shakespeare-1984.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "open-admissions-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/open-admissions-1984/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: open-admissions-1984.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-human-comedy-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-human-comedy-1984/thumbnail.jpg",
+          "poster": "/images/shows/the-human-comedy-1984/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-human-comedy-1984.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "beethovens-tenth-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/beethovens-tenth-1984/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: beethovens-tenth-1984.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "play-memory-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/play-memory-1984/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: play-memory-1984.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-woman-of-independent-means-1984",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-woman-of-independent-means-1984/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-woman-of-independent-means-1984.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-best-little-whorehouse-in-texas-1982",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-best-little-whorehouse-in-texas-1982/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-best-little-whorehouse-in-texas-1982.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  }
+}
