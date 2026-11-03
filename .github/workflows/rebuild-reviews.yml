@@ -482,6 +482,20 @@ jobs:
         run: node scripts/exclusion-rule-census.js --compare-rebuild --no-diff
         continue-on-error: true
 
+      - name: Applied fix plans reached includable rows
+        if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
+        # BRO-6872: an approved fix plan (data/pending-fixes/*.json) marked "applied" that cleared
+        # wrongProduction/wrongShow/isRoundupArticle/wrongAttribution, whose review still has no row
+        # in reviews.json. Five pipeline steps between the file and the row fail silently, so a
+        # cleared flag can sit for months while the show page misses the review. It runs HERE, not
+        # in data-health-check.yml, because it needs this run's data/audit/rebuild-exclusions-*.json
+        # (gitignored, written by the rebuild above): without a show's list the dedup and no-score
+        # passes are invisible and the audit reports a legitimate drop. Every inclusion rule is
+        # delegated to review-guards explainExclusion, never re-implemented. Advisory (rule 19).
+        timeout-minutes: 3
+        run: node scripts/audit-applied-fix-plans.js --strict
+        continue-on-error: true
+
       - name: Opening-night drop + completeness check
         if: always() && steps.rebuild.outcome == 'success' && steps.staleness.outputs.safe_to_publish == 'true'
         # Per-critic snapshot diff + per-show rebuild-regression alert path
