@@ -858,6 +858,33 @@
     "queuedAt": "2026-11-03T23:01:09.856Z"
   },
   {
+    "conditionKey": "feedback-outcomes:2026-11-03T22:59:15.214252+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nWaiting for Lefty — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Thanks for adding my opinion to Waiting for Lefty BUT you attribute the review to my colleague Frank Scheck, not me!  I am here writing about The Verge and crying. I hope you can take the time to fix the glitch.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/1179",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41737536389",
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-11-03T23:17:14.219Z"
+  },
+  {
     "conditionKey": "land:land/bro-6928-critic-splits",
     "title": "Landing blocked: unit-tests-node red on land/bro-6928-critic-splits",
     "description": "land.yml did not land land/bro-6928-critic-splits: the unit-tests-node gate went red at ccd7f6ad37. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41733456491",
