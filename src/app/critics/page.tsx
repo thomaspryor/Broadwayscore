@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { getAllCritics } from '@/lib/data-reviews';
 import { generateBreadcrumbSchema, generateCriticItemListSchema, BASE_URL } from '@/lib/seo';
 import CriticIndexClient from './CriticIndexClient';
+import { getVerifiedCriticSlugs } from '@/lib/critic-server';
 
 export function generateMetadata(): Metadata {
   const allCritics = getAllCritics();
@@ -29,8 +30,9 @@ export function generateMetadata(): Metadata {
   };
 }
 
-export default function CriticIndexPage() {
+export default async function CriticIndexPage() {
   const allCritics = getAllCritics();
+  const verifiedSlugs = await getVerifiedCriticSlugs();
   const totalReviews = allCritics.reduce((sum, c) => sum + c.reviewCount, 0);
 
   // Strip reviews array for the index page (just need metadata for cards)
@@ -55,7 +57,7 @@ export default function CriticIndexPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, itemListSchema]) }}
       />
-      <CriticIndexClient critics={criticSummaries} totalReviews={totalReviews} />
+      <CriticIndexClient critics={criticSummaries} totalReviews={totalReviews} verifiedSlugs={verifiedSlugs} />
     </>
   );
 }

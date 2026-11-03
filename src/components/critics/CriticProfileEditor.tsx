@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Modal from '@/components/show-cards/Modal';
 import { accessToken } from './CriticClaimPanel';
-import { BIO_MAX, TITLE_MAX, MAX_LINKS } from '@/lib/critic-claim';
+import { BIO_MAX, TITLE_MAX, MAX_LINKS, PICK_MAX } from '@/lib/critic-claim';
 
 export interface EditableProfile {
   photoUrl: string | null; jobTitle: string | null; bio: string | null; outlets: string[];
@@ -24,14 +24,19 @@ async function toSquareJpeg(file: File): Promise<Blob> {
   return new Promise((resolve, reject) => canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('encode'))), 'image/jpeg', 0.85));
 }
 
-export default function CriticProfileEditor({ open, onClose, slug, profile, notifyOpeningNight, reviewOptions, onSaved }: {
+export default function CriticProfileEditor({ open, onClose, slug, profile, notifyOpeningNight, views30, reviewOptions, onSaved }: {
   open: boolean; onClose: () => void; slug: string; profile: EditableProfile | null;
-  notifyOpeningNight: boolean; reviewOptions: { key: string; label: string }[]; onSaved: () => void;
+  notifyOpeningNight: boolean; views30: number; reviewOptions: { key: string; label: string }[]; onSaved: () => void;
 }) {
   const [jobTitle, setJobTitle] = useState('');
   const [bio, setBio] = useState('');
   const [outlets, setOutlets] = useState('');
   const [links, setLinks] = useState<{ label: string; url: string }[]>([]);
+  const [bestEver, setBestEver] = useState('');
+  const [thisSeason, setThisSeason] = useState('');
+  const [pinned, setPinned] = useState('');
+  const [notify, setNotify] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -40,8 +45,10 @@ export default function CriticProfileEditor({ open, onClose, slug, profile, noti
     setJobTitle(profile?.jobTitle || ''); setBio(profile?.bio || '');
     setOutlets((profile?.outlets || []).join(', '));
     setLinks(profile?.links?.length ? profile.links : [{ label: '', url: '' }]);
+    setBestEver(profile?.picks?.bestEver || ''); setThisSeason(profile?.picks?.thisSeason || '');
+    setPinned(profile?.pinnedReviewKey || ''); setNotify(notifyOpeningNight); setCopied(false);
     setError('');
-  }, [open, profile]);
+  }, [open, profile, notifyOpeningNight]);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -55,9 +62,8 @@ export default function CriticProfileEditor({ open, onClose, slug, profile, noti
           slug, jobTitle, bio,
           outlets: outlets.split(',').map((o) => o.trim()).filter(Boolean),
           links: links.filter((l) => l.label.trim() && l.url.trim()),
-          // Fields this form does not edit are sent back unchanged.
-          picks: profile?.picks || {}, pinnedReviewKey: profile?.pinnedReviewKey || null,
-          notifyOpeningNight,
+          picks: { bestEver, thisSeason }, pinnedReviewKey: pinned || null,
+          notifyOpeningNight: notify,
         }),
       });
       const j = await res.json().catch(() => ({}));
@@ -80,6 +86,11 @@ export default function CriticProfileEditor({ open, onClose, slug, profile, noti
       if (!res.ok) { setError(j.error || 'Upload failed.'); return; }
       onSaved();
     } catch { setError('Could not read that image. Try a JPEG or PNG.'); } finally { setBusy(false); }
+  }
+
+  const snippet = `<a href="https://broadwayscorecard.com/critics/${slug}"><img src="https://broadwayscorecard.com/api/critics/badge/${slug}" alt="My reviews on Broadway Scorecard" width="240" height="64"></a>`;
+  async function copySnippet() {
+    try { await navigator.clipboard.writeText(snippet); setCopied(true); } catch { setCopied(false); }
   }
 
   return (
@@ -120,13 +131,37 @@ export default function CriticProfileEditor({ open, onClose, slug, profile, noti
             )}
           </div>
         </div>
+        <div>
+          <label htmlFor="ed-best" className={label}>Best thing you have seen, ever ({bestEver.length}/{PICK_MAX})</label>
+          <input id="ed-best" maxLength={PICK_MAX} value={bestEver} onChange={(e) => setBestEver(e.target.value)} placeholder="A show and, if you like, a line on why" className={inputClasses} />
+        </div>
+        <div>
+          <label htmlFor="ed-season" className={label}>Best this season ({thisSeason.length}/{PICK_MAX})</label>
+          <input id="ed-season" maxLength={PICK_MAX} value={thisSeason} onChange={(e) => setThisSeason(e.target.value)} className={inputClasses} />
+        </div>
+        <div>
+          <label htmlFor="ed-pin" className={label}>Pin one of your reviews</label>
+          <select id="ed-pin" value={pinned} onChange={(e) => setPinned(e.target.value)} className={inputClasses}>
+            <option value="">None</option>
+            {reviewOptions.map((o) => <option key={o.key} value={o.key}>{o.label}</option>)}
+          </select>
+        </div>
+        <label className="flex items-start gap-2 text-sm text-gray-200 cursor-pointer">
+          <input type="checkbox" checked={notify} onChange={(e) => setNotify(e.target.checked)} className="mt-1 accent-brand" />
+          <span>Email me when one of my opening-night reviews appears on Broadway Scorecard. One short note per show, to the address you gave us.</span>
+        </label>
+        <div className="rounded-lg border border-white/10 bg-surface-overlay p-3 text-sm">
+          <p className="text-gray-200 mb-1">Your page was viewed <b className="text-white">{views30.toLocaleString('en-US')}</b> times in the last 30 days.</p>
+          <p className="text-fg-muted mb-2">Add this badge to your own site or newsletter:</p>
+          <code className="block text-xs text-fg-muted break-all mb-2">{snippet}</code>
+          <button type="button" onClick={copySnippet} className="text-brand hover:underline">{copied ? 'Copied' : 'Copy the badge code'}</button>
+        </div>
         <p className="text-xs text-fg-muted">Your scores and reviews come from your published work and can&apos;t be edited here.</p>
         {error && <p role="alert" className="text-sm text-score-skip">{error}</p>}
         <div className="flex gap-3">
           <button type="submit" disabled={busy} className={btnPrimary}>{busy ? 'Saving…' : 'Save'}</button>
           <button type="button" onClick={onClose} className="px-4 py-2 text-sm text-fg-muted hover:text-white">Cancel</button>
         </div>
-        <span hidden>{reviewOptions.length}</span>
       </form>
     </Modal>
   );

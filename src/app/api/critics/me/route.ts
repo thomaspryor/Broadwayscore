@@ -17,7 +17,10 @@ export async function GET(req: NextRequest) {
   if (approved) {
     const res = await sbAdmin(`/rest/v1/critic_profiles?critic_slug=eq.${slug}&user_id=eq.${user.id}&select=*`);
     const row = res.ok ? (await res.json())[0] : null;
-    return NextResponse.json({ state: 'owner', email: user.email, notifyOpeningNight: approved.notify_opening_night, profile: row ? toPublicProfile(row) : null });
+    const since = new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10);
+    const vres = await sbAdmin(`/rest/v1/critic_page_views?critic_slug=eq.${slug}&day=gte.${since}&select=views`);
+    const views30 = vres.ok ? ((await vres.json()) as { views: number }[]).reduce((n, r) => n + (r.views || 0), 0) : 0;
+    return NextResponse.json({ state: 'owner', email: user.email, notifyOpeningNight: approved.notify_opening_night, views30, profile: row ? toPublicProfile(row) : null });
   }
   if (claims.some((c) => c.status === 'pending')) return NextResponse.json({ state: 'pending', email: user.email });
   return NextResponse.json({ state: 'none', email: user.email });

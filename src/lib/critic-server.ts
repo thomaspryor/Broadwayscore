@@ -113,3 +113,18 @@ export async function getPublicCriticProfile(slug: string): Promise<PublicCritic
     return rows[0] ? toPublicProfile(rows[0]) : null;
   } catch { return null; }
 }
+
+/** Slugs of verified (claimed and approved) critics, for the /critics Verified filter. Cached by tag. */
+export async function getVerifiedCriticSlugs(): Promise<string[]> {
+  if (!criticBackendReady()) return [];
+  try {
+    const res = await fetch(`${SB_URL()}/rest/v1/critic_profiles?select=critic_slug&limit=2000`, {
+      headers: { apikey: SERVICE(), Authorization: `Bearer ${SERVICE()}` },
+      next: { tags: ['critic-profiles'] },
+      signal: AbortSignal.timeout(5000),
+    });
+    if (!res.ok) return [];
+    const rows = (await res.json()) as { critic_slug: string }[];
+    return rows.map((r) => r.critic_slug);
+  } catch { return []; }
+}
