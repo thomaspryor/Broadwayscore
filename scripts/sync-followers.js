@@ -71,7 +71,9 @@ function fetchJSON(url, headers) {
             reject(new Error(`JSON parse error: ${e.message}`));
           }
         } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
+          const err = new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`);
+          err.status = res.statusCode;
+          reject(err);
         }
       });
     });
@@ -179,7 +181,9 @@ function httpJSON(method, url, body, headers) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           try { resolve(JSON.parse(respBody)); } catch { resolve(respBody); }
         } else {
-          reject(new Error(`HTTP ${res.statusCode}: ${respBody.slice(0, 200)}`));
+          const err = new Error(`HTTP ${res.statusCode}: ${respBody.slice(0, 200)}`);
+          err.status = res.statusCode;
+          reject(err);
         }
       });
     });
@@ -194,6 +198,93 @@ function postJSON(url, body, headers) { return httpJSON('POST', url, body, heade
 function patchJSON(url, body, headers) { return httpJSON('PATCH', url, body, headers); }
 const delay = (ms) => new Promise(r => setTimeout(r, ms));
 const maskEmail = (e) => e.replace(/(.{2}).*(@.*)/, '$1***$2');
+
+// BRO-6929: city tags live in subscribers.json next to the list. `cities` is
+// email -> every hub city that person signed up from; `cityPushed` is email ->
+// the value last written to the Resend `city` contact property. The normal list
+// rewrite must carry both through or the next run would re-push everything.
+function readCityState() {
+  try {
+    const prev = JSON.parse(fs.readFileSync(SUBSCRIBERS_PATH, 'utf8'));
+    const out = {};
+    if (prev.cities) out.cities = prev.cities;
+    if (prev.cityPushed) out.cityPushed = prev.cityPushed;
+    return out;
+  } catch { return {}; }
+}
+
+/**
+ * Tag Broadway subscribers by the city page they signed up from, over the
+ * FULL submission history every run (cheap, idempotent, self-healing), then
+ * set the Resend `city` contact property. Read-only on the lists themselves.
+ * Never throws: city tagging must not break the subscriber sync.
+ */
+async function syncCityTags({ subscribersList, followFormId, followToken, subscriberFormId, subscriberToken, resendApiKey }) {
+  const tagsLib = require('./lib/signup-city-tags');
+  console.log('\nTagging subscribers by signup city (full submission history)...');
+  try {
+    const shows = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    const ctx = tagsLib.buildCityContext(Array.isArray(shows) ? shows : shows.shows, tagsLib.loadHubKeys());
+
+    const submissions = [];
+    let complete = true;
+    for (const [formId, token, label] of [
+      [subscriberFormId, subscriberToken, 'subscriber'],
+      [followFormId, followToken, 'follow'],
+    ]) {
+      if (!formId || !token) continue;
+      const res = await fetchAllSubmissions(formId, token, null);
+      if (!res || !res.complete) { complete = false; console.log(`  City pass: ${label} form fetch incomplete`); }
+      if (res && res.items) submissions.push(...res.items);
+    }
+    if (!complete || submissions.length === 0) {
+      console.log('  Skipping city tagging this run (incomplete or empty fetch)');
+      return;
+    }
+
+    // Order does not matter across forms for the set of cities; "latest" is by
+    // each form's own order, so sort the merged list newest-first by timestamp.
+    const when = (s) => Date.parse(s.created_at || s._date || s.submitted_at || '') || 0;
+    submissions.sort((a, b) => when(b) - when(a));
+
+    const onList = new Set(subscribersList.map((e) => e.toLowerCase()));
+    const all = tagsLib.buildCityTags(submissions, ctx, isTestEmail);
+    const tags = new Map([...all].filter(([email]) => onList.has(email)));
+    const summary = tagsLib.summarizeCityTags(tags);
+    console.log(`  City tags: ${summary.people} subscribers tagged; by city: ${JSON.stringify(summary.byCity)}`);
+
+    const state = readCityState();
+    const cities = {};
+    for (const [email, v] of tags) cities[email] = v.cities;
+    state.cities = cities;
+    state.cityPushed = state.cityPushed || {};
+    for (const email of Object.keys(state.cityPushed)) if (!tags.has(email)) delete state.cityPushed[email];
+
+    if (!DRY_RUN && resendApiKey) {
+      const auth = { 'Authorization': `Bearer ${resendApiKey}` };
+      const stats = await tagsLib.pushCitiesToResend({
+        tags,
+        pushed: state.cityPushed,
+        http: (method, url, body) => (method === 'GET' ? fetchJSON(url, auth) : httpJSON(method, url, body, auth)),
+        delay,
+        log: (m) => console.log(m),
+      });
+      console.log(`  Resend city property: ${stats.set} set, ${stats.unchanged} unchanged, ${stats.notInResend} not in Resend, ${stats.errors} errors${stats.propertyCreated ? ' (property created)' : ''}`);
+    } else if (!resendApiKey) {
+      console.log('  Skipping Resend city property (no RESEND_API_KEY)');
+    }
+
+    if (!DRY_RUN) {
+      const file = JSON.parse(fs.readFileSync(SUBSCRIBERS_PATH, 'utf8'));
+      file.cities = state.cities;
+      file.cityPushed = state.cityPushed;
+      fs.writeFileSync(SUBSCRIBERS_PATH, JSON.stringify(file, null, 2));
+      console.log(`  Saved city tags for ${Object.keys(cities).length} subscribers`);
+    }
+  } catch (err) {
+    console.error(`  City tagging failed (sync continues): ${err.message}`);
+  }
+}
 
 /**
  * Sync a subscriber list into a Resend audience: add missing contacts, and
@@ -516,6 +607,7 @@ async function main() {
         totalSubscribers: subscribersList.length,
       },
       subscribers: subscribersList,
+      ...readCityState(),
     };
     fs.writeFileSync(SUBSCRIBERS_PATH, JSON.stringify(subscribersData, null, 2));
     console.log(`Saved ${subscribersList.length} subscribers to ${SUBSCRIBERS_PATH}`);
@@ -633,6 +725,9 @@ async function main() {
   } else if (!resendApiKey) {
     console.log('\n  Skipping Resend sync (no RESEND_API_KEY)');
   }
+
+  // --- 6. City tags (BRO-6929): after the audiences exist, so contacts can be updated ---
+  await syncCityTags({ subscribersList, followFormId, followToken, subscriberFormId, subscriberToken, resendApiKey });
 }
 
 if (require.main === module) {
