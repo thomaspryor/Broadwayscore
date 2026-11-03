@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T09:14:44.950Z",
+  "timestamp": "2026-11-03T09:57:22.957Z",
   "stats": {
-    "totalReviews": 79786,
-    "alreadyFlagged": 22019,
+    "totalReviews": 79802,
+    "alreadyFlagged": 22022,
     "dateGuardCatches": 219,
-    "directorMismatch": 3451,
+    "directorMismatch": 3452,
     "tvFilmSignals": 2262,
-    "londonSignals": 3586,
+    "londonSignals": 3587,
     "offBroadwaySignals": 735,
-    "yearMismatch": 359,
-    "noPublishDate": 8432
+    "yearMismatch": 360,
+    "noPublishDate": 8434
   },
   "findings": [
     {
@@ -22850,6 +22850,20 @@
     },
     {
       "showId": "footloose-pitlochry-festival-regional-2024",
+      "file": "corrblimey--unknown.json",
+      "score": 83,
+      "publishDate": "2024-06-20",
+      "url": "https://corrblimey.uk/2024/06/20/review-footloose-pitlochry-festival-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"walter bobbie\" from footloose-1998"
+        }
+      ]
+    },
+    {
+      "showId": "footloose-pitlochry-festival-regional-2024",
       "file": "thestage--david-pollock.json",
       "publishDate": "2024-06-17",
       "url": "https://www.thestage.co.uk/reviews/footloose-review-at-pitlochry-festival-theatre-by-dean-pitchford-walter-bobbie-and-douglas-rintoul",
@@ -40035,6 +40049,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-leeds-regional-2024",
+      "file": "charles-hutchinson-press--charles-hutchinson.json",
+      "score": 92,
+      "publishDate": "2024-03-23",
+      "url": "https://charleshutchpress.co.uk/review-macbeth-leeds-playhouse/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (3x) more than 2024 (2x). 2022 matches production: macbeth-2022"
         }
       ]
     },
@@ -126614,6 +126642,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-grand-babylon-hotel-hull-truck-regional-2026",
+      "file": "theatreandtonic--ashton.json",
+      "score": 86,
+      "publishDate": "2026-03-11",
+      "url": "https://theatreandtonic.co.uk/blog/the-grand-babylon-hotel-hull-truck-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
