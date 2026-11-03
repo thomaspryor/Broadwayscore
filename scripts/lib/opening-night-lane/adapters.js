@@ -14,13 +14,13 @@
 const discovery = require('./discovery');
 const { westEndAdapters } = require('./west-end-adapters');
 
-function laneAdapters({ showScoreGuards = {}, adaptersConfig = {}, search, decodeImpl = null, now = Date.now, ledgerDir } = {}) {
+function laneAdapters({ showScoreGuards = {}, adaptersConfig = {}, search, decodeImpl = null, now = Date.now, ledgerDir, fetchGated } = {}) {
   return [
     discovery.bwwRoundupAdapter(), discovery.dtliAdapter(), discovery.showScoreAdapter(showScoreGuards), discovery.playbillVerdictAdapter(),
     discovery.talkinBroadwayAdapter({ now }), discovery.googleNewsAdapter({ decodeImpl, now }),
     discovery.rssAdapter({ feeds: adaptersConfig.feeds }), discovery.sectionIndexAdapter({ outlets: adaptersConfig.outlets }),
     discovery.serpAdapter({ search: adaptersConfig.search || search, now, ledgerDir }),
-    ...westEndAdapters({ now }),
+    ...westEndAdapters({ now, fetchGated }),
   ];
 }
 

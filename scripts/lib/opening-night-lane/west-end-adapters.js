@@ -226,7 +226,7 @@ function lboRoundupAdapter() {
       // BRO-3121: a page the run dates cannot vouch for is another production's.
       const prod = require('../aggregator-page-production').checkAggregatorPageProduction({ html, show });
       if (prod.outOfRun) return [];
-      const { extractReviewsFromLBO } = require('../../scrape-london-box-office-roundups');
+      const { extractReviewsFromLBO } = require('../lbo-extract');
       return requireKnownOutletRows(rowCandidates(extractReviewsFromLBO(html, show.id, url), url, 'lboRoundupExcerpt'), url, 'lbo-roundup');
     },
   };
