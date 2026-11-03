@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6221-h",
   "planId": "1b694b5c-c454-449c-91f2-0a2e64d7bede",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T15:03:22.151Z",
   "submitter": {
     "name": null,
@@ -464,5 +464,134 @@
         "description": "shows.json: children-children-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T17:55:56.755Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for gemini-1977"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-trial-of-the-catonsville-nine-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for no-place-to-be-somebody-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for double-solitaire-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for solitaire-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-incomparable-max-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for aint-supposed-to-die-a-natural-death-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for to-live-another-summer-to-pass-another-winter-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for eli-the-fanatic-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-grass-harp-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-prisoner-of-second-avenue-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for ma-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for only-fools-are-sad-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for two-gentlemen-of-verona-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for wild-and-wonderful-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for inner-city-1971"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for fun-city-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for theres-one-in-every-marriage-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for narrow-road-to-the-deep-north-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for vivat-vivat-regina-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for wise-child-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-love-suicide-at-schofield-barracks-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for moonchildren-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for night-watch-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for children-children-1972"
+    }
+  ],
+  "executedIn": "ci"
 }
