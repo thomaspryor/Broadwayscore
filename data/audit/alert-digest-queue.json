@@ -605,6 +605,20 @@
     "queuedAt": "2026-11-03T20:13:25.001Z"
   },
   {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-bridge-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on The Bridge",
+    "description": "thestage/Siobhan Murphy (thestage--siobhan-murphy.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped content is a review of a Palestinian perf — https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T21:17:14.578Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -631,19 +645,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T21:17:06.036Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T21:17:06.607Z"
   }
 ]

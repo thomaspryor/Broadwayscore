@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-03T19:13:32.234Z",
+  "generatedAt": "2026-11-03T21:17:16.629Z",
   "date": "2026-11-03",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 164702,
+  "entryCount": 171295,
   "shows": [
     {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
@@ -96,13 +96,13 @@
     },
     {
       "showId": "the-lives-of-others-west-end-2026",
-      "reviewCount": 24,
+      "reviewCount": 25,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 2118926,
-        "scored-to-rebuilt": 468176,
+        "scored-to-rebuilt": 485298,
         "rebuilt-to-deployed": 67276648
       },
       "reviews_over_15min": 0,
@@ -8364,13 +8364,13 @@
     },
     {
       "showId": "the-bridge-off-west-end-2026",
-      "reviewCount": 10,
+      "reviewCount": 13,
       "median_e2e_ms": 15340566,
       "p90_e2e_ms": 22068299,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": 270901,
-        "scored-to-rebuilt": 1040691,
+        "collected-to-scored": 520984,
+        "scored-to-rebuilt": 826283,
         "rebuilt-to-deployed": 5182858
       },
       "reviews_over_15min": 2,
@@ -9335,13 +9335,13 @@
     },
     {
       "showId": "all-the-worlds-a-stage-regional-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2359166,
+        "scored-to-rebuilt": 1478711,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -9822,6 +9822,21 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 3269511,
         "scored-to-rebuilt": 341748,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "richard-iii-west-end-2014",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -12102,6 +12117,51 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 2147790,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-morbs-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 620383,
+        "scored-to-rebuilt": 854851,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "i-became-we-off-broadway-2026",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 445268,
+        "scored-to-rebuilt": 752449,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "reviewCount": 31,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 196419,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
