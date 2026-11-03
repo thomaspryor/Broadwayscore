@@ -103,7 +103,7 @@ for (const vp of VIEWPORTS) {
       await listBtn.click();
       await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
+      const removeBtn = page.getByRole('button', { name: 'Remove from To See' }).first();
       await expect(removeBtn).toBeVisible();
       await removeBtn.click();
 
@@ -125,7 +125,7 @@ for (const vp of VIEWPORTS) {
       await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
       // Count the entries directly (the Watchlist tab count badge was removed, BRO-6170).
-      const removeButtons = page.getByRole('button', { name: 'Remove from watchlist' });
+      const removeButtons = page.getByRole('button', { name: 'Remove from To See' });
       const initialCount = await removeButtons.count();
       expect(initialCount).toBeGreaterThan(0);
 
@@ -190,12 +190,12 @@ for (const vp of VIEWPORTS) {
       await goToMock(page, 'diary');
 
       // Switch to watchlist
-      await page.getByRole('tab', { name: /Watchlist/ }).click();
-      await expect(page.getByRole('tab', { name: /Watchlist/ })).toHaveAttribute('aria-selected', 'true', { timeout: 3000 });
+      await page.getByRole('tab', { name: /To See/ }).click();
+      await expect(page.getByRole('tab', { name: /To See/ })).toHaveAttribute('aria-selected', 'true', { timeout: 3000 });
 
       // Switch back to diary
-      await page.getByRole('tab', { name: 'Diary' }).click();
-      await expect(page.getByRole('tab', { name: /Diary/ })).toHaveAttribute('aria-selected', 'true', { timeout: 3000 });
+      await page.getByRole('tab', { name: 'Seen' }).click();
+      await expect(page.getByRole('tab', { name: /Seen/ })).toHaveAttribute('aria-selected', 'true', { timeout: 3000 });
     });
 
     // ─── Navigation Links ───────────────────────────────────────

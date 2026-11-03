@@ -223,14 +223,14 @@ export function welcomeFinishDestination(input: { showsAdded: number; imported: 
  */
 export function welcomeDoneMessage(input: { showsAdded: number; imported: number; unratedAdded: number }): string {
   const { showsAdded, imported } = input;
-  if (showsAdded + imported <= 0) return 'Rate a show from its page any time, and it lands in your diary.';
+  if (showsAdded + imported <= 0) return 'Rate a show from its page any time, and it lands in Seen.';
   const counts = [
     showsAdded > 0 ? `${showsAdded} ${showsAdded === 1 ? 'show' : 'shows'} added` : null,
     imported > 0 ? `${imported} imported` : null,
   ].filter(Boolean).join(', ');
   const unrated = Math.min(Math.max(input.unratedAdded, 0), Math.max(showsAdded, 0));
   // Imports can be watchlist rows as well as diary entries.
-  if (unrated === 0) return `${counts} to ${imported > 0 ? 'My Shows' : 'your diary'}.`;
+  if (unrated === 0) return `${counts} to ${imported > 0 ? 'My Shows' : 'Seen'}.`;
   // "They" would take in the imports too, so name the unrated picks then.
   const who = unrated === showsAdded && imported === 0
     ? (showsAdded === 1 ? 'It waits' : 'They wait')

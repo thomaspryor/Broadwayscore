@@ -48,11 +48,11 @@ export function TitleTabs({ items, isActive, onSelect, panelFor = tab => `panel-
 
 const DIARY_VIEWS: { tab: MyShowsTab; label: string }[] = [
   { tab: 'diary', label: 'List' },
-  { tab: 'feed', label: 'Feed' },
+  { tab: 'feed', label: 'Photos' },
   { tab: 'stats', label: 'Stats' },
 ];
 
-/** App-style List / Feed / Stats segmented control under Diary: the page's second text level. */
+/** App-style List / Photos / Stats segmented control under Seen: the page's second text level. */
 export function DiarySegmented({ active, onSelect }: { active: MyShowsTab; onSelect: (tab: MyShowsTab) => void }) {
   return (
     <div role="tablist" aria-label="Diary views" className="flex gap-1 p-1 mt-4 mb-3 rounded-xl bg-surface-raised border border-white/10">

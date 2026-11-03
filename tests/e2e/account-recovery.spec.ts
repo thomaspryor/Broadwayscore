@@ -53,7 +53,7 @@ for (const status of [409, 401]) {
       localStorage.setItem('bsc_pending_action', JSON.stringify({ type: 'rating', showId: 'hamilton-2015', rating: 4, timestamp: Date.now() }));
     }, session);
     await page.goto('/my-shows?tab=watchlist');
-    await page.getByRole('button', { name: 'Add to watchlist', exact: true }).click();
+    await page.getByRole('button', { name: 'Add to To See', exact: true }).click();
     await page.getByPlaceholder('Search to add...').fill('Hamilton');
     await page.getByRole('button', { name: /Hamilton/ }).first().click();
     await expect(page.getByText('Your account no longer exists on this device; sign in again').first()).toBeVisible();
@@ -61,7 +61,7 @@ for (const status of [409, 401]) {
     expect(logouts).toEqual(['local']);
     expect(await page.evaluate(() => localStorage.getItem('bsc_auth'))).toBeNull();
     expect(await page.evaluate(() => localStorage.getItem('bsc_pending_action'))).toBeNull();
-    await expect(page.getByRole('button', { name: 'Add to watchlist', exact: true })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: 'Add to To See', exact: true })).toHaveCount(0);
   });
 }
 

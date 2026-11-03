@@ -672,7 +672,7 @@ export default function MyShowsClient() {
             </div>
             <div className="flex items-start gap-2.5 text-sm text-gray-300">
               <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-brand" fill="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
-              <span>Keep a watchlist of what&apos;s next</span>
+              <span>Save the shows you want to see</span>
             </div>
             <div className="flex items-start gap-2.5 text-sm text-gray-300">
               <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" d="M4 6h16M4 10h16M4 14h16M4 18h10" /></svg>
@@ -755,7 +755,7 @@ export default function MyShowsClient() {
       <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
         <h1 className="sr-only">My Shows</h1>
         <TitleTabs
-          items={[{ tab: 'diary', label: 'Diary' }, { tab: 'watchlist', label: 'Watchlist' }, { tab: 'lists', label: 'Lists' }]}
+          items={[{ tab: 'diary', label: 'Seen' }, { tab: 'watchlist', label: 'To See' }, { tab: 'lists', label: 'Lists' }]}
           isActive={tab => (tab === 'diary' ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
           panelFor={tab => `panel-${tab === 'diary' && DIARY_GROUP.includes(activeTab) ? activeTab : tab}`}
           onSelect={setActiveTab}
@@ -805,7 +805,7 @@ export default function MyShowsClient() {
           </svg>
           <span className="text-sm text-white min-w-0 truncate">
             <span className="font-semibold">{justAdded.title}</span>
-            <span className="text-gray-400"> added to your Watchlist</span>
+            <span className="text-gray-400"> added to To See</span>
           </span>
           <span className="flex items-center gap-2 ml-auto">
             <span className="text-xs text-fg-muted hidden sm:inline">Seeing it when?</span>
@@ -952,8 +952,8 @@ export default function MyShowsClient() {
               <LoadError onRetry={() => { getAllReviews(); getWatchlist(true); }} />
             ) : <EmptyState
               icon="🎭"
-              title="Your diary is empty"
-              description="Start rating shows to build your personal theater diary!"
+              title="No shows here yet"
+              description="Rate a show you’ve seen and it lands here."
               ctaLabel="Browse Shows"
               ctaHref="/"
             />
@@ -989,8 +989,8 @@ export default function MyShowsClient() {
                             plannedDate={entry.planned_date}
                             actions={
                               <RowRemoveButton
-                                onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
-                                label={`Remove ${entryTitle} from watchlist`}
+                                onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from To See.')}
+                                label={`Remove ${entryTitle} from To See`}
                               />
                             }
                           />
@@ -1038,7 +1038,7 @@ export default function MyShowsClient() {
                             <DiaryCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
                           ))}
                           <AddShowCard context="diary" variant="list" onOpen={() => {
-                            const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                            const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to Seen"], [aria-label="Rate a show"]');
                             btn?.click();
                           }} />
                         </div>
@@ -1048,7 +1048,7 @@ export default function MyShowsClient() {
                             <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} showYear />
                           ))}
                           <AddShowCard context="diary" onOpen={() => {
-                            const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                            const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to Seen"], [aria-label="Rate a show"]');
                             btn?.click();
                           }} />
                         </div>
@@ -1100,7 +1100,7 @@ export default function MyShowsClient() {
                             ))}
                             {yearIdx === sortedYears.length - 1 && (
                               <AddShowCard context="diary" variant="list" onOpen={() => {
-                                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to Seen"], [aria-label="Rate a show"]');
                                 btn?.click();
                               }} />
                             )}
@@ -1112,7 +1112,7 @@ export default function MyShowsClient() {
                             ))}
                             {yearIdx === sortedYears.length - 1 && (
                               <AddShowCard context="diary" onOpen={() => {
-                                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
+                                const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to Seen"], [aria-label="Rate a show"]');
                                 btn?.click();
                               }} />
                             )}
@@ -1136,7 +1136,7 @@ export default function MyShowsClient() {
               <LoadError onRetry={() => { getWatchlist(true); }} />
             ) : <EmptyState
               icon="📋"
-              title="Your watchlist is empty"
+              title="Nothing on your To See list yet"
               description="Add shows you want to see!"
               ctaLabel="Browse Shows"
               ctaHref="/"
@@ -1154,7 +1154,7 @@ export default function MyShowsClient() {
                   />
                 ))}
                 <AddShowCard context="watchlist" onOpen={() => {
-                  const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                  const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to To See"]');
                   btn?.click();
                 }} />
               </div>
@@ -1166,12 +1166,12 @@ export default function MyShowsClient() {
                     entry={entry}
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                    onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
+                    onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from To See.')}
                     onRate={openRatingEditor}
                   />
                 ))}
                 <AddShowCard context="watchlist" variant="list" onOpen={() => {
-                  const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                  const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to To See"]');
                   btn?.click();
                 }} />
               </div>
@@ -1195,7 +1195,7 @@ export default function MyShowsClient() {
                       ))}
                       {unbookedWatchlist.length === 0 && (
                         <AddShowCard context="watchlist" onOpen={() => {
-                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to To See"]');
                           btn?.click();
                         }} />
                       )}
@@ -1208,13 +1208,13 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from To See.')}
                           onRate={openRatingEditor}
                         />
                       ))}
                       {unbookedWatchlist.length === 0 && (
                         <AddShowCard context="watchlist" variant="list" onOpen={() => {
-                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                          const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to To See"]');
                           btn?.click();
                         }} />
                       )}
@@ -1240,7 +1240,7 @@ export default function MyShowsClient() {
                         />
                       ))}
                       <AddShowCard context="watchlist" onOpen={() => {
-                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to To See"]');
                         btn?.click();
                       }} />
                     </div>
@@ -1252,12 +1252,12 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from To See.')}
                           onRate={openRatingEditor}
                         />
                       ))}
                       <AddShowCard context="watchlist" variant="list" onOpen={() => {
-                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to To See"]');
                         btn?.click();
                       }} />
                     </div>
@@ -1273,7 +1273,7 @@ export default function MyShowsClient() {
                   {upcomingBookedWatchlist.length === 0 && unbookedWatchlist.length === 0 && (
                     <div className="mb-4">
                       <AddShowCard context="watchlist" variant="list" onOpen={() => {
-                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to watchlist"]');
+                        const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add to To See"]');
                         btn?.click();
                       }} />
                     </div>
@@ -1760,7 +1760,7 @@ function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(true); }}
               className="relative z-[1] inline-flex items-center justify-center p-1 text-score-skip/80 hover:text-score-skip transition-colors"
-              aria-label="Remove from watchlist"
+              aria-label="Remove from To See"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1879,8 +1879,8 @@ function AddShowSearch({
         type="button"
         onClick={() => setIsOpen(true)}
         className="btn-primary gap-1.5 text-xs max-sm:!w-11 max-sm:!h-11 max-sm:!p-0 max-sm:!rounded-full"
-        aria-label={context === 'diary' ? 'Add a show to diary' : 'Add to watchlist'}
-        title={context === 'diary' ? 'Rate a show' : 'Add to watchlist'}
+        aria-label={context === 'diary' ? 'Add a show to Seen' : 'Add to To See'}
+        title={context === 'diary' ? 'Rate a show' : 'Add to To See'}
       >
         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
@@ -1974,7 +1974,7 @@ function LoadError({ onRetry }: { onRetry: () => void }) {
     <div className="text-center py-16" role="alert">
       <div className="text-4xl mb-3">⚠️</div>
       <h3 className="text-lg font-bold text-white mb-1">We couldn&apos;t load your shows</h3>
-      <p className="text-sm text-gray-400 mb-4">Your diary is safe. Check your connection and try again.</p>
+      <p className="text-sm text-gray-400 mb-4">Your shows are safe. Check your connection and try again.</p>
       <button type="button" onClick={onRetry} className="btn-primary text-sm">Try again</button>
     </div>
   );

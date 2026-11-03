@@ -129,7 +129,7 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
         <fieldset className="space-y-2 mb-5">
           <legend className="sr-only">What to share</legend>
           <SectionToggle label="Upcoming" hint="Shows you have a date for" count={counts.booked} checked={showBooked} onChange={on => setSection('booked', on)} />
-          <SectionToggle label="Not yet booked" hint="On your watchlist, no date yet" count={counts.unbooked} checked={showUnbooked} onChange={on => setSection('unbooked', on)} />
+          <SectionToggle label="Not yet booked" hint="On To See, no date yet" count={counts.unbooked} checked={showUnbooked} onChange={on => setSection('unbooked', on)} />
         </fieldset>
 
         <ShareLinkPanel

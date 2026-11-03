@@ -115,7 +115,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
         <EmptyState
           title="No photos yet"
           body={groups.length > 0
-            ? 'Add photos from the night to any diary entry. Open the Timeline and tap “Add a photo” on an entry.'
+            ? 'Add photos from the night to any show you’ve seen. Open the Timeline and tap “Add a photo” on an entry.'
             : 'Rate a show with the date you saw it, then add photos from the night to that entry.'}
           icon="camera"
           action={groups.length > 0 ? { label: 'Go to Timeline', onClick: () => pickMode('timeline') } : undefined}

@@ -22,7 +22,7 @@ interface SignInModalProps {
 
 const CONTEXT_HEADLINES: Record<SignInContext, string> = {
   rating: 'Sign in to save your rating',
-  watchlist: 'Sign in to save your watchlist',
+  watchlist: 'Sign in to save your To See list',
   watchlist_local: 'Saved. Keep your list with a free account',
   // "Sign in" alone read as "for people who already have an account", and
   // email-list members assumed they did (BRO-4893).
@@ -31,9 +31,9 @@ const CONTEXT_HEADLINES: Record<SignInContext, string> = {
 
 const CONTEXT_SUBTEXT: Record<SignInContext, string> = {
   rating: 'Your rating will be saved automatically after sign-in.',
-  watchlist: 'Your watchlist will be saved automatically after sign-in.',
+  watchlist: 'Your To See list will be saved automatically after sign-in.',
   watchlist_local: "Your list is on this device for now. Sign in to see it on your phone and computer, and we'll move it over for you.",
-  generic: 'Track shows, rate performances, and build your theater diary.',
+  generic: 'Track the shows you’ve seen and the ones you want to see.',
 };
 
 export default function SignInModal({ isOpen, onClose, onSignIn, onSendEmailCode, onVerifyEmailCode, context = 'generic', loading = false, error = null }: SignInModalProps) {

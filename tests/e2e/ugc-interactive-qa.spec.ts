@@ -123,7 +123,7 @@ test.describe('Click behaviors — mobile (390px)', () => {
     const initialUrl = page.url();
 
     // Click the Add show button in the header
-    const addBtn = page.locator('button[aria-label="Add to watchlist"]');
+    const addBtn = page.locator('button[aria-label="Add to To See"]');
     await addBtn.click();
 
     // Search input should appear
@@ -157,7 +157,7 @@ test.describe('Click behaviors — mobile (390px)', () => {
   test('diary "Add show" search navigates to show page for rating', async ({ page }) => {
     await goToMock(page, 'diary');
 
-    const addBtn = page.locator('button[aria-label="Add a show to diary"]');
+    const addBtn = page.locator('button[aria-label="Add a show to Seen"]');
     await addBtn.click();
 
     const searchInput = page.locator('input[placeholder*="Search to rate"]');
