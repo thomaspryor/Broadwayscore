@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-11-03T01:04:33.500Z",
-  "processed": 40,
-  "failed": 50,
-  "successRate": "44.4%",
+  "updatedAt": "2026-11-03T01:39:27.974Z",
+  "processed": 110,
+  "failed": 70,
+  "successRate": "61.1%",
   "tierBreakdown": {
-    "playwright": 22,
+    "playwright": 56,
     "amp": 0,
     "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 4,
+    "scrapingdog": 15,
     "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 12,
-    "archive": 7
+    "archiveToday": 17,
+    "archive": 24
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 12,
   "recentActivity": [
-    {
-      "t": "2026-11-03T00:06:14.997Z",
-      "event": "bb-session",
-      "session": "18c69893",
-      "url": "https://www.washingtonpost.com/politics/2026/10/05/famous-people-deaths-septembe"
-    },
     {
       "t": "2026-11-03T00:06:15.552Z",
       "event": "bb-cookie-inject",
@@ -106,6 +100,34 @@
       "event": "bb-session",
       "session": "52859e8d",
       "url": "https://deadline.com/2026/10/billy-crystal-860-broadway-closing-date-1237206061/"
+    },
+    {
+      "t": "2026-11-03T01:21:59.848Z",
+      "event": "bb-session",
+      "session": "a552195c",
+      "url": "https://ground.news/article/the-banality-of-evil-hannah-arendt-france-1940"
+    },
+    {
+      "t": "2026-11-03T01:31:30.375Z",
+      "event": "bb-session",
+      "session": "f12fd767",
+      "url": "https://www.talkinbroadway.com/page/regional/chicago/ch933.html"
+    },
+    {
+      "t": "2026-11-03T01:31:30.883Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T01:38:50.478Z",
+      "event": "bb-session",
+      "session": "4b5327af",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-11-03T01:38:50.899Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
