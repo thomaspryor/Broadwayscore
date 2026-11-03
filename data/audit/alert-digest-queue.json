@@ -619,20 +619,6 @@
     "queuedAt": "2026-11-03T20:13:25.001Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T21:17:42.910Z"
-  },
-  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-the-bridge-off-west-end-2026",
     "title": "Unhandled CV.wrongProduction on The Bridge",
     "description": "thestage/Siobhan Murphy (thestage--siobhan-murphy.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] The scraped content is a review of a Palestinian perf — https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
@@ -690,6 +676,62 @@
       }
     ],
     "queuedAt": "2026-11-03T21:25:37.626Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:heartbreak-house-regional-2026",
+    "title": "Review gap — \"Heartbreak House\" missing 5 cited review(s)",
+    "description": "Heartbreak House (heartbreak-house-regional-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=heartbreak-house-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T22:38:03.129Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:kelly-mccaughan-catholic-guilt-off-broadway-2026",
+    "title": "Review gap — \"Kelly McCaughan: Catholic Guilt\" missing 1 cited review(s)",
+    "description": "Kelly McCaughan: Catholic Guilt (kelly-mccaughan-catholic-guilt-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=kelly-mccaughan-catholic-guilt-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T22:38:03.164Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-best-medicine-regional-2026",
+    "title": "Review gap — \"The Best Medicine\" missing 2 cited review(s)",
+    "description": "The Best Medicine (the-best-medicine-regional-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-best-medicine-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T22:38:03.343Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T22:38:23.617Z"
   },
   {
     "conditionKey": "land:land/bro-6895-vercel-env-sync",

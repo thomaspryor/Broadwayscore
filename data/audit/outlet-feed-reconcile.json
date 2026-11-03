@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T21:18:09.432Z",
+  "generatedAt": "2026-11-03T22:38:53.172Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -142,24 +142,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theatre-weekly",
-      "error": "HTTP 403 for https://theatreweekly.com/feed"
-    },
-    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
-    },
-    {
-      "outletId": "theater-pizzazz",
-      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -182,9 +170,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 641,
-  "matchedGaps": 5,
-  "possibleGaps": 11,
+  "itemsScanned": 752,
+  "matchedGaps": 6,
+  "possibleGaps": 12,
   "gaps": [
     {
       "showId": "slanted-floors-off-broadway-2026",
@@ -223,6 +211,15 @@
       "publishDate": "2026-10-29"
     },
     {
+      "showId": "the-moth-off-west-end-2026",
+      "title": "The Moth",
+      "level": "matched",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/uk-reviews/the-moth/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=the-moth",
+      "headline": "The Moth",
+      "publishDate": "2026-11-03"
+    },
+    {
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
@@ -232,12 +229,21 @@
       "publishDate": "2026-11-01"
     },
     {
-      "showId": "slanted-floors-off-broadway-2026",
-      "title": "Slanted Floors",
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "level": "possible",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
+      "headline": "FINALLY: “WAITING FOR LEFTY” HAS ARRIVED",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+      "title": "The Blue Violinist Over West End Avenue",
       "level": "possible",
       "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-slanted-floors-a-voyeurs-view-of-one-gay-new-york-city-household_1858778/",
-      "headline": "Review: Slanted Floors, a Voyeur’s View of One Gay New York City Household",
+      "url": "https://www.theatermania.com/news/review-the-blue-violinist-over-west-end-avenue-shouting-about-israel-on-the-upper-west-side_1858817/",
+      "headline": "Review: The Blue Violinist Over West End Avenue, Shouting About Israel on the Upper West Side",
       "publishDate": null
     },
     {
@@ -272,15 +278,6 @@
       "title": "The Heart",
       "level": "possible",
       "outletId": "plays-to-see",
-      "url": "https://playstosee.com/reviews/burlesque/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=burlesque",
-      "headline": "Burlesque",
-      "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "plays-to-see",
       "url": "https://playstosee.com/reviews/international-reviews/ireland/iris/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=iris",
       "headline": "Iris",
       "publishDate": "2026-10-29"
@@ -302,6 +299,15 @@
       "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
       "headline": "‘Waiting for Lefty’ Review: Protest Songs in the Key of Life",
       "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
+      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
+      "publishDate": "2026-10-30"
     },
     {
       "showId": "the-heart-off-broadway-2026",
