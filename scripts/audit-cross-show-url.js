@@ -10,9 +10,11 @@
  * existing review-texts file, regardless of which scraper wrote it.
  *
  * Catches the DISTINCTIVE-TITLE class (URL slug names a different long-titled
- * show). It does NOT catch short-titled shows (slug < 8 chars, e.g. "Care",
- * "Equus") — a bare short substring is too noisy to trust as a URL signal; those
- * need a content/date signal (audit-cross-attribution-by-critic.js).
+ * show). Short-titled shows (slug < 8 chars, e.g. "Care", "Equus") are caught
+ * only when every mention sits inside a longer title playing that year
+ * ("mean-girls" on Girls, BRO-6909); a bare short substring is too noisy to
+ * trust, so the rest need a content/date signal
+ * (audit-cross-attribution-by-critic.js).
  *
  * Usage:
  *   node scripts/audit-cross-show-url.js                 # report only

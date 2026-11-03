@@ -176,6 +176,74 @@ function getGenericTitleShow(showId, showsPath = DEFAULT_SHOWS_PATH) {
   return _genericCache.get(showsPath).get(showId) || null;
 }
 
+
+const _shortCache = new Map();
+/** {id, title, slug} for a show the index leaves out for a short slug (< 8 chars). */
+function getShortTitleShow(showId, opts = {}) {
+  if (Array.isArray(opts.shows)) {
+    const s = opts.shows.find(x => x && x.id === showId);
+    return s ? { id: s.id, title: s.title, slug: slugify(s.title) } : null;
+  }
+  const showsPath = opts.showsPath || DEFAULT_SHOWS_PATH;
+  if (!_shortCache.has(showsPath)) {
+    const m = new Map();
+    try {
+      const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+      for (const s of showsData.shows || showsData) {
+        const slug = slugify(s && s.title);
+        if (slug.length >= 3 && slug.length < 8) m.set(s.id, { id: s.id, title: s.title, slug });
+      }
+    } catch {}
+    _shortCache.set(showsPath, m);
+  }
+  return _shortCache.get(showsPath).get(showId) || null;
+}
+
+const LEAD_FILLER = new Set(['the', 'a', 'an', 'and', 'of', 'my', 'our']);
+/**
+ * BRO-6909: a short title ("Girls", "Vanya") is left out of the slug index, so
+ * the guard was off for it and a Mean Girls tour review
+ * (northwestend.com/mean-girls-liverpool-empire/) counted for Girls (Young Vic,
+ * 2026). Widening the index to short titles flagged 108 corpus rows, nearly all
+ * real ("august-wilsons-fences", two-show round-ups, place words). The one
+ * shape that held up: every mention of this title in the URL sits inside a
+ * longer show title that puts words IN FRONT of it ("mean-girls",
+ * "uncle-vanya"). A trailing subtitle ("tina-the-tina-turner-musical") or a
+ * credit ("August Wilson's Fences") is the same work, and one bare mention
+ * anywhere in the path ("and-juliet-shaftesbury-...-romeo-and-juliet") vouches.
+ * Corpus 2026-11-03 (6,183 short-title rows): flags only the Mean Girls one.
+ */
+function shortTitleLeftExtension(thisShow, urlPath, index, reviewYear) {
+  const slug = thisShow.slug;
+  // Undated: no way to tell a reused link from another show. A title whose
+  // slug lost a leading symbol ("& Juliet" -> "juliet") expects words in front.
+  if (reviewYear == null || /^[^a-z0-9]/i.test(String(thisShow.title || '').trim())) return null;
+  const esc = slug.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const runs = [...urlPath.matchAll(new RegExp(`(?<![a-z0-9])${esc}(?![a-z0-9])`, 'g'))];
+  if (!runs.length) return null;
+  const ownTail = new RegExp(`[’']s?\\s+${slug.split('-').join('[^a-z0-9]+')}\\W*$`, 'i');
+  const longer = index.filter(o => o.id !== thisShow.id && o.slug.endsWith(`-${slug}`)
+    // Playing in the review's own year, not the usual +-1/2 slack: Time Out's
+    // Vanya (2023) review sits on a reused ".../uncle-vanya-20-review" link,
+    // and no Uncle Vanya ran in 2023.
+    && o.startYear != null && o.startYear <= reviewYear && (o.endYear == null || o.endYear >= reviewYear)
+    && !ownTail.test(o.title || '')
+    && !sameTitleModuloCredit(o.slug, slug)
+    && o.slug.slice(0, -slug.length - 1).split('-').some(w => w.length >= 3 && !LEAD_FILLER.has(w)));
+  if (!longer.length) return null;
+  let owner = null;
+  for (const m of runs) {
+    const before = urlPath.slice(0, m.index);
+    const hit = longer.find(o => {
+      const prefix = o.slug.slice(0, -slug.length);
+      return before.endsWith(prefix) && !/[a-z0-9]/.test(before.charAt(before.length - prefix.length - 1));
+    });
+    if (!hit) return null;
+    owner = owner || hit;
+  }
+  return owner ? { matchedShowId: owner.id, matchedTitle: owner.title, showTitle: thisShow.title } : null;
+}
+
 /**
  * @param {string} showId   show the review is currently filed under
  * @param {string} url      the review URL
@@ -201,7 +269,10 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       const generic = getGenericTitleShow(showId, opts.showsPath || DEFAULT_SHOWS_PATH);
       if (generic) thisShow = generic;
     }
-    if (!thisShow) return null;
+    if (!thisShow) {
+      const short = getShortTitleShow(showId, opts);
+      return short ? shortTitleLeftExtension(short, urlPath, index, reviewYear) : null;
+    }
     const ownSlugVouches = !thisShow.generic;
 
     // Check if URL contains this show's slug — if yes, no mismatch
@@ -355,5 +426,6 @@ module.exports = {
   showRunYears,
   getShowSlugIndex,
   detectCrossShowUrlMismatch,
+  shortTitleLeftExtension,
   sameTitleModuloCredit,
 };
