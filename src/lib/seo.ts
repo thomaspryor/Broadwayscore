@@ -590,7 +590,8 @@ export function describeDiscountTickets(title: string, lr: ShowLotteryRush, curr
   const add = (label: string, price: unknown) => {
     if (typeof price === 'number' && Number.isFinite(price) && price > 0) {
       // A program named for its price ("MTC $35") already says it; "for $35" again reads as a typo.
-      options.push({ label, price, priceInLabel: label.includes(formatTicketPrice(price, currency)) });
+      const shown = formatTicketPrice(price, currency).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      options.push({ label, price, priceInLabel: new RegExp(`${shown}(?![\\d.])`).test(label) });
     }
   };
   if (lr.lottery) add(`a ${lr.lottery.type === 'digital' ? 'digital ' : ''}lottery${!lr.lottery.platform ? '' : /^show website$/i.test(lr.lottery.platform) ? ' on the show website' : ` (${lr.lottery.platform})`}`, lr.lottery.price);

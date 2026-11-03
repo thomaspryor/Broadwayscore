@@ -23,7 +23,7 @@
  */
 
 const fs = require('fs');
-const { mapSpecialToSpecialLottery } = require('./lib/special-lottery');
+const { mapSpecialToSpecialLottery, isAccessProgram } = require('./lib/special-lottery');
 const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
@@ -746,8 +746,10 @@ function mapBwayRushToShows(rawData) {
           break;
 
         case 'special':
-          if (!entry.special) {
-            entry.special = { name: cls.name, price: p.price };
+          // Written straight to specialLottery so the merge updates a changed price
+          // (a raw `special` was re-added and then discarded on every run, BRO-6878).
+          if (!entry.specialLottery || isAccessProgram(entry.specialLottery)) {
+            entry.specialLottery = { name: cls.name, platform: '', url: '', price: p.price, instructions: '' };
           }
           break;
 
@@ -944,7 +946,7 @@ function postProcessPlaybillEntry(entry) {
   }
 
   // 3. Deduplicate lottery & specialLottery when same price (with tolerance)
-  if (entry.lottery && entry.specialLottery) {
+  if (entry.lottery && entry.specialLottery && !isAccessProgram(entry.specialLottery)) {
     const normPlatform = (p) => (p || '').toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim();
     const samePlatform = normPlatform(entry.lottery.platform) === normPlatform(entry.specialLottery.platform);
     const priceDiff = Math.abs(entry.lottery.price - entry.specialLottery.price);
@@ -962,7 +964,7 @@ function postProcessPlaybillEntry(entry) {
   }
 
   // 4. If only specialLottery exists (no lottery), promote it to lottery
-  if (entry.specialLottery && !entry.lottery) {
+  if (entry.specialLottery && !entry.lottery && !isAccessProgram(entry.specialLottery)) {
     entry.lottery = {
       type: 'digital',
       platform: entry.specialLottery.platform,
@@ -1597,7 +1599,7 @@ function sanitizeData(existing) {
     }
 
     // --- Deduplicate lottery & specialLottery ---
-    if (show.lottery && show.specialLottery) {
+    if (show.lottery && show.specialLottery && !isAccessProgram(show.specialLottery)) {
       const priceDiff = Math.abs(show.lottery.price - show.specialLottery.price);
       const priceClose = priceDiff < 2 || priceDiff / Math.max(show.lottery.price, show.specialLottery.price) < 0.1;
       const normPlatform = (p) => (p || '').toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim();
@@ -1620,7 +1622,7 @@ function sanitizeData(existing) {
     }
 
     // --- Promote lone specialLottery → lottery ---
-    if (show.specialLottery && !show.lottery) {
+    if (show.specialLottery && !show.lottery && !isAccessProgram(show.specialLottery)) {
       show.lottery = {
         type: 'digital',
         platform: show.specialLottery.platform,
@@ -1919,7 +1921,9 @@ async function main() {
   console.log('='.repeat(60));
 }
 
-main().catch(err => {
+if (require.main !== module) {
+  module.exports = { sanitizeData };
+} else main().catch(err => {
   console.error('\n[Fatal]', err.message);
   if (verbose) console.error(err.stack);
   process.exit(1);

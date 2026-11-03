@@ -118,3 +118,8 @@ test('a program named for its price is not followed by the same price again (MTC
   assert.doesNotMatch(out, /MTC \$35\) for \$35/);
   assert.match(out, /lottery \(TodayTix\) for \$40/);
 });
+
+test('a price that is only a prefix of the number in the name is still stated ($3 vs "MTC $35")', () => {
+  const lr = { specialLottery: { name: 'MTC $35', platform: '', url: '', price: 3, instructions: '' } } as unknown as Parameters<typeof describeDiscountTickets>[1];
+  assert.match(describeDiscountTickets('X', lr, '$') || '', /\(MTC \$35\) for \$3\./);
+});

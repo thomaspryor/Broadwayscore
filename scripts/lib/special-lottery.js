@@ -21,4 +21,13 @@ function mapSpecialToSpecialLottery(row) {
   return row;
 }
 
-module.exports = { mapSpecialToSpecialLottery };
+// Named access programs (age/eligibility-restricted, sold by the theatre).
+// They are NOT a lottery: the "promote lone specialLottery -> lottery" and
+// "dedupe lottery vs specialLottery" cleanups must leave them alone, or the
+// next scrape turns "MTC $35" back into an unnamed $35 lottery (BRO-6878 review).
+const ACCESS_PROGRAM_NAMES = new Set(['MTC $35', 'HipTix', 'LincTix', 'Ponyboy Seat']);
+function isAccessProgram(sl) {
+  return !!(sl && typeof sl.name === 'string' && ACCESS_PROGRAM_NAMES.has(sl.name));
+}
+
+module.exports = { mapSpecialToSpecialLottery, isAccessProgram, ACCESS_PROGRAM_NAMES };
