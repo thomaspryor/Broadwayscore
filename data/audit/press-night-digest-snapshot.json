@@ -1,30 +1,32 @@
 {
-  "generatedAt": "2026-11-03T06:52:14.593Z",
+  "generatedAt": "2026-11-03T10:24:05.719Z",
   "night": "2026-11-02",
   "counts": {
     "total": 3,
     "passed": 0,
-    "failed": 0,
-    "notGraded": 3
+    "failed": 1,
+    "notGraded": 2
   },
   "lines": [
     {
-      "verdict": "PENDING",
-      "line": "Clifford Odets’ Waiting for Lefty: not graded yet, still being checked."
+      "verdict": "FAIL",
+      "line": "Clifford Odets’ Waiting for Lefty: published by the regular pipeline; 1 of 2 reviews live by 12:00am; New York Theatre Guide went live at 12:03am (late). Failed."
     },
     {
-      "verdict": "PENDING",
-      "line": "Slanted Floors: not graded yet, still being checked."
+      "verdict": "UNKNOWN",
+      "line": "Slanted Floors: not graded, no reviews were published overnight."
     },
     {
-      "verdict": "PENDING",
-      "line": "The Morbs: not graded yet, still being checked."
+      "verdict": "UNKNOWN",
+      "line": "The Morbs: not graded, no reviews were published overnight."
     }
   ],
   "scoreboard": {
-    "graded": 8,
+    "graded": 9,
     "passed": 0,
     "passedOnOwn": 0
   },
-  "missFirstSeen": {}
+  "missFirstSeen": {
+    "clifford-odets-waiting-for-lefty-off-broadway-2026|2026-11-02|review:nytg:Gillian Russo": "2026-11-03T10:24:05.719Z"
+  }
 }
