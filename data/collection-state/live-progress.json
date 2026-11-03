@@ -1,37 +1,42 @@
 {
-  "updatedAt": "2026-11-03T20:54:53.443Z",
-  "processed": 10,
-  "failed": 20,
-  "successRate": "33.3%",
+  "updatedAt": "2026-11-03T21:28:12.786Z",
+  "processed": 17,
+  "failed": 6,
+  "successRate": "73.9%",
   "tierBreakdown": {
-    "playwright": 3,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 7,
+    "amp": 1,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 9
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-11-03T20:47:46.442Z",
+      "t": "2026-11-03T21:18:35.462Z",
       "event": "bb-session",
-      "session": "001179c2",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+      "session": "cabbfd8f",
+      "url": "https://www.wsj.com/articles/mcneal-review-robert-downey-jr-broadway-debut-linco"
     },
     {
-      "t": "2026-11-03T20:50:51.455Z",
-      "event": "bb-session",
-      "session": "e779ee8e",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-03T20:50:52.181Z",
+      "t": "2026-11-03T21:18:36.181Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-11-03T21:27:03.479Z",
+      "event": "bb-session",
+      "session": "b606d9dd",
+      "url": "https://www.washingtonpost.com/entertainment/theater_dance/women-in-classic-musi"
+    },
+    {
+      "t": "2026-11-03T21:27:04.183Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
     }
   ]
 }
