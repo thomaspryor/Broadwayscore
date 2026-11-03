@@ -1214332,21 +1214332,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T00:19:09.145Z",
-    "completedAt": "2026-11-03T00:19:24.804Z",
-    "totalReviews": 3,
-    "processed": 3,
+    "startedAt": "2026-11-03T00:19:11.815Z",
+    "completedAt": "2026-11-03T00:19:45.273Z",
+    "totalReviews": 6,
+    "processed": 6,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 15511,
-      "output": 931,
-      "cacheRead": 11421,
+      "input": 39753,
+      "output": 1887,
+      "cacheRead": 22842,
       "cacheWrite": 0,
-      "total": 41575
+      "total": 95938
     },
-    "costUsd": 0.0608206,
-    "runId": "41551027025",
+    "costUsd": 0.1477838,
+    "runId": "41551065849",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1234222,16 +1234222,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "in-the-tomb-of-ten-thousand-calendars-regional-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "in-transit-2016",
         "ourDistribution": {
           "up": 22,
@@ -1244097,10 +1244087,20 @@
       {
         "showId": "pericles-regional-2024",
         "ourDistribution": {
-          "up": 13,
-          "flat": 2,
+          "up": 18,
+          "flat": 3,
           "down": 0,
-          "total": 15
+          "total": 21
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "pericles-regional-2026",
+        "ourDistribution": {
+          "up": 18,
+          "flat": 3,
+          "down": 0,
+          "total": 21
         },
         "hasDisagreement": false
       },
@@ -1263598,8 +1263598,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-03T00:24:22.212Z",
-    "completedAt": "2026-11-03T00:24:22.214Z",
+    "startedAt": "2026-11-03T00:24:42.200Z",
+    "completedAt": "2026-11-03T00:24:42.202Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1263612,7 +1263612,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41551027025",
+    "runId": "41551065849",
     "source": "comparative-rescore",
     "errorDetails": []
   }
