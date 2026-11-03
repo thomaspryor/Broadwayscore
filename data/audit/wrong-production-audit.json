@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T01:03:13.790Z",
+  "timestamp": "2026-11-03T01:37:02.481Z",
   "stats": {
-    "totalReviews": 79645,
-    "alreadyFlagged": 21985,
+    "totalReviews": 79707,
+    "alreadyFlagged": 21991,
     "dateGuardCatches": 219,
-    "directorMismatch": 3432,
+    "directorMismatch": 3436,
     "tvFilmSignals": 2261,
-    "londonSignals": 3585,
+    "londonSignals": 3586,
     "offBroadwaySignals": 734,
     "yearMismatch": 355,
-    "noPublishDate": 8428
+    "noPublishDate": 8456
   },
   "findings": [
     {
@@ -13363,6 +13363,7 @@
     {
       "showId": "come-from-away-moonlight-regional-2026",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 89,
       "publishDate": "2026-09-10",
       "url": "https://www.sandiegouniontribune.com/2026/09/10/review-moonlights-moving-come-from-away-a-balm-for-the-soul/",
       "findings": [
@@ -27274,6 +27275,7 @@
     {
       "showId": "hairspray-regional-2026",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 67,
       "publishDate": "2026-06-16",
       "url": "https://www.sandiegouniontribune.com/2026/06/16/review-new-villages-hairspray-is-fun-but-uneven/",
       "findings": [
@@ -36318,6 +36320,7 @@
     {
       "showId": "kims-convenience-regional-2026",
       "file": "broadwayworld--erinmarie-reiter.json",
+      "score": 77,
       "publishDate": "2026-05-22",
       "url": "https://www.broadwayworld.com/san-diego/article/Review-KIMS-CONVENIENCE-at-The-Old-Globe-20260522",
       "findings": [
@@ -36331,6 +36334,7 @@
     {
       "showId": "kims-convenience-regional-2026",
       "file": "san-diego-jewish-world--unknown.json",
+      "score": 86,
       "publishDate": null,
       "url": "https://www.sdjewishworld.com/2026/05/24/television-sit-com-kims-convenience-comes-to-old-globe-stage/",
       "findings": [
@@ -36344,6 +36348,7 @@
     {
       "showId": "kims-convenience-regional-2026",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 78,
       "publishDate": "2026-05-22",
       "url": "https://www.sandiegouniontribune.com/2026/05/22/review-kims-convenience-a-funny-and-touching-look-at-the-immigrant-experience/",
       "findings": [
@@ -36357,6 +36362,7 @@
     {
       "showId": "kims-convenience-regional-2026",
       "file": "theatrereviewskurahashi--yuko-kurahashi.json",
+      "score": 83,
       "publishDate": "2026-05-24",
       "url": "https://theatrereviewskurahashi.wordpress.com/2026/05/25/humanity-love-and-caring-in-the-old-globe-theatres-kims-convenience/",
       "findings": [
@@ -44664,9 +44670,37 @@
     },
     {
       "showId": "north-by-northwest-old-regional-2026",
+      "file": "arts-meme--debra-levine.json",
+      "publishDate": "2026-07-09",
+      "url": "https://artsmeme.com/2026/07/09/on-the-run-in-summer-2026-staycation-fun-north-by-northwest-at-the-globe-in-san-diego/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
       "file": "broadwayworld--erinmarie-reiter.json",
+      "score": 79,
       "publishDate": "2026-07-11",
       "url": "https://www.broadwayworld.com/san-diego/article/Review-NORTH-BY-NORTHWEST-at-The-Old-Globe-20260711",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "from-another-zero--alejandra-enciso.json",
+      "score": 86,
+      "publishDate": "2026-07-20",
+      "url": "https://fromanother0.com/the-uk-comes-to-san-diego-in-the-north-american-premiere-of-north-by-northwest/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44691,6 +44725,7 @@
     {
       "showId": "north-by-northwest-old-regional-2026",
       "file": "san-diego-story--david-dixon.json",
+      "score": 77,
       "publishDate": "2026-07-14",
       "url": "https://sandiegostory.com/creative-interpretation-of-a-hitchcock-classic/",
       "findings": [
@@ -44717,6 +44752,7 @@
     {
       "showId": "north-by-northwest-old-regional-2026",
       "file": "stageandcinema--michael-m-landman-karny.json",
+      "score": 77,
       "publishDate": "2026-07-14",
       "url": "https://stageandcinema.com/2026/07/14/north-by-northwest-old-globe-review-san-diego/",
       "findings": [
@@ -44730,6 +44766,7 @@
     {
       "showId": "north-by-northwest-old-regional-2026",
       "file": "theatrereviewskurahashi--yuko-kurahashi.json",
+      "score": 79,
       "publishDate": "2026-07-13",
       "url": "https://theatrereviewskurahashi.wordpress.com/2026/07/13/a-hitchcock-thriller-in-physical-theatre-north-by-northwest-at-the-old-globe/",
       "findings": [
@@ -53773,6 +53810,7 @@
     {
       "showId": "scapin-regional-2026",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 73,
       "publishDate": "2026-07-28",
       "url": "https://www.sandiegouniontribune.com/2026/07/28/review-in-north-coast-reps-scapin-the-actors-are-having-the-most-fun/",
       "findings": [
@@ -65144,7 +65182,22 @@
     },
     {
       "showId": "the-family-album-lajolla-regional-2026",
+      "file": "from-another-zero--alejandra-enciso.json",
+      "score": 78,
+      "publishDate": "2026-07-31",
+      "url": "https://fromanother0.com/the-family-album-from-waves-to-stage/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-family-album-lajolla-regional-2026",
       "file": "san-diego-story--david-dixon.json",
+      "score": 79,
       "publishDate": "2026-07-31",
       "url": "https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical/",
       "findings": [
@@ -65157,6 +65210,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-family-album-lajolla-regional-2026",
+      "file": "talk-theatre-to-me--unknown.json",
+      "score": 89,
+      "publishDate": "2026-07-27",
+      "url": "https://www.talktheatretome.com/theatre/ljpthefamilyalbum",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
         }
       ]
     },
@@ -73993,6 +74060,7 @@
     {
       "showId": "the-spongebob-musical-regional-2026",
       "file": "san-diego-union-tribune--pam-kragen.json",
+      "score": 78,
       "publishDate": "2026-06-15",
       "url": "https://www.sandiegouniontribune.com/2026/06/15/review-cygnets-spongebob-musical-a-joyful-cartoon-come-to-life/",
       "findings": [
@@ -128547,6 +128615,19 @@
       "score": 89,
       "publishDate": "2026-10-29",
       "url": "https://www.shinylife.co.uk/2026/10/29/the-lives-of-others/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "the-recs--the-recs-sw.json",
+      "publishDate": "2026-11-01",
+      "url": "https://therecs.co.uk/the-lives-of-others/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
