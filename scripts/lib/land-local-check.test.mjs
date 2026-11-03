@@ -204,7 +204,7 @@ test('pre-commit warns for staged prebuild outputs without generator changes', (
     sh('read-tree', '--empty');
     stage('public/data/research/example.json');
     assert.doesNotMatch(hook(), /WARNING: staged prebuild outputs/, 'unrelated datasets are not prebuild output');
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 // BRO-6252: the caller keeps committing while the ~20 min base run is in flight. Real git, no mocks.
