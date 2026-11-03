@@ -20,6 +20,12 @@
  *   node scripts/audit-cross-show-url.js --json          # machine-readable
  *   node scripts/audit-cross-show-url.js --strict        # exit 1 if unhandled > --max
  *   node scripts/audit-cross-show-url.js --strict --max=50  # CI monitor: fail only above baseline
+ *   node scripts/audit-cross-show-url.js --source=reviews.json --strict --max=N
+ *       # BRO-6910: scan the INCLUDED reviews in data/reviews.json (no
+ *       # review-texts needed, so it runs in test.yml). Every row there is live
+ *       # on the site, so each mismatch counts as unhandled; the baseline catches
+ *       # a detector change that would start flagging (and so dropping at ingest)
+ *       # reviews we already publish, the Waiting for Lefty failure (BRO-6909).
  *
  * IMPORTANT — report-only by default, NEVER auto --fix the whole corpus.
  * As a blanket scan the canonical guard has a known false-positive tail:
@@ -42,6 +48,7 @@ const { isRejectedNonReview } = require('./lib/review-guards');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -50,6 +57,8 @@ const ARGV = process.argv.slice(2);
 const FIX = ARGV.includes('--fix');
 const JSON_OUT = ARGV.includes('--json');
 const STRICT = ARGV.includes('--strict');
+const SOURCE = (ARGV.find(a => a.startsWith('--source=')) || '--source=review-texts').slice('--source='.length);
+const REVIEWS_JSON_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
 // strict fails when unhandled > MAX. Parsed lazily inside main() rather than at
 // module scope: parseMaxArgOrExit can process.exit(2), and an exit fired while
 // a module is still being required would take down any future importer before
@@ -79,6 +88,11 @@ function isAlreadyHandled(d) {
 function main() {
   // Exit 2 here matches this file's existing "cannot run" convention below.
   MAX = parseMaxArgOrExit(ARGV, { scriptName: 'audit-cross-show-url' });
+  if (SOURCE !== 'review-texts' && SOURCE !== 'reviews.json') {
+    console.error(`✗ --source must be review-texts or reviews.json (got ${SOURCE})`);
+    process.exit(2);
+  }
+  if (SOURCE === 'reviews.json') return mainReviewsJson();
   if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
     console.error(`✗ review-texts not found at ${REVIEW_TEXTS_DIR} (worktree without data symlinks?)`);
     process.exit(2);
@@ -127,6 +141,16 @@ function main() {
     }
   }
 
+  // A --strict run that scanned nothing (missing/empty checkout) must fail
+  // loud instead of passing vacuously (task #1063 class).
+  try {
+    assertCorpusScanned(scanned, { gate: STRICT, label: REVIEW_TEXTS_DIR });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\n❌ GATE: ${e.message}`);
+    process.exit(1);
+  }
+
   if (JSON_OUT) {
     console.log(JSON.stringify({ scanned, total: hits.length, handled: hits.length - unhandled.length, unhandled: unhandled.length, fixed: FIX ? unhandled.length : 0, hits: unhandled }, null, 2));
   } else {
@@ -141,6 +165,48 @@ function main() {
 
   if (STRICT && unhandled.length > MAX && !FIX) {
     console.error(`\n✗ STRICT: ${unhandled.length} unhandled cross-show URL mismatch(es) > baseline ${MAX}. A new scrape likely leaked cross-show URLs — triage the clusters (2+ reviews → same other show) and --fix the confirmed ones.`);
+    process.exit(1);
+  }
+}
+
+// BRO-6910: the included-reviews corpus. Read-only (--fix refused: rows in
+// reviews.json are derived, the fix belongs on the review-texts file).
+function mainReviewsJson() {
+  if (FIX) { console.error('✗ --fix is not supported with --source=reviews.json'); process.exit(2); }
+  if (!fs.existsSync(REVIEWS_JSON_PATH)) {
+    console.error(`✗ reviews.json not found at ${REVIEWS_JSON_PATH}`);
+    process.exit(2);
+  }
+  const showsPath = fs.existsSync(SHOWS_PATH) ? SHOWS_PATH : undefined;
+  const raw = JSON.parse(fs.readFileSync(REVIEWS_JSON_PATH, 'utf8'));
+  const rows = Array.isArray(raw) ? raw : (raw.reviews || []);
+  let scanned = 0;
+  const hits = [];
+  for (const r of rows) {
+    if (!r || !r.showId || !r.url) continue;
+    scanned++;
+    const m = detectCrossShowUrlMismatch(r.showId, r.url, { ...(showsPath ? { showsPath } : {}), publishDate: r.publishDate });
+    if (m) hits.push({ showId: r.showId, matchedShowId: m.matchedShowId, matchedTitle: m.matchedTitle, outletId: r.outletId || null, url: r.url, publishDate: r.publishDate || null });
+  }
+  // A --strict run that scanned nothing (missing/empty checkout) must fail
+  // loud instead of passing vacuously (task #1063 class).
+  try {
+    assertCorpusScanned(scanned, { gate: STRICT, label: 'data/reviews.json' });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`\n❌ GATE: ${e.message}`);
+    process.exit(1);
+  }
+
+  if (JSON_OUT) {
+    console.log(JSON.stringify({ source: 'reviews.json', scanned, flagged: hits.length, max: MAX, hits }, null, 2));
+  } else {
+    console.log(`Cross-show URL audit (included reviews, data/reviews.json): scanned ${scanned} URLs, ${hits.length} flagged by the ingest guard`);
+    for (const h of hits.slice(0, 40)) console.log(`  ${h.showId} <- ${h.matchedShowId} | ${h.url.slice(0, 80)}`);
+    if (hits.length > 40) console.log(`  … ${hits.length - 40} more`);
+  }
+  if (STRICT && hits.length > MAX) {
+    console.error(`\n✗ STRICT: ${hits.length} published reviews are flagged by detectCrossShowUrlMismatch > baseline ${MAX}. gather-reviews would drop these at ingest (BRO-6909 Waiting for Lefty). Tighten the detector, or raise the baseline only after checking the new hits are real cross-show leaks.`);
     process.exit(1);
   }
 }
