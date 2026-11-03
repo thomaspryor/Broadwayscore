@@ -624,6 +624,13 @@ const SITE_SEARCH_ENDPOINTS = {
     linkPattern: /href="(https:\/\/www\.telegraph\.co\.uk\/theatre\/[^"]*)"/gi,
     requiresJs: true,
     outletIdOverride: 'telegraph',
+    // BRO-6898: disabled. Ledger 2026-11-01..03: ScrapingBee returned HTTP 500 on
+    // 626 of 660 telegraph.co.uk renders (3,190 credits). Scrapingdog returns 200
+    // but the byte-identical 152,030-byte "Search the Telegraph" shell for three
+    // different queries (Hamilton, Oedipus, Kiss Me Kate) whose only /theatre/ link is
+    // the nav item /theatre/tickets/: the endpoint no longer returns results on either
+    // provider. The 'telegraph' section index above is the working path.
+    applies: () => false,
   },
 
   'lighting-and-sound-america': {

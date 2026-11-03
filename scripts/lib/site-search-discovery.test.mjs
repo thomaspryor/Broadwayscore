@@ -162,3 +162,12 @@ test('BRO-6766: Opera Today is an opera-only, title-validated endpoint that reje
   }
   assert.equal(hasNonMetOperaUrlMarker('https://operatoday.com/2026/11/cosi-fan-tutte-review/', 'eno').rejected, false);
 });
+
+test('telegraph-search is disabled: no provider call is made (BRO-6898)', async () => {
+  const { searchOutletSite } = require('./site-search-discovery.js');
+  const cfg = SITE_SEARCH_ENDPOINTS['telegraph-search'];
+  assert.ok(cfg, 'entry still exists so sibling-exclusion logic keeps working');
+  assert.equal(cfg.applies({ type: 'play' }), false);
+  const r = await searchOutletSite('telegraph-search', 'Hamilton', { show: { type: 'musical' }, skipJs: false });
+  assert.deepEqual(r, []);
+});
