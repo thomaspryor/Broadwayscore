@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T04:07:11.468Z",
+  "timestamp": "2026-11-03T04:26:21.475Z",
   "stats": {
-    "totalReviews": 79766,
-    "alreadyFlagged": 22013,
+    "totalReviews": 79771,
+    "alreadyFlagged": 22015,
     "dateGuardCatches": 219,
-    "directorMismatch": 3451,
+    "directorMismatch": 3452,
     "tvFilmSignals": 2262,
-    "londonSignals": 3586,
-    "offBroadwaySignals": 734,
+    "londonSignals": 3587,
+    "offBroadwaySignals": 735,
     "yearMismatch": 359,
-    "noPublishDate": 8438
+    "noPublishDate": 8435
   },
   "findings": [
     {
@@ -29269,6 +29269,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2012",
+      "file": "timeout-london--unknown.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emily burns\" from hay-fever-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -133377,6 +133395,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-woodsman-off-broadway-2016",
+      "file": "as-her-world-turns--erica-meyer.json",
+      "score": null,
+      "publishDate": "April 12th, 2016",
+      "url": "https://www.asherworldturns.com/spring-2016-nyc-theater-guide/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
