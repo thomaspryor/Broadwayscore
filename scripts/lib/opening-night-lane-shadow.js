@@ -23,12 +23,33 @@ const { withSpendShow } = require('./provider-telemetry');
 
 /** The shadow bypasses the live driver's lease, but must share its count-and-warn spend scope. */
 async function runShadowNight(options) {
-  const restoreSpend = beginPressNightSpend(options.show, options.now());
+  // A replay passes spendNow (the real clock), never its replay clock: a replay weeks later must not reopen the press-night window, which
+  // relaxes the ScrapingDog press-night cap to warn and books real spend to a past night (BRO-6872 review).
+  const restoreSpend = beginPressNightSpend(options.show, (options.spendNow || options.now)());
   try {
     return await withSpendShow(options.show.id, () => require('./opening-night-lane/lane-runner').runLaneNight(options));
   } finally {
     restoreSpend();
   }
+}
+
+/**
+ * The clock a REPLAY of a past night runs on (BRO-6872). trust-model.isLaneReview only takes rows seen between
+ * SEEN_BEFORE_DAYS before the night and SEEN_AFTER_DAYS after it, so a night replayed a week later stamped every row
+ * with today and the publish merge refused all of them ("not a lane review", 54x per replay). A replay instead runs on
+ * a clock that starts at the night's embargo and advances in real time; the trust check itself is unchanged.
+ * Returns null when the night is still inside the window (a live shadow keeps the real clock) unless `force`.
+ */
+function replayClock({ show, night, realNow = Date.now, force = false }) {
+  const { SEEN_AFTER_DAYS } = require('./opening-night-lane/trust-model');
+  const nightMs = Date.parse(`${night}T00:00:00Z`);
+  if (!Number.isFinite(nightMs)) throw new Error(`shadow: bad night ${night}`);
+  const startReal = realNow();
+  const pastWindow = startReal >= nightMs + (SEEN_AFTER_DAYS + 1) * 24 * 3600 * 1000;
+  if (!force && !pastWindow) return null;
+  const anchor = Date.parse(require('./press-night-record').defaultEmbargoAt(show));
+  if (!Number.isFinite(anchor)) throw new Error(`shadow: no embargo time for ${show && show.id}`);
+  return { anchorAt: new Date(anchor).toISOString(), now: () => anchor + (realNow() - startReal) };
 }
 
 // The real night job (opening-night-lane-live.yml, mode=night) runs the lane for 270 minutes; a shadow review scored
@@ -268,6 +289,6 @@ function writeShadowReport(outDir, rep) {
 }
 
 module.exports = {
-  runShadowNight,
+  runShadowNight, replayClock,
   REAL_NIGHT_WINDOW_MIN, createShadowPublishPorts, createScoreRecorder, createLiveRecorder, buildShadowReport, reportMarkdown, writeShadowReport,
 };

@@ -27,6 +27,7 @@
 const failures = require('./lane-failures');
 const trust = require('./trust-model');
 const { canonicalUrl, hasReviewSignal } = require('./discovery');
+const { laneNonReviewReason } = require('./lane-guards');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
 const { getHardPaywallDomain, HARD_PAYWALL_FLOORS } = require('../paywall-completeness');
@@ -203,6 +204,10 @@ function createInlineScoring({
   async function scoreReview(row, fetchedReview = {}) {
     const key = canonicalUrl(row.url);
     gate('score', key);
+    // The write path's non-review and roundup guards, which the lane bypasses, applied to the fetched page before any
+    // model is paid for it: a verdict, never retried (BRO-6872: Gold Derby roundups scored as reviews).
+    const notAReview = laneNonReviewReason(row);
+    if (notAReview) return fail('score', key, new Error(`not a review: ${notAReview}`), true);
     const excerpts = usableExcerpts((fetchedReview && fetchedReview.excerpts) || {});
     const ctx = { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete' };
     // The excerpt is the scorer's text only when there is no page text to score: page text is scored as it always was,

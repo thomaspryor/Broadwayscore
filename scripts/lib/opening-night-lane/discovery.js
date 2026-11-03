@@ -30,7 +30,11 @@ const path = require('path');
 const { findBWWRoundupLinkOnHomepage } = require('../bww-homepage-scan');
 const { findDTLIShowLinkOnHomepage } = require('../dtli-homepage-scan');
 const { parseFeedItems, titleMatchesShow, urlSlugMatchesShow, ALL_FEEDS } = require('../rss-discovery');
-const { resolveOutletFromUrl } = require('../review-normalization');
+const { resolveOutletFromUrl, URL_HOST_ALIASES } = require('../review-normalization');
+
+// Old host -> current host for outlets that serve one article on both (BRO-6872: The Independent was scored twice,
+// once per host). Exact hosts only, after www is stripped; shared with normalizeUrl so the two never disagree.
+const HOST_ALIAS = new Map(URL_HOST_ALIASES);
 const { isFeatureSectionReviewPath } = require('../domain-filters');
 const { admitLaneCandidate } = require('./trust-model');
 const ledger = require('./ledger');
@@ -81,7 +85,7 @@ const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '
 const hostMatches = (host, list) => !!host && list.some((h) => host === h || host.endsWith(`.${h}`));
 
 /**
- * One canonical form per article: https, no www, tracking parameters dropped, remaining parameters sorted, no
+ * One canonical form per article: https, no www, old outlet hosts mapped to current ones, tracking parameters dropped, remaining parameters sorted, no
  * fragment, no trailing slash, no AMP suffix. Returns null for redirect wrappers and anything unparseable: the real
  * article behind a wrapper is unknown, and guessing would split one review across two keys.
  */
@@ -89,7 +93,8 @@ function canonicalUrl(url) {
   let u;
   try { u = new URL(String(url).replace(/&amp;/g, '&').trim()); } catch { return null; }
   if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
-  const host = u.hostname.replace(/^www\./, '').toLowerCase();
+  const bare = u.hostname.replace(/^www\./, '').toLowerCase();
+  const host = HOST_ALIAS.get(bare) || bare;
   if (!host || hostMatches(host, WRAPPER_HOSTS)) return null;
   u.protocol = 'https:';
   u.hostname = host;

@@ -212,6 +212,6 @@ function buildLaneReview({
 }
 
 module.exports = {
-  PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS,
+  PROVENANCE_KEY, PRODUCTION_VERIFIED, SOURCES, LANE_BYPASSED_GUARDS, MIN_FULL_TEXT_CHARS, SEEN_BEFORE_DAYS, SEEN_AFTER_DAYS,
   buildLaneProvenance, isLaneReview, laneRowSource, laneBypasses, calendarDateIn, admitLaneCandidate, laneReviewFilename, paywallFallbackScore, buildLaneReview,
 };

@@ -35,6 +35,7 @@ const SAMPLES = {
   'britishtheatre.com': ['https://www.britishtheatre.com/posts/the-story-review-round-up', 'britishtheatrecom', LONDON_SHOW],
   'londontheatredirect.com': ['https://www.londontheatredirect.com/news/the-story-review-round-up', 'londontheatredirect', LONDON_SHOW],
   'independent.co.uk': ['https://www.independent.co.uk/arts-entertainment/theatre-dance/the-story-reviews-round-up-a1234.html', 'independent', LONDON_SHOW],
+  'the-independent.com': ['https://www.the-independent.com/arts-entertainment/theatre-dance/the-story-reviews-round-up-a1234.html', 'independent', LONDON_SHOW],
   'latimes.com': ['https://www.latimes.com/entertainment-arts/story/2026-01-01/other-desert-cities-what-did-the-critics-think', 'latimes', BROADWAY_SHOW],
   'standard.co.uk': ['https://www.standard.co.uk/culture/theatre/the-story-reviews-round-up-a1234.html', 'standard', LONDON_SHOW],
   'dailymail.co.uk': ['https://www.dailymail.co.uk/tvshowbiz/article-1234/The-Story-panned-by-critics.html', 'daily-mail', LONDON_SHOW],

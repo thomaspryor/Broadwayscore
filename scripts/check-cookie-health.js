@@ -46,6 +46,9 @@ const CRITICAL_OUTLETS = {
     testUrl: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3',
     authCookies: ['sso', 'djcs_route', 'session'],
     proxyBlocked: true, // WSJ aggressively blocks proxy access — live test unreliable
+    // BRO-6872: a non-subscriber WSJ page is still ~600 KB of HTML, so "OK via plain-HTTPS (638543 chars)" was printed
+    // while the opening-night lane, on the same cookies, extracted a 597-char teaser. The article body is the signal.
+    minBodyChars: 1500,
   },
   newyorker: {
     envVar: 'NEWYORKER_COOKIES',
@@ -630,13 +633,22 @@ function classifyLiveContent(html, authCookies, source) {
   return { status: 'pass', message: `OK via ${source} (${html.length} chars)` };
 }
 
-async function checkLiveAccessPlain(fileKey, testUrl, authCookies) {
+/** A page that passed on size alone still fails when its extracted article body is a paywall teaser (BRO-6872). */
+function withBodyCheck(result, html, testUrl, minBodyChars) {
+  if (!minBodyChars || result.status !== 'pass') return result;
+  const body = extractArticleTextFromUrl(html, testUrl) || '';
+  if (body.length >= minBodyChars) return { ...result, message: `${result.message}, article body ${body.length} chars` };
+  return { status: 'fail', message: `${result.message.replace(/^OK/, 'Fetched')} but the article body is ${body.length}/${minBodyChars} chars: a paywall teaser, subscriber cookies not authenticating` };
+}
+
+async function checkLiveAccessPlain(fileKey, testUrl, authCookies, minBodyChars) {
   // Tier 1: plain HTTPS + cookies (works from residential IPs only)
   try {
     const plain = await fetchWithCookiesPlain(testUrl);
     if (plain && plain.content) {
       const result = classifyLiveContent(plain.content, authCookies, 'plain-HTTPS');
-      if (result.status === 'pass') return result;
+      // The page came through: its body says whether the cookies authenticated (Bright Data would fetch the same teaser).
+      if (result.status === 'pass') return withBodyCheck(result, plain.content, testUrl, minBodyChars);
     }
   } catch (err) {
     console.log(`  plain-HTTPS error: ${err.message}`);
@@ -645,8 +657,9 @@ async function checkLiveAccessPlain(fileKey, testUrl, authCookies) {
   // Tier 2: Bright Data with cookies (residential proxy)
   const bd = await fetchWithBrightDataCookies(testUrl);
   if (bd.ok) {
-    const bdResult = classifyLiveContent(bd.content, authCookies, 'Bright Data');
-    if (bdResult.status === 'pass') return bdResult;
+    const bdResult = withBodyCheck(classifyLiveContent(bd.content, authCookies, 'Bright Data'), bd.content, testUrl, minBodyChars);
+    // A teaser through Bright Data is the cookies failing, not anti-bot blocking: report it, don't fall through to warn.
+    if (bdResult.status === 'pass' || /paywall teaser/.test(bdResult.message || '')) return bdResult;
   }
 
   // Both tiers failed. For WSJ/New Yorker this is the expected CI outcome —
@@ -815,7 +828,7 @@ async function main() {
       // ScrapingBee. Post PR #260, fetchWithCookiesPlain is the primary path gather/collect
       // take for these domains, so this is the real end-to-end verification.
       const live = config.proxyBlocked
-        ? await checkLiveAccessPlain(fileKey, config.testUrl, config.authCookies)
+        ? await checkLiveAccessPlain(fileKey, config.testUrl, config.authCookies, config.minBodyChars)
         : await checkLiveAccess(fileKey, config.testUrl, existing.cookies, config.authCookies, config.minBodyChars, config);
       console.log(`${icons[live.status]} ${fileKey}: ${live.message}`);
       return { name: fileKey, layer: 3, status: live.status, message: live.message, isCritical: true };
@@ -978,4 +991,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { CRITICAL_OUTLETS, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain };
+module.exports = { CRITICAL_OUTLETS, checkAuthExpiry, walledVerdictToResult, checkLiveAccessWalledPlain, withBodyCheck };

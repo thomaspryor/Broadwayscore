@@ -47,6 +47,9 @@ const THEATER_FEEDS = [
   // newyorktheater.me is Jonathan Mandell's single-author blog — stamp the byline so
   // RSS hits don't land in _pending/ with criticName='Unknown'. See feedback_rss_discovery_pending_strand.md.
   { url: 'https://www.newyorktheater.me/feed/', outletId: 'nyt-theater', name: 'NY Theater', needsFilter: true, market: 'broadway', defaultCritic: 'Jonathan Mandell' },
+  // Exeunt NYC (T2). The site-wide /feed/ is empty; the reviews category feed lists each review the night it posts.
+  // No aggregator cited its 2026-10-22 Imaginary Invalid review and the Google News link never decoded (BRO-6872).
+  { url: 'https://exeuntnyc.com/reviews/feed/', outletId: 'exeunt-magazine', name: 'Exeunt Magazine', needsFilter: true, market: 'broadway' },
 ];
 
 // West End theater feeds (verified March 2026)

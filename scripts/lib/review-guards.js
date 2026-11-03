@@ -1842,7 +1842,7 @@ function isRoundupUrl(url) {
   if (/londontheatredirect\.com\/(?:[a-z]{2}\/)?news\/[^?#]*(?:review-round-?up|what-are-the-critics-saying)/i.test(url)) {
     return { isRoundup: true, reason: 'London Theatre Direct review roundup article' };
   }
-  if (/independent\.co\.uk\/[^?#]*-reviews?-round-?up-/i.test(url)) {
+  if (/(?:independent\.co\.uk|the-independent\.com)\/[^?#]*-reviews?-round-?up-/i.test(url)) {
     return { isRoundup: true, reason: 'Independent critics review roundup article' };
   }
   if (/latimes\.com\/[^?#]*what-did-(?:the-)?critics-think/i.test(url)) {
@@ -3448,6 +3448,8 @@ const ROUNDUP_HOST_OUTLETS = {
   // BRO-4875, with their isRoundupUrl patterns. Ids per data/outlet-registry.json.
   'londontheatredirect.com': ['londontheatredirect', 'london-theatre-direct'],
   'independent.co.uk': ['independent', 'the-independent'],
+  // The lane canonicalizes independent.co.uk to its current host (URL_HOST_ALIASES), so the guard must know both (BRO-6872).
+  'the-independent.com': ['independent', 'the-independent'],
   'latimes.com': ['latimes', 'la-times', 'los-angeles-times'],
   // BRO-6685, with its isRoundupUrl pattern.
   'goldderby.com': ['goldderby', 'gold-derby'],

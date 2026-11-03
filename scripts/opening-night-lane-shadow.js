@@ -7,7 +7,13 @@
  * scripts/lib/opening-night-lane-shadow.js.
  *
  *   npx tsx scripts/opening-night-lane-shadow.js --show=ID --night=YYYY-MM-DD --out=DIR
- *       [--window-min=300] [--live-base=https://broadwayscorecard.com] [--adapters=config.json]
+ *       [--window-min=300] [--live-base=https://broadwayscorecard.com] [--adapters=config.json] [--replay]
+ *
+ * REPLAY (BRO-6872): a night more than SEEN_AFTER_DAYS old (or any night with --replay) runs on a clock that starts at
+ * the night's embargo, so the lane's trust window judges rows as on the night. Its batches then go through the real
+ * publish merge (mergeShowRows) into a modelled site (lib/lane-replay-grade.js createReplaySitePorts) instead of
+ * being dropped, and the report is graded (lib/lane-shadow-grade.js: recall, false positives, duplicates, score gaps,
+ * time to score) into shadow-grade.{json,md}. Nothing outside --out is written either way.
  *
  * tsx is needed because the ensemble scorer is TypeScript. Writes only under --out: ledger/, live-first-seen.jsonl and
  * lane-scores.jsonl as they happen, shadow-report.{json,md} every 2 minutes and at the end (also on SIGTERM). Spends scraper
@@ -41,6 +47,8 @@ async function main() {
   const windowMin = Number(arg('window-min')) > 0 ? Number(arg('window-min')) : 300;
   const liveBase = arg('live-base') || 'https://broadwayscorecard.com';
   const adaptersConfig = arg('adapters') ? JSON.parse(fs.readFileSync(arg('adapters'), 'utf8')) : {};
+  const replay = shadow.replayClock({ show, night, force: argv.includes('--replay') });
+  const now = replay ? replay.now : Date.now;
   const ledgerDir = path.resolve(outDir, 'ledger');
   fs.mkdirSync(ledgerDir, { recursive: true });
 
@@ -53,7 +61,7 @@ async function main() {
   // Three models, like production (llm-ensemble-score.yml leaves OPENROUTER_API_KEY out: "Kimi disabled"). With the key
   // the scorer adds Kimi, whose 300 s OpenRouter timeouts and retries cost ~15 minutes per review in the first CI run.
   const scorer = new EnsembleReviewScorer(env.ANTHROPIC_API_KEY, env.OPENAI_API_KEY, env.GEMINI_API_KEY);
-  const scoring = inline.createInlineScoring({ show, night, ledgerDir, now: Date.now, ...inline.realFetchPorts({ fetchPage: laneFetch.fetchPage }), scoreText: inline.ensembleScoreText(scorer) });
+  const scoring = inline.createInlineScoring({ show, night, ledgerDir, now, ...inline.realFetchPorts({ fetchPage: laneFetch.fetchPage }), scoreText: inline.ensembleScoreText(scorer) });
   // BRO-6651: record the aggregator/index pages each pass reads, encrypted (the repo is public) beside the report artifact.
   const recorder = require('./lib/opening-night-lane/driver').recorderFromEnv({ ...env, LANE_RECORD_DIR: env.LANE_RECORD_DIR || path.resolve(outDir, 'recording') });
   const fetchText = recorder.wrapFetchText(discovery.fetchTextFrom(laneFetch.fetchPage));
@@ -66,16 +74,22 @@ async function main() {
   };
 
   const out = path.resolve(outDir);
+  const grader = require('./lib/lane-shadow-grade');
+  // Replay: the real merge into a modelled site; the live shadow keeps its apply-nothing ports.
+  const site = require('./lib/lane-replay-grade').createReplaySitePorts({ now });
   const rows = [];
-  const scores = shadow.createScoreRecorder({ logFile: path.join(out, 'lane-scores.jsonl') });
+  const scores = shadow.createScoreRecorder({ logFile: path.join(out, 'lane-scores.jsonl'), now });
   // A live fetch with no timeout could hang the recorder past the window; 20 s is a missed poll, not a stall.
   const fetchImpl = (url, opts = {}) => globalThis.fetch(url, { ...opts, signal: AbortSignal.timeout(20000) });
-  const live = shadow.createLiveRecorder({ fetchLiveShow: publish.fetchLiveShowFrom(liveBase, { fetchImpl }), showId, logFile: path.join(out, 'live-first-seen.jsonl') });
-  const startedAt = Date.now();
+  const live = shadow.createLiveRecorder({ fetchLiveShow: publish.fetchLiveShowFrom(liveBase, { fetchImpl }), showId, now, logFile: path.join(out, 'live-first-seen.jsonl') });
+  const startedAt = now();
   let result = null; let endedAt = null;
-  const writeReport = () => shadow.writeShadowReport(out, shadow.buildShadowReport({
-    show, night, ledgerDir, scores: scores.snapshot(), rows, live: live.snapshot(), startedAt, endedAt, result,
-  }));
+  const writeReport = () => {
+    const rep = shadow.buildShadowReport({ show, night, ledgerDir, scores: scores.snapshot(), rows, live: live.snapshot(), startedAt, endedAt, result });
+    const md = shadow.writeShadowReport(out, rep);
+    if (!replay) return md;
+    return md + grader.writeGrade(out, grader.gradeShadowReport(rep, { replayAnchorAt: replay.anchorAt, sandbox: site.live() }));
+  };
   await live.poll();
   const timer = setInterval(() => {
     live.poll().catch(() => {}).finally(() => { try { writeReport(); } catch (e) { console.error(`shadow: report write failed: ${e.message}`); } });
@@ -83,19 +97,25 @@ async function main() {
   // A cancelled or timed-out step gets SIGTERM before the kill: leave the report as it stands.
   for (const sig of ['SIGTERM', 'SIGINT']) {
     process.once(sig, () => {
-      try { endedAt = Date.now(); writeReport(); console.error(`shadow: ${sig}, report written`); } finally {
+      try { endedAt = now(); writeReport(); console.error(`shadow: ${sig}, report written`); } finally {
         // Release the Browserbase session rather than leave it billing to its timeout; never wait more than 3 s on it.
         require('./lib/with-timeout').withTimeout(laneFetch.close(), 3000, { resolveWith: null }).catch(() => {}).finally(() => process.exit(143));
       }
     });
   }
-  console.log(`shadow: ${showId} ${night}, window ${windowMin} min, live site ${liveBase}; no lease, no publish`);
+  console.log(`shadow: ${showId} ${night}, window ${windowMin} min, live site ${liveBase}; no lease, no publish${replay ? `; REPLAY clock from ${replay.anchorAt}, sandbox merge` : ''}`);
+  const onRows = (applied, at) => {
+    for (const row of applied) { rows.push({ row, at }); scores.onRow(row); console.log(`shadow: scored ${row.outlet || row.outletId} ${row.assignedScore} ${row.url}`); }
+  };
+  const publishPorts = replay
+    ? { ...site, async updateReviews(fn) { const r = await site.updateReviews(fn); onRows(r.applied || [], now()); return r; } }
+    : shadow.createShadowPublishPorts({ onRows, now });
   try {
     result = await shadow.runShadowNight({
       show, night, openingDate: show.openingDate, timeZone: show.market === 'west-end' ? 'Europe/London' : 'America/New_York',
-      ledgerDir, fetchText, windowMs: windowMin * 60 * 1000, dryRun: true,
+      ledgerDir, fetchText, windowMs: windowMin * 60 * 1000, dryRun: true, spendNow: Date.now,
       adapters: require('./lib/opening-night-lane/adapters').laneAdapters({
-        showScoreGuards, adaptersConfig, search: serpSearch, decodeImpl: require('./lib/google-news-decode').decodeGoogleNewsLink, now: Date.now, ledgerDir,
+        showScoreGuards, adaptersConfig, search: serpSearch, decodeImpl: require('./lib/google-news-decode').decodeGoogleNewsLink, now, ledgerDir,
       }),
       missingOutlets: ({ seen }) => discovery.laneMissingOutlets({ show, seen, adaptersConfig }),
       fetchReview: scoring.fetchReview, scoreReview: scores.wrapScore(scoring.scoreReview),
@@ -103,16 +123,14 @@ async function main() {
       // pipeline already published, and must not write review files the regular pipeline also writes. onDiskRows
       // only feeds the syndication check, as in the real lane: a primary already on the site drops its copy.
       onDiskRows: require('./lib/opening-night-lane/driver').onDiskRowsFor(path.join(repoDir, 'data', 'reviews.json'), showId),
-      publishPorts: shadow.createShadowPublishPorts({ onRows: (applied, at) => {
-        for (const row of applied) { rows.push({ row, at }); scores.onRow(row); console.log(`shadow: scored ${row.outlet || row.outletId} ${row.assignedScore} ${row.url}`); }
-      } }),
-      now: Date.now, wait: (ms) => new Promise((r) => setTimeout(r, ms)),
+      publishPorts,
+      now, wait: (ms) => new Promise((r) => setTimeout(r, ms)),
     });
   } finally {
     clearInterval(timer);
     await laneFetch.close();
     await live.poll();
-    endedAt = Date.now();
+    endedAt = now();
     const md = writeReport();
     console.log(md);
     if (env.GITHUB_STEP_SUMMARY) fs.appendFileSync(env.GITHUB_STEP_SUMMARY, md);

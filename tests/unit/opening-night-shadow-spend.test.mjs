@@ -114,3 +114,14 @@ test('shadow restores spend state after rejection and clears an inherited tag ou
   assert.equal(process.env.SCRAPER_SPEND_PURPOSE, inherited);
   assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, 'warn');
 });
+
+test('a replay books spend on the real clock, never its replay clock (BRO-6872)', async t => {
+  const dir = setup(t);
+  const show = { id: 'shadow-replay', title: 'Shadow', category: 'broadway', openingDate: NIGHT };
+  // The replay clock sits on the press night; the real clock is weeks later, outside the press-night window.
+  const opts = { ...options(dir, show, async () => {
+    assert.notEqual(process.env.SD_PRESS_NIGHT_CAP_MODE, 'warn', 'a replay must not relax the press-night cap');
+    return [];
+  }), spendNow: () => NOW + 30 * 86400000 };
+  await shadow.runShadowNight(opts);
+});

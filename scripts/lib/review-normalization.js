@@ -2998,6 +2998,7 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
 }
 
 module.exports = {
+  URL_HOST_ALIASES,
   normalizeOutlet,
   normalizeOutletFull,
   isRegisteredOutlet,
