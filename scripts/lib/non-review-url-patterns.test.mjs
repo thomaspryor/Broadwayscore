@@ -767,3 +767,26 @@ test('BRO-5489: britishtheatre.com locale /shows/ hubs and Sounds & Stage /show/
     'https://soundsandstage.com/mischief-theatre-strikes-again-with-hilarious-spy-spoof-the-comedy-about-spies-review/',
   ]) assert.notEqual(namedNonReviewReason(u), 'show-hub', u);
 });
+
+// BRO-6909: pages counted as reviews for the week of 2026-10-27 openings.
+test('forum, aggregator-repost and blog tag pages are listing pages, their reviews are not', () => {
+  const { listingPageUrlReason, classifyGapCandidateUrl: gap } = require('./non-review-url-patterns.js');
+  const bad = {
+    'https://theatreboard.co.uk/thread/16312/dogstar-hampstead-theatre': 'forum-thread',
+    'https://theatreboard.co.uk/thread/16298/stoker-wilde-wiltons-music-hall': 'forum-thread',
+    'https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-playhouse': 'news-aggregator-repost',
+    'https://cherylmarkosky.com/tag/english-national-opera/': 'tag-index-page',
+    'https://monstagigz.com/tag/triumph/': 'tag-index-page',
+    'https://firstnightmagazine.com/tag/franz-and-marie/': 'tag-index-page',
+  };
+  for (const [url, reason] of Object.entries(bad)) {
+    assert.equal(listingPageUrlReason(url), reason, url);
+    assert.notEqual(gap(url).ok, true, url);
+  }
+  for (const url of [
+    'https://monstagigz.com/2026/08/25/theatre-review-a-month-in-the-country-starring-sophie-okonedo-at-donmar-warehouse/',
+    'https://firstnightmagazine.com/2026/10/12/review-of-affluenza-noah-schnapps-stage-debut-is-no-stranger-thing-and-it-isnt-great-either/',
+    'https://thespyinthestalls.com/2026/10/the-revlon-girl/',
+    'https://twi-ny.com/tag/an-american-daughter/',
+  ]) assert.equal(listingPageUrlReason(url), null, url);
+});

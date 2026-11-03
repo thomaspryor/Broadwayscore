@@ -72,7 +72,10 @@ const NON_REVIEW_HOST_PATTERNS = [
   /^nimaxtheatres\.com$/, /(^|\.)londontheatres\.co\.uk$/,
   /^sadlerswells\.com$/, /^improbable\.co\.uk$/,
   /^imdb\.com$/, /(^|\.)wikipedia\.org$/, /(^|\.)tripadvisor\./,
-  /^theatreboard\.com$/, /^officiallondontheatre\.com$/,
+  /^theatreboard\.(?:com|co\.uk)$/, /^officiallondontheatre\.com$/,
+  // News aggregator: /article/<slug> pages re-host another outlet's review
+  // (BRO-6909: Memoriam counted Ground News's copy of The Spy in the Stalls).
+  /(^|\.)ground\.news$/,
   /(^|\.)london-theatreland\.co\.uk$/, /^ma\.to$/,
   // Our own site is never a source for our own gap list.
   /(^|\.)broadwayscorecard\.com$/,
@@ -610,7 +613,12 @@ const LISTING_PAGE_URL_PATTERNS = [
   // critic review: theatreboard.com (ProBoards) scored a preview punter 90/Rave.
   // Host-scoped on purpose: a bare /topic/ path is also a real news topic page
   // (britannica.com/topic/...), so it is only a forum on a forum-shaped host.
-  { host: /(^|\.)theatreboard\.com$/, path: /^\/(thread|board|user|forum)\b/i, reason: 'forum-thread' },
+  // theatreboard.co.uk is the same ProBoards forum (BRO-6909: a Dogstar
+  // thread scored 77, a Stoker & Wilde thread 75).
+  { host: /(^|\.)theatreboard\.(?:com|co\.uk)$/, path: /^\/(thread|board|user|forum)\b/i, reason: 'forum-thread' },
+  // Ground News /article/ pages summarise other outlets' reviews; the review
+  // is the original outlet's URL. 7 counted rows on 2026-11-03, none original.
+  { host: /(^|\.)ground\.news$/, path: /^\/article\//i, reason: 'news-aggregator-repost' },
   { host: /(^|\.)proboards\.com$/, path: /./, reason: 'forum-thread' },
   { host: /^forum\.broadwayworld\.com$/, path: /^\/(thread|forum|newcsd)/i, reason: 'forum-thread' },
   { host: /(^|\.)balletcoforum\.com$/, path: /^\/(topic|forum)\b/i, reason: 'forum-thread' },
@@ -690,7 +698,11 @@ const LISTING_PAGE_URL_PATTERNS = [
   // reviews.json 2026-10-14: 0 of 2,078 scored rows from these hosts use such
   // a path. Host-scoped: other sites do publish reviews at /tag/ urls
   // (twi-ny.com, offoffonline, whatsonoffbroadway).
-  { host: /(^|\.)(?:thereviewshub\.com|deadline\.com|vulture\.com|theatermania\.com|whatsonstage\.com|theatreweekly\.com)$/, path: /^\/(?:tags?|category|author)\//i, reason: 'tag-index-page' },
+  // BRO-6909: three London blogs whose reviews are dated posts. reviews.json
+  // 2026-11-03: their one /tag/ row each was counted (ENO Tosca took
+  // cherylmarkosky.com/tag/english-national-opera/, scored 87); 0 of their
+  // other 108 rows use the path.
+  { host: /(^|\.)(?:thereviewshub\.com|deadline\.com|vulture\.com|theatermania\.com|whatsonstage\.com|theatreweekly\.com|cherylmarkosky\.com|monstagigz\.com|firstnightmagazine\.com)$/, path: /^\/(?:tags?|category|author)\//i, reason: 'tag-index-page' },
 ];
 
 /**
