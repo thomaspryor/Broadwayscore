@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T10:48:07.808Z",
+  "generatedAt": "2026-11-03T12:41:50.620Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -146,7 +146,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -155,10 +155,6 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "plays-international",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -171,15 +167,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 714,
-  "matchedGaps": 8,
-  "possibleGaps": 10,
+  "itemsScanned": 756,
+  "matchedGaps": 10,
+  "possibleGaps": 9,
   "gaps": [
     {
       "showId": "all-the-worlds-a-stage-regional-2026",
@@ -189,6 +181,15 @@
       "url": "https://stageandcinema.com/2026/10/30/all-the-worlds-a-stage-signature-review/",
       "headline": "Theater Review: ALL THE WORLD’S A STAGE (Signature Theatre / Arlington, VA )",
       "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "king-hedley-ii-regional-2026",
+      "title": "King Hedley II",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/11/02/king-hedley-ii-city-lit-review/",
+      "headline": "Theater Review: KING HEDLEY II (City Lit Theater / Chicago)",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -207,6 +208,15 @@
       "url": "https://frontmezzjunkies.com/2026/10/29/rent-still-has-my-heart-thirty-years-later/",
       "headline": "“Rent” Still Has My Heart, Thirty Years Later",
       "publishDate": "2026-10-29"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "matched",
+      "outletId": "onin",
+      "url": "https://onin.london/carpo-expansion/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=carpo-expansion",
+      "headline": "carpo announces global expansion plans with London at the heart of its international journey",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-heart-off-broadway-2026",
@@ -261,15 +271,6 @@
       "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
       "headline": "FINALLY: “WAITING FOR LEFTY” HAS ARRIVED",
       "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "possible",
-      "outletId": "fairypoweredproductions",
-      "url": "https://fairypoweredproductions.com/the-multiple-award-winning-critically-acclaimed-smash-hit-production-of-paddington-the-musical-extends-until-25-june-2028/",
-      "headline": "THE MULTIPLE AWARD-WINNING CRITICALLY ACCLAIMED SMASH-HIT PRODUCTION OF PADDINGTON THE MUSICAL EXTENDS UNTIL 25 JUNE 2028",
-      "publishDate": "2026-10-29"
     },
     {
       "showId": "the-heart-off-broadway-2026",
