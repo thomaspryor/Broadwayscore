@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-6927-f",
-  "planId": "32ceb1f1-4df7-4b57-9ebb-e586a7184449",
+  "planId": "f24c5293-5e5f-4870-94cb-9d05f52698d6",
   "status": "pending",
-  "createdAt": "2026-11-03T22:40:29.461Z",
+  "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6927 critic gap fill (part 6/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "summary": "BRO-6927 critic gap fill (part 6/10): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
     "steps": [
       "Ingest each review URL with ingest-review-from-url.js under the named critic",
       "Next rebuild and scheduled scoring pick them up"
@@ -18,152 +18,152 @@
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.theaterscene.net/plays/evening-talk-house/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-02-24",
-        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=hadestown-off-broadway-2016 --url=https://newyorktheater.me/2016/05/23/hadestown-review/ --critic=\"Jonathan Mandell\" --publish-date=2016-05-23",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of hadestown-off-broadway-2016, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=https://www.timeout.com/newyork/blog/theater-review-evening-at-the-talk-house-is-wallace-shawns-political-party-trick-021617 --critic=\"David Cote\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: David Cote (Time Out New York) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=hangmen-off-broadway-2018 --url=http://www.theaternewsonline.com/NYTheaterReviews/GIVINGUPTHENOOSE.cfm --critic=\"Brian Scott Lipton\" --publish-date=2018-02-05",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Theater News Online) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/Evening-at-the-Talk-House/241 --critic=\"Brian Scott Lipton\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=hangmen-off-broadway-2018 --url=http://thebroadwayblog.com/hangmen-atlantic-theater-company/ --critic=\"Samuel L. Leiter\" --publish-date=2018-02-16",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of hangmen-off-broadway-2018, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.theatermania.com/off-broadway/reviews/evening-at-the-talk-house_80060.html --critic=\"Zachary Stewart\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240 --critic=\"Steven Suskin\" --publish-date=2017-10-24",
+        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of jesus-hopped-the-a-train-off-broadway-2017, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=M67QLP --critic=\"David Barbour\" --publish-date=2017-02-17",
-        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=purlie-victorious-2023 --url=https://cititour.com/NYC_Broadway/Purlie-Victorious/1169 --critic=\"Brian Scott Lipton\" --publish-date=2023-09-27",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of purlie-victorious-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/evening-at-talk-house-976758 --critic=\"Frank Scheck\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: Frank Scheck (The Hollywood Reporter) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=scene-partners-off-broadway-2023 --url=https://cititour.com/NYC_Broadway/Scene-Partners/1180 --critic=\"Brian Scott Lipton\" --publish-date=2023-11-15",
+        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of scene-partners-off-broadway-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://dctheatrescene.com/2017/02/16/wallace-shawns-evening-talk-house-review/ --critic=\"Jonathan Mandell\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=turn-me-loose-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/60s-comic-dick-gregory-oscar-wilde-stage-off-broadway-article-1.2643055 --critic=\"Joe Dziemianowicz\" --publish-date=2016-05-19",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of turn-me-loose-off-broadway-2016, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://slleiter.blogspot.com/2017/03/144-review-evening-at-talk-house-seen.html --critic=\"Samuel L. Leiter\" --publish-date=2017-03-02",
-        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=turn-me-loose-off-broadway-2016 --url=http://dctheatrescene.com/2016/05/19/turn-loose-review-scandals-joe-morton-play-dick-gregory/ --critic=\"Jonathan Mandell\" --publish-date=2016-05-19",
+        "description": "BRO-6927 gap: Jonathan Mandell (DC Theatre Scene) review of turn-me-loose-off-broadway-2016, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.thewrap.com/evening-talk-house-theater-review-wallace-shawn-gets-deadly-serious/ --critic=\"Robert Hofler\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=a-dolls-house-2023 --url=https://www.theatermania.com/broadway-theater/news/review-a-dolls-house_94950.html --critic=\"Zachary Stewart\" --publish-date=2023-03-10",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of a-dolls-house-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.vulture.com/2017/02/theater-evening-at-the-talk-house-and-escaped-alone.html --critic=\"Jesse Green\" --publish-date=2017-02-17",
-        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=fire-and-air-off-broadway-2018 --url=https://www.culturalweekly.com/air-fire-mcnally-diaghilev-play/ --critic=\"David Sheward\" --publish-date=2018-02-01",
+        "description": "BRO-6927 gap: David Sheward (Cultural Weekly) review of fire-and-air-off-broadway-2018, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://theaterlife.com/evening-at-the-talk-house/ --critic=\"David Sheward\" --publish-date=2017-02-20",
-        "description": "BRO-6927 gap: David Sheward (Theater Life) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=n-a-off-broadway-2024 --url=https://www.theatermania.com/news/review-n-a-is-the-nancy-pelosi-aoc-fan-fic-nobody-asked-for_1743874/ --critic=\"Zachary Stewart\" --publish-date=2024-06-27",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of n-a-off-broadway-2024, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/58a5d149e4b026a89a7a2772 --critic=\"Steven Suskin\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=on-the-evolutionary-function-of-shame-off-broadway-2025 --url=https://www.theatermania.com/news/review-on-the-evolutionary-function-of-shame-a-reactionary-queer-fable_1765628/ --critic=\"Zachary Stewart\" --publish-date=2025-02-26",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of on-the-evolutionary-function-of-shame-off-broadway-2025, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.amny.com/entertainment/evening-at-the-talk-house-suffers-from-slow-pacing-1.13137179 --critic=\"Matt Windman\" --publish-date=2017-02-16",
-        "description": "BRO-6927 gap: Matt Windman (AM New York) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=school-pictures-off-broadway-2023 --url=https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boys-in-harpy-land-at-playwrights-horizons_1722069/ --critic=\"Zachary Stewart\" --publish-date=2023-11-22",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of school-pictures-off-broadway-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=evening-at-the-talk-house-off-broadway-2017 --url=http://www.clydefitchreport.com/2017/02/wallace-shawn-talk-house-off-broadway/ --critic=\"David Finkle\" --publish-date=2017-02-20",
-        "description": "BRO-6927 gap: David Finkle (The Clyde Fitch Report) review of evening-at-the-talk-house-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=sea-wall-a-life-2019 --url=https://www.theatermania.com/broadway/reviews/sea-wall-a-life-jake-gyllenhaal-tom-sturridge_89503.html --critic=\"Zachary Stewart\" --publish-date=2019-08-08",
+        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of sea-wall-a-life-2019, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=finians-rainbow-off-broadway-2016 --url=http://www.theaterscene.net/musicals/finians-rainbow/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-12-05",
-        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of finians-rainbow-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=the-profane-off-broadway-2017 --url=http://thebroadwayblog.com/2017/04/10/16366-profane-playwrights-horizons --critic=\"Samuel L. Leiter\" --publish-date=2017-04-10",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of the-profane-off-broadway-2017, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=finians-rainbow-off-broadway-2016 --url=https://cititour.com/NYC_Broadway/Finians-Rainbow/916 --critic=\"Brian Scott Lipton\" --publish-date=2016-11-06",
-        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of finians-rainbow-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=the-traveling-lady-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/horton-footes-traveling-lady-yes-definitely-isla_us_594c5334e4b0c85b96c65804 --critic=\"David Finkle\" --publish-date=2017-06-22",
+        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of the-traveling-lady-off-broadway-2017, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=finians-rainbow-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-9KSZ88 --critic=\"David Barbour\" --publish-date=2016-11-07",
-        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of finians-rainbow-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=this-aint-no-disco-off-broadway-2018 --url=https://www.thewrap.com/aint-no-disco-theater-review-studio-54-ready-another-15-minutes-fame/ --critic=\"Robert Hofler\" --publish-date=2018-07-24",
+        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of this-aint-no-disco-off-broadway-2018, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=finians-rainbow-off-broadway-2016 --url=https://newyorktheater.me/2016/11/07/finians-rainbow-review-political-leprechauns-updated/ --critic=\"Jonathan Mandell\" --publish-date=2016-11-07",
-        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of finians-rainbow-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=this-beautiful-future-off-broadway-2022 --url=https://www.wsj.com/articles/this-beautiful-future-rita-kalnejais-cherry-lane-theatre-austin-pendleton-angelina-fiordellisi-uly-schlesinger-francesca-carpanini-jack-serio-11663884851 --critic=\"Charles Isherwood\" --publish-date=2022-09-22",
+        "description": "BRO-6927 gap: Charles Isherwood (The Wall Street Journal) review of this-beautiful-future-off-broadway-2022, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=finians-rainbow-off-broadway-2016 --url=http://thebroadwayblog.com/2016/11/14/15615-finians-rainbow-irish-rep --critic=\"Samuel L. Leiter\" --publish-date=2016-11-14",
-        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of finians-rainbow-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=tiny-beautiful-things-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/tiny-beautiful-poignant-illusionists-lacks-wow-factor-article-1.2902033 --critic=\"Joe Dziemianowicz\" --publish-date=2016-12-07",
+        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of tiny-beautiful-things-off-broadway-2016, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=finians-rainbow-off-broadway-2016 --url=http://www.huffingtonpost.com/steven-suskin/aisle-view-pot-of-gold-at_b_12836330.html --critic=\"Steven Suskin\" --publish-date=2016-11-06",
-        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of finians-rainbow-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=a-dolls-house-part-2-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-JZMS30 --critic=\"David Barbour\" --publish-date=2017-04-28",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of a-dolls-house-part-2-2017, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=finians-rainbow-off-broadway-2016 --url=http://www.ny1.com/nyc/all-boroughs/on-stage/2016/11/11/theater-review---finian-s-rainbow-.html --critic=\"Roma Torre\" --publish-date=2016-11-11",
-        "description": "BRO-6927 gap: Roma Torre (NY1) review of finians-rainbow-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=bite-me-off-broadway-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=S2440N --critic=\"David Barbour\" --publish-date=2023-10-05",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of bite-me-off-broadway-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://www.theaterscene.net/musicals/fiorello/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-09-24",
-        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=caroline-or-change-2021 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=W87BXC --critic=\"David Barbour\" --publish-date=2021-11-04",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of caroline-or-change-2021, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://www.theatermania.com/off-broadway/reviews/fiorello_78370.html?cid=rssfeed-reviews --critic=\"Zachary Stewart\" --publish-date=2016-09-09",
-        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=clydes-2021 --url=http://nystagereview.com/2021/11/23/clydes-lynn-nottage-cooks-up-a-sharp-kitchen-set-comedy/ --critic=\"Melissa Rose Bernardo\" --publish-date=2021-11-23",
+        "description": "BRO-6927 gap: Melissa Rose Bernardo (New York Stage Review) review of clydes-2021, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=W14ZRR --critic=\"David Barbour\" --publish-date=2016-09-21",
-        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=dr-rides-american-beach-house-off-broadway-2019 --url=https://newyorktheater.me/2019/11/05/dr-rides-american-beach-house-review-lesbian-desire-disguised-in-1983/ --critic=\"Jonathan Mandell\" --publish-date=2019-11-05",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of dr-rides-american-beach-house-off-broadway-2019, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://thebroadwayblog.com/2016/09/19/15339-review-fiorello --critic=\"Samuel L. Leiter\" --publish-date=2016-09-19",
-        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=elf-2024 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=LF4NK7 --critic=\"David Barbour\" --publish-date=2024-12-05",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of elf-2024, listed on Show Score but missing from reviews.json"
       }
     ]
   }

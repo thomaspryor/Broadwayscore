@@ -1,62 +1,20 @@
 {
   "issueNumber": "bro-6927-b",
-  "planId": "6310f355-2f12-46ce-ac3a-2d5206ece584",
+  "planId": "8b8a4f84-dea4-4bcd-a31f-139bebd139c8",
   "status": "pending",
-  "createdAt": "2026-11-03T22:40:29.461Z",
+  "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6927 critic gap fill (part 2/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "summary": "BRO-6927 critic gap fill (part 2/10): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
     "steps": [
       "Ingest each review URL with ingest-review-from-url.js under the named critic",
       "Next rebuild and scheduled scoring pick them up"
     ],
     "riskLevel": "Low",
     "actions": [
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-time-travellers-wife-west-end-2023 --url=https://www.thetimes.co.uk/article/the-time-travellers-wife-apollo-theatre-review-5f9d0lst2 --critic=\"Clive Davis\" --publish-date=2023-11-02",
-        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of the-time-travellers-wife-west-end-2023, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-unfriend-west-end-2023 --url=https://www.standard.co.uk/culture/theatre/the-unfriend-criterion-theatre-review-steven-moffat-mark-gatiss-amanda-abbington-b1054409.html --critic=\"Nick Curtis\" --publish-date=2023-01-20",
-        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-unfriend-west-end-2023, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-unlikely-pilgrimage-of-harold-fry-west-end-2026 --url=https://www.standard.co.uk/culture/theatre/the-unlikely-pilgrimage-of-harold-fry-theatre-royal-haymarket-review-b1270389.html --critic=\"Nick Curtis\" --publish-date=2026-02-11",
-        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-unlikely-pilgrimage-of-harold-fry-west-end-2026, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=the-weir-west-end-2025 --url=https://www.standard.co.uk/culture/theatre/the-weir-harold-pinter-theatre-review-brendan-gleeson-b1248987.html --critic=\"Nick Curtis\" --publish-date=2025-09-22",
-        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of the-weir-west-end-2025, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=under-milk-wood-west-end-2021 --url=https://www.standard.co.uk/culture/theatre/under-milk-wood-at-national-theatre-review-dylan-thomas-michael-sheen-b942368.html --critic=\"Nick Curtis\" --publish-date=2021-06-25",
-        "description": "BRO-6927 gap: Nick Curtis (The London Evening Standard) review of under-milk-wood-west-end-2021, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=crazy-for-you-west-end-2023 --url=https://www.theguardian.com/stage/2022/jul/20/crazy-for-you-review-chichester-festival-theatre-gershwin-musical --critic=\"Arifa Akbar\" --publish-date=2023-07-20",
-        "description": "BRO-6927 gap: Arifa Akbar (The Guardian (UK)) review of crazy-for-you-west-end-2023, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=big-the-musical-west-end-2019 --url=https://www.timeout.com/london/theatre/big-the-musical-review --critic=\"Andrzej Lukowski\" --publish-date=2019-09-19",
-        "description": "BRO-6927 gap: Andrzej Lukowski (Time Out London) review of big-the-musical-west-end-2019, listed on Show Score but missing from reviews.json"
-      },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
@@ -92,18 +50,6 @@
         "script": "ingest-review-from-url.js",
         "args": "--show=endgame-west-end-2020 --url=https://www.timeout.com/london/theatre/endgame-cancelled --critic=\"Andrzej Lukowski\" --publish-date=2020-02-05",
         "description": "BRO-6927 gap: Andrzej Lukowski (Time Out London) review of endgame-west-end-2020, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=harry-potter-and-the-cursed-child-both-parts-west-end-2021 --url=https://www.timeout.com/london/theatre/harry-potter-and-the-cursed-child-review --critic=\"Andrzej Lukowski\" --publish-date=2018-09-18",
-        "description": "BRO-6927 gap: Andrzej Lukowski (Time Out London) review of harry-potter-and-the-cursed-child-both-parts-west-end-2021, listed on Show Score but missing from reviews.json"
-      },
-      {
-        "type": "run-script",
-        "script": "ingest-review-from-url.js",
-        "args": "--show=harry-potter-and-the-cursed-child-both-parts-west-end-2021 --url=https://www.whatsonstage.com/london-theatre/reviews/harry-potter-cursed-child-palace-west-end_41360.html --critic=\"Sarah Crompton\" --publish-date=2016-07-26",
-        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of harry-potter-and-the-cursed-child-both-parts-west-end-2021, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
@@ -164,6 +110,60 @@
         "script": "ingest-review-from-url.js",
         "args": "--show=the-comedy-about-a-bank-robbery-west-end-2016 --url=https://www.standard.co.uk/go/london/theatre/the-comedy-about-a-bank-robbery-theatre-review-so-wrong-it-s-just-not-right-a3231416.html --critic=\"Fiona Mountford\" --publish-date=2016-04-22",
         "description": "BRO-6927 gap: Fiona Mountford (The London Evening Standard) review of the-comedy-about-a-bank-robbery-west-end-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lehman-trilogy-west-end-2023 --url=https://www.telegraph.co.uk/theatre/what-to-see/lehman-trilogy-gillian-lynne-theatre-review-sam-mended-directs/ --critic=\"Dominic Cavendish\" --publish-date=2023-02-09",
+        "description": "BRO-6927 gap: Dominic Cavendish (The Telegraph (UK)) review of the-lehman-trilogy-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=to-kill-a-mockingbird-west-end-2022 --url=https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/ --critic=\"Dominic Cavendish\" --publish-date=2022-03-31",
+        "description": "BRO-6927 gap: Dominic Cavendish (The Telegraph (UK)) review of to-kill-a-mockingbird-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=broken-glass-off-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/broken-glass-review-young-vic-arthur-miller-b2931621.html --critic=\"Alice Saville\" --publish-date=2026-03-04",
+        "description": "BRO-6927 gap: Alice Saville (The Independent (UK)) review of broken-glass-off-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oliver-west-end-2024 --url=https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/ --critic=\"Sarah Crompton\" --publish-date=2025-01-14",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of oliver-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=rockets-and-blue-lights-west-end-2021 --url=https://www.whatsonstage.com/london-theatre/reviews/rockets-and-blue-lights-national_54823.html --critic=\"Sarah Crompton\" --publish-date=2021-09-03",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of rockets-and-blue-lights-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-shitheads-west-end-2026 --url=https://www.whatsonstage.com/news/the-shtheads-at-the-royal-court-review_1712175/ --critic=\"Sarah Crompton\" --publish-date=2026-02-13",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of the-shitheads-west-end-2026, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-starry-messenger-west-end-2019 --url=https://www.whatsonstage.com/london-theatre/reviews/the-starry-messenger-wyndhams-broderick_49159.html --critic=\"Sarah Crompton\" --publish-date=2019-05-30",
+        "description": "BRO-6927 gap: Sarah Crompton (WhatsOnStage) review of the-starry-messenger-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=man-of-la-mancha-west-end-2019 --url=https://esdating.standard.co.uk/culture/theatre/man-of-la-mancha-review-kelsey-grammer-fails-to-stand-out-in-strange-musical-revival-a4131056.html --critic=\"Fiona Mountford\" --publish-date=2019-05-01",
+        "description": "BRO-6927 gap: Fiona Mountford (The London Evening Standard) review of man-of-la-mancha-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=300-paintings-off-broadway-2024 --url=https://www.theaterscene.net/plays/solo-plays/300-paintings/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2025-01-20",
+        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of 300-paintings-off-broadway-2024, listed on Show Score but missing from reviews.json"
       }
     ]
   }

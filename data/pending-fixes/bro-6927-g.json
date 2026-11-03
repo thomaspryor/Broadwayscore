@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-6927-g",
-  "planId": "4f31e836-2b5f-4102-b20e-a5874f3a3b60",
+  "planId": "ddc232cd-63c7-4540-87d9-b53fd716f4fe",
   "status": "pending",
-  "createdAt": "2026-11-03T22:40:29.461Z",
+  "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6927 critic gap fill (part 7/45): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "summary": "BRO-6927 critic gap fill (part 7/10): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
     "steps": [
       "Ingest each review URL with ingest-review-from-url.js under the named critic",
       "Next rebuild and scheduled scoring pick them up"
@@ -18,152 +18,152 @@
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://www.nytimes.com/2016/09/10/theater/review-fiorello-the-mayor-who-fought-for-the-little-guy.html --critic=\"Charles Isherwood\" --publish-date=2016-09-10",
-        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=make-believe-off-broadway-2019 --url=https://newyorktheater.me/2019/08/15/make-believe-review-bess-wohls-elliptical-look-at-child-neglect/ --critic=\"Jonathan Mandell\" --publish-date=2019-08-15",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of make-believe-off-broadway-2019, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://www.huffingtonpost.com/steven-suskin/aisle-view-little-tin-mus_b_11944434.html --critic=\"Steven Suskin\" --publish-date=2016-09-09",
-        "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=mary-gets-hers-off-broadway-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=OW8POC --critic=\"David Barbour\" --publish-date=2023-09-22",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of mary-gets-hers-off-broadway-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://www.amny.com/entertainment/fiorello-review-political-musical-still-rings-true-1.12323387 --critic=\"Matt Windman\" --publish-date=2016-09-15",
-        "description": "BRO-6927 gap: Matt Windman (AM New York) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=othello-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-Q3Y34H --critic=\"David Barbour\" --publish-date=2025-04-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of othello-2025, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=fiorello-off-broadway-2016 --url=http://www.clydefitchreport.com/2016/09/fiorello-musical-bock-harnick-off-broadway/ --critic=\"David Finkle\" --publish-date=2016-09-11",
-        "description": "BRO-6927 gap: David Finkle (The Clyde Fitch Report) review of fiorello-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=othello-the-remix-off-broadway-2016 --url=http://www.vulture.com/2016/12/theater-review-a-pair-of-othellos.html --critic=\"Jesse Green\" --publish-date=2016-12-12",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of othello-the-remix-off-broadway-2016, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=god-of-vengeance-off-broadway-2016 --url=http://www.theaterscene.net/plays/god-of-vengeance/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-12-31",
-        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of god-of-vengeance-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=pirates-the-penzance-musical-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=SVLM9L --critic=\"David Barbour\" --publish-date=2025-05-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of pirates-the-penzance-musical-2025, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=god-of-vengeance-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-53YIUI --critic=\"David Barbour\" --publish-date=2017-01-03",
-        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of god-of-vengeance-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=ring-twice-for-miranda-off-broadway-2017 --url=http://thebroadwayblog.com/2017/02/14/16022-review-ring-twice-for-miranda --critic=\"Samuel L. Leiter\" --publish-date=2017-02-14",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of ring-twice-for-miranda-off-broadway-2017, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=god-of-vengeance-off-broadway-2016 --url=https://newyorktheater.me/2016/12/25/god-of-vengeance-review-broadways-first-lesbian-kiss-this-time-in-yiddish/ --critic=\"Jonathan Mandell\" --publish-date=2016-12-25",
-        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of god-of-vengeance-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=stephen-sondheims-old-friends-2025 --url=https://theaterlife.com/sondheims-old-friends/ --critic=\"Samuel L. Leiter\" --publish-date=2025-04-20",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theater Life) review of stephen-sondheims-old-friends-2025, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=god-of-vengeance-off-broadway-2016 --url=http://www.nytimes.com/2016/12/29/theater/god-of-vengeance-review.html --critic=\"Charles Isherwood\" --publish-date=2016-12-29",
-        "description": "BRO-6927 gap: Charles Isherwood (The New York Times) review of god-of-vengeance-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=stereophonic-off-broadway-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-6T6KMR --critic=\"David Barbour\" --publish-date=2023-10-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of stereophonic-off-broadway-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=god-of-vengeance-off-broadway-2016 --url=http://www.amny.com/entertainment/god-of-vengeance-review-yiddish-production-a-fascinating-artifact-1.12871879 --critic=\"Matt Windman\" --publish-date=2017-01-05",
-        "description": "BRO-6927 gap: Matt Windman (AM New York) review of god-of-vengeance-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=a-good-house-west-end-2025 --url=https://www.thetimes.com/article/40b4f4a1-ab27-4137-8d6a-956ae7f93da9 --critic=\"Clive Davis\" --publish-date=2025-01-20",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of a-good-house-west-end-2025, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=god-of-vengeance-off-broadway-2016 --url=http://www.huffingtonpost.com/david-finkle/first-nighter-sholem-asch_b_13861072.html --critic=\"David Finkle\" --publish-date=2016-12-26",
-        "description": "BRO-6927 gap: David Finkle (The Huffington Post) review of god-of-vengeance-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=aint-too-proud-west-end-2023 --url=https://www.thetimes.co.uk/article/aint-too-proud-review-the-temptations-musical-wont-get-you-dancing-in-the-aisles-v0nrbvzcm --critic=\"Clive Davis\" --publish-date=2023-04-21",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of aint-too-proud-west-end-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.theaterscene.net/plays/hold-on-to-me-darling/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2016-03-31",
-        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=and-juliet-west-end-2019 --url=https://www.thetimes.co.uk/article/amp-juliet-review-shakespeare-on-steroids-is-not-for-the-sober-tj9mg2fcd --critic=\"Clive Davis\" --publish-date=2019-11-21",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of and-juliet-west-end-2019, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.timeout.com/newyork/theater/hold-on-to-me-darling --critic=\"David Cote\" --publish-date=2016-03-14",
-        "description": "BRO-6927 gap: David Cote (Time Out New York) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=bad-jews-west-end-2022 --url=https://www.thetimes.co.uk/article/bad-jews-review-so-boring-i-started-counting-the-cupboards-5hbkwh0dj --critic=\"Clive Davis\" --publish-date=2022-07-26",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of bad-jews-west-end-2022, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.theaterpizzazz.com/hold-on-to-me-darling/ --critic=\"Brian Scott Lipton\" --publish-date=2016-03-15",
-        "description": "BRO-6927 gap: Brian Scott Lipton (Theater Pizzazz) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=brokeback-mountain-west-end-2023 --url=https://www.thetimes.co.uk/article/brokeback-mountain-review-theatre-play-london-2023-lmhgcwvwg --critic=\"Clive Davis\" --publish-date=2023-05-19",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of brokeback-mountain-west-end-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.theatermania.com/off-broadway/reviews/hold-on-to-me-darling_76306.html --critic=\"Zachary Stewart\" --publish-date=2016-03-14",
-        "description": "BRO-6927 gap: Zachary Stewart (Theatermania) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=cock-west-end-2022 --url=https://www.thetimes.co.uk/article/cock-review-sexual-identity-study-is-about-as-plausible-as-bridgerton-jndq9pqwz --critic=\"Clive Davis\" --publish-date=2022-03-16",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of cock-west-end-2022, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-2VJ7XW --critic=\"David Barbour\" --publish-date=2016-03-23",
-        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=constellations-west-end-2021 --url=https://www.thetimes.co.uk/article/constellations-review-rotating-cast-of-couples-keep-spark-alive-pmzjlwmds --critic=\"Clive Davis\" --publish-date=2021-07-05",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of constellations-west-end-2021, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/lonergan-hold-darling-fame-review-article-1.2561194 --critic=\"Joe Dziemianowicz\" --publish-date=2016-03-14",
-        "description": "BRO-6927 gap: Joe Dziemianowicz (New York Daily News) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=cuckoo-west-end-2023 --url=https://www.thetimes.co.uk/article/cuckoo-review-jerwood-theatre-downstairs-royal-court-l55hqtfcc --critic=\"Clive Davis\" --publish-date=2023-07-13",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of cuckoo-west-end-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://slleiter.blogspot.com/2016/03/167-review-hold-on-to-me-darling-seen.html --critic=\"Samuel L. Leiter\" --publish-date=2016-03-15",
-        "description": "BRO-6927 gap: Samuel L. Leiter (Theatre's Leiter Side) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=groundhog-day-west-end-2023 --url=https://www.thetimes.co.uk/article/groundhog-day-review-the-same-magic-and-satire-all-over-again-qgzxnw0j7 --critic=\"Clive Davis\" --publish-date=2023-06-09",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of groundhog-day-west-end-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=https://www.thewrap.com/hold-on-to-me-darling-theater-review-timothy-olyphants-fake-tears-make-for-real-laughs/ --critic=\"Robert Hofler\" --publish-date=2016-03-14",
-        "description": "BRO-6927 gap: Robert Hofler (The Wrap) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=jouvert-west-end-2021 --url=https://www.timeout.com/london/theatre/jouvert-review --critic=\"Clive Davis\" --publish-date=2021-06-25",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of jouvert-west-end-2021, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.vulture.com/2016/03/theater-review-hold-on-to-me-darling.html --critic=\"Jesse Green\" --publish-date=2016-03-14",
-        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=long-days-journey-into-night-west-end-2024 --url=https://www.thetimes.co.uk/article/long-days-journey-into-night-review-brian-cox-puts-in-the-work-but-its-a-tough-job-r3zwnsxvf --critic=\"Clive Davis\" --publish-date=2024-04-03",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of long-days-journey-into-night-west-end-2024, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://thefrontrowcenter.com/2016/03/hold-on-to-me-darling/ --critic=\"Tulis McCall\" --publish-date=2016-03-16",
-        "description": "BRO-6927 gap: Tulis McCall (Front Row Center) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=lungs-west-end-2019 --url=https://www.thetimes.co.uk/article/lungs-review-crown-co-stars-breathe-life-into-a-dark-drama-t9zsplztj --critic=\"Clive Davis\" --publish-date=2019-10-21",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of lungs-west-end-2019, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=hold-on-to-me-darling-off-broadway-2016 --url=http://www.hollywoodreporter.com/review/kenneth-lonergans-hold-me-darlng-874984 --critic=\"David Rooney\" --publish-date=2016-03-14",
-        "description": "BRO-6927 gap: David Rooney (The Hollywood Reporter) review of hold-on-to-me-darling-off-broadway-2016, listed on Show Score but missing from reviews.json"
+        "args": "--show=medea-west-end-2023 --url=https://www.thetimes.co.uk/article/medea-review-sophie-okonedos-hellish-descent-into-darkness-90st570z7 --critic=\"Clive Davis\" --publish-date=2023-02-18",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of medea-west-end-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=if-i-forget-off-broadway-2017 --url=http://www.theaterscene.net/plays/offbway-plays/if-i-forget/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2017-03-15",
-        "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=oklahoma-west-end-2023 --url=https://www.thetimes.co.uk/article/oklahoma-theatre-review-wyndham-hm7p5kjth --critic=\"Clive Davis\" --publish-date=2023-03-01",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of oklahoma-west-end-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=if-i-forget-off-broadway-2017 --url=https://www.timeout.com/newyork/blog/theater-review-steven-levensons-if-i-forget-confronts-modern-jewish-self-image-022217 --critic=\"Adam Feldman\" --publish-date=2017-02-22",
-        "description": "BRO-6927 gap: Adam Feldman (Time Out New York) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=old-friends-west-end-2023 --url=https://www.thetimes.co.uk/article/stephen-sondheim-s-old-friends-review-this-is-unmissable-musical-theatre-rfkbcxdwd --critic=\"Clive Davis\" --publish-date=2023-10-04",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of old-friends-west-end-2023, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=if-i-forget-off-broadway-2017 --url=https://cititour.com/NYC_Broadway/If-I-Forget/750 --critic=\"Brian Scott Lipton\" --publish-date=2017-02-22",
-        "description": "BRO-6927 gap: Brian Scott Lipton (Cititour) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=opening-night-west-end-2024 --url=https://www.thetimes.co.uk/article/opening-night-review-sheridan-smith-shines-in-a-bizarre-drama-2thlqkf6n --critic=\"Clive Davis\" --publish-date=2024-03-27",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of opening-night-west-end-2024, listed on Show Score but missing from reviews.json"
       },
       {
         "type": "run-script",
         "script": "ingest-review-from-url.js",
-        "args": "--show=if-i-forget-off-broadway-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-BSBDQX --critic=\"David Barbour\" --publish-date=2017-02-23",
-        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of if-i-forget-off-broadway-2017, listed on Show Score but missing from reviews.json"
+        "args": "--show=orlando-west-end-2022 --url=https://www.thetimes.co.uk/article/orlando-review-nudges-winks-and-a-pack-of-woolfs-make-orlando-bloom-gqlpz8h7c --critic=\"Clive Davis\" --publish-date=2022-12-06",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of orlando-west-end-2022, listed on Show Score but missing from reviews.json"
       }
     ]
   }
