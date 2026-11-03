@@ -391,7 +391,7 @@ const CENSUS_JUNK_DOMAINS = new Set([
   'liverpool-theatre.co.uk', 'southendtheatre.co.uk', 'san-francisco-theater.com',
   'washington-theater.com', 'brooklyn-theater.com',
   // aggregator listing pages
-  'theatreinchicago.com', 'theatreindc.com',
+  'theatreinchicago.com', 'theatreindc.com', 'theatreinla.com',
 ]);
 
 /**

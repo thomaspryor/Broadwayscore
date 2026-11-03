@@ -18,6 +18,7 @@ test('regionOf routes every market to its own block', () => {
   assert.equal(regionOf('tour', { city: 'chicago-il' }), 'tour');
   assert.equal(regionOf('regional', { city: 'chicago-il' }), 'chicago');
   assert.equal(regionOf('regional', { city: 'washington-dc' }), 'dc');
+  assert.equal(regionOf('regional', { city: 'los-angeles-ca' }), 'la');
   assert.equal(regionOf('regional', { city: 'san-diego-ca' }), 'regional');
   assert.equal(regionOf('regional'), 'regional');
   assert.equal(regionOf('opera'), 'other');
@@ -25,7 +26,7 @@ test('regionOf routes every market to its own block', () => {
 
 test('every region regionOf can return is rendered', () => {
   for (const [m, s] of [['broadway'], ['west-end'], ['tour'], ['regional', { city: 'chicago-il' }],
-    ['regional', { city: 'washington-dc' }], ['regional'], ['opera'], ['something-new']]) {
+    ['regional', { city: 'washington-dc' }], ['regional', { city: 'los-angeles-ca' }], ['regional'], ['opera'], ['something-new']]) {
     assert.ok(REGION_ORDER.includes(regionOf(m, s || {})), `${m} -> ${regionOf(m, s || {})} not rendered`);
   }
 });

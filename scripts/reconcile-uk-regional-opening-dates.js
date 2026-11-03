@@ -22,7 +22,7 @@ const { isLocalOnlyShow } = require('./lib/local-market');
 
 // BRO-6697: theatreinchicago rows are localOnly regional rows seeded the same way
 // ('tic-first-review'); they stay in scope after a move re-stamps the source.
-const isTicRow = (s) => s.discoverySource === 'theatreinchicago' || s.discoverySource === 'theatreindc';
+const isTicRow = (s) => s.discoverySource === 'theatreinchicago' || s.discoverySource === 'theatreindc' || s.discoverySource === 'theatreinla';
 
 function plan(shows, reviews) {
   const by = {};
