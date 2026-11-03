@@ -47,6 +47,16 @@ const RUNTIME_ENV = {
     required: ['APPROVAL_HMAC_SECRET', 'GH_DISPATCH_TOKEN'],
     optional: ['MEZZANINE_TOKEN_FORM_DISABLED'],
   },
+  // BRO-6895 critic claiming: the claim route 503s and no owner email goes out
+  // without these (caught only after landing on 2026-11-03).
+  'src/lib/critic-server.ts': {
+    required: ['SUPABASE_SERVICE_ROLE_KEY', 'OWNER_EMAIL', 'RESEND_API_KEY', 'NEXT_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_ANON_KEY'],
+    optional: [],
+  },
+  'src/app/api/critics/claim/route.ts': {
+    required: ['APPROVAL_HMAC_SECRET'],
+    optional: ['CRITIC_CLAIMS_DISABLED'],
+  },
 };
 
 function requiredNames(runtimeEnv = RUNTIME_ENV) {

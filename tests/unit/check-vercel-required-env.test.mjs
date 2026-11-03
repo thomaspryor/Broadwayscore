@@ -25,18 +25,20 @@ test('every process.env name a listed route reads is declared required or option
   }
 });
 
+const CRITIC_ENV = 'NEXT_PUBLIC_SUPABASE_URL="u"\nNEXT_PUBLIC_SUPABASE_ANON_KEY="a"\nSUPABASE_SERVICE_ROLE_KEY="s"\nOWNER_EMAIL="o@x.com"\nRESEND_API_KEY="r"\n';
+
 test('autonomous-action needs both the HMAC secret and the Linear key (BRO-5170)', () => {
-  assert.deepEqual(requiredNames(), ['APPROVAL_HMAC_SECRET', 'GH_DISPATCH_TOKEN', 'GMAIL_CLIENT_ID', 'LINEAR_API_KEY']);
+  assert.deepEqual(requiredNames(), ['APPROVAL_HMAC_SECRET', 'GH_DISPATCH_TOKEN', 'GMAIL_CLIENT_ID', 'LINEAR_API_KEY', 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'NEXT_PUBLIC_SUPABASE_URL', 'OWNER_EMAIL', 'RESEND_API_KEY', 'SUPABASE_SERVICE_ROLE_KEY']);
   assert.deepEqual(RUNTIME_ENV['src/app/api/autonomous-action/route.ts'].required, ['APPROVAL_HMAC_SECRET', 'LINEAR_API_KEY']);
 });
 
 test('the BRO-5170 state (no LINEAR_API_KEY line) is reported missing', () => {
-  const env = parseEnvFile('APPROVAL_HMAC_SECRET="abc"\nGH_DISPATCH_TOKEN="g"\nGMAIL_CLIENT_ID="c"\nNEXT_PUBLIC_FEATURES="x"\n');
+  const env = parseEnvFile(CRITIC_ENV + 'APPROVAL_HMAC_SECRET="abc"\nGH_DISPATCH_TOKEN="g"\nGMAIL_CLIENT_ID="c"\nNEXT_PUBLIC_FEATURES="x"\n');
   assert.deepEqual(checkEnv(env, requiredNames()), { missing: ['LINEAR_API_KEY'], empty: [] });
 });
 
 test('a sensitive var pulled with an empty value counts as present', () => {
-  const env = parseEnvFile('APPROVAL_HMAC_SECRET=""\nGH_DISPATCH_TOKEN="g"\nGMAIL_CLIENT_ID="c"\nLINEAR_API_KEY="lin_api_x"\n');
+  const env = parseEnvFile(CRITIC_ENV + 'APPROVAL_HMAC_SECRET=""\nGH_DISPATCH_TOKEN="g"\nGMAIL_CLIENT_ID="c"\nLINEAR_API_KEY="lin_api_x"\n');
   assert.deepEqual(checkEnv(env, requiredNames()), { missing: [], empty: ['APPROVAL_HMAC_SECRET'] });
 });
 
