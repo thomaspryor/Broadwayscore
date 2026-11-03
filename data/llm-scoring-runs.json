@@ -1,5 +1,43 @@
 [
   {
+    "startedAt": "2026-11-02T17:46:54.201Z",
+    "completedAt": "2026-11-02T17:46:54.220Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "41490965000",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-02T18:15:18.091Z",
+    "completedAt": "2026-11-02T18:15:22.780Z",
+    "totalReviews": 29,
+    "processed": 1,
+    "skipped": 28,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 5261,
+      "output": 320,
+      "cacheRead": 3762,
+      "cacheWrite": 0,
+      "total": 13911
+    },
+    "costUsd": 0.0206714,
+    "runId": "41497541478",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-11-02T18:20:20.580Z",
     "completedAt": "2026-11-02T18:20:28.214Z",
     "totalReviews": 3,
@@ -1138939,21 +1138977,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T21:14:57.663Z",
-    "completedAt": "2026-11-03T21:15:10.457Z",
-    "totalReviews": 6,
-    "processed": 2,
-    "skipped": 4,
+    "startedAt": "2026-11-03T21:31:26.373Z",
+    "completedAt": "2026-11-03T21:31:45.315Z",
+    "totalReviews": 11,
+    "processed": 3,
+    "skipped": 8,
     "errors": 0,
     "tokensUsed": {
-      "input": 12999,
-      "output": 707,
-      "cacheRead": 3807,
-      "cacheWrite": 3807,
-      "total": 31800
+      "input": 19771,
+      "output": 1021,
+      "cacheRead": 11421,
+      "cacheWrite": 0,
+      "total": 47987
     },
-    "costUsd": 0.06265494999999999,
-    "runId": "41717174979",
+    "costUsd": 0.07436609999999999,
+    "runId": "41718262720",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1156383,10 +1156421,10 @@
       {
         "showId": "hadestown-2019",
         "ourDistribution": {
-          "up": 75,
+          "up": 74,
           "flat": 3,
           "down": 3,
-          "total": 81
+          "total": 80
         },
         "dtliDistribution": {
           "up": 4,
@@ -1156983,10 +1157021,10 @@
       {
         "showId": "harry-potter-2021",
         "ourDistribution": {
-          "up": 70,
+          "up": 69,
           "flat": 8,
           "down": 1,
-          "total": 79
+          "total": 78
         },
         "dtliDistribution": {
           "up": 8,
@@ -1161070,10 +1161108,10 @@
       {
         "showId": "king-hedley-ii-regional-2026",
         "ourDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 0,
-          "total": 4
+          "up": 5,
+          "flat": 1,
+          "down": 1,
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -1189508,8 +1189546,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-03T21:20:07.345Z",
-    "completedAt": "2026-11-03T21:20:07.347Z",
+    "startedAt": "2026-11-03T21:36:42.221Z",
+    "completedAt": "2026-11-03T21:36:42.223Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1189522,83 +1189560,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41717174979",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-03T21:22:45.433Z",
-    "completedAt": "2026-11-03T21:23:01.313Z",
-    "totalReviews": 9,
-    "processed": 3,
-    "skipped": 6,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 17814,
-      "output": 960,
-      "cacheRead": 11421,
-      "cacheWrite": 0,
-      "total": 45089
-    },
-    "costUsd": 0.0680569,
-    "runId": "41719404827",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-03T21:27:58.835Z",
-    "completedAt": "2026-11-03T21:27:58.837Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41719404827",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-03T21:26:23.645Z",
-    "completedAt": "2026-11-03T21:26:29.087Z",
-    "totalReviews": 33,
-    "processed": 1,
-    "skipped": 32,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 6337,
-      "output": 340,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 15591
-    },
-    "costUsd": 0.024100700000000003,
-    "runId": "41719401375",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-03T21:31:26.246Z",
-    "completedAt": "2026-11-03T21:31:26.262Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41719401375",
+    "runId": "41718262720",
     "source": "comparative-rescore",
     "errorDetails": []
   }
