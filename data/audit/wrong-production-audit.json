@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T18:38:38.633Z",
+  "timestamp": "2026-11-03T19:05:01.711Z",
   "stats": {
-    "totalReviews": 79928,
-    "alreadyFlagged": 22054,
+    "totalReviews": 79946,
+    "alreadyFlagged": 22055,
     "dateGuardCatches": 216,
-    "directorMismatch": 3458,
+    "directorMismatch": 3457,
     "tvFilmSignals": 2262,
     "londonSignals": 3587,
     "offBroadwaySignals": 735,
-    "yearMismatch": 360,
-    "noPublishDate": 8497
+    "yearMismatch": 361,
+    "noPublishDate": 8505
   },
   "findings": [
     {
@@ -19147,19 +19147,6 @@
     },
     {
       "showId": "eclipsed-off-broadway-2015",
-      "file": "hollywood-reporter--unknown.json",
-      "publishDate": "2015-10-14",
-      "url": "http://www.hollywoodreporter.com/review/lupita-nyongo-danai-guriras-eclipsed-832110",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"liesl tommy\" from eclipsed-2016"
-        }
-      ]
-    },
-    {
-      "showId": "eclipsed-off-broadway-2015",
       "file": "njcom--christopher-kelly.json",
       "score": 76,
       "publishDate": "2015-10-15",
@@ -22087,6 +22074,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "finians-rainbow-off-broadway-2016",
+      "file": "broadway-and-me--janice-c-simpson.json",
+      "publishDate": "December 28th, 2016",
+      "url": "http://broadwayandme.blogspot.com/2016/12/why-finians-rainbow-doesnt-glow-for-me.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2009 (2x) more than 2016 (0x). 2009 matches production: finians-rainbow-2009"
         }
       ]
     },
