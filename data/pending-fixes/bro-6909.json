@@ -1,0 +1,36 @@
+{
+  "issueNumber": "bro-6909",
+  "planId": "00c3ab7d-0c28-4f08-8813-1a63bd1caa1d",
+  "status": "pending",
+  "createdAt": "2026-11-03T21:52:54.698Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Girls (Young Vic 2026): two copies of a Mean Girls Liverpool tour review counted; mark wrongShow",
+    "steps": [
+      "girls-off-west-end-2026/north-west-end--beth-easton.json: wrongShow",
+      "girls-off-west-end-2026/north-west-end--unknown.json: wrongShow"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "girls-off-west-end-2026/north-west-end--beth-easton.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "girls-off-west-end-2026/north-west-end--beth-easton.json: wrongShow"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "girls-off-west-end-2026/north-west-end--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "girls-off-west-end-2026/north-west-end--unknown.json: wrongShow"
+      }
+    ]
+  }
+}
