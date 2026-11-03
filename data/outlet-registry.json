@@ -1,9 +1,9 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-11-03T00:09:22.571Z",
+    "lastUpdated": "2026-11-03T00:21:07.790Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6632: domainAliases artsatl += artsatl.com (ArtsATL published under artsatl.com before moving to artsatl.org; census sample is an ArtsATL review)"
+    "lastChange": "BRO-6854: San Diego outlets From Another Zero, Talk Theatre to Me, Arts Meme (tier 3)"
   },
   "outlets": {
     "westendtheatre": {
@@ -14951,6 +14951,33 @@
         "tablet-magazine"
       ],
       "domain": "tabletmag.com"
+    },
+    "from-another-zero": {
+      "displayName": "From Another Zero",
+      "tier": 3,
+      "aliases": [
+        "fromanotherzero",
+        "from another zero"
+      ],
+      "domain": "fromanother0.com"
+    },
+    "talk-theatre-to-me": {
+      "displayName": "Talk Theatre to Me",
+      "tier": 3,
+      "aliases": [
+        "talktheatretome",
+        "talk theatre to me"
+      ],
+      "domain": "talktheatretome.com"
+    },
+    "arts-meme": {
+      "displayName": "Arts Meme",
+      "tier": 3,
+      "aliases": [
+        "artsmeme",
+        "arts meme"
+      ],
+      "domain": "artsmeme.com"
     }
   },
   "_aliasIndex": {
@@ -15655,6 +15682,6 @@
     "theatrereviews-with-paul-seven": "theatre-reviews-paul-seven",
     "paul seven lewis": "theatre-reviews-paul-seven"
   },
-  "lastUpdated": "2026-11-01T03:38:44.000Z",
+  "lastUpdated": "2026-11-03T00:21:07.790Z",
   "lastChange": "BRO-6742: registered theatre-reviews-paul-seven (theatre.reviews' own /review/ pages by Paul Lewis; no domain, the host is an aggregator)"
 }
