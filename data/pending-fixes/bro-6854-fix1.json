@@ -1,0 +1,39 @@
+{
+  "issueNumber": "bro-6854-fix1",
+  "planId": "9e67fd7e-c709-4ea9-8af5-a44187e6d69c",
+  "status": "pending",
+  "createdAt": "2026-11-03T02:11:38.645Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6854: remove 3 London reviews filed under the San Diego Good Night, Oscar",
+    "steps": [
+      "London (Barbican) review of Good Night, Oscar, not the North Coast Rep production",
+      "London (Barbican) review, not the North Coast Rep production",
+      "West End review, not the North Coast Rep production"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "good-night-oscar-regional-2026/independent--alice-saville.json",
+        "description": "London (Barbican) review of Good Night, Oscar, not the North Coast Rep production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "good-night-oscar-regional-2026/thestage--dave-fargnoli.json",
+        "description": "London (Barbican) review, not the North Coast Rep production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "good-night-oscar-regional-2026/whatsonstage--alun-hood.json",
+        "description": "West End review, not the North Coast Rep production"
+      }
+    ]
+  }
+}
