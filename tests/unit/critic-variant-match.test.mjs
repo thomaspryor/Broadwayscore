@@ -15,7 +15,6 @@ const pg = (name, count, ...outlets) => ({ name, count, outlets });
 test('real splits merge', () => {
   const cases = [
     [pg('Andrjez Lukowski', 1, 'Time Out London'), pg('Andrzej Lukowski', 371, 'Time Out London')],
-    [pg('Jess Green', 1, 'Musical Theatre Review'), pg('Jesse Green', 400, 'New York Times')],
     [pg('David Fargnoli', 1, 'Stage Left'), pg('Dave Fargnoli', 30, 'Stage Left')],
     [pg('Chris Caggiano', 15, 'Dc Metro'), pg('Christopher Caggiano', 12, 'Dc Metro')],
     [pg('Jospeh Verlezza', 1, 'X'), pg('Joseph Verlezza', 40, 'Y')],
@@ -29,6 +28,11 @@ test('different people stay apart', () => {
     [pg('Stu Brown', 40, 'A'), pg('Scott Brown', 300, 'B')],
     [pg('Breanne J Heldman', 20, 'A'), pg('Breanne L Heldman', 20, 'A')],
     [pg('Marina Kennedy', 8, 'A'), pg('Mark Kennedy', 80, 'B')],
+    // name match but no shared outlet: a human decides (review found these were two people)
+    [pg('Simon Thomson', 1, 'City A.M.'), pg('Simon Thompson', 16, 'WhatsOnStage')],
+    [pg('Jess Green', 1, 'Musical Theatre Review'), pg('Jesse Green', 400, 'New York Times')],
+    [pg('Erin Grode', 1, 'A'), pg('Eric Grode', 50, 'B')],
+    [pg('Jane Roberts', 3, 'A'), pg('Jane Robertson', 40, 'B')],
   ];
   for (const [a, b] of cases) assert.notEqual(classifyVariantPair(a, b).verdict, 'merge', `${a.name} / ${b.name}`);
 });

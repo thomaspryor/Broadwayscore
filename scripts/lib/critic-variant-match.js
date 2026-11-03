@@ -103,7 +103,9 @@ function damerau(a, b) {
 function closeToken(x, y) {
   const n = Math.min(x.length, y.length);
   const d = damerau(x, y);
-  return (n >= 5 && d <= 1) || (n >= 7 && d <= 2);
+  // 2 edits only for same-length tokens (transposition/substitution), so suffix
+  // pairs like Richards/Richardson and Roberts/Robertson stay different.
+  return (n >= 5 && d <= 1) || (n >= 7 && d <= 2 && x.length === y.length);
 }
 
 function sameNickname(x, y) {
@@ -190,7 +192,9 @@ function classifyVariantPair(a, b, opts = {}) {
     return { verdict: 'review', relation, reason: 'extra words, both pages sizeable', canonical };
   }
   if (shared.length > 0) return { verdict: 'merge', relation, reason: `${relation}, shared outlet ${shared[0]}`, canonical };
-  if (straggler) return { verdict: 'merge', relation, reason: `${relation}, ${small.count}-review straggler`, canonical };
+  // A name match with no shared outlet is not enough (Simon Thomson/Thompson, Jess/Jesse Green
+  // were two people): a human decides.
+  if (straggler) return { verdict: 'review', relation, reason: `${relation}, ${small.count}-review straggler but no shared outlet`, canonical };
   return { verdict: 'review', relation, reason: `${relation}, no shared outlet and both pages sizeable`, canonical };
 }
 
