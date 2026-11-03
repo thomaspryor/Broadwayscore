@@ -37,6 +37,10 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   const [editOpen, setEditOpen] = useState(false);
   const [flagOpen, setFlagOpen] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
+  const [claimsOff, setClaimsOff] = useState(false);
+  useEffect(() => {
+    fetch('/api/critics/status').then((r) => (r.ok ? r.json() : null)).then((j) => { if (j?.claimsDisabled) setClaimsOff(true); }).catch(() => {});
+  }, []);
 
   const refresh = useCallback(async () => {
     const token = await accessToken();
@@ -80,7 +84,7 @@ export default function CriticClaimPanel({ slug, name, outlet, claimed, reviewOp
   if (me.state === 'pending') {
     return <div className="mb-4 rounded-lg border border-white/10 bg-surface-raised px-4 py-3 text-sm text-fg-muted">Thanks, we have your request for this page. We&apos;ll be in touch by email.</div>;
   }
-  if (me.state === 'unavailable') return null;
+  if (me.state === 'unavailable' || claimsOff) return null;
 
   const start = () => {
     if (!isAuthenticated) { showSignIn('generic', 'critic_claim', { returnTo: `/critics/${slug}` }); return; }
@@ -105,6 +109,7 @@ function ClaimModal({ open, onClose, slug, name, defaultEmail, onDone }: {
   const [workUrl, setWorkUrl] = useState('');
   const [socials, setSocials] = useState<{ platform: string; value: string }[]>([{ platform: 'instagram', value: '' }]);
   const [note, setNote] = useState('');
+  const [gotcha, setGotcha] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [sent, setSent] = useState(false);
@@ -118,7 +123,7 @@ function ClaimModal({ open, onClose, slug, name, defaultEmail, onDone }: {
       if (!token) { setError('Please sign in again.'); return; }
       const res = await fetch('/api/critics/claim', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ slug, contactEmail: email, socials, workUrl, note }),
+        body: JSON.stringify({ slug, contactEmail: email, socials, workUrl, note, _gotcha: gotcha }),
       });
       const j = await res.json().catch(() => ({}));
       if (!res.ok) { setError(j.error || 'Something went wrong. Please try again.'); return; }
@@ -141,6 +146,10 @@ function ClaimModal({ open, onClose, slug, name, defaultEmail, onDone }: {
             <div>
               <label htmlFor="claim-email" className="block text-sm font-medium text-gray-200 mb-1">Best email to reach you</label>
               <input id="claim-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className={inputClasses} />
+            </div>
+            <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
+              <label htmlFor="claim-website-hp">Leave this empty</label>
+              <input id="claim-website-hp" type="text" tabIndex={-1} autoComplete="off" value={gotcha} onChange={(e) => setGotcha(e.target.value)} />
             </div>
             <fieldset>
               <legend className="block text-sm font-medium text-gray-200 mb-1">Your main social account (at least one)</legend>

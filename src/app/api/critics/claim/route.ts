@@ -1,27 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getCriticBySlug, getOutletBySlug, getOutletSlugById } from '@/lib/data-reviews';
-import { sanitizeClaimInput, signClaimLink, claimHints } from '@/lib/critic-claim';
+import { sanitizeClaimInput, signClaimLink, claimHints, claimLimitVerdict, ownerEmailPlan, rateLimitAllow, claimsDisabled } from '@/lib/critic-claim';
 import { criticBackendReady, getRequestUser, sbAdmin, emailOwner, escHtml, getClaimsForUser } from '@/lib/critic-server';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
 const SITE = 'https://broadwayscorecard.com';
-const hits = new Map<string, { n: number; t: number }>();
-function limited(key: string): boolean {
-  const now = Date.now();
-  const h = hits.get(key);
-  if (!h || now - h.t > 3600_000) { hits.set(key, { n: 1, t: now }); return false; }
-  return ++h.n > 5;
+const userHits = new Map<string, { n: number; t: number }>();
+const ipHits = new Map<string, { n: number; t: number }>();
+function clientIp(req: NextRequest): string {
+  return req.headers.get('x-forwarded-for')?.split(',')[0].trim() || req.headers.get('x-real-ip') || 'unknown';
 }
 
 export async function POST(req: NextRequest) {
-  if (!criticBackendReady()) return NextResponse.json({ error: 'Claiming is not available right now.' }, { status: 503 });
+  if (claimsDisabled() || !criticBackendReady()) return NextResponse.json({ error: 'Claiming is not available right now.' }, { status: 503 });
+  const body = await req.json().catch(() => null);
+  // Honeypot: real people never see this field. Accept silently and drop.
+  if (body && typeof body === 'object' && typeof (body as Record<string, unknown>)._gotcha === 'string' && (body as Record<string, string>)._gotcha) {
+    return NextResponse.json({ ok: true, status: 'pending' });
+  }
+  if (!rateLimitAllow(ipHits, clientIp(req), 10, 3600_000)) return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
   const user = await getRequestUser(req);
   if (!user) return NextResponse.json({ error: 'Please sign in first.' }, { status: 401 });
-  if (limited(user.id)) return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
+  if (!rateLimitAllow(userHits, user.id, 5, 3600_000)) return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
 
-  const input = sanitizeClaimInput(await req.json().catch(() => null));
+  const input = sanitizeClaimInput(body);
   if ('error' in input) return NextResponse.json({ error: input.error }, { status: 400 });
   const critic = getCriticBySlug(input.slug);
   if (!critic) return NextResponse.json({ error: 'Unknown critic page.' }, { status: 404 });
@@ -30,6 +34,10 @@ export async function POST(req: NextRequest) {
   if (existing.some((c) => c.status === 'pending' || c.status === 'approved')) {
     return NextResponse.json({ ok: true, status: existing.find((c) => c.status === 'approved') ? 'approved' : 'pending' });
   }
+
+  const mine = await sbAdmin(`/rest/v1/critic_claims?user_id=eq.${encodeURIComponent(user.id)}&select=status,critic_slug,created_at&order=created_at.desc&limit=50`);
+  const verdict = claimLimitVerdict(mine.ok ? await mine.json() : [], input.slug);
+  if (!verdict.ok) return NextResponse.json({ error: verdict.message }, { status: 429 });
 
   const ins = await sbAdmin('/rest/v1/critic_claims', {
     method: 'POST', prefer: 'return=representation',
@@ -47,8 +55,10 @@ export async function POST(req: NextRequest) {
     const p = signClaimLink(secret || '', action, row.id);
     return `${SITE}/api/critics/decide?${new URLSearchParams({ c: p.c, a: p.a, e: String(p.e), s: p.s })}`;
   };
-  const others = await sbAdmin(`/rest/v1/critic_claims?critic_slug=eq.${encodeURIComponent(input.slug)}&id=neq.${row.id}&status=in.(pending,approved)&select=status`);
-  const otherClaimStatuses = others.ok ? ((await others.json()) as { status: string }[]).map((r) => r.status) : [];
+  const others = await sbAdmin(`/rest/v1/critic_claims?critic_slug=eq.${encodeURIComponent(input.slug)}&id=neq.${row.id}&status=in.(pending,approved)&select=status,owner_emailed_at`);
+  const otherClaims = others.ok ? ((await others.json()) as { status: string; owner_emailed_at: string | null }[]) : [];
+  const otherClaimStatuses = otherClaims.map((r) => r.status);
+  const plan = ownerEmailPlan(otherClaims);
   const outletSlug = getOutletSlugById(critic.primaryOutletId);
   const outletDomain = (outletSlug && getOutletBySlug(outletSlug)?.logoDomain) || null;
   const hints = claimHints({ contactEmail: input.contactEmail, accountEmail: user.email, outletDomain, otherClaimStatuses });
@@ -70,7 +80,10 @@ Note: ${escHtml(input.note || 'none')}</p>
 <p><b>Reply you can paste</b> (this email is reply-to them):<br><i>${escHtml(reply)}</i></p>
 <p><a href="${link('approve')}">Approve</a> &nbsp;|&nbsp; <a href="${link('decline')}">Decline</a></p>
 <p style="color:#888;font-size:12px">Each link opens a confirm page first; nothing changes until you press the button there.</p>`;
-  const sent = secret ? await emailOwner(`Critic page claim: ${critic.name}`, html, input.contactEmail) : false;
-  if (!sent) console.error('[critics/claim] owner email not sent for claim', row.id);
+  let sent = false;
+  if (plan === 'full') sent = secret ? await emailOwner(`Critic page claim: ${critic.name}`, html, input.contactEmail) : false;
+  else if (plan === 'note') sent = await emailOwner(`Another claim came in: ${critic.name}`, `<p>Another request came in for <a href="${SITE}/critics/${input.slug}">${SITE}/critics/${input.slug}</a> while one is already waiting. Only one claim email per page is sent while a request is pending, and the new one is stored. Approve or decline the first request, then the next can be looked at.</p>`);
+  if (plan !== 'none' && !sent) console.error('[critics/claim] owner email not sent for claim', row.id);
+  if (sent) await sbAdmin(`/rest/v1/critic_claims?id=eq.${row.id}`, { method: 'PATCH', prefer: 'return=minimal', body: JSON.stringify({ owner_emailed_at: new Date().toISOString() }) });
   return NextResponse.json({ ok: true, status: 'pending' });
 }

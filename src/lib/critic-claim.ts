@@ -174,7 +174,62 @@ export function sanitizeClaimInput(body: unknown): ClaimInput | { error: string 
   const rawUrl = typeof b.workUrl === 'string' ? b.workUrl.trim() : '';
   const workUrl = rawUrl ? cleanUrl(rawUrl) : null;
   if (rawUrl && !workUrl) return { error: 'The link to your work must start with https://.' };
-  return { slug, contactEmail: email, socials, workUrl, note: cleanText(b.note, 1000) };
+  const note = cleanText(b.note, 1000);
+  if (note && countUrls(note) > MAX_NOTE_URLS) return { error: 'Please keep the note to two links at most.' };
+  return { slug, contactEmail: email, socials, workUrl, note };
+}
+
+export const MAX_NOTE_URLS = 2;
+/** Counts http(s) links and bare www. links in free text. */
+export function countUrls(text: string): number {
+  return (text.match(/(?:https?:\/\/|www\.)\S+/gi) || []).length;
+}
+
+// ---- Anti-spam: limits are pure so tests can require() the real rules ----
+export const MAX_CLAIMS_PER_DAY = 3;
+export interface AccountClaim { status: string; critic_slug: string; created_at: string }
+export type LimitVerdict = { ok: true } | { ok: false; reason: 'pending-elsewhere' | 'daily-cap'; message: string };
+
+/**
+ * Per-account limits for a NEW claim on `slug`: one pending claim per
+ * account at a time (which also covers one pending per critic page), and at
+ * most MAX_CLAIMS_PER_DAY claims per account per rolling day.
+ */
+export function claimLimitVerdict(accountClaims: readonly AccountClaim[], slug: string, now = Date.now()): LimitVerdict {
+  const pending = accountClaims.find((c) => c.status === 'pending' && c.critic_slug !== slug);
+  if (pending) return { ok: false, reason: 'pending-elsewhere', message: 'You already have a request waiting for review. We will be in touch by email, and you can claim another page after that.' };
+  const dayAgo = now - 86_400_000;
+  const recent = accountClaims.filter((c) => Date.parse(c.created_at) > dayAgo).length;
+  if (recent >= MAX_CLAIMS_PER_DAY) return { ok: false, reason: 'daily-cap', message: 'You have sent several requests today. Please try again tomorrow.' };
+  return { ok: true };
+}
+
+export interface PageClaim { status: string; owner_emailed_at: string | null }
+export type OwnerEmailPlan = 'full' | 'note' | 'none';
+
+/**
+ * One full email to the owner per page while a claim is pending. Later claims
+ * on that page send at most one short "another claim came in" note per day
+ * (nothing if any email about this page went out in the last 24 hours).
+ */
+export function ownerEmailPlan(otherClaimsOnPage: readonly PageClaim[], now = Date.now()): OwnerEmailPlan {
+  if (!otherClaimsOnPage.some((c) => c.status === 'pending')) return 'full';
+  const dayAgo = now - 86_400_000;
+  const emailedRecently = otherClaimsOnPage.some((c) => c.owner_emailed_at && Date.parse(c.owner_emailed_at) > dayAgo);
+  return emailedRecently ? 'none' : 'note';
+}
+
+/** Sliding fixed-window counter. Returns true when the call is allowed. */
+export function rateLimitAllow(map: Map<string, { n: number; t: number }>, key: string, limit: number, windowMs: number, now = Date.now()): boolean {
+  const h = map.get(key);
+  if (!h || now - h.t > windowMs) { map.set(key, { n: 1, t: now }); return true; }
+  h.n++;
+  return h.n <= limit;
+}
+
+/** CRITIC_CLAIMS_DISABLED=true turns claiming off (prompt hidden, endpoint 503). */
+export function claimsDisabled(env: Record<string, string | undefined> = process.env): boolean {
+  return (env.CRITIC_CLAIMS_DISABLED || '').trim().toLowerCase() === 'true';
 }
 
 export interface HintInput {
