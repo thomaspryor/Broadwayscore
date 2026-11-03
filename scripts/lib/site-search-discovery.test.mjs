@@ -56,23 +56,24 @@ test('west-end market returns Telegraph/WhatsOnStage/The Stage, excludes broadwa
 });
 
 test('already-found outlets are excluded via their EFFECTIVE id (outletIdOverride)', () => {
-  // 'telegraph-search' overrides to canonical 'telegraph' — if an aggregator already
-  // found telegraph, the sibling search-index endpoint must not re-fire either.
-  const withoutFound = selectApplicableSiteSearchOutlets('west-end', { id: 'x', type: 'play' }, new Set());
-  assert.ok(withoutFound.includes('telegraph-search') || withoutFound.includes('telegraph'));
+  // 'vulture-opera' overrides to canonical 'vulture' — if an aggregator already found
+  // vulture, the sibling endpoint must not re-fire either. (telegraph-search used to
+  // carry this test; it is disabled since BRO-6898, so use the live registry sibling.)
+  const opera = { id: 'x', type: 'opera' };
+  const withoutFound = selectApplicableSiteSearchOutlets('broadway', opera, new Set());
+  assert.ok(withoutFound.includes('vulture-opera'), 'positive control: sibling fires when nothing is found');
 
-  const alreadyFound = new Set(['telegraph']);
-  const withFound = selectApplicableSiteSearchOutlets('west-end', { id: 'x', type: 'play' }, alreadyFound);
-  assert.ok(!withFound.includes('telegraph'), 'canonical telegraph must be excluded once found');
-  assert.ok(!withFound.includes('telegraph-search'), 'sibling telegraph-search must also be excluded once telegraph is found');
+  const withFound = selectApplicableSiteSearchOutlets('broadway', opera, new Set(['vulture']));
+  assert.ok(!withFound.includes('vulture'), 'canonical vulture must be excluded once found');
+  assert.ok(!withFound.includes('vulture-opera'), 'sibling vulture-opera must also be excluded once vulture is found');
 });
 
 test('opera-gated outlets only fire when applies(show) passes', () => {
   const nonOpera = selectApplicableSiteSearchOutlets('broadway', { id: 'x', type: 'play' }, new Set());
   const opera = selectApplicableSiteSearchOutlets('broadway', { id: 'x', type: 'opera' }, new Set());
-  const operaOnlyIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => typeof SITE_SEARCH_ENDPOINTS[id].applies === 'function');
-  assert.ok(operaOnlyIds.length > 0, 'sanity: registry has at least one applies()-gated outlet');
-  for (const id of operaOnlyIds) {
+  const gatedIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => typeof SITE_SEARCH_ENDPOINTS[id].applies === 'function');
+  assert.ok(gatedIds.length > 0, 'sanity: registry has at least one applies()-gated outlet');
+  for (const id of gatedIds) {
     assert.ok(!nonOpera.includes(id), `${id} is applies()-gated and must not fire for a non-opera show`);
   }
 });
@@ -161,4 +162,19 @@ test('BRO-6766: Opera Today is an opera-only, title-validated endpoint that reje
     assert.equal(hasNonMetOperaUrlMarker(`https://operatoday.com/2026/07/${slug}/`, 'eno').rejected, true, slug);
   }
   assert.equal(hasNonMetOperaUrlMarker('https://operatoday.com/2026/11/cosi-fan-tutte-review/', 'eno').rejected, false);
+});
+
+test('telegraph-search is disabled: no provider call is made (BRO-6898)', async () => {
+  const { searchOutletSite } = require('./site-search-discovery.js');
+  const cfg = SITE_SEARCH_ENDPOINTS['telegraph-search'];
+  assert.ok(cfg, 'entry still exists so sibling-exclusion logic keeps working');
+  assert.equal(cfg.applies({ type: 'play' }), false);
+  const r = await searchOutletSite('telegraph-search', 'Hamilton', { show: { type: 'musical' }, skipJs: false });
+  assert.deepEqual(r, []);
+});
+
+test('telegraph section index stays selected while telegraph-search is excluded (BRO-6898)', () => {
+  const ids = selectApplicableSiteSearchOutlets('broadway', { type: 'musical' }, new Set(), true);
+  assert.ok(ids.includes('telegraph'));
+  assert.ok(!ids.includes('telegraph-search'));
 });

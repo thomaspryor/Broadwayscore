@@ -110,28 +110,7 @@ function gatherLines() {
   return lines;
 }
 
-function parse(lines) {
-  const prov = {
-    scrapingdog: { reqs: 0, ok: 0, credits: 0, hosts: {} },
-    brightdata: { reqs: 0, ok: 0, credits: 0, hosts: {} },
-    scrapingbee: { reqs: 0, ok: 0, credits: 0, hosts: {} },
-  };
-  const tag = { '[SD Call]': 'scrapingdog', '[BD Call]': 'brightdata', '[SB Call]': 'scrapingbee' };
-  for (const line of lines) {
-    const t = Object.keys(tag).find(k => line.includes(k));
-    if (!t) continue;
-    const m = line.slice(line.indexOf(t) + t.length).trim();
-    let rec; try { rec = JSON.parse(m); } catch { continue; }
-    const p = prov[tag[t]];
-    p.reqs++;
-    if (rec.success) p.ok++;
-    if (rec.credits) p.credits += rec.credits;
-    const h = rec.host || 'unknown';
-    p.hosts[h] = p.hosts[h] || { reqs: 0, credits: 0 };
-    p.hosts[h].reqs++; p.hosts[h].credits += rec.credits || 0;
-  }
-  return prov;
-}
+const { parse } = require('./lib/scraper-usage-parse'); // BRO-6898: memo-skips are not calls
 
 function pct(ok, n) { return n ? `${(ok / n * 100).toFixed(1)}%` : '—'; }
 function usd(n) { return `$${n.toFixed(2)}`; }

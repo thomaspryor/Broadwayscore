@@ -5386,7 +5386,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // paid JS-rendered outlets fire only for outlets STILL missing after the SSR
     // pass. Firing everything in one flat batch (the original version of this step)
     // let sibling endpoints for the same outlet — e.g. free 'telegraph' (SSR) and
-    // paid 'telegraph-search' (JS) — both burn a call even when the free one had
+    // formerly-paid 'telegraph-search' (JS, disabled BRO-6898) — both burn a call even when the free one had
     // already found the review, and spent ScrapingBee budget with no cap (ship-check
     // finding, #767).
     const ssrIds = selectApplicableSiteSearchOutlets(market, show, alreadyFoundIds, false);

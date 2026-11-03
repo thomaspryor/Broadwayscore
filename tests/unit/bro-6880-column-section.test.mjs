@@ -63,3 +63,82 @@ test('non-column hosts are untouched; short text is returned unchanged', () => {
   assert.equal(isolateMultiShowSection('https://example.com/a', COLUMN, 'The Imaginary Invalid', [], TITLES).action, 'not-multi-show');
   assert.equal(isolateColumnSection('Short.', 'The Imaginary Invalid', { knownTitles: TITLES }).action, 'single-section');
 });
+
+// BRO-6872: some fetch routes flatten the column to one line. Sections are then found from each review's listing
+// footer ("About 1 hour 30 minutes. example.org."), and a section belongs to the show it names first.
+const foot = (site) => `Through Nov. 22 at the Example Theatre. About 1 hour 30 minutes. ${site}.org.`;
+// Each section names its show more than once, as a real review does: a show named only in passing never owns a section.
+const FLAT_ODC = `Two big names lead this week. ‘Other Desert Cities’ returns with a family fight over a memoir. ${filler('ODC', 8)} ‘Other Desert Cities’ still has bite. ${foot('odc')}`;
+const FLAT_SG = `Here are two more. ‘School Girls; Or, The African Mean Girls Play’ follows a clique in Ghana. ${filler('SG', 8)} ‘School Girls; Or, The African Mean Girls Play’ rewards a second visit. ${foot('sg')}`;
+const FLAT_TII = `If anyone can adapt Moliere, it is this company with ‘The Imaginary Invalid,’ a farce about a man sure he is dying. ${filler('TII', 6)} ‘The Imaginary Invalid’ is the one to see. Unlike ‘Other Desert Cities,’ it never sags. Sometimes that is just what the doctor ordered. ${foot('tii')}`;
+const FLAT = [FLAT_ODC, FLAT_SG, FLAT_TII].join(' ');
+const FLAT_TITLES = [...TITLES, 'The Doctor', 'Broadway'];
+
+test('flattened column: the target section is kept, sentences naming another show are dropped', () => {
+  assert.ok(!FLAT.includes('\n') && FLAT.length > 1500);
+  const iso = isolateMultiShowSection(URL, FLAT, 'The Imaginary Invalid', [], FLAT_TITLES);
+  assert.equal(iso.action, 'isolated');
+  assert.match(iso.text, /^If anyone can adapt Moliere/);
+  assert.match(iso.text, /just what the doctor ordered/, 'lower-case prose is not the title "The Doctor"');
+  assert.match(iso.text, /tii\.org\.$/);
+  assert.doesNotMatch(iso.text, /Desert Cities|School Girls|ODC|SG cast/);
+  const sg = isolateMultiShowSection(URL, FLAT, 'School Girls; Or, The African Mean Girls Play', [], FLAT_TITLES);
+  assert.equal(sg.action, 'isolated');
+  assert.doesNotMatch(sg.text, /Imaginary|ODC/);
+});
+
+test('flattened column: refuses when the show owns no section or two; one footer is a single review', () => {
+  assert.equal(isolateMultiShowSection(URL, FLAT, 'Hamilton', [], FLAT_TITLES).action, 'refuse');
+  const twice = `${FLAT} ‘The Imaginary Invalid’ again, briefly. ${filler('again', 6)} ‘The Imaginary Invalid’ holds up. ${foot('again')}`;
+  assert.equal(isolateMultiShowSection(URL, twice, 'The Imaginary Invalid', [], FLAT_TITLES).reason, 'ambiguous');
+  const one = `${FLAT_TII} ${filler('more', 10)}`;
+  assert.equal(isolateMultiShowSection(URL, one, 'The Imaginary Invalid', [], FLAT_TITLES).action, 'single-section');
+});
+
+test('flattened column: a show named once in passing never owns a section (it would take the neighbour review)', () => {
+  // Real case the first cut of this got wrong: in the Washington Post column of 2026-10-30, "Charlie and the
+  // Chocolate Factory" appears once, as a Roald Dahl aside inside the section reviewing another show, and was
+  // handed that whole section. A section's show must be named at least twice, and be the only one named early.
+  const aside = FLAT.replace('Unlike ‘Other Desert Cities,’ it never sags.', 'It nods to ‘Hamilton’ once.');
+  const passing = isolateMultiShowSection(URL, aside, 'Hamilton', [], [...FLAT_TITLES, 'Hamilton']);
+  assert.equal(passing.action, 'refuse');
+  assert.equal(passing.text, null);
+  // the real owner of that section is unaffected
+  assert.equal(isolateMultiShowSection(URL, aside, 'The Imaginary Invalid', [], FLAT_TITLES).action, 'isolated');
+});
+
+test('flattened column: a long column we cannot split refuses instead of storing every review as one', () => {
+  const fourth = `Also open is ‘Dog Day Afternoon,’ back for a run. ${filler('DDA', 8)} ‘Dog Day Afternoon’ sells out all the same.`;
+  const noFooters = `${FLAT} ${fourth}`.replaceAll(/About 1 hour 30 minutes\. \w+\.org\./g, 'It plays into next month.');
+  assert.ok(noFooters.length > 1500 && !/\n/.test(noFooters));
+  const r = isolateMultiShowSection(URL, noFooters, 'The Imaginary Invalid', [], [...FLAT_TITLES, 'Dog Day Afternoon']);
+  assert.equal(r.action, 'refuse');
+  assert.equal(r.text, null);
+  // a single review that name-drops one other show is still left alone
+  const single = `${FLAT_TII.replaceAll(/About 1 hour 30 minutes\. \w+\.org\./g, 'It plays on.')} ${filler('more', 12)}`;
+  assert.equal(isolateMultiShowSection(URL, single, 'The Imaginary Invalid', [], FLAT_TITLES).action, 'single-section');
+});
+
+// Real corpus check (skipped in CI, where data/review-texts is private): the stored Washington Post column that
+// covers five shows must never hand a show a section it does not own. No article text is pinned here.
+test('real flattened column: no show is given another show\'s section', async (t) => {
+  const fs = await import('node:fs');
+  const path = await import('node:path');
+  const { fileURLToPath } = await import('node:url');
+  const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const col = path.join(root, 'data/review-texts/death-of-a-salesman-2026/washpost--thomas-floyd.json');
+  const showsPath = path.join(root, 'data/shows.json');
+  if (!fs.existsSync(col) || !fs.existsSync(showsPath)) { t.skip('no local review texts'); return; }
+  const raw = JSON.parse(fs.readFileSync(col, 'utf8'));
+  const text = raw.fullText || raw.text || '';
+  if (!text || /\n/.test(text.trim())) { t.skip('stored copy is not the flattened column'); return; }
+  const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+  const titles = (Array.isArray(shows) ? shows : shows.shows).map((s) => s.title);
+  const { isolateFlatColumnSection } = require('../../scripts/lib/column-section-extract.js');
+  for (const [title, expect] of [['Charlie and the Chocolate Factory', 'refuse'], ['Dog Day Afternoon', 'isolated']]) {
+    const r = isolateFlatColumnSection(text, title, { aliases: [], knownTitles: titles });
+    assert.ok(r, `${title}: the column should take the flat path`);
+    assert.equal(r.action, expect, `${title}`);
+    if (r.action === 'isolated') assert.ok(r.text.includes(title.split(' ')[0]), `${title}: kept text is its own section`);
+  }
+});

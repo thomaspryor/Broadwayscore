@@ -1772,7 +1772,7 @@ async function pollShow(show) {
   // Prevents burning SB credits on outlets aggregators/RSS already found.
   // BRO-2941: also suppresses outlets that have been attempted-and-missing
   // DEFAULT_GIVEUP_THRESHOLD ticks in a row for THIS show — a market-agnostic
-  // outlet (vulture, THR, deadline, timeout, ew, telegraph-search) that will
+  // outlet (vulture, THR, deadline, timeout, ew; telegraph-search is disabled, BRO-6898) that will
   // never cover a given show (e.g. THR on an Off-Broadway transfer) would
   // otherwise re-render at 5 SB credits on every single poll tick forever.
   //

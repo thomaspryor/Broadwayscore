@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6824-b",
   "planId": "5c598478-121c-4c4d-aaee-e1ba9b7c67d0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T15:06:15.932Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "args": "--file=armour-oran-mor-regional-2024/the-scotsman--joyce-mcmillan.json,dancing-shoes-oran-mor-regional-2025/the-scotsman--joyce-mcmillan.json,dookin-oot-oran-mor-regional-2025/the-scotsman--joyce-mcmillan.json,ivor-oran-mor-regional-2025/the-scotsman--joyce-mcmillan.json,peak-stuff-chichester-festival-regional-2024/portsmouth-news--james-butler.json,pushin-thirty-oran-mor-regional-2024/the-scotsman--joyce-mcmillan.json,roost-oran-mor-regional-2024/the-scotsman--joyce-mcmillan.json,stand-and-deliver-the-lee-jeans-sit-in-tron-regional-2026/the-scotsman--mark-fisher.json,sunset-song-dundee-rep-regional-2024/the-scotsman--joyce-mcmillan.json,the-cat-and-the-canary-chichester-festival-regional-2024/portsmouth-news--james-george.json,the-house-party-chichester-festival-regional-2024/portsmouth-news--james-butler.json,through-the-shortbread-tin-tron-regional-2025/the-scotsman--joyce-mcmillan.json --apply"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T16:35:06.423Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
