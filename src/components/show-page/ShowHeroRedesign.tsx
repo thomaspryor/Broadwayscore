@@ -65,6 +65,9 @@ import { removeLocalShow } from '@/lib/local-watchlist';
 import { getWatchlistCtaLabel } from '@/lib/watchlist-cta-label';
 import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
+import { saveLocalRating } from '@/lib/local-ratings';
+import { useLocalRatings } from '@/hooks/useLocalRatings';
+import { LOCAL_RATINGS_MIGRATED_EVENT } from '@/components/user/LocalRatingsMigrator';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -184,6 +187,8 @@ function Inner({
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, updatePerformance, watchlist } = useWatchlist(user?.id || null);
   const { lists, getLists } = useUserLists(user?.id || null);
+  const { getLocalRating } = useLocalRatings();
+  const localRating = !isAuthenticated ? getLocalRating(show.id) : null;
   const { showToast } = useToastSafe();
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
@@ -264,6 +269,14 @@ function Inner({
       getLists();
     }
   }, [isAuthenticated, user, show.id, getReviewsForShow, getWatchlist, getLists]);
+
+  // Signed-out ratings just moved into the account: show them without a reload.
+  useEffect(() => {
+    if (!isAuthenticated || !user) return;
+    const onMigrated = () => { getReviewsForShow(show.id); };
+    document.addEventListener(LOCAL_RATINGS_MIGRATED_EVENT, onMigrated);
+    return () => document.removeEventListener(LOCAL_RATINGS_MIGRATED_EVENT, onMigrated);
+  }, [isAuthenticated, user, show.id, getReviewsForShow]);
 
   // Draft carried across sign-in (rating + typed note + date + target review id).
   const { pendingDraft, setPendingDraft, hasExecutedPending, saveDraft } = usePendingRatingDraft(show.id, {
@@ -366,19 +379,35 @@ function Inner({
   // open with the typed note intact when this rejects. So on the authed path we
   // THROW on failure (no swallow, no close-in-finally) and let a resolved promise
   // signal success — the editor then calls onSaved to close.
-  const handleSaveReview = useCallback(async (data: RatingEditorSaveData): Promise<void | 'auth-gated'> => {
+  const handleSaveReview = useCallback(async (data: RatingEditorSaveData): Promise<void | 'auth-gated' | 'saved-local'> => {
     if (!user) {
       if (authLoading) {
         // Session still restoring for an already-signed-in user — don't bounce
         // them to sign-in; surface a retryable error in the editor instead.
         throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
-      // Gate at Save — persist the full draft, then sign in. The editor stays
-      // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
-      // loses nothing; completing it lets the pending-action effect resume.
-      saveDraft(data);
+      // Save first, ask later (BRO-6917): keep the rating on this device so a
+      // dismissed sign-in loses nothing, then offer sign-in. LocalRatingsMigrator
+      // moves it into the account at sign-in; the one-hour draft is not needed.
+      const next = saveLocalRating({
+        showId: show.id,
+        rating: data.rating,
+        ...(data.reviewText ? { reviewText: data.reviewText } : {}),
+        ...(data.dateSeen ? { dateSeen: data.dateSeen } : {}),
+        ...(data.timeSlot ? { timeSlot: data.timeSlot } : {}),
+        ...(data.curtainTime ? { curtainTime: data.curtainTime } : {}),
+        ...(data.seat ? { seat: data.seat } : {}),
+      });
+      removeLocalShow(show.id); // rated = seen, off the want-to-see list
+      trackUgc('rating_saved_local', {
+        show_id: show.id,
+        source: 'show_page',
+        rating: data.rating,
+        has_review_text: !!data.reviewText,
+        local_count: next.length,
+      });
       showSignIn('rating', 'show_rating_save');
-      return 'auth-gated';
+      return 'saved-local';
     }
     if (data.reviewId) {
       const filters = `id=eq.${data.reviewId}&user_id=eq.${user.id}`;
@@ -417,7 +446,7 @@ function Inner({
     }
     await getReviewsForShow(show.id);
     invalidateRatingsCache();
-  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, removeFromWatchlist, saveDraft]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, removeFromWatchlist]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
@@ -767,6 +796,22 @@ function Inner({
       {/* Membership caption — one line gathering ALL list membership: the
           Watchlist link first (the "On your list" button is a TOGGLE and must
           not navigate), then custom lists. Owner design pick, 2026-07-19. */}
+      {userFeaturesEnabled && localRating && (
+        <p className="text-xs text-fg-muted flex items-start gap-1.5" data-testid="local-rating-note">
+          <span className="flex shrink-0 items-center pt-px"><MiniStars rating={localRating.rating} /></span>
+          <span>
+            Your rating, saved on this device.{' '}
+            <button
+              type="button"
+              onClick={() => showSignIn('rating', 'show_rating_note')}
+              className="underline hover:text-white/90"
+            >
+              Keep it everywhere
+            </button>
+          </span>
+        </p>
+      )}
+
       {userFeaturesEnabled && (onWatchlist || firstListContainingShow) && (
         <p className="text-xs text-fg-muted flex items-center gap-1.5">
           <svg className="w-3 h-3 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
