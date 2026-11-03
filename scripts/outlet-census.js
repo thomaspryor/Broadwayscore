@@ -256,8 +256,9 @@ async function enumerateSitemap(src, since) {
         } catch (e) {
           // A 404 is an answer (no sitemap for that period); anything else is retried, then
           // counted as a failure that marks the enumeration incomplete (BRO-6488).
-          if (/HTTP 404\b/.test(e.message)) { missing++; return; }
-          if (attempt < 3 && !/HTTP 4\d\d\b/.test(e.message)) { await new Promise((ok) => setTimeout(ok, 2000 * attempt)); continue; }
+          const status = Number((/HTTP (\d{3})\b/.exec(e.message) || [])[1]) || 0;
+          if (status === 404) { missing++; return; }
+          if (attempt < 3 && census.isTransientFetch(status, status ? null : e)) { await new Promise((ok) => setTimeout(ok, 2000 * attempt)); continue; }
           failed++; if (notes.length < 30) notes.push(`${u}: ${e.message}`); return;
         }
       }
