@@ -16,7 +16,14 @@
     "legally-blonde-2007/chicago-reader--justin-hayford.json",
     "legally-blonde-2007/thestage--unknown.json",
     "mary-poppins-2006/ew--steve-daly.json",
-    "mary-poppins-2006/timeout--david-cote.json"
+    "mary-poppins-2006/timeout--david-cote.json",
+    "dogstar-off-west-end-2026/theatreboard--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+    "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json",
+    "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "mary-poppins-2006/variety--charles-isherwood.json",
@@ -24,7 +31,17 @@
     "mcneal-2024/daily-mail--unknown.json",
     "my-fair-lady-2018/backstage--unknown.json",
     "my-fair-lady-2018/rocknycliveandrecorded--iman-lababedi.json",
-    "my-fair-lady-2018/stageandcinema--unknown.json"
+    "my-fair-lady-2018/stageandcinema--unknown.json",
+    "the-bridge-off-west-end-2026/the-list--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "ceilidh-the-musical-off-west-end-2026/musical-theatre-review--angela-thomas.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
+    "girls-off-west-end-2026/londontheatre1--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -35,7 +52,13 @@
       "mcneal-2024/theatre-reviews-limited--david-roberts.json",
       "legally-blonde-2007/chicago-reader--justin-hayford.json",
       "legally-blonde-2007/thestage--unknown.json",
-      "mary-poppins-2006/timeout--david-cote.json"
+      "mary-poppins-2006/timeout--david-cote.json",
+      "dogstar-off-west-end-2026/theatreboard--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+      "the-lives-of-others-west-end-2026/londontheatredirect--andrew-papadopoulos.json",
+      "girls-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [
       "data/review-texts/mary-poppins-2006/variety--charles-isherwood.json"
@@ -62,11 +85,12 @@
       "mcneal-2024/broadwaynews--brittani-samuel.json",
       "my-fair-lady-2018/thestage--mark-shenton.json",
       "my-fair-lady-2018/stageandcinema--unknown.json",
-      "mary-poppins-2006/ew--steve-daly.json"
+      "mary-poppins-2006/ew--steve-daly.json",
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
     ]
   },
   "startTime": "2026-11-03T21:17:55.841Z",
-  "lastProcessed": "mary-poppins-2006/timeout--david-cote.json",
+  "lastProcessed": "girls-off-west-end-2026/londontheatre1--unknown.json",
   "log": [
     {
       "t": "2026-11-03T21:18:35.462Z",
@@ -89,6 +113,12 @@
       "t": "2026-11-03T21:27:04.183Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-03T21:50:36.742Z",
+      "event": "bb-session",
+      "session": "38e95ef4",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }

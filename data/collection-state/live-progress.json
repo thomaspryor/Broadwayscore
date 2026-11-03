@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-11-03T21:28:12.786Z",
-  "processed": 17,
-  "failed": 6,
-  "successRate": "73.9%",
+  "updatedAt": "2026-11-03T21:51:17.498Z",
+  "processed": 24,
+  "failed": 16,
+  "successRate": "60.0%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 13,
     "amp": 1,
     "browserbase": 4,
     "directCookies": 0,
@@ -12,9 +12,9 @@
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 9
+    "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-11-03T21:18:35.462Z",
@@ -37,6 +37,12 @@
       "t": "2026-11-03T21:27:04.183Z",
       "event": "bb-cookie-inject",
       "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-03T21:50:36.742Z",
+      "event": "bb-session",
+      "session": "38e95ef4",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
     }
   ]
 }
