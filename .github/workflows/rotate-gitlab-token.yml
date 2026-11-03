@@ -154,18 +154,7 @@ jobs:
             bash scripts/lib/push-with-retry.sh 5 main
           fi
 
-      # BRO-6674: the notify step below is digest-only and the next scheduled run
-      # is a month away, so a failed rotation files one START-NOW card (reused
-      # while open; kill switch: repo variable WORKFLOW_FAILURE_CARD_DISABLED).
-      # Advisory: continue-on-error, it cannot change the run result.
-      - name: File fix card for failed token rotation
-        if: failure() && vars.WORKFLOW_FAILURE_CARD_DISABLED != 'true'
-        continue-on-error: true
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: node scripts/file-workflow-failure-card.js rotate-gitlab-token
-
+      # severity-low-ok: failures already route to a dispatched START-NOW card via route-workflow-alerts.js gitlab-token-failed (Route alert on ANY failure step above)
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
