@@ -340,6 +340,79 @@
     "queuedAt": "2026-11-02T23:39:37.869Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41554989437",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41554989437)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41553789076)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "5"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-11-03T01:08:59.904Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:heartbreak-house-regional-2026",
+    "title": "Review gap — \"Heartbreak House\" missing 3 cited review(s)",
+    "description": "Heartbreak House (heartbreak-house-regional-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=heartbreak-house-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T01:31:50.802Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:kelly-mccaughan-catholic-guilt-off-broadway-2026",
+    "title": "Review gap — \"Kelly McCaughan: Catholic Guilt\" missing 1 cited review(s)",
+    "description": "Kelly McCaughan: Catholic Guilt (kelly-mccaughan-catholic-guilt-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=kelly-mccaughan-catholic-guilt-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T01:31:50.843Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-best-medicine-regional-2026",
+    "title": "Review gap — \"The Best Medicine\" missing 1 cited review(s)",
+    "description": "The Best Medicine (the-best-medicine-regional-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-best-medicine-regional-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T01:31:51.035Z"
+  },
+  {
     "conditionKey": "t1-gaps:needs-manual-recovery",
     "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
     "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
@@ -351,7 +424,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-11-03T00:25:52.047Z"
+    "queuedAt": "2026-11-03T01:32:31.339Z"
   },
   {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
@@ -394,36 +467,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T00:59:47.548Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41554989437",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41554989437)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/41553789076)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "5"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-11-03T01:08:59.904Z"
   }
 ]
