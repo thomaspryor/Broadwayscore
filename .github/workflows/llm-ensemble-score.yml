@@ -769,6 +769,8 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: LLM ensemble scoring"
+          # BRO-6886: never re-dispatch scoring from scoring's own push.
+          dispatch_scoring: 'false'
 
       # Wall-clock time AFTER the push attempt finished — NOT the local commit's
       # committer timestamp. push-review-texts can commit locally then spend
