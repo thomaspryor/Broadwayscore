@@ -1214332,21 +1214332,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T00:16:30.371Z",
-    "completedAt": "2026-11-03T00:16:34.779Z",
-    "totalReviews": 1,
+    "startedAt": "2026-11-03T00:15:58.764Z",
+    "completedAt": "2026-11-03T00:16:04.290Z",
+    "totalReviews": 4,
     "processed": 1,
-    "skipped": 0,
+    "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 5089,
-      "output": 277,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 13676
+      "input": 6119,
+      "output": 315,
+      "cacheRead": 0,
+      "cacheWrite": 3807,
+      "total": 15325
     },
-    "costUsd": 0.019495600000000002,
-    "runId": "41550761794",
+    "costUsd": 0.03633755,
+    "runId": "41550693747",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1224725,6 +1224725,16 @@
           "flat": 1,
           "down": 0,
           "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "conscience-regional-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
         },
         "hasDisagreement": false
       },
@@ -1258442,18 +1258452,8 @@
         "ourDistribution": {
           "up": 4,
           "flat": 0,
-          "down": 1,
-          "total": 5
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "the-swan-regional-2026",
-        "ourDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 1,
-          "total": 5
+          "down": 0,
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1263588,8 +1263588,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-03T00:21:32.797Z",
-    "completedAt": "2026-11-03T00:21:32.798Z",
+    "startedAt": "2026-11-03T00:21:01.311Z",
+    "completedAt": "2026-11-03T00:21:01.312Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1263602,7 +1263602,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41550761794",
+    "runId": "41550693747",
     "source": "comparative-rescore",
     "errorDetails": []
   }
