@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-02T02:09:11.819Z",
-    "completedAt": "2026-11-02T02:09:28.183Z",
-    "totalReviews": 5,
-    "processed": 5,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 16778,
-      "output": 1062,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 17840
-    },
-    "costUsd": 0.043087900000000005,
-    "runId": "41373764018",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-02T02:31:47.006Z",
-    "completedAt": "2026-11-02T02:31:47.008Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41376700657",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-02T02:48:48.548Z",
     "completedAt": "2026-11-02T02:48:56.250Z",
     "totalReviews": 21,
@@ -1081042,6 +1081004,44 @@
     },
     "costUsd": 0,
     "runId": "41599932507",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-03T08:31:40.134Z",
+    "completedAt": "2026-11-03T08:31:46.501Z",
+    "totalReviews": 19,
+    "processed": 1,
+    "skipped": 18,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 6720,
+      "output": 354,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 16174
+    },
+    "costUsd": 0.025384300000000002,
+    "runId": "41603171762",
+    "source": "index",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-03T08:36:42.207Z",
+    "completedAt": "2026-11-03T08:36:42.216Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "41603171762",
     "source": "comparative-rescore",
     "errorDetails": []
   }
