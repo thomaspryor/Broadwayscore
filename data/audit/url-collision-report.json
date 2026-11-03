@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-11-03T15:46:25.961Z",
+  "generatedAt": "2026-11-03T17:24:13.589Z",
   "summary": {
-    "total": 13,
-    "high": 7,
-    "medium": 5,
-    "low": 1
+    "total": 14,
+    "high": 6,
+    "medium": 6,
+    "low": 2
   },
   "collisions": [
     {
@@ -87,6 +87,33 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html",
+      "normalizedUrl": "https://interestedbystander.com/2026/03/harry-potter-adjacent-broadway-reviews.html",
+      "candidates": [
+        {
+          "showId": "every-brilliant-thing-2026",
+          "file": "the-interested-bystander--cary-wong.json",
+          "publishDate": "2026-03-12",
+          "openingDate": "2026-03-12",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "the-interested-bystander"
+        },
+        {
+          "showId": "giant-2026",
+          "file": "the-interested-bystander--interested-bystander.json",
+          "publishDate": "2026-03-27",
+          "openingDate": "2026-03-23",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "the-interested-bystander"
+        }
+      ],
+      "suggestedWinner": "every-brilliant-thing-2026",
+      "reason": "publishDate 2026-03-12 is 0 days from every-brilliant-thing-2026 but also 4 days from giant-2026",
+      "confidence": "medium"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
@@ -197,33 +224,6 @@
       "confidence": "high"
     },
     {
-      "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
-      "normalizedUrl": "https://londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
-      "candidates": [
-        {
-          "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-          "file": "london-theatre--marianka-swain.json",
-          "publishDate": "2026-07-08",
-          "openingDate": "2026-10-16",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre"
-        },
-        {
-          "showId": "jesus-christ-superstar-west-end-2026",
-          "file": "london-theatre--marianka-swain.json",
-          "publishDate": "2026-07-07",
-          "openingDate": "2026-07-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "london-theatre"
-        }
-      ],
-      "suggestedWinner": "jesus-christ-superstar-west-end-2026",
-      "reason": "publishDate 2026-07-07 is 0 days from jesus-christ-superstar-west-end-2026 opening (2026-07-07); next closest is 100 days from jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "confidence": "high"
-    },
-    {
       "url": "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
       "normalizedUrl": "https://standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
       "candidates": [
@@ -249,6 +249,33 @@
       "suggestedWinner": "jesus-christ-superstar-west-end-2026",
       "reason": "publishDate 2026-07-07 is 0 days from jesus-christ-superstar-west-end-2026 opening (2026-07-07); next closest is 100 days from jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "confidence": "high"
+    },
+    {
+      "url": "https://www.ny1.com/content/ny1_living/theater_reviews/127164/ny1-theater-review---la-bete-/",
+      "normalizedUrl": "https://ny1.com/content/ny1_living/theater_reviews/127164/ny1-theater-review---la-bete-",
+      "candidates": [
+        {
+          "showId": "la-bete-1991",
+          "file": "ny1--roma-torre.json",
+          "publishDate": null,
+          "openingDate": "1991-02-10",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "ny1"
+        },
+        {
+          "showId": "la-bete-2010",
+          "file": "ny1--roma-torre.json",
+          "publishDate": null,
+          "openingDate": "2010-10-14",
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "ny1"
+        }
+      ],
+      "suggestedWinner": "la-bete-2010",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
