@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T15:35:51.180Z",
+  "generatedAt": "2026-11-03T17:25:16.216Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -57,6 +57,11 @@
       "id": "ceilidh-the-musical-off-west-end-2026",
       "title": "Ceilidh The Musical",
       "openingDate": "2026-10-29"
+    },
+    {
+      "id": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "openingDate": "2026-11-03"
     },
     {
       "id": "the-moth-off-west-end-2026",
@@ -119,11 +124,6 @@
       "openingDate": "2026-10-28"
     },
     {
-      "id": "king-hedley-ii-regional-2026",
-      "title": "King Hedley II",
-      "openingDate": "2026-10-28"
-    },
-    {
       "id": "the-royale-regional-2026",
       "title": "The Royale",
       "openingDate": "2026-10-30"
@@ -142,12 +142,8 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -168,11 +164,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 752,
-  "matchedGaps": 10,
-  "possibleGaps": 9,
+  "itemsScanned": 724,
+  "matchedGaps": 8,
+  "possibleGaps": 12,
   "gaps": [
     {
       "showId": "all-the-worlds-a-stage-regional-2026",
@@ -184,12 +184,30 @@
       "publishDate": "2026-10-31"
     },
     {
-      "showId": "king-hedley-ii-regional-2026",
-      "title": "King Hedley II",
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
       "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/11/02/king-hedley-ii-city-lit-review/",
-      "headline": "Theater Review: KING HEDLEY II (City Lit Theater / Chicago)",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
+      "headline": "‘The Bridge’ review &#8211; Olive oil and occupation in Palestinian road trip play",
+      "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "matched",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
+      "headline": "Review: The Bridge (Bush Theatre)",
+      "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "matched",
+      "outletId": "pinkprincetheatre",
+      "url": "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
+      "headline": "REVIEW: THE BRIDGE @ BUSH THEATRE",
       "publishDate": "2026-11-03"
     },
     {
@@ -211,48 +229,12 @@
       "publishDate": "2026-10-29"
     },
     {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
-      "outletId": "onin",
-      "url": "https://onin.london/carpo-expansion/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=carpo-expansion",
-      "headline": "carpo announces global expansion plans with London at the heart of its international journey",
-      "publishDate": "2026-11-03"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
-      "outletId": "onin",
-      "url": "https://onin.london/dolphin-house-spa/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dolphin-house-spa",
-      "headline": "Dolphin House Spa at Dolphin Square officially launches, bringing a new wellness retreat to the heart of Pimlico",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "the-heart-off-broadway-2026",
-      "title": "The Heart",
-      "level": "matched",
-      "outletId": "onin",
-      "url": "https://onin.london/world-heart-beat-announces-two-festive-evenings-of-music-and-celebration-at-embassy-gardens/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=world-heart-beat-announces-two-festive-evenings-of-music-and-celebration-at-embassy-gardens",
-      "headline": "World Heart Beat Announces Two Festive Evenings of Music and Celebration at Embassy Gardens",
-      "publishDate": "2026-11-03"
-    },
-    {
       "showId": "the-morbs-off-broadway-2026",
       "title": "The Morbs",
       "level": "matched",
       "outletId": "this-week-in-new-york",
       "url": "https://twi-ny.com/2026/11/02/the-morbs-jen-diamond-art-theatre/",
       "headline": "MEMORIES AND DREAMS: THE MORBS AT A.R.T.",
-      "publishDate": "2026-11-02"
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "level": "matched",
-      "outletId": "operawire",
-      "url": "https://operawire.com/cast-change-vanessa-goikoetxea-natalya-romaniw-join-semperoper-dresdens-tosca/",
-      "headline": "Cast Change: Vanessa Goikoetxea &#038; Natalya Romaniw Join Semperoper Dresden&#8217;s &#8216;Tosca&#8217;",
       "publishDate": "2026-11-02"
     },
     {
@@ -272,6 +254,33 @@
       "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
       "headline": "FINALLY: “WAITING FOR LEFTY” HAS ARRIVED",
       "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "possible",
+      "outletId": "monstagigz",
+      "url": "https://monstagigz.com/2026/11/01/preview-9-reasons-why-we-cant-wait-for-november-2026-starring-pride/",
+      "headline": "PREVIEW: 9 reasons why we can&#8217;t wait for November 2026 starring Pride",
+      "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "possible",
+      "outletId": "onin",
+      "url": "https://onin.london/theatre-initiative-writers-block-wins-high-profile-support-to-help-playaweights-afford-time-in-london/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=theatre-initiative-writers-block-wins-high-profile-support-to-help-playaweights-afford-time-in-london",
+      "headline": "Theatre Initiative ‘Writers Block’ Wins High Profile Support To Help Playaweights Afford Time in London",
+      "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "level": "possible",
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
+      "headline": "The Oresteia at the Bridge: Thrillingly stripped back and bloody",
+      "publishDate": null
     },
     {
       "showId": "the-heart-off-broadway-2026",
