@@ -82,7 +82,7 @@ Note: ${escHtml(input.note || 'none')}</p>
 <p style="color:#888;font-size:12px">Each link opens a confirm page first; nothing changes until you press the button there.</p>`;
   let sent = false;
   if (plan === 'full') sent = secret ? await emailOwner(`Critic page claim: ${critic.name}`, html, input.contactEmail) : false;
-  else if (plan === 'note') sent = await emailOwner(`Another claim came in: ${critic.name}`, `<p>Another request came in for <a href="${SITE}/critics/${input.slug}">${SITE}/critics/${input.slug}</a> while one is already waiting. Only one claim email per page is sent while a request is pending, and the new one is stored. Approve or decline the first request, then the next can be looked at.</p>`);
+  else if (plan === 'note') sent = await emailOwner(`Another claim came in: ${critic.name}`, `<p>Another request came in for <a href="${SITE}/critics/${input.slug}">${SITE}/critics/${input.slug}</a> while one is already waiting. Only one claim email per page is sent while a request is pending, and the new one is stored. Contact: ${escHtml(input.contactEmail)}<br>Socials:<br>${socialHtml}</p><p><a href="${link('approve')}">Approve this one</a> &nbsp;|&nbsp; <a href="${link('decline')}">Decline this one</a></p>`);
   if (plan !== 'none' && !sent) console.error('[critics/claim] owner email not sent for claim', row.id);
   if (sent) await sbAdmin(`/rest/v1/critic_claims?id=eq.${row.id}`, { method: 'PATCH', prefer: 'return=minimal', body: JSON.stringify({ owner_emailed_at: new Date().toISOString() }) });
   return NextResponse.json({ ok: true, status: 'pending' });

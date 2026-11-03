@@ -105,6 +105,7 @@ export async function getPublicCriticProfile(slug: string): Promise<PublicCritic
   try {
     const res = await fetch(`${SB_URL()}/rest/v1/critic_profiles?critic_slug=eq.${encodeURIComponent(slug)}&select=*`, {
       headers: { apikey: SERVICE(), Authorization: `Bearer ${SERVICE()}` },
+      cache: 'force-cache',
       next: { tags: ['critic-profiles', `critic-profile:${slug}`] },
       signal: AbortSignal.timeout(5000),
     });
@@ -120,6 +121,7 @@ export async function getVerifiedCriticSlugs(): Promise<string[]> {
   try {
     const res = await fetch(`${SB_URL()}/rest/v1/critic_profiles?select=critic_slug&limit=2000`, {
       headers: { apikey: SERVICE(), Authorization: `Bearer ${SERVICE()}` },
+      cache: 'force-cache',
       next: { tags: ['critic-profiles'] },
       signal: AbortSignal.timeout(5000),
     });

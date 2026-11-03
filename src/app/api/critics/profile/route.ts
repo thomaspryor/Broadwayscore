@@ -27,8 +27,8 @@ export async function PUT(req: NextRequest) {
     job_title: e.jobTitle, bio: e.bio, outlets: e.outlets, links: e.links, picks: e.picks,
     pinned_review_key: e.pinnedReviewKey, updated_at: new Date().toISOString(),
   };
-  const up = await sbAdmin(`/rest/v1/critic_profiles?critic_slug=eq.${slug}&user_id=eq.${user.id}`, { method: 'PATCH', prefer: 'return=minimal', body: JSON.stringify(patch) });
-  if (!up.ok) return NextResponse.json({ error: 'Could not save. Please try again.' }, { status: 502 });
+  const up = await sbAdmin(`/rest/v1/critic_profiles?critic_slug=eq.${encodeURIComponent(slug)}&user_id=eq.${encodeURIComponent(user.id)}`, { method: 'PATCH', prefer: 'return=representation', body: JSON.stringify(patch) });
+  if (!up.ok || ((await up.json().catch(() => [])) as unknown[]).length !== 1) return NextResponse.json({ error: 'Could not save. Please try again.' }, { status: 502 });
   if (typeof body?.notifyOpeningNight === 'boolean') {
     await sbAdmin(`/rest/v1/critic_claims?id=eq.${claim.id}`, { method: 'PATCH', prefer: 'return=minimal', body: JSON.stringify({ notify_opening_night: body.notifyOpeningNight }) });
   }

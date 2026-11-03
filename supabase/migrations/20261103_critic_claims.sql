@@ -37,6 +37,9 @@ CREATE UNIQUE INDEX IF NOT EXISTS critic_claims_one_approved
   ON public.critic_claims (critic_slug) WHERE status = 'approved';
 CREATE UNIQUE INDEX IF NOT EXISTS critic_claims_one_pending
   ON public.critic_claims (user_id, critic_slug) WHERE status = 'pending';
+-- One open request per account at all (closes the race between parallel claims on different pages).
+CREATE UNIQUE INDEX IF NOT EXISTS critic_claims_one_pending_per_user
+  ON public.critic_claims (user_id) WHERE status = 'pending';
 CREATE INDEX IF NOT EXISTS critic_claims_user ON public.critic_claims (user_id);
 
 CREATE TABLE IF NOT EXISTS public.critic_profiles (

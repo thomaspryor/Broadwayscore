@@ -15,10 +15,10 @@ export async function GET(req: NextRequest) {
   const claims = await getClaimsForUser(user.id, slug);
   const approved = claims.find((c) => c.status === 'approved');
   if (approved) {
-    const res = await sbAdmin(`/rest/v1/critic_profiles?critic_slug=eq.${slug}&user_id=eq.${user.id}&select=*`);
+    const res = await sbAdmin(`/rest/v1/critic_profiles?critic_slug=eq.${encodeURIComponent(slug)}&user_id=eq.${encodeURIComponent(user.id)}&select=*`);
     const row = res.ok ? (await res.json())[0] : null;
     const since = new Date(Date.now() - 30 * 86_400_000).toISOString().slice(0, 10);
-    const vres = await sbAdmin(`/rest/v1/critic_page_views?critic_slug=eq.${slug}&day=gte.${since}&select=views`);
+    const vres = await sbAdmin(`/rest/v1/critic_page_views?critic_slug=eq.${encodeURIComponent(slug)}&day=gte.${since}&select=views`);
     const views30 = vres.ok ? ((await vres.json()) as { views: number }[]).reduce((n, r) => n + (r.views || 0), 0) : 0;
     return NextResponse.json({ state: 'owner', email: user.email, notifyOpeningNight: approved.notify_opening_night, views30, profile: row ? toPublicProfile(row) : null });
   }

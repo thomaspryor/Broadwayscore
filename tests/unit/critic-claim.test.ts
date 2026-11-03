@@ -167,3 +167,8 @@ test('rate limiter and kill switch', () => {
   assert.equal(claimsDisabled({}), false);
   assert.equal(claimsDisabled({ CRITIC_CLAIMS_DISABLED: 'false' }), false);
 });
+
+test('critic page JSON-LD escapes < so a bio cannot close the script tag', () => {
+  const src = require('node:fs').readFileSync('src/app/critics/[slug]/page.tsx', 'utf8');
+  assert.ok(/JSON\.stringify\(\[breadcrumbSchema, criticSchema, faqSchema\]\)\.replace\(\/<\/g/.test(src));
+});
