@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-f",
   "planId": "f24c5293-5e5f-4870-94cb-9d05f52698d6",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,134 @@
         "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of elf-2024, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:50:09.430Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=hadestown-off-broadway-2016 --url=https://newyorktheater.me/2016/05/23/hadestown-review/ --critic=\"Jonathan Mandell\" --publish-date=2016-05-23"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=hangmen-off-broadway-2018 --url=http://www.theaternewsonline.com/NYTheaterReviews/GIVINGUPTHENOOSE.cfm --critic=\"Brian Scott Lipton\" --publish-date=2018-02-05"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=jesus-hopped-the-a-train-off-broadway-2017 --url=https://www.huffingtonpost.com/entry/59efab58e4b00a4ce5a22240 --critic=\"Steven Suskin\" --publish-date=2017-10-24"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=scene-partners-off-broadway-2023 --url=https://cititour.com/NYC_Broadway/Scene-Partners/1180 --critic=\"Brian Scott Lipton\" --publish-date=2023-11-15"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=turn-me-loose-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/60s-comic-dick-gregory-oscar-wilde-stage-off-broadway-article-1.2643055 --critic=\"Joe Dziemianowicz\" --publish-date=2016-05-19"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=a-dolls-house-2023 --url=https://www.theatermania.com/broadway-theater/news/review-a-dolls-house_94950.html --critic=\"Zachary Stewart\" --publish-date=2023-03-10"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-profane-off-broadway-2017 --url=http://thebroadwayblog.com/2017/04/10/16366-profane-playwrights-horizons --critic=\"Samuel L. Leiter\" --publish-date=2017-04-10"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-traveling-lady-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/horton-footes-traveling-lady-yes-definitely-isla_us_594c5334e4b0c85b96c65804 --critic=\"David Finkle\" --publish-date=2017-06-22"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=tiny-beautiful-things-off-broadway-2016 --url=http://www.nydailynews.com/entertainment/theater-arts/tiny-beautiful-poignant-illusionists-lacks-wow-factor-article-1.2902033 --critic=\"Joe Dziemianowicz\" --publish-date=2016-12-07"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=a-dolls-house-part-2-2017 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-JZMS30 --critic=\"David Barbour\" --publish-date=2017-04-28"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=bite-me-off-broadway-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=S2440N --critic=\"David Barbour\" --publish-date=2023-10-05"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=caroline-or-change-2021 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=W87BXC --critic=\"David Barbour\" --publish-date=2021-11-04"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=dr-rides-american-beach-house-off-broadway-2019 --url=https://newyorktheater.me/2019/11/05/dr-rides-american-beach-house-review-lesbian-desire-disguised-in-1983/ --critic=\"Jonathan Mandell\" --publish-date=2019-11-05"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
