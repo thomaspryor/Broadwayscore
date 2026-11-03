@@ -27,7 +27,7 @@ const {
 } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { getReviewBreakdownTierId } = require('./lib/score-tiers');
+const { countReviewVerdicts } = require('./lib/review-breakdown');
 
 // Wrap the HTML builder so every send/draft path picks up GA4/PostHog UTM
 // attribution (idempotent — see scripts/lib/email-utm.js). Campaign is the
@@ -254,15 +254,8 @@ function getReviewStats(reviews, showId, market, show, shows) {
   // ones written about THIS run so the email can say how many are new.
   const runs = show && Array.isArray(show.priorRuns) && show.priorRuns.length ? priorRunClassifier(show, shows) : null;
   const newReviewCount = runs && runs.windows.length ? showReviews.filter(runs.isCurrent).length : null;
-  let rave = 0, positive = 0, mixed = 0, negative = 0;
-
-  for (const r of showReviews) {
-    const tier = getReviewBreakdownTierId(r.verdict, r.assignedScore, market);
-    if (tier === 'rave') rave++;
-    else if (tier === 'positive') positive++;
-    else if (tier === 'mixed') mixed++;
-    else negative++;
-  }
+  const { rave, positive, mixed, negative } = countReviewVerdicts(
+    showReviews.map(r => ({ reviewScore: r.assignedScore, verdict: r.verdict })), market);
 
   return {
     reviewCount: showReviews.length,

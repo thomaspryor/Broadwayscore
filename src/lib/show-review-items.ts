@@ -33,6 +33,7 @@ export function getReviewListItems(show: ComputedShow): ReviewListItem[] {
     publishDate: r.publishDate,
     tier: r.tier,
     reviewScore: r.reviewScore,
+    verdict: r.verdict,
     designation: r.designation,
     quote: r.quote,
     summary: r.summary,

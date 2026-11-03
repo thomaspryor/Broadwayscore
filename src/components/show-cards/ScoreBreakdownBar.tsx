@@ -1,8 +1,9 @@
-import { getBreakdownTierId, getReviewBreakdownTierId } from '../../../scripts/lib/score-tiers';
+import { getBreakdownTierId } from '../../../scripts/lib/score-tiers';
+import { countReviewVerdicts } from '../../../scripts/lib/review-breakdown';
 
 /**
- * Breakdown bar tiers. Four sentiment labels over the same score bands as the
- * 5-tier ScoreBadge, so the bar never contradicts the badge colors beside it:
+ * Breakdown bar tiers. Reviews use the critic's verdict when available.
+ * Without a verdict, the fallback uses these score bands:
  *   Rave     = Critical Gold (83 Broadway / 85 West End and up)
  *   Positive = Recommended + Worth Seeing (green and blue badges, 65 to gold-1)
  *   Mixed    = orange badge band (55 to 64)
@@ -70,14 +71,8 @@ export function ScoreBreakdownBar({ reviews, category, className = '', ariaHidde
   // Count each review by the critic's own verdict (BRO-6686), falling back to the
   // score band when it has none. Non-finite scores with no verdict are skipped
   // (the tier comes back null), so they don't silently count as Negative.
-  const counts: Record<BreakdownTier, number> = { rave: 0, positive: 0, mixed: 0, negative: 0 };
-  let total = 0;
-  for (const r of reviews) {
-    const tier = getReviewBreakdownTierId(r.verdict, r.reviewScore, category);
-    if (!tier) continue;
-    counts[tier]++;
-    total++;
-  }
+  const counts = countReviewVerdicts(reviews, category);
+  const total = counts.rave + counts.positive + counts.mixed + counts.negative;
   if (total === 0) return null;
 
   const pcts = allocatePercentages(counts, total);

@@ -20,6 +20,7 @@
  */
 
 const fs = require('fs');
+const { countReviewSentiments } = require('./lib/review-breakdown');
 const path = require('path');
 const { execSync } = require('child_process');
 
@@ -77,9 +78,7 @@ function getSiteScore(showId) {
   return {
     score: data.cs,
     reviewCount: data.rc,
-    positive: data.bd?.positive || 0,
-    mixed: data.bd?.mixed || 0,
-    negative: data.bd?.negative || 0,
+    ...countReviewSentiments((data.rv || []).map(r => ({ reviewScore: r.s, verdict: r.v })), data.cat),
   };
 }
 
@@ -92,7 +91,8 @@ function getShowReviewStats(reviewsArr, showId, outletRegistry, showCategory) {
   const outlets = outletRegistry.outlets || outletRegistry;
 
   let t1 = 0, t2 = 0, t3 = 0;
-  let positive = 0, mixed = 0, negative = 0;
+  const { positive, mixed, negative } = countReviewSentiments(
+    showRevs.map(r => ({ reviewScore: r.assignedScore, verdict: r.verdict })), showCategory);
   const outletsSeen = new Set();
 
   for (const r of showRevs) {
@@ -100,10 +100,6 @@ function getShowReviewStats(reviewsArr, showId, outletRegistry, showCategory) {
     if (tier === 1) t1++;
     else if (tier === 2) t2++;
     else t3++;
-
-    if (r.assignedScore >= 75) positive++;
-    else if (r.assignedScore >= 55) mixed++;
-    else negative++;
 
     outletsSeen.add(r.outletId);
   }

@@ -5,7 +5,7 @@ import Link from 'next/link';
 import type { OutletBadge } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
 import { getScoreColorClass } from '@/components/show-cards';
-import { getGoldThreshold } from '@/config/score-buckets';
+import { getReviewBadgePresentation } from '../../scripts/lib/review-breakdown';
 import { getReviewKey } from '../../scripts/lib/review-list-key';
 import { catchEarlyImgError } from '@/lib/img-early-error';
 import { isLondonMarket } from '@/lib/market-utils';
@@ -30,6 +30,7 @@ export interface ReviewListItem {
   // them to Tier 1 weight wherever they write (BRO-4881 tier chip copy).
   isTopCritic?: boolean;
   reviewScore: number;
+  verdict?: string | null;
   designation?: string;
   quote?: string;
   summary?: string;
@@ -331,13 +332,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
 }
 
 const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop, showTiers = true }: { review: ReviewListItem; isLast: boolean; category?: string; hideStop?: boolean; showTiers?: boolean }) {
-  const goldMin = getGoldThreshold(category);
-  let scoreLabel: string;
-  if (review.reviewScore >= goldMin) scoreLabel = 'Critical Gold';
-  else if (review.reviewScore >= 75) scoreLabel = 'Recommended';
-  else if (review.reviewScore >= 65) scoreLabel = 'Worth Seeing';
-  else if (review.reviewScore >= 55) scoreLabel = 'Mixed';
-  else scoreLabel = 'Critical Miss';
+  const { label: scoreLabel, colorScore } = getReviewBadgePresentation(review.verdict, review.reviewScore, category);
 
   // Phones show the date in the byline instead of the header row, which
   // otherwise squeezes the outlet name to a letter or two next to the tier
@@ -392,7 +387,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
          DO NOT put flex/overflow styles on a <Link>/<a> — it will stretch. */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '3px' }}>
         <div
-          className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreColorClass(review.reviewScore)}`}
+          className={`flex-shrink-0 w-11 h-11 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-base sm:text-lg font-bold ${getScoreColorClass(colorScore ?? review.reviewScore, category)}`}
           role="meter"
           aria-valuenow={review.reviewScore}
           aria-valuemin={0}
