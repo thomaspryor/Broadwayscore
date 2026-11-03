@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T01:33:00.081Z",
+  "generatedAt": "2026-11-03T02:31:47.419Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
@@ -11,22 +11,6 @@
   },
   "shows": [
     {
-      "showId": "the-royale-regional-2026",
-      "title": "The Royale",
-      "openingDate": "2026-10-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.49 vs local 84.37 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-11-03T01:32:52.331Z"
-    },
-    {
       "showId": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "openingDate": "2026-10-29",
@@ -34,29 +18,45 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 78.58 vs local 78.68 (Δ0.1)"
+          "detail": "deployed cs 76.81 vs local 76.91 (Δ0.1)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23,
+      "localCount": 22,
+      "deployedCount": 22,
       "firstDefectAt": "2026-11-03T00:26:20.314Z"
     },
     {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "title": "Ceilidh The Musical",
-      "openingDate": "2026-10-29",
+      "showId": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "openingDate": "2026-10-28",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 81.37 vs local 82.58 (Δ1.21)"
+          "detail": "deployed cs 83.32 vs local 83.58 (Δ0.26)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 18,
-      "deployedCount": 18,
-      "firstDefectAt": "2026-11-03T01:32:52.331Z"
+      "localCount": 16,
+      "deployedCount": 17,
+      "firstDefectAt": "2026-11-03T02:31:40.820Z"
+    },
+    {
+      "showId": "a-ghost-in-your-ear-off-broadway-2026",
+      "title": "A Ghost In Your Ear",
+      "openingDate": "2026-10-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 71.05 vs local 70.72 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-11-03T02:31:40.820Z"
     }
   ],
   "persistentDefective": 0,
