@@ -123,3 +123,16 @@ test('archiveLagWeeks: how far the archive trails the live file (validate-data w
   assert.equal(archiveLagWeeks({ lastWeek: null }, '20261102'), null);
   assert.equal(archiveLagWeeks({ lastWeek: '20261102' }, undefined), null);
 });
+
+// Live check (BRO-6877 recheck): the refresh workflows must keep folding ended
+// weeks into the committed archive. A writer that rolls show-schedules.json
+// forward without archiving leaves the archive trailing; > 1 week means a
+// whole rollover was missed (same threshold validate-data warns on).
+test('committed archive keeps up with the live schedule (lag <= 1 week)', () => {
+  const { archiveLagWeeks } = require('../../scripts/lib/merge-show-schedule-history.js');
+  const h = hist.loadHistory();
+  const live = JSON.parse(fs.readFileSync(path.join(path.dirname(hist.HISTORY_PATH), 'show-schedules.json'), 'utf8'));
+  const lag = archiveLagWeeks(h, live.currentMonday);
+  assert.notEqual(lag, null, 'both files carry a week key');
+  assert.ok(lag <= 1, `archive lastWeek ${h.lastWeek} trails live currentMonday ${live.currentMonday} by ${lag} weeks`);
+});
