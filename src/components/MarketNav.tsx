@@ -48,11 +48,13 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const isRegional = marketId === 'regional';
   // National tours (BRO-4211): own pill label; dropdown links to the tours browse page.
   // Flag-checked: with the flag off a /show/*-tour-YYYY URL is a 404 and must not read as "Tours".
-  const isTour = marketId === 'tour' && featureFlags.tour;
+  // Non-hub tour city pages (/tours/boston-ma, ...) read as Tours too, not Broadway; hub pages name their city instead.
+  const isTourCityPath = pathname.startsWith('/tours/') && !activeHub;
+  const isTour = (marketId === 'tour' || isTourCityPath) && featureFlags.tour;
   // Don't apply opera domain branding when user has explicitly navigated to
   // another market (off-broadway, west-end, off-west-end, regional). The opera
   // domain flag only matters on opera-specific pages.
-  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isTour;
+  const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isTour || !!activeHub;
   const isOpera = (isOperaDomain || isOperaShowPage || isOperaPage) && !isExplicitNonOperaMarket;
   const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isTour && !isOpera && !activeHub;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
@@ -63,7 +65,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // Close on route change
   useEffect(() => {
     setIsOpen(false);
-  }, [marketId]);
+  }, [marketId, activeHub?.slug]);
 
   return (
     <div className="flex items-center gap-2 sm:gap-3" ref={dropdownRef}>
@@ -300,8 +302,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           )}
           {featureFlags.regional && Object.entries(HUB_CITIES).map(([slug, hub]) => {
             const hubStats = stats.hubs?.[slug];
-            if (!hubStats || hubStats.shows <= 0) return null;
             const isHub = isHubPath(slug);
+            if ((!hubStats || hubStats.shows <= 0) && !isHub) return null;
             return (
               <Fragment key={slug}>
                 <div className="h-px bg-white/[0.06] mx-2 my-1" />
@@ -317,7 +319,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                     <span className={`w-1.5 h-1.5 rounded-full ${isHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
                     <div>
                       <div className={`text-sm font-semibold ${isHub ? 'text-sky-200' : 'text-white'}`}>{hub.short} Theater</div>
-                      <div className="text-[11px] text-fg-muted">{hubStats.openShows} playing now · {hub.menuSub}</div>
+                      <div className="text-[11px] text-fg-muted">{hubStats?.openShows ?? 0} playing now · {hub.menuSub}</div>
                     </div>
                   </div>
                   {isHub && (
