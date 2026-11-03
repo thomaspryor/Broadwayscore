@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-11-03T20:14:25.097Z",
+  "generatedAt": "2026-11-03T21:18:09.048Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 321,
-  "clean": 321,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 320,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "openingDate": "2026-11-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.13 vs local 78.35 (Δ1.22)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-03T21:18:02.508Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T20:14:25.503Z",
+  "generatedAt": "2026-11-03T21:18:09.432Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -142,12 +142,24 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theatre-weekly",
+      "error": "HTTP 403 for https://theatreweekly.com/feed"
+    },
+    {
       "outletId": "theater-life",
       "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "theater-pizzazz",
+      "error": "HTTP 403 for https://theaterpizzazz.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -168,16 +180,21 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "Timeout fetching https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&af"
     }
   ],
-  "itemsScanned": 720,
-  "matchedGaps": 4,
-  "possibleGaps": 12,
+  "itemsScanned": 641,
+  "matchedGaps": 5,
+  "possibleGaps": 11,
   "gaps": [
+    {
+      "showId": "slanted-floors-off-broadway-2026",
+      "title": "Slanted Floors",
+      "level": "matched",
+      "outletId": "one-minute-critic",
+      "url": "https://1minutecritic.com/slanted-floors-apartment-play-review/",
+      "headline": "&#8216;Slanted Floors&#8217; invites you to pull up a chair in a gay couple’s living room. Stare if you must.",
+      "publishDate": "2026-11-03"
+    },
     {
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
@@ -213,15 +230,6 @@
       "url": "https://www.london-unattached.com/tosca-english-national-opera/",
       "headline": "Tosca, English National Opera",
       "publishDate": "2026-11-01"
-    },
-    {
-      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "title": "Clifford Odets’ Waiting for Lefty",
-      "level": "possible",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
-      "headline": "FINALLY: “WAITING FOR LEFTY” HAS ARRIVED",
-      "publishDate": "2026-11-02"
     },
     {
       "showId": "slanted-floors-off-broadway-2026",
@@ -290,10 +298,10 @@
       "showId": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/hansel-gretel-and-the-witch-northern-stage-newcastle/",
-      "headline": "Hansel &#038; Gretel and the Witch &#8211; Northern Stage, Newcastle",
-      "publishDate": "2026-10-30"
+      "outletId": "nytimes",
+      "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
+      "headline": "‘Waiting for Lefty’ Review: Protest Songs in the Key of Life",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-heart-off-broadway-2026",
