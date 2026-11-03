@@ -44,6 +44,9 @@ const { classifyVenueSuffix, buildVenueVocabulary } = require('./title-venue-suf
 
 // A title with more trailing parentheticals than this is not a title.
 const MAX_VENUE_STRIP_PASSES = 4;
+// "(musical)", "(play)", "(opera)" as the WHOLE trailing parenthetical only.
+// "Matilda The Musical" and "Rock of Ages (The Musical Comedy)" are untouched.
+const GENRE_DISAMBIGUATOR_RE = /\s*\((?:musical|play|opera)\)\s*$/i;
 const {
   isShoutedTitle,
   isExemptFromTitleCase,
@@ -57,7 +60,7 @@ const {
  *   title: string,            // what the title SHOULD be (venue-suffix repairs only)
  *   changed: boolean,
  *   manualReview: boolean,    // shouted casing detected — a human owes us a source lookup
- *   steps: Array<{kind:'venue-suffix'|'roman-numeral-case', from:string, to:string, oracle?:string}>
+ *   steps: Array<{kind:'venue-suffix'|'genre-disambiguator'|'roman-numeral-case', from:string, to:string, oracle?:string}>
  * }}
  */
 function normalizeShowTitle(show, ctx = {}) {
@@ -82,6 +85,23 @@ function normalizeShowTitle(show, ctx = {}) {
     title = venueResult.title;
   }
 
+  // 1a. BRO-6268: a bare genre disambiguator a source appended to tell two
+  // same-titled works apart. Theatricalia names the 2011 Gielgud musical
+  // "Lend Me a Tenor (musical)" to separate it from the play. The venue
+  // oracle only stripped it by accident (a regional "San Diego Musical
+  // Theatre" venue made "Musical" a corpus venue token), so the result
+  // depended on unrelated rows. Strip it deterministically. The show's
+  // `type` field carries the genre; promote-historical-we.js reads the
+  // genre hint from the raw candidate title before normalising.
+  const genre = GENRE_DISAMBIGUATOR_RE.exec(title);
+  if (genre) {
+    const to = title.slice(0, genre.index).trim();
+    if (to) {
+      steps.push({ kind: 'genre-disambiguator', from: title, to });
+      title = to;
+    }
+  }
+
   // 1b. BRO-4567: title-cased Roman numerals ("Richard Ii" -> "Richard II").
   // Deterministic (the numeral's only correct form is upper case), so this
   // repairs rather than flags; validate-data.js errors with the expected
@@ -101,6 +121,7 @@ function normalizeShowTitle(show, ctx = {}) {
 module.exports = {
   normalizeShowTitle,
   MAX_VENUE_STRIP_PASSES,
+  GENRE_DISAMBIGUATOR_RE,
   buildVenueVocabulary,
   isExemptFromTitleCase,
 };

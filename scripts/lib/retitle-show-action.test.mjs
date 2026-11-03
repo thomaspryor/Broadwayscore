@@ -115,3 +115,15 @@ test('applyRetitleShow drops the tag only with expectTitle and a reason', () => 
   assert.equal(applyRetitleShow(stale, { ...act, expectTitle: 'something else' }).ok, false);
   assert.equal(stale[0].title, '10 Things I Hate About You on Broadway');
 });
+
+test('BRO-6268: a bare genre disambiguator may be dropped, even onto a shared title', () => {
+  assert.equal(retitleProblem('Lend Me a Tenor (Musical)', 'Lend Me a Tenor', ['Lend Me a Tenor']), null);
+  assert.equal(retitleProblem('Hamlet (play)', 'Hamlet', []), null);
+  // only that exact parenthetical, and only onto the remaining words
+  assert.match(retitleProblem('Lend Me a Tenor (Musical)', 'Lend Me', []), /not a cosmetic repair/);
+  assert.match(retitleProblem('Lend Me a Tenor (Gielgud)', 'Lend Me a Tenor', []), /not a cosmetic repair/);
+  const shows = [{ id: 'lend-me-a-tenor-musical-west-end-2011', title: 'Lend Me a Tenor (Musical)' }, { id: 'lend-me-a-tenor-2010', title: 'Lend Me a Tenor' }];
+  const r = applyRetitleShow(shows, { id: 'lend-me-a-tenor-musical-west-end-2011', expectTitle: 'Lend Me a Tenor (Musical)', newTitle: 'Lend Me a Tenor', reason: 'Theatricalia genre disambiguator' });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(shows[0].title, 'Lend Me a Tenor');
+});

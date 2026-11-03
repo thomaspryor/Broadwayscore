@@ -19,10 +19,14 @@
  *     in the insertion ("... Under the Sky") is a different title and refuses;
  *     that case belongs to the venue promoter's dated-listing completion.
  *   - or the old title is the new one plus a trailing " on Broadway" market tag (no other row has the bare title);
+ *   - or the old title is the new one plus a bare genre disambiguator such as
+ *     "(musical)" (BRO-6268, Theatricalia). The row's `type` keeps the genre;
+ *     a shared bare title is allowed, as everywhere else in the corpus;
  *   - id and slug never change, so no redirect is needed.
  */
 
 const { foldDiacritics } = require('./title-match');
+const { GENRE_DISAMBIGUATOR_RE } = require('./show-title-normalize');
 
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 
@@ -58,6 +62,10 @@ function retitleProblem(oldTitle, newTitle, otherTitles = []) {
   const n = words(newTitle);
   if (!n) return 'newTitle has no letters or digits';
   if (o === n) return null;
+  // Theatricalia's "Lend Me a Tenor (musical)" (BRO-6268): the same rule the
+  // canonical normaliser applies, so validate-data's expected title has a plan path.
+  const genre = GENRE_DISAMBIGUATOR_RE.exec(oldTitle);
+  if (genre && oldTitle.slice(0, genre.index).trim() === newTitle) return null;
   // A slug counter is a single digit 2-9 ("King Lear 2") and only exists
   // because another row already had the bare title. A number that is part of
   // the name ("Cloud 9", "Room 101", "A Doll's House, Part 2") has no such
