@@ -173,14 +173,14 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
           </span>
         </div>
         <p className="text-gray-400 text-lg sm:text-xl">
-          Every Met production plus new premieres from London&apos;s Royal Opera House and English National Opera. Every critic. One score.
+          Every Met production plus new premieres from the Royal Opera House, San Francisco Opera and English National Opera. Every critic. One score.
         </p>
         <p className="text-fg-muted text-sm sm:text-base mt-1">
           {totalShows} productions. {totalReviews.toLocaleString()} critic reviews. And counting.
         </p>
         {openCount > 0 && (
           <p className="text-fg-muted text-xs sm:text-sm mt-1">
-            {openCount} currently running in New York and London.
+            {openCount} currently running in New York, London and San Francisco.
           </p>
         )}
       </div>
@@ -296,7 +296,7 @@ export default function OperaPageClient(props: OperaPageClientProps) {
             Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span>
             <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
           </div>
-          <p className="text-gray-400 text-lg sm:text-xl">Every Met production plus new premieres from London&apos;s Royal Opera House and English National Opera. Every critic. One score.</p>
+          <p className="text-gray-400 text-lg sm:text-xl">Every Met production plus new premieres from the Royal Opera House, San Francisco Opera and English National Opera. Every critic. One score.</p>
         </div>
         <div className="animate-pulse space-y-4">
           <div className="h-8 bg-surface-overlay rounded w-3/4"></div>
