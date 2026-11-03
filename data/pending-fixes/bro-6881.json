@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6881",
   "planId": "c56a16d4-3bad-4ce2-a588-b4c29fca260a",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T07:00:15.764Z",
   "submitter": {
     "name": null,
@@ -104,5 +104,34 @@
         "description": "shows.json: the-feel-good-story-america-needs-right-now-regional-2026.images"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T08:34:18.722Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for cassatt-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for crossing-delancey-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lakefront-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for how-high-the-moon-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-feel-good-story-america-needs-right-now-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
