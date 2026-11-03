@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T03:14:49.928Z",
+  "timestamp": "2026-11-03T03:54:24.266Z",
   "stats": {
-    "totalReviews": 79718,
-    "alreadyFlagged": 22008,
+    "totalReviews": 79725,
+    "alreadyFlagged": 22007,
     "dateGuardCatches": 219,
     "directorMismatch": 3439,
-    "tvFilmSignals": 2261,
+    "tvFilmSignals": 2262,
     "londonSignals": 3586,
     "offBroadwaySignals": 734,
     "yearMismatch": 356,
-    "noPublishDate": 8436
+    "noPublishDate": 8438
   },
   "findings": [
     {
@@ -8556,6 +8556,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"susan stroman\" from big-fish-2013"
+        }
+      ]
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "file": "deadline--unknown.json",
+      "score": 89,
+      "publishDate": "2026-10-21",
+      "url": "https://deadline.com/2026/10/billy-crystal-860-broadway-review-1237168548/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -128535,7 +128549,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
-      "score": 77,
+      "score": 82,
       "publishDate": "2026-11-01",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-lives-of-others-adelphi-theatre",
       "findings": [
@@ -128701,7 +128715,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "theatreandtonic--ziwen.json",
-      "score": 76,
+      "score": 79,
       "publishDate": "2026-11-01",
       "url": "https://theatreandtonic.co.uk/blog/the-lives-of-others-starring-keira-knightley-review",
       "findings": [
