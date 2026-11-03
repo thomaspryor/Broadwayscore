@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T17:25:16.216Z",
+  "generatedAt": "2026-11-03T18:36:55.035Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -142,8 +142,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "slantmagazine",
@@ -164,14 +168,10 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 724,
-  "matchedGaps": 8,
+  "itemsScanned": 747,
+  "matchedGaps": 7,
   "possibleGaps": 12,
   "gaps": [
     {
@@ -187,15 +187,6 @@
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "level": "matched",
-      "outletId": "liamodell",
-      "url": "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
-      "headline": "‘The Bridge’ review &#8211; Olive oil and occupation in Palestinian road trip play",
-      "publishDate": "2026-11-03"
-    },
-    {
-      "showId": "the-bridge-off-west-end-2026",
-      "title": "The Bridge",
-      "level": "matched",
       "outletId": "all-that-dazzles-uk",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
       "headline": "Review: The Bridge (Bush Theatre)",
@@ -205,9 +196,9 @@
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "level": "matched",
-      "outletId": "pinkprincetheatre",
-      "url": "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
-      "headline": "REVIEW: THE BRIDGE @ BUSH THEATRE",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
+      "headline": "The Bridge – Bush Theatre, London",
       "publishDate": "2026-11-03"
     },
     {

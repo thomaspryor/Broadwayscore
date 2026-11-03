@@ -1,79 +1,46 @@
 {
-  "generatedAt": "2026-11-03T17:25:15.816Z",
+  "generatedAt": "2026-11-03T18:36:54.694Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 321,
-  "clean": 317,
-  "defective": 4,
+  "clean": 319,
+  "defective": 2,
   "byType": {
-    "score-drift": 3,
-    "unreachable": 1
+    "score-drift": 2
   },
   "shows": [
     {
-      "showId": "franky-off-west-end-2026",
-      "title": "Franky",
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "openingDate": "2026-10-29",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 79.09 vs local 78.76 (Δ0.33)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 24,
+      "firstDefectAt": "2026-11-03T18:36:47.630Z"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
       "openingDate": "2026-10-27",
       "ok": false,
       "defects": [
         {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
-    },
-    {
-      "showId": "oliver-west-end-2024",
-      "title": "Oliver!",
-      "openingDate": "2024-12-14",
-      "ok": false,
-      "defects": [
-        {
           "type": "score-drift",
-          "detail": "deployed cs 83.89 vs local 83.57 (Δ0.32)"
+          "detail": "deployed cs 77.73 vs local 77.44 (Δ0.29)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 21,
-      "deployedCount": 22,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "title": "Cabaret at the Kit Kat Club",
-      "openingDate": "2021-12-12",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 87.42 vs local 87.79 (Δ0.37)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 25,
-      "deployedCount": 25,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
-    },
-    {
-      "showId": "magic-mike-live-west-end-2021",
-      "title": "Magic Mike Live",
-      "openingDate": "2018-11-28",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 60.91 vs local 60.97 (Δ0.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 12,
-      "deployedCount": 13,
-      "firstDefectAt": "2026-11-03T17:25:07.927Z"
+      "localCount": 18,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-11-03T18:36:47.630Z"
     }
   ],
   "persistentDefective": 0,
