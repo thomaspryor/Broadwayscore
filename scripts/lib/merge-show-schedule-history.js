@@ -49,4 +49,16 @@ function mergeShowScheduleHistory(ours, remote) {
   return { merged };
 }
 
-module.exports = { emptyHistory, pruneAfter, mergeShowScheduleHistory };
+/**
+ * Whole weeks the archive's lastWeek trails the live file's currentMonday
+ * (both YYYYMMDD Mondays). 0 when current; null when either is missing.
+ * A growing lag means the writers stopped archiving (validate-data.js warns).
+ */
+function archiveLagWeeks(history, currentMonday) {
+  const last = history && history.lastWeek;
+  if (!/^\d{8}$/.test(String(last || '')) || !/^\d{8}$/.test(String(currentMonday || ''))) return null;
+  const t = (k) => Date.UTC(+k.slice(0, 4), +k.slice(4, 6) - 1, +k.slice(6, 8));
+  return Math.max(0, Math.round((t(currentMonday) - t(last)) / (7 * 864e5)));
+}
+
+module.exports = { emptyHistory, pruneAfter, mergeShowScheduleHistory, archiveLagWeeks };

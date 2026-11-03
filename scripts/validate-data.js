@@ -239,6 +239,7 @@ const reviewValidationScope = createReviewValidationScope(
 );
 const GROSSES_FILE = path.join(DATA_DIR, 'grosses.json');
 const SCHEDULES_FILE = path.join(DATA_DIR, 'show-schedules.json');
+const { archiveLagWeeks } = require('./lib/merge-show-schedule-history');
 const COMMERCIAL_FILE = path.join(DATA_DIR, 'commercial.json');
 const BASELINE_FILE = path.join(DATA_DIR, 'audit', 'validation-baseline.json');
 // Loud, unmissable signal that the override is active — if VALIDATE_DATA_SHOWS_JSON
@@ -2315,6 +2316,20 @@ function validateSchedulesJson(shows) {
     warn(`show-schedules.json: ${singleWeek}/${totalCovered} open Broadway shows have only 1 week of data`);
   } else {
     ok(`show-schedules.json: all ${multiWeek} open Broadway shows have multi-week schedule data`);
+  }
+
+  // BRO-6877: the past-week archive must keep up with the live file, or past
+  // diary dates silently lose their times. Advisory: warn, never block.
+  const historyFile = path.join(DATA_DIR, 'show-schedule-history.json');
+  if (fs.existsSync(historyFile)) {
+    try {
+      const lag = archiveLagWeeks(JSON.parse(fs.readFileSync(historyFile, 'utf8')), data.currentMonday);
+      if (lag === null) warn('show-schedule-history.json: lastWeek or currentMonday missing');
+      else if (lag > 1) warn(`show-schedule-history.json is ${lag} weeks behind show-schedules.json (archiving stopped? rerun scripts/backfill-show-schedule-history.js)`);
+      else ok(`show-schedule-history.json is current (lag ${lag} week)`);
+    } catch (e) {
+      warn(`show-schedule-history.json parse error: ${e.message}`);
+    }
   }
 }
 

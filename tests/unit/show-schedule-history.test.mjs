@@ -114,3 +114,12 @@ test('committed archive covers March 2026 onward (spot check Oh, Mary!)', () => 
   assert.ok(h.lastWeek <= live.currentMonday, 'archive never holds weeks that have not started');
   assert.deepEqual(h.shows['oh-mary-2024']?.weeks['20260511']?.[5], { m: '17:00', e: '20:30' }, 'Sat 2026-05-16');
 });
+
+test('archiveLagWeeks: how far the archive trails the live file (validate-data warns > 1)', async () => {
+  const { archiveLagWeeks } = require('../../scripts/lib/merge-show-schedule-history.js');
+  assert.equal(archiveLagWeeks({ lastWeek: '20261102' }, '20261102'), 0);
+  assert.equal(archiveLagWeeks({ lastWeek: '20261019' }, '20261102'), 2);
+  assert.equal(archiveLagWeeks({ lastWeek: '20261228' }, '20270104'), 1, 'across a year end');
+  assert.equal(archiveLagWeeks({ lastWeek: null }, '20261102'), null);
+  assert.equal(archiveLagWeeks({ lastWeek: '20261102' }, undefined), null);
+});
