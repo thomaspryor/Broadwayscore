@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T04:05:36.349Z",
+  "generatedAt": "2026-11-03T05:32:52.869Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -17,6 +17,11 @@
       "id": "tosca-english-national-opera-west-end-2026",
       "title": "Tosca - English National Opera",
       "openingDate": "2026-10-30"
+    },
+    {
+      "id": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "openingDate": "2026-11-02"
     },
     {
       "id": "medea-off-broadway-2026",
@@ -125,10 +130,6 @@
       "reason": "no data/review-texts directory for this show"
     },
     {
-      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "parcel-from-america-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -140,12 +141,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "theater-pizzazz",
-      "error": "Timeout fetching https://theaterpizzazz.com/feed/"
+      "outletId": "front-row-center",
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -172,9 +173,9 @@
       "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 720,
+  "itemsScanned": 730,
   "matchedGaps": 7,
-  "possibleGaps": 9,
+  "possibleGaps": 10,
   "gaps": [
     {
       "showId": "all-the-worlds-a-stage-regional-2026",
@@ -238,6 +239,15 @@
       "url": "https://www.london-unattached.com/tosca-english-national-opera/",
       "headline": "Tosca, English National Opera",
       "publishDate": "2026-11-01"
+    },
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "level": "possible",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
+      "headline": "FINALLY: “WAITING FOR LEFTY” HAS ARRIVED",
+      "publishDate": "2026-11-02"
     },
     {
       "showId": "the-heart-off-broadway-2026",

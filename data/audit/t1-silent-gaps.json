@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T04:04:59.935Z",
+  "generatedAt": "2026-11-03T05:32:24.253Z",
   "windowDays": 45,
   "showsScanned": 249,
   "gaps": [
@@ -21,34 +21,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 202.20456944444445,
+      "fileAgeHours": 203.65785916666667,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 187.66210222222222,
+      "nonTerminalAgeHours": 189.11885722222223,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "openingDate": "2026-11-01",
-      "file": "backstage--unknown.json",
-      "outletId": "backstage",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 1,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/ --outlet=backstage   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-11-02T09:52:12.991Z",
-      "fileAgeHours": 18.211735277777777,
-      "gapSeenAt": "2026-11-03T03:32:07.942Z",
-      "nonTerminalAgeHours": 0.5477758333333334,
-      "needsManualRecovery": false
     },
     {
       "showId": "an-evening-with-an-immigrant-off-west-end-2026",
@@ -68,9 +44,57 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 14.428308611111111,
+      "fileAgeHours": 15.880318611111111,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 12.899454444444444,
+      "nonTerminalAgeHours": 14.356209444444444,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "catch-me-if-you-can-regional-2026",
+      "title": "Catch Me If You Can",
+      "openingDate": "2026-09-21",
+      "file": "broadwayworld--unknown.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.broadwayworld.com/article/Review-CATCH-ME-IF-YOU-CAN-at-Colony-Theatre-20261008",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=catch-me-if-you-can-regional-2026 --url=https://www.broadwayworld.com/article/Review-CATCH-ME-IF-YOU-CAN-at-Colony-Theatre-20261008 --outlet=broadwayworld   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-03T04:41:21.386Z",
+      "fileAgeHours": 0.8491216666666667,
+      "gapSeenAt": "2026-11-03T05:32:24.253Z",
+      "nonTerminalAgeHours": 0,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "crone-creed-regional-2026",
+      "title": "Crone Creed",
+      "openingDate": "2026-10-05",
+      "file": "broadwayworld--unknown.json",
+      "outletId": "broadwayworld",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.broadwayworld.com/article/Review-CRONE-CREED-at-El-Portal-Theatre-20261006",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Fetch failed: fetch failed: All scraping methods failed; no archive.org capture"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=crone-creed-regional-2026 --url=https://www.broadwayworld.com/article/Review-CRONE-CREED-at-El-Portal-Theatre-20261006 --outlet=broadwayworld   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-11-03T04:44:51.505Z",
+      "fileAgeHours": 0.7924272222222222,
+      "gapSeenAt": "2026-11-03T05:32:24.253Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     }
   ],
