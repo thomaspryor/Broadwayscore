@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-11-03T12:04:32.560Z",
+    "generatedAt": "2026-11-03T14:42:01.947Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -17,43 +17,43 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 59
+      "churn": 66
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 92,
+      "churn": 100,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 57,
+      "churn": 60,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 44,
+      "churn": 46,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 39,
+      "churn": 40,
       "mergeAttr": "ours"
     }
   ]
