@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-b",
   "planId": "8b8a4f84-dea4-4bcd-a31f-139bebd139c8",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,134 @@
         "description": "BRO-6927 gap: Victor Gluck (TheaterScene.net) review of 300-paintings-off-broadway-2024, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:56:09.724Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=cabaret-at-the-kit-kat-club-west-end-2021 --url=https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/ --critic=\"Dominic Cavendish\" --publish-date=2021-12-13"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=captain-corellis-mandolin-west-end-2019 --url=https://www.timeout.com/london/theatre/captain-corellis-mandolin-review --critic=\"Andrzej Lukowski\" --publish-date=2019-06-25"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=endgame-west-end-2020 --url=https://www.timeout.com/london/theatre/endgame-cancelled --critic=\"Andrzej Lukowski\" --publish-date=2020-02-05"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=king-lear-west-end-2023 --url=https://www.timeout.com/london/theatre/king-lear-25-review --critic=\"Andrzej Lukowski\" --publish-date=2023-10-31"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=showstopper-the-improvised-musical-west-end-2023 --url=https://www.telegraph.co.uk/theatre/what-to-see/showstopper-the-improvised-musical-review/ --critic=\"Dominic Cavendish\" --publish-date=2015-10-01"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=moulin-rouge-the-musical-west-end-2021 --url=https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-piccadilly-theatre-review-perfect-way-celebrate/ --critic=\"Dominic Cavendish\" --publish-date=2022-01-20"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=moulin-rouge-the-musical-west-end-2021 --url=https://www.whatsonstage.com/london-theatre/reviews/moulin-rouge-review-west-end-luhrmann_55756.html --critic=\"Sarah Crompton\" --publish-date=2022-01-20"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=othello-west-end-2025 --url=https://www.telegraph.co.uk/theatre/what-to-see/othello-theatre-royal-haymarket-review/ --critic=\"Dominic Cavendish\" --publish-date=2025-11-05"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-comedy-about-a-bank-robbery-west-end-2016 --url=https://www.telegraph.co.uk/theatre/what-to-see/quite-simply-this-is-the-funniest-show-in-the-west-end/ --critic=\"Dominic Cavendish\" --publish-date=2016-05-18"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-comedy-about-a-bank-robbery-west-end-2016 --url=https://www.standard.co.uk/go/london/theatre/the-comedy-about-a-bank-robbery-theatre-review-so-wrong-it-s-just-not-right-a3231416.html --critic=\"Fiona Mountford\" --publish-date=2016-04-22"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-lehman-trilogy-west-end-2023 --url=https://www.telegraph.co.uk/theatre/what-to-see/lehman-trilogy-gillian-lynne-theatre-review-sam-mended-directs/ --critic=\"Dominic Cavendish\" --publish-date=2023-02-09"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=to-kill-a-mockingbird-west-end-2022 --url=https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-sorkins-revelatory-adaptation/ --critic=\"Dominic Cavendish\" --publish-date=2022-03-31"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=broken-glass-off-west-end-2026 --url=https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/broken-glass-review-young-vic-arthur-miller-b2931621.html --critic=\"Alice Saville\" --publish-date=2026-03-04"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=oliver-west-end-2024 --url=https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/ --critic=\"Sarah Crompton\" --publish-date=2025-01-14"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=300-paintings-off-broadway-2024 --url=https://www.theaterscene.net/plays/solo-plays/300-paintings/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2025-01-20"
+    }
+  ],
+  "executedIn": "ci"
 }
