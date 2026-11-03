@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T13:00:53.672Z",
+  "timestamp": "2026-11-03T14:09:19.437Z",
   "stats": {
-    "totalReviews": 79812,
+    "totalReviews": 79815,
     "alreadyFlagged": 22025,
     "dateGuardCatches": 219,
-    "directorMismatch": 3452,
+    "directorMismatch": 3454,
     "tvFilmSignals": 2262,
     "londonSignals": 3586,
     "offBroadwaySignals": 735,
     "yearMismatch": 360,
-    "noPublishDate": 8430
+    "noPublishDate": 8431
   },
   "findings": [
     {
@@ -75256,6 +75256,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-west-end-2014",
+      "file": "standard--conor-mcpherson.json",
+      "publishDate": "2014-01-22",
+      "url": "https://www.standard.co.uk/culture/theatre/the-weir-playwright-conor-mcpherson-on-the-art-of-acting-9043179.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-west-end-2014",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/10589792/The-Weir-Wyndhams-Theatre-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
         }
       ]
     },
