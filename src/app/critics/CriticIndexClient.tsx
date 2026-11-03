@@ -32,7 +32,7 @@ const SORT_OPTIONS: { value: SortMode; label: string }[] = [
   { value: 'alpha', label: 'A-Z' },
 ];
 
-function CriticCard({ critic }: { critic: CriticSummary }) {
+function CriticCard({ critic, verified }: { critic: CriticSummary; verified: boolean }) {
   return (
     <Link
       href={`/critics/${critic.slug}`}
@@ -49,6 +49,9 @@ function CriticCard({ critic }: { critic: CriticSummary }) {
       <div className="flex-1 min-w-0">
         <h2 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">
           {critic.name}
+          {verified && (
+            <span className="ml-2 text-[10px] font-medium px-1.5 py-0.5 rounded-full bg-brand/20 text-brand align-middle">✓ Verified</span>
+          )}
           {critic.isFreelancer && (
             <span className="ml-2 text-[10px] font-medium px-1.5 py-0.5 rounded border bg-purple-500/20 text-purple-400 border-purple-500/30 align-middle">
               Freelancer
@@ -75,7 +78,9 @@ function CriticCard({ critic }: { critic: CriticSummary }) {
   );
 }
 
-export default function CriticIndexClient({ critics, totalReviews }: { critics: CriticSummary[]; totalReviews: number }) {
+export default function CriticIndexClient({ critics, totalReviews, verifiedSlugs }: { critics: CriticSummary[]; totalReviews: number; verifiedSlugs: string[] }) {
+  const verifiedSet = useMemo(() => new Set(verifiedSlugs), [verifiedSlugs]);
+  const [verifiedOnly, setVerifiedOnly] = useState(false);
   const [search, setSearch] = useState('');
   const [sortMode, setSortMode] = useState<SortMode>('reviews');
 
@@ -83,6 +88,7 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
 
   const filtered = useMemo(() => {
     let list = critics.filter(c => c.reviewCount >= minReviews);
+    if (verifiedOnly) list = list.filter(c => verifiedSet.has(c.slug));
     if (search.trim()) {
       const q = search.toLowerCase();
       list = list.filter(c =>
@@ -91,7 +97,7 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
       );
     }
     return list;
-  }, [search, critics, minReviews]);
+  }, [search, critics, minReviews, verifiedOnly, verifiedSet]);
 
   const sorted = useMemo(() => {
     const list = [...filtered];
@@ -147,6 +153,13 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
         />
       </div>
 
+      {verifiedSlugs.length > 0 && (
+        <label className="mb-4 inline-flex items-center gap-2 text-sm text-fg-muted cursor-pointer">
+          <input type="checkbox" checked={verifiedOnly} onChange={e => setVerifiedOnly(e.target.checked)} className="accent-brand" />
+          Verified critics only ({verifiedSlugs.length})
+        </label>
+      )}
+
       {/* Sort & Filter Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 mb-5 text-sm">
         <ToggleBar
@@ -195,7 +208,7 @@ export default function CriticIndexClient({ critics, totalReviews }: { critics: 
 
       {/* Critic List */}
       <div className="space-y-2">
-        {sorted.map(c => <CriticCard key={c.slug} critic={c} />)}
+        {sorted.map(c => <CriticCard key={c.slug} critic={c} verified={verifiedSet.has(c.slug)} />)}
       </div>
 
       {sorted.length === 0 && (

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
@@ -175,6 +175,21 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
     return sorted;
   }, [filteredReviews, sortMode]);
 
+  // Count a view for verified critics (once per browser tab session; no visitor data is sent).
+  useEffect(() => {
+    if (!profile) return;
+    try {
+      const k = `critic-view:${critic.slug}`;
+      if (sessionStorage.getItem(k)) return;
+      sessionStorage.setItem(k, '1');
+    } catch { /* storage blocked: count anyway */ }
+    fetch('/api/critics/view', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ slug: critic.slug }), keepalive: true }).catch(() => {});
+  }, [profile, critic.slug]);
+
+  const pinnedReview = useMemo(
+    () => (profile?.pinnedReviewKey ? critic.reviews.find(r => `${r.showSlug}-${getReviewKey(r)}` === profile.pinnedReviewKey) : undefined),
+    [critic.reviews, profile?.pinnedReviewKey],
+  );
   const visibleReviews = sortedReviews.slice(0, showCount);
   const remaining = sortedReviews.length - showCount;
 
@@ -223,6 +238,7 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
         <CriticClaimPanel
           slug={critic.slug}
           name={critic.name}
+          outlet={critic.primaryOutlet}
           claimed={!!profile}
           reviewOptions={critic.reviews.map(r => ({ key: `${r.showSlug}-${getReviewKey(r)}`, label: `${r.showTitle} (${r.outlet})` }))}
         />
@@ -237,6 +253,16 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
             {profile.links.map(l => (
               <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer nofollow ugc" className="inline-flex items-center text-xs px-3 py-1 rounded-full border border-white/10 bg-surface-raised text-white hover:text-brand transition-colors">{l.label}</a>
             ))}
+          </div>
+        )}
+
+        {profile && (profile.picks.bestEver || profile.picks.thisSeason) && (
+          <div className="mb-4 rounded-lg border border-white/10 bg-surface-raised px-4 py-3">
+            <h2 className="text-xs uppercase tracking-wide text-fg-muted mb-2">In their own words</h2>
+            <dl className="space-y-1 text-sm">
+              {profile.picks.bestEver && <div className="flex gap-2"><dt className="text-fg-muted shrink-0">Best ever:</dt><dd className="text-white">{profile.picks.bestEver}</dd></div>}
+              {profile.picks.thisSeason && <div className="flex gap-2"><dt className="text-fg-muted shrink-0">This season:</dt><dd className="text-white">{profile.picks.thisSeason}</dd></div>}
+            </dl>
           </div>
         )}
 
@@ -308,6 +334,13 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
         size="compact"
         className="mb-4"
       />
+
+      {pinnedReview && (
+        <div className="mb-4">
+          <h2 className="text-xs uppercase tracking-wide text-fg-muted mb-2">Pinned review</h2>
+          <ReviewCard review={pinnedReview} showYear={null} loading="lazy" />
+        </div>
+      )}
 
       {/* Review List */}
       <div className="space-y-2">

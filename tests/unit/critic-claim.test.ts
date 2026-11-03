@@ -4,7 +4,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
+import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, sanitizeFlagInput, selectNoticeReviews, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
 
 const SECRET = 'test-secret';
 const ID = '11111111-2222-3333-4444-555555555555';
@@ -69,4 +69,30 @@ test('claim input validates slug, email and work link', () => {
   assert.ok('error' in sanitizeClaimInput({ slug: '../x', contactEmail: 'j@e.com' }));
   assert.ok('error' in sanitizeClaimInput({ slug: 'a', contactEmail: 'nope' }));
   assert.ok('error' in sanitizeClaimInput({ slug: 'a', contactEmail: 'j@e.com', workUrl: 'ftp://x' }));
+});
+
+test('a score flag must name one of the critic\'s own reviews and carries only text', () => {
+  const own = new Set(['hamilton-abc', 'wicked-def']);
+  const ok = sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', note: ' score looks low ', reviewScore: 100, score: 100 }, own);
+  assert.deepEqual(ok, { slug: 'jordan-ellis', reviewKey: 'wicked-def', note: 'score looks low' });
+  assert.ok(!('reviewScore' in ok) && !('score' in ok));
+  assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'someone-elses', note: 'x' }, own));
+  assert.ok('error' in sanitizeFlagInput({ slug: 'jordan-ellis', reviewKey: 'wicked-def', note: '   ' }, own));
+  assert.ok('error' in sanitizeFlagInput({ slug: '../x', reviewKey: 'wicked-def', note: 'x' }, own));
+});
+
+test('opening-night notice picks recent, unsent reviews once per show', () => {
+  const now = Date.UTC(2026, 10, 3, 12);
+  const day = 86_400_000;
+  const reviews = [
+    { showSlug: 'a', showTitle: 'A', parsedDate: now - 1 * day },
+    { showSlug: 'a', showTitle: 'A', parsedDate: now - 2 * day },
+    { showSlug: 'b', showTitle: 'B', parsedDate: now - 10 * day },
+    { showSlug: 'c', showTitle: 'C', parsedDate: now - 1 * day },
+    { showSlug: 'd', showTitle: 'D', parsedDate: now + 5 * day },
+    { showSlug: 'e', showTitle: 'E', parsedDate: null },
+  ];
+  const out = selectNoticeReviews(reviews, new Set(['c']), now, 3);
+  assert.deepEqual(out.map((r) => r.showSlug), ['a']);
+  assert.equal(out[0].parsedDate, now - 1 * day);
 });

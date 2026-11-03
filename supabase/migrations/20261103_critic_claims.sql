@@ -11,7 +11,7 @@
 --
 -- Re-runnable. ROLLBACK (app code reverted first):
 --   DROP FUNCTION IF EXISTS public.bump_critic_page_view(text);
---   DROP TABLE IF EXISTS public.critic_page_views, public.critic_requests,
+--   DROP TABLE IF EXISTS public.critic_opening_notices, public.critic_page_views, public.critic_requests,
 --     public.critic_profiles, public.critic_claims;
 --   DELETE FROM storage.buckets WHERE id = 'critic-photos';
 
@@ -66,6 +66,15 @@ CREATE TABLE IF NOT EXISTS public.critic_page_views (
   PRIMARY KEY (critic_slug, day)
 );
 
+-- One row per opening-night "your review is in" email, so a critic is never emailed twice for a show.
+CREATE TABLE IF NOT EXISTS public.critic_opening_notices (
+  critic_slug text NOT NULL,
+  show_slug   text NOT NULL,
+  sent_at     timestamptz NOT NULL DEFAULT now(),
+  PRIMARY KEY (critic_slug, show_slug)
+);
+
+ALTER TABLE public.critic_opening_notices ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.critic_claims     ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.critic_profiles   ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.critic_requests   ENABLE ROW LEVEL SECURITY;

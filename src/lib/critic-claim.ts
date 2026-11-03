@@ -122,3 +122,41 @@ export function sanitizeClaimInput(body: unknown): { slug: string; contactEmail:
   if (rawUrl && !workUrl) return { error: 'The link to your work must start with https://.' };
   return { slug, contactEmail: email, workUrl, note: cleanText(b.note, 1000) };
 }
+
+export const FLAG_NOTE_MAX = 600;
+export interface ScoreFlagInput { slug: string; reviewKey: string; note: string }
+
+/**
+ * "Flag a score" request. A flag is only ever a message to the owner: it can
+ * name one of the critic's own reviews and say what looks wrong, and nothing
+ * in it is read back into a score. Unknown review keys are rejected.
+ */
+export function sanitizeFlagInput(body: unknown, ownReviewKeys: ReadonlySet<string>): ScoreFlagInput | { error: string } {
+  const b = (body && typeof body === 'object' ? body : {}) as Record<string, unknown>;
+  const slug = typeof b.slug === 'string' && SLUG_RE.test(b.slug) ? b.slug : null;
+  if (!slug) return { error: 'Unknown page.' };
+  const reviewKey = typeof b.reviewKey === 'string' && ownReviewKeys.has(b.reviewKey) ? b.reviewKey : null;
+  if (!reviewKey) return { error: 'Pick one of your reviews.' };
+  const note = cleanText(b.note, FLAG_NOTE_MAX);
+  if (!note) return { error: 'Tell us what looks wrong.' };
+  return { slug, reviewKey, note };
+}
+
+export interface NoticeReview { showSlug: string; showTitle: string; parsedDate: number | null }
+
+/**
+ * Which of a critic's reviews should trigger an opening-night "your review is
+ * in" email: published within `windowDays` of now (and not in the future), and
+ * not already in the sent ledger. One entry per show, newest review wins.
+ */
+export function selectNoticeReviews(reviews: NoticeReview[], alreadySent: ReadonlySet<string>, nowMs: number, windowDays = 3): NoticeReview[] {
+  const cutoff = nowMs - windowDays * 86_400_000;
+  const byShow = new Map<string, NoticeReview>();
+  for (const r of reviews) {
+    if (!r.parsedDate || r.parsedDate < cutoff || r.parsedDate > nowMs) continue;
+    if (alreadySent.has(r.showSlug)) continue;
+    const prev = byShow.get(r.showSlug);
+    if (!prev || (r.parsedDate || 0) > (prev.parsedDate || 0)) byShow.set(r.showSlug, r);
+  }
+  return [...byShow.values()];
+}
