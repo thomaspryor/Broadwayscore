@@ -26,5 +26,12 @@ test('branding config has an opera entry with the kit gradient', () => {
 
 test('opera landing page hero uses the kit gradient, not amber', () => {
   assert.ok(page.includes(`from-[${light}] to-[${dark}]`));
-  assert.doesNotMatch(page, /from-amber-/);
+  assert.doesNotMatch(page, /amber-/);
+  assert.doesNotMatch(page, /text-brand border border-brand/, 'Beta badge is not site gold');
+});
+
+test('footer opera card hover is not amber', () => {
+  const foot = fs.readFileSync(new URL('../src/components/FooterExploreCards.tsx', import.meta.url), 'utf8');
+  const card = foot.match(/<Link key="opera"[\s\S]*?<\/Link>/)[0];
+  assert.doesNotMatch(card, /amber-/);
 });

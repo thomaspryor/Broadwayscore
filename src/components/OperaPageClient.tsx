@@ -168,7 +168,7 @@ function OperaPageInner({ shows, totalShows, totalReviews }: OperaPageClientProp
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
             Opera<span className="bg-gradient-to-r from-[#f0627a] to-[#c4213f] bg-clip-text text-transparent">Scorecard</span>
           </h1>
-          <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 absolute -top-1 sm:-top-4 right-0 translate-x-full">
+          <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#f0627a] border border-[#f0627a]/30 bg-[#f0627a]/10 rounded px-1.5 py-0.5 absolute -top-1 sm:-top-4 right-0 translate-x-full">
             Beta
           </span>
         </div>
@@ -294,7 +294,7 @@ export default function OperaPageClient(props: OperaPageClientProps) {
         <div className="mb-8 sm:mb-10">
           <div className="text-4xl sm:text-6xl font-extrabold text-white mb-3 tracking-tight" aria-hidden="true">
             Opera<span className="bg-gradient-to-r from-[#f0627a] to-[#c4213f] bg-clip-text text-transparent">Scorecard</span>
-            <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-brand border border-brand/30 bg-brand/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
+            <span className="ml-2 align-middle inline-block text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#f0627a] border border-[#f0627a]/30 bg-[#f0627a]/10 rounded px-1.5 py-0.5 relative -top-3 sm:-top-4">Beta</span>
           </div>
           <p className="text-gray-400 text-lg sm:text-xl">Every Met production plus new premieres from the Royal Opera House, San Francisco Opera and English National Opera. Every critic. One score.</p>
         </div>
