@@ -128,11 +128,15 @@ export function onlyPerformanceSlot(showId: string, date: string, history?: Show
 }
 
 /**
- * True when the date falls before the live schedule window, i.e. only the
- * past-week archive (BRO-6877, /data/show-schedule-history.json) can cover it.
+ * True when only the past-week archive (BRO-6877,
+ * /data/show-schedule-history.json) can cover this date: a week that has
+ * started that the live schedule no longer carries for this show (a past
+ * week, or a show that closed this week).
  */
-export function isBeforeScheduleWindow(date: string): boolean {
-  return !!date && mondayOfWeekYyyymmdd(date) < schedules.currentMonday;
+export function needsScheduleHistory(showId: string, date: string): boolean {
+  if (!date) return false;
+  const key = mondayOfWeekYyyymmdd(date);
+  return key <= schedules.currentMonday && !getShowSchedule(showId)?.weeks[key];
 }
 
 /**

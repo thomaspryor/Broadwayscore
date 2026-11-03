@@ -8,7 +8,7 @@ import {
   scheduledShowtime,
   isKnownDarkForSlot,
   onlyPerformanceSlot,
-  isBeforeScheduleWindow,
+  needsScheduleHistory,
   getScheduleCurrentMonday,
 } from '../../src/lib/data-showtimes';
 import type { ShowSchedule } from '../../src/lib/data-types';
@@ -33,10 +33,12 @@ test('a date before the archive still has no time', () => {
   assert.equal(isKnownDarkForSlot('oh-mary-2024', '2026-02-14', 'evening', om), false);
 });
 
-test('isBeforeScheduleWindow splits on the live file\'s current Monday', () => {
+test('needsScheduleHistory: only started weeks the live file lacks', () => {
   const m = getScheduleCurrentMonday();
   const iso = `${m.slice(0, 4)}-${m.slice(4, 6)}-${m.slice(6, 8)}`;
-  assert.equal(isBeforeScheduleWindow(iso), false, 'this week is live');
-  assert.equal(isBeforeScheduleWindow('2026-05-16'), true);
-  assert.equal(isBeforeScheduleWindow(''), false);
+  assert.equal(needsScheduleHistory('oh-mary-2024', iso), false, 'this week is live for a running show');
+  assert.equal(needsScheduleHistory('not-a-live-show', iso), true, 'a show gone from the live file this week');
+  assert.equal(needsScheduleHistory('oh-mary-2024', '2026-05-16'), true);
+  assert.equal(needsScheduleHistory('oh-mary-2024', '2099-01-01'), false, 'future dates never fetch');
+  assert.equal(needsScheduleHistory('oh-mary-2024', ''), false);
 });

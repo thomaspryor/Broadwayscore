@@ -212,10 +212,15 @@ function generateSchedules(scheduleData, openShowIds) {
   schedules.currentMonday = currentMonday;
 
   schedules.lastUpdated = new Date().toISOString();
-  // BRO-6877: archive the weeks this write retires. Weeks are only ever
-  // removed here with whole shows, but the currentMonday move still ends a week.
-  const a = archiveOutgoingSchedule(JSON.parse(fs.readFileSync(SCHEDULES_PATH, 'utf8')), currentMonday, { dryRun: DRY_RUN });
-  console.log(`Schedules: history +${a.added} show-weeks archived, ${a.updated} revised (${a.shows} shows)`);
+  // BRO-6877: archive the started weeks of the outgoing file (closed WE/OB
+  // shows are deleted above, so their final week is only kept this way).
+  // Never block the live schedule on the archive (backfill script rebuilds a missed week).
+  try {
+    const a = archiveOutgoingSchedule(JSON.parse(fs.readFileSync(SCHEDULES_PATH, 'utf8')), currentMonday, { dryRun: DRY_RUN });
+    console.log(`Schedules: history +${a.added} show-weeks archived, ${a.updated} revised (${a.shows} shows)`);
+  } catch (err) {
+    console.log(`::warning::Schedules: could not archive past weeks: ${err.message}`);
+  }
   if (!DRY_RUN) {
     fs.writeFileSync(SCHEDULES_PATH, JSON.stringify(schedules, null, 2) + '\n');
   }

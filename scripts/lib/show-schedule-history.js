@@ -2,18 +2,21 @@
  * Past-week showtime archive (BRO-6877).
  *
  * data/show-schedules.json is a rolling window (current week + ~7 future
- * weeks); every refresh drops the week that just ended. This module keeps
- * those weeks in data/show-schedule-history.json, append-only, so a diary
- * entry for a past date can still show the real curtain time.
+ * weeks); every refresh drops the week that just ended, and a show that
+ * closes is removed outright. This module keeps every week that has started
+ * in data/show-schedule-history.json, append-only, so a diary entry for a
+ * past date can still show the real curtain time.
  *
- * Shape (same per-show shape as show-schedules.json, past weeks only):
- *   { lastUpdated, firstWeek, throughMonday, shows: { id: { weeks: { YYYYMMDD: [7 x {m,e}] } } } }
- * throughMonday is exclusive: every archived week starts before it.
+ * Shape (same per-show shape as show-schedules.json):
+ *   { lastUpdated, firstWeek, lastWeek, shows: { id: { weeks: { YYYYMMDD: [7 x {m,e}] } } } }
+ * lastWeek is inclusive: no archived week starts after it. The current week
+ * is archived too (a show removed mid-week, e.g. on closing, keeps its final
+ * week); later refreshes overwrite it until it ends.
  *
  * Merge rule: a snapshot is authoritative for weeks on or after its own
- * currentMonday (those were live schedule data when it was taken), so a later
- * snapshot overwrites them. Weeks before a snapshot's currentMonday are
- * leftovers (TodayTix-sourced shows keep old weeks); they only fill gaps.
+ * currentMonday (live schedule data when it was taken), so a later snapshot
+ * overwrites them. Weeks before a snapshot's currentMonday are leftovers
+ * (TodayTix-sourced shows keep old weeks); they only fill gaps.
  */
 const fs = require('fs');
 const path = require('path');
@@ -22,7 +25,7 @@ const HISTORY_PATH = path.join(__dirname, '..', '..', 'data', 'show-schedule-his
 const WEEK_KEY = /^\d{8}$/;
 
 function emptyHistory() {
-  return { lastUpdated: null, firstWeek: null, throughMonday: null, shows: {} };
+  return { lastUpdated: null, firstWeek: null, lastWeek: null, shows: {} };
 }
 
 function loadHistory(file = HISTORY_PATH) {
@@ -42,10 +45,11 @@ function normaliseWeek(week) {
 }
 
 /**
- * Merge one show-schedules.json snapshot into history (mutates and returns it).
+ * Merge one show-schedules.json snapshot into history (mutates it). Only
+ * weeks starting on/before uptoMonday are taken (default: all).
  * Returns { added, updated } counts of show-weeks.
  */
-function mergeSnapshot(history, snapshot) {
+function mergeSnapshot(history, snapshot, uptoMonday = null) {
   const stats = { added: 0, updated: 0 };
   if (!snapshot || !snapshot.shows) return stats;
   const snapMonday = WEEK_KEY.test(String(snapshot.currentMonday || '')) ? snapshot.currentMonday : null;
@@ -53,67 +57,75 @@ function mergeSnapshot(history, snapshot) {
     if (!sched || !sched.weeks) continue;
     for (const [key, week] of Object.entries(sched.weeks)) {
       if (!WEEK_KEY.test(key) || !isValidWeek(week)) continue;
+      if (uptoMonday && key > uptoMonday) continue;
       const authoritative = snapMonday ? key >= snapMonday : false;
-      const target = (history.shows[showId] ||= { weeks: {} });
-      const existing = target.weeks[key];
+      const existing = history.shows[showId]?.weeks[key];
       if (existing && !authoritative) continue;
       const next = normaliseWeek(week);
       if (!existing) stats.added++;
       else if (JSON.stringify(existing) !== JSON.stringify(next)) stats.updated++;
       else continue;
-      target.weeks[key] = next;
+      (history.shows[showId] ||= { weeks: {} }).weeks[key] = next;
     }
   }
   return stats;
 }
 
 /**
- * Drop weeks on/after cutoffMonday (they are still in the live file) and
- * refresh metadata. Never prunes below an earlier throughMonday: the two
- * writers compute "this Monday" differently (bwayrush in ET, TodayTix in the
- * runner's UTC), so a cutoff can step back a week and must not delete
- * weeks the archive already owns.
+ * Drop weeks that have not started yet (after lastMonday) and refresh
+ * metadata. Never prunes below an earlier lastWeek: the two writers compute
+ * "this Monday" differently (bwayrush in ET, TodayTix in the runner's UTC), so
+ * a cutoff can step back a week and must not delete weeks already archived.
  */
-function pruneFrom(history, cutoffMonday) {
-  if (history.throughMonday && cutoffMonday && cutoffMonday < history.throughMonday) {
-    cutoffMonday = history.throughMonday;
-  }
+function pruneAfter(history, lastMonday) {
+  if (history.lastWeek && (!lastMonday || lastMonday < history.lastWeek)) lastMonday = history.lastWeek;
   let first = null;
   for (const [showId, sched] of Object.entries(history.shows)) {
     for (const key of Object.keys(sched.weeks)) {
-      if (cutoffMonday && key >= cutoffMonday) delete sched.weeks[key];
+      if (lastMonday && key > lastMonday) delete sched.weeks[key];
       else if (!first || key < first) first = key;
     }
     if (!Object.keys(sched.weeks).length) delete history.shows[showId];
   }
   history.firstWeek = first;
-  if (cutoffMonday && (!history.throughMonday || cutoffMonday > history.throughMonday)) {
-    history.throughMonday = cutoffMonday;
-  }
+  history.lastWeek = lastMonday || history.lastWeek || null;
   return history;
 }
 
 /**
  * The refresh hook: before a writer replaces show-schedules.json, fold the
- * outgoing file's weeks into the archive. Weeks before newCurrentMonday are
- * kept; the rest are still live in the new file.
+ * outgoing file's started weeks (on/before newCurrentMonday) into the archive.
  */
 function archiveOutgoingSchedule(oldSnapshot, newCurrentMonday, { file = HISTORY_PATH, dryRun = false } = {}) {
   const history = loadHistory(file);
-  // Only weeks the new file no longer carries; counts then mean "archived".
-  const cutoff = history.throughMonday && history.throughMonday > newCurrentMonday ? history.throughMonday : newCurrentMonday;
-  const ended = { currentMonday: oldSnapshot && oldSnapshot.currentMonday, shows: {} };
-  for (const [id, sched] of Object.entries((oldSnapshot && oldSnapshot.shows) || {})) {
-    const weeks = Object.fromEntries(Object.entries((sched && sched.weeks) || {}).filter(([k]) => k < cutoff));
-    if (Object.keys(weeks).length) ended.shows[id] = { weeks };
-  }
-  const stats = mergeSnapshot(history, ended);
-  pruneFrom(history, newCurrentMonday);
-  if (stats.added || stats.updated || !fs.existsSync(file)) {
+  const upto = history.lastWeek && history.lastWeek > newCurrentMonday ? history.lastWeek : newCurrentMonday;
+  const stats = mergeSnapshot(history, oldSnapshot, upto);
+  const lastBefore = history.lastWeek;
+  pruneAfter(history, newCurrentMonday);
+  if (stats.added || stats.updated || history.lastWeek !== lastBefore || !fs.existsSync(file)) {
     history.lastUpdated = new Date().toISOString();
     if (!dryRun) writeHistory(history, file);
   }
   return { ...stats, shows: Object.keys(history.shows).length };
+}
+
+/**
+ * Push-conflict merge (core-data-merge-registry.js, push-with-retry.sh): the
+ * two writers race on a Monday rollover. Union per show-week; ours (this run)
+ * wins on a shared week. Returns { merged } (registry contract).
+ */
+function mergeShowScheduleHistory(ours, remote) {
+  ours = ours && ours.shows ? ours : emptyHistory();
+  remote = remote && remote.shows ? remote : emptyHistory();
+  const merged = { ...remote, ...ours, shows: {} };
+  for (const id of new Set([...Object.keys(remote.shows), ...Object.keys(ours.shows)])) {
+    merged.shows[id] = { weeks: { ...(remote.shows[id]?.weeks || {}), ...(ours.shows[id]?.weeks || {}) } };
+  }
+  const max = (a, b) => (!a ? b : !b ? a : a > b ? a : b);
+  merged.lastUpdated = max(ours.lastUpdated, remote.lastUpdated);
+  merged.lastWeek = max(ours.lastWeek, remote.lastWeek);
+  pruneAfter(merged, merged.lastWeek);
+  return { merged };
 }
 
 /** One week per line: readable, small git diffs, still plain JSON. */
@@ -127,7 +139,7 @@ function serialise(history) {
   return '{\n'
     + `  "lastUpdated": ${JSON.stringify(history.lastUpdated)},\n`
     + `  "firstWeek": ${JSON.stringify(history.firstWeek)},\n`
-    + `  "throughMonday": ${JSON.stringify(history.throughMonday)},\n`
+    + `  "lastWeek": ${JSON.stringify(history.lastWeek)},\n`
     + `  "shows": {\n${showBlocks.join(',\n')}\n  }\n}\n`;
 }
 
@@ -142,8 +154,9 @@ module.exports = {
   emptyHistory,
   loadHistory,
   mergeSnapshot,
-  pruneFrom,
+  pruneAfter,
   archiveOutgoingSchedule,
+  mergeShowScheduleHistory,
   serialise,
   writeHistory,
 };

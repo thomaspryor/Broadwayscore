@@ -36,7 +36,7 @@ const hist = fs.existsSync(histSrc) ? JSON.parse(fs.readFileSync(histSrc, 'utf8'
 fs.writeFileSync(histOut, JSON.stringify({
   lastUpdated: hist.lastUpdated || null,
   firstWeek: hist.firstWeek || null,
-  throughMonday: hist.throughMonday || null,
+  lastWeek: hist.lastWeek || null,
   shows: hist.shows || {},
 }));
 console.log(`show-schedule-history: ${Object.keys(hist.shows || {}).length} shows, ${(fs.statSync(histOut).size / 1024).toFixed(0)} KB`);

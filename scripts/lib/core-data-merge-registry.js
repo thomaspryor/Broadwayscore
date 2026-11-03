@@ -67,6 +67,7 @@ const { mergeAwardsJson } = require('./merge-awards-json');
 const { mergeOpeningNightSent } = require('./merge-opening-night-sent');
 const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
+const { mergeShowScheduleHistory } = require('./show-schedule-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
 const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
 const { mergeExpressCompleted } = require('./merge-express-completed');
@@ -149,6 +150,21 @@ const CORE_DATA_MERGE_REGISTRY = [
     format: 'json',
     newline: false,
     notApiFallbackMerge: 'gitignored in the public repo (.gitignore data/diary-shows.json); private core-data owns it, so no push-with-retry.sh commit ever stages it and the flag would be inert',
+  },
+  {
+    file: 'show-schedule-history.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeShowScheduleHistory,
+    format: 'json',
+    newline: true,
+    // BRO-6877: append-only past-week showtime archive. Two writers
+    // (update-lottery-rush.yml, fetch-todaytix-showtimes.yml) with separate
+    // concurrency groups both archive the outgoing week on a Monday rollover.
+    // Union per show-week, ours wins; nothing is ever deleted except weeks
+    // that have not started, so a fallback push against an untouched remote
+    // re-adds nothing ours removed.
+    apiFallbackMerge: true,
   },
   {
     file: 'newsletter-state.json',

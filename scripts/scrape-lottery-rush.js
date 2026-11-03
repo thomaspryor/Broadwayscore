@@ -492,9 +492,9 @@ async function extractAndWriteScheduleData(html) {
     const a = archiveOutgoingSchedule(outgoing, currentMonday);
     console.log(`[Schedule] History: +${a.added} show-weeks archived, ${a.updated} revised (${a.shows} shows)`);
   } catch (err) {
-    console.error(`::error::[Schedule] Could not archive past weeks: ${err.message} — not overwriting show-schedules.json`);
-    process.exitCode = 1;
-    return;
+    // Never block the live schedule on the archive; a missed week can be
+    // rebuilt from git history with scripts/backfill-show-schedule-history.js.
+    console.log(`::warning::[Schedule] Could not archive past weeks: ${err.message}`);
   }
 
   fs.writeFileSync(SCHEDULE_PATH, JSON.stringify(output, null, 2) + '\n');

@@ -7,11 +7,11 @@
 
 import { useEffect, useState } from 'react';
 import type { ShowSchedule } from './data-types';
-import { isBeforeScheduleWindow } from './data-showtimes';
+import { needsScheduleHistory } from './data-showtimes';
 
 interface HistoryFile {
   firstWeek: string | null;
-  throughMonday: string | null;
+  lastWeek: string | null;
   shows: Record<string, ShowSchedule>;
 }
 
@@ -34,12 +34,12 @@ export function loadScheduleHistory(): Promise<HistoryFile | null> {
 }
 
 /**
- * The archived weeks for this show, loaded only when the picked date is
- * before the live schedule window. Undefined while loading, when not needed,
+ * The archived weeks for this show, loaded only when the live schedule
+ * can't cover the picked date (see needsScheduleHistory). Undefined while loading, when not needed,
  * or when the archive has nothing for the show.
  */
 export function useScheduleHistory(showId: string, date: string): ShowSchedule | undefined {
-  const needed = isBeforeScheduleWindow(date);
+  const needed = needsScheduleHistory(showId, date);
   const [history, setHistory] = useState<{ showId: string; schedule?: ShowSchedule } | null>(null);
   useEffect(() => {
     if (!needed) return;

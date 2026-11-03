@@ -11,10 +11,12 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const hist = require('../../scripts/lib/show-schedule-history.js');
+const { CORE_DATA_MERGE_REGISTRY: MERGE_REGISTRY } = require('../../scripts/lib/core-data-merge-registry.js');
 
 const day = (m, e) => ({ m, e });
 const week = (sat) => [day(null, null), day(null, '19:00'), day(null, '19:00'), day(null, '19:00'), day(null, '20:00'), sat, day('15:00', null)];
-const snap = (currentMonday, weeks) => ({ currentMonday, shows: { 'show-a': { weeks } } });
+const snap = (currentMonday, weeks, id = 'show-a') => ({ currentMonday, shows: { [id]: { weeks } } });
+const tmpFile = () => path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'sched-hist-')), 'h.json');
 
 test('a later snapshot overwrites the weeks it was live for', () => {
   const h = hist.emptyHistory();
@@ -32,46 +34,70 @@ test('a leftover week older than the snapshot only fills gaps, never overwrites'
   assert.equal(h.shows['show-a'].weeks['20260518'][5].m, '14:00', 'missing week filled');
 });
 
-test('malformed weeks are skipped', () => {
+test('malformed weeks are skipped and create no show entry', () => {
   const h = hist.emptyHistory();
   hist.mergeSnapshot(h, snap('20260504', { 20260504: [day('14:00', null)], bogus: week(day(null, null)) }));
-  assert.deepEqual(h.shows, {}, 'no empty show entry is created');
+  assert.deepEqual(h.shows, {});
 });
 
-test('pruneFrom keeps past weeks only and never steps back below throughMonday', () => {
+test('pruneAfter keeps started weeks only and never steps back below lastWeek', () => {
   const h = hist.emptyHistory();
   hist.mergeSnapshot(h, snap('20260504', { 20260504: week(day(null, null)), 20260511: week(day(null, null)), 20260518: week(day(null, null)) }));
-  hist.pruneFrom(h, '20260518');
+  hist.pruneAfter(h, '20260511');
   assert.deepEqual(Object.keys(h.shows['show-a'].weeks).sort(), ['20260504', '20260511']);
-  assert.equal(h.throughMonday, '20260518');
+  assert.equal(h.lastWeek, '20260511');
   assert.equal(h.firstWeek, '20260504');
-  hist.mergeSnapshot(h, snap('20260511', { 20260511: week(day('14:00', null)) }));
-  hist.pruneFrom(h, '20260511'); // a writer whose "this Monday" lags a week
+  hist.pruneAfter(h, '20260504'); // a writer whose "this Monday" lags a week
   assert.ok(h.shows['show-a'].weeks['20260511'], 'archived week survives a lagging cutoff');
-  assert.equal(h.throughMonday, '20260518');
+  assert.equal(h.lastWeek, '20260511');
 });
 
-test('archiveOutgoingSchedule folds the outgoing file into the archive on disk', () => {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sched-hist-'));
-  const file = path.join(dir, 'h.json');
-  const outgoing = snap('20261026', { 20261026: week(day('14:00', '20:00')), 20261102: week(day('14:00', '20:00')) });
+test('archiveOutgoingSchedule keeps ended weeks and the current week, not future ones', () => {
+  const file = tmpFile();
+  const outgoing = snap('20261026', { 20261026: week(day('14:00', '20:00')), 20261102: week(day('14:00', '20:00')), 20261109: week(day('14:00', '20:00')) });
   const r = hist.archiveOutgoingSchedule(outgoing, '20261102', { file });
-  assert.equal(r.added, 1, 'only the ended week is kept');
+  assert.equal(r.added, 2);
   const back = JSON.parse(fs.readFileSync(file, 'utf8'));
-  assert.deepEqual(Object.keys(back.shows['show-a'].weeks), ['20261026']);
-  assert.equal(back.throughMonday, '20261102');
+  assert.deepEqual(Object.keys(back.shows['show-a'].weeks), ['20261026', '20261102']);
+  assert.equal(back.lastWeek, '20261102');
   const again = hist.archiveOutgoingSchedule(outgoing, '20261102', { file });
   assert.deepEqual([again.added, again.updated], [0, 0], 'idempotent');
 });
 
-test('committed archive covers past weeks back to March 2026 (spot check Oh, Mary!)', () => {
+test('a show removed mid-week (closing) keeps its final week', () => {
+  const file = tmpFile();
+  // Monday rollover archived last week; on Thursday the show closes and the
+  // next refresh drops it from the live file. Same currentMonday both times.
+  hist.archiveOutgoingSchedule(snap('20261026', { 20261102: week(day('14:00', null)) }, 'closing-show'), '20261102', { file });
+  const live = snap('20261102', { 20261102: week(day('14:00', '20:00')) }, 'closing-show');
+  hist.archiveOutgoingSchedule(live, '20261102', { file });
+  const back = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(back.shows['closing-show'].weeks['20261102'][5].e, '20:00', 'latest view of the closing week kept');
+});
+
+test('mergeShowScheduleHistory unions both writers, ours wins a shared week', () => {
+  const a = hist.emptyHistory();
+  hist.mergeSnapshot(a, snap('20261026', { 20261026: week(day('14:00', null)) }));
+  hist.pruneAfter(a, '20261026');
+  const b = hist.emptyHistory();
+  hist.mergeSnapshot(b, snap('20261026', { 20261026: week(day('11:00', null)) }));
+  hist.mergeSnapshot(b, snap('20261102', { 20261102: week(day('11:00', null)) }, 'show-b'));
+  hist.pruneAfter(b, '20261102');
+  const { merged: m } = hist.mergeShowScheduleHistory(a, b);
+  assert.equal(m.shows['show-a'].weeks['20261026'][5].m, '14:00', 'ours wins');
+  assert.ok(m.shows['show-b'].weeks['20261102'], 'remote-only show kept');
+  assert.equal(m.lastWeek, '20261102');
+  const entry = MERGE_REGISTRY.find((e) => e.file === 'show-schedule-history.json');
+  assert.equal(entry && entry.merge, hist.mergeShowScheduleHistory, 'registered for push conflicts');
+});
+
+test('committed archive covers March 2026 onward (spot check Oh, Mary!)', () => {
   const h = hist.loadHistory();
   const live = JSON.parse(fs.readFileSync(path.join(path.dirname(hist.HISTORY_PATH), 'show-schedules.json'), 'utf8'));
   assert.ok(h.firstWeek && h.firstWeek <= '20260316', `firstWeek ${h.firstWeek}`);
   for (const s of Object.values(h.shows)) {
-    for (const k of Object.keys(s.weeks)) assert.ok(k < h.throughMonday, `${k} is before throughMonday`);
+    for (const k of Object.keys(s.weeks)) assert.ok(k <= h.lastWeek, `${k} has started`);
   }
-  assert.ok(h.throughMonday <= live.currentMonday, 'archive never runs ahead of the live file');
-  const sat = h.shows['oh-mary-2024']?.weeks['20260511']?.[5];
-  assert.deepEqual(sat, { m: '17:00', e: '20:30' }, 'Sat 2026-05-16');
+  assert.ok(h.lastWeek <= live.currentMonday, 'archive never holds weeks that have not started');
+  assert.deepEqual(h.shows['oh-mary-2024']?.weeks['20260511']?.[5], { m: '17:00', e: '20:30' }, 'Sat 2026-05-16');
 });

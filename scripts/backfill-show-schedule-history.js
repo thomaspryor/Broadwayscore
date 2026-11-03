@@ -3,8 +3,8 @@
  * Backfill data/show-schedule-history.json from the git history of
  * data/show-schedules.json (BRO-6877). Walks every committed version oldest
  * first, merges each into the archive (later snapshots win for the weeks they
- * were live for), then keeps only weeks before the current file's
- * currentMonday. Idempotent: re-running merges the same snapshots again.
+ * were live for), then keeps only weeks that have started (on/before the
+ * current file's currentMonday). Idempotent: re-running merges the same snapshots again.
  *
  * Two sources:
  *   git (default): needs the history. Cloud clones are shallow and deepening
@@ -67,12 +67,12 @@ for (const read of versions()) {
 }
 
 const current = JSON.parse(fs.readFileSync(path.join(ROOT, FILE), 'utf8'));
-hist.pruneFrom(history, current.currentMonday);
+hist.pruneAfter(history, current.currentMonday);
 history.lastUpdated = new Date().toISOString();
 
 const weeks = Object.values(history.shows).reduce((n, s) => n + Object.keys(s.weeks).length, 0);
 console.log(`merged: +${added} new show-weeks, ${updated} revised, ${skipped} unreadable versions`);
-console.log(`archive: ${Object.keys(history.shows).length} shows, ${weeks} show-weeks, ${history.firstWeek} .. before ${history.throughMonday}`);
+console.log(`archive: ${Object.keys(history.shows).length} shows, ${weeks} show-weeks, ${history.firstWeek} .. ${history.lastWeek}`);
 if (dryRun) {
   console.log('[dry run] not written');
 } else {

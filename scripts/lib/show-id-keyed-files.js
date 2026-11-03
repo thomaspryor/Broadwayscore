@@ -80,6 +80,7 @@ const SHOW_ID_KEYED_FILES = [
   { repo: 'web', path: 'data/todaytix-ids.json', shape: 'map', keyPath: ['shows'] },
   { repo: 'web', path: 'data/todaytix-showtimes.json', shape: 'map', keyPath: ['shows'] },
   { repo: 'web', path: 'data/show-schedules.json', shape: 'map', keyPath: ['shows'] },
+  { repo: 'web', path: 'data/show-schedule-history.json', shape: 'map', keyPath: ['shows'] },
   { repo: 'web', path: 'data/image-sources.json', shape: 'map', keyPath: [] },
   { repo: 'web', path: 'data/ibdb-image-cache.json', shape: 'map', keyPath: ['shows'] },
   { repo: 'web', path: 'data/playbill-urls.json', shape: 'map', keyPath: ['shows'] },
