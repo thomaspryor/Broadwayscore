@@ -33,6 +33,7 @@ const { execSync } = require('child_process');
 const { classifyContentTier, isGarbageContent, validateShowMentioned, countWords } = require('./lib/content-quality');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
+const { listUnpushedReviewFiles, startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
 const { cleanText, stripTrailingJunk } = require('./lib/text-cleaning');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 const { generateReviewFilename } = require('./lib/review-normalization');
@@ -872,9 +873,11 @@ function checkpointReviewTexts(stats) {
     // 1) — from a shallow clone that pull makes upload-pack send the whole
     // repo instead of the delta (#466). The helper runs the same
     // lib/restore-protected-fields.js and adds the #394/#464/#543 fixes.
+    const pushedReviewFiles = listUnpushedReviewFiles(reviewTextsDir); // BRO-6886
     const rtPush = pushWithRetry({ cwd: reviewTextsDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
       markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
+      startPressNightScoring(pushedReviewFiles); // BRO-6886: score new press-night reviews now, not at job end
       console.log('  [Checkpoint] review-texts pushed');
       return;
     }

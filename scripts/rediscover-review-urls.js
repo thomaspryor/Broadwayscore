@@ -29,6 +29,7 @@ const { isCrossOutletUrl } = require('./lib/review-normalization');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { markReviewTextsPushed } = require('./lib/review-texts-pushed-marker.js'); // BRO-5308
+const { listUnpushedReviewFiles, startPressNightScoring } = require('./lib/press-night-scoring-trigger'); // BRO-6886
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasUsableText, isPlausibleArticleRedirect, AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
 
@@ -352,9 +353,11 @@ function pushReviewTextsCheckpoint(message) {
     // push-with-retry.sh documents. The helper accepts the remote deletion
     // instead. That is the repo's intended behaviour (memory/feedback_outlet_
     // merge_no_flag_and_keep.md), so this is a fix, not a regression.
+    const pushedReviewFiles = listUnpushedReviewFiles(rtDir); // BRO-6886
     const rtPush = pushWithRetry({ cwd: rtDir, branch: 'main', retries: 3 });
     if (rtPush.ok) {
       markReviewTextsPushed(); // BRO-5308: final push-review-texts reports pushed=true
+      startPressNightScoring(pushedReviewFiles); // BRO-6886: score new press-night reviews now, not at job end
       console.log('  ✓ Pushed review-texts to private repo');
       return;
     }
