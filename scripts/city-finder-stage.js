@@ -123,7 +123,9 @@ function emit() {
   const [hubSlug, hub] = hubEntry;
   const actions = [];
   const skipped = [];
+  const haveProd = new Set(shows.filter((s) => s.localOnly).map((s) => `${F.norm(s.title)}|${F.norm(s.venue || '').split(' ').slice(0, 2).join(' ')}`));
   for (const p of staged.productions) {
+    if (haveProd.has(`${F.norm(p.title)}|${F.norm(p.theatre).split(' ').slice(0, 2).join(' ')}`)) { skipped.push(`${p.title} (already a show)`); continue; }
     const openNow = p.end && p.end >= today && p.start <= today;
     if (p.reviews.length < min && !(openNow && p.reviews.length >= 2)) { skipped.push(`${p.title} (${p.reviews.length} reviews)`); continue; }
     const opening = p.firstReview && p.firstReview < p.start && p.startSource !== 'bww' ? p.firstReview : p.start;

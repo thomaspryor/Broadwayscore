@@ -1,0 +1,43 @@
+{
+  "issueNumber": "bro-6854-sd-d",
+  "planId": "afc67688-d570-46c6-befa-b38880056ba2",
+  "status": "pending",
+  "createdAt": "2026-11-03T03:09:09.398Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "San Diego: add Topdog/Underdog at The Old Globe (3 reviews found by daily pickup)",
+    "steps": [
+      "add topdog-underdog-old-regional-2026"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "description": "add topdog-underdog-old-regional-2026",
+        "show": {
+          "id": "topdog-underdog-old-regional-2026",
+          "title": "Topdog/Underdog",
+          "slug": "topdog-underdog-old-regional-2026",
+          "venue": "The Old Globe, San Diego, CA",
+          "status": "open",
+          "type": "play",
+          "category": "regional",
+          "market": "regional",
+          "openingDate": "2026-10-01",
+          "openingDateSource": "earliest-review-date",
+          "discoverySource": "cityfinder-san-diego",
+          "localOnly": true,
+          "city": "san-diego-ca",
+          "discoveredAt": "2026-11-03",
+          "evidenceUrls": [
+            "https://www.sandiegouniontribune.com/2026/10/02/review-old-globes-thrilling-topdog-underdog-comes-up-aces/",
+            "https://stageandcinema.com/2026/10/05/topdog-underdog-old-globe/"
+          ]
+        }
+      }
+    ]
+  }
+}
