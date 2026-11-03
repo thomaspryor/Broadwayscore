@@ -111,7 +111,7 @@ function summarizeCityTags(tags) {
  * @param {(msg)=>void} o.log
  */
 async function pushCitiesToResend({ tags, pushed, http, delay, log }) {
-  const stats = { set: 0, unchanged: 0, notInResend: 0, errors: 0, propertyCreated: false };
+  const stats = { set: 0, unchanged: 0, notInResend: 0, cleared: 0, errors: 0, propertyCreated: false };
   try {
     const list = await http('GET', 'https://api.resend.com/contact-properties');
     const have = (list.data || []).some((p) => p.key === RESEND_CITY_PROPERTY);
@@ -121,8 +121,26 @@ async function pushCitiesToResend({ tags, pushed, http, delay, log }) {
     }
   } catch (err) {
     stats.errors++;
-    log(`  Could not ensure Resend "${RESEND_CITY_PROPERTY}" property: ${err.message}`);
+    log(`  Could not ensure Resend "${RESEND_CITY_PROPERTY}" property (HTTP ${err.status || 'error'})`);
     return stats;
+  }
+
+  // Someone we tagged earlier who is no longer tagged (unsubscribed, or their
+  // show/hub stopped counting): clear the property so a city send cannot reach
+  // them on a stale tag. A 404 means they are gone from Resend, which is fine.
+  for (const email of Object.keys(pushed)) {
+    if (tags.has(email)) continue;
+    try {
+      await http('PATCH', `https://api.resend.com/contacts/${encodeURIComponent(email)}`,
+        { properties: { [RESEND_CITY_PROPERTY]: null } });
+      stats.cleared++;
+      delete pushed[email];
+    } catch (err) {
+      if (err.status === 404) { delete pushed[email]; continue; }
+      stats.errors++;
+      if (stats.errors <= 3) log(`  Resend city clear failed (HTTP ${err.status || 'error'})`);
+    }
+    await delay(300);
   }
 
   for (const [email, v] of tags) {
@@ -136,7 +154,7 @@ async function pushCitiesToResend({ tags, pushed, http, delay, log }) {
       if (err.status === 404) stats.notInResend++;
       else {
         stats.errors++;
-        if (stats.errors <= 3) log(`  Resend city update failed: ${err.message}`);
+        if (stats.errors <= 3) log(`  Resend city update failed (HTTP ${err.status || 'error'})`);
       }
     }
     await delay(300);

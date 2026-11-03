@@ -197,6 +197,7 @@ function httpJSON(method, url, body, headers) {
 function postJSON(url, body, headers) { return httpJSON('POST', url, body, headers); }
 function patchJSON(url, body, headers) { return httpJSON('PATCH', url, body, headers); }
 const delay = (ms) => new Promise(r => setTimeout(r, ms));
+const CITY_PASS_MIN_INTERVAL_MS = 20 * 60 * 60 * 1000;
 const maskEmail = (e) => e.replace(/(.{2}).*(@.*)/, '$1***$2');
 
 // BRO-6929: city tags live in subscribers.json next to the list. `cities` is
@@ -209,6 +210,7 @@ function readCityState() {
     const out = {};
     if (prev.cities) out.cities = prev.cities;
     if (prev.cityPushed) out.cityPushed = prev.cityPushed;
+    if (prev.cityTaggedAt) out.cityTaggedAt = prev.cityTaggedAt;
     return out;
   } catch { return {}; }
 }
@@ -220,9 +222,16 @@ function readCityState() {
  * Never throws: city tagging must not break the subscriber sync.
  */
 async function syncCityTags({ subscribersList, followFormId, followToken, subscriberFormId, subscriberToken, resendApiKey }) {
-  const tagsLib = require('./lib/signup-city-tags');
-  console.log('\nTagging subscribers by signup city (full submission history)...');
   try {
+    const tagsLib = require('./lib/signup-city-tags');
+    // The full-history pass is only needed about daily; the hourly
+    // opening-night-broadcast runs call this script too and must stay short.
+    const last = Date.parse(readCityState().cityTaggedAt || '') || 0;
+    if (!FULL_RESYNC && Date.now() - last < CITY_PASS_MIN_INTERVAL_MS) {
+      console.log('\nCity tagging ran recently, skipping this run');
+      return;
+    }
+    console.log('\nTagging subscribers by signup city (full submission history)...');
     const shows = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
     const ctx = tagsLib.buildCityContext(Array.isArray(shows) ? shows : shows.shows, tagsLib.loadHubKeys());
 
@@ -258,7 +267,6 @@ async function syncCityTags({ subscribersList, followFormId, followToken, subscr
     for (const [email, v] of tags) cities[email] = v.cities;
     state.cities = cities;
     state.cityPushed = state.cityPushed || {};
-    for (const email of Object.keys(state.cityPushed)) if (!tags.has(email)) delete state.cityPushed[email];
 
     if (!DRY_RUN && resendApiKey) {
       const auth = { 'Authorization': `Bearer ${resendApiKey}` };
@@ -269,8 +277,9 @@ async function syncCityTags({ subscribersList, followFormId, followToken, subscr
         delay,
         log: (m) => console.log(m),
       });
-      console.log(`  Resend city property: ${stats.set} set, ${stats.unchanged} unchanged, ${stats.notInResend} not in Resend, ${stats.errors} errors${stats.propertyCreated ? ' (property created)' : ''}`);
+      console.log(`  Resend city property: ${stats.set} set, ${stats.unchanged} unchanged, ${stats.cleared} cleared, ${stats.notInResend} not in Resend, ${stats.errors} errors${stats.propertyCreated ? ' (property created)' : ''}`);
     } else if (!resendApiKey) {
+      for (const email of Object.keys(state.cityPushed)) if (!tags.has(email)) delete state.cityPushed[email];
       console.log('  Skipping Resend city property (no RESEND_API_KEY)');
     }
 
@@ -278,6 +287,7 @@ async function syncCityTags({ subscribersList, followFormId, followToken, subscr
       const file = JSON.parse(fs.readFileSync(SUBSCRIBERS_PATH, 'utf8'));
       file.cities = state.cities;
       file.cityPushed = state.cityPushed;
+      file.cityTaggedAt = new Date().toISOString();
       fs.writeFileSync(SUBSCRIBERS_PATH, JSON.stringify(file, null, 2));
       console.log(`  Saved city tags for ${Object.keys(cities).length} subscribers`);
     }

@@ -79,7 +79,7 @@ test('pushCitiesToResend creates the property, sets changed values, skips unchan
   const { http, calls } = fakeHttp({ failFor: { 'c@example.org': 404, 'd@example.org': 500 } });
   const logs = [];
   const stats = await tags.pushCitiesToResend({ tags: t, pushed, http, delay: async () => {}, log: (m) => logs.push(m) });
-  assert.deepEqual(stats, { set: 1, unchanged: 1, notInResend: 1, errors: 1, propertyCreated: true });
+  assert.deepEqual(stats, { set: 1, unchanged: 1, notInResend: 1, cleared: 0, errors: 1, propertyCreated: true });
   assert.equal(calls[1].method, 'POST');
   assert.deepEqual(calls[1].body, { key: 'city', type: 'string' });
   const patch = calls.find((c) => c.method === 'PATCH');
@@ -99,4 +99,23 @@ test('pushCitiesToResend does not recreate an existing property and never throws
   const failed = await tags.pushCitiesToResend({ tags: new Map([['a@x.org', { cities: ['chicago-il'], latest: 'chicago-il' }]]), pushed: {}, http: boom, delay: async () => {}, log() {} });
   assert.equal(failed.errors, 1);
   assert.equal(failed.set, 0);
+});
+
+test('pushCitiesToResend clears the property for people no longer tagged', async () => {
+  const pushed = { 'gone@example.org': 'chicago-il', 'deleted@example.org': 'chicago-il', 'kept@example.org': 'chicago-il' };
+  const t = new Map([['kept@example.org', { cities: ['chicago-il'], latest: 'chicago-il' }]]);
+  const { http, calls } = fakeHttp({ props: [{ key: 'city' }], failFor: { 'deleted@example.org': 404 } });
+  const stats = await tags.pushCitiesToResend({ tags: t, pushed, http, delay: async () => {}, log() {} });
+  assert.equal(stats.cleared, 1);
+  assert.deepEqual(pushed, { 'kept@example.org': 'chicago-il' });
+  const clear = calls.find((c) => c.method === 'PATCH' && c.url.includes('gone%40example.org'));
+  assert.deepEqual(clear.body, { properties: { city: null } });
+});
+
+test('error logs carry the HTTP status only, never the response body', async () => {
+  const logs = [];
+  const http = async (m) => { if (m === 'GET') return { data: [{ key: 'city' }] }; const e = new Error('HTTP 422: {"email":"someone@example.org"}'); e.status = 422; throw e; };
+  await tags.pushCitiesToResend({ tags: new Map([['someone@example.org', { cities: ['chicago-il'], latest: 'chicago-il' }]]), pushed: {}, http, delay: async () => {}, log: (m) => logs.push(m) });
+  assert.ok(logs.length > 0);
+  assert.ok(logs.every((l) => !l.includes('someone@example.org')), logs.join('|'));
 });
