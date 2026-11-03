@@ -668,5 +668,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T04:41:18.598Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/outlet-domain-validation-live-data.test.mjs::at most the 2 known real instances are flagged across the full corpus",
+    "title": "Live-data test failing: at most the 2 known real instances are flagged across the full corpus (tests/unit/outlet-domain-validation-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"at most the 2 known real instances are flagged across the full corpus\" in tests/unit/outlet-domain-validation-live-data.test.mjs is red against the live corpus.\n\nexpected at most 2 flagged files (the known incident + its sibling), got 3: all-male-as-you-like-it-regional-2026/whatsonstage--steve-adams.json, the-music-man-tour-2026/standard--standard-topic.json, the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T04:48:41.827Z"
   }
 ]
