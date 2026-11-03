@@ -79,7 +79,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           the build and route checks cover that instead. */}
       <Link href={isOpera ? '/opera' : (isWestEnd || isOffWestEnd ? '/west-end' : '/')} className="flex items-center shrink-0 group ph-no-rageclick">
         {isOpera ? (
-          <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-amber-400 to-amber-500 bg-clip-text text-transparent">Scorecard</span></span>
+          <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">Opera<span className="bg-gradient-to-r from-[#f0627a] to-[#c4213f] bg-clip-text text-transparent">Scorecard</span></span>
         ) : isWestEnd || isOffWestEnd ? (
           <span className="text-base min-[390px]:text-lg sm:text-3xl font-extrabold text-white tracking-tight">WestEnd<span className="bg-gradient-to-r from-pink-400 to-pink-500 bg-clip-text text-transparent">Scorecard</span></span>
         ) : (
@@ -97,7 +97,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           ${isOpen
             ? 'bg-white/10 border-white/20 text-white'
             : isOpera
-              ? 'bg-amber-500/[0.12] border-amber-500/25 text-amber-300 hover:bg-amber-500/20'
+              ? 'bg-[#e0485f]/[0.12] border-[#e0485f]/25 text-[#f0627a] hover:bg-[#e0485f]/20'
               : isOffBroadway
                 ? 'bg-purple-500/[0.12] border-purple-500/25 text-purple-300 hover:bg-purple-500/20'
                 : isOffWestEnd
@@ -173,22 +173,22 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
           <Link
             href="/opera"
             className={`flex items-center justify-between px-3.5 py-3 rounded-lg transition-colors ${
-              isOpera ? 'bg-amber-500/[0.08]' : 'hover:bg-white/[0.04]'
+              isOpera ? 'bg-[#e0485f]/[0.08]' : 'hover:bg-white/[0.04]'
             }`}
             onClick={() => setIsOpen(false)}
           >
             <div className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${isOpera ? 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]' : 'bg-amber-500/60'}`} />
+              <span className={`w-1.5 h-1.5 rounded-full ${isOpera ? 'bg-[#e0485f] shadow-[0_0_6px_rgba(224,72,95,0.5)]' : 'bg-[#e0485f]/60'}`} />
               <div>
-                <div className={`flex items-center gap-1.5 text-sm font-semibold ${isOpera ? 'text-amber-200' : 'text-white'}`}>
+                <div className={`flex items-center gap-1.5 text-sm font-semibold ${isOpera ? 'text-[#f7a1b0]' : 'text-white'}`}>
                   OperaScorecard
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-amber-400/70 border border-amber-400/30 rounded px-1 py-px">Beta</span>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-[#f0627a]/70 border border-[#f0627a]/30 rounded px-1 py-px">Beta</span>
                 </div>
                 <div className="text-[11px] text-fg-muted">Met Opera · New York</div>
               </div>
             </div>
             {isOpera && (
-              <svg className="w-4 h-4 text-amber-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <svg className="w-4 h-4 text-[#f0627a]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             )}
