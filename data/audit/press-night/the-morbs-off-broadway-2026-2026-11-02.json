@@ -7,12 +7,12 @@
   "embargoSource": "market-default",
   "probe": {
     "startedAt": "2026-11-03T02:30:06.194Z",
-    "endedAt": null,
+    "endedAt": "2026-11-03T09:00:36.410Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 77,
     "failedSamples": 0,
-    "lastSampleAt": "2026-11-03T04:55:15.227Z",
-    "lastOkSampleAt": "2026-11-03T04:55:15.227Z"
+    "lastSampleAt": "2026-11-03T08:57:13.330Z",
+    "lastOkSampleAt": "2026-11-03T08:57:13.330Z"
   },
   "firstLiveAt": null,
   "firstLiveBaseline": false,
@@ -20,12 +20,12 @@
   "liveCount": 0,
   "liveCountAt": {
     "1h": 0,
-    "2h": null,
+    "2h": 0,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-11-03T04:00:11.692Z",
-    "2h": null,
+    "2h": "2026-11-03T05:07:02.593Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -47,6 +47,17 @@
       "liveCount": 0,
       "fetchedAt": "2026-11-03T05:00:25.510Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 0,
+      "fetchedAt": "2026-11-03T09:00:32.689Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "manualActions": [],
@@ -59,11 +70,17 @@
         "label": "2h",
         "standDown": false,
         "reason": "market not lane-only"
+      },
+      {
+        "at": "2026-11-03T09:00:32.756Z",
+        "label": "end",
+        "standDown": false,
+        "reason": "market not lane-only"
       }
     ]
   },
   "fileState": {
-    "capturedAt": "2026-11-03T05:00:31.996Z",
+    "capturedAt": "2026-11-03T09:00:36.370Z",
     "files": [
       {
         "file": "phusionpassenger--unknown.json",
@@ -92,5 +109,16 @@
         "syndicatedUnder": null
       }
     ]
+  },
+  "laneShadow": {
+    "importedAt": "2026-11-03T09:00:28.724Z",
+    "runId": "41566494832",
+    "startedAt": "2026-11-03T02:33:52.443Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": null,
+    "discoveredByOutlet": {},
+    "bwwRoundupUrl": null,
+    "liveFirstSeen": []
   }
 }
