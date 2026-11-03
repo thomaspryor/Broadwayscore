@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T19:36:14.000Z",
+  "generatedAt": "2026-11-03T20:14:25.503Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -168,9 +168,13 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "Timeout fetching https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&af"
     }
   ],
-  "itemsScanned": 750,
+  "itemsScanned": 720,
   "matchedGaps": 4,
   "possibleGaps": 12,
   "gaps": [

@@ -366,13 +366,13 @@
       "title": "T1 Coverage — new gaps past 24h",
       "firstSeen": "2026-07-28T19:25:18.269Z",
       "incidentOpenedAt": "2026-07-28T19:25:18.269Z",
-      "lastSeen": "2026-11-03T19:36:13.764Z",
+      "lastSeen": "2026-11-03T20:14:25.277Z",
       "lastNotifiedAt": "2026-11-03T00:26:27.996Z",
       "lastSurfacedAt": "2026-10-31T22:31:49.645Z",
       "notifyCount": 73,
       "cardId": null,
       "linearIdentifier": "BRO-5532",
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "t1-coverage:scoreboard": {
       "status": "resolved",
@@ -19442,7 +19442,7 @@
       "title": "Roundup gaps: 8 listed review(s) not captured across 3 show(s)",
       "firstSeen": "2026-10-16T17:15:04.341Z",
       "incidentOpenedAt": "2026-10-16T17:15:04.341Z",
-      "lastSeen": "2026-11-03T19:34:01.845Z",
+      "lastSeen": "2026-11-03T20:13:25.267Z",
       "lastNotifiedAt": "2026-11-03T19:34:01.845Z",
       "lastSurfacedAt": null,
       "notifyCount": 33,
@@ -19497,7 +19497,8 @@
         "tosca-off-broadway-2026",
         "msblackforpresident-off-broadway-2026",
         "the-lives-of-others-west-end-2026"
-      ]
+      ],
+      "silentRefires": 1
     },
     "land:land/bro-5478-land-hold-doc": {
       "status": "resolved",
@@ -20438,13 +20439,13 @@
       "title": "Review gap — \"Other Desert Cities\" missing 5 cited review(s)",
       "firstSeen": "2026-10-18T00:39:14.869Z",
       "incidentOpenedAt": "2026-10-31T17:58:25.538Z",
-      "lastSeen": "2026-11-03T19:34:01.605Z",
+      "lastSeen": "2026-11-03T20:13:25.055Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.753Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.753Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:school-pictures-off-broadway-2026": {
       "status": "open",
@@ -21183,13 +21184,13 @@
       "title": "Review gap — \"Memoirs of Amorous Gentlemen\" missing 1 cited review(s)",
       "firstSeen": "2026-10-19T00:48:16.000Z",
       "incidentOpenedAt": "2026-10-31T17:58:23.722Z",
-      "lastSeen": "2026-11-03T19:34:01.586Z",
+      "lastSeen": "2026-11-03T20:13:25.036Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.679Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.679Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "test-yml:red:Unit Tests:592023ab": {
       "status": "resolved",
@@ -21288,19 +21289,17 @@
       "resolveReason": "absent"
     },
     "review-gap:opening-window:lincoln-in-the-bardo-off-broadway-2026": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Review gap — \"Lincoln in the Bardo\" missing 1 cited review(s)",
       "firstSeen": "2026-10-19T04:06:18.503Z",
-      "incidentOpenedAt": "2026-10-19T04:06:18.503Z",
-      "lastSeen": "2026-10-21T22:56:47.384Z",
-      "lastNotifiedAt": "2026-10-21T22:56:47.384Z",
-      "lastSurfacedAt": "2026-10-21T22:56:47.384Z",
-      "notifyCount": 4,
+      "incidentOpenedAt": "2026-11-03T20:13:25.001Z",
+      "lastSeen": "2026-11-03T20:13:25.001Z",
+      "lastNotifiedAt": "2026-11-03T20:13:25.001Z",
+      "lastSurfacedAt": "2026-11-03T20:13:25.001Z",
+      "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-25T23:51:22.621Z",
-      "resolveReason": "review-gap: no uncollected cited reviews on the latest audit, show past its opening window (or closed) with only SERP-census gaps, or show id retired"
+      "linearIdentifier": null
     },
     "land:land/bro-5667-fantasy-measured-pricing": {
       "status": "resolved",
@@ -22262,13 +22261,13 @@
       "title": "Review gap — \"King of the Yees\" missing 1 cited review(s)",
       "firstSeen": "2026-10-20T06:53:09.377Z",
       "incidentOpenedAt": "2026-10-20T06:53:09.377Z",
-      "lastSeen": "2026-11-03T19:34:01.527Z",
+      "lastSeen": "2026-11-03T20:13:24.966Z",
       "lastNotifiedAt": "2026-11-03T14:15:11.218Z",
       "lastSurfacedAt": "2026-11-03T14:15:11.218Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-6896",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "review-gap:opening-window:machine-learning-off-broadway-2026": {
       "status": "resolved",
@@ -22930,13 +22929,13 @@
       "title": "Review gap — \"Seussical ™ – Theatre Young Audiences\" missing 2 cited review(s)",
       "firstSeen": "2026-10-21T05:36:12.166Z",
       "incidentOpenedAt": "2026-10-31T17:58:25.579Z",
-      "lastSeen": "2026-11-03T19:34:01.643Z",
+      "lastSeen": "2026-11-03T20:13:25.099Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.768Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.768Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:the-master-builder-off-west-end-2026": {
       "status": "open",
@@ -23453,13 +23452,13 @@
       "title": "Review gap — \"Jesus Christ Superstar\" missing 1 cited review(s)",
       "firstSeen": "2026-10-21T19:57:41.687Z",
       "incidentOpenedAt": "2026-10-31T17:58:23.600Z",
-      "lastSeen": "2026-11-03T19:34:01.491Z",
+      "lastSeen": "2026-11-03T20:13:24.927Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.605Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.605Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "land:land/bro-5866-showscore-wrong-production": {
       "status": "resolved",
@@ -24154,13 +24153,13 @@
       "title": "Review gap — \"Garry Starr Classic Penguins\" missing 8 cited review(s)",
       "firstSeen": "2026-10-22T14:24:48.490Z",
       "incidentOpenedAt": "2026-10-22T14:24:48.490Z",
-      "lastSeen": "2026-11-03T19:34:01.454Z",
+      "lastSeen": "2026-11-03T20:13:24.889Z",
       "lastNotifiedAt": "2026-11-03T05:31:53.688Z",
       "lastSurfacedAt": "2026-11-03T05:31:53.688Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "review-gap:opening-window:girls-off-west-end-2026": {
       "status": "open",
@@ -32004,13 +32003,13 @@
       "title": "Review gap — \"Medea\" missing 4 cited review(s)",
       "firstSeen": "2026-10-30T00:11:51.035Z",
       "incidentOpenedAt": "2026-10-30T00:11:51.035Z",
-      "lastSeen": "2026-11-03T19:34:01.569Z",
+      "lastSeen": "2026-11-03T20:13:25.019Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.664Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.664Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "land:land/bro-6546-final": {
       "status": "open",
@@ -32925,13 +32924,13 @@
       "title": "Review gap — \"The Lives of Others\" missing 2 cited review(s)",
       "firstSeen": "2026-10-30T19:10:36.677Z",
       "incidentOpenedAt": "2026-10-30T19:10:36.677Z",
-      "lastSeen": "2026-11-03T19:34:01.686Z",
+      "lastSeen": "2026-11-03T20:13:25.136Z",
       "lastNotifiedAt": "2026-11-03T05:31:54.040Z",
       "lastSurfacedAt": "2026-11-03T05:31:54.040Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "cookie-health:t1-auth-expired:nytimes": {
       "status": "resolved",
@@ -33230,13 +33229,13 @@
       "title": "Review gap — \"Tosca - English National Opera\" missing 2 cited review(s)",
       "firstSeen": "2026-10-30T23:31:23.549Z",
       "incidentOpenedAt": "2026-10-30T23:31:23.549Z",
-      "lastSeen": "2026-11-03T19:34:01.724Z",
+      "lastSeen": "2026-11-03T20:13:25.172Z",
       "lastNotifiedAt": "2026-11-03T12:40:57.376Z",
       "lastSurfacedAt": "2026-11-03T12:40:57.376Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "test-yml:red:Unit Tests:f37cf14e": {
       "status": "resolved",
@@ -34130,13 +34129,13 @@
       "title": "Review gap — \"Lanny\" missing 1 cited review(s)",
       "firstSeen": "2026-10-31T17:58:23.632Z",
       "incidentOpenedAt": "2026-10-31T17:58:23.632Z",
-      "lastSeen": "2026-11-03T19:34:01.550Z",
+      "lastSeen": "2026-11-03T20:13:24.984Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.650Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.650Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:mud-row-regional-2026": {
       "status": "open",
@@ -34186,13 +34185,13 @@
       "title": "Review gap — \"The Penelopiad\" missing 1 cited review(s)",
       "firstSeen": "2026-10-31T17:58:25.845Z",
       "incidentOpenedAt": "2026-10-31T17:58:25.845Z",
-      "lastSeen": "2026-11-03T19:34:01.705Z",
+      "lastSeen": "2026-11-03T20:13:25.154Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.830Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.830Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:these-are-our-neighbours-citizens-regional-2026": {
       "status": "open",
@@ -34326,13 +34325,13 @@
       "title": "Review gap — \"Roleplay\" missing 1 cited review(s)",
       "firstSeen": "2026-11-01T00:08:36.058Z",
       "incidentOpenedAt": "2026-11-01T00:08:36.058Z",
-      "lastSeen": "2026-11-03T19:34:01.625Z",
+      "lastSeen": "2026-11-03T20:13:25.074Z",
       "lastNotifiedAt": "2026-11-03T10:44:11.819Z",
       "lastSurfacedAt": "2026-11-03T10:44:11.819Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-6630-cost": {
       "status": "open",
@@ -34353,13 +34352,13 @@
       "title": "Review gap — \"Tosca\" missing 3 cited review(s)",
       "firstSeen": "2026-11-01T02:12:49.366Z",
       "incidentOpenedAt": "2026-11-01T02:12:49.366Z",
-      "lastSeen": "2026-11-03T19:34:01.742Z",
+      "lastSeen": "2026-11-03T20:13:25.188Z",
       "lastNotifiedAt": "2026-11-03T17:21:07.761Z",
       "lastSurfacedAt": "2026-11-03T17:21:07.761Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "pending-unrecoverable:tosca-off-broadway-2026": {
       "status": "resolved",
@@ -34562,13 +34561,13 @@
       "title": "Review gap — \"Tristan & Yseult\" missing 1 cited review(s)",
       "firstSeen": "2026-11-01T14:39:58.934Z",
       "incidentOpenedAt": "2026-11-01T14:39:58.934Z",
-      "lastSeen": "2026-11-03T19:34:01.760Z",
+      "lastSeen": "2026-11-03T20:13:25.205Z",
       "lastNotifiedAt": "2026-11-03T08:25:20.871Z",
       "lastSurfacedAt": "2026-11-03T08:25:20.871Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "health-check:Dispatch: owner-judgment cards without owner notification": {
       "status": "open",
@@ -35593,12 +35592,13 @@
       "title": "Review gap — \"King Hedley II\" missing 2 cited review(s)",
       "firstSeen": "2026-11-02T23:10:09.820Z",
       "incidentOpenedAt": "2026-11-02T23:10:09.820Z",
-      "lastSeen": "2026-11-03T19:34:01.508Z",
+      "lastSeen": "2026-11-03T20:13:24.945Z",
       "lastNotifiedAt": "2026-11-03T19:34:01.508Z",
       "lastSurfacedAt": "2026-11-03T19:34:01.508Z",
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-6736-mvzsox0r": {
       "status": "open",
@@ -35685,13 +35685,13 @@
       "title": "Review gap — \"Heartbreak House\" missing 3 cited review(s)",
       "firstSeen": "2026-11-03T01:31:50.802Z",
       "incidentOpenedAt": "2026-11-03T01:31:50.802Z",
-      "lastSeen": "2026-11-03T19:34:01.472Z",
+      "lastSeen": "2026-11-03T20:13:24.909Z",
       "lastNotifiedAt": "2026-11-03T01:31:50.802Z",
       "lastSurfacedAt": "2026-11-03T01:31:50.802Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "review-gap:opening-window:the-best-medicine-regional-2026": {
       "status": "open",
@@ -35699,13 +35699,13 @@
       "title": "Review gap — \"The Best Medicine\" missing 1 cited review(s)",
       "firstSeen": "2026-11-03T01:31:51.035Z",
       "incidentOpenedAt": "2026-11-03T01:31:51.035Z",
-      "lastSeen": "2026-11-03T19:34:01.663Z",
+      "lastSeen": "2026-11-03T20:13:25.118Z",
       "lastNotifiedAt": "2026-11-03T01:31:51.035Z",
       "lastSurfacedAt": "2026-11-03T01:31:51.035Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "land:land/bro-6876-visual-ask-guard": {
       "status": "open",
@@ -35937,13 +35937,13 @@
       "title": "Review gap — \"A Train To Woking\" missing 1 cited review(s)",
       "firstSeen": "2026-11-03T17:21:07.429Z",
       "incidentOpenedAt": "2026-11-03T17:21:07.429Z",
-      "lastSeen": "2026-11-03T19:34:01.432Z",
+      "lastSeen": "2026-11-03T20:13:24.868Z",
       "lastNotifiedAt": "2026-11-03T17:21:07.429Z",
       "lastSurfacedAt": "2026-11-03T17:21:07.429Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-6734-tour-city-onboarding-lists": {
       "status": "resolved",

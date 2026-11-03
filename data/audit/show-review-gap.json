@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-03T19:34:00.851Z",
+  "generatedAt": "2026-11-03T20:13:24.189Z",
   "windowDays": 1095,
-  "targets": 882,
-  "auditedThisRun": 21,
-  "carriedForward": 1965,
+  "targets": 864,
+  "auditedThisRun": 15,
+  "carriedForward": 1973,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 626,
-    "missingCurrentRun": 1166,
+    "withGap": 625,
+    "missingCurrentRun": 1165,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 912,
-    "totalRecoverable": 57,
-    "totalRecovered": 93,
+    "totalRecoverable": 56,
+    "totalRecovered": 94,
     "humanExcluded": 25,
-    "automatedExcluded": 970,
-    "automatedExcludedListed": 704,
-    "priorProductionCitations": 6241
+    "automatedExcluded": 978,
+    "automatedExcludedListed": 709,
+    "priorProductionCitations": 6165
   },
   "results": [
     {
@@ -53715,11 +53715,17 @@
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "title": "Cabaret at the Kit Kat Club",
-      "openingDate": "2021-12-16",
+      "openingDate": "2021-12-12",
       "status": "open",
       "category": "west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421"
+      ],
       "aggregatorListedUrls": [
+        "https://ew.com/cabaret-kit-kat-club-review-broadway-8636569",
+        "https://www.timeout.com/newyork/theater/cabaret-at-the-kit-kat-club-broadway-review-revival-eddie-redmayne",
+        "https://www.villagevoice.com/review-cabaret-at-the-kit-kat-club-works-too-hard-but-finds-its-way/",
+        "https://www.queerty.com/eddie-redmayne-leads-a-dazzling-dangerous-cabaret-at-the-kit-kat-club-20240421",
         "https://www.londontheatre.co.uk/reviews/cabaret-at-the-kit-kat-club-review-eddie-redmayne-and-jessie-buckley",
         "https://www.standard.co.uk/culture/theatre/cabaret-review-eddie-redmayne-jessie-buckley-the-kit-kat-club-b971184.html",
         "https://www.theguardian.com/stage/2021/dec/13/cabaret-review-eddie-redmayne-playhouse-theatre",
@@ -53727,23 +53733,54 @@
         "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/",
         "https://www.whatsonstage.com/london-theatre/reviews/cabaret-eddie-redmayne-buckley-west-end_55529.html",
         "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-playhouse-theatre-review-maude-apatow/",
-        "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buckley-kit-kat-club-london-2021-rebecca-frecknall"
+        "https://www.thestage.co.uk/long-reviews/cabaret-review-eddie-redmayne-jessie-buckley-kit-kat-club-london-2021-rebecca-frecknall",
+        "https://theartsdesk.com/theatre/cabaret-kit-kat-club-playhouse-theatre-review-%E2%80%93-polymorphous-prodigious",
+        "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cabaret-review-jessie-buckley-eddie-redmayne-b1974565.html",
+        "https://www.theatrebee.com/post/review-cabaret-at-the-kit-kat-club"
       ],
-      "dirFiles": 73,
-      "dirClean": 18,
-      "inReviewsJson": 26,
-      "missing": [],
+      "dirFiles": 72,
+      "dirClean": 20,
+      "inReviewsJson": 25,
+      "missing": [
+        {
+          "url": "https://www.villagevoice.com/review-cabaret-at-the-kit-kat-club-works-too-hard-but-finds-its-way/",
+          "host": "villagevoice.com",
+          "knownOutletId": "village-voice",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.queerty.com/eddie-redmayne-leads-a-dazzling-dangerous-cabaret-at-the-kit-kat-club-20240421",
+          "host": "queerty.com",
+          "knownOutletId": "queerty",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "allthatdazzles.co.uk",
           "count": 1
         },
         {
-          "host": "theartsdesk.com",
+          "host": "broadwayworld.com",
           "count": 1
         },
         {
-          "host": "broadwayworld.com",
+          "host": "dailymail.co.uk",
           "count": 1
         },
         {
@@ -53752,10 +53789,6 @@
         },
         {
           "host": "inews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "independent.co.uk",
           "count": 1
         },
         {
@@ -53771,19 +53804,71 @@
           "count": 1
         },
         {
-          "host": "theatrebee.com",
-          "count": 1
-        },
-        {
           "host": "theatreweekly.com",
           "count": 1
-        },
-        {
-          "host": "thetimes.co.uk",
-          "count": 2
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://ew.com/cabaret-kit-kat-club-review-broadway-8636569",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ew--emlyn-travis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://ew.com/cabaret-kit-kat-club-review-broadway-8636569"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/cabaret-at-the-kit-kat-club-broadway-review-revival-eddie-redmayne",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/cabaret-at-the-kit-kat-club-broadway-review-revival-eddie-redmayne"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
         {
           "url": "https://www.timeout.com/london/theatre/cabaret-3",
           "host": "timeout.com",
@@ -53796,10 +53881,23 @@
           "dirFlags": [
             {
               "file": "timeout-london--andrzej-lukowski.json",
-              "flag": "wrongShow",
+              "flag": "clean",
               "urlInDir": "https://www.timeout.com/london/theatre/cabaret-3"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectedAt"
+          ],
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/cabaret-at-the-kit-kat-club-london"
+            }
+          ],
+          "listingDate": "2021-12-13",
+          "listingSource": "show-score",
+          "reverify": true
         },
         {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/",
@@ -53816,7 +53914,20 @@
               "flag": "clean",
               "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/cabaret-review-eddie-redmayne-dazzles-kill-for-a-ticket-theatrical/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongAttribution"
+          ],
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/cabaret-at-the-kit-kat-club-london"
+            }
+          ],
+          "listingDate": "2021-12-13",
+          "listingSource": "show-score",
+          "reverify": true
         },
         {
           "url": "https://www.whatsonstage.com/london-theatre/reviews/cabaret-eddie-redmayne-buckley-west-end_55529.html",
@@ -53833,7 +53944,20 @@
               "flag": "wrongShow",
               "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/cabaret-eddie-redmayne-buckley-west-end_55529.html"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/cabaret-at-the-kit-kat-club-london"
+            }
+          ],
+          "listingDate": "2021-12-12",
+          "listingSource": "show-score",
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -53843,11 +53967,41 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 302,
+        "byReason": {
+          "aggregator-internal-nav": 226,
+          "not-http-url": 57,
+          "aggregator-section-root": 4,
+          "non-review-host": 15
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-CABARET-AT-THE-KIT-KAT-CLUB-Opens-on-Broadway-Updating-Live-20240421",
+          "publishDate": "2024-04-21"
+        }
+      ],
+      "automatedExcludedListed": 3,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.villagevoice.com/review-cabaret-at-the-kit-kat-club-works-too-hard-but-finds-its-way/",
+          "host": "villagevoice.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.queerty.com/eddie-redmayne-leads-a-dazzling-dangerous-cabaret-at-the-kit-kat-club-20240421",
+          "host": "queerty.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -53906,6 +54060,30 @@
             "firstSeenAt": "2026-10-11T21:47:22.687Z"
           },
           {
+            "url": "https://theartsdesk.com/theatre/cabaret-kit-kat-club-playhouse-theatre-review-%E2%80%93-polymorphous-prodigious",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://www.thetimes.co.uk/article/cabaret-is-amazing-but-eddie-redmayne-is-miscast-nxsnxvczb",
+            "outletId": "thetimes.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cabaret-review-jessie-buckley-eddie-redmayne-b1974565.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://www.theatrebee.com/post/review-cabaret-at-the-kit-kat-club",
+            "outletId": "theatrebee.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/cabaret-3",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -53929,10 +54107,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 5,
-        "candidateCount": 8
+        "liveCount": 9,
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-11T21:47:22.687Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "cable-street-59e59-off-broadway-2026",
@@ -63836,7 +64014,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-03T18:35:27.526Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "clinamen-off-broadway-2026",
@@ -77389,6 +77567,44 @@
         "candidateCount": 9
       },
       "computedAt": "2026-11-01T20:47:07.485Z"
+    },
+    {
+      "showId": "dear-young-monster-sheffield-regional-2025",
+      "title": "Dear Young Monster",
+      "openingDate": "2025-09-06",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "death-becomes-her-2024",
@@ -112400,17 +112616,20 @@
         "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
         "https://newyorktheater.me/2022/04/12/to-my-girls-review/",
         "https://www.theatrely.com/post/offensive-and-fabulous-to-my-girls-offers-searing-critique-of-gay-culture-review",
-        "https://www.londontheatre.co.uk/reviews/girls-review-young-vic",
-        "https://www.britishtheatreguide.info/reviews/girls-young-vic-the-26166",
-        "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
-        "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
         "https://www.allthatdazzles.co.uk/post/review-girls-the-maria-theatre-young-vic",
         "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/",
+        "https://www.britishtheatreguide.info/reviews/girls-young-vic-the-26166",
         "https://everything-theatre.co.uk/2026/10/review-girls-young-vic/",
-        "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
         "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
-        "https://ayoungishperspective.co.uk/2026/10/29/review-girls/",
+        "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
+        "https://www.londontheatre.co.uk/reviews/girls-review-young-vic",
+        "https://rocknrollerbaby.co.uk/girls-musical-london/",
+        "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
         "https://www.westendbestfriend.co.uk/news/review-girls-young-vic-theatre",
+        "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
+        "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
+        "https://ayoungishperspective.co.uk/2026/10/29/review-girls/",
         "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
         "https://www.thestage.co.uk/reviews/girls-review-young-vic-theatre-london",
         "https://www.whatsonstage.com/news/girls-at-the-young-vic-review_1736003/",
@@ -112420,9 +112639,9 @@
         "https://www.timeout.com/london/theatre/girls",
         "https://www.timeout.com/london/theatre/girls-1-review"
       ],
-      "dirFiles": 44,
-      "dirClean": 16,
-      "inReviewsJson": 16,
+      "dirFiles": 49,
+      "dirClean": 18,
+      "inReviewsJson": 18,
       "missing": [
         {
           "url": "https://www.nytimes.com/2022/04/12/theater/to-my-girls-review.html",
@@ -112479,7 +112698,15 @@
       ],
       "dirOnly": [
         {
+          "host": "londonlivinglarge.com",
+          "count": 1
+        },
+        {
           "host": "northwestend.com",
+          "count": 1
+        },
+        {
+          "host": "playstosee.com",
           "count": 1
         },
         {
@@ -112492,6 +112719,37 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--matthew-plampton.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:venue-verified:Young Vic",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.londontheatre.co.uk/reviews/girls-review-young-vic",
           "host": "londontheatre.co.uk",
@@ -112522,9 +112780,9 @@
           "reverify": true
         },
         {
-          "url": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
+          "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
+          "host": "theqr.co.uk",
+          "knownOutletId": "theqr",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -112532,17 +112790,52 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatre-weekly--matthew-plampton.json",
+              "file": "theqr--will-quinn.json",
+              "flag": "clean",
+              "urlInDir": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--alan-ingram.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/"
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
             "wrongProduction"
           ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:venue-verified:Young Vic",
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
           "sources": [
             {
               "source": "serp-census",
@@ -112618,8 +112911,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 4,
+            "results": 0,
+            "accepted": 0,
             "error": null
           },
           {
@@ -112628,8 +112921,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 0,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 5,
             "error": null
           },
           {
@@ -112639,7 +112932,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -112649,7 +112942,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -112659,26 +112952,27 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 8,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 325,
+        "count": 326,
         "byReason": {
-          "non-review-host": 28,
-          "roundup-page": 1,
-          "ticketing-listing": 2,
           "aggregator-internal-nav": 223,
           "not-http-url": 65,
           "aggregator-section-root": 4,
+          "non-review-host": 27,
+          "write-path-blocked": 1,
+          "ticketing-listing": 3,
+          "no-review-evidence": 1,
           "census-junk-host": 1,
-          "show-hub": 1
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
@@ -112686,6 +112980,16 @@
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413",
           "publishDate": "2022-04-13"
+        }
+      ],
+      "nonReviewCandidates": [
+        {
+          "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
+          "host": "rocknrollerbaby.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "nonReviewVerdict": "page-date-before-run",
+          "nonReviewDetail": "2017-06-03"
         }
       ],
       "automatedExcludedListed": 1,
@@ -112722,6 +113026,20 @@
       ],
       "ingestResults": [],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://lovelondonloveculture.com/2026/11/03/review-round-up-girls-young-vic-theatre/",
+          "host": "lovelondonloveculture.com",
+          "file": "lovelondonloveculture--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/11/03/review-round-up-girls-young-vic-theatre/ matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -112736,10 +113054,46 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-girls-the-maria-theatre-young-vic",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T06:43:10.293Z"
+          },
+          {
             "url": "https://www.britishtheatreguide.info/reviews/girls-young-vic-the-26166",
             "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-10-30T16:58:09.613Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/10/review-girls-young-vic/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T19:29:04.194Z"
+          },
+          {
+            "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
+            "outletId": "rocknrollerbaby.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-girls-young-vic-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
           {
             "url": "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
@@ -112754,38 +113108,8 @@
             "firstSeenAt": "2026-10-28T08:10:37.431Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-girls-the-maria-theatre-young-vic",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T06:43:10.293Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/10/review-girls-young-vic/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T19:29:04.194Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T08:10:37.431Z"
-          },
-          {
             "url": "https://ayoungishperspective.co.uk/2026/10/29/review-girls/",
             "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T06:43:10.293Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-girls-young-vic-theatre",
-            "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-30T06:43:10.293Z"
           },
@@ -112846,11 +113170,27 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [],
-        "liveCount": 13,
-        "candidateCount": 14
+        "excluded": [
+          {
+            "url": "https://rocknrollerbaby.co.uk/girls-musical-london/",
+            "host": "rocknrollerbaby.co.uk",
+            "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://theqr.co.uk/2026/10/21/sisterhood-under-siege-the-cast-of-girls-at-the-young-vic/",
+            "host": "theqr.co.uk",
+            "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+            "host": "bestoftheatre.co.uk",
+            "reason": "confirmed-non-review"
+          }
+        ],
+        "liveCount": 14,
+        "candidateCount": 15
       },
-      "computedAt": "2026-11-02T20:39:48.261Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -177872,33 +178212,36 @@
         "https://www.theatermania.com/news/review-lincoln-in-the-bardo-at-the-met-opera-spooky-for-the-wrong-reasons_1857674/",
         "https://www.thetimes.com/culture/classical-opera/article/lincoln-in-the-bardo-review-opera-8z28bfrs9",
         "https://www.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
-        "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
+        "https://local.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
+        "https://parterre.com/broadcast/109263/lincoln-in-the-bardo/",
+        "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+        "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
         "https://operawire.com/dua-lipa-attends-metropolitan-operas-lincoln-in-bardo/",
         "https://bachtrack.com/es_ES/review-mazzoli-lincoln-in-the-bardo-blain-cruz-mattei-metropolitan-opera-new-york-october-2026",
         "https://www.vulture.com/article/opera-review-lincoln-in-the-bardo-mazzoli-metropolitan.html",
-        "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
         "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
         "https://www.newyorker.com/magazine/2026/11/09/lincoln-in-the-bardo-music-review",
         "https://icareifyoulisten.com/2026/10/review-lincoln-in-the-bardo-at-the-metropolitan-opera/",
         "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
-        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
+        "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
         "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
       ],
-      "dirFiles": 37,
-      "dirClean": 15,
-      "inReviewsJson": 14,
+      "dirFiles": 39,
+      "dirClean": 16,
+      "inReviewsJson": 15,
       "missing": [
         {
-          "url": "https://www.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
+          "url": "https://local.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
           "host": "newsbreak.com",
           "knownOutletId": "newsbreak",
+          "serpCensus": true,
           "sources": [
             {
               "source": "serp-census",
               "sourceUrl": null
             }
-          ],
-          "serpCensus": true
+          ]
         }
       ],
       "dirOnly": [
@@ -177911,7 +178254,7 @@
           "count": 1
         },
         {
-          "host": "parterre.com",
+          "host": "nystagereview.com",
           "count": 1
         },
         {
@@ -177920,6 +178263,101 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
+          "host": "newsbreak.com",
+          "knownOutletId": "newsbreak",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsbreak--playbill.json",
+              "flag": "clean",
+              "urlInDir": "https://www.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--yoonha-park.json",
+              "flag": "clean",
+              "urlInDir": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+          "host": "apnews.com",
+          "knownOutletId": "ap",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "ap--mike-silverman.json",
+              "flag": "clean",
+              "urlInDir": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
           "host": "slippedisc.com",
@@ -177948,39 +178386,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
-          "host": "npr.org",
-          "knownOutletId": "npr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "npr--jeff-lunden.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
         },
         {
           "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
@@ -178025,7 +178430,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -178036,7 +178441,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -178056,7 +178461,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -178066,7 +178471,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -178076,40 +178481,40 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 9,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 138,
+        "count": 139,
         "byReason": {
-          "not-http-url": 20,
-          "non-review-host": 43,
           "aggregator-internal-nav": 39,
-          "aggregator-section-root": 5,
+          "not-http-url": 20,
           "production-database-listing": 6,
+          "aggregator-section-root": 5,
+          "non-review-host": 47,
           "non-stage-review": 1,
+          "no-review-evidence": 14,
           "roundup-page": 1,
-          "no-review-evidence": 18,
-          "ticketing-reseller": 1,
-          "census-junk-host": 4
+          "census-junk-host": 4,
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 2,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "ingestResults": [
         {
-          "url": "https://www.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
+          "url": "https://local.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
           "host": "newsbreak.com",
           "outletId": "newsbreak",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
@@ -178117,13 +178522,20 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": null
+          "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/lincoln-in-the-bardo-off-broadway-2026/newsbreak--playbill.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         }
       ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html"
+          },
           {
             "outletId": "slippedisc",
             "outlet": "slippedisc",
@@ -178178,6 +178590,18 @@
             "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
+            "url": "https://parterre.com/broadcast/109263/lincoln-in-the-bardo/",
+            "outletId": "parterre.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
+            "outletId": "operawire.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T21:30:13.917Z"
+          },
+          {
             "url": "https://operawire.com/dua-lipa-attends-metropolitan-operas-lincoln-in-bardo/",
             "outletId": "operawire.com",
             "state": "live",
@@ -178220,10 +178644,11 @@
             "firstSeenAt": "2026-10-25T18:34:20.132Z"
           },
           {
-            "url": "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
-            "outletId": "operawire.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T21:30:13.917Z"
+            "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floor-lincoln-in-the-bardo.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
           },
           {
             "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
@@ -178243,20 +178668,25 @@
         "censusSchema": 4,
         "excluded": [
           {
-            "url": "https://www.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
+            "url": "https://local.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
             "host": "newsbreak.com",
             "reason": "syndication-portal"
           },
           {
-            "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
-            "host": "npr.org",
+            "url": "https://www.newsbreak.com/news/4956570655200-what-did-reviews-say-about-lincoln-in-the-bardo-at-the-met-opera",
+            "host": "newsbreak.com",
+            "reason": "confirmed-non-review"
+          },
+          {
+            "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+            "host": "apnews.com",
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 11,
-        "candidateCount": 13
+        "liveCount": 12,
+        "candidateCount": 14
       },
-      "computedAt": "2026-11-02T19:36:38.932Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "linda-vista-2019",
@@ -187704,10 +188134,10 @@
       "previewsStartDate": "2026-10-06",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
-        "https://www.offoffonline.com/offoffonline/2026/10/16/machine-learning",
         "https://www.theatermirror.net/central-squares-machine-learning-weaves-humanity-and-ai/",
         "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
+        "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
+        "https://www.offoffonline.com/offoffonline/2026/10/16/machine-learning",
         "http://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/"
       ],
       "dirFiles": 8,
@@ -187718,18 +188148,21 @@
           "url": "https://www.theatermirror.net/central-squares-machine-learning-weaves-humanity-and-ai/",
           "host": "theatermirror.net",
           "knownOutletId": "theater-mirror",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2024-02-07",
           "sources": [
             {
               "source": "serp-census",
               "sourceUrl": null
             }
-          ],
-          "serpCensus": true
+          ]
         },
         {
           "url": "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
           "host": "mlreview.com",
           "knownOutletId": null,
+          "serpCensus": true,
           "priorRun": true,
           "priorRunSource": "pending-file-date:2017-07-30",
           "sources": [
@@ -187737,8 +188170,7 @@
               "source": "serp-census",
               "sourceUrl": null
             }
-          ],
-          "serpCensus": true
+          ]
         }
       ],
       "dirOnly": [
@@ -187779,7 +188211,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -187789,8 +188221,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 4,
+            "accepted": 0,
             "error": null
           },
           {
@@ -187800,7 +188232,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -187820,30 +188252,36 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 4,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 34,
+        "count": 32,
         "byReason": {
-          "non-review-host": 24,
+          "non-review-host": 23,
           "no-review-evidence": 2,
-          "news-roundup-site": 3,
-          "census-junk-host": 2,
-          "non-review-path": 1,
-          "institutional-press-release": 2
+          "census-junk-host": 4,
+          "news-roundup-site": 2,
+          "institutional-press-release": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.theatermirror.net/central-squares-machine-learning-weaves-humanity-and-ai/",
+          "host": "theatermirror.net",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
           "host": "mlreview.com",
@@ -187852,35 +188290,11 @@
           "censusGateOn": true
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.theatermirror.net/central-squares-machine-learning-weaves-humanity-and-ai/",
-          "host": "theatermirror.net",
-          "outletId": "theater-mirror",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "machine-learning-off-broadway-2026: https://www.theatermirror.net/central-squares-machine-learning-weaves-humanity-and-ai/ dated 2024-02-07 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "theater-mirror",
-            "outlet": "theater-mirror",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatermirror.net/central-squares-machine-learning-weaves-humanity-and-ai/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -187900,21 +188314,14 @@
             "outletId": "theaterscene.net",
             "state": "live",
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://www.theatermirror.net/central-squares-machine-learning-weaves-humanity-and-ai/",
-            "outletId": "theater-mirror",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 3,
-        "candidateCount": 4
+        "candidateCount": 3
       },
-      "computedAt": "2026-11-02T19:36:38.932Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -204384,30 +204791,32 @@
       "previewsStartDate": "2026-10-22",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.londonbornandbred.co.uk/post/memoriam",
-        "https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough",
-        "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
-        "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
-        "https://onin.london/memoriam-at-southwark-playhouse-review/",
-        "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
         "https://everything-theatre.co.uk/2026/10/review-memoriam-southwark-playhouse/",
-        "https://www.thestage.co.uk/reviews/memoriam-review-southwark-playhouse-borough-london",
-        "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/",
-        "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
+        "https://www.londonboxoffice.co.uk/news/post/memoriam-southwark-playhouse-borough-review",
         "https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/",
+        "https://uktheatrenetwork.com/2026/10/27/memoriam-southwark-theatre-london/",
+        "https://www.thestage.co.uk/reviews/memoriam-review-southwark-playhouse-borough-london",
+        "https://northwestend.com/memoriam-southwark-playhouse-borough/amp/",
+        "https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough",
+        "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
+        "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
+        "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/",
+        "https://thespyinthestalls.com/2026/10/memoriam/",
+        "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
+        "https://www.londonbornandbred.co.uk/post/memoriam",
+        "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
+        "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
+        "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
+        "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+        "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
+        "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
+        "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
+        "https://onin.london/memoriam-at-southwark-playhouse-review/",
         "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
         "https://www.adventuresintheatreland.com/post/memoriam-southwark-playhouse-borough",
         "https://fringereview.co.uk/review/fringereview-uk/2026/memoriam/",
         "https://www.westendbestfriend.co.uk/news/review-memoriam-southwark-playhouse",
-        "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
-        "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
-        "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
         "https://www.britishtheatreguide.info/reviews/memoriam-southwark-playh-26162",
-        "https://www.londonboxoffice.co.uk/news/post/memoriam-southwark-playhouse-borough-review",
-        "https://uktheatrenetwork.com/2026/10/27/memoriam-southwark-theatre-london/",
-        "https://thespyinthestalls.com/2026/10/memoriam/",
-        "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
-        "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
         "http://www.jonathanbaz.com/2026/10/memoriam-review.html",
         "https://everything-theatre.co.uk/tag/memoriam/",
         "https://playstosee.com/reviews/uk-reviews/london/memoriam/",
@@ -204416,12 +204825,11 @@
         "https://www.frostmagazine.com/2026/10/memoriam-at-southwark-playhouse-london-reviewed-by-paul-vates-frost-magazines-drama-critic/",
         "https://www.frostmagazine.com/2026/10/memoriam-at-southwark-playhouse-watford-review-by-paul-vates-frost-magazines-drama-critic/",
         "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
-        "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
         "https://www.londontheatrereviews.co.uk/post.cfm?p=29456"
       ],
-      "dirFiles": 36,
-      "dirClean": 27,
-      "inReviewsJson": 27,
+      "dirFiles": 37,
+      "dirClean": 28,
+      "inReviewsJson": 28,
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
@@ -204456,6 +204864,51 @@
             }
           ],
           "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "viewfromthegods--simon-jenner.json",
+              "flag": "clean",
+              "urlInDir": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "knownSyndicationSecondary"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "syndication-primary-held"
+          ],
+          "copyOfLiveReview": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            },
+            {
+              "source": "bestoftheatre",
+              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-memoriam-southwark-playhouse-borough"
+            }
+          ],
+          "listingDate": "2026-10-28",
+          "listingSource": "bestoftheatre",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "bestoftheatre",
           "reverify": false
         },
         {
@@ -204515,47 +204968,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
-          "host": "viewfromthegods.co.uk",
-          "knownOutletId": "viewfromthegods",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "viewfromthegods--simon-jenner.json",
-              "flag": "clean",
-              "urlInDir": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "knownSyndicationSecondary"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "syndication-primary-held"
-          ],
-          "copyOfLiveReview": true,
-          "sources": [
-            {
-              "source": "bestoftheatre",
-              "sourceUrl": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-memoriam-southwark-playhouse-borough"
-            }
-          ],
-          "listingDate": "2026-10-28",
-          "listingSource": "bestoftheatre",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 5,
-          "weRefStarsSource": "bestoftheatre",
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -204623,8 +205035,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 1,
+            "results": 10,
+            "accepted": 5,
             "error": null
           },
           {
@@ -204633,8 +205045,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 7,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -204643,8 +205055,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 9,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 5,
             "error": null
           },
           {
@@ -204654,7 +205066,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 6,
             "error": null
           },
           {
@@ -204664,21 +205076,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 18,
+        "resultCount": 20,
         "error": null
       },
       "candidatesRejected": {
         "count": 22,
         "byReason": {
-          "non-review-host": 20,
-          "non-stage-review": 1,
-          "census-junk-host": 1
+          "non-review-host": 18,
+          "no-review-evidence": 1,
+          "roundup-page": 1,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -204705,46 +205118,28 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londonbornandbred.co.uk/post/memoriam",
-            "outletId": "londonbornandbred.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T20:58:21.689Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T02:53:45.143Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
-            "outletId": "theatreandtonic.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T02:53:45.143Z"
-          },
-          {
-            "url": "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T05:28:50.804Z"
-          },
-          {
-            "url": "https://onin.london/memoriam-at-southwark-playhouse-review/",
-            "outletId": "onin.london",
-            "state": "live",
-            "firstSeenAt": "2026-11-02T08:30:09.649Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
             "url": "https://everything-theatre.co.uk/2026/10/review-memoriam-southwark-playhouse/",
             "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-29T20:58:21.689Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/memoriam-southwark-playhouse-borough-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T00:50:34.340Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://uktheatrenetwork.com/2026/10/27/memoriam-southwark-theatre-london/",
+            "outletId": "uktheatrenetwork.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T13:04:51.101Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/memoriam-review-southwark-playhouse-borough-london",
@@ -204753,16 +205148,88 @@
             "firstSeenAt": "2026-10-29T20:58:21.689Z"
           },
           {
+            "url": "https://northwestend.com/memoriam-southwark-playhouse-borough/amp/",
+            "outletId": "northwestend.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
             "url": "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
             "outletId": "jewishnews.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/",
-            "outletId": "londontheatre1.com",
+            "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/10/memoriam/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
+            "url": "https://www.londonbornandbred.co.uk/post/memoriam",
+            "outletId": "londonbornandbred.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T20:58:21.689Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
+            "outletId": "reviewsgate.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T13:54:34.822Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
+            "outletId": "readaboutstuff.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T05:28:50.804Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T15:02:52.339Z"
+          },
+          {
+            "url": "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
+            "outletId": "ratedreviewed.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T23:31:22.664Z"
+          },
+          {
+            "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
+            "outletId": "revstanstheatreblog.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-29T20:58:21.689Z"
+          },
+          {
+            "url": "https://onin.london/memoriam-at-southwark-playhouse-review/",
+            "outletId": "onin.london",
+            "state": "live",
+            "firstSeenAt": "2026-11-02T08:30:09.649Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
@@ -204789,58 +205256,10 @@
             "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
-            "url": "https://ratedreviewed.co.uk/2026/10/29/memoriam-southwark-playhouse-borough/",
-            "outletId": "ratedreviewed.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T23:31:22.664Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/10/30/memoriam-review-southwark-playhouse-borough-noga-flaishon/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T15:02:52.339Z"
-          },
-          {
-            "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
-            "outletId": "revstanstheatreblog.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-29T20:58:21.689Z"
-          },
-          {
             "url": "https://www.britishtheatreguide.info/reviews/memoriam-southwark-playh-26162",
             "outletId": "britishtheatreguide.info",
             "state": "live",
             "firstSeenAt": "2026-10-28T21:39:57.244Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/memoriam-southwark-playhouse-borough-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T00:50:34.340Z"
-          },
-          {
-            "url": "https://uktheatrenetwork.com/2026/10/27/memoriam-southwark-theatre-london/",
-            "outletId": "uktheatrenetwork.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T13:04:51.101Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/10/memoriam/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
-            "outletId": "thereviewshub.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-28T02:53:45.143Z"
-          },
-          {
-            "url": "https://www.reviewsgate.co.uk/all-reviews/memoriam-by-noga-flaishon-southwark-playhouse-the-large-71-newington-causeway-london-se1-until-21-november-2026-review-by-william-russell",
-            "outletId": "reviewsgate.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T13:54:34.822Z"
           },
           {
             "url": "http://www.jonathanbaz.com/2026/10/memoriam-review.html",
@@ -204912,10 +205331,10 @@
             "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 27,
-        "candidateCount": 29
+        "liveCount": 28,
+        "candidateCount": 30
       },
-      "computedAt": "2026-11-02T20:39:48.261Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "menopause-the-musical-tour-2026",
@@ -215217,428 +215636,27 @@
       "openingDate": "2022-01-19",
       "status": "open",
       "category": "west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-the-reviews-for-broadways-moulin-rouge-musical",
-        "https://playbill.com/article/read-the-reviews-for-moulin-rouge-the-musical-in-london",
-        "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
-        "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-THE-MUSICAL-National-Tour-Opens-In-Chicago-20220422",
-        "https://www.broadwayworld.com/article/Review-Roundup-Were-the-Critics-Dazzled-By-Broadway-Bound-MOULIN-ROUGE-Updating-Live-20180805"
-      ],
+      "previewsStartDate": "2021-11-12",
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.amny.com/entertainment/moulin-rouge-review-1.34264501",
-        "https://broadwaynews.com/2019/07/25/review-moulin-rouge-hits-broadway-with-a-panache-of-pop/",
-        "https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1202653416/",
-        "https://ew.com/theater-reviews/2019/07/25/moulin-rouge-musical-review/",
-        "https://www.thedailybeast.com/moulin-rouge-the-musical-is-trapped-colorfully-and-loudly-in-its-own-jukebox",
-        "https://www.theguardian.com/stage/2019/jul/25/moulin-rouge-broadway-review",
-        "https://www.hollywoodreporter.com/review/moulin-rouge-musical-theater-1226326",
-        "https://mashable.com/article/moulin-rouge-broadway-review/",
-        "https://www.newsday.com/entertainment/theater/moulin-rouge-the-musical-1.34203228",
-        "https://www.nydailynews.com/entertainment/broadway/ny-chris-jones-review-moulin-rouge-20190726-sorvpzfoyfc7pjxzcl5ema7pku-story.html",
-        "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
-        "https://nypost.com/2019/07/25/moulin-rouge-review-nycs-hottest-nightclub-is-on-broadway/",
-        "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-a-dazzling-exercise-in-excess/",
-        "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-all-you-need-is-love-and-showmanship/",
-        "https://www.newyorktheatreguide.com/news-features/a-new-york-theatre-guide-to-moulin-rouge-the-musical",
-        "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html",
-        "https://www.nj.com/entertainment/2019/07/moulin-rouge-is-a-dizzying-blast-of-color-and-music-broadway-review.html",
-        "https://www.ny1.com/nyc/all-boroughs/news/2019/07/26/theater-review---moulin-rouge--",
-        "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/",
-        "https://www.rollingstone.com/culture/culture-features/moulin-rouge-broadway-review-aaron-tveit-karen-olivo-863241/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-musical-al-hirschfeld-theatre-new-york-review-exactly/",
-        "https://www.timeout.com/newyork/theater/moulin-rouge-broadway-review",
-        "https://www.towleroad.com/2019/07/moulin-rouge/",
-        "https://www.usatoday.com/story/entertainment/music/2019/07/26/moulin-rouge-broadway-musical-review-says-better-than-movie/1825575001/",
-        "https://variety.com/2019/music/reviews/moulin-rouge-review-broadway-musical-2-1203278036/",
-        "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11564101001",
-        "https://www.washingtonpost.com/entertainment/theater_dance/will-you-love-moulin-rouge-as-a-stage-musical-well-youll-certainly-fall-in-like/2019/07/25/4aa3a796-aedf-11e9-a0c9-6d2d7818f3da_story.html",
-        "https://www.thewrap.com/moulin-rouge-broadway-review-alex-timbers-baz-luhrmann-aaron-tveit-karen-olivo/",
-        "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
-        "https://www.theguardian.com/stage/2022/jan/20/moulin-rouge-the-musical-review",
-        "https://londonist.com/london/on-stage/moulin-rouge-london-west-end-piccadilly-theatre-review",
         "https://www.londontheatre.co.uk/reviews/moulin-rouge-the-musical-review-piccadilly-theatre",
-        "https://www.londontheatre1.com/reviews/moulin-rouge-the-musical-at-the-piccadilly-theatre-review/",
-        "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadilly-theatre-london-baz-luhrmann-liisi-lafontaine",
-        "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-piccadilly-theatre-review-perfect-way-celebrate/",
-        "https://theatreweekly.com/review-moulin-rouge-at-the-piccadilly-theatre-london/",
+        "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
         "https://www.timeout.com/london/theatre/moulin-rouge-the-musical-review",
+        "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-piccadilly-theatre-review-perfect-way-celebrate/",
         "https://www.thetimes.co.uk/article/moulin-rouge-the-musical-review-crackerjack-hits-coated-in-several-tons-of-rhinestones-zbrh30lh8",
-        "https://variety.com/2019/legit/reviews/moulin-rouge-review-broadway-musical-2-1203278036/",
-        "https://deadline.com/2019/07/moulin-rouge-musical-broadway-box-office-full-houses-hefty-admission-36-million-week-5-1202640581/",
-        "https://www.newyorktheatreguide.com/reviews/review-of-moulin-rouge-the-musical-on-broadway",
-        "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-moulin-rouge-musical-tour-chicago-20220422-6fsyoegvenfknfqof5tu2njmea-story.html",
-        "https://chicago.suntimes.com/2022/4/22/23035729/moulin-rouge-stage-musical-review-chicago-theater",
-        "https://twincitiesarts.com/2022/05/21/review-falling-in-love-at-the-moulin-rouge-orpheum-htt/",
-        "https://original.newsbreak.com/@onstage-colorado-1594100/2634406115756-theatre-review-moulin-rouge-earns-its-exclamation-point",
-        "https://datebook.sfchronicle.com/theater/review-believe-in-pop-and-schmaltz-again-with-moulin-rouge-the-musical",
-        "https://datebook.sfchronicle.com/theater/how-huge-moulin-rouge-stage-was-recreated-inside-s-f-s-orpheum-theather",
-        "https://www.ocregister.com/2022/11/14/theater-review-stage-version-of-moulin-rouge-delivers-the-hits-in-costa-mesa/",
-        "https://kutv.com/news/entertainment/broadways-remix-of-moulin-rouge-is-a-fantastic-spectacle",
-        "https://www.draperjournal.com/2022/12/03/420107/-moulin-rouge-the-musical-is-a-smoldering-delight-filled-with-dazzling-songs-and-performances",
-        "https://www.seattletimes.com/entertainment/theater/moulin-rouge-is-sensory-overload-at-seattles-paramount-theatre/",
-        "https://www.wweek.com/arts/theater/2023/01/10/moulin-rouge-the-musical-is-a-glamorous-and-glorious-pop-opera/",
-        "https://www.fayettevilleflyer.com/2023/02/13/review-moulin-rouge-offers-a-dazzling-high-energy-run-through-the-pop-songbook/",
-        "https://preview.houstonchronicle.com/theater/moulin-rouge-review-hobby-center-17806701",
-        "https://redcarpetcrash.com/dallas-theater-review-moulin-rouge/",
-        "https://www.fanbolt.com/141326/moulin-rouge-the-musical-review-spendor-romance-grandeur-and-so-much-satisfying-nostalgia/",
-        "https://www.clevescene.com/arts/moulin-rouge-the-musical-at-playhouse-square-is-a-carnival-of-song-and-dance-42158869",
-        "https://www.westendbestfriend.co.uk/news/review-moulin-rouge-the-musical-kimmel-cultural-campus-us-national-tour",
-        "https://www.buffalorising.com/2023/10/moulin-rouge-at-sheas-is-a-fun-romp-spectacular-but-not-an-emotional-grab-for-me/",
-        "https://www.roccitymag.com/arts-entertainment/theater-review-moulin-rouge-16886093",
-        "https://patch.com/connecticut/hartford/theater-review-moulin-rouge-musical-tour-bushnell",
-        "https://www.providencejournal.com/story/entertainment/arts/2023/12/23/moulin-rouge-the-musical-is-rich-splashy-spectacle-at-providence-performing-arts-center/72016032007/",
-        "https://columbusunderground.com/theater-review-broadway-in-columbus-brings-tony-winning-tribute-to-young-love-moulin-rouge-to-the-ohio-rs1/",
-        "https://www.bostonglobe.com/2024/01/18/arts/moulin-rouge-is-nothing-shout-about/",
-        "https://www.tuftsdaily.com/article/2024/01/moulin-rouge-the-musical-is-a-feast-for-the-senses-at-the-boston-opera-house",
-        "https://www.orlandoweekly.com/arts/review-broadway-in-orlando-brings-touring-moulin-rouge-the-musical-to-the-dr-phillips-but-its-more-meh-than-magical-36273601",
-        "https://www.sun-sentinel.com/2024/03/12/review-how-wonderful-life-is-when-moulin-rouge-the-musical-is-in-fort-lauderdale/",
-        "https://www.channel3000.com/madison-magazine/moulin-rouge-is-a-massive-mid-aughts-jukebox/article_4e6f48f4-404c-11ef-a890-fbb4d4490394.html",
-        "https://www.dailycardinal.com/article/2024/07/moulin-rouge-the-musical-dazzles-audience-with-bohemian-blends-of-pop-songs",
-        "https://www.oklahoman.com/story/entertainment/2024/09/07/sparkling-moulin-rouge-the-musical-makes-its-okc-bow-what-to-know/74967275007/",
-        "https://www.theonlycritic.com/post/moulin-rouge-the-musical-review-dazzling-spectacle-lacks-the-depth-of-its-cinematic-predecessor",
-        "https://www.thejewishnews.com/culture/review-moulin-rouge-the-musical-is-an-extravaganza-of-song-and-celebration/article_7b760bfc-7761-11ef-9b36-1b5c48fb6b82.html",
-        "https://nextmag.ca/review-moulin-rouge-the-musical-has-a-lot-to-enjoy-but-doesnt-quite-earn-its-exclamation-mark/",
-        "https://www.thestar.com/entertainment/stage/moulin-rouge-at-mirvish-is-a-jukebox-musical-on-steroids-thats-as-entertaining-as-it/article_04d1edde-a765-11ef-af1c-c34a183b63f7.html",
-        "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-moulin-rouge-the-musical-is-less-wild-and-more-conventional-than-the/",
-        "https://indianapolisrecorder.com/review-thaw-out-the-winter-blues-with-moulin-rouge-the-musical/",
-        "https://revuewm.com/arts/review-moulin-rouge-is-a-spectacular-fairy-tale-of-a-musical",
-        "https://www.statesman.com/story/entertainment/arts/2025/05/17/moulin-rouge-musical-broadway-in-austin-bass-concert-hall/83654854007/",
-        "https://www.sandiegouniontribune.com/2025/06/30/review-touring-moulin-rouge-captures-the-fun-dazzle-of-broadway-original/",
-        "https://www.cibolacitizen.com/lifestyle/moulin-rouge-musical-dazzles-popejoy-hall",
-        "https://weliveentertainment.com/we-live-entertainment/theater-review-pop-passion-parisian-fire-moulin-rouge-returns-red-hot-form/",
-        "https://wehotimes.com/moulin-rouge-brings-parisian-pop-to-the-pantages/",
-        "https://patch.com/california/studiocity/tony-award-winning-best-musical-moulin-rouge-musical-magical-magnum-opus",
-        "https://pstribune.com/2025/12/12/spectacular-spectacular-moulin-rouge-the-musical-ignites-the-mccallum-theatre/",
-        "https://www.sfchronicle.com/entertainment/theater/article/moulin-rouge-broadwaysf-orpheum-21221010.php",
-        "https://calgaryherald.com/entertainment/theatre/review-moulin-rouge-the-musical-is-a-treat-for-the-eyes-and-ears",
-        "https://edmontonjournal.com/entertainment/review-moulin-rouge-the-musical-a-fun-romantic-romp",
-        "https://www.straight.com/arts/broadway-across-canadas-moulin-rouge-asks-how-many-mash-ups-is-too-many-mash-ups",
-        "https://folioweekly.com/2026/03/12/moulin-rouge-can-can-and-does-it-all-downtown/",
-        "https://www.timesunion.com/theater/article/moulin-rouge-musical-proctors-theater-review-22280848.php",
-        "https://www.broadwayworld.com/ottawa/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-National-Arts-Centre-20260515",
-        "https://www.nytimes.com/2018/08/05/theater/moulin-rouge-the-musical-review.html",
-        "https://variety.com/2018/legit/reviews/moulin-rouge-review-broadway-musical-1202895995/",
-        "https://www.bostonglobe.com/arts/2018/08/04/puttin-glitz-moulin-rouge/z3CQdR759BGRiXC0L7jy9J/story.html",
-        "http://www.capecodtimes.com/news/20180804/hot-sassy-moulin-rouge-never-cools-off",
-        "https://www.thestage.co.uk/reviews/2018/moulin-rouge-review-emerson-colonial-theatre-boston-knock/",
-        "http://bostonartsdiary.com/wordpress/2018/08/moulin-rouge-the-musical/",
         "https://www.whatsonstage.com/london-theatre/reviews/moulin-rouge-review-west-end-luhrmann_55756.html",
         "https://theartsdesk.com/theatre/moulin-rouge-musical-piccadilly-theatre-review-spectacular-escapism",
-        "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays"
+        "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadilly-theatre-london-baz-luhrmann-liisi-lafontaine",
+        "https://www.theguardian.com/stage/2022/jan/20/moulin-rouge-the-musical-review",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/moulin-rouge-musical-review-b1997081.html",
+        "https://londonist.com/london/on-stage/moulin-rouge-london-west-end-piccadilly-theatre-review",
+        "https://www.londontheatre1.com/reviews/moulin-rouge-the-musical-at-the-piccadilly-theatre-review/",
+        "https://theatreweekly.com/review-moulin-rouge-at-the-piccadilly-theatre-london/"
       ],
-      "dirFiles": 129,
-      "dirClean": 15,
-      "inReviewsJson": 24,
-      "missing": [
-        {
-          "url": "https://broadwaynews.com/2019/07/25/review-moulin-rouge-hits-broadway-with-a-panache-of-pop/",
-          "host": "broadwaynews.com",
-          "knownOutletId": "broadwaynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://ew.com/theater-reviews/2019/07/25/moulin-rouge-musical-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/moulin-rouge-the-musical-is-trapped-colorfully-and-loudly-in-its-own-jukebox",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://mashable.com/article/moulin-rouge-broadway-review/",
-          "host": "mashable.com",
-          "knownOutletId": "mashable",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/theater/moulin-rouge-the-musical-1.34203228",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-chris-jones-review-moulin-rouge-20190726-sorvpzfoyfc7pjxzcl5ema7pku-story.html",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nypost.com/2019/07/25/moulin-rouge-review-nycs-hottest-nightclub-is-on-broadway/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-a-dazzling-exercise-in-excess/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-all-you-need-is-love-and-showmanship/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/news-features/a-new-york-theatre-guide-to-moulin-rouge-the-musical",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nj.com/entertainment/2019/07/moulin-rouge-is-a-dizzying-blast-of-color-and-music-broadway-review.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.ny1.com/nyc/all-boroughs/news/2019/07/26/theater-review---moulin-rouge--",
-          "host": "ny1.com",
-          "knownOutletId": "ny1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.rollingstone.com/culture/culture-features/moulin-rouge-broadway-review-aaron-tveit-karen-olivo-863241/",
-          "host": "rollingstone.com",
-          "knownOutletId": "rollingstone",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-musical-al-hirschfeld-theatre-new-york-review-exactly/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.towleroad.com/2019/07/moulin-rouge/",
-          "host": "towleroad.com",
-          "knownOutletId": "towleroad",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.usatoday.com/story/entertainment/music/2019/07/26/moulin-rouge-broadway-musical-review-says-better-than-movie/1825575001/",
-          "host": "usatoday.com",
-          "knownOutletId": "usatoday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2019/music/reviews/moulin-rouge-review-broadway-musical-2-1203278036/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11564101001",
-          "host": "wsj.com",
-          "knownOutletId": "wsj",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/will-you-love-moulin-rouge-as-a-stage-musical-well-youll-certainly-fall-in-like/2019/07/25/4aa3a796-aedf-11e9-a0c9-6d2d7818f3da_story.html",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/moulin-rouge-broadway-review-alex-timbers-baz-luhrmann-aaron-tveit-karen-olivo/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-box-office-full-houses-hefty-admission-36-million-week-5-1202640581/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/review-of-moulin-rouge-the-musical-on-broadway",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-moulin-rouge-musical-tour-chicago-20220422-6fsyoegvenfknfqof5tu2njmea-story.html",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://chicago.suntimes.com/2022/4/22/23035729/moulin-rouge-stage-musical-review-chicago-theater",
-          "host": "suntimes.com",
-          "knownOutletId": "chicago-sun-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://original.newsbreak.com/@onstage-colorado-1594100/2634406115756-theatre-review-moulin-rouge-earns-its-exclamation-point",
-          "host": "newsbreak.com",
-          "knownOutletId": "newsbreak",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/how-huge-moulin-rouge-stage-was-recreated-inside-s-f-s-orpheum-theather",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.providencejournal.com/story/entertainment/arts/2023/12/23/moulin-rouge-the-musical-is-rich-splashy-spectacle-at-providence-performing-arts-center/72016032007/",
-          "host": "providencejournal.com",
-          "knownOutletId": "providence-journal",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.bostonglobe.com/2024/01/18/arts/moulin-rouge-is-nothing-shout-about/",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sun-sentinel.com/2024/03/12/review-how-wonderful-life-is-when-moulin-rouge-the-musical-is-in-fort-lauderdale/",
-          "host": "sun-sentinel.com",
-          "knownOutletId": "south-florida-sun-sentinel",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.oklahoman.com/story/entertainment/2024/09/07/sparkling-moulin-rouge-the-musical-makes-its-okc-bow-what-to-know/74967275007/",
-          "host": "oklahoman.com",
-          "knownOutletId": "oklahoman",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://indianapolisrecorder.com/review-thaw-out-the-winter-blues-with-moulin-rouge-the-musical/",
-          "host": "indianapolisrecorder.com",
-          "knownOutletId": "indianapolisrecorder",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://patch.com/california/studiocity/tony-award-winning-best-musical-moulin-rouge-musical-magical-magnum-opus",
-          "host": "patch.com",
-          "knownOutletId": "patch",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sfchronicle.com/entertainment/theater/article/moulin-rouge-broadwaysf-orpheum-21221010.php",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.straight.com/arts/broadway-across-canadas-moulin-rouge-asks-how-many-mash-ups-is-too-many-mash-ups",
-          "host": "straight.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://folioweekly.com/2026/03/12/moulin-rouge-can-can-and-does-it-all-downtown/",
-          "host": "folioweekly.com",
-          "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/moulin-rouge-musical-proctors-theater-review-22280848.php",
-          "host": "timesunion.com",
-          "knownOutletId": "albany-times-union",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.broadwayworld.com/ottawa/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-National-Arts-Centre-20260515",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/08/05/theater/moulin-rouge-the-musical-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2018/legit/reviews/moulin-rouge-review-broadway-musical-1202895995/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.bostonglobe.com/arts/2018/08/04/puttin-glitz-moulin-rouge/z3CQdR759BGRiXC0L7jy9J/story.html",
-          "host": "bostonglobe.com",
-          "knownOutletId": "boston-globe",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.capecodtimes.com/news/20180804/hot-sassy-moulin-rouge-never-cools-off",
-          "host": "capecodtimes.com",
-          "knownOutletId": "cape-cod-times",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://bostonartsdiary.com/wordpress/2018/08/moulin-rouge-the-musical/",
-          "host": "bostonartsdiary.com",
-          "knownOutletId": "boston-arts-diary",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "dirFiles": 126,
+      "dirClean": 16,
+      "inReviewsJson": 23,
+      "missing": [],
       "dirOnly": [
         {
           "host": "theatrerecord.com",
@@ -215653,10 +215671,6 @@
           "count": 1
         },
         {
-          "host": "independent.co.uk",
-          "count": 1
-        },
-        {
           "host": "londonboxoffice.co.uk",
           "count": 1
         },
@@ -215665,91 +215679,11 @@
           "count": 1
         },
         {
-          "host": "thereviewshub.com",
-          "count": 1
-        },
-        {
           "host": "thetimes.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.amny.com/entertainment/moulin-rouge-review-1.34264501",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "amny--matt-windman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.amny.com/entertainment/moulin-rouge-review-1.34264501"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1202653416/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "deadline--greg-evans.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-review-alex-timbers-1202653416/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/moulin-rouge-musical-theater-1226326",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hollywood-reporter--david-rooney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.hollywoodreporter.com/review/moulin-rouge-musical-theater-1226326"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--ben-brantley.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2019/07/25/theater/moulin-rouge-review.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-piccadilly-theatre-review-perfect-way-celebrate/",
           "host": "telegraph.co.uk",
@@ -215765,696 +215699,24 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-piccadilly-theatre-review-perfect-way-celebrate/"
             }
-          ]
-        },
-        {
-          "url": "https://variety.com/2019/legit/reviews/moulin-rouge-review-broadway-musical-2-1203278036/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "variety--marilyn-stasio.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://variety.com/2019/legit/reviews/moulin-rouge-review-broadway-musical-2-1203278036/"
-            }
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://twincitiesarts.com/2022/05/21/review-falling-in-love-at-the-moulin-rouge-orpheum-htt/",
-          "host": "twincitiesarts.com",
-          "knownOutletId": "twin-cities-arts-reader",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "twin-cities-arts-reader--boo-segersin.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://twincitiesarts.com/2022/05/21/review-falling-in-love-at-the-moulin-rouge-orpheum-htt/"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/review-believe-in-pop-and-schmaltz-again-with-moulin-rouge-the-musical",
-          "host": "sfchronicle.com",
-          "knownOutletId": "san-francisco-chronicle",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
+          "sources": [
             {
-              "file": "san-francisco-chronicle--lily-janiak.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://datebook.sfchronicle.com/theater/review-believe-in-pop-and-schmaltz-again-with-moulin-rouge-the-musical"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.ocregister.com/2022/11/14/theater-review-stage-version-of-moulin-rouge-delivers-the-hits-in-costa-mesa/",
-          "host": "ocregister.com",
-          "knownOutletId": "oc-register",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oc-register--christopher-smith.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.ocregister.com/2022/11/14/theater-review-stage-version-of-moulin-rouge-delivers-the-hits-in-costa-mesa/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://kutv.com/news/entertainment/broadways-remix-of-moulin-rouge-is-a-fantastic-spectacle",
-          "host": "kutv.com",
-          "knownOutletId": "kutv",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "kutv--ryan-painter.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://kutv.com/news/entertainment/broadways-remix-of-moulin-rouge-is-a-fantastic-spectacle"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.draperjournal.com/2022/12/03/420107/-moulin-rouge-the-musical-is-a-smoldering-delight-filled-with-dazzling-songs-and-performances",
-          "host": "draperjournal.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-city-journals--peri-kinder.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.draperjournal.com/2022/12/03/420107/-moulin-rouge-the-musical-is-a-smoldering-delight-filled-with-dazzling-songs-and-performances"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.seattletimes.com/entertainment/theater/moulin-rouge-is-sensory-overload-at-seattles-paramount-theatre/",
-          "host": "seattletimes.com",
-          "knownOutletId": "seattle-times",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "seattle-times--jerald-pierce.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.seattletimes.com/entertainment/theater/moulin-rouge-is-sensory-overload-at-seattles-paramount-theatre/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.wweek.com/arts/theater/2023/01/10/moulin-rouge-the-musical-is-a-glamorous-and-glorious-pop-opera/",
-          "host": "wweek.com",
-          "knownOutletId": "willamette-week",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "willamette-week--rachel-saslow.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.wweek.com/arts/theater/2023/01/10/moulin-rouge-the-musical-is-a-glamorous-and-glorious-pop-opera/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.fayettevilleflyer.com/2023/02/13/review-moulin-rouge-offers-a-dazzling-high-energy-run-through-the-pop-songbook/",
-          "host": "fayettevilleflyer.com",
-          "knownOutletId": "fayetteville-flyer",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fayetteville-flyer--kevin-kinder.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.fayettevilleflyer.com/2023/02/13/review-moulin-rouge-offers-a-dazzling-high-energy-run-through-the-pop-songbook/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://preview.houstonchronicle.com/theater/moulin-rouge-review-hobby-center-17806701",
-          "host": "houstonchronicle.com",
-          "knownOutletId": "houston-chronicle",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "preview--chris-vognar.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://preview.houstonchronicle.com/theater/moulin-rouge-review-hobby-center-17806701"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://redcarpetcrash.com/dallas-theater-review-moulin-rouge/",
-          "host": "redcarpetcrash.com",
-          "knownOutletId": "red-carpet-crash",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "red-carpet-crash--lauryn-angel.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://redcarpetcrash.com/dallas-theater-review-moulin-rouge/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.fanbolt.com/141326/moulin-rouge-the-musical-review-spendor-romance-grandeur-and-so-much-satisfying-nostalgia/",
-          "host": "fanbolt.com",
-          "knownOutletId": "fanbolt",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fanbolt--emma-loggins.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.fanbolt.com/141326/moulin-rouge-the-musical-review-spendor-romance-grandeur-and-so-much-satisfying-nostalgia/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.clevescene.com/arts/moulin-rouge-the-musical-at-playhouse-square-is-a-carnival-of-song-and-dance-42158869",
-          "host": "clevescene.com",
-          "knownOutletId": "clevescene",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "scene-on-stage--christine-howey.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.clevescene.com/arts/moulin-rouge-the-musical-at-playhouse-square-is-a-carnival-of-song-and-dance-42158869"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.westendbestfriend.co.uk/news/review-moulin-rouge-the-musical-kimmel-cultural-campus-us-national-tour",
-          "host": "westendbestfriend.co.uk",
-          "knownOutletId": "west-end-best-friend",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "west-end-best-friend--jamie-flowers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.westendbestfriend.co.uk/news/review-moulin-rouge-the-musical-kimmel-cultural-campus-us-national-tour"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.buffalorising.com/2023/10/moulin-rouge-at-sheas-is-a-fun-romp-spectacular-but-not-an-emotional-grab-for-me/",
-          "host": "buffalorising.com",
-          "knownOutletId": "buffalorising",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "buffalorising--peter-hall.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.buffalorising.com/2023/10/moulin-rouge-at-sheas-is-a-fun-romp-spectacular-but-not-an-emotional-grab-for-me/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.roccitymag.com/arts-entertainment/theater-review-moulin-rouge-16886093",
-          "host": "roccitymag.com",
-          "knownOutletId": "roc-city-mag",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "city-magazine--leah-stacy.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.roccitymag.com/arts-entertainment/theater-review-moulin-rouge-16886093"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://patch.com/connecticut/hartford/theater-review-moulin-rouge-musical-tour-bushnell",
-          "host": "patch.com",
-          "knownOutletId": "patch",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "patch--debra-graff.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://patch.com/connecticut/hartford/theater-review-moulin-rouge-musical-tour-bushnell"
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/moulin-rouge-the-musical-london"
             },
             {
-              "file": "patch--nancy-sasso-janis.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://patch.com/connecticut/hartford/theater-review-moulin-rouge-musical-tour-bushnell"
+              "source": "serp-census",
+              "sourceUrl": null
             }
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://columbusunderground.com/theater-review-broadway-in-columbus-brings-tony-winning-tribute-to-young-love-moulin-rouge-to-the-ohio-rs1/",
-          "host": "columbusunderground.com",
-          "knownOutletId": "columbus-underground",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "columbus-underground--richard-sanford.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://columbusunderground.com/theater-review-broadway-in-columbus-brings-tony-winning-tribute-to-young-love-moulin-rouge-to-the-ohio-rs1/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.tuftsdaily.com/article/2024/01/moulin-rouge-the-musical-is-a-feast-for-the-senses-at-the-boston-opera-house",
-          "host": "tuftsdaily.com",
-          "knownOutletId": "the-tufts-daily",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-tufts-daily--odessa-gaines.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.tuftsdaily.com/article/2024/01/moulin-rouge-the-musical-is-a-feast-for-the-senses-at-the-boston-opera-house"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.orlandoweekly.com/arts/review-broadway-in-orlando-brings-touring-moulin-rouge-the-musical-to-the-dr-phillips-but-its-more-meh-than-magical-36273601",
-          "host": "orlandoweekly.com",
-          "knownOutletId": "orlando-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "orlando-weekly--seth-kubersky.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.orlandoweekly.com/arts/review-broadway-in-orlando-brings-touring-moulin-rouge-the-musical-to-the-dr-phillips-but-its-more-meh-than-magical-36273601"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.channel3000.com/madison-magazine/moulin-rouge-is-a-massive-mid-aughts-jukebox/article_4e6f48f4-404c-11ef-a890-fbb4d4490394.html",
-          "host": "channel3000.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "madison-magazine--aaron-r-conklin.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.channel3000.com/madison-magazine/moulin-rouge-is-a-massive-mid-aughts-jukebox/article_4e6f48f4-404c-11ef-a890-fbb4d4490394.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.dailycardinal.com/article/2024/07/moulin-rouge-the-musical-dazzles-audience-with-bohemian-blends-of-pop-songs",
-          "host": "dailycardinal.com",
-          "knownOutletId": "the-daily-cardinal",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-daily-cardinal--bryna-goeking.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.dailycardinal.com/article/2024/07/moulin-rouge-the-musical-dazzles-audience-with-bohemian-blends-of-pop-songs"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theonlycritic.com/post/moulin-rouge-the-musical-review-dazzling-spectacle-lacks-the-depth-of-its-cinematic-predecessor",
-          "host": "theonlycritic.com",
-          "knownOutletId": "theonlycritic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theonlycritic--nate-adams.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theonlycritic.com/post/moulin-rouge-the-musical-review-dazzling-spectacle-lacks-the-depth-of-its-cinematic-predecessor"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thejewishnews.com/culture/review-moulin-rouge-the-musical-is-an-extravaganza-of-song-and-celebration/article_7b760bfc-7761-11ef-9b36-1b5c48fb6b82.html",
-          "host": "thejewishnews.com",
-          "knownOutletId": "the-detroit-jewish-news",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "jewishnews--ronelle-grier.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thejewishnews.com/culture/review-moulin-rouge-the-musical-is-an-extravaganza-of-song-and-celebration/article_7b760bfc-7761-11ef-9b36-1b5c48fb6b82.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nextmag.ca/review-moulin-rouge-the-musical-has-a-lot-to-enjoy-but-doesnt-quite-earn-its-exclamation-mark/",
-          "host": "nextmag.ca",
-          "knownOutletId": "next-magazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "next-magazine--ryan-borochovitz.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nextmag.ca/review-moulin-rouge-the-musical-has-a-lot-to-enjoy-but-doesnt-quite-earn-its-exclamation-mark/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestar.com/entertainment/stage/moulin-rouge-at-mirvish-is-a-jukebox-musical-on-steroids-thats-as-entertaining-as-it/article_04d1edde-a765-11ef-af1c-c34a183b63f7.html",
-          "host": "thestar.com",
-          "knownOutletId": "toronto-star",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "toronto-star--glenn-sumi.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thestar.com/entertainment/stage/moulin-rouge-at-mirvish-is-a-jukebox-musical-on-steroids-thats-as-entertaining-as-it/article_04d1edde-a765-11ef-af1c-c34a183b63f7.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-moulin-rouge-the-musical-is-less-wild-and-more-conventional-than-the/",
-          "host": "theglobeandmail.com",
-          "knownOutletId": "the-globe-and-mail",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-globe-and-mail--martin-morrow.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theglobeandmail.com/arts/theatre-and-performance/reviews/article-moulin-rouge-the-musical-is-less-wild-and-more-conventional-than-the/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://revuewm.com/arts/review-moulin-rouge-is-a-spectacular-fairy-tale-of-a-musical",
-          "host": "revuewm.com",
-          "knownOutletId": "revue",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "revue-arts--john-kissane.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://revuewm.com/arts/review-moulin-rouge-is-a-spectacular-fairy-tale-of-a-musical"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.statesman.com/story/entertainment/arts/2025/05/17/moulin-rouge-musical-broadway-in-austin-bass-concert-hall/83654854007/",
-          "host": "statesman.com",
-          "knownOutletId": "austin-american-statesman",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "austin-american-statesman--michael-barnes.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.statesman.com/story/entertainment/arts/2025/05/17/moulin-rouge-musical-broadway-in-austin-bass-concert-hall/83654854007/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.sandiegouniontribune.com/2025/06/30/review-touring-moulin-rouge-captures-the-fun-dazzle-of-broadway-original/",
-          "host": "sandiegouniontribune.com",
-          "knownOutletId": "san-diego-union-tribune",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "san-diego-union-tribune--pam-kragen.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.sandiegouniontribune.com/2025/06/30/review-touring-moulin-rouge-captures-the-fun-dazzle-of-broadway-original/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.cibolacitizen.com/lifestyle/moulin-rouge-musical-dazzles-popejoy-hall",
-          "host": "cibolacitizen.com",
-          "knownOutletId": "cibola-citizen",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cibola-citizen--diego-lopez.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.cibolacitizen.com/lifestyle/moulin-rouge-musical-dazzles-popejoy-hall"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://weliveentertainment.com/we-live-entertainment/theater-review-pop-passion-parisian-fire-moulin-rouge-returns-red-hot-form/",
-          "host": "weliveentertainment.com",
-          "knownOutletId": "weliveentertainment",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "weliveentertainment--kevin-taft.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://weliveentertainment.com/we-live-entertainment/theater-review-pop-passion-parisian-fire-moulin-rouge-returns-red-hot-form/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://wehotimes.com/moulin-rouge-brings-parisian-pop-to-the-pantages/",
-          "host": "wehotimes.com",
-          "knownOutletId": "weho-times",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "weho-times--shaena-engle.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://wehotimes.com/moulin-rouge-brings-parisian-pop-to-the-pantages/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://pstribune.com/2025/12/12/spectacular-spectacular-moulin-rouge-the-musical-ignites-the-mccallum-theatre/",
-          "host": "pstribune.com",
-          "knownOutletId": "palm-springs-tribune",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "palm-springs-tribune--marty-treinen.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://pstribune.com/2025/12/12/spectacular-spectacular-moulin-rouge-the-musical-ignites-the-mccallum-theatre/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://calgaryherald.com/entertainment/theatre/review-moulin-rouge-the-musical-is-a-treat-for-the-eyes-and-ears",
-          "host": "calgaryherald.com",
-          "knownOutletId": "calgary-herald",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "calgary-herald--louis-b-hobson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://calgaryherald.com/entertainment/theatre/review-moulin-rouge-the-musical-is-a-treat-for-the-eyes-and-ears"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://edmontonjournal.com/entertainment/review-moulin-rouge-the-musical-a-fun-romantic-romp",
-          "host": "edmontonjournal.com",
-          "knownOutletId": "edmonton-journal",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "edmonton-journal--liane-faulder.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://edmontonjournal.com/entertainment/review-moulin-rouge-the-musical-a-fun-romantic-romp"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "listingDate": "2022-01-20",
+          "listingSource": "show-score",
+          "reverify": true
         },
         {
           "url": "https://www.whatsonstage.com/london-theatre/reviews/moulin-rouge-review-west-end-luhrmann_55756.html",
@@ -216471,7 +215733,24 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.whatsonstage.com/london-theatre/reviews/moulin-rouge-review-west-end-luhrmann_55756.html"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "show-score",
+              "sourceUrl": "https://www.show-score.com/uk/london/west-end-shows/moulin-rouge-the-musical-london"
+            },
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "listingDate": "2022-01-20",
+          "listingSource": "show-score",
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -216481,15 +215760,8 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1359,
-        "byReason": {
-          "aggregator-internal-nav": 792,
-          "not-http-url": 371,
-          "production-database-listing": 32,
-          "aggregator-section-root": 22,
-          "non-review-host": 90,
-          "roundup-page": 52
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [
         {
@@ -216500,320 +215772,8 @@
           "reason": "same outlet \"times-uk\" already held at thetimes.com; thetimes.co.uk is a registered alias of it"
         }
       ],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-the-reviews-for-broadways-moulin-rouge-musical",
-          "publishDate": "2019-07-25"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-Opens-On-Broadway-See-What-The-Critics-Think-20190725",
-          "publishDate": "2019-07-25"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-MOULIN-ROUGE-THE-MUSICAL-National-Tour-Opens-In-Chicago-20220422",
-          "publishDate": "2022-04-22"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Were-the-Critics-Dazzled-By-Broadway-Bound-MOULIN-ROUGE-Updating-Live-20180805",
-          "publishDate": "2018-08-05"
-        }
-      ],
+      "automatedExcludedListed": 2,
       "unextractable": [],
-      "weIngestBlocked": [
-        {
-          "url": "https://broadwaynews.com/2019/07/25/review-moulin-rouge-hits-broadway-with-a-panache-of-pop/",
-          "host": "broadwaynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://ew.com/theater-reviews/2019/07/25/moulin-rouge-musical-review/",
-          "host": "ew.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thedailybeast.com/moulin-rouge-the-musical-is-trapped-colorfully-and-loudly-in-its-own-jukebox",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://mashable.com/article/moulin-rouge-broadway-review/",
-          "host": "mashable.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/theater/moulin-rouge-the-musical-1.34203228",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nydailynews.com/entertainment/broadway/ny-chris-jones-review-moulin-rouge-20190726-sorvpzfoyfc7pjxzcl5ema7pku-story.html",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.vulture.com/2019/07/theater-review-moulin-rouge-is-nycs-biggest-karaoke-night.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nypost.com/2019/07/25/moulin-rouge-review-nycs-hottest-nightclub-is-on-broadway/",
-          "host": "nypost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-a-dazzling-exercise-in-excess/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://nystagereview.com/2019/07/25/moulin-rouge-the-musical-all-you-need-is-love-and-showmanship/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/news-features/a-new-york-theatre-guide-to-moulin-rouge-the-musical",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nj.com/entertainment/2019/07/moulin-rouge-is-a-dizzying-blast-of-color-and-music-broadway-review.html",
-          "host": "nj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.ny1.com/nyc/all-boroughs/news/2019/07/26/theater-review---moulin-rouge--",
-          "host": "ny1.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://observer.com/2019/08/moulin-rouge-the-musical-kitsch-glitz-review-broadway/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.rollingstone.com/culture/culture-features/moulin-rouge-broadway-review-aaron-tveit-karen-olivo-863241/",
-          "host": "rollingstone.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-musical-al-hirschfeld-theatre-new-york-review-exactly/",
-          "host": "telegraph.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.towleroad.com/2019/07/moulin-rouge/",
-          "host": "towleroad.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.usatoday.com/story/entertainment/music/2019/07/26/moulin-rouge-broadway-musical-review-says-better-than-movie/1825575001/",
-          "host": "usatoday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://variety.com/2019/music/reviews/moulin-rouge-review-broadway-musical-2-1203278036/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.wsj.com/articles/moulin-rouge-the-musical-review-pop-opera-excess-11564101001",
-          "host": "wsj.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/will-you-love-moulin-rouge-as-a-stage-musical-well-youll-certainly-fall-in-like/2019/07/25/4aa3a796-aedf-11e9-a0c9-6d2d7818f3da_story.html",
-          "host": "washingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/moulin-rouge-broadway-review-alex-timbers-baz-luhrmann-aaron-tveit-karen-olivo/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://deadline.com/2019/07/moulin-rouge-musical-broadway-box-office-full-houses-hefty-admission-36-million-week-5-1202640581/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/review-of-moulin-rouge-the-musical-on-broadway",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-moulin-rouge-musical-tour-chicago-20220422-6fsyoegvenfknfqof5tu2njmea-story.html",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://chicago.suntimes.com/2022/4/22/23035729/moulin-rouge-stage-musical-review-chicago-theater",
-          "host": "suntimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://original.newsbreak.com/@onstage-colorado-1594100/2634406115756-theatre-review-moulin-rouge-earns-its-exclamation-point",
-          "host": "newsbreak.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://datebook.sfchronicle.com/theater/how-huge-moulin-rouge-stage-was-recreated-inside-s-f-s-orpheum-theather",
-          "host": "sfchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.providencejournal.com/story/entertainment/arts/2023/12/23/moulin-rouge-the-musical-is-rich-splashy-spectacle-at-providence-performing-arts-center/72016032007/",
-          "host": "providencejournal.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.bostonglobe.com/2024/01/18/arts/moulin-rouge-is-nothing-shout-about/",
-          "host": "bostonglobe.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sun-sentinel.com/2024/03/12/review-how-wonderful-life-is-when-moulin-rouge-the-musical-is-in-fort-lauderdale/",
-          "host": "sun-sentinel.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.oklahoman.com/story/entertainment/2024/09/07/sparkling-moulin-rouge-the-musical-makes-its-okc-bow-what-to-know/74967275007/",
-          "host": "oklahoman.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://indianapolisrecorder.com/review-thaw-out-the-winter-blues-with-moulin-rouge-the-musical/",
-          "host": "indianapolisrecorder.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://patch.com/california/studiocity/tony-award-winning-best-musical-moulin-rouge-musical-magical-magnum-opus",
-          "host": "patch.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.sfchronicle.com/entertainment/theater/article/moulin-rouge-broadwaysf-orpheum-21221010.php",
-          "host": "sfchronicle.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.straight.com/arts/broadway-across-canadas-moulin-rouge-asks-how-many-mash-ups-is-too-many-mash-ups",
-          "host": "straight.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://folioweekly.com/2026/03/12/moulin-rouge-can-can-and-does-it-all-downtown/",
-          "host": "folioweekly.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timesunion.com/theater/article/moulin-rouge-musical-proctors-theater-review-22280848.php",
-          "host": "timesunion.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.broadwayworld.com/ottawa/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-National-Arts-Centre-20260515",
-          "host": "broadwayworld.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/08/05/theater/moulin-rouge-the-musical-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://variety.com/2018/legit/reviews/moulin-rouge-review-broadway-musical-1202895995/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.bostonglobe.com/arts/2018/08/04/puttin-glitz-moulin-rouge/z3CQdR759BGRiXC0L7jy9J/story.html",
-          "host": "bostonglobe.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.capecodtimes.com/news/20180804/hot-sassy-moulin-rouge-never-cools-off",
-          "host": "capecodtimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://bostonartsdiary.com/wordpress/2018/08/moulin-rouge-the-musical/",
-          "host": "bostonartsdiary.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
-      "ingestResults": [
-        {
-          "url": "https://www.londontheatre1.com/reviews/moulin-rouge-the-musical-at-the-piccadilly-theatre-review/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://theatreweekly.com/review-moulin-rouge-at-the-piccadilly-theatre-london/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -216835,56 +215795,14 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theguardian.com/stage/2019/jul/25/moulin-rouge-broadway-review",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/moulin-rouge-broadway-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2022/jan/20/moulin-rouge-the-musical-review",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
-            "url": "https://londonist.com/london/on-stage/moulin-rouge-london-west-end-piccadilly-theatre-review",
-            "outletId": "londonist.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
             "url": "https://www.londontheatre.co.uk/reviews/moulin-rouge-the-musical-review-piccadilly-theatre",
             "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-11T21:47:22.687Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/moulin-rouge-the-musical-at-the-piccadilly-theatre-review/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadilly-theatre-london-baz-luhrmann-liisi-lafontaine",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-moulin-rouge-at-the-piccadilly-theatre-london/",
-            "outletId": "theatreweekly.com",
+            "url": "https://www.standard.co.uk/culture/theatre/moulin-rouge-the-musical-musical-review-piccadilly-london-b977840.html",
+            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-11T21:47:22.687Z"
           },
@@ -216901,20 +215819,44 @@
             "firstSeenAt": "2026-10-11T21:47:22.687Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/2018/moulin-rouge-review-emerson-colonial-theatre-boston-knock/",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-11T21:47:22.687Z"
-          },
-          {
             "url": "https://theartsdesk.com/theatre/moulin-rouge-musical-piccadilly-theatre-review-spectacular-escapism",
             "outletId": "theartsdesk.com",
             "state": "live",
             "firstSeenAt": "2026-10-11T21:47:22.687Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/a-guide-to-west-end-shows-playing-on-sundays-and-mondays",
-            "outletId": "londontheatre.co.uk",
+            "url": "https://www.thestage.co.uk/long-reviews/moulin-rouge-the-musical-review-piccadilly-theatre-london-baz-luhrmann-liisi-lafontaine",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T21:47:22.687Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2022/jan/20/moulin-rouge-the-musical-review",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T21:47:22.687Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/moulin-rouge-musical-review-b1997081.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://londonist.com/london/on-stage/moulin-rouge-london-west-end-piccadilly-theatre-review",
+            "outletId": "londonist.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T21:47:22.687Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/moulin-rouge-the-musical-at-the-piccadilly-theatre-review/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-11T21:47:22.687Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-moulin-rouge-at-the-piccadilly-theatre-london/",
+            "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-10-11T21:47:22.687Z"
           },
@@ -216935,11 +215877,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 10,
-        "candidateCount": 12
+        "liveCount": 11,
+        "candidateCount": 13
       },
-      "computedAt": "2026-10-11T21:47:22.687Z",
-      "automatedExcludedListed": 0
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "mr-wolf-regional-2025",
@@ -223191,6 +222132,7 @@
       "previewsStartDate": "2026-11-02",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://readaboutstuff.com/tag/nero/",
         "https://www.timeout.com/london/theatre/nero",
         "http://www.curtainup.com/nero.html"
       ],
@@ -223289,16 +222231,97 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Nero\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Nero\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Nero\" review southwark",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Nero Southwark Playhouse review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Nero Southwark Playhouse review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Nero Southwark Playhouse review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 26,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "non-review-host": 15,
+          "write-path-blocked": 1,
+          "ticketing-listing": 3,
+          "news-article": 1,
+          "event-listing": 1,
+          "non-review-path": 1,
+          "no-review-evidence": 2,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://readaboutstuff.com/tag/nero/",
+          "host": "readaboutstuff.com",
+          "knownOutletId": "readaboutstuff",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "zeroCharAttempts": 12
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/london/theatre/nero",
@@ -223357,7 +222380,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-11-03T18:35:27.526Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "new-born-off-broadway-2026",
@@ -272813,8 +271836,9 @@
         "https://thefrontrowcenter.com/2023/12/school-pictures/",
         "https://www.timeout.com/newyork/theater/school-pictures",
         "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
-        "https://www.adriandimanlig.com/viewpoints-a-stealthy-quirky-and-unrelated-double-feature-at-the-cherry-lane-milo-cramers-school-pictures-and-eliya-smiths-two-girls/",
-        "https://thefrontrowcenter.com/2026/10/school-pictures-2/"
+        "https://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
+        "https://thefrontrowcenter.com/2026/10/school-pictures-2/",
+        "https://www.adriandimanlig.com/viewpoints-a-stealthy-quirky-and-unrelated-double-feature-at-the-cherry-lane-milo-cramers-school-pictures-and-eliya-smiths-two-girls/"
       ],
       "dirFiles": 9,
       "dirClean": 4,
@@ -272860,16 +271884,30 @@
           ]
         },
         {
-          "url": "https://www.adriandimanlig.com/viewpoints-a-stealthy-quirky-and-unrelated-double-feature-at-the-cherry-lane-milo-cramers-school-pictures-and-eliya-smiths-two-girls/",
-          "host": "adriandimanlig.com",
-          "knownOutletId": "adriandimanlig",
+          "url": "https://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
+          "host": "theaterscene.net",
+          "knownOutletId": "theater-scene",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "sibling-held:school-pictures-off-broadway-2023",
           "sources": [
             {
               "source": "serp-census",
               "sourceUrl": null
             }
-          ],
-          "serpCensus": true
+          ]
+        },
+        {
+          "url": "https://www.adriandimanlig.com/viewpoints-a-stealthy-quirky-and-unrelated-double-feature-at-the-cherry-lane-milo-cramers-school-pictures-and-eliya-smiths-two-girls/",
+          "host": "adriandimanlig.com",
+          "knownOutletId": "adriandimanlig",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
         }
       ],
       "dirOnly": [],
@@ -273020,7 +272058,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -273040,7 +272078,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -273061,17 +272099,19 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 316,
+        "count": 314,
         "byReason": {
-          "aggregator-internal-nav": 211,
+          "aggregator-internal-nav": 209,
           "not-http-url": 49,
           "aggregator-section-root": 5,
-          "non-review-host": 42,
-          "census-junk-host": 2,
+          "non-review-host": 40,
+          "roundup-page": 4,
           "venue-production-page": 1,
-          "roundup-page": 3,
           "merch-store": 2,
-          "podcast-episode": 1
+          "census-junk-host": 1,
+          "podcast-episode": 1,
+          "review-hub-page": 1,
+          "news-roundup-site": 1
         }
       },
       "dedupedVariants": [],
@@ -273094,6 +272134,13 @@
         },
         {
           "url": "http://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
+          "host": "theaterscene.net",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theaterscene.net/musicals/offbway/school-pictures/victor-gluck/",
           "host": "theaterscene.net",
           "priorRun": true,
           "reason": "prior-run",
@@ -273200,7 +272247,7 @@
         "liveCount": 4,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-02T18:07:09.402Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -307404,7 +306451,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -307414,7 +306461,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -307434,7 +306481,7 @@
             "page": 1,
             "geo": "us",
             "ok": true,
-            "results": 0,
+            "results": 10,
             "accepted": 0,
             "error": null
           },
@@ -307455,11 +306502,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 24,
         "byReason": {
-          "non-review-host": 6,
-          "venue-production-page": 9,
-          "aggregator-internal-nav": 3
+          "aggregator-internal-nav": 4,
+          "non-review-host": 13,
+          "venue-production-page": 7
         }
       },
       "dedupedVariants": [],
@@ -307474,7 +306521,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-02T20:39:48.261Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "tammy-faye-2024",
@@ -316147,8 +315194,15 @@
       "status": "open",
       "category": "off-west-end",
       "previewsStartDate": "2026-10-28",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+      ],
       "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+        "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+        "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+        "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
         "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
         "https://www.standard.co.uk/go/london/theatre/beat-the-devil-review-david-hare-the-bridge-a4536291.html",
         "https://theatreweekly.com/review-the-bridge-at-bush-theatre/",
@@ -316159,27 +315213,66 @@
         "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
         "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
         "https://www.timeout.com/london/theatre/the-bridge-4",
+        "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
+        "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
+        "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
         "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
         "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
         "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
         "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
         "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
         "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
-        "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
         "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
         "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
-        "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
         "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
         "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
-        "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
         "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn"
       ],
-      "dirFiles": 19,
-      "dirClean": 9,
-      "inReviewsJson": 6,
+      "dirFiles": 21,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
         {
           "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
           "host": "theskinny.co.uk",
@@ -316288,35 +315381,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": true,
-          "recoverableFile": "thestage--siobhan-murphy.json",
-          "recoverableOutletId": "thestage",
-          "recoverableCritic": "Siobhan Murphy",
-          "recoverableCount": 2,
-          "dirFlags": [
-            {
-              "file": "thestage--siobhan-murphy.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://thestage.co.uk/reviews/london-city-ballet-firebird-a-double-bill-review-sadlers-well-london"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
         {
           "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
           "host": "britishtheatreguide.info",
@@ -316432,37 +315496,6 @@
           ],
           "serpCensus": true,
           "reverify": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": true,
-          "recoverableFile": "thestage--siobhan-murphy.json",
-          "recoverableOutletId": "thestage",
-          "recoverableCritic": "Siobhan Murphy",
-          "recoverableCount": 2,
-          "dirFlags": [
-            {
-              "file": "thestage--siobhan-murphy.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://thestage.co.uk/reviews/london-city-ballet-firebird-a-double-bill-review-sadlers-well-london"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "noTextOrScoreSignal"
-          ],
-          "sources": [
-            {
-              "source": "theatre-reviews",
-              "sourceUrl": "https://theatre.reviews/reviews-roundup/oresteia-bridge-reviews/"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [],
-          "priorRun": true,
-          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -316515,10 +315548,24 @@
         "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 97,
+        "byReason": {
+          "aggregator-internal-nav": 56,
+          "not-http-url": 5,
+          "production-database-listing": 10,
+          "aggregator-section-root": 4,
+          "non-review-host": 20,
+          "non-stage-review": 1,
+          "write-path-blocked": 1
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london",
+          "publishDate": "2020-02-20"
+        }
+      ],
       "nonReviewCandidates": [
         {
           "url": "https://www.timeout.com/london/theatre/the-bridge-4",
@@ -316536,9 +315583,30 @@
           "nonReviewDetail": "2026-08-30"
         }
       ],
-      "automatedExcludedListed": 5,
+      "automatedExcludedListed": 4,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
           "host": "timeout.com",
@@ -316602,15 +315670,16 @@
       "ingestSkippedByCap": [],
       "recoveryResults": [
         {
-          "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
-          "host": "thestage.co.uk",
-          "file": "thestage--siobhan-murphy.json",
-          "recovered": false,
+          "url": "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
+          "host": "allthatdazzles.co.uk",
+          "file": "all-that-dazzles-uk--unknown.json",
+          "recovered": true,
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 3
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
         }
       ],
       "censusVerdict": {
@@ -316622,13 +315691,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada"
           },
           {
             "outletId": "british-theatre",
@@ -316661,6 +315723,18 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
           {
             "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
             "outletId": "standard.co.uk",
@@ -316740,18 +315814,23 @@
             "firstSeenAt": "2026-11-03T18:35:27.526Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
             "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
             "outletId": "the-skinny",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-29T07:30:38.899Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
-            "outletId": "thestage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
           },
           {
             "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
@@ -316795,10 +315874,10 @@
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 9,
+        "liveCount": 10,
         "candidateCount": 15
       },
-      "computedAt": "2026-11-03T18:35:27.526Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -348768,8 +347847,8 @@
       "previewsStartDate": "2026-10-07",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theatermania.com/news/rachel-crowl-to-star-in-josep-maria-miros-the-nicest-body-ever-seen-around-these-parts_1850631/",
-        "https://www.theatermania.com/news/review-rachel-crowl-takes-on-a-whole-town-in-the-nicest-body-ever-seen-around-these-parts_1857561/"
+        "https://www.theatermania.com/news/review-rachel-crowl-takes-on-a-whole-town-in-the-nicest-body-ever-seen-around-these-parts_1857561/",
+        "https://www.theatermania.com/news/rachel-crowl-to-star-in-josep-maria-miros-the-nicest-body-ever-seen-around-these-parts_1850631/"
       ],
       "dirFiles": 2,
       "dirClean": 1,
@@ -348800,7 +347879,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -348811,7 +347890,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -348831,7 +347910,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -348841,16 +347920,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 29,
+        "count": 32,
         "byReason": {
-          "non-review-host": 9,
           "aggregator-internal-nav": 5,
-          "bare-host": 2,
+          "non-review-host": 17,
           "write-path-blocked": 1,
-          "news-roundup-site": 2,
-          "non-review-path": 6,
+          "non-review-path": 4,
           "venue-production-page": 1,
-          "review-hub-page": 3
+          "review-hub-page": 2,
+          "news-roundup-site": 2
         }
       },
       "dedupedVariants": [],
@@ -348862,16 +347940,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.theatermania.com/news/rachel-crowl-to-star-in-josep-maria-miros-the-nicest-body-ever-seen-around-these-parts_1850631/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T17:07:08.919Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/review-rachel-crowl-takes-on-a-whole-town-in-the-nicest-body-ever-seen-around-these-parts_1857561/",
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-10-20T16:46:22.541Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/rachel-crowl-to-star-in-josep-maria-miros-the-nicest-body-ever-seen-around-these-parts_1850631/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-31T17:07:08.919Z"
           }
         ],
         "censusSchema": 4,
@@ -348879,7 +347957,7 @@
         "liveCount": 1,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-02T19:36:38.932Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "the-night-larry-kramer-kissed-me-hope-mill-regional-2026",
@@ -378499,6 +377577,44 @@
       "computedAt": "2026-10-31T22:30:56.337Z"
     },
     {
+      "showId": "things-with-friends-regional-2025",
+      "title": "Things with Friends",
+      "openingDate": "2025-09-07",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-03T20:13:24.189Z"
+    },
+    {
       "showId": "this-is-government-off-broadway-2025",
       "title": "This is Government",
       "openingDate": "2025-09-06",
@@ -391116,10 +390232,10 @@
         "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
         "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
         "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
-        "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
-        "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
-        "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
         "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
+        "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
+        "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
+        "https://airmail.news/arts-intel/events/school-pictures-and-two-girls",
         "https://www.timeout.com/newyork/theater/two-girls"
       ],
       "dirFiles": 17,
@@ -391181,7 +390297,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 5,
             "error": null
           },
           {
@@ -391191,7 +390307,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -391201,7 +390317,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -391211,7 +390327,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -391227,23 +390343,24 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 1,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 318,
+        "count": 308,
         "byReason": {
-          "aggregator-internal-nav": 204,
+          "aggregator-internal-nav": 207,
           "not-http-url": 51,
-          "aggregator-section-root": 7,
-          "non-review-host": 30,
-          "non-stage-review": 2,
-          "census-junk-host": 10,
-          "news-roundup-site": 2,
-          "venue-production-page": 4,
-          "write-path-blocked": 2,
+          "aggregator-section-root": 6,
+          "non-review-host": 33,
+          "non-stage-review": 1,
+          "write-path-blocked": 1,
+          "ticketing-listing": 1,
+          "non-review-path": 1,
           "roundup-page": 4,
-          "merch-store": 2
+          "venue-production-page": 1,
+          "merch-store": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -391282,10 +390399,10 @@
             "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
-            "url": "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
-            "outletId": "theatermania.com",
+            "url": "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
+            "outletId": "thefrontrowcenter.com",
             "state": "live",
-            "firstSeenAt": "2026-10-19T18:05:32.145Z"
+            "firstSeenAt": "2026-10-24T10:01:46.935Z"
           },
           {
             "url": "https://nyunews.com/arts/performance/2026/10/20/two-girls-cherry-lane-review/",
@@ -391294,10 +390411,10 @@
             "firstSeenAt": "2026-10-20T21:11:21.454Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/10/two-girls-one-cup-at-cherry-lane-theatre/",
-            "outletId": "thefrontrowcenter.com",
+            "url": "https://www.theatermania.com/news/review-two-girls-an-interrogation-of-a-memory-of-a-brazilian-porno_1857490/",
+            "outletId": "theatermania.com",
             "state": "live",
-            "firstSeenAt": "2026-10-24T10:01:46.935Z"
+            "firstSeenAt": "2026-10-19T18:05:32.145Z"
           },
           {
             "url": "https://www.timeout.com/newyork/theater/two-girls",
@@ -391322,7 +390439,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-11-02T18:07:09.402Z"
+      "computedAt": "2026-11-03T20:13:24.189Z"
     },
     {
       "showId": "two-halves-of-guinness-off-west-end-2026",
@@ -411550,28 +410667,27 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-03T19:34:00.850Z",
+    "at": "2026-11-03T20:13:24.188Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "the-penelopiad-york-royal-regional-2026",
-      "abba-voyage-off-west-end-2026"
+      "moulin-rouge-the-musical-west-end-2021",
+      "cabaret-at-the-kit-kat-club-west-end-2021"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "ideal-lowry-regional-2025",
-      "suffs-tour-2025"
+      "things-with-friends-regional-2025",
+      "dear-young-monster-sheffield-regional-2025"
     ],
-    "neverAuditedDueAtStart": 629,
+    "neverAuditedDueAtStart": 627,
     "oldestDueRowAtStart": {
-      "showId": "abba-voyage-off-west-end-2026",
-      "computedAt": "2026-10-11T21:47:22.687Z",
-      "ageHours": 549.4
-    },
-    "oldestDueRowAfterRun": {
       "showId": "moulin-rouge-the-musical-west-end-2021",
       "computedAt": "2026-10-11T21:47:22.687Z",
-      "ageHours": 549.8
+      "ageHours": 550.1
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "hadestown-2019",
+      "computedAt": "2026-10-11T21:47:22.687Z",
+      "ageHours": 550.4
     }
   }
 }
