@@ -28,6 +28,7 @@ require('./gemini-usage-ledger').install(); // BRO-5043: record-only Gemini usag
 const cheerio = require('cheerio');
 const { titleWordsMatchWithConfidence } = require('./show-matching');
 const { findContainingTitleSibling } = require('./title-containment');
+const { titleVariantInfo, venueTokens } = require('./show-title-tokens');
 const { GEMINI_FLASH, GPT4O_MINI } = require('./models');
 
 // Confidence threshold below which the LLM tiebreaker fires
@@ -326,6 +327,15 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
     return { valid: true, confidence: match.confidence, reason: 'headings match (high confidence)' };
   }
 
+  // Layer 1b (BRO-6910): a billed-title variant. "Clifford Odets’ Waiting for
+  // Lefty" matched 2 of 4 words against Playbill's "What Do Reviews Think of
+  // Waiting for Lefty at Classic Stage Company?" and the BWW roundup, the LLM
+  // said no, and four Verdict-listed reviews were never gathered.
+  const variantHit = matchDerivedTitleVariant(showTitle, headingText, options);
+  if (variantHit) {
+    return { valid: true, confidence: variantHit.confidence, reason: `headings match billed-title variant "${variantHit.title}"${variantHit.proof ? ` (venue "${variantHit.proof}")` : ''}` };
+  }
+
   // High confidence non-match — reject without LLM when ZERO words from title appear
   // This covers both multi-word titles and single-word titles where the word isn't present.
   // Partial matches (e.g., "Sweeney" found but not "Todd") go to LLM tiebreaker.
@@ -387,8 +397,66 @@ async function validatePageMatchesShow(html, showTitle, options = {}) {
   return { valid: false, confidence: 0, reason: `no match: headings "${headingText.substring(0, 80)}" vs "${showTitle}"` };
 }
 
+let _showsByTitle = null;
+/** The one shows.json row billed exactly as `title`, or null (none, or ambiguous). */
+function uniqueShowByTitle(title, shows) {
+  const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+  let index = _showsByTitle;
+  if (shows || !index) {
+    index = new Map();
+    let rows = shows;
+    if (!rows) {
+      try { const raw = require('../../data/shows.json'); rows = Array.isArray(raw) ? raw : raw.shows || []; } catch (_) { rows = []; }
+    }
+    for (const s of rows) {
+      if (!s || !s.title) continue;
+      const k = norm(s.title);
+      index.set(k, index.has(k) ? null : s);
+    }
+    if (!shows) _showsByTitle = index;
+  }
+  return index.get(norm(title)) || null;
+}
+
+/**
+ * A 'derived' titleVariantInfo variant (credit/performer prefix or venue label
+ * dropped) that the headings name in full at high confidence. A variant that is
+ * another show's exact title (clashIds) also needs one of this show's venue
+ * words in the headings: "Waiting for Lefty" alone is the 2024 regional too.
+ * Label heads ("Tosca" for "Tosca - ENO") are left to the existing layers.
+ * @returns {{title: string, confidence: number, proof: string|null}|null}
+ */
+function matchDerivedTitleVariant(showTitle, headingText, options = {}) {
+  const show = options.show || uniqueShowByTitle(showTitle, options.shows) || { title: showTitle };
+  // Proof is the show's whole venue name as a phrase in the headings
+  // ("Classic Stage Company"), required for EVERY derived variant: an empty
+  // clashIds only means no other shows.json row shares the short title, and a
+  // single venue word ("classic", "performing", a city) proves nothing.
+  const venueName = typeof show.venue === 'string' ? show.venue : show.venue && show.venue.name;
+  const venuePhrase = normalizePhrase(venueName);
+  if (!venuePhrase || venueTokens(show).length === 0) return null;
+  const headingPhrase = ` ${normalizePhrase(headingText)} `;
+  if (!headingPhrase.includes(` ${venuePhrase} `)) return null;
+  let variants;
+  try { variants = titleVariantInfo(show); } catch (_) { return null; }
+  for (const v of variants) {
+    if (v.kind !== 'derived' || v.labelHead) continue;
+    const m = titleWordsMatchWithConfidence(v.title, headingText);
+    if (!m.matched || m.confidence < LLM_CONFIDENCE_THRESHOLD || m.matchCount < (m.words || []).length) continue;
+    if (findContainingTitleSibling(headingText, v.title, { shows: options.shows })) continue;
+    return { title: v.title, confidence: m.confidence, proof: venueName };
+  }
+  return null;
+}
+
+function normalizePhrase(t) {
+  return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ').replace(/^the /, '').trim();
+}
+
 module.exports = {
   validatePageMatchesShow,
+  matchDerivedTitleVariant,
   titleWordsMatchWithConfidence,
   parseYesNo,
   extractYearFromUrl,
