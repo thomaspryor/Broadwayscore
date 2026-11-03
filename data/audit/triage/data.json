@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-11-02T21:18:44.786Z",
+  "lastChecked": "2026-11-03T09:35:35.550Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -94,17 +94,17 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "89 review(s) with no usable text, 69 rejected although verified as a review, 44 never scored, 34 with a blocked URL (0 published on the site), across 589 current shows"
+      "message": "110 review(s) with no usable text, 71 rejected although verified as a review, 17 never scored, 34 with a blocked URL (0 published on the site), across 589 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "pass",
-      "message": "No published review score contradicts the critic's rating (44777 checked)"
+      "message": "No published review score contradicts the critic's rating (45146 checked)"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "132 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 133 more already attempted)"
+      "message": "89 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 167 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -114,7 +114,7 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 562 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 567 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",

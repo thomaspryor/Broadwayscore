@@ -1,7 +1,7 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-11-02T21:18:44.818Z",
+  "lastChecked": "2026-11-03T09:35:35.557Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -13,8 +13,8 @@
     },
     {
       "name": "Coverage: adversarial probe",
-      "status": "warn",
-      "message": "The naive search found 4 review URL(s) this pipeline hasn't discovered yet: our-sinatra-a-musical-celebration-off-broadway-2026, the-humanities-regional-2026"
+      "status": "pass",
+      "message": "Every discovered review URL was live or named-excluded (12h ago)"
     }
   ]
 }
