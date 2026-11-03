@@ -14,12 +14,17 @@
  */
 
 const { looksLikeReview } = require('./author-pages/headline-classifier.js');
+const { ARTICLE_ID_QUERY_KEY } = require('./review-url-clusters.js');
 
 module.exports = { urlKey, ourUrlsFor, mergeArticlesBySource, computeCriticCoverage };
 
 /**
  * Normalize a URL to a host+path key for cross-source dedup/matching.
- * Strips protocol, `www.`, trailing slash, and query string.
+ * Strips protocol, `www.`, trailing slash, and query string, except
+ * article-id query params (LSA story.asp?ID=N, talkinbroadway d.php?id=N):
+ * there the query IS the article, and dropping it collapsed every Lighting &
+ * Sound America review into one key, so David Barbour's 150+ missing reviews
+ * read as already captured (BRO-6927).
  *
  * @param {string} u
  * @returns {string|null}
@@ -27,7 +32,12 @@ module.exports = { urlKey, ourUrlsFor, mergeArticlesBySource, computeCriticCover
 function urlKey(u) {
   try {
     const x = new URL(u);
-    return x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/$/, '').split('?')[0];
+    const base = x.hostname.replace(/^www\./, '') + x.pathname.replace(/\/$/, '').split('?')[0];
+    const ids = [...x.searchParams.entries()]
+      .filter(([k]) => ARTICLE_ID_QUERY_KEY.test(k))
+      .map(([k, v]) => `${k.toLowerCase()}=${v}`)
+      .sort();
+    return ids.length ? `${base}?${ids.join('&')}` : base;
   } catch {
     return null;
   }
