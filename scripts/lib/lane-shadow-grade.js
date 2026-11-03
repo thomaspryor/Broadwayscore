@@ -6,8 +6,9 @@
  * review with side 'both' | 'lane-only' | 'site-only' | 'lane-unscored', lane and site scores, lane scored time.
  * Output: the numbers the 2026-10 replays were graded on by hand, with a pass/fail per check:
  *   recall          lane-scored reviews the site also has / reviews the site has, all time (reported, not gated)
- *   onTimeRecall    the same over reviews the site dates on or before the night + 1 day, or has no date for (the
- *                   gate): a review published days later (a weekly magazine) cannot be found on the night
+ *   onTimeRecall    the same over reviews the site dates on or before the night + 1 day (the gate): a review
+ *                   published days later (a weekly magazine) cannot be found on the night. siteRowVerdict settles
+ *                   undated pages from the regular pipeline's first sighting (siteMeta)
  *   falsePositives  lane-scored reviews the site does not have (a non-review, a roundup, a duplicate URL, or a real
  *                   review the regular pipeline missed: listed so a person can tell which)
  *   duplicates      lane-scored reviews that are one review twice: same outlet and the same critic, the same article
@@ -34,6 +35,81 @@ const criticKey = (c) => String(c || '').toLowerCase().normalize('NFKD').replace
 const ms = (t) => { const v = Date.parse(t || ''); return Number.isFinite(v) ? v : null; };
 const round1 = (x) => Math.round(x * 10) / 10;
 
+// The lane starts this long before the embargo (lane-only-markets.js window, embargo - 3h). A review the regular
+// pipeline already had before then is on the site when the lane starts, and the lane's merge keeps it.
+const LANE_LEAD_MS = 3 * 60 * 60 * 1000;
+const etDate = (t) => new Date(t).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+
+/** {firstSeenAt, source} the regular pipeline recorded for a site URL (opts.siteMeta: Map canonical URL -> meta). */
+function lookupMeta(siteMeta, url) {
+  if (!siteMeta || !url) return null;
+  try { return siteMeta.get(require('./opening-night-lane/discovery').canonicalUrl(url)) || null; } catch { return null; }
+}
+
+/**
+ * Whether a site review counts in the on-time recall (BRO-6872 round 9). Production's own first sighting
+ * (firstSeenAt in its review file) settles the cases a publish date cannot:
+ *   already-live     production had it before the lane starts (a preview-period blog post production found the
+ *                    morning of opening day): on a lane night it is already on the site. Excluded.
+ *   (A reader-form rule was tried and dropped: ingest-review-from-url.js labels every caller's file
+ *   'submit-review-form', so `sources` cannot tell a reader's post from a pipeline find. The two BC blog posts that
+ *   prompted it had no review-submission issue: one was already live, one arrived 8 days late, and the rules here
+ *   exclude both.)
+ *   on-time / late   by the full publish date (<= night + 1). With no full date (undated pages, "2026-10"), by the
+ *                    day production first saw it (Eastern time), and on time when that is unknown too.
+ * Without siteMeta every row falls through to the date rule, as before.
+ */
+function siteRowVerdict(r, { nightPlus1, laneStartMs, meta }) {
+  const seen = meta ? ms(meta.firstSeenAt) : null;
+  if (seen != null && laneStartMs != null && seen < laneStartMs) return 'already-live';
+  if (!nightPlus1) return 'on-time';
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(String(r.siteDate || '')) ? r.siteDate : null;
+  if (date) return date <= nightPlus1 ? 'on-time' : 'late';
+  if (seen != null) return etDate(seen) <= nightPlus1 ? 'on-time' : 'late';
+  return 'on-time';
+}
+
+/** Levenshtein distance, capped: only "is it at most `max`" matters. */
+function editDistanceAtMost(a, b, max) {
+  if (Math.abs(a.length - b.length) > max) return false;
+  let prev = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i];
+    for (let j = 1; j <= b.length; j++) cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    if (Math.min(...cur) > max) return false;
+    prev = cur;
+  }
+  return prev[b.length] <= max;
+}
+
+/**
+ * A lane-only row and a site-only row that are one review stored under two URLs: same host and parent path, and article
+ * slugs at most 2 edits apart, one-to-one in both directions (the site row of Other Desert Cities at Culture Sauce is "/ther-desert-cities-...",
+ * a typo the outlet redirects to "/other-desert-cities-..."). Each such pair becomes one 'both' row with the site's
+ * score. Slugs under 12 characters never pair (too little to tell two reviews apart).
+ */
+function joinNearSlugs(reviews) {
+  const slug = (u) => { try { const x = new URL(u); const parts = x.pathname.replace(/\/+$/, '').toLowerCase().split('/'); return { host: x.hostname.replace(/^www\./, ''), last: parts.pop(), dir: parts.join('/') }; } catch { return null; } };
+  // Two slugs that differ only in digits or a trailing "-N" are two articles (WordPress's "-2" for a repeated slug,
+  // "part-1" / "part-2"), never a typo.
+  const sameArticle = (a, b) => a.host === b.host && a.dir === b.dir && a.last.length >= 12 && b.last.length >= 12 && a.last !== b.last
+    && a.last.replace(/-\d+$/, '') !== b.last.replace(/-\d+$/, '') && a.last.replace(/\d/g, '') !== b.last.replace(/\d/g, '')
+    && editDistanceAtMost(a.last, b.last, 2);
+  const out = [...reviews];
+  const lanes = out.filter((r) => r.side === 'lane-only').map((r) => ({ r, s: slug(r.url) })).filter((x) => x.s);
+  const sites = out.filter((r) => r.side === 'site-only').map((r) => ({ r, s: slug(r.url) })).filter((x) => x.s);
+  for (const l of lanes) {
+    const hits = sites.filter((x) => sameArticle(l.s, x.s));
+    if (hits.length !== 1) continue;
+    // One-to-one both ways: a site row two lane rows could claim pairs with neither.
+    if (lanes.filter((y) => sameArticle(y.s, hits[0].s)).length !== 1) continue;
+    const s = hits[0].r;
+    Object.assign(l.r, { side: 'both', siteScore: s.siteScore ?? null, siteLiveAt: s.siteLiveAt || null, siteDate: s.siteDate || null, siteUrl: s.url, joinedBy: 'near-slug' });
+    out.splice(out.indexOf(s), 1);
+  }
+  return out;
+}
+
 function pct(values, p) {
   const v = values.filter((x) => typeof x === 'number').sort((a, b) => a - b);
   if (!v.length) return null;
@@ -46,7 +122,7 @@ function pct(values, p) {
  */
 function gradeShadowReport(rep, opts = {}) {
   const th = { ...DEFAULT_THRESHOLDS, ...(opts.thresholds || {}) };
-  const reviews = Array.isArray(rep && rep.reviews) ? rep.reviews : [];
+  const reviews = joinNearSlugs((Array.isArray(rep && rep.reviews) ? rep.reviews : []).map((r) => ({ ...r })));
   const scored = reviews.filter((r) => r.side === 'both' || r.side === 'lane-only');
   const both = reviews.filter((r) => r.side === 'both');
   const siteLive = reviews.filter((r) => r.side === 'both' || r.side === 'site-only');
@@ -85,8 +161,12 @@ function gradeShadowReport(rep, opts = {}) {
   const ratio = (n, d) => (d ? Math.round((n / d) * 1000) / 1000 : null);
   const recall = ratio(both.length, siteLive.length);
   const nightPlus1 = rep && rep.night && Number.isFinite(Date.parse(rep.night)) ? new Date(Date.parse(rep.night) + 86400e3).toISOString().slice(0, 10) : null;
-  const onTime = (r) => !nightPlus1 || !r.siteDate || r.siteDate <= nightPlus1;
-  const onTimeRecall = ratio(both.filter(onTime).length, siteLive.filter(onTime).length);
+  const laneStartMs = opts.laneStartAt ? ms(opts.laneStartAt) : (ms(opts.replayAnchorAt) != null ? ms(opts.replayAnchorAt) - LANE_LEAD_MS : ms(rep && rep.startedAt));
+  const verdict = (r) => siteRowVerdict(r, { nightPlus1, laneStartMs, meta: lookupMeta(opts.siteMeta, r.siteUrl || r.url) });
+  for (const r of reviews) if (r.side === 'both' || r.side === 'site-only') r.onTimeVerdict = verdict(r);
+  const counted = (r) => r.onTimeVerdict === 'on-time';
+  const onTimeRecall = ratio(both.filter(counted).length, siteLive.filter(counted).length);
+  const excluded = siteLive.filter((r) => r.onTimeVerdict === 'already-live').map((r) => ({ ...brief(r), why: r.onTimeVerdict }));
   const falsePositives = reviews.filter((r) => r.side === 'lane-only').map(brief);
 
   const checks = [
@@ -103,7 +183,8 @@ function gradeShadowReport(rep, opts = {}) {
     pass: checks.every((c) => c.pass), checks,
     counts: { laneScored: scored.length, siteLive: siteLive.length, both: both.length, laneOnly: falsePositives.length, siteOnly: reviews.filter((r) => r.side === 'site-only').length, laneUnscored: reviews.filter((r) => r.side === 'lane-unscored').length },
     recall, onTimeRecall, meanAbsScoreDiff: meanAbsDiff,
-    falsePositives, missed: reviews.filter((r) => r.side === 'site-only').map((r) => ({ ...brief(r), siteDate: r.siteDate || null, late: !onTime(r) })), duplicates, scoreGaps,
+    siteMeta: opts.siteMeta ? { reviews: opts.siteMeta.size } : null,
+    falsePositives, excluded, missed: reviews.filter((r) => r.side === 'site-only').map((r) => ({ ...brief(r), siteDate: r.siteDate || null, late: r.onTimeVerdict === 'late', excluded: r.onTimeVerdict === 'already-live' })), duplicates, scoreGaps,
     timeToScoreMin: { median: pct(tts, 50), p90: pct(tts, 90), max: tts.length ? Math.max(...tts) : null, from: opts.replayAnchorAt ? 'embargo' : 'shadow start' },
     publish: { errors: publishErrors, sandboxPublished },
   };
@@ -119,11 +200,33 @@ function gradeMarkdown(g) {
     `- Lane scored ${g.counts.laneScored}, site has ${g.counts.siteLive}, both ${g.counts.both}, lane only ${g.counts.laneOnly}, site only ${g.counts.siteOnly}, lane unscored ${g.counts.laneUnscored}.`,
     `- Time to score (min from ${g.timeToScoreMin.from}): median ${g.timeToScoreMin.median ?? 'n/a'}, p90 ${g.timeToScoreMin.p90 ?? 'n/a'}, max ${g.timeToScoreMin.max ?? 'n/a'}.`,
     ...(g.falsePositives.length ? ['', 'Lane only:', ...g.falsePositives.map((r) => `- ${row(r)} ${r.laneScore} ${r.url}`)] : []),
-    ...(g.missed.length ? ['', 'Site only (missed):', ...g.missed.map((r) => `- ${row(r)} ${r.siteScore} ${r.url}${r.late ? ` (dated ${r.siteDate}, after the night)` : ''}`)] : []),
+    ...(g.missed.length ? ['', 'Site only (missed):', ...g.missed.map((r) => `- ${row(r)} ${r.siteScore} ${r.url}${r.late ? ` (dated ${r.siteDate || 'by first sighting'}, after the night)` : ''}${r.excluded ? ' (not gated, see below)' : ''}`)] : []),
+    ...(g.excluded && g.excluded.length ? ['', 'Not gated (already live before the lane starts):', ...g.excluded.map((r) => `- ${row(r)} ${r.url} (${r.why})`)] : []),
     ...(g.duplicates.length ? ['', 'Duplicates:', ...g.duplicates.map((d) => `- ${d.map((r) => r.url).join(' | ')}`)] : []),
     ...(g.scoreGaps.length ? ['', `Score gaps of ${GAP_PTS}+ (lane / site, lane text chars, tier):`, ...g.scoreGaps.map((d) => `- ${row(d)} ${d.laneScore} / ${d.siteScore} (${d.delta > 0 ? '+' : ''}${d.delta}), ${d.laneTextChars ?? '?'} chars, ${d.laneContentTier || '?'}`)] : []),
   ];
   return `${lines.join('\n')}\n`;
+}
+
+/**
+ * siteMeta from review files ({url, firstSeenAt, source, sources} per file; the text is never kept): a local review-texts
+ * show directory, or `files` already read ([{name, json}]). Returns a Map canonical URL -> {firstSeenAt, source, sources}.
+ */
+function loadSiteMetaFromDir(dir, files = null) {
+  const { canonicalUrl } = require('./opening-night-lane/discovery');
+  const list = files || (fs.existsSync(dir) ? fs.readdirSync(dir).filter((n) => n.endsWith('.json')).map((name) => {
+    try { return { name, json: JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8')) }; } catch { return null; }
+  }).filter(Boolean) : []);
+  const meta = new Map();
+  for (const { json } of list) {
+    const k = canonicalUrl(json && json.url);
+    if (!k) continue;
+    const m = { firstSeenAt: json.firstSeenAt || null, source: json.source || null, sources: Array.isArray(json.sources) ? json.sources : null };
+    // Two files for one URL (a duplicate): production first had it when the earlier of them was first seen.
+    const prev = meta.get(k);
+    if (!prev || (ms(m.firstSeenAt) != null && (ms(prev.firstSeenAt) == null || ms(m.firstSeenAt) < ms(prev.firstSeenAt)))) meta.set(k, m);
+  }
+  return meta;
 }
 
 function writeGrade(outDir, g) {
@@ -134,4 +237,4 @@ function writeGrade(outDir, g) {
   return md;
 }
 
-module.exports = { GAP_PTS, DEFAULT_THRESHOLDS, gradeShadowReport, gradeMarkdown, writeGrade };
+module.exports = { GAP_PTS, DEFAULT_THRESHOLDS, LANE_LEAD_MS, gradeShadowReport, gradeMarkdown, writeGrade, siteRowVerdict, joinNearSlugs, loadSiteMetaFromDir };

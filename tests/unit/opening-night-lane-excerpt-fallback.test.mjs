@@ -143,7 +143,7 @@ test('200-299 chars: the scorer refuses even a partial copy, so the last attempt
         assert.equal(got.fullText, '', 'text the scorer would refuse is not sent');
         assert.match(lf.readFailures(dir, SHOW.id, NIGHT).failures.at(-1).reason, /scoring the aggregator excerpt/);
       } else {
-        await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /under the 300 a partial copy needs/.test(e.message));
+        await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /paywall teaser, held unscored/.test(e.message));
         assert.deepEqual(scored, [], 'never sent to a scorer that would refuse it');
       }
     } finally { fs.rmSync(dir, { recursive: true, force: true }); }
@@ -171,6 +171,30 @@ test('the scorer refusing the page text (input_validation_failed) rescores from 
     const wrongShow = scoring({ dir: tmp(), extract: () => body, scoreText: async () => ({ rejected: true, rejection: 'wrong_show' }) });
     const g2 = await wrongShow.fetchReview(WSJ_CAND);
     await assert.rejects(wrongShow.scoreReview({ url: WSJ, fullText: g2.fullText, showId: SHOW.id }, g2), (e) => e.permanent === true && /wrong_show/.test(e.message));
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+// A page the lane labelled a partial copy (paywall rule, contentTier 'truncated') over the host floor that the scorer
+// calls truncated_text is scored from the aggregator excerpt; on a page sent as complete the same verdict stays final.
+test('a labelled partial copy refused as truncated_text rescores from the excerpt; a complete page refused that way does not', async () => {
+  const dir = tmp();
+  try {
+    const body = 'The production, which the critic found uneven in places. '.repeat(80);
+    const calls = [];
+    const sc = scoring({ dir, extract: () => body, scoreText: async (text, ctx) => {
+      calls.push(ctx.contentTier);
+      return text ? { rejected: true, rejection: 'truncated_text: ends mid-sentence' } : { score: 74 };
+    } });
+    const got = await sc.fetchReview(WSJ_CAND);
+    assert.ok(got.fullText.length > 3000);
+    const res = await sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, { ...got, contentTier: 'truncated' });
+    assert.equal(res.score, 74);
+    assert.equal(res.extra.contentTier, 'excerpt');
+    assert.deepEqual(calls, ['truncated', 'excerpt']);
+
+    const sc2 = scoring({ dir: tmp(), extract: () => body, scoreText: async () => ({ rejected: true, rejection: 'truncated_text: ends mid-sentence' }) });
+    const g2 = await sc2.fetchReview(WSJ_CAND);
+    await assert.rejects(sc2.scoreReview({ url: WSJ, fullText: g2.fullText, showId: SHOW.id }, { ...g2, contentTier: 'complete' }), (e) => e.permanent === true && /truncated_text/.test(e.message));
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -296,5 +320,22 @@ test('open site: a fully fetched review keeps its aggregator excerpts on the row
     const out = await sc.fetchReview({ url: TB, key: d.canonicalUrl(TB), excerpts: ex });
     assert.deepEqual(out.excerpts, ex);
     assert.ok(out.fullText.length > 1000);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+// BRO-6872 review: the open-site 200-299 case keeps its own check now that the WSJ case above holds instead.
+test('open site, 200-299 chars, no fallback: fails for good on the last attempt as before', async () => {
+  const dir = tmp();
+  try {
+    let t = NOW;
+    const sc = inl.createInlineScoring({
+      show: SHOW, night: NIGHT, ledgerDir: dir, now: () => t, retryMs: [1000],
+      fetchPage: async () => ({ content: 'x' }), extractArticle: () => 'A short cut of an open-site review page. '.repeat(7).slice(0, 250),
+      scoreText: async () => ({ score: 70 }),
+    });
+    const cand = { url: 'https://deadline.com/2026/10/open-site-broadway-review-1/' };
+    await assert.rejects(sc.fetchReview(cand), inl.LaneRetryError);
+    t += 1000;
+    await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /under the 300 a partial copy needs/.test(e.message));
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

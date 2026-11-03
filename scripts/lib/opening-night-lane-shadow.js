@@ -198,6 +198,7 @@ function buildShadowReport({ show, night, ledgerDir, scores = [], rows = [], liv
       laneDiscoveredAt: iso(e && e.discoveredAt), laneScoredAt: iso(scoredAt), siteLiveAt: iso(liveAt),
       laneScore: e && e.laneScore != null ? e.laneScore : null, siteScore: l && l.score != null ? l.score : null,
       siteDate: (l && l.date) || null,
+      siteUrl: l ? (l.url || l.key) : null,
       laneTextChars: e && e.laneTextChars != null ? e.laneTextChars : null, laneContentTier: (e && e.laneContentTier) || null,
       scoredLeadMin: scoredAt != null && liveAt != null ? minutesBetween(scoredAt, liveAt) : null,
       // Already on the site at the first poll: the regular pipeline had it before the shadow started.
@@ -289,7 +290,35 @@ function writeShadowReport(outDir, rep) {
   return md;
 }
 
+/**
+ * Map canonical URL -> {firstSeenAt, source, sources} for a show's review files: the local review-texts checkout when
+ * there is one, else the private review-texts repo through the GitHub API (REVIEW_TEXTS_TOKEN). Only those fields
+ * are kept; the review text is never stored or logged.
+ */
+async function loadSiteMeta({ repoDir, showId, token, fetchImpl = globalThis.fetch }) {
+  const grader = require('./lane-shadow-grade');
+  const local = path.join(repoDir, 'data', 'review-texts', showId);
+  if (fs.existsSync(local)) return grader.loadSiteMetaFromDir(local);
+  if (!token) throw new Error('no review-texts checkout and no REVIEW_TEXTS_TOKEN');
+  const api = 'https://api.github.com/repos/thomaspryor/broadway-review-texts/contents';
+  const get = async (url, accept) => {
+    const res = await fetchImpl(url, { headers: { Authorization: `Bearer ${token}`, Accept: accept, 'User-Agent': 'opening-night-lane-shadow' }, signal: AbortSignal.timeout(20000) });
+    if (!res.ok) throw new Error(`GitHub ${res.status} for ${url.replace(api, '')}`);
+    return res.json();
+  };
+  const listing = await get(`${api}/${encodeURIComponent(showId)}`, 'application/vnd.github+json');
+  const files = [];
+  for (const f of (Array.isArray(listing) ? listing : []).filter((x) => x.type === 'file' && /\.json$/.test(x.name))) {
+    try {
+      const j = await get(`${api}/${encodeURIComponent(showId)}/${encodeURIComponent(f.name)}`, 'application/vnd.github.raw+json');
+      files.push({ name: f.name, json: { url: j.url, firstSeenAt: j.firstSeenAt, source: j.source, sources: j.sources } });
+    } catch { /* one unreadable file grades by its date */ }
+  }
+  return grader.loadSiteMetaFromDir(null, files);
+}
+
 module.exports = {
   runShadowNight, replayClock,
   REAL_NIGHT_WINDOW_MIN, createShadowPublishPorts, createScoreRecorder, createLiveRecorder, buildShadowReport, reportMarkdown, writeShadowReport,
+  loadSiteMeta,
 };

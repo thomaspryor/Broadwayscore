@@ -30,6 +30,7 @@ const shadow = require('./lib/opening-night-lane-shadow');
 const argv = process.argv.slice(2);
 const arg = (n) => (argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3) || null;
 
+
 async function main() {
   if (hasHelpFlag(argv)) { console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0]); return 0; }
   const repoDir = path.resolve(__dirname, '..');
@@ -56,7 +57,9 @@ async function main() {
   const inline = require('./lib/opening-night-lane/inline-score');
   const publish = require('./lib/opening-night-lane/publish');
   // Talkin' Broadway through one Browserbase session, shared by discovery and review fetch, as in the driver (BRO-6073).
-  const laneFetch = require('./lib/opening-night-lane/browserbase-fetch').createLaneFetch({ env });
+  // Tagged as the shadow caller: no allowance, so a shadow run or replay never spends the live night's (BRO-6872).
+  const bbFetch = require('./lib/opening-night-lane/browserbase-fetch');
+  const laneFetch = bbFetch.createLaneFetch({ env, caller: bbFetch.SHADOW_CALLER });
   const { EnsembleReviewScorer } = require('./llm-scoring/ensemble-scorer.ts');
   // Three models, like production (llm-ensemble-score.yml leaves OPENROUTER_API_KEY out: "Kimi disabled"). With the key
   // the scorer adds Kimi, whose 300 s OpenRouter timeouts and retries cost ~15 minutes per review in the first CI run.
@@ -82,13 +85,17 @@ async function main() {
   // A live fetch with no timeout could hang the recorder past the window; 20 s is a missed poll, not a stall.
   const fetchImpl = (url, opts = {}) => globalThis.fetch(url, { ...opts, signal: AbortSignal.timeout(20000) });
   const live = shadow.createLiveRecorder({ fetchLiveShow: publish.fetchLiveShowFrom(liveBase, { fetchImpl }), showId, now, logFile: path.join(out, 'live-first-seen.jsonl') });
+  // The regular pipeline's first sighting of each site review (firstSeenAt, sources), read from the private review
+  // files (metadata only, the text is dropped), settles undated pages and reader submissions in the grade. A failed
+  // read grades by publish dates alone and says so.
+  const siteMeta = replay ? await shadow.loadSiteMeta({ repoDir, showId, token: env.REVIEW_TEXTS_TOKEN }).catch((e) => { console.error(`shadow: site review metadata unavailable (${e.message}); grading by publish dates only`); return null; }) : null;
   const startedAt = now();
   let result = null; let endedAt = null;
   const writeReport = () => {
     const rep = shadow.buildShadowReport({ show, night, ledgerDir, scores: scores.snapshot(), rows, live: live.snapshot(), startedAt, endedAt, result });
     const md = shadow.writeShadowReport(out, rep);
     if (!replay) return md;
-    return md + grader.writeGrade(out, grader.gradeShadowReport(rep, { replayAnchorAt: replay.anchorAt, sandbox: site.live() }));
+    return md + grader.writeGrade(out, grader.gradeShadowReport(rep, { replayAnchorAt: replay.anchorAt, sandbox: site.live(), siteMeta }));
   };
   await live.poll();
   const timer = setInterval(() => {
