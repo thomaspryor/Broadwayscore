@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-d",
   "planId": "820674cf-21ab-49e2-b87e-3c40bc71e1a3",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,134 @@
         "description": "BRO-6927 gap: Steven Suskin (The Huffington Post) review of the-portuguese-kid-off-broadway-2017, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:50:50.517Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=runboyrun-and-in-old-age-off-broadway-2019 --url=https://thebroadwayblog.com/runboyrun/ --critic=\"Samuel L. Leiter\" --publish-date=2019-09-28"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=smart-people-off-broadway-2016 --url=http://nypost.com/2016/02/12/mike-birbiglias-hilarious-thank-god-for-jokes-is-a-must-see/ --critic=\"Elisabeth Vincentelli\" --publish-date=2016-02-13"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=sweetee-off-broadway-2017 --url=http://thebroadwayblog.com/2017/06/02/16608-sweetee-review --critic=\"Samuel L. Leiter\" --publish-date=2017-06-02"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-glass-menagerie-2017 --url=http://dctheatrescene.com/2017/03/09/glass-menagerie-review-sally-field-no-glass-menagerie/ --critic=\"Jonathan Mandell\" --publish-date=2017-03-09"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-glass-menagerie-2017 --url=http://www.chicagotribune.com/entertainment/theater/broadway/sc-glass-menagerie-broadway-review-ent-0309-20170309-column.html --critic=\"Chris Jones\" --publish-date=2017-03-09"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=titanique-off-broadway-2022 --url=http://www.theaterscene.net/musicals/offbway/titanique/victor-gluck/ --critic=\"Victor Gluck\" --publish-date=2022-08-22"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=celebrity-autobiography-2026 --url=https://www.talkinbroadway.com/page/world/index.html --critic=\"Howard Miller\" --publish-date=2026-05-19"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-broadway-2025 --url=https://www.talkinbroadway.com/page/ob/07_10_25.html --critic=\"Howard Miller\" --publish-date=2025-07-10"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=heathers-the-musical-off-broadway-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-QBZQD9 --critic=\"David Barbour\" --publish-date=2025-07-10"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=mlimas-tale-off-broadway-2018 --url=https://www.amny.com/entertainment/lynn-nottage-review-mlima-s-tale-1.18057963 --critic=\"Matt Windman\" --publish-date=2018-04-15"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=soft-power-off-broadway-2019 --url=https://newyorktheater.me/2019/10/21/soft-power-review-david-henry-hwangs-sly-reverse-chinese-musical-about-america/ --critic=\"Jonathan Mandell\" --publish-date=2019-10-21"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
