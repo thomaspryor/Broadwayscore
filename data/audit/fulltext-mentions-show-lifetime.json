@@ -1,13 +1,17 @@
 {
-  "updatedAt": "2026-11-02T21:49:16.098Z",
-  "scanned": 4649,
-  "showsWithViolations": 497,
-  "totalViolations": 750,
-  "newSinceLastRun": 3,
+  "updatedAt": "2026-11-03T09:55:12.658Z",
+  "scanned": 4749,
+  "showsWithViolations": 504,
+  "totalViolations": 757,
+  "newSinceLastRun": 7,
   "newViolationKeys": [
-    "the-lives-of-others-west-end-2026::thestage--dave-fargnoli.json",
-    "the-only-way-out-is-in-pitlochry-festival-regional-2026::thestage--fergus-morgan.json",
-    "pacific-overtures-off-broadway-2017::film-festival-traveler--kevin-filipski.json"
+    "fences-leeds-regional-2026::thestage--matt-barton.json",
+    "vietgone-off-broadway-2016::diandra-reviews-it-all--diandra-rivera.json",
+    "act-your-age-regional-2026::stage-raw--joel-beers.json",
+    "the-physicists-regional-2026::stage-raw--lovell-estell-iii.json",
+    "painted-ponies-regional-2026::stage-raw--steven-morris.json",
+    "green-corridors-regional-2026-city-garage-theatre::stage-raw--lovell-estell-iii.json",
+    "a-number-regional-2026::stage-raw--lovell-estell-iii.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -699,6 +703,7 @@
     "what-im-here-for-tron-regional-2026::guardian--mark-fisher.json",
     "what-im-here-for-tron-regional-2026::thestage--arusa-qureshi.json",
     "brassed-off-leeds-regional-2026::guardian--nick-ahad.json",
+    "fences-leeds-regional-2026::thestage--matt-barton.json",
     "our-public-house-leeds-regional-2026::guardian--nick-ahad.json",
     "a-taste-of-honey-royal-exchange-regional-2024::thestage--chris-bartlett.json",
     "abigails-party-royal-exchange-regional-2025::thestage--chris-bartlett.json",
@@ -753,13 +758,19 @@
     "tell-me-how-it-ends-liverpool-everyman-regional-2024::whatsonstage--matt-barton.json",
     "jesus-hopped-the-a-train-off-broadway-2017::theater-pizzazz--sandi-durell.json",
     "pacific-overtures-off-broadway-2017::film-festival-traveler--kevin-filipski.json",
+    "vietgone-off-broadway-2016::diandra-reviews-it-all--diandra-rivera.json",
     "4000-days-regional-2021::chicago-theatre-review--colin-douglas.json",
     "8-track-regional-2021::chicago-theatre-review--colin-douglas.json",
     "sweat-regional-2022::chicago-theatre-review--colin-douglas.json",
     "antonios-song-i-was-dreaming-of-a-son-regional-2023::chicago-theatre-review--colin-douglas.json",
     "the-christians-regional-2023::chicago-theatre-review--colin-douglas.json",
     "bald-sisters-regional-2022::chicago-theatre-review--colin-douglas.json",
-    "refuge-regional-2022::chicago-theatre-review--colin-douglas.json"
+    "refuge-regional-2022::chicago-theatre-review--colin-douglas.json",
+    "act-your-age-regional-2026::stage-raw--joel-beers.json",
+    "the-physicists-regional-2026::stage-raw--lovell-estell-iii.json",
+    "painted-ponies-regional-2026::stage-raw--steven-morris.json",
+    "green-corridors-regional-2026-city-garage-theatre::stage-raw--lovell-estell-iii.json",
+    "a-number-regional-2026::stage-raw--lovell-estell-iii.json"
   ],
   "hits": [
     {
@@ -8223,7 +8234,7 @@
       "showId": "the-lives-of-others-west-end-2026",
       "title": "The Lives of Others",
       "openingDate": "2026-10-29",
-      "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Lives of Others' (4350 chars, textIssues flag set): https://www.thestage.co.uk/reviews/the-lives-of-others-review-adelphi-theatre-london-keira-knightley-robert-icke",
+      "message": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED but fullText never mentions 'The Lives of Others' (4350 chars, textIssues flag set): https://www.thestage.co.uk/reviews/the-lives-of-others-review-adelphi-theatre-london-keira-knightley-robert-icke\n⚠️  standard/Nick Curtis (standard--nick-curtis.json) also too short to assess (0 chars): https://www.standard.co.uk/culture/theatre/the-lives-of-others-keira-knightley-review-b1303233.html",
       "violations": [
         {
           "filename": "thestage--dave-fargnoli.json",
@@ -15388,6 +15399,30 @@
       ]
     },
     {
+      "showId": "fences-leeds-regional-2026",
+      "title": "Fences",
+      "openingDate": "2026-09-17",
+      "message": "thestage/Matt Barton (thestage--matt-barton.json) SHIPPED but fullText never mentions 'Fences' (3007 chars): https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+      "violations": [
+        {
+          "filename": "thestage--matt-barton.json",
+          "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
+          "outletId": "thestage",
+          "criticName": "Matt Barton",
+          "haystackLength": 3007,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "our-public-house-leeds-regional-2026",
       "title": "Our Public House",
       "openingDate": "2026-05-22",
@@ -16572,6 +16607,30 @@
       ]
     },
     {
+      "showId": "vietgone-off-broadway-2016",
+      "title": "Vietgone",
+      "openingDate": "2016-10-25",
+      "message": "diandra-reviews-it-all/Diandra Rivera (diandra-reviews-it-all--diandra-rivera.json) SHIPPED but fullText never mentions 'Vietgone' (388 chars): http://www.diandrareviewsitall.com/2016/10/theatre-review-vietgone-is-must-see.html",
+      "violations": [
+        {
+          "filename": "diandra-reviews-it-all--diandra-rivera.json",
+          "url": "http://www.diandrareviewsitall.com/2016/10/theatre-review-vietgone-is-must-see.html",
+          "outletId": "diandra-reviews-it-all",
+          "criticName": "Diandra Rivera",
+          "haystackLength": 388,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
       "showId": "4000-days-regional-2021",
       "title": "4000 Days",
       "openingDate": "2021-10-14",
@@ -16738,15 +16797,135 @@
           }
         }
       ]
+    },
+    {
+      "showId": "act-your-age-regional-2026",
+      "title": "Act Your Age",
+      "openingDate": "2026-06-02",
+      "message": "stage-raw/Joel Beers (stage-raw--joel-beers.json) SHIPPED but fullText never mentions 'Act Your Age' (4621 chars): https://stageraw.com/stage-raw-review-act-your-age/",
+      "violations": [
+        {
+          "filename": "stage-raw--joel-beers.json",
+          "url": "https://stageraw.com/stage-raw-review-act-your-age/",
+          "outletId": "stage-raw",
+          "criticName": "Joel Beers",
+          "haystackLength": 4621,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "the-physicists-regional-2026",
+      "title": "The Physicists",
+      "openingDate": "2026-05-18",
+      "message": "stage-raw/Lovell Estell III (stage-raw--lovell-estell-iii.json) SHIPPED but fullText never mentions 'The Physicists' (2494 chars): https://stageraw.com/stage-raw-review-the-physicists/",
+      "violations": [
+        {
+          "filename": "stage-raw--lovell-estell-iii.json",
+          "url": "https://stageraw.com/stage-raw-review-the-physicists/",
+          "outletId": "stage-raw",
+          "criticName": "Lovell Estell III",
+          "haystackLength": 2494,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "painted-ponies-regional-2026",
+      "title": "Painted Ponies",
+      "openingDate": "2026-06-29",
+      "message": "stage-raw/Martín Hernández (stage-raw--steven-morris.json) SHIPPED but fullText never mentions 'Painted Ponies' (2964 chars): https://stageraw.com/stage-raw-review-painted-ponies/",
+      "violations": [
+        {
+          "filename": "stage-raw--steven-morris.json",
+          "url": "https://stageraw.com/stage-raw-review-painted-ponies/",
+          "outletId": "stage-raw",
+          "criticName": "Martín Hernández",
+          "haystackLength": 2964,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "green-corridors-regional-2026-city-garage-theatre",
+      "title": "Green Corridors",
+      "openingDate": "2026-08-25",
+      "message": "stage-raw/Lovell Estell III (stage-raw--lovell-estell-iii.json) SHIPPED but fullText never mentions 'Green Corridors' (2306 chars): https://stageraw.com/stage-raw-review-green-corridors/",
+      "violations": [
+        {
+          "filename": "stage-raw--lovell-estell-iii.json",
+          "url": "https://stageraw.com/stage-raw-review-green-corridors/",
+          "outletId": "stage-raw",
+          "criticName": "Lovell Estell III",
+          "haystackLength": 2306,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "a-number-regional-2026",
+      "title": "A Number",
+      "openingDate": "2026-09-23",
+      "message": "stage-raw/Lovell Estell III (stage-raw--lovell-estell-iii.json) SHIPPED but fullText never mentions 'A Number' (2737 chars): https://stageraw.com/stage-raw-review-a-number/",
+      "violations": [
+        {
+          "filename": "stage-raw--lovell-estell-iii.json",
+          "url": "https://stageraw.com/stage-raw-review-a-number/",
+          "outletId": "stage-raw",
+          "criticName": "Lovell Estell III",
+          "haystackLength": 2737,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
     }
   ],
   "triage": {
-    "total": 750,
+    "total": 757,
     "counts": {
       "excerpt": 192,
       "wrong-production": 9,
-      "unresolved": 441,
-      "truncated": 108
+      "unresolved": 446,
+      "truncated": 110
     },
     "outletPlans": [
       {
@@ -18281,6 +18460,25 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "diandra-reviews-it-all",
+        "total": 1,
+        "counts": {
+          "truncated": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "vietgone-off-broadway-2016/diandra-reviews-it-all--diandra-rivera.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         ]
@@ -21563,6 +21761,62 @@
         ]
       },
       {
+        "outletId": "stage-raw",
+        "total": 5,
+        "counts": {
+          "unresolved": 4,
+          "truncated": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "a-number-regional-2026/stage-raw--lovell-estell-iii.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "act-your-age-regional-2026/stage-raw--joel-beers.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "green-corridors-regional-2026-city-garage-theatre/stage-raw--lovell-estell-iii.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "painted-ponies-regional-2026/stage-raw--steven-morris.json",
+            "bucket": "truncated",
+            "evidence": [
+              "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-physicists-regional-2026/stage-raw--lovell-estell-iii.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
         "outletId": "stageandcinema",
         "total": 2,
         "counts": {
@@ -22681,10 +22935,10 @@
       },
       {
         "outletId": "thestage",
-        "total": 105,
+        "total": 106,
         "counts": {
           "truncated": 16,
-          "unresolved": 76,
+          "unresolved": 77,
           "excerpt": 13
         },
         "requiresArticleReview": true,
@@ -22907,6 +23161,15 @@
           },
           {
             "file": "evita-west-end-2025/thestage--sam-marlowe.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "fences-leeds-regional-2026/thestage--matt-barton.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
