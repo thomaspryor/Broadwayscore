@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6924",
   "planId": "244293f2-2aa1-47f3-8718-d4db82a82873",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T22:06:32.746Z",
   "submitter": {
     "name": null,
@@ -219,5 +219,140 @@
         "description": "BRO-6924: flagged wrongProduction under the Met because it reviews the ENO London staging; it now lives in the ENO folder (URL slug tosca-review-london-coliseum)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:30:14.842Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/a-youngish-perspective--unknown.json → tosca-english-national-opera-west-end-2026/a-youngish-perspective--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/a-youngish-perspective--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/broadwayworld--gary-naylor.json → tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/broadwayworld--gary-naylor.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/financialtimes--richard-fairman.json → tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/financialtimes--richard-fairman.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/guardian--flora-willson.json → tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/london-theatre--cheryl-markosky.json → tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/london-theatre--cheryl-markosky.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/plays-to-see--rene-weis-frsa.json → tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/plays-to-see--rene-weis-frsa.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/sunday-telegraph--nicholas-kenyon.json → tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json rejectionReason: \"wrong_production\" -> null"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/theatre-weekly--unknown.json → tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/thereviewshub--unknown.json → tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/thereviewshub--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/thestage--george-hall.json → tosca-english-national-opera-west-end-2026/thestage--george-hall.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/thestage--george-hall.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved tosca-off-broadway-2026/times-uk--richard-morrison.json → tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
