@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6855-audit",
   "planId": "4cb40f06-2707-4d4a-88b9-36a4d854c1b2",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -43,8 +43,8 @@
         "file": "painted-ponies-regional-2026/stage-raw--steven-morris.json",
         "field": "criticName",
         "oldValue": "Steven Morris",
-        "newValue": "Mart\u00edn Hern\u00e1ndez",
-        "description": "Article byline reads 'Reviewed by Mart\u00edn Hern\u00e1ndez'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+        "newValue": "Martín Hernández",
+        "description": "Article byline reads 'Reviewed by Martín Hernández'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
       },
       {
         "type": "review-field-edit",
@@ -145,5 +145,84 @@
         "description": "heroes-of-the-fourth-turning-regional-2026: attach real art (the Catharsis Theatre Collective show banner from the Humanitix event page); the hub card had no image (BRO-6855)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T05:37:38.221Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-swan-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"G. Bruce Smith\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heroes-of-the-fourth-turning-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-case-for-the-existence-of-god-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "painted-ponies-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"Martín Hernández\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "millennials-are-killing-musicals-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grangeville-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angry-raucous-and-shamelessly-gorgeous-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pericles-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "brigadoon-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "texas-sodomy-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"F. Kathleen Foley\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "begin-again-regional-2026/stage-raw--steven-morris.json criticName: \"Steven Morris\" -> \"Keelyn McDermott\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rorschach-regional-2026/broadwayworld--aidan-oconnor.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heartbreak-house-regional-2026/theatreinla--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for clown-sh-t-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for heroes-of-the-fourth-turning-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
