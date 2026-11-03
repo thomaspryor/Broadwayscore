@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T18:07:01.344Z",
+  "timestamp": "2026-11-03T18:38:38.633Z",
   "stats": {
-    "totalReviews": 79925,
-    "alreadyFlagged": 22047,
+    "totalReviews": 79928,
+    "alreadyFlagged": 22054,
     "dateGuardCatches": 216,
-    "directorMismatch": 3459,
+    "directorMismatch": 3458,
     "tvFilmSignals": 2262,
-    "londonSignals": 3589,
+    "londonSignals": 3587,
     "offBroadwaySignals": 735,
     "yearMismatch": 360,
-    "noPublishDate": 8500
+    "noPublishDate": 8497
   },
   "findings": [
     {
@@ -478,7 +478,7 @@
     {
       "showId": "1984-west-end-2016",
       "file": "essentialsurrey--samantha-laurie.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2016-10-10",
       "url": "https://www.essentialsurrey.co.uk/theatre-arts/review-1984-west-end/",
       "findings": [
@@ -5258,6 +5258,7 @@
     {
       "showId": "an-ideal-husband-west-end-2010",
       "file": "guardian--michael-billington.json",
+      "score": 57,
       "publishDate": "2010-11-11",
       "url": "https://www.theguardian.com/stage/2010/nov/11/an-ideal-husband-review",
       "findings": [
@@ -10555,6 +10556,7 @@
     {
       "showId": "cabaret-2014",
       "file": "nytimes--ben-brantley.json",
+      "score": 68,
       "publishDate": "2014-04-24",
       "url": "http://www.nytimes.com/2014/04/25/theater/cabaret-opens-with-alan-cumming-and-michelle-williams.html?hpw&rref=arts&_r=0",
       "findings": [
@@ -19035,22 +19037,9 @@
     {
       "showId": "driving-miss-daisy-west-end-2011",
       "file": "guardian--michael-billington.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2011-10-06",
       "url": "https://www.theguardian.com/stage/2011/oct/06/driving-miss-daisy-theatre-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"david esbjornson\" from driving-miss-daisy-2010"
-        }
-      ]
-    },
-    {
-      "showId": "driving-miss-daisy-west-end-2011",
-      "file": "guardian--susannah-clapp.json",
-      "publishDate": "2011-10-09",
-      "url": "https://www.theguardian.com/stage/2011/oct/09/driving-miss-daisy-vanessa-redgrave",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -19104,6 +19093,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "broadway-and-me--unknown.json",
+      "score": 86,
       "publishDate": "2015-10-31",
       "url": "http://broadwayandme.blogspot.com/2015/10/the-public-continues-its-hot-streak.html",
       "findings": [
@@ -19117,7 +19107,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "exeunt-magazine--loren-noveck.json",
-      "score": null,
+      "score": 85,
       "publishDate": "2015-10-15",
       "url": "http://exeuntmagazine.com/reviews/eclipsed-2/",
       "findings": [
@@ -19131,6 +19121,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "financialtimes--brendan-lemon.json",
+      "score": 77,
       "publishDate": "2015-10-15",
       "url": "https://www.ft.com/intl/cms/s/0/f924ddb8-7256-11e5-bdb1-e6e4767162cc.html",
       "findings": [
@@ -19170,7 +19161,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "njcom--christopher-kelly.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2015-10-15",
       "url": "http://www.nj.com/entertainment/index.ssf/2015/10/lupita_nyongo_eclipsed_review_public_theater.html",
       "findings": [
@@ -19198,7 +19189,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "nytimes--charles-isherwood.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2015-10-14",
       "url": "http://www.nytimes.com/2015/10/15/theater/review-in-eclipsed-female-captives-in-liberias-civil-war-seek-sustenance.html?partner=rss&emc=rss",
       "findings": [
@@ -19212,7 +19203,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "theatermania--zachary-stewart.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2015-10-14",
       "url": "http://www.theatermania.com/off-broadway/reviews/eclipsed_74569.html",
       "findings": [
@@ -19226,7 +19217,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "thewrap--robert-hofler.json",
-      "score": null,
+      "score": 80,
       "publishDate": "2015-10-13",
       "url": "http://www.thewrap.com/eclipsed-theater-review-lupita-nyongo-shines-danai-gurira-walking-dead/",
       "findings": [
@@ -19245,7 +19236,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "timeout--adam-feldman.json",
-      "score": null,
+      "score": 83,
       "publishDate": "2015-10-14",
       "url": "http://www.timeout.com/newyork/theater/eclipsed-1",
       "findings": [
@@ -19259,6 +19250,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "usatoday--elysa-gardner.json",
+      "score": 85,
       "publishDate": "2015-10-14",
       "url": "http://www.usatoday.com/story/life/theater/2015/10/14/nyongo-makes-impression-eclipsed/73870142/?utm_source=feedblitz&utm_medium=FeedBlitzRss&utm_campaign=usatoday-lifetopstories",
       "findings": [
@@ -19272,7 +19264,7 @@
     {
       "showId": "eclipsed-off-broadway-2015",
       "file": "variety--marilyn-stasio.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2015-10-14",
       "url": "http://variety.com/2015/legit/reviews/eclipsed-review-lupita-nyongo-danai-gurira-1201617655/",
       "findings": [
@@ -19505,6 +19497,7 @@
     {
       "showId": "end-of-the-rainbow-west-end-2010",
       "file": "guardian--michael-billington.json",
+      "score": 56,
       "publishDate": "2010-11-23",
       "url": "https://www.theguardian.com/stage/2010/nov/23/end-of-the-rainbow-review-theatre",
       "findings": [
@@ -31775,6 +31768,7 @@
     {
       "showId": "in-a-forest-dark-and-deep-west-end-2011",
       "file": "guardian--michael-billington.json",
+      "score": 61,
       "publishDate": "2011-03-15",
       "url": "https://www.theguardian.com/stage/2011/mar/15/in-a-forest-dark-and-deep-review",
       "findings": [
@@ -44855,7 +44849,7 @@
     {
       "showId": "noises-off-west-end-2011",
       "file": "variety--unknown.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2011-12-15",
       "url": "https://variety.com/2011/legit/reviews/noises-off-1117946761/",
       "findings": [
@@ -54669,7 +54663,7 @@
     {
       "showId": "shrek-the-musical-west-end-2011",
       "file": "gramilano--unknown.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2011-06-16",
       "url": "https://www.gramilano.com/2011/06/critics-round-up-shrek-the-musical-opens-in-london/",
       "findings": [
@@ -54683,6 +54677,7 @@
     {
       "showId": "shrek-the-musical-west-end-2011",
       "file": "guardian--michael-billington.json",
+      "score": 63,
       "publishDate": "2011-06-14",
       "url": "https://www.theguardian.com/stage/2011/jun/14/shrek-the-musical-review",
       "findings": [
@@ -54696,7 +54691,7 @@
     {
       "showId": "shrek-the-musical-west-end-2011",
       "file": "whatsonstage--michael-coveney.json",
-      "score": 58,
+      "score": 59,
       "publishDate": "2011-06-14",
       "url": "https://www.whatsonstage.com/news/shrek-the-musical_8595/",
       "findings": [
@@ -75091,7 +75086,7 @@
     {
       "showId": "the-visit-2015",
       "file": "perez-hilton--perez-hilton.json",
-      "score": null,
+      "score": 79,
       "publishDate": null,
       "url": "https://perezhilton.com/2015-04-24-the-visit-broadway-review",
       "findings": [
@@ -75347,6 +75342,7 @@
     {
       "showId": "the-weir-west-end-2014",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 81,
       "publishDate": "2014-01-23",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/10589792/The-Weir-Wyndhams-Theatre-review.html",
       "findings": [
@@ -87170,7 +87166,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "independent--alice-saville.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-02-05",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/arcadia-old-vic-review-tom-stoppard-b2914437.html",
       "findings": [
@@ -87198,7 +87194,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 77,
+      "score": 80,
       "publishDate": "2026-02-05",
       "url": "https://www.londontheatre.co.uk/reviews/arcadia-review-old-vic",
       "findings": [
@@ -87240,7 +87236,7 @@
     {
       "showId": "arcadia-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 74,
+      "score": 77,
       "publishDate": "2026-02-08",
       "url": "https://theartsdispatch.substack.com/p/arcadia-review-old-vic-london",
       "findings": [
@@ -88737,7 +88733,7 @@
     {
       "showId": "betty-blue-eyes-west-end-2011",
       "file": "independent--michael-coveney.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2011-04-14",
       "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/first-night-betty-blue-eyes-novello-theatre-london-2267577.html",
       "findings": [
@@ -90701,7 +90697,7 @@
     {
       "showId": "cabaret-2014",
       "file": "dctheatrescene--richard-seff.json",
-      "score": null,
+      "score": 86,
       "publishDate": "2014-05-30",
       "url": "https://dctheatrescene.com/2014/05/30/applauding-michelle-williams-performance-cabaret/",
       "findings": [
@@ -93136,7 +93132,7 @@
     {
       "showId": "cyrano-de-bergerac-2012",
       "file": "exeunt-magazine--unknown.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2012-10-12",
       "url": "https://exeuntnyc.com/reviews/cyrano-de-bergerac/",
       "findings": [
@@ -93150,7 +93146,7 @@
     {
       "showId": "cyrano-de-bergerac-2012",
       "file": "nytimes--ben-brantley.json",
-      "score": null,
+      "score": 86,
       "publishDate": "2012-10-11",
       "url": "http://theater.nytimes.com/2012/10/12/theater/reviews/cyrano-de-bergerac-with-douglas-hodge.html?pagewanted=2",
       "findings": [
@@ -97110,19 +97106,6 @@
       ]
     },
     {
-      "showId": "fela-west-end-2010",
-      "file": "metro-uk--claire-allfree.json",
-      "publishDate": "2010-11-15",
-      "url": "https://www.metro.co.uk/lifestyle/847301-fela-giving-new-life-to-the-afrobeat-legend",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
       "showId": "festen-2006",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -97585,7 +97568,7 @@
     {
       "showId": "frankenstein-west-end-2011",
       "file": "nytimes--ben-brantley.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2011-02-24",
       "url": "http://theater.nytimes.com/2011/02/26/theater/reviews/26franken.html?ref=theater",
       "findings": [
@@ -100329,6 +100312,7 @@
     {
       "showId": "hamilton-west-end-2021",
       "file": "britishtheatrecom--douglas-mayo.json",
+      "score": 94,
       "publishDate": "2017-12-24",
       "url": "https://www.britishtheatre.com/posts/review-hamilton-victoria-palace-theatre",
       "findings": [
@@ -101209,7 +101193,7 @@
     {
       "showId": "hay-fever-west-end-2012",
       "file": "artsdesk--unknown.json",
-      "score": null,
+      "score": 80,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/hay-fever-noel-coward-theatre",
       "findings": [
@@ -105630,7 +105614,7 @@
     {
       "showId": "john-off-broadway-2015",
       "file": "as-her-world-turns--erica-meyer.json",
-      "score": null,
+      "score": 91,
       "publishDate": "August 3rd, 2015",
       "url": "https://www.asherworldturns.com/theater-recap-july-2015/",
       "findings": [
@@ -105644,7 +105628,7 @@
     {
       "showId": "john-off-broadway-2015",
       "file": "deadline--jeremy-gerard.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2015-08-27",
       "url": "http://deadline.com/2015/08/whorl-inside-a-loop-john-reviews-1201508505/",
       "findings": [
@@ -105671,7 +105655,7 @@
     {
       "showId": "john-off-broadway-2015",
       "file": "nytg--tulis-mccall.json",
-      "score": null,
+      "score": 63,
       "publishDate": "August 13th, 2015",
       "url": "http://www.newyorktheatreguide.com/reviews/john15.htm",
       "findings": [
@@ -105685,7 +105669,7 @@
     {
       "showId": "john-off-broadway-2015",
       "file": "nytimes--charles-isherwood.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2015-08-11",
       "url": "http://www.nytimes.com/2015/08/12/theater/review-in-john-pondering-lifes-mysteries-from-gettysburg.html?_r=0",
       "findings": [
@@ -105699,7 +105683,7 @@
     {
       "showId": "john-off-broadway-2015",
       "file": "slate--tyler-coates.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2015-08-12",
       "url": "https://slate.com/culture/2015/08/annie-bakers-new-play-john-reviewed.html",
       "findings": [
@@ -105713,7 +105697,7 @@
     {
       "showId": "john-off-broadway-2015",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2015-08-11",
       "url": "http://slleiter.blogspot.com/2015/08/48-2015-2016-review-of-john-seen-august.html",
       "findings": [
@@ -105727,7 +105711,7 @@
     {
       "showId": "john-off-broadway-2015",
       "file": "variety--marilyn-stasio.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2015-08-11",
       "url": "http://variety.com/2015/legit/reviews/john-review-play-annie-baker-1201567821/",
       "findings": [
@@ -105923,7 +105907,7 @@
     {
       "showId": "jumpy-west-end-2012",
       "file": "express-uk--mark-shenton.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2012-09-02",
       "url": "https://www.express.co.uk/entertainment/theatre/343446/Theatre-review-Jumpy-Duke-of-York-s-Theatre-London/amp",
       "findings": [
@@ -107968,6 +107952,7 @@
     {
       "showId": "long-days-journey-into-night-west-end-2012",
       "file": "thestage--mark-shenton.json",
+      "score": 61,
       "publishDate": "2012-04-11",
       "url": "https://www.thestage.co.uk/reviews/long-days-journey-into-night-review-at-apollo-london",
       "findings": [
@@ -108205,7 +108190,7 @@
     {
       "showId": "macbeth-2008",
       "file": "njcom--anthony-venutolo.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2008-04-09",
       "url": "https://www.nj.com/entertainment/arts/2008/04/british_macbeth_bloody_complic.html",
       "findings": [
@@ -108609,7 +108594,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": 63,
+      "score": 65,
       "publishDate": "2026-02-11",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/man-and-boy-review/",
       "findings": [
@@ -108637,7 +108622,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 58,
+      "score": 57,
       "publishDate": "2026-02-11",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/ben-daniels-man-and-boy-national-theatre-review/",
       "findings": [
@@ -111561,6 +111546,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2011",
       "file": "guardian--michael-billington.json",
+      "score": 82,
       "publishDate": "2011-06-01",
       "url": "https://www.theguardian.com/stage/2011/jun/01/much-ado-about-nothing-review",
       "findings": [
@@ -111574,7 +111560,7 @@
     {
       "showId": "much-ado-about-nothing-west-end-2011",
       "file": "thestage--michael-coveney.json",
-      "score": null,
+      "score": 52,
       "publishDate": "2011-06-02",
       "url": "https://www.thestage.co.uk/reviews/much-ado-about-nothing-review-at-wyndhams-theatre-london",
       "findings": [
@@ -114043,7 +114029,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "daily-mail--georgina-brown.json",
-      "score": 95,
+      "score": 93,
       "publishDate": "2024-07-26",
       "url": "https://www.dailymail.co.uk/tvshowbiz/article-13674445/Oliver-review-Dickens-writes-GEORGINA-BROWN.html",
       "findings": [
@@ -114099,7 +114085,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "standard--unknown.json",
-      "score": 96,
+      "score": 94,
       "publishDate": "January 15th, 2025",
       "url": "https://www.standard.co.uk/culture/theatre/oliver-gielgud-theatre-review-cameron-mackintosh-matthew-bourne-b1204920.html",
       "findings": [
@@ -114154,7 +114140,7 @@
     {
       "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--unknown.json",
-      "score": 94,
+      "score": 95,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
       "findings": [
@@ -114459,6 +114445,7 @@
     {
       "showId": "one-man-two-guvnors-west-end-2011",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 91,
       "publishDate": "2011-11-22",
       "url": "https://www.ft.com/content/743e6d5c-1504-11e1-a2a6-00144feabdc0",
       "findings": [
@@ -118065,7 +118052,7 @@
     {
       "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2011",
       "file": "everything-theatre--everything-theatre.json",
-      "score": null,
+      "score": 83,
       "publishDate": "2011-06-21",
       "url": "https://everything-theatre.co.uk/2011/06/rosencrantz-and-guildenstern-are-dead/",
       "findings": [
@@ -122108,7 +122095,7 @@
     {
       "showId": "sweeney-todd-west-end-2012",
       "file": "islington-gazette--tom-marshall.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2012-07-11",
       "url": "https://www.islingtongazette.co.uk/news/21243985.theatre-review-sweeney-todd-adelphi-theatre/",
       "findings": [
@@ -127127,20 +127114,6 @@
       ]
     },
     {
-      "showId": "the-heretic-west-end-2011",
-      "file": "independent--unknown.json",
-      "score": null,
-      "publishDate": "2011-02-13",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-children-s-hour-comedy-theatre-londonplenty-crucible-studio-sheffieldthe-heretic-royal-court-downstairs-london-2213032.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "the-hills-of-california-2024",
       "file": "culturesauce--thom-geier.json",
       "score": 78,
@@ -128901,7 +128874,7 @@
     {
       "showId": "the-lives-of-others-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 95,
+      "score": 94,
       "publishDate": "2026-11-01",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-LIVES-OF-OTHERS-Starring-Keira-Knightly-Stephen-Dillane-Luke-Thompson-20261101",
       "findings": [
@@ -130747,7 +130720,7 @@
     {
       "showId": "the-pitmen-painters-west-end-2011",
       "file": "express-uk--julie-carpenter.json",
-      "score": null,
+      "score": 88,
       "publishDate": "2011-10-14",
       "url": "https://www.express.co.uk/entertainment/theatre/277284/Stage-Review-The-Pitmen-Painters-Duchess-Theatre-London",
       "findings": [
@@ -130844,6 +130817,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2011",
       "file": "guardian--michael-billington.json",
+      "score": 56,
       "publishDate": "2011-09-28",
       "url": "https://www.theguardian.com/stage/2011/sep/28/playboy-of-the-western-world-review",
       "findings": [
@@ -130857,7 +130831,7 @@
     {
       "showId": "the-playboy-of-the-western-world-west-end-2011",
       "file": "whatsonstage--michael-coveney.json",
-      "score": 60,
+      "score": 62,
       "publishDate": "2011-09-28",
       "url": "https://www.whatsonstage.com/news/the-playboy-of-the-western-world_6847/",
       "findings": [
@@ -132874,7 +132848,7 @@
     {
       "showId": "the-umbrellas-of-cherbourg-west-end-2011",
       "file": "standard--henry-hitchings.json",
-      "score": null,
+      "score": 41,
       "publishDate": "2011-03-23",
       "url": "http://www.thisislondon.co.uk/theatre/review-23934627-theres-not-much-to-stir-the-emotions-in-the-umbrellas-of-cherbourg.do",
       "findings": [
@@ -132999,6 +132973,7 @@
     {
       "showId": "the-village-bike-west-end-2011",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 77,
       "publishDate": "2011-07-05",
       "url": "https://www.ft.com/content/d127c478-a6e1-11e0-a808-00144feabdc0",
       "findings": [
@@ -134516,7 +134491,7 @@
     {
       "showId": "timon-of-athens-west-end-2012",
       "file": "standard--evening-standard.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2012-09-06",
       "url": "https://www.standard.co.uk/culture/theatre/timon-of-athens-olivier-theatre-national-review-7956478.html",
       "findings": [
@@ -137870,7 +137845,7 @@
     {
       "showId": "written-on-the-heart-west-end-2012",
       "file": "whatsonstage--michael-coveney.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2012-04-24",
       "url": "https://www.whatsonstage.com/news/written-on-the-heart-west-end_4617/",
       "findings": [
