@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T15:13:57.942Z",
+  "timestamp": "2026-11-03T15:53:51.483Z",
   "stats": {
-    "totalReviews": 79840,
-    "alreadyFlagged": 22026,
+    "totalReviews": 79865,
+    "alreadyFlagged": 22028,
     "dateGuardCatches": 217,
     "directorMismatch": 3454,
     "tvFilmSignals": 2262,
-    "londonSignals": 3586,
+    "londonSignals": 3587,
     "offBroadwaySignals": 735,
     "yearMismatch": 360,
-    "noPublishDate": 8451
+    "noPublishDate": 8471
   },
   "findings": [
     {
@@ -92110,6 +92110,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.nytimes.com/2026/11/02/theater/odets-waiting-for-lefty-awake-sing-golden-boy.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
