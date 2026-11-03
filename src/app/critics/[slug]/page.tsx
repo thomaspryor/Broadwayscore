@@ -79,7 +79,7 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, criticSchema, faqSchema]) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, criticSchema, faqSchema]).replace(/</g, '\\u003c') }}
       />
       <CriticDetailClient critic={critic} profile={profile} />
     </>

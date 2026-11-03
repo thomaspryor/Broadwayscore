@@ -37,7 +37,7 @@ export async function GET(req: NextRequest) {
   if (!criticBackendReady()) return page('Unavailable', '<h1>Unavailable</h1><p>Nothing was changed.</p>', 503);
   const claim = await loadClaim(g.claimId);
   if (!claim) return page('Not found', '<h1>Request not found</h1><p>Nothing was changed.</p>', 404);
-  if (claim.status !== 'pending') return page('Already handled', `<h1>Already ${escHtml(claim.status)}</h1><p>Nothing changes if you tap again.</p>`);
+  if (claim.status !== 'pending' && !(claim.status === 'approved' && g.action === 'approve')) return page('Already handled', `<h1>Already ${escHtml(claim.status)}</h1><p>Nothing changes if you tap again.</p>`);
   const hidden = Object.entries(params).map(([k, v]) => `<input type="hidden" name="${k}" value="${escHtml(v || '')}">`).join('');
   return page(g.action === 'approve' ? 'Approve claim' : 'Decline claim',
     `<h1>${g.action === 'approve' ? 'Approve' : 'Decline'} this claim?</h1><p>Page: <a href="/critics/${escHtml(claim.critic_slug)}">${escHtml(claim.critic_slug)}</a><br>Contact: ${escHtml(claim.contact_email)}</p>
@@ -53,10 +53,12 @@ export async function POST(req: NextRequest) {
   if (!criticBackendReady()) return page('Unavailable', '<h1>Unavailable</h1><p>Nothing was changed.</p>', 503);
   const claim = await loadClaim(g.claimId);
   if (!claim) return page('Not found', '<h1>Request not found</h1><p>Nothing was changed.</p>', 404);
-  if (claim.status !== 'pending') return page('Already handled', `<h1>Already ${escHtml(claim.status)}</h1><p>Nothing changed.</p>`);
+  // Retrying an approve whose profile row failed last time is allowed: the profile upsert below is idempotent.
+  const retryApprove = claim.status === 'approved' && g.action === 'approve';
+  if (claim.status !== 'pending' && !retryApprove) return page('Already handled', `<h1>Already ${escHtml(claim.status)}</h1><p>Nothing changed.</p>`);
 
   const status = g.action === 'approve' ? 'approved' : 'declined';
-  const upd = await sbAdmin(`/rest/v1/critic_claims?id=eq.${g.claimId}&status=eq.pending`, {
+  const upd = retryApprove ? new Response('[]', { status: 200 }) : await sbAdmin(`/rest/v1/critic_claims?id=eq.${g.claimId}&status=eq.pending`, {
     method: 'PATCH', prefer: 'return=representation',
     body: JSON.stringify({ status, decided_at: new Date().toISOString() }),
   });
@@ -64,6 +66,10 @@ export async function POST(req: NextRequest) {
     return page('Could not record', upd.status === 409
       ? '<h1>Another account already owns this page</h1><p>Nothing was changed.</p>'
       : '<h1>Could not record that</h1><p>Nothing was changed. Tap the link again in a minute.</p>', upd.status === 409 ? 409 : 502);
+  }
+  if (!retryApprove) {
+    const changed = (await upd.json().catch(() => [])) as unknown[];
+    if (!Array.isArray(changed) || changed.length !== 1) return page('Already handled', '<h1>Already handled</h1><p>Someone else decided this a moment ago. Nothing changed.</p>', 409);
   }
   if (g.action === 'approve') {
     const prof = await sbAdmin('/rest/v1/critic_profiles?on_conflict=critic_slug', {

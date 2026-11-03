@@ -80,8 +80,13 @@ async function main() {
   let n = 0;
   for (const t of todo.slice(0, MAX)) {
     const m = compose(t.name, t.showTitle, t.outlet, t.slug);
-    await send(t.to, m.subject, m.html);
+    // Record first (the primary key dedupes), then send; undo the record if the send fails so a rerun retries.
     await sb('/rest/v1/critic_opening_notices', { method: 'POST', headers: { Prefer: 'return=minimal' }, body: JSON.stringify({ critic_slug: t.slug, show_slug: t.showSlug }) });
+    try { await send(t.to, m.subject, m.html); }
+    catch (err) {
+      await sb(`/rest/v1/critic_opening_notices?critic_slug=eq.${encodeURIComponent(t.slug)}&show_slug=eq.${encodeURIComponent(t.showSlug)}`, { method: 'DELETE' });
+      throw err;
+    }
     n++;
   }
   console.log(`Sent ${n} email(s).`);

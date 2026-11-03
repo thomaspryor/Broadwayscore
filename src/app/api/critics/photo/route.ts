@@ -30,8 +30,8 @@ export async function POST(req: NextRequest) {
     signal: AbortSignal.timeout(15000),
   });
   if (!up.ok) return NextResponse.json({ error: 'Upload failed. Please try again.' }, { status: 502 });
-  const patch = await sbAdmin(`/rest/v1/critic_profiles?critic_slug=eq.${slug}&user_id=eq.${user.id}`, { method: 'PATCH', prefer: 'return=minimal', body: JSON.stringify({ photo_path: path, updated_at: new Date().toISOString() }) });
-  if (!patch.ok) return NextResponse.json({ error: 'Could not save. Please try again.' }, { status: 502 });
+  const patch = await sbAdmin(`/rest/v1/critic_profiles?critic_slug=eq.${encodeURIComponent(slug)}&user_id=eq.${encodeURIComponent(user.id)}`, { method: 'PATCH', prefer: 'return=representation', body: JSON.stringify({ photo_path: path, updated_at: new Date().toISOString() }) });
+  if (!patch.ok || ((await patch.json().catch(() => [])) as unknown[]).length !== 1) return NextResponse.json({ error: 'Could not save. Please try again.' }, { status: 502 });
   revalidateTag(`critic-profile:${slug}`, { expire: 0 });
   revalidatePath(`/critics/${slug}`);
   return NextResponse.json({ ok: true });
