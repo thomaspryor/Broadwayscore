@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6900",
   "planId": "b652ef19-6301-4c23-aa85-9b9e8f95ca22",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T17:15:42.499Z",
   "submitter": {
     "name": null,
@@ -239,5 +239,134 @@
         "description": "BRO-6900: the outlet page (https://www.dailymail.com/tvshowbiz/article-5656471/Quentin-Letts-reviews-Strictly-Ballroom-Musical.html) prints a single 4/5 verdict (dailymail-rating-img) and its body matches the stored text; the file was stored with no rating, so it was scored unanchored."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T19:53:43.789Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-about-eve-west-end-2019/daily-mail--quentin-letts.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-enemy-of-the-people-west-end-2024/daily-mail--patrick-marmion.json originalScore: null -> \"1/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anna-x-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clarkston-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frozen-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"5/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "harry-potter-and-the-cursed-child-both-parts-west-end-2021/daily-mail--quentin-letts.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hello-dolly-west-end-2024/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "home-im-darling-west-end-2018/daily-mail--quentin-letts.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "inter-alia-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-west-end-2023/daily-mail--patrick-marmion.json originalScore: null -> \"1/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lemons-lemons-lemons-lemons-lemons-west-end-2023/daily-mail--patrick-marmion.json originalScore: null -> \"2/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "long-days-journey-into-night-west-end-2024/daily-mail--patrick-marmion.json originalScore: null -> \"2/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "lyonesse-west-end-2023/daily-mail--patrick-marmion.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "man-to-man-west-end-2026/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mrs-warrens-profession-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "murder-cathedral-off-west-end-2026/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oedipus-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "opening-night-west-end-2024/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2025/daily-mail--patrick-marmion.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pretty-woman-the-musical-west-end-2020/daily-mail--patrick-marmion.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "queen-anne-west-end-2017/daily-mail--quentin-letts.json originalScore: null -> \"3/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-of-rock-west-end-2016/daily-mail--quentin-letts.json originalScore: null -> \"5/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shirley-valentine-west-end-2023/daily-mail--patrick-marmion.json originalScore: null -> \"5/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "strictly-ballroom-west-end-2018/daily-mail--quentin-letts.json originalScore: null -> \"4/5\" (retracted originalScoreNormalized, originalScoreSource, scoreSource)"
+    }
+  ],
+  "executedIn": "ci"
 }
