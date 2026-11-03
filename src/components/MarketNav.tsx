@@ -319,7 +319,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                     <span className={`w-1.5 h-1.5 rounded-full ${isHub ? 'bg-sky-400 shadow-[0_0_6px_rgba(56,189,248,0.5)]' : 'bg-sky-500/60'}`} />
                     <div>
                       <div className={`text-sm font-semibold ${isHub ? 'text-sky-200' : 'text-white'}`}>{hub.short} Theater</div>
-                      <div className="text-[11px] text-fg-muted">{hubStats?.openShows ?? 0} playing now · {hub.menuSub}</div>
+                      <div className="text-[11px] text-fg-muted">{hubStats ? `${hubStats.openShows} playing now · ${hub.menuSub}` : hub.menuSub}</div>
                     </div>
                   </div>
                   {isHub && (
