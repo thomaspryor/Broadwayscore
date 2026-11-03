@@ -29,11 +29,11 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require('../lib/score-tiers');
-const { roundupFillOrder, findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
+const { roundupFillOrder, findBackfillEvents, findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
 const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
-const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON } = require('./config');
+const { CHANNEL_SETS, MARKETS, marketOf, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL } = require('./config');
 const { targetSets, tagChannels, channelKey, homeSet } = require('./routing');
 const briefs = require('./briefs');
 
@@ -740,6 +740,13 @@ async function main() {
     const found2 = { shows: ctx.shows, ledger: ctx.ledger, now, reviewsByShow: ctx.reviewsByShow, slim: ctx.slim, getOutletTier: ctx.getOutletTier };
     if (WEEKLY_ROUNDUP.enabled) roundupEvents = findRoundupEvents({ ...found2, cfg: WEEKLY_ROUNDUP }).filter(ev => !tooManyFailures(ev.id));
     if (CLOSING_SOON.enabled) closingEvents = findClosingSoonEvents({ ...found2, cfg: CLOSING_SOON }).filter(ev => !tooManyFailures(`closing-soon:${ev.show.id}`));
+    // BRO-6932: nothing else is going out today, so post an older show that missed its window.
+    if (BACKFILL.enabled) {
+      const busy = found.length + compareEvents.length + roundupEvents.length + closingEvents.length > 0;
+      // A show held for want of a poster is tried at most once a day, so it cannot hold a slot all afternoon.
+      const held = id => { const w = (ctx.ledger._meta.waitingForPoster || {})[id]; return !!w && now - Date.parse(w.at || w.since) < 20 * 3600e3; };
+      events.push(...scheduleEvents(findBackfillEvents({ ...found2, busy, blocked: id => tooManyFailures(id) || held(id), cfg: BACKFILL }), ctx.ledger, now));
+    }
   }
   const owed = pendingRetries(ctx.ledger, now).length;
   const toVerify = postsToVerify(ctx.ledger, now).length;
@@ -857,7 +864,7 @@ async function main() {
         const desc = describe(ev.show, ctx);
         const captions = buildCaptions(desc);
         const card = await buildCard(desc, outDir, { requirePoster: live });
-        console.log(`\n[autopost] ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
+        console.log(`\n[autopost] ${ev.show.id}${ev.backfill ? " (quiet-day backfill)" : ""} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
         console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
         const route = targetSets(ev.show, ctx.reviewsByShow[ev.show.id], CHANNEL_SETS, ctx.shows);
         console.log(`  routing: ${ev.show.category} -> ${route.join(' + ') || 'no'} channels${route.length > 1 ? ' (high profile, cross-posted)' : ''}`);
@@ -874,6 +881,7 @@ async function main() {
         const entry = {
           type: 'score', date: new Date(now).toISOString().slice(0, 10), showId: ev.show.id, slug: ev.show.slug || ev.show.id,
           title: ev.show.title, dueAt: ev.dueAt.toISOString(), score: desc.score, imageUrl, text: captions.twitter, channels: posted,
+          ...(ev.backfill ? { backfill: true } : {}),
         };
         if (Object.keys(errors).length) {
           // Retried by retryFailedChannels() on later runs with these exact texts, so
@@ -894,7 +902,7 @@ async function main() {
           // or it ages out of SCORE_LOOKBACK_DAYS. Reported once so the digest shows it.
           const waiting = ctx.ledger._meta.waitingForPoster = ctx.ledger._meta.waitingForPoster || {};
           if (!waiting[ev.show.id]) problems.push(`${ev.show.id}: held, ${e.message}. Add a full-size poster (at least 440px wide) and it posts on the next run.`);
-          waiting[ev.show.id] = { since: (waiting[ev.show.id] || {}).since || new Date(now).toISOString(), reason: e.message.slice(0, 300) };
+          waiting[ev.show.id] = { since: (waiting[ev.show.id] || {}).since || new Date(now).toISOString(), at: new Date(now).toISOString(), reason: e.message.slice(0, 300) };
           console.log(`  [art] ${ev.show.id}: HELD, ${e.message}`);
           writeLedger(ctx.ledger);
           continue;

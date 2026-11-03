@@ -135,8 +135,20 @@ const CLOSING_SOON = {
   minScore: 80, maxPerDay: 2, // rounded Critic Score
 };
 
+// Quiet-day backfill (BRO-6932): a show whose score settled after its SCORE_LOOKBACK_DAYS
+// window still gets its score post on a day with nothing else going out (owner, 2026-11-03:
+// "it doesn't have to always be so timely"). Judged on the New York day, because every
+// network posts from the Broadway channel set today. Set enabled false to stop.
+const BACKFILL = {
+  enabled: true,
+  fromHour: 14, // New York local hour from which a day with no post counts as quiet
+  maxPerDay: 2, // backfill posts on one quiet day (90 minutes apart, STAGGER_MINUTES)
+  lookbackDays: 45, // opened at most this many days ago
+  minDaysLeft: 2, // a show closing sooner than this is not worth a post
+};
+
 module.exports = {
-  WEEKLY_ROUNDUP, CLOSING_SOON,
+  WEEKLY_ROUNDUP, CLOSING_SOON, BACKFILL,
   MARKETS, marketOf, OPERA_HOUSE_TAGS, operaHouseTag, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,

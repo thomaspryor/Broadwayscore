@@ -137,7 +137,7 @@ const liveLedger = { posts: [{ type: 'score', showId: 'posted', dueAt: '2026-10-
 test('skippedShows: waiting, aged out and pre-launch shows, each with a plain reason', () => {
   const ctx = selCtx([
     show('waiting', '2026-10-30'), // slot Oct 31, no score yet
-    show('aged', '2026-10-21'), // slot Oct 22, aged out Nov 1
+    { ...show('aged', '2026-10-21'), status: 'closed' }, // slot Oct 22, aged out Nov 1, closed so no quiet-day backfill
     show('prelaunch', '2026-10-05'), // aged out Oct 16, before the first ledger entry
     show('posted', '2026-10-30'),
     show('future', '2026-11-05'),
@@ -150,6 +150,20 @@ test('skippedShows: waiting, aged out and pre-launch shows, each with a plain re
   assert.equal(out[2].link, 'https://westendscorecard.com/show/london');
   assert.deepEqual(skippedShows({ ctx, ledger: { posts: [] }, now: NOW }), []); // not live yet
   assert.deepEqual(skippedShows({ ctx: null, ledger: liveLedger, now: NOW }), []);
+});
+
+test('skippedShows: a show that aged out but can still post on a quiet day is not called given up (BRO-6932)', () => {
+  const ctx = selCtx([show('aged', '2026-10-21'), { ...show('closing', '2026-10-21'), closingDate: '2026-11-03' }]);
+  const out = skippedShows({ ctx, ledger: liveLedger, now: NOW });
+  assert.deepEqual(out.map((x) => [x.title, x.final]), [['CLOSING', true], ['AGED', false]]);
+  assert.equal(out[1].reason, 'not posted yet: no score on the site yet. It will post on a quiet day once that changes');
+  assert.match(out[0].reason, /gave up 10 days after opening/);
+  const settled = selCtx([show('aged', '2026-10-21', 'off-broadway')], { aged: { cs: 80, rc: 9 } });
+  settled.reviewsByShow = { aged: Array.from({ length: 9 }, (_, i) => ({ outletId: `o${i}`, assignedScore: 80, scoreConfidence: 'high' })) };
+  settled.getOutletTier = (id) => (Number(id.slice(1)) < 3 ? 1 : 2);
+  const r = skippedShows({ ctx: settled, ledger: liveLedger, now: NOW });
+  assert.match(r[0].reason, /will post on the next day with nothing else going out/);
+  assert.equal(r[0].final, false);
 });
 
 test('skippedShows lists ledger skips from the last week in words', () => {

@@ -21,7 +21,7 @@
  * Facebook have clicks, Instagram has reach), but every network can send a visit.
  */
 
-const { scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../social-autopost/select');
+const { backfillWindow, scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../social-autopost/select');
 const C = require('../social-autopost/config');
 
 const NETWORK_NAMES = { twitter: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube' };
@@ -347,10 +347,17 @@ function skippedShows({ ctx, ledger, now }) {
     let reason; let final = false;
     if (d.why === 'too-old') {
       const u = scoreDecision(show, dctx, { ignoreAge: true });
-      reason = u.due
-        ? `has a score now, but it was not ready within ${C.SCORE_LOOKBACK_DAYS} days of opening`
-        : `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
-      final = true;
+      if (backfillWindow(show, dctx)) {
+        // BRO-6932: still owed a post; a quiet day picks it up once its score settles.
+        reason = u.due
+          ? `its score settled after the ${C.SCORE_LOOKBACK_DAYS}-day window, so it will post on the next day with nothing else going out`
+          : `not posted yet: ${plainReason(u)}. It will post on a quiet day once that changes`;
+      } else {
+        reason = u.due
+          ? `has a score now, but it was not ready within ${C.SCORE_LOOKBACK_DAYS} days of opening`
+          : `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
+        final = true;
+      }
     } else {
       reason = plainReason(d);
     }
