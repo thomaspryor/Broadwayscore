@@ -7,7 +7,7 @@
     "email": null
   },
   "plan": {
-    "summary": "BRO-6855 LA accuracy audit: correct Stage Raw critic names to the article byline, flag two files that are not reviews of the tracked show.",
+    "summary": "BRO-6855 LA accuracy audit: correct Stage Raw critic names to the article byline, flag two files that are not reviews of the tracked show. Attach real art to Clown Sh*t and Heroes of the Fourth Turning.",
     "steps": [
       "Apply the review-field-edit actions",
       "Rebuild reviews so scores reflect the corrections"
@@ -117,6 +117,32 @@
         "oldValue": null,
         "newValue": true,
         "description": "Stored text is theatreinla.com page navigation and template code, no review of Heartbreak House."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "clown-sh-t-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/clown-sh-t-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/clown-sh-t-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/clown-sh-t-regional-2026/hero.webp"
+        },
+        "description": "clown-sh-t-regional-2026: attach real art (Stage Raw production photo of Clown Sh*t); the hub card had no image (BRO-6855)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "heroes-of-the-fourth-turning-regional-2026",
+        "field": "images",
+        "oldValue": null,
+        "newValue": {
+          "poster": "/images/shows/heroes-of-the-fourth-turning-regional-2026/poster.webp",
+          "thumbnail": "/images/shows/heroes-of-the-fourth-turning-regional-2026/thumbnail.webp",
+          "hero": "/images/shows/heroes-of-the-fourth-turning-regional-2026/hero.webp"
+        },
+        "description": "heroes-of-the-fourth-turning-regional-2026: attach real art (the Catharsis Theatre Collective show banner from the Humanitix event page); the hub card had no image (BRO-6855)"
       }
     ]
   }
