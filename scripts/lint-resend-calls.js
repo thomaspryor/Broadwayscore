@@ -67,6 +67,7 @@ const ALLOWLIST = new Set([
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
   'scripts/sync-followers.js',
+  'scripts/lib/signup-city-tags.js', // BRO-6929: not a sender. Only GET/POST /contact-properties and PATCH /contacts/{email} to write the `city` property on existing subscribers; no /emails, /broadcasts or /send anywhere in the file. Split out of sync-followers.js (above) so the push logic is unit-testable with a fake http
   'scripts/execute-approved-fix.js',
   'scripts/send-opening-night-broadcast.js',
   'scripts/send-btc-results.js',
