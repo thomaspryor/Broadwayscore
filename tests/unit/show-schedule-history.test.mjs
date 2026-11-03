@@ -106,22 +106,23 @@ test('mergeShowScheduleHistory unions both writers, ours wins a shared week', ()
 
 test('committed archive covers March 2026 onward (spot check Oh, Mary!)', () => {
   const h = hist.loadHistory();
-  const live = JSON.parse(fs.readFileSync(path.join(path.dirname(hist.HISTORY_PATH), 'show-schedules.json'), 'utf8'));
   assert.ok(h.firstWeek && h.firstWeek <= '20260316', `firstWeek ${h.firstWeek}`);
   for (const s of Object.values(h.shows)) {
     for (const k of Object.keys(s.weeks)) assert.ok(k <= h.lastWeek, `${k} has started`);
   }
-  assert.ok(h.lastWeek <= live.currentMonday, 'archive never holds weeks that have not started');
   assert.deepEqual(h.shows['oh-mary-2024']?.weeks['20260511']?.[5], { m: '17:00', e: '20:30' }, 'Sat 2026-05-16');
 });
 
-test('archiveLagWeeks: how far the archive trails the live file (validate-data warns > 1)', async () => {
+test('archiveLagWeeks: how far the archive trails the live file (signed; validate-data warns unless 0)', async () => {
   const { archiveLagWeeks } = require('../../scripts/lib/merge-show-schedule-history.js');
   assert.equal(archiveLagWeeks({ lastWeek: '20261102' }, '20261102'), 0);
   assert.equal(archiveLagWeeks({ lastWeek: '20261019' }, '20261102'), 2);
   assert.equal(archiveLagWeeks({ lastWeek: '20261228' }, '20270104'), 1, 'across a year end');
   assert.equal(archiveLagWeeks({ lastWeek: null }, '20261102'), null);
   assert.equal(archiveLagWeeks({ lastWeek: '20261102' }, undefined), null);
+  assert.equal(archiveLagWeeks({ lastWeek: '20261109' }, '20261102'), -1, 'stale live file rolled back');
+  assert.equal(archiveLagWeeks({ lastWeek: '20261399' }, '20261102'), null, 'not a real date');
+  assert.equal(archiveLagWeeks({ lastWeek: '20260230' }, '20261102'), null, 'Feb 30');
 });
 
 // Live check (BRO-6877 recheck): the refresh workflows must keep folding ended

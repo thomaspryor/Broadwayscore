@@ -51,14 +51,20 @@ function mergeShowScheduleHistory(ours, remote) {
 
 /**
  * Whole weeks the archive's lastWeek trails the live file's currentMonday
- * (both YYYYMMDD Mondays). 0 when current; null when either is missing.
- * A growing lag means the writers stopped archiving (validate-data.js warns).
+ * (both YYYYMMDD Mondays). 0 when current; null when either is missing or
+ * not a real date. Positive: the writers stopped archiving. Negative: the
+ * live file's currentMonday went backwards (a stale writer). validate-data.js
+ * warns on anything but 0.
  */
 function archiveLagWeeks(history, currentMonday) {
   const last = history && history.lastWeek;
   if (!/^\d{8}$/.test(String(last || '')) || !/^\d{8}$/.test(String(currentMonday || ''))) return null;
-  const t = (k) => Date.UTC(+k.slice(0, 4), +k.slice(4, 6) - 1, +k.slice(6, 8));
-  return Math.max(0, Math.round((t(currentMonday) - t(last)) / (7 * 864e5)));
+  const t = (k) => {
+    const ms = Date.UTC(+k.slice(0, 4), +k.slice(4, 6) - 1, +k.slice(6, 8));
+    return new Date(ms).toISOString().slice(0, 10).replace(/-/g, '') === k ? ms : NaN;
+  };
+  const weeks = Math.round((t(currentMonday) - t(last)) / (7 * 864e5));
+  return Number.isFinite(weeks) ? weeks : null;
 }
 
 module.exports = { emptyHistory, pruneAfter, mergeShowScheduleHistory, archiveLagWeeks };

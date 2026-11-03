@@ -2324,9 +2324,10 @@ function validateSchedulesJson(shows) {
   if (fs.existsSync(historyFile)) {
     try {
       const lag = archiveLagWeeks(JSON.parse(fs.readFileSync(historyFile, 'utf8')), data.currentMonday);
-      if (lag === null) warn('show-schedule-history.json: lastWeek or currentMonday missing');
-      else if (lag > 1) warn(`show-schedule-history.json is ${lag} weeks behind show-schedules.json (archiving stopped? rerun scripts/backfill-show-schedule-history.js)`);
-      else ok(`show-schedule-history.json is current (lag ${lag} week)`);
+      if (lag === null) warn('show-schedule-history.json: lastWeek or currentMonday missing or not a date');
+      else if (lag > 0) warn(`show-schedule-history.json is ${lag} week(s) behind show-schedules.json (archiving stopped? rerun scripts/backfill-show-schedule-history.js)`);
+      else if (lag < 0) warn(`show-schedules.json currentMonday ${data.currentMonday} is ${-lag} week(s) before the archive's lastWeek (a stale writer rolled it back)`);
+      else ok('show-schedule-history.json is current');
     } catch (e) {
       warn(`show-schedule-history.json parse error: ${e.message}`);
     }
