@@ -98,3 +98,14 @@ test('DISABLE_LABELLED_SIBLINGS turns off the pairing only', () => {
     assert.deepEqual(idx.get(met.id)?.labelledSiblings || [], []);
   } finally { delete process.env.DISABLE_LABELLED_SIBLINGS; }
 });
+
+test('the cross-market relaxation is for head-keyed pairs only: an exact-title transfer keeps the nearest-opening rule', () => {
+  const london = { id: 'y-west-end-2026', title: 'Y', category: 'west-end', venue: 'Harold Pinter Theatre', openingDate: '2026-10-01', closingDate: '2027-03-31' };
+  const bway = { id: 'y-2026', title: 'Y', category: 'broadway', venue: 'Booth Theatre', openingDate: '2026-10-20' };
+  const idx = buildSiblingIndex([london, bway]);
+  // Oct 19 sits nearer Broadway's opening; a URL naming the London house in passing stays.
+  const d = siblingVenueDecision(idx.get(bway.id), {
+    url: 'https://example.com/y-review-harold-pinter-transfer', publishDate: '2026-10-19', visitedSet: new Set([bway.id]),
+  });
+  assert.equal(d, null);
+});

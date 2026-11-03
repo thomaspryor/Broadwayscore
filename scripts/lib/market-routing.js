@@ -413,6 +413,9 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
     if (!phrase) continue;
     // A sibling with no opening date has no window, so it cannot claim a review.
     if (!sib.openingDate) continue;
+    // A head-keyed pair needs this show's own opening too: without it the "closer to
+    // which opening" test below cannot run, and the head is often a common word.
+    if (sib.labelled && !sibData.openingDate) continue;
     if (reviewDate) {
       // The sibling's run window must hold the review, or the URL is only mentioning the
       // venue in passing (a Broadway review citing the London venue it came from).
@@ -426,7 +429,8 @@ function siblingVenueDecision(sibData, { url, publishDate, visitedSet }) {
       // review: two houses' productions of one opera can open days apart (ENO's Tosca Oct 30,
       // the Met's Nov 1), and a Nov 2 URL naming only the London house is London's (BRO-6924).
       // A transfer's origin opened months earlier, so it stays out.
-      const crossMarket = currentPool && sib.category && getShowMarketPool(sib) !== currentPool;
+      // Head-keyed pairs only: exact-title transfers keep the nearest-opening rule.
+      const crossMarket = sib.labelled && currentPool && sib.category && getShowMarketPool(sib) !== currentPool;
       const sibNear = Math.abs(reviewDate - sib.openingDate) <= SIBLING_CLOSE_DAYS * DAY;
       if (sibData.openingDate && !(crossMarket && sibNear)
           && Math.abs(reviewDate - sibData.openingDate) < Math.abs(reviewDate - sib.openingDate)) continue;
