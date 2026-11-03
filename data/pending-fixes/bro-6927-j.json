@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-j",
   "planId": "d480bebf-0204-4810-8963-4e9f86f8e1f1",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -112,5 +112,89 @@
         "description": "BRO-6927 gap: Mark Kennedy (The Washington Post) review of the-music-man-2022, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:50:32.316Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=farinelli-and-the-king-2017 --url=http://www.vulture.com/2017/12/two-critics-review-one-show-farinelli-and-the-king.html --critic=\"Sara Holdren\" --publish-date=2017-12-17"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=shadow-land-off-broadway-2023 --url=https://www.wsj.com/articles/shadow-land-review-family-history-in-hurricane-katrina-5400c6ba --critic=\"Charles Isherwood\" --publish-date=2023-05-04"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=someone-spectacular-off-broadway-2024 --url=https://www.wsj.com/articles/someone-spectacular-review-therapy-on-autopilot-c486e12f --critic=\"Charles Isherwood\" --publish-date=2024-07-31"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=staff-meal-off-broadway-2024 --url=https://www.wsj.com/articles/staff-meal-review-abe-koogler-playwrights-horizons-9c2fbe8c --critic=\"Charles Isherwood\" --publish-date=2024-05-08"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=heisenberg-2016 --url=http://www.amny.com/entertainment/heisenberg-review-mary-louise-parker-stars-in-slight-romance-1.12453398 --critic=\"Matt Windman\" --publish-date=2016-10-13"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=take-me-out-2022 --url=https://www.vulture.com/2022/04/theater-review-take-me-out-jesse-tyler-ferguson.html --critic=\"Helen Shaw\" --publish-date=2022-04-04"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=hedwig-and-the-angry-inch-2014 --url=http://www.chicagotribune.com/entertainment/theater/sc-hedwig-broadway-review-column.html --critic=\"Chris Jones\" --publish-date=2014-04-22"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=summer-1976-2023 --url=https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-summer-1976-20230426-lilwdbldfjbyfnbqsqlytpo74e-story.html --critic=\"Chris Jones\" --publish-date=2023-04-26"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-music-man-2022 --url=https://www.washingtonpost.com/entertainment/review-hugh-jackman-steals-the-music-man-on-broadway/2022/02/10/15ab0646-8aed-11ec-838f-0cfdf69cce3c_story.html --critic=\"Mark Kennedy\" --publish-date=2022-02-11"
+    }
+  ],
+  "executedIn": "ci"
 }
