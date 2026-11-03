@@ -132,6 +132,9 @@ Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, th
 ### 19. New blocking CI gates land advisory first (BRO-2123)
 New `--strict`/`--gate` test.yml steps: `continue-on-error: true` (or own baseline, or `# gate-arm-ok: <proof>`), blocking later. `audit-new-gate-arming.js` enforces; `memory/feedback_new_gates_land_advisory.md`.
 
+### 20. Three-Tier Planning (owner, BRO-6246)
+**Substantial** (new system: 4th new file in a new dir, new workflow/secret) = plan + `/plan-review` + `OWNER-PLAN-APPROVED: <quote>`; a product decision, so "decide technical calls yourself" doesn't apply. **Moderate** = `/second-opinion`. **Simple** = go. Hook (in `worktree-enforce.sh`) warns, blocks from 2026-11-07.
+
 ---
 
 ## File Hygiene
