@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6910",
   "planId": "ac175e3b-2c28-4be5-849f-0b776af5c577",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T23:00:29.400Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "Stored quote is from The Executrix section; use a verbatim sentence from the Lefty section"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:12:11.800Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json llmPullQuote: \"Their first work under the banner of Two Sisters, their new company, is The Executrix, an inventive and slippery one-act by Horwitz, which Sarah Blush directs.\" -> \"Clifford Odets’ episodic, pro-union drama from 1935 still has plenty of potency even if Steven Pasquale’s staging struggles to maintain momentum.\""
+    }
+  ],
+  "executedIn": "ci"
 }
