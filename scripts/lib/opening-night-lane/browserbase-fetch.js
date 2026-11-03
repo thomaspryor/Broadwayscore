@@ -10,7 +10,11 @@
  * Spend. One session is shared by every routed fetch of the process (discovery and review fetch alike, a new page per
  * fetch), created on first use and once at a time (single-flight), rotated before its timeout, at most `maxSessions`
  * per run. createBbSession is the chokepoint: kill switch, day ceiling, reserves and the lane's caller allowance
- * (browserbase-caps.js CALLER_ALLOWANCES 'opening-night-lane'). A refusal that will not change tonight (kill switch, no
+ * (browserbase-caps.js CALLER_ALLOWANCES 'opening-night-lane'). Shadow runs and replays tag their sessions SHADOW_CALLER,
+ * which has no allowance: they cannot spend the live night's trailing-24h allowance, and they stop at the account's
+ * recovery and opening-window reserves, so they never take the last sessions of a day a live night may need (BRO-6872).
+ * Both reserves hold only while the run is not an exempt caller (brightdata-caps isExemptCaller: BD_OPENING_NIGHT, a
+ * workflow named "Opening night ...", an allowlisted script); the lane workflow is none of these, and a unit test pins it. A refusal that will not change tonight (kill switch, no
  * keys, allowance used, denied host, run cap) turns the route off for the run; any other refusal or failure to create
  * or connect pauses it for `cooldownMs`. While the route is off, routed hosts go to plain fetchPage, as before.
  *
@@ -24,6 +28,7 @@
 
 const BROWSERBASE_HOSTS = Object.freeze(['talkinbroadway.com']);
 const CALLER = 'opening-night-lane';
+const SHADOW_CALLER = 'opening-night-lane-shadow';
 const LATCHING_REFUSAL = /kill switch|not set|caller allowance used|host denied/i;
 // The allowance check refuses when it cannot count (Browserbase's list API failed): that may lift, so it only pauses.
 const latches = (e) => !!(e && e.bbNoSession && LATCHING_REFUSAL.test(e.message) && !/count unknown/i.test(e.message));
@@ -49,6 +54,7 @@ class BrowserbaseUnavailable extends Error {
  * @param {(page: object, url: string, opts?: object) => Promise<object>} p.readPage - browser-read-page.js readBrowserPage
  * @param {(sessionId: string) => Promise<void>} [p.releaseSession] - ends a created session that never got a browser
  * @param {object} [p.env] - needs BROWSERBASE_API_KEY and BROWSERBASE_PROJECT_ID, or the route is off
+ * @param {string} [p.caller] - session attribution and allowance key: CALLER (the live night) or SHADOW_CALLER
  * @param {number} [p.maxSessions] - sessions this run may create
  * @param {number} [p.sessionTimeoutSec] - Browserbase session timeout; the session is replaced 5 min before it
  * @param {number} [p.fetchTimeoutMs] - one fetch, navigation and challenge wait together
@@ -56,7 +62,7 @@ class BrowserbaseUnavailable extends Error {
  */
 function createBrowserbaseFetcher({
   createSession, connect, readPage, releaseSession = async () => {}, env = process.env, now = Date.now, log = () => {},
-  maxSessions = 8, sessionTimeoutSec = 3600, fetchTimeoutMs = 60000, cooldownMs = 15 * 60 * 1000,
+  caller = CALLER, maxSessions = 8, sessionTimeoutSec = 3600, fetchTimeoutMs = 60000, cooldownMs = 15 * 60 * 1000,
 }) {
   let offReason = env.BROWSERBASE_API_KEY && env.BROWSERBASE_PROJECT_ID ? null : 'BROWSERBASE_API_KEY / BROWSERBASE_PROJECT_ID not set';
   let pausedUntil = 0;
@@ -76,7 +82,7 @@ function createBrowserbaseFetcher({
     let session;
     try {
       session = await createSession({
-        caller: CALLER, purpose: 'opening-night lane Talkin Broadway fetch', host: BROWSERBASE_HOSTS[0], category: 'discovery',
+        caller, purpose: 'opening-night lane Talkin Broadway fetch', host: BROWSERBASE_HOSTS[0], category: 'discovery',
         body: { timeout: sessionTimeoutSec, browserSettings: { solveCaptchas: true } },
       });
     } catch (e) {
@@ -169,10 +175,10 @@ function laneFetchPage({ fetchPage, browserbase }) {
 }
 
 /** The real wiring: scraper.fetchPage plus a Browserbase fetcher over createBbSession and Playwright, loaded lazily. */
-function createLaneFetch({ env = process.env, log = (m) => console.log(m) } = {}) {
+function createLaneFetch({ env = process.env, log = (m) => console.log(m), caller = CALLER } = {}) {
   const { fetchPage } = require('../scraper');
   const browserbase = createBrowserbaseFetcher({
-    env, log,
+    env, log, caller,
     createSession: (opts) => require('../browserbase-session').createBbSession(opts),
     connect: (connectUrl) => require('playwright').chromium.connectOverCDP(connectUrl),
     readPage: (page, url, opts) => require('../browser-read-page').readBrowserPage(page, url, opts),
@@ -184,4 +190,4 @@ function createLaneFetch({ env = process.env, log = (m) => console.log(m) } = {}
   return { fetchPage: laneFetchPage({ fetchPage, browserbase }), browserbase, close: () => browserbase.close() };
 }
 
-module.exports = { BROWSERBASE_HOSTS, CALLER, routesThroughBrowserbase, BrowserbaseUnavailable, createBrowserbaseFetcher, laneFetchPage, createLaneFetch };
+module.exports = { BROWSERBASE_HOSTS, CALLER, SHADOW_CALLER, routesThroughBrowserbase, BrowserbaseUnavailable, createBrowserbaseFetcher, laneFetchPage, createLaneFetch };

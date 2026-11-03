@@ -56,7 +56,9 @@ async function main() {
   const inline = require('./lib/opening-night-lane/inline-score');
   const publish = require('./lib/opening-night-lane/publish');
   // Talkin' Broadway through one Browserbase session, shared by discovery and review fetch, as in the driver (BRO-6073).
-  const laneFetch = require('./lib/opening-night-lane/browserbase-fetch').createLaneFetch({ env });
+  // Tagged as the shadow caller: no allowance, so a shadow run or replay never spends the live night's (BRO-6872).
+  const bbFetch = require('./lib/opening-night-lane/browserbase-fetch');
+  const laneFetch = bbFetch.createLaneFetch({ env, caller: bbFetch.SHADOW_CALLER });
   const { EnsembleReviewScorer } = require('./llm-scoring/ensemble-scorer.ts');
   // Three models, like production (llm-ensemble-score.yml leaves OPENROUTER_API_KEY out: "Kimi disabled"). With the key
   // the scorer adds Kimi, whose 300 s OpenRouter timeouts and retries cost ~15 minutes per review in the first CI run.

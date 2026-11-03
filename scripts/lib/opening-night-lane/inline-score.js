@@ -11,7 +11,8 @@
  * or stars (the trust model's low-confidence fallback score), or printed an excerpt beside its link (scored as
  * excerpt-only, the regular pipeline's path for a paywalled review); with none of them it is a failure.
  * A paywall host's page under the scorer's body gate is the teaser, never scored as page text: it waits for an excerpt
- * or score. Between the gate and the host's floor (WSJ 2500) the scorer sees it and its not_a_review is held the same way.
+ * or score. Over the gate, scraped text failing the old path's paywall rule is scored as a partial copy, and
+ * a not_a_review on a page under the host's floor (WSJ 2500) is held for an excerpt.
  *
  * Timing: the runner re-offers a failed candidate on its next pass (every 2 minutes), so the backoff steps below are
  * floors and the effective retry granularity is the pass interval. One transient failure therefore costs about one pass
@@ -32,7 +33,7 @@ const { canonicalUrl, hasReviewSignal } = require('./discovery');
 const { laneNonReviewReason } = require('./lane-guards');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
-const { getHardPaywallDomain, HARD_PAYWALL_FLOORS } = require('../paywall-completeness');
+const { getHardPaywallDomain, HARD_PAYWALL_FLOORS, SCRAPED_SOURCE_METHODS, SOFT_PAYWALL_MIN_CHARS, truncatedTierPatch } = require('../paywall-completeness');
 const { OUTLET_HARD_MARKERS } = require('../paywall-detector');
 
 // Hosts whose page will not give a scraper the review text, so an aggregator excerpt may stand in for it: the
@@ -74,7 +75,8 @@ const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '
  * not_a_review is still a verdict.
  */
 function isTeaserNotAReview(rejection, url, text) {
-  if (!/^not_a_review\b/.test(String(rejection || ''))) return false;
+  // truncated_text too: a page labelled a partial copy (the paywall rule above) can draw that verdict instead (BRO-6872).
+  if (!/^(not_a_review|truncated_text)\b/.test(String(rejection || ''))) return false;
   // The URL must itself say review (WSJ "/articles/<show>-review-..."): a short feature or news piece on the same host,
   // under the floor because it is short, keeps its verdict (ship-check).
   if (!hasReviewSignal(url, '')) return false;
@@ -170,6 +172,7 @@ function createInlineScoring({
       const page = await fetchPage(candidate.fetchUrl || candidate.url);
       const html = page && typeof page.content === 'string' ? page.content : '';
       if (!html) throw new Error('fetchPage returned no content');
+      const sourceMethod = page.source || page.via || null; // what the old path's paywall rule keys on (SCRAPED_SOURCE_METHODS)
       const text = String(extractArticle(html, hostOf(candidate.url)) || '').trim();
       const meta = extractMeta(html, candidate.url) || {};
       if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score or paywall excerpt to fall back on`);
@@ -207,7 +210,25 @@ function createInlineScoring({
         if (partialOk) contentTier = 'truncated';
         else { keepText = false; contentTier = excerptTier.contentTier; }
       }
-      const out = withExcerpts({ outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: keepText ? text : '', aggregator, ...(contentTier ? { contentTier } : {}) });
+      // Over the body gate, the old path's paywall rule (collect-review-texts.js), on the same inputs: scraped text on a
+      // hard-paywall URL that fails assessPaywallCompleteness, or on a soft-paywall host under its floor, is a partial
+      // copy. It is scored now, re-collected later, and carries the old path's fields (tierReason 'Paywall truncation:',
+      // sourceMethod) so the rebuild's applyPaywallTierOverride keeps it truncated. The WSJ floor is not a teaser
+      // boundary: 27 of 40 complete, logged-in WSJ reviews of 1000-2499 chars sit under it, so this text is scored,
+      // not held (BRO-6872).
+      let paywallTruncation = null;
+      if (!contentTier && keepText && text.length >= BODY_GATE_CHARS && SCRAPED_SOURCE_METHODS.has(sourceMethod)) {
+        const criticName = meta.criticName || candidate.criticName || null;
+        paywallTruncation = truncatedTierPatch({ contentTier: 'complete', fullText: text, url: candidate.url, criticName, sourceMethod });
+        const host = hostOf(candidate.url);
+        const softMin = !getHardPaywallDomain(candidate.url) && SOFT_PAYWALL_MIN_CHARS[host];
+        if (!paywallTruncation && softMin && text.length < softMin) {
+          const reason = `Paywall truncation: ${text.length} chars < ${softMin} min for ${host} (source: ${sourceMethod})`;
+          paywallTruncation = { contentTier: 'truncated', tierReason: reason, contentTierReason: reason, textStatus: 'truncated', textQuality: 'truncated', isFullReview: false };
+        }
+        if (paywallTruncation) contentTier = 'truncated';
+      }
+      const out = withExcerpts({ outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: keepText ? text : '', aggregator, ...(contentTier ? { contentTier } : {}), ...(sourceMethod ? { sourceMethod } : {}), ...(paywallTruncation ? { paywallTruncation } : {}) });
       fetched.set(key, out);
       return out;
     } catch (e) {
@@ -267,7 +288,10 @@ function createInlineScoring({
       // about the review when an aggregator printed the critic's own words: score those once, excerpt-only. The 10-22
       // WSJ review was lost for good to input_validation_failed:body_too_short (BRO-6066). A wrong-show or non-review
       // verdict is the scorer's judgement of the review itself and is never retried on an excerpt.
-      if (!fromExcerpt && r && r.rejected && /^input_validation_failed/.test(String(r.rejection || '')) && row.fullText && hasExcerpts) {
+      // Likewise a paywall page already labelled a partial copy (contentTier 'truncated', over the host floor) drawing a
+      // truncated_text verdict: the scorer agreed it is partial, which says nothing against the critic's quoted words.
+      const refusedPartial = /^truncated_text\b/.test(String((r && r.rejection) || '')) && ctx.contentTier === 'truncated';
+      if (!fromExcerpt && r && r.rejected && (/^input_validation_failed/.test(String(r.rejection || '')) || refusedPartial) && row.fullText && hasExcerpts) {
         failures.appendFailure(ledgerDir, { show: show.id, night, reviewKey: key, stage: 'score', reason: `scorer refused the page text (${r.rejection}); scoring the aggregator excerpt`, attempt: 1, terminal: false, at: now() });
         r = await scoreText('', { ...ctx, contentTier: 'excerpt', excerpts });
         fromExcerpt = true;

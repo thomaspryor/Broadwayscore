@@ -174,6 +174,30 @@ test('the scorer refusing the page text (input_validation_failed) rescores from 
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
+// A page the lane labelled a partial copy (paywall rule, contentTier 'truncated') over the host floor that the scorer
+// calls truncated_text is scored from the aggregator excerpt; on a page sent as complete the same verdict stays final.
+test('a labelled partial copy refused as truncated_text rescores from the excerpt; a complete page refused that way does not', async () => {
+  const dir = tmp();
+  try {
+    const body = 'The production, which the critic found uneven in places. '.repeat(80);
+    const calls = [];
+    const sc = scoring({ dir, extract: () => body, scoreText: async (text, ctx) => {
+      calls.push(ctx.contentTier);
+      return text ? { rejected: true, rejection: 'truncated_text: ends mid-sentence' } : { score: 74 };
+    } });
+    const got = await sc.fetchReview(WSJ_CAND);
+    assert.ok(got.fullText.length > 3000);
+    const res = await sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, { ...got, contentTier: 'truncated' });
+    assert.equal(res.score, 74);
+    assert.equal(res.extra.contentTier, 'excerpt');
+    assert.deepEqual(calls, ['truncated', 'excerpt']);
+
+    const sc2 = scoring({ dir: tmp(), extract: () => body, scoreText: async () => ({ rejected: true, rejection: 'truncated_text: ends mid-sentence' }) });
+    const g2 = await sc2.fetchReview(WSJ_CAND);
+    await assert.rejects(sc2.scoreReview({ url: WSJ, fullText: g2.fullText, showId: SHOW.id }, { ...g2, contentTier: 'complete' }), (e) => e.permanent === true && /truncated_text/.test(e.message));
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
 // The real scorer's input gate on the exact file ensembleScoreText builds: the excerpt passes it, the teaser does not.
 test('through the real ensemble input gate: an excerpt-only lane review passes, the paywall teaser it replaces is refused', async () => {
   const real = Object.create(EnsembleReviewScorer.prototype);

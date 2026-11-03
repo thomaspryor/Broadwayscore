@@ -713,3 +713,102 @@ test('a held paywall teaser takes an aggregator excerpt that arrives on a later 
     assert.equal(got.contentTier, 'excerpt');
   } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
 });
+
+// BRO-6872: the old path's rule for a hard-paywall page over the body gate. Real logged-in WSJ reviews run 1000-2499
+// chars (27 of 40 complete ones in the corpus sit under the 2500 floor), so such a page is scored, never held; one
+// that fails the completeness check is scored as a partial copy (lane-runner then queues it for re-collection).
+test('a WSJ page over the body gate that fails the completeness check is scored as a partial copy, labelled as the old path labels it', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6872-wsj-trunc-'));
+  try {
+    const body = 'The critic weighs the revival, scene by scene, and finds it sharp. '.repeat(24); // ~1600 chars
+    const mk = (source) => inl.createInlineScoring({
+      show: { id: 'wsj-trunc-2026', title: 'Trunc' }, night: '2026-10-18', ledgerDir: dir, now: () => NIGHT_START,
+      fetchPage: async () => ({ content: 'x', ...(source ? { source } : {}) }), extractArticle: () => body,
+      scoreText: async () => ({ score: 70 }),
+    });
+    const url = 'https://www.wsj.com/arts-culture/theater/trunc-broadway-review-aaa111';
+    const got = await mk('brightdata').fetchReview({ url, criticName: 'A Critic' });
+    assert.equal(got.contentTier, 'truncated');
+    assert.equal(got.sourceMethod, 'brightdata');
+    assert.equal(got.fullText, body.trim(), 'the text is kept for scoring');
+    assert.match(got.paywallTruncation.tierReason, /^Paywall truncation: .*wsj\.com \(source: brightdata\)$/);
+    assert.equal(got.paywallTruncation.isFullReview, false);
+    // The rebuild keeps the lane's row truncated: it carries what applyPaywallTierOverride keys on.
+    const pc = require('../../scripts/lib/paywall-completeness.js');
+    const row = { url, fullText: got.fullText, criticName: 'A Critic', sourceMethod: got.sourceMethod, ...got.paywallTruncation, firstSeenAt: new Date().toISOString() };
+    assert.equal(pc.applyPaywallTierOverride(row, { contentTier: 'complete' }).contentTier, 'truncated');
+    // A direct fetch is not scraped text: the old path leaves it complete, and so does the lane.
+    const direct = await mk('direct').fetchReview({ url });
+    assert.equal(direct.contentTier, undefined);
+    assert.equal(direct.paywallTruncation, undefined);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('a soft-paywall page under its floor is a partial copy, as in the old path', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6872-ft-'));
+  try {
+    const sc = inl.createInlineScoring({
+      show: { id: 'ft-2026', title: 'Ft' }, night: '2026-10-18', ledgerDir: dir, now: () => NIGHT_START,
+      fetchPage: async () => ({ content: 'x', source: 'scrapingbee' }), extractArticle: () => 'The critic finds the revival sharp and funny. '.repeat(30), // ~1400 chars
+      scoreText: async () => ({ score: 70 }),
+    });
+    const got = await sc.fetchReview({ url: 'https://www.ft.com/content/abc-123' });
+    assert.equal(got.contentTier, 'truncated');
+    assert.match(got.paywallTruncation.tierReason, /^Paywall truncation: \d+ chars < 2000 min for ft\.com \(source: scrapingbee\)$/);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+test('a short WSJ review that ends in its info box passes the completeness check and stays complete', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6872-wsj-short-'));
+  try {
+    const sc = inl.createInlineScoring({
+      show: { id: 'wsj-short-2026', title: 'Short' }, night: '2026-10-18', ledgerDir: dir, now: () => NIGHT_START,
+      fetchPage: async () => ({ content: 'x' }),
+      extractArticle: () => 'The critic weighs the revival, scene by scene, and finds it sharp. '.repeat(24) + 'Running time: 1 hour 45 minutes, no intermission.',
+      scoreText: async () => ({ score: 70 }),
+    });
+    const got = await sc.fetchReview({ url: 'https://www.wsj.com/arts-culture/theater/short-broadway-review-bbb222' });
+    assert.equal(got.contentTier, undefined, 'no partial-copy tier: scored as complete');
+    // Same text on an open site is untouched by the paywall rule.
+    const open = inl.createInlineScoring({
+      show: { id: 'wsj-short-2026', title: 'Short' }, night: '2026-10-18', ledgerDir: dir, now: () => NIGHT_START,
+      fetchPage: async () => ({ content: 'x' }), extractArticle: () => 'The critic weighs the revival, scene by scene, and finds it sharp. '.repeat(24),
+      scoreText: async () => ({ score: 70 }),
+    });
+    assert.equal((await open.fetchReview({ url: 'https://deadline.com/2026/10/short-review-123/' })).contentTier, undefined);
+  } finally { fs.rmSync(dir, { recursive: true, force: true, maxRetries: 5 }); }
+});
+
+// BRO-6872: shadow runs and replays draw from a separate Browserbase budget than the live night.
+test('the live night tags sessions with the lane caller; a shadow run with the shadow caller, which has no allowance', async () => {
+  const callers = [];
+  const mk = (caller) => fakeBB({ ...(caller ? { caller } : {}), createSession: async (o) => { callers.push(o.caller); return { id: `s${callers.length}`, connectUrl: 'wss://x' }; } });
+  await mk().fetcher.fetch(TB_URL);
+  await mk(bbf.SHADOW_CALLER).fetcher.fetch(TB_URL);
+  assert.deepEqual(callers, ['opening-night-lane', 'opening-night-lane-shadow']);
+  const caps = require('../../scripts/lib/browserbase-caps.js');
+  const now = new Date('2026-11-05T00:00:00Z');
+  assert.ok(caps.callerAllowance(bbf.CALLER, { now, env: {} }) > 0, 'the live night keeps its allowance');
+  // No allowance: the shadow caller cannot spend the live night's trailing-24h count, and stops at the account reserves.
+  assert.equal(caps.callerAllowance(bbf.SHADOW_CALLER, { now, env: {} }), 0);
+  // The shadow entry point is the one that passes it.
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '../../scripts/opening-night-lane-shadow.js'), 'utf8');
+  assert.match(src, /createLaneFetch\(\{ env, caller: bbFetch\.SHADOW_CALLER \}\)/);
+});
+
+test('a truncated_text verdict on a paywall page under its floor is a teaser verdict too; on a full-length page it stands', () => {
+  const url = 'https://www.wsj.com/arts-culture/theater/x-broadway-review-ccc333';
+  assert.equal(inl.isTeaserNotAReview('truncated_text', url, 'a'.repeat(1500)), true);
+  assert.equal(inl.isTeaserNotAReview('not_a_review', url, 'a'.repeat(1500)), true);
+  assert.equal(inl.isTeaserNotAReview('truncated_text', url, 'a'.repeat(3000)), false);
+  assert.equal(inl.isTeaserNotAReview('wrong_show', url, 'a'.repeat(1500)), false);
+});
+
+// Shadow runs stop at the reserves only while they are not an exempt caller; pin that the lane workflow is not one.
+test('the lane workflow that runs shadow replays is not an exempt Browserbase caller', () => {
+  const caps = require('../../scripts/lib/brightdata-caps.js');
+  const wf = fs.readFileSync(new URL('../../.github/workflows/opening-night-lane-live.yml', import.meta.url), 'utf8');
+  const name = wf.match(/^name:\s*(.+)$/m)[1].trim();
+  assert.equal(caps.isExemptCaller('opening-night-lane-shadow.js', [], name, null), false, `workflow "${name}" would exempt shadow runs from the reserves`);
+  assert.doesNotMatch(wf, /BD_OPENING_NIGHT/, 'the lane workflow must not set BD_OPENING_NIGHT (it exempts shadow runs from the reserves)');
+});
