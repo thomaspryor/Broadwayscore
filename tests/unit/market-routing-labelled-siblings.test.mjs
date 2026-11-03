@@ -90,3 +90,11 @@ test('a transfer origin months earlier is not rescued by the cross-market relaxa
   });
   assert.equal(d, null);
 });
+
+test('DISABLE_LABELLED_SIBLINGS turns off the pairing only', () => {
+  process.env.DISABLE_LABELLED_SIBLINGS = 'true';
+  try {
+    const idx = buildSiblingIndex([eno, met]);
+    assert.deepEqual(idx.get(met.id)?.labelledSiblings || [], []);
+  } finally { delete process.env.DISABLE_LABELLED_SIBLINGS; }
+});

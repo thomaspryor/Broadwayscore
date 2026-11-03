@@ -91,6 +91,8 @@ function labelInitials(label) {
  */
 function buildLabelledPairs(shows, byTitle) {
   const pairs = new Map();
+  // Kill switch for this pairing alone (the exact-title rule keeps running).
+  if (process.env.DISABLE_LABELLED_SIBLINGS === 'true') return pairs;
   const add = (id, entry) => {
     if (!pairs.has(id)) pairs.set(id, []);
     if (!pairs.get(id).some(e => e.show.id === entry.show.id)) pairs.get(id).push(entry);
