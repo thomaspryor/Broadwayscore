@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-11-03T22:09:00.724Z",
+  "runDate": "2026-11-03T23:53:25.234Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 5,
     "priority": "all",
     "showFilter": "clifford-odets-waiting-for-lefty-off-broadway-2026",
     "aggressive": false,
@@ -11,7 +11,7 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
+    "processed": 1,
     "failed": 0,
     "skipped": 0,
     "successRate": "100.0%"
@@ -22,7 +22,7 @@
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 0
@@ -36,8 +36,8 @@
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
@@ -45,7 +45,7 @@
     "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 0,
-    "scrapingBeePageCredits": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,7 +54,7 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
+    "processed": 1,
     "failed": 0,
     "shows": [
       "clifford-odets-waiting-for-lefty-off-broadway-2026"
@@ -66,28 +66,24 @@
     }
   },
   "processed": [
-    "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
-    "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json"
+    "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json"
   ],
   "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
-      "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json"
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json"
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theater-pizzazz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
