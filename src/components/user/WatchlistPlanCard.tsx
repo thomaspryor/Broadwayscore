@@ -212,7 +212,7 @@ function PlanSheet({ showId, showTitle, entry, event, onDateChange, onShowtimeCh
             onClick={async () => { await guarded(onRemove)(); onClose(); }}
             className="btn btn-secondary w-full h-12 text-score-skip"
           >
-            Remove from watchlist
+            Remove from To See
           </button>
         </div>
       </div>

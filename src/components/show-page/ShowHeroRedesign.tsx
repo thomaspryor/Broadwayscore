@@ -781,7 +781,7 @@ function Inner({
                   href="/my-shows?tab=watchlist"
                   className="text-brand/90 hover:text-brand transition-colors border-b border-dotted border-brand/30"
                 >
-                  Watchlist
+                  To See list
                 </Link>
               </>
             )}

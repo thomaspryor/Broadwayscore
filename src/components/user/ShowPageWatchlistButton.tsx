@@ -62,7 +62,7 @@ export default function ShowPageWatchlistButton({
         showToast?.(<>Added to <a href="/my-shows?tab=watchlist" className="underline hover:text-white/90">To See</a></>, 'success');
       }
     } catch {
-      showToast?.('Failed to update watchlist. Please try again.', 'error');
+      showToast?.('Couldn’t update To See. Please try again.', 'error');
     } finally {
       setLoading(false);
     }
