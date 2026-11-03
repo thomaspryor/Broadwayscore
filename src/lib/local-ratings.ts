@@ -86,10 +86,19 @@ export function removeRatingEntry(list: LocalRating[], showId: string): LocalRat
   return list.filter(e => e.showId !== showId);
 }
 
-/** Ratings to copy into the account: local ones for shows it has not rated yet, oldest first. */
-export function ratingsToMigrate(local: LocalRating[], accountRatedShowIds: Iterable<string>): LocalRating[] {
-  const have = new Set(accountRatedShowIds);
-  return [...local].reverse().filter(e => !have.has(e.showId));
+/**
+ * Ratings to copy into the account, oldest first. A local rating is skipped
+ * only when the account already holds the same star rating for that show
+ * (a retry after a lost response). A different rating is a new viewing
+ * (the product supports several per show), so it is kept.
+ */
+export function ratingsToMigrate(
+  local: LocalRating[],
+  accountRatings: Iterable<{ showId: string; rating: number }>,
+): LocalRating[] {
+  const have = new Set<string>();
+  for (const a of accountRatings) have.add(`${a.showId}|${a.rating}`);
+  return [...local].reverse().filter(e => !have.has(`${e.showId}|${e.rating}`));
 }
 
 // ─── storage wrappers ────────────────────────────────────────────────────
@@ -97,10 +106,12 @@ export function ratingsToMigrate(local: LocalRating[], accountRatedShowIds: Iter
 let memoryList: LocalRating[] | null = null;
 
 export function getLocalRatings(): LocalRating[] {
+  // A failed write (full or blocked storage) leaves the newest list in memory; it wins over stale storage.
+  if (memoryList !== null) return memoryList;
   try {
     return parseLocalRatings(localStorage.getItem(RATINGS_KEY));
   } catch {
-    return memoryList ?? [];
+    return [];
   }
 }
 
@@ -108,6 +119,7 @@ function writeLocalRatings(list: LocalRating[]): void {
   try {
     if (list.length === 0) localStorage.removeItem(RATINGS_KEY);
     else localStorage.setItem(RATINGS_KEY, JSON.stringify(list));
+    memoryList = null;
   } catch {
     memoryList = list;
   }
