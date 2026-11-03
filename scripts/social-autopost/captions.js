@@ -179,6 +179,24 @@ const HOOK_BANNED = [
   [/\b(delve|robust|leverage|unlock|tapestry|realm|journey|landscape|navigate|deep dive|not just|it's not|moreover|furthermore|additionally|truly|genuinely)\b/i, 'an anti-slop word'],
 ];
 
+// Audience reception is a letter grade, never a number (VOICE.md rule 8, BRO-6922). Numbers may be digits or
+// spoken words (voiceover prompts spell them out). A count of audience reviews is allowed; a score or a
+// critic-versus-audience point gap is not.
+const NUM = '(?:\\d{1,3}|(?:twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred)(?:-[a-z]+)?)';
+const AUD = '(?:audiences?|crowds?)';
+const AUDIENCE_NUMBER = [
+  new RegExp(`\\b${AUD}\\b[^.\\n]{0,40}?\\b${NUM}\\b`, 'i'),
+  new RegExp(`\\b${NUM}\\b\\s+(?:[a-z]+\\s+){0,2}?(?:from|with|among|by|for)\\s+(?:the\\s+)?${AUD}\\b`, 'i'),
+  new RegExp(`\\b${NUM}[- ]points?\\b[^.\\n]{0,40}?\\b${AUD}\\b`, 'i'),
+];
+const AUDIENCE_COUNT = new RegExp(`\\b${NUM}\\s+audience\\s+(?:reviews?|ratings?)\\b`, 'gi');
+/** The phrase that gives audiences a number, or null. */
+function audienceNumber(text) {
+  const t = String(text).replace(AUDIENCE_COUNT, 'some audience reviews');
+  for (const re of AUDIENCE_NUMBER) { const m = t.match(re); if (m) return m[0]; }
+  return null;
+}
+
 /** Problem with a hook sentence, or null when it is fine (empty is fine). */
 function validateHook(hook) {
   if (hook == null || hook === '') return null;
@@ -186,6 +204,7 @@ function validateHook(hook) {
   if (hook.length > HOOK_MAX) return `hook is ${hook.length} characters, at most ${HOOK_MAX}`;
   if (/\n/.test(hook)) return 'hook must be one line';
   for (const [re, what] of HOOK_BANNED) if (re.test(hook)) return `hook contains ${what}`;
+  if (audienceNumber(hook)) return 'hook gives audiences a number (audiences get a letter grade only)';
   return null;
 }
 
@@ -455,6 +474,6 @@ function closingAllowedNumbers(p) {
 module.exports = {
   scoreQuestion, scoreAllowedNumbers, compareQuestion, roundupQuestion, closingQuestion,
   buildCaptions, showUrl, postMarkers, LIMITS,
-  buildCompareCaptions, compareCaveat, compareMarkers, validateHook, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
+  buildCompareCaptions, compareCaveat, compareMarkers, validateHook, audienceNumber, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
   monthDay, ROUNDUP_SENTENCE, CLOSING_SENTENCE, roundupHeader, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers, SET_DOMAIN,
 };

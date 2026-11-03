@@ -1139,18 +1139,40 @@ test('voice: no banned phrase, no em dash, and no question that is only engageme
   const voice = fs.readFileSync(new URL('./social-autopost/VOICE.md', import.meta.url), 'utf8');
   assert.doesNotMatch(voice, /[—–]/, 'VOICE.md has a dash');
   assert.match(voice, /replies/i, 'VOICE.md covers replies');
-  // Audience reception is a letter grade, never a number (VOICE.md rule 8).
-  const AUDIENCE_NUMBER = [/audiences?\b[^.\n]{0,40}?\b\d{2,3}\b/i, /\b\d{2,3}\b[^.\n]{0,25}?\baudiences?\b/i];
+  // Audience reception is a letter grade, never a number (VOICE.md rule 8, BRO-6922).
   for (const f of voiceFixtures()) {
-    for (const [net, text] of Object.entries(f.caps)) for (const re of AUDIENCE_NUMBER) assert.doesNotMatch(text, re, `${f.name} ${net} gives audiences a number`);
+    for (const [net, text] of Object.entries(f.caps)) assert.equal(cap.audienceNumber(text), null, `${f.name} ${net} gives audiences a number`);
   }
   const plansDir = new URL('./video-proto/plans/', import.meta.url);
   for (const file of fs.readdirSync(plansDir).filter(n => n.endsWith('.json'))) {
-    const plan = fs.readFileSync(new URL(file, plansDir), 'utf8');
-    for (const re of AUDIENCE_NUMBER) assert.doesNotMatch(plan, re, `${file} gives audiences a number`);
+    assert.equal(cap.audienceNumber(fs.readFileSync(new URL(file, plansDir), 'utf8')), null, `${file} gives audiences a number`);
   }
   assert.match(voice, /Audience reception is a letter grade, never a number/, 'VOICE.md states the audience-grade rule');
   assert.match(fs.readFileSync(new URL('../.claude/commands/social-post.md', import.meta.url), 'utf8'), /VOICE\.md/, 'social-post.md points at VOICE.md');
+});
+
+test('voice: audiences get a letter grade, never a number, in captions, hooks and every voiceover template (BRO-6922)', () => {
+  const { audienceNumber, validateHook } = require('./social-autopost/captions.js');
+  for (const bad of ['Critic Score of 61 from 26 reviews, but audiences give it 82.', 'Audiences are happier than either: 90, against 79.',
+    'And audiences give it eighty-two.', 'It scores an 82 with audiences.', 'Critics are 9 points warmer than audiences.']) {
+    assert.ok(audienceNumber(bad), `should block: ${bad}`);
+  }
+  for (const ok of ['Critic Score 61 from 26 reviews. Audiences give it an A-.', "Critic Score of 84 from 32 critics' reviews, and audiences give it an A+.",
+    'Audiences give it an A- from 120 audience reviews.', 'Same show, two cities, an 8-point gap. Why do you think London critics warmed to it more?']) {
+    assert.equal(audienceNumber(ok), null, `should allow: ${ok}`);
+  }
+  assert.match(validateHook('Audiences give it eighty-two') || '', /audiences a number/);
+  // Every voiceover line, with each number slot spoken as a number and each grade slot as a grade.
+  const { LINES } = require('./video-proto/voscript.js');
+  const GRADE = { a: 'an', G: 'A-minus', g: 'A-', Aud: 'Audiences agree and give it an A-.' };
+  const NUMBER_SLOT = /^(n|N|s|tally|Tally|cn|Cn)$/;
+  const fill = t => t.replace(/\{(\w+)\}/g, (_, k) => GRADE[k] ?? (NUMBER_SLOT.test(k) ? 'eighty-two' : 'Title'));
+  let n = 0;
+  for (const [slot, opts] of Object.entries(LINES)) for (const o of opts) {
+    const text = fill(Array.isArray(o) ? o[0] : o); n++;
+    assert.equal(audienceNumber(text), null, `voscript ${slot}: ${text}`);
+  }
+  assert.ok(n > 50, `only ${n} voiceover lines scanned`);
 });
 
 test('voice: compare question follows the direction and size of the gap; within 3 points the angle is agreement', () => {
