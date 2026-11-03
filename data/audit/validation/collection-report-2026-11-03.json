@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-11-03T20:17:41.277Z",
+  "runDate": "2026-11-03T22:09:00.724Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 0,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-resistible-rise-of-arturo-ui-west-end-2013,the-weir-west-end-2014,the-importance-of-being-earnest-west-end-2014,richard-iii-west-end-2014,my-night-with-reg-west-end-2015,di-and-viv-and-rose-west-end-2015,white-christmas-west-end-2014,taken-at-midnight-west-end-2015,a-view-from-the-bridge-west-end-2015,violence-and-son-west-end-2015",
+    "showFilter": "clifford-odets-waiting-for-lefty-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 1,
+    "processed": 2,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "88.9%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
-    "tier2Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 1,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 2,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 0,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,15 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 8,
-    "failed": 1,
+    "processed": 2,
+    "failed": 0,
     "shows": [
-      "my-night-with-reg-west-end-2015",
-      "richard-iii-west-end-2014",
-      "taken-at-midnight-west-end-2015",
-      "the-weir-west-end-2014",
-      "violence-and-son-west-end-2015",
-      "white-christmas-west-end-2014"
+      "clifford-odets-waiting-for-lefty-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -71,50 +66,31 @@
     }
   },
   "processed": [
-    "violence-and-son-west-end-2015/guardian--unknown.json",
-    "violence-and-son-west-end-2015/standard--fiona-mountford.json",
-    "taken-at-midnight-west-end-2015/guardian--kate-kellaway.json",
-    "taken-at-midnight-west-end-2015/financialtimes--ian-shuttleworth.json",
-    "my-night-with-reg-west-end-2015/financialtimes--ian-shuttleworth.json",
-    "white-christmas-west-end-2014/standard--fiona-mountford.json",
-    "richard-iii-west-end-2014/guardian--susannah-clapp.json",
-    "the-weir-west-end-2014/telegraph--dominic-cavendish.json"
+    "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
+    "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json"
   ],
-  "failed": [
-    "the-weir-west-end-2014/bestoftheatre--unknown.json"
-  ],
+  "failed": [],
   "cumulativeResumedState": {
     "processed": [
-      "violence-and-son-west-end-2015/guardian--unknown.json",
-      "violence-and-son-west-end-2015/standard--fiona-mountford.json",
-      "taken-at-midnight-west-end-2015/guardian--kate-kellaway.json",
-      "taken-at-midnight-west-end-2015/financialtimes--ian-shuttleworth.json",
-      "my-night-with-reg-west-end-2015/financialtimes--ian-shuttleworth.json",
-      "white-christmas-west-end-2014/standard--fiona-mountford.json",
-      "richard-iii-west-end-2014/guardian--susannah-clapp.json",
-      "the-weir-west-end-2014/telegraph--dominic-cavendish.json"
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json"
     ],
-    "failed": [
-      "the-weir-west-end-2014/bestoftheatre--unknown.json"
-    ]
+    "failed": []
   },
   "tierDetails": {
     "playwright": [
-      "taken-at-midnight-west-end-2015/financialtimes--ian-shuttleworth.json",
-      "my-night-with-reg-west-end-2015/financialtimes--ian-shuttleworth.json"
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/nysr--frank-scheck.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json"
+    ],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "violence-and-son-west-end-2015/standard--fiona-mountford.json",
-      "white-christmas-west-end-2014/standard--fiona-mountford.json",
-      "the-weir-west-end-2014/telegraph--dominic-cavendish.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
