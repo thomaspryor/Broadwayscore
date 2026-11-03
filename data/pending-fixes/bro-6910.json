@@ -1,0 +1,45 @@
+{
+  "issueNumber": "bro-6910",
+  "planId": "ac175e3b-2c28-4be5-849f-0b776af5c577",
+  "status": "pending",
+  "createdAt": "2026-11-03T23:00:29.400Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Waiting for Lefty: Theatrely two-show review (The Executrix + Waiting for Lefty) was CV-promoted to not-a-review with no reason and showed an Executrix pull quote; clear the flag and quote the Lefty section",
+    "steps": [
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json: isNonReview -> false",
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json: nonReviewManualClear -> true",
+      "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json: llmPullQuote -> \"Clifford Odets’ episodic, pro-union dra"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Signed critical review by Juan A. Ramirez; the second half reviews the Classic Stage Company Waiting for Lefty. CV promotion carried an empty reason."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Signed critical review by Juan A. Ramirez; the second half reviews the Classic Stage Company Waiting for Lefty. CV promotion carried an empty reason."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "clifford-odets-waiting-for-lefty-off-broadway-2026/theatrely--juan-a-ramirez.json",
+        "field": "llmPullQuote",
+        "oldValue": "Their first work under the banner of Two Sisters, their new company, is The Executrix, an inventive and slippery one-act by Horwitz, which Sarah Blush directs.",
+        "newValue": "Clifford Odets’ episodic, pro-union drama from 1935 still has plenty of potency even if Steven Pasquale’s staging struggles to maintain momentum.",
+        "description": "Stored quote is from The Executrix section; use a verbatim sentence from the Lefty section"
+      }
+    ]
+  }
+}
