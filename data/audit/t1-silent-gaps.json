@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T07:11:27.100Z",
+  "generatedAt": "2026-11-03T08:25:38.096Z",
   "windowDays": 45,
   "showsScanned": 249,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 205.31227638888888,
+      "fileAgeHours": 206.55014333333332,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 190.76964805555556,
+      "nonTerminalAgeHours": 192.00603583333333,
       "needsManualRecovery": true
     },
     {
@@ -34,20 +34,16 @@
       "outletId": "backstage",
       "tier": 2,
       "type": "empty-body",
-      "recoverable": true,
+      "recoverable": false,
       "url": "https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/ --outlet=backstage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T09:52:12.991Z",
-      "fileAgeHours": 21.319430555555556,
+      "fileAgeHours": 22.5560475,
       "gapSeenAt": "2026-11-03T07:11:27.100Z",
-      "nonTerminalAgeHours": 0,
+      "nonTerminalAgeHours": 1.2363877777777779,
       "needsManualRecovery": false
     },
     {
@@ -68,9 +64,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 17.535929444444445,
+      "fileAgeHours": 18.7724025,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 16.007000277777777,
+      "nonTerminalAgeHours": 17.243388055555556,
       "needsManualRecovery": false
     }
   ],
