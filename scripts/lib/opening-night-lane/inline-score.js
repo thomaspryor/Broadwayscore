@@ -30,7 +30,7 @@
 const failures = require('./lane-failures');
 const trust = require('./trust-model');
 const { canonicalUrl, hasReviewSignal } = require('./discovery');
-const { laneNonReviewReason } = require('./lane-guards');
+const { laneNonReviewReason, multiShowColumnReason, nearbyShowTitles } = require('./lane-guards');
 const { BODY_GATE_CHARS, MIN_SHORT_PARTIAL_CHARS } = require('../scorable-text');
 const { EXCERPT_FIELDS } = require('../excerpt-fields');
 const { getHardPaywallDomain, HARD_PAYWALL_FLOORS, SCRAPED_SOURCE_METHODS, SOFT_PAYWALL_MIN_CHARS, truncatedTierPatch } = require('../paywall-completeness');
@@ -97,11 +97,12 @@ function isTeaserNotAReview(rejection, url, text) {
  */
 function createInlineScoring({
   show, night, ledgerDir, now, fetchPage, extractArticle, extractMeta = () => ({}), aggregatorFor = () => ({}), scoreText,
-  retryMs = DEFAULT_RETRY_MS, minTextChars = trust.MIN_FULL_TEXT_CHARS,
+  retryMs = DEFAULT_RETRY_MS, minTextChars = trust.MIN_FULL_TEXT_CHARS, allShows = [],
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, ledgerDir, now, fetchPage, extractArticle, scoreText })) {
     if (v === undefined || v === null) throw new Error(`inline-score: ${k} is required`);
   }
+  const otherTitles = nearbyShowTitles(show, allShows); // same-weeks shows a multi-show column would also cover
   const state = new Map(); // `${stage}:${key}` -> {attempts, nextAt, terminal}
   const maxAttempts = retryMs.length + 1;
   const fetched = new Map(); // key -> the fetch result, so a score retry never pays for the page again
@@ -258,6 +259,8 @@ function createInlineScoring({
     // model is paid for it: a verdict, never retried (BRO-6872: Gold Derby roundups scored as reviews).
     const notAReview = laneNonReviewReason(row);
     if (notAReview) return fail('score', key, new Error(`not a review: ${notAReview}`), true);
+    const column = multiShowColumnReason(row, otherTitles);
+    if (column) return fail('score', key, new Error(column), true);
     const excerpts = usableExcerpts((fetchedReview && fetchedReview.excerpts) || {});
     const ctx = { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete' };
     // The excerpt is the scorer's text only when there is no page text to score: page text is scored as it always was,
