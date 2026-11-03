@@ -83,19 +83,22 @@ test('production wiring: laneAdapters ends with the five West End adapters, afte
   assert.ok(names.indexOf('bww-roundup') < names.indexOf('wet-roundup'));
 });
 
-test('throttle: a clean run is not repeated within 10 minutes; a run that threw is retried on the next pass', async () => {
+test('throttle: a clean run is not repeated within 10 minutes; one failure is retried at once, a second in a row waits', async () => {
   let clock = 0;
   let calls = 0;
   let fail = true;
   const inner = { name: 'probe', discover: async () => { calls++; if (fail) throw new Error('down'); return []; } };
   const a = we.westEndOnly(inner, { now: () => clock });
   const args = { show: night.SHOW, night: night.NIGHT, fetchText: async () => '' };
-  await assert.rejects(a.discover(args));
+  await assert.rejects(a.discover(args)); // call 1 fails
+  clock += 60e3; await assert.rejects(a.discover(args)); // call 2: one failure is retried at once, fails again
+  clock += 60e3; await a.discover(args); // two failures in a row: skipped (no paid fetch every pass)
+  assert.equal(calls, 2);
   fail = false;
-  clock += 60e3; await a.discover(args); // retried at once after the failure
+  clock += we.DEFAULT_EVERY_MS; await a.discover(args); // call 3, clean
   clock += 60e3; await a.discover(args); // clean run 1 min ago: skipped
-  clock += we.DEFAULT_EVERY_MS; await a.discover(args);
-  assert.equal(calls, 3);
+  clock += we.DEFAULT_EVERY_MS; await a.discover(args); // call 4
+  assert.equal(calls, 4);
 });
 
 test('Stagedoor: the 2026 redirect stands the adapter down for the night; a live Stagedoor is reported', async () => {

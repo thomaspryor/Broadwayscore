@@ -17,7 +17,7 @@
  *   - a round-up that matched the show but parsed to no review on a known outlet throws (layout change), as
  *     discovery.requireKnownOutletLinks does for BWW and Playbill, so the pass's errors name it;
  *   - the lane runs a pass every couple of minutes for hours, and these sources are paid fetches: each adapter re-reads
- *     at most once per `everyMs` (default 10 min) after a clean run; a run that threw is retried on the next pass.
+ *     at most once per `everyMs` (default 10 min); one failed run is retried on the next pass, a second in a row waits.
  *
  * Stagedoor's domain has redirected to a ticketing site since 2026-06-25 (scrape-stagedoor-critics.js checkStagedoorAlive).
  * Its adapter probes the homepage once per night and stands down when it is still gone. Its review rows never carried an
@@ -95,20 +95,28 @@ function datedNear(html, show) {
 }
 
 /**
- * Wrap an adapter so it skips West End-less nights and re-reads at most once per `everyMs` after a clean run. A run that
- * threw leaves the clock alone, so the next pass retries it.
+ * Wrap an adapter so it skips West End-less nights and re-reads at most once per `everyMs` after a clean run. The first
+ * run that throws is retried on the next pass (a blip); a second failure in a row throttles like a clean run, so a source
+ * that stays broken all night (The Stage without a login, a changed layout) is not a paid fetch every pass.
  */
 function westEndOnly(adapter, { now = Date.now, everyMs = DEFAULT_EVERY_MS } = {}) {
-  let lastCleanAt = null;
+  let lastRunAt = null;
+  let failuresInRow = 0;
   return {
     ...adapter,
     async discover(args) {
       if (!isWestEnd(args && args.show)) return [];
       const t = now();
-      if (lastCleanAt !== null && t - lastCleanAt < everyMs) return [];
-      const out = await adapter.discover(args);
-      lastCleanAt = t;
-      return out;
+      if (lastRunAt !== null && failuresInRow !== 1 && t - lastRunAt < everyMs) return [];
+      lastRunAt = t;
+      try {
+        const out = await adapter.discover(args);
+        failuresInRow = 0;
+        return out;
+      } catch (e) {
+        failuresInRow++;
+        throw e;
+      }
     },
   };
 }
