@@ -7,6 +7,7 @@ import { getBroadwayShows } from './data-core';
 import { slugify } from './data-core';
 import { getCategoriesForRole as getCategoriesForRoleJs } from '../../scripts/lib/creative-roles';
 import { creativeNamesInPageOrder } from '../../scripts/lib/page-name-sources';
+import { creativeCreditNames } from '../../scripts/lib/creative-credit-names';
 import { assignUniqueSlugs } from '../../scripts/lib/url-slug';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Retired-slug map (prebuild: scripts/build-slug-redirects.js) — getUnifiedCreativeProfile
@@ -87,18 +88,20 @@ function buildAllProfiles() {
 
     for (const member of show.creativeTeam) {
       const categories = getCategoriesForRole(member.role);
-      for (const cat of categories) {
-        const map = accum[cat];
-        let entry = map.get(member.name);
-        if (!entry) {
-          entry = { roles: new Set(), shows: [] };
-          map.set(member.name, entry);
-        }
-        entry.roles.add(member.role);
-        // Avoid duplicate show entries for same person+show+category
-        // (can happen if person has both "Music" and "Music & Lyrics" on same show)
-        if (!entry.shows.some(s => s.slug === show.slug)) {
-          entry.shows.push({ ...showEntry, role: member.role });
+      for (const name of creativeCreditNames(member.name)) {
+        for (const cat of categories) {
+          const map = accum[cat];
+          let entry = map.get(name);
+          if (!entry) {
+            entry = { roles: new Set(), shows: [] };
+            map.set(name, entry);
+          }
+          entry.roles.add(member.role);
+          // Avoid duplicate show entries for same person+show+category
+          // (can happen if person has both "Music" and "Music & Lyrics" on same show)
+          if (!entry.shows.some(s => s.slug === show.slug)) {
+            entry.shows.push({ ...showEntry, role: member.role });
+          }
         }
       }
     }
@@ -204,29 +207,31 @@ function buildUnifiedProfiles() {
       const categories = getCategoriesForRole(member.role);
       if (categories.length === 0) continue;
 
-      let person = personMap.get(member.name);
-      if (!person) {
-        person = { categories: new Set(), allRoles: new Set(), showMap: new Map() };
-        personMap.set(member.name, person);
-      }
+      for (const name of creativeCreditNames(member.name)) {
+        let person = personMap.get(name);
+        if (!person) {
+          person = { categories: new Set(), allRoles: new Set(), showMap: new Map() };
+          personMap.set(name, person);
+        }
 
-      for (const cat of categories) {
-        person.categories.add(cat);
-      }
-      person.allRoles.add(member.role);
+        for (const cat of categories) {
+          person.categories.add(cat);
+        }
+        person.allRoles.add(member.role);
 
-      let showEntry = person.showMap.get(show.slug);
-      if (!showEntry) {
-        showEntry = { entry: baseEntry, roles: new Set() };
-        person.showMap.set(show.slug, showEntry);
+        let showEntry = person.showMap.get(show.slug);
+        if (!showEntry) {
+          showEntry = { entry: baseEntry, roles: new Set() };
+          person.showMap.set(show.slug, showEntry);
+        }
+        showEntry.roles.add(member.role);
       }
-      showEntry.roles.add(member.role);
     }
   }
 
   // Slugs, with collision numbering, from the ONE shared rule: the names in
-  // page order (scripts/lib/page-name-sources.js creativeNamesInPageOrder —
-  // the same walk as the loop above) through assignUniqueSlugs
+  // page order (scripts/lib/page-name-sources.js creativeNamesInPageOrder:
+  // existing identities first, then new collaborators) through assignUniqueSlugs
   // (scripts/lib/url-slug.js). scripts/build-slug-redirects.js replays exactly
   // this over shows.json to derive the retired pre-fold slugs, so "Noël Coward"
   // (`noel-coward-2`, because "Noel Coward" reached `noel-coward` first) redirects
@@ -295,6 +300,13 @@ function buildUnifiedProfiles() {
 
   // Sort by show count descending
   unifiedProfiles.sort((a, b) => b.showCount - a.showCount);
+
+  // Show pages still display the original credit. Its link goes directly to
+  // the same first collaborator as the retired team URL's permanent redirect.
+  for (const name of creativeNamesInPageOrder(allShows, { splitTeams: false })) {
+    const slug = nameToUnifiedSlug.get(creativeCreditNames(name)[0]);
+    if (slug) nameToUnifiedSlug.set(name, slug);
+  }
 }
 
 // Build on first access (lazy init)

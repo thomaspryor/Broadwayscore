@@ -26,6 +26,7 @@
  */
 
 const { getCategoriesForRole } = require('./creative-roles');
+const { creativeCreditNames } = require('./creative-credit-names');
 
 /**
  * @typedef {{ id?: string, category?: string, venue?: string, _devOnly?: boolean,
@@ -70,12 +71,15 @@ function offBroadwayShows(shows) {
 /**
  * Unified creative pages (src/lib/data-creative.ts buildUnifiedProfiles):
  * every creative-team member whose role maps to a category, first-encounter
- * order across the shows as given. Names are exact strings — "Noel Coward"
+ * order across the shows as given. Existing individual names precede newly
+ * split collaborators so new names cannot steal an existing collision slug.
+ * Names are exact strings — "Noel Coward"
  * and "Noël Coward" are two people here, exactly as on the site.
  * @param {ShowLike[]} shows already filtered (broadwayShows)
+ * @param {{ splitTeams?: boolean }} [options] false replays retired team URLs
  * @returns {string[]}
  */
-function creativeNamesInPageOrder(shows) {
+function creativeNamesInPageOrder(shows, { splitTeams = true } = {}) {
   const seen = new Set();
   const names = [];
   for (const show of shows) {
@@ -87,7 +91,9 @@ function creativeNamesInPageOrder(shows) {
       names.push(member.name);
     }
   }
-  return names;
+  if (!splitTeams) return names;
+  const individuals = names.filter(name => creativeCreditNames(name).length === 1);
+  return [...new Set([...individuals, ...names.flatMap(creativeCreditNames)])];
 }
 
 /**
