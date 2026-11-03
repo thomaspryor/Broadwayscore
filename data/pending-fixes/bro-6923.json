@@ -1,0 +1,115 @@
+{
+  "issueNumber": "bro-6923",
+  "planId": "20aebe0d-e3b3-4995-a316-b9952dace4ee",
+  "status": "pending",
+  "createdAt": "2026-11-03T23:47:26.347Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6923: clear wrongProduction on 6 reviews whose flag named a parent building (Young Vic, National Theatre) while the show venue is a stage of it. Alias-aware re-verify in CI found each valid.",
+    "steps": [
+      "Set wrongProduction false and record a manual clear on each listed review file."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "girls-off-west-end-2026/theatre-weekly--matthew-plampton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: The Maria Theatre is a stage inside Young Vic; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "girls-off-west-end-2026/theatre-weekly--matthew-plampton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: The Maria Theatre is a stage inside Young Vic; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nye-west-end-2024/broadwayworld--persson-gary-naylor.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Olivier Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nye-west-end-2024/broadwayworld--persson-gary-naylor.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Olivier Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rockets-and-blue-lights-west-end-2021/artsdesk--aleks-sierz.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Dorfman Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rockets-and-blue-lights-west-end-2021/artsdesk--aleks-sierz.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Dorfman Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-brilliant-friend-part-1-part-2-west-end-2019/london-theatre--mark-shenton.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Olivier Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "my-brilliant-friend-part-1-part-2-west-end-2019/london-theatre--mark-shenton.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Olivier Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "translations-west-end-2018/timeout-london--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Olivier Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "translations-west-end-2018/timeout-london--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Olivier Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "home-im-darling-west-end-2018/guardian--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-6923: Dorfman Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "home-im-darling-west-end-2018/guardian--unknown.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6923: Dorfman Theatre is a stage inside National Theatre; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
+      }
+    ]
+  }
+}
