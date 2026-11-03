@@ -4,7 +4,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, sanitizeFlagInput, selectNoticeReviews, cleanSocialLink, claimHints, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
+import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, sanitizeFlagInput, selectNoticeReviews, cleanSocialLink, claimHints, claimLimitVerdict, ownerEmailPlan, rateLimitAllow, claimsDisabled, countUrls, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
 
 const SECRET = 'test-secret';
 const ID = '11111111-2222-3333-4444-555555555555';
@@ -128,4 +128,42 @@ test('claim hints are information only and cover the four cases', () => {
   assert.ok(h({ otherClaimStatuses: ['pending'] }).includes('Another claim on this page is pending'));
   assert.ok(h({ otherClaimStatuses: ['pending', 'approved'] }).includes('Another claim on this page is approved'));
   assert.ok(!h({ contactEmail: 'a@notnytimes.com', accountEmail: 'a@notnytimes.com' }).some((x) => x.startsWith('Email domain matches')));
+});
+
+test('claim limits: one pending per account, three per day, notes with many links rejected', () => {
+  const now = Date.UTC(2026, 10, 3, 12);
+  const ago = (h: number) => new Date(now - h * 3600_000).toISOString();
+  assert.deepEqual(claimLimitVerdict([], 'a', now), { ok: true });
+  const pendingElsewhere = claimLimitVerdict([{ status: 'pending', critic_slug: 'b', created_at: ago(1) }], 'a', now);
+  assert.ok(!pendingElsewhere.ok && pendingElsewhere.reason === 'pending-elsewhere');
+  // Pending on the same page is handled as "already requested" by the route, not by this rule.
+  assert.deepEqual(claimLimitVerdict([{ status: 'pending', critic_slug: 'a', created_at: ago(1) }], 'a', now), { ok: true });
+  const three = ['x', 'y', 'z'].map((s, i) => ({ status: 'declined', critic_slug: s, created_at: ago(2 + i) }));
+  const capped = claimLimitVerdict(three, 'a', now);
+  assert.ok(!capped.ok && capped.reason === 'daily-cap');
+  assert.deepEqual(claimLimitVerdict(three.map((c) => ({ ...c, created_at: ago(30) })), 'a', now), { ok: true });
+  const base = { slug: 'jane-doe', contactEmail: 'j@e.com', socials: [{ platform: 'x', value: '@jane' }] };
+  assert.ok('error' in sanitizeClaimInput({ ...base, note: 'see https://a.example https://b.example www.c.example' }));
+  assert.ok(!('error' in sanitizeClaimInput({ ...base, note: 'see https://a.example and www.b.example' })));
+  assert.equal(countUrls('none here'), 0);
+});
+
+test('owner email: one full email per pending page, then at most one note a day', () => {
+  const now = Date.UTC(2026, 10, 3, 12);
+  const ago = (h: number) => new Date(now - h * 3600_000).toISOString();
+  assert.equal(ownerEmailPlan([], now), 'full');
+  assert.equal(ownerEmailPlan([{ status: 'approved', owner_emailed_at: ago(1) }], now), 'full');
+  assert.equal(ownerEmailPlan([{ status: 'pending', owner_emailed_at: ago(1) }], now), 'none');
+  assert.equal(ownerEmailPlan([{ status: 'pending', owner_emailed_at: ago(30) }], now), 'note');
+  assert.equal(ownerEmailPlan([{ status: 'pending', owner_emailed_at: null }], now), 'note');
+});
+
+test('rate limiter and kill switch', () => {
+  const m = new Map<string, { n: number; t: number }>();
+  assert.deepEqual([1, 2, 3, 4].map(() => rateLimitAllow(m, 'ip', 3, 1000, 0)), [true, true, true, false]);
+  assert.equal(rateLimitAllow(m, 'ip', 3, 1000, 2000), true);
+  assert.equal(claimsDisabled({ CRITIC_CLAIMS_DISABLED: 'true' }), true);
+  assert.equal(claimsDisabled({ CRITIC_CLAIMS_DISABLED: 'TRUE ' }), true);
+  assert.equal(claimsDisabled({}), false);
+  assert.equal(claimsDisabled({ CRITIC_CLAIMS_DISABLED: 'false' }), false);
 });

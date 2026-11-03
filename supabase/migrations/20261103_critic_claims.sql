@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS public.critic_claims (
   contact_email text NOT NULL CHECK (char_length(contact_email) <= 254),
   work_url      text CHECK (work_url IS NULL OR char_length(work_url) <= 500),
   social_links  jsonb NOT NULL DEFAULT '[]'::jsonb,
+  owner_emailed_at timestamptz,
   note          text CHECK (note IS NULL OR char_length(note) <= 1000),
   status        text NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','approved','declined')),
   notify_opening_night boolean NOT NULL DEFAULT false,
@@ -29,6 +30,7 @@ CREATE TABLE IF NOT EXISTS public.critic_claims (
   decided_at    timestamptz
 );
 ALTER TABLE public.critic_claims ADD COLUMN IF NOT EXISTS social_links jsonb NOT NULL DEFAULT '[]'::jsonb;
+ALTER TABLE public.critic_claims ADD COLUMN IF NOT EXISTS owner_emailed_at timestamptz;
 
 -- One approved owner per page; one open request per account and page.
 CREATE UNIQUE INDEX IF NOT EXISTS critic_claims_one_approved
