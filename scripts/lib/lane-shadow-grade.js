@@ -5,7 +5,9 @@
  * Input: the report lib/opening-night-lane-shadow.js buildShadowReport writes (shadow-report.json): one entry per
  * review with side 'both' | 'lane-only' | 'site-only' | 'lane-unscored', lane and site scores, lane scored time.
  * Output: the numbers the 2026-10 replays were graded on by hand, with a pass/fail per check:
- *   recall          lane-scored reviews the site also has / reviews the site has
+ *   recall          lane-scored reviews the site also has / reviews the site has, all time (reported, not gated)
+ *   onTimeRecall    the same over reviews the site dates on or before the night + 1 day, or has no date for (the
+ *                   gate): a review published days later (a weekly magazine) cannot be found on the night
  *   falsePositives  lane-scored reviews the site does not have (a non-review, a roundup, a duplicate URL, or a real
  *                   review the regular pipeline missed: listed so a person can tell which)
  *   duplicates      lane-scored reviews that are one review twice: same outlet and the same critic, the same article
@@ -19,7 +21,7 @@ const fs = require('fs');
 const path = require('path');
 
 const GAP_PTS = 8;
-const DEFAULT_THRESHOLDS = Object.freeze({ minRecall: 0.85, maxFalsePositives: 2, maxDuplicates: 0, maxPublishErrors: 0, maxMeanAbsDiff: 6 });
+const DEFAULT_THRESHOLDS = Object.freeze({ minOnTimeRecall: 0.85, maxFalsePositives: 2, maxDuplicates: 0, maxPublishErrors: 0, maxMeanAbsDiff: 6 });
 
 function outletKey(r) {
   try {
@@ -80,11 +82,15 @@ function gradeShadowReport(rep, opts = {}) {
 
   const publishErrors = ((rep && rep.laneErrorsByAdapter && rep.laneErrorsByAdapter.publish) || {}).count || 0;
   const sandboxPublished = Array.isArray(opts.sandbox) ? opts.sandbox.length : null;
-  const recall = siteLive.length ? Math.round((both.length / siteLive.length) * 1000) / 1000 : null;
+  const ratio = (n, d) => (d ? Math.round((n / d) * 1000) / 1000 : null);
+  const recall = ratio(both.length, siteLive.length);
+  const nightPlus1 = rep && rep.night && Number.isFinite(Date.parse(rep.night)) ? new Date(Date.parse(rep.night) + 86400e3).toISOString().slice(0, 10) : null;
+  const onTime = (r) => !nightPlus1 || !r.siteDate || r.siteDate <= nightPlus1;
+  const onTimeRecall = ratio(both.filter(onTime).length, siteLive.filter(onTime).length);
   const falsePositives = reviews.filter((r) => r.side === 'lane-only').map(brief);
 
   const checks = [
-    { name: 'recall', value: recall, threshold: `>= ${th.minRecall}`, pass: recall != null && recall >= th.minRecall },
+    { name: 'onTimeRecall', value: onTimeRecall, threshold: `>= ${th.minOnTimeRecall}`, pass: onTimeRecall != null && onTimeRecall >= th.minOnTimeRecall },
     { name: 'falsePositives', value: falsePositives.length, threshold: `<= ${th.maxFalsePositives}`, pass: falsePositives.length <= th.maxFalsePositives },
     { name: 'duplicates', value: duplicates.length, threshold: `<= ${th.maxDuplicates}`, pass: duplicates.length <= th.maxDuplicates },
     { name: 'publishErrors', value: publishErrors, threshold: `<= ${th.maxPublishErrors}`, pass: publishErrors <= th.maxPublishErrors },
@@ -96,8 +102,8 @@ function gradeShadowReport(rep, opts = {}) {
     show: rep && rep.show, night: rep && rep.night, replayAnchorAt: opts.replayAnchorAt || null,
     pass: checks.every((c) => c.pass), checks,
     counts: { laneScored: scored.length, siteLive: siteLive.length, both: both.length, laneOnly: falsePositives.length, siteOnly: reviews.filter((r) => r.side === 'site-only').length, laneUnscored: reviews.filter((r) => r.side === 'lane-unscored').length },
-    recall, meanAbsScoreDiff: meanAbsDiff,
-    falsePositives, missed: reviews.filter((r) => r.side === 'site-only').map(brief), duplicates, scoreGaps,
+    recall, onTimeRecall, meanAbsScoreDiff: meanAbsDiff,
+    falsePositives, missed: reviews.filter((r) => r.side === 'site-only').map((r) => ({ ...brief(r), siteDate: r.siteDate || null, late: !onTime(r) })), duplicates, scoreGaps,
     timeToScoreMin: { median: pct(tts, 50), p90: pct(tts, 90), max: tts.length ? Math.max(...tts) : null, from: opts.replayAnchorAt ? 'embargo' : 'shadow start' },
     publish: { errors: publishErrors, sandboxPublished },
   };
@@ -109,10 +115,11 @@ function gradeMarkdown(g) {
     `## Lane replay grade: ${g.show} (${g.night}): ${g.pass ? 'PASS' : 'FAIL'}`,
     '',
     ...g.checks.map((c) => `- ${c.pass ? 'ok' : 'FAIL'} ${c.name}: ${c.value == null ? 'n/a' : c.value} (${c.threshold})`),
+    `- All-time recall ${g.recall ?? 'n/a'} (not gated: includes reviews published after the night).`,
     `- Lane scored ${g.counts.laneScored}, site has ${g.counts.siteLive}, both ${g.counts.both}, lane only ${g.counts.laneOnly}, site only ${g.counts.siteOnly}, lane unscored ${g.counts.laneUnscored}.`,
     `- Time to score (min from ${g.timeToScoreMin.from}): median ${g.timeToScoreMin.median ?? 'n/a'}, p90 ${g.timeToScoreMin.p90 ?? 'n/a'}, max ${g.timeToScoreMin.max ?? 'n/a'}.`,
     ...(g.falsePositives.length ? ['', 'Lane only:', ...g.falsePositives.map((r) => `- ${row(r)} ${r.laneScore} ${r.url}`)] : []),
-    ...(g.missed.length ? ['', 'Site only (missed):', ...g.missed.map((r) => `- ${row(r)} ${r.siteScore} ${r.url}`)] : []),
+    ...(g.missed.length ? ['', 'Site only (missed):', ...g.missed.map((r) => `- ${row(r)} ${r.siteScore} ${r.url}${r.late ? ` (dated ${r.siteDate}, after the night)` : ''}`)] : []),
     ...(g.duplicates.length ? ['', 'Duplicates:', ...g.duplicates.map((d) => `- ${d.map((r) => r.url).join(' | ')}`)] : []),
     ...(g.scoreGaps.length ? ['', `Score gaps of ${GAP_PTS}+ (lane / site, lane text chars, tier):`, ...g.scoreGaps.map((d) => `- ${row(d)} ${d.laneScore} / ${d.siteScore} (${d.delta > 0 ? '+' : ''}${d.delta}), ${d.laneTextChars ?? '?'} chars, ${d.laneContentTier || '?'}`)] : []),
   ];

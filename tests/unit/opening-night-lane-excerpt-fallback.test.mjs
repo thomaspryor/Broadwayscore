@@ -119,7 +119,7 @@ test('the same teaser with no excerpt still fails visibly (nothing to score)', a
   const dir = tmp();
   try {
     const sc = scoring({ dir, extract: () => 'Subscribe to read.', scoreText: async () => ({ score: 1 }) });
-    await assert.rejects(sc.fetchReview({ url: WSJ }), /no aggregator score or excerpt/);
+    await assert.rejects(sc.fetchReview({ url: WSJ }), /no aggregator score or paywall excerpt/);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -232,5 +232,69 @@ test('page text is scored without the aggregator quote mixed in; the quote is on
     const got = await sc.fetchReview(WSJ_CAND);
     assert.equal(await sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, got), 75);
     assert.equal(seen[0].excerpts, undefined);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+// BRO-6872 replay: on open sites the excerpt scores were 20 points off (Talkin' Broadway 71 vs 91 from a 0-char page,
+// The Hollywood Reporter 62 vs 42 after the scorer refused a 907-char extraction). An excerpt stands in for the review
+// only on a hard-paywall host; an open site's review is held for the regular pipeline to collect in full.
+test('open site: an empty page with an aggregator excerpt is held, never scored from the excerpt', async () => {
+  const dir = tmp();
+  try {
+    const TB = 'https://www.talkinbroadway.com/page/world/860.html';
+    let t = NOW;
+    let calls = 0;
+    const sc = scoring({ dir, now: () => t, extract: () => '', scoreText: async () => { calls++; return { score: 71 }; } });
+    const cand = { url: TB, key: d.canonicalUrl(TB), excerpts: { bwwExcerpt: 'Howard Miller, a one-line quote from the aggregator page about the evening.' } };
+    await assert.rejects(sc.fetchReview(cand), /no aggregator score or paywall excerpt/);
+    t += 1000;
+    await assert.rejects(sc.fetchReview(cand), inl.LanePermanentError);
+    assert.equal(calls, 0);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('open site: page text the scorer refuses is not replaced by the excerpt; the same text on WSJ still is', async () => {
+  for (const [url, held] of [['https://www.hollywoodreporter.com/lifestyle/arts/other-desert-cities-broadway-review-1236000000/', true], [WSJ, false]]) {
+    const dir = tmp();
+    try {
+      const seen = [];
+      const sc = scoring({ dir, extract: () => 'x', scoreText: async (text, ctx) => { seen.push(ctx.contentTier); return text ? { rejected: true, rejection: 'input_validation_failed:body_too_short' } : { score: 62 }; } });
+      const row = { showId: SHOW.id, url, outletId: 'o', outlet: 'O', fullText: 'Partial article text. '.repeat(40) };
+      const fetched = { fullText: row.fullText, excerpts: { bwwExcerpt: 'A critic, a quote that the aggregator printed beside the link tonight.' } };
+      if (held) {
+        await assert.rejects(sc.scoreReview(row, fetched), /scorer rejected the review: input_validation_failed/);
+        assert.deepEqual(seen, ['complete']);
+      } else {
+        const r = await sc.scoreReview(row, fetched);
+        assert.equal(r.score, 62);
+        assert.equal(r.extra.contentTier, 'excerpt');
+        assert.deepEqual(seen, ['complete', 'excerpt']);
+      }
+    } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  }
+});
+
+// Ship-check (BRO-6872): the London and NY paywalls outside the completeness list (Telegraph, FT, The Times, Newsday)
+// still get the excerpt fallback; open sites never do.
+test('excerptMayScore: paywall hosts in either list score an excerpt, open sites do not', () => {
+  for (const u of [WSJ, 'https://www.telegraph.co.uk/theatre/what-to-see/x-review/', 'https://www.thetimes.co.uk/article/x-review-abc',
+    'https://www.thetimes.com/culture/theatre/article/x-review', 'https://www.ft.com/content/abc', 'https://www.newsday.com/entertainment/x']) {
+    assert.equal(inl.excerptMayScore(u), true, u);
+  }
+  for (const u of ['https://www.talkinbroadway.com/page/world/860.html', 'https://www.hollywoodreporter.com/x-review/',
+    'https://www.the-independent.com/arts/x-review.html', 'https://notthetimes.com/x', 'not a url']) {
+    assert.equal(inl.excerptMayScore(u), false, u);
+  }
+});
+
+test('open site: a fully fetched review keeps its aggregator excerpts on the row (written as bwwExcerpt etc.)', async () => {
+  const dir = tmp();
+  try {
+    const TB = 'https://www.talkinbroadway.com/page/world/860.html';
+    const sc = scoring({ dir, extract: () => 'A full review paragraph about the evening. '.repeat(60), scoreText: async () => ({ score: 90 }) });
+    const ex = { bwwExcerpt: 'Howard Miller, a one-line quote from the aggregator page about the evening.' };
+    const out = await sc.fetchReview({ url: TB, key: d.canonicalUrl(TB), excerpts: ex });
+    assert.deepEqual(out.excerpts, ex);
+    assert.ok(out.fullText.length > 1000);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });

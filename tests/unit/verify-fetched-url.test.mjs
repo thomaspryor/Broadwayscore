@@ -460,3 +460,20 @@ describe('verifyFetchedUrl Newsquest London sister sites (BRO-6742)', () => {
     assert.equal(r.reason, 'url_mismatch');
   });
 });
+
+describe('verifyFetchedUrl publisher host moves from URL_HOST_ALIASES (BRO-6872)', () => {
+  const page = (c) => `<html><head><title>x</title><link rel="canonical" href="${c}"></head></html>`;
+  const art = '/arts-entertainment/theatre-dance/reviews/other-desert-cities-broadway-review-b3068662.html';
+  test('the-independent.com page declaring its old independent.co.uk canonical → verified', () => {
+    assert.equal(verifyFetchedUrl(page('https://www.independent.co.uk' + art), 'https://the-independent.com' + art).verified, true);
+  });
+  test('reverse direction → verified', () => {
+    assert.equal(verifyFetchedUrl(page('https://www.the-independent.com' + art), 'https://www.independent.co.uk' + art).verified, true);
+  });
+  test('thetimes.com vs thetimes.co.uk → verified', () => {
+    assert.equal(verifyFetchedUrl(page('https://www.thetimes.co.uk/article/x-review-abc123'), 'https://www.thetimes.com/article/x-review-abc123').verified, true);
+  });
+  test('Independent request with an unrelated canonical host still rejected', () => {
+    assert.equal(verifyFetchedUrl(page('https://www.example.com' + art), 'https://the-independent.com' + art).reason, 'url_mismatch');
+  });
+});

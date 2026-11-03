@@ -533,6 +533,12 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)rockstarmedia\.com\.my$/, reason: 'news-aggregator', allSources: true },
   { host: /(^|\.)cnn\.com$/, path: /\/video\//i, reason: 'tv-video-segment', allSources: true },
   { host: /(^|\.)goldderby\.com$/, path: /^\/theater\/\d{4}\/(?!.*review)/i, reason: 'awards-news-not-review', allSources: true },
+  // News about a show's reception, any host: Showbiz411's ".../gets-disappointing-opening-night-reviews" was scored
+  // as a Roger Friedman review in the BRO-6872 lane replay. Matched 0 of the ~38k reviews.json URLs when added (a real
+  // review's slug says "review", not that the show "gets ... reviews"; nj.com's "...-broadway-reviews" does not match).
+  // A path carrying a standalone "review" token is left alone (a review, or a BWW "Review-Roundup-Critics-React" page
+  // the roundup guard owns); each phrase is anchored on slug boundaries ("critics-reaction" is not "critics-react").
+  { host: /./, path: /^(?!.*(?:^|[-/_])review(?:[-/_.]|$))(?:.*(?:^|[-/])(?:gets|draws|earns|receives|getting|drawing|earning|receiving|lands|garners|met-with)-(?:[a-z0-9]+-){0,3}?(?:rave|raves|mixed|disappointing|glowing|positive|negative|poor|bad|good|great|strong|tepid|lukewarm|scathing|harsh|brutal|opening-night)-(?:[a-z]+-)?reviews(?:[-/.]|$)|.*(?:^|[-/])(?:opening-night-reviews|critics-react|what-(?:the-)?critics-(?:are-)?saying)(?:[-/.]|$))/i, reason: 'reception-news-not-review', allSources: true },
   { host: /(^|\.)a2view\.com$/, path: /^\/tags?\//i, reason: 'tag-index-page', allSources: true },
   { host: /(^|\.)londontheatredirect\.com$/, path: /^\/(?:[a-z]{2}\/)?(?:play|musical|dance|opera|concert|comedy|experience|booking|show|event)s?\//i, reason: 'ticket-seller-product-page', allSources: true },
 ];
