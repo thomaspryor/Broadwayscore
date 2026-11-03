@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const { planPickup } = require('./lib/city-finder-daily');
+const { registryId } = require('./lib/city-finder-config');
 
 const ROOT = path.join(__dirname, '..');
 const arg = (n, d) => { const h = process.argv.slice(2).find((a) => a.startsWith(`--${n}=`)); return h ? h.split('=').slice(1).join('=') : d; };
@@ -36,7 +37,10 @@ const staged = readJson(`data/audit/city-finder-stage-${city}.json`);
 const shows = readJson('data/shows.json');
 const reviewsRaw = readJson('data/reviews.json');
 const reviews = Array.isArray(reviewsRaw) ? reviewsRaw : (reviewsRaw.reviews || Object.values(reviewsRaw));
-const { ingest, candidates } = planPickup({ staged, shows: Array.isArray(shows) ? shows : shows.shows, reviews, hubSlug });
+const dispatchedFile = path.join(ROOT, 'data', 'audit', `city-finder-dispatched-${city}.json`);
+let dispatched = [];
+try { dispatched = JSON.parse(fs.readFileSync(dispatchedFile, 'utf8')).urls || []; } catch { /* first run */ }
+const { ingest, candidates } = planPickup({ staged, shows: Array.isArray(shows) ? shows : shows.shows, reviews, hubSlug, dispatched, outletId: registryId });
 
 fs.writeFileSync(path.join(ROOT, 'data', 'audit', `city-finder-daily-${city}.json`), JSON.stringify({ on, since, ingest, candidates }, null, 1) + '\n');
 fs.writeFileSync(arg('plan', `/tmp/city-finder-ingest-${city}.json`), JSON.stringify(ingest, null, 1));

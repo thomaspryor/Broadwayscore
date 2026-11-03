@@ -1,0 +1,140 @@
+name: City Finder Daily
+run-name: 'City finder daily pickup'
+
+# BRO-6854: city hubs without a Theatre-In-X roundup (San Diego, Boston) find their reviews with the multi-source
+# finder (scripts/lib/city-review-finder.js, every fetch through fetchPage). This pickup runs the finder over
+# productions open now or opened in the last 21 days, then sends review URLs not yet on file for shows we already
+# have to ingest-urls.yml (one dispatch-ingest-batch call for all cities, one scoring run).
+# New productions are NEVER added here: they are written to data/audit/city-finder-daily-<city>.json as
+# candidates and added through a pending-fix plan.
+# Advisory: the dispatch step is continue-on-error. Kill switch: repo variable CITY_FINDER_DISPATCH=false
+# (the finder and its report still run).
+
+on:
+  schedule:
+    - cron: '47 10 * * *'
+  workflow_dispatch:
+    inputs:
+      dispatch:
+        description: 'Send new review URLs to ingest (false = report only)'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+
+permissions:
+  # contents: write: commits the audit files and the dispatched-URL list via push-with-retry.sh.
+  contents: write
+  # actions: write: dispatch-ingest-batch.js dispatches ingest-urls.yml and llm-ensemble-score.yml.
+  actions: write
+
+concurrency:
+  group: city-finder-daily
+  cancel-in-progress: false
+
+jobs:
+  pickup:
+    name: Find and dispatch new city reviews
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+      SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+      SCRAPER_USE_SCRAPINGDOG: '1'
+      BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+      BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: main
+          # The push happens after a long dispatch wait: depth 1000 keeps push-with-retry.sh's shallow boundary
+          # an ancestor of main (as press-night-probe.yml does).
+          fetch-depth: 1000
+
+      - name: Setup Node
+        uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: List finder cities
+        id: cities
+        run: |
+          CITIES=$(node -e "const h=require('./data/city-hubs.json').hubs;console.log(Object.values(h).filter(x=>x.finder&&x.finder.key).map(x=>x.finder.key).join(' '))")
+          [ -n "$CITIES" ] || { echo "::error::no hub with finder.key in data/city-hubs.json"; exit 1; }
+          echo "cities=$CITIES" >> "$GITHUB_OUTPUT"
+
+      - name: Run the finder per city
+        id: find
+        run: |
+          OK=""
+          for C in ${{ steps.cities.outputs.cities }}; do
+            if node scripts/city-finder-daily.js --city="$C" --plan="/tmp/city-finder-ingest-$C.json"; then OK="$OK $C"; else echo "::warning::finder failed for $C"; fi
+          done
+          echo "ok=$OK" >> "$GITHUB_OUTPUT"
+          [ -n "$OK" ] || { echo "::error::finder failed for every city"; exit 1; }
+
+      - name: Merge ingest plans
+        id: merge
+        run: |
+          node -e '
+            const fs = require("fs");
+            const merged = {};
+            for (const c of process.argv.slice(1)) {
+              const p = JSON.parse(fs.readFileSync(`/tmp/city-finder-ingest-${c}.json`, "utf8"));
+              for (const [id, urls] of Object.entries(p)) merged[id] = (merged[id] || []).concat(urls);
+            }
+            fs.writeFileSync("/tmp/city-finder-ingest-all.json", JSON.stringify(merged));
+            const n = Object.values(merged).reduce((a, v) => a + v.length, 0);
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, `urls=${n}\n`);
+            console.log(`${n} new review URLs across ${Object.keys(merged).length} shows`);
+          ' ${{ steps.find.outputs.ok }}
+
+      - name: Dispatch ingest + scoring (one batch for all cities)
+        id: dispatch
+        if: steps.merge.outputs.urls != '0' && inputs.dispatch != 'false' && vars.CITY_FINDER_DISPATCH != 'false'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/dispatch-ingest-batch.js --plan=/tmp/city-finder-ingest-all.json --checkpoint=/tmp/city-finder-ckpt.json
+
+      - name: Mark dispatched URLs
+        if: steps.dispatch.outcome == 'success'
+        run: |
+          for C in ${{ steps.find.outputs.ok }}; do
+            node scripts/city-finder-mark-dispatched.js --city="$C" --plan="/tmp/city-finder-ingest-$C.json"
+          done
+
+      - name: Commit reports
+        if: always()
+        run: |
+          git add data/audit/city-finder-daily-*.json data/audit/city-finder-days-*.json data/audit/city-finder-stage-*.json data/audit/city-finder-dispatched-*.json
+          if git diff --staged --quiet; then
+            echo "No report changes"
+          else
+            git commit -m "data: city finder daily pickup [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: city-finder-daily
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'City Finder Daily Failed'
+          description: 'The daily city review pickup failed (finder, report commit), so new San Diego and Boston reviews were not picked up today.'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

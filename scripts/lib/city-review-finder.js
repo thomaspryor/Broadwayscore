@@ -154,7 +154,7 @@ const ADAPTERS = {
   /** WordPress REST search. */
   async wp(site, prod, ctx, window) {
     const q = encodeURIComponent(norm(prod.title).split(' ').slice(0, 6).join(' '));
-    const url = `${site.base}/wp-json/wp/v2/posts?search=${q}&per_page=20&orderby=date&after=${window.from}T00:00:00&before=${window.to}T23:59:59&_fields=link,title,date,excerpt`;
+    const url = `${site.base}/wp-json/wp/v2/posts?search=${q}&per_page=50&orderby=date&after=${window.from}T00:00:00&before=${window.to}T23:59:59&_fields=link,title,date,excerpt`;
     const rows = jsonOf(await ctx.getPage(url)) || [];
     if (!Array.isArray(rows)) return [];
     return filterCandidates(rows.map((r) => ({ url: r.link, title: stripTags(r.title && r.title.rendered), date: (r.date || '').slice(0, 10), excerpt: stripTags(r.excerpt && r.excerpt.rendered) })), prod, window);
@@ -329,6 +329,7 @@ async function findReviews(prod, cfg, ctx) {
 
 /** Run-scoped caches + the fetch wiring around one fetch function. */
 function makeContext({ getPage, today, dayCache = {}, saveDayCache = () => {} }) {
+  const dayIndexCache = {};
   const bwwPages = new Map();
   const anchors = new Map();
   const ctx = {
@@ -341,8 +342,20 @@ function makeContext({ getPage, today, dayCache = {}, saveDayCache = () => {} })
       const key = `${site.id}|${day}`;
       if (dayCache[key]) return dayCache[key];
       const [y, m, d] = day.split('-');
-      const r = await getPage(`${site.base}/sitemap.xml?yyyy=${y}&mm=${m}&dd=${d}`);
-      const urls = [...String((r && r.content) || '').matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => decode(x[1]));
+      const locs = (pg) => [...String((pg && pg.content) || '').matchAll(/<loc>([^<]+)<\/loc>/g)].map((x) => decode(x[1]));
+      let r = null;
+      let urls;
+      if (site.dayIndex) {
+        // Arc-style outbound feed: an index lists one child sitemap per day.
+        if (!dayIndexCache[site.id]) dayIndexCache[site.id] = locs(await getPage(site.dayIndex));
+        const kids = dayIndexCache[site.id].filter((u) => u.includes(`/${day}/`));
+        urls = [];
+        for (const k of kids) { r = await getPage(k); urls.push(...locs(r)); }
+        if (site.pathIncludes) urls = urls.filter((u) => u.includes(site.pathIncludes));
+      } else {
+        r = await getPage(`${site.base}/sitemap.xml?yyyy=${y}&mm=${m}&dd=${d}`);
+        urls = locs(r);
+      }
       if (r && day < today) { dayCache[key] = urls.filter((u) => !site.slugPrefix || (u.split('/').filter(Boolean).pop() || '').startsWith(site.slugPrefix)); saveDayCache(dayCache); return dayCache[key]; }
       return urls;
     },

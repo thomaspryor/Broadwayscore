@@ -333,3 +333,6 @@ sweep-image-variants.yml  # BRO-6808: self-healing daily sweep; a missing sm/ va
 aeo-visibility-weekly.yml
 # BRO-6857: monthly report-only board hygiene dry run; a missed month only delays the report
 board-hygiene-report.yml
+
+# city-finder-daily.yml: daily pickup of new San Diego/Boston reviews (BRO-6854); a missed day only delays reviews one day, and the failure step posts to the alerts channel.
+city-finder-daily.yml
