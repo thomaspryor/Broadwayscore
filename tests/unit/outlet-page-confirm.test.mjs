@@ -175,3 +175,15 @@ describe('poller config (BRO-6921)', () => {
     for (const id of ['totaltheater1', 'artsfuse', 'exeunt-magazine']) assert.equal(poller.OUTLET_STRATEGY_CONFIG[id].strategy, 'rss', id);
   });
 });
+
+describe('sibling productions (corpus check, BRO-6921)', () => {
+  test('a main title shared by two running productions is never a candidate', () => {
+    const legacy = { id: 'alvin-ailey-legacy', title: 'Alvin Ailey American Dance Theater: Legacy', status: 'open', openingDate: '2026-09-01', venue: "Sadler's Wells" };
+    const newWorks = { id: 'alvin-ailey-new-works', title: 'Alvin Ailey American Dance Theater: New Works', status: 'open', openingDate: '2026-09-01', venue: "Sadler's Wells" };
+    const item = { url: 'https://www.thestage.co.uk/reviews/alvin-ailey-american-dance-theater-new-works-review-sadlers-wells-london', headline: '', publishDate: '2026-09-10' };
+    // The full title still identifies New Works; the shared main title never picks Legacy.
+    assert.deepEqual(findPageConfirmCandidates(item, [legacy, newWorks], { reviewOnlyFeed: true, nowMs: Date.parse('2026-09-11') }).map((c) => c.show.id), ['alvin-ailey-new-works']);
+    const bare = { url: 'https://x.com/review-alvin-ailey-american-dance-theater-at-sadlers-wells', headline: '', publishDate: '2026-09-10' };
+    assert.deepEqual(findPageConfirmCandidates(bare, [legacy, newWorks], { reviewOnlyFeed: true, nowMs: Date.parse('2026-09-11') }), []);
+  });
+});

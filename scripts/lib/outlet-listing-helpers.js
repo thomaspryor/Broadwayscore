@@ -299,7 +299,19 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
 // Barber". The separator must be followed by more title, so "Oh, Mary!" keeps
 // its full form only.
 const SUBTITLE_SEP_RE = /\s+[-‐‑‒–—]\s+|[:!?;]\s+/;
+// Per show object and title: every feed item is checked against every active show.
+const titleFormsCache = new WeakMap();
 function titleForms(show) {
+  if (show && typeof show === 'object') {
+    const hit = titleFormsCache.get(show);
+    if (hit && hit.title === show.title) return hit.forms;
+    const forms = computeTitleForms(show);
+    titleFormsCache.set(show, { title: show.title, forms });
+    return forms;
+  }
+  return computeTitleForms(show);
+}
+function computeTitleForms(show) {
   const full = hyphenSpaced(String((show && show.title) || '').replace(/[_/]+/g, ' '));
   const forms = full ? [full] : [];
   const parts = String((show && show.title) || '').split(SUBTITLE_SEP_RE);
@@ -347,6 +359,11 @@ function findPageConfirmCandidates(item, activeShows, { alreadyMatched = [], rev
     if (!forms.length || COMMON_WORD_SHOW_TITLES.has(forms[0])) continue;
     const form = forms.find((f) => formInHay(f, hay));
     if (!form) continue;
+    // Sibling productions share a main title (Alvin Ailey's "Legacy" and "New
+    // Works" programmes, a run and its return): their credits and venue match
+    // too, so the page cannot tell them apart. Ambiguous forms are left to the
+    // full-title matcher.
+    if (activeShows.some((o) => o.id !== show.id && titleForms(o).includes(form))) continue;
     // A review: the review-only feed, the word "review", or a headline that is the bare title.
     const bare = forms.some((f) => hyphenSpaced(headline.replace(/[_/]+/g, ' ')) === f);
     if (!reviewOnlyFeed && !bare && !REVIEW_WORD_RE.test(rawText)) continue;
