@@ -11,7 +11,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 if (hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/generate-show-schedules-mobile.js\nWrites public/data/show-schedules.json from data/show-schedules.json (no flags).');
+  console.log('Usage: node scripts/generate-show-schedules-mobile.js\nWrites public/data/show-schedules.json and public/data/show-schedule-history.json from data/ (no flags).');
   process.exit(0);
 }
 
@@ -27,3 +27,16 @@ const out = { lastUpdated: data.lastUpdated, currentMonday: data.currentMonday, 
 fs.mkdirSync(path.dirname(outPath), { recursive: true });
 fs.writeFileSync(outPath, JSON.stringify(out));
 console.log(`show-schedules-mobile: ${Object.keys(shows).length} shows, ${(fs.statSync(outPath).size / 1024).toFixed(0)} KB`);
+
+// Past weeks (BRO-6877): the web diary form lazy-fetches this for dates before
+// the live window, and the app reads the same URL. Never bundled.
+const histSrc = path.join(ROOT, 'data', 'show-schedule-history.json');
+const histOut = path.join(ROOT, 'public', 'data', 'show-schedule-history.json');
+const hist = fs.existsSync(histSrc) ? JSON.parse(fs.readFileSync(histSrc, 'utf8')) : { shows: {} };
+fs.writeFileSync(histOut, JSON.stringify({
+  lastUpdated: hist.lastUpdated || null,
+  firstWeek: hist.firstWeek || null,
+  throughMonday: hist.throughMonday || null,
+  shows: hist.shows || {},
+}));
+console.log(`show-schedule-history: ${Object.keys(hist.shows || {}).length} shows, ${(fs.statSync(histOut).size / 1024).toFixed(0)} KB`);

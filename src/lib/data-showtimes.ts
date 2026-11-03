@@ -94,8 +94,8 @@ const GENERIC_SLOT_TIME: Record<'matinee' | 'evening', string> = {
  * night), so used blindly it would fabricate a plausible-looking time for a
  * performance that isn't happening.
  */
-export function resolveShowtimeDefault(showId: string, date: string, slot: 'matinee' | 'evening'): string {
-  const scheduled = scheduledTime(showId, date, slot);
+export function resolveShowtimeDefault(showId: string, date: string, slot: 'matinee' | 'evening', history?: ShowSchedule): string {
+  const scheduled = scheduledTime(showId, date, slot, history);
   return scheduled || GENERIC_SLOT_TIME[slot];
 }
 
@@ -104,35 +104,49 @@ export function resolveShowtimeDefault(showId: string, date: string, slot: 'mati
  * slot is explicitly dark — never true for an uncovered date (bwayrush's
  * rolling few-week window means "no data" is the common case, not "dark").
  */
-export function isKnownDarkForSlot(showId: string, date: string, slot: 'matinee' | 'evening'): boolean {
-  const schedule = getShowSchedule(showId);
-  const week = schedule?.weeks[mondayOfWeekYyyymmdd(date)];
-  const day = week?.[weekdayIndexMonFirst(date)];
+export function isKnownDarkForSlot(showId: string, date: string, slot: 'matinee' | 'evening', history?: ShowSchedule): boolean {
+  const day = dayFor(showId, date, history);
   if (!day) return false;
   return (slot === 'matinee' ? day.m : day.e) === null;
 }
 
 /** The real scheduled "HH:MM" for this slot on this date, or null (uncovered date, or dark). */
-export function scheduledShowtime(showId: string, date: string, slot: 'matinee' | 'evening'): string | null {
-  return scheduledTime(showId, date, slot);
+export function scheduledShowtime(showId: string, date: string, slot: 'matinee' | 'evening', history?: ShowSchedule): string | null {
+  return scheduledTime(showId, date, slot, history);
 }
 
 /**
  * When the schedule covers this date and only one performance plays, that
  * slot (BRO-6783 auto-select); otherwise null.
  */
-export function onlyPerformanceSlot(showId: string, date: string): 'matinee' | 'evening' | null {
-  const m = scheduledTime(showId, date, 'matinee');
-  const e = scheduledTime(showId, date, 'evening');
-  if (m && !e && isKnownDarkForSlot(showId, date, 'evening')) return 'matinee';
-  if (e && !m && isKnownDarkForSlot(showId, date, 'matinee')) return 'evening';
+export function onlyPerformanceSlot(showId: string, date: string, history?: ShowSchedule): 'matinee' | 'evening' | null {
+  const m = scheduledTime(showId, date, 'matinee', history);
+  const e = scheduledTime(showId, date, 'evening', history);
+  if (m && !e && isKnownDarkForSlot(showId, date, 'evening', history)) return 'matinee';
+  if (e && !m && isKnownDarkForSlot(showId, date, 'matinee', history)) return 'evening';
   return null;
 }
 
-function scheduledTime(showId: string, date: string, slot: 'matinee' | 'evening'): string | null {
-  const schedule = getShowSchedule(showId);
-  const week = schedule?.weeks[mondayOfWeekYyyymmdd(date)];
-  const day = week?.[weekdayIndexMonFirst(date)];
+/**
+ * True when the date falls before the live schedule window, i.e. only the
+ * past-week archive (BRO-6877, /data/show-schedule-history.json) can cover it.
+ */
+export function isBeforeScheduleWindow(date: string): boolean {
+  return !!date && mondayOfWeekYyyymmdd(date) < schedules.currentMonday;
+}
+
+/**
+ * The day's {m, e} from the live schedule, else from the past-week archive
+ * the caller loaded for this show (optional; never bundled).
+ */
+function dayFor(showId: string, date: string, history?: ShowSchedule) {
+  const key = mondayOfWeekYyyymmdd(date);
+  const idx = weekdayIndexMonFirst(date);
+  return getShowSchedule(showId)?.weeks[key]?.[idx] ?? history?.weeks[key]?.[idx];
+}
+
+function scheduledTime(showId: string, date: string, slot: 'matinee' | 'evening', history?: ShowSchedule): string | null {
+  const day = dayFor(showId, date, history);
   return (slot === 'matinee' ? day?.m : day?.e) ?? null;
 }
 

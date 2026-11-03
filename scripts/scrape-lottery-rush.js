@@ -38,6 +38,7 @@ const BWAYRUSH_URL = 'https://bwayrush.com/';
 const PLAYBILL_URL = 'https://playbill.com/article/broadway-rush-lottery-and-standing-room-only-policies-com-116003';
 const OUTPUT_PATH = path.join(__dirname, '../data/lottery-rush.json');
 const SCHEDULE_PATH = path.join(__dirname, '../data/show-schedules.json');
+const { archiveOutgoingSchedule } = require('./lib/show-schedule-history.js');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 
 // CLI args
@@ -483,6 +484,18 @@ async function extractAndWriteScheduleData(html) {
     currentMonday,
     shows: scheduleShows,
   };
+
+  // Keep the weeks this overwrite drops (BRO-6877): fold the outgoing file into
+  // data/show-schedule-history.json before replacing it.
+  try {
+    const outgoing = JSON.parse(fs.readFileSync(SCHEDULE_PATH, 'utf8'));
+    const a = archiveOutgoingSchedule(outgoing, currentMonday);
+    console.log(`[Schedule] History: +${a.added} show-weeks archived, ${a.updated} revised (${a.shows} shows)`);
+  } catch (err) {
+    console.error(`::error::[Schedule] Could not archive past weeks: ${err.message} — not overwriting show-schedules.json`);
+    process.exitCode = 1;
+    return;
+  }
 
   fs.writeFileSync(SCHEDULE_PATH, JSON.stringify(output, null, 2) + '\n');
   console.log(`[Schedule] Wrote show-schedules.json with ${Object.keys(scheduleShows).length} shows, ${futureWeeksFetched + 1} weeks`);

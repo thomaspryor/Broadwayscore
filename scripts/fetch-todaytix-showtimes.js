@@ -14,6 +14,7 @@ const path = require('path');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'todaytix-showtimes.json');
 const SCHEDULES_PATH = path.join(__dirname, '..', 'data', 'show-schedules.json');
+const { archiveOutgoingSchedule } = require('./lib/show-schedule-history.js');
 const DRY_RUN = process.argv.includes('--dry-run');
 const LIMIT = (() => {
   const idx = process.argv.indexOf('--limit');
@@ -211,6 +212,10 @@ function generateSchedules(scheduleData, openShowIds) {
   schedules.currentMonday = currentMonday;
 
   schedules.lastUpdated = new Date().toISOString();
+  // BRO-6877: archive the weeks this write retires. Weeks are only ever
+  // removed here with whole shows, but the currentMonday move still ends a week.
+  const a = archiveOutgoingSchedule(JSON.parse(fs.readFileSync(SCHEDULES_PATH, 'utf8')), currentMonday, { dryRun: DRY_RUN });
+  console.log(`Schedules: history +${a.added} show-weeks archived, ${a.updated} revised (${a.shows} shows)`);
   if (!DRY_RUN) {
     fs.writeFileSync(SCHEDULES_PATH, JSON.stringify(schedules, null, 2) + '\n');
   }
