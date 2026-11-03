@@ -586,9 +586,12 @@ function formatTicketPrice(price: number, currency: string): string {
  * the show has no priced option. Exported for the unit test.
  */
 export function describeDiscountTickets(title: string, lr: ShowLotteryRush, currency: string): string | null {
-  const options: { label: string; price: number }[] = [];
+  const options: { label: string; price: number; priceInLabel?: boolean }[] = [];
   const add = (label: string, price: unknown) => {
-    if (typeof price === 'number' && Number.isFinite(price) && price > 0) options.push({ label, price });
+    if (typeof price === 'number' && Number.isFinite(price) && price > 0) {
+      // A program named for its price ("MTC $35") already says it; "for $35" again reads as a typo.
+      options.push({ label, price, priceInLabel: label.includes(formatTicketPrice(price, currency)) });
+    }
   };
   if (lr.lottery) add(`a ${lr.lottery.type === 'digital' ? 'digital ' : ''}lottery${!lr.lottery.platform ? '' : /^show website$/i.test(lr.lottery.platform) ? ' on the show website' : ` (${lr.lottery.platform})`}`, lr.lottery.price);
   if (lr.specialLottery) add(`a special lottery${lr.specialLottery.name ? ` (${lr.specialLottery.name})` : ''}`, lr.specialLottery.price);
@@ -597,7 +600,7 @@ export function describeDiscountTickets(title: string, lr: ShowLotteryRush, curr
   if (lr.studentRush) add('student rush', lr.studentRush.price);
   if (lr.standingRoom) add('standing room', lr.standingRoom.price);
   if (options.length === 0) return null;
-  const parts = options.map(o => `${o.label} for ${formatTicketPrice(o.price, currency)}`);
+  const parts = options.map(o => (o.priceInLabel ? o.label : `${o.label} for ${formatTicketPrice(o.price, currency)}`));
   const list = parts.length === 1 ? parts[0] : `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`;
   const cheapest = Math.min(...options.map(o => o.price));
   const cheapestNote = options.length > 1 ? ` The cheapest way in is ${formatTicketPrice(cheapest, currency)}.` : '';

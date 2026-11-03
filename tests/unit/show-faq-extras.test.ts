@@ -110,3 +110,11 @@ test('a lottery on "show website" reads naturally', () => {
   const t = describeDiscountTickets('X', { lottery: { type: 'general', platform: 'show website', url: '', price: 35, time: '', instructions: '' }, rush: null, standingRoom: null }, '£');
   assert.match(t!, /a lottery on the show website for £35/);
 });
+
+test('a program named for its price is not followed by the same price again (MTC $35)', () => {
+  const lr = { specialLottery: { name: 'MTC $35', platform: '', url: '', price: 35, instructions: '' }, lottery: { type: 'digital', platform: 'TodayTix', price: 40 } } as unknown as Parameters<typeof describeDiscountTickets>[1];
+  const out = describeDiscountTickets('Awake and Sing!', lr, '$') || '';
+  assert.match(out, /a special lottery \(MTC \$35\)\./);
+  assert.doesNotMatch(out, /MTC \$35\) for \$35/);
+  assert.match(out, /lottery \(TodayTix\) for \$40/);
+});
