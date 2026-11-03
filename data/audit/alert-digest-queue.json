@@ -454,5 +454,36 @@
       }
     ],
     "queuedAt": "2026-11-03T17:34:08.668Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6899-tab-names",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-6899-tab-names",
+    "description": "land.yml did not land land/bro-6899-tab-names: the unit-tests-tsx gate went red at 862fe8cb38. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41680466193",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6899-tab-names"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "862fe8cb385347bc16b2abf5dc240952948a1ccd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41680466193"
+      }
+    ],
+    "queuedAt": "2026-11-03T17:53:22.742Z"
   }
 ]
