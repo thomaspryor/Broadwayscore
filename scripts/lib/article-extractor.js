@@ -581,10 +581,13 @@ function dailyMailArticleBody(html) {
 function extractDailyMailBody(html) {
   const body = dailyMailArticleBody(html);
   if (body == null) return '';
-  return [...body.matchAll(/<p[^>]*class="[^"]*mol-para[^"]*"[^>]*>([\s\S]*?)<\/p>/g)]
-    .map((m) => stripHtml(m[1]).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim())
-    .filter(Boolean)
-    .join('\n\n');
+  const clean = (m) => stripHtml(m[1]).replace(/\u00a0/g, ' ').replace(/\s+/g, ' ').trim();
+  const mol = [...body.matchAll(/<p[^>]*class="[^"]*mol-para[^"]*"[^>]*>([\s\S]*?)<\/p>/g)].map(clean).filter(Boolean);
+  if (mol.length) return mol.join('\n\n');
+  // Pre-2014 articles (BRO-6448: a 2013 Quentin Letts review) print plain <p> tags
+  // in the articleBody div, no mol-para class. Returning '' there sent the caller to
+  // the generic fallbacks, which read the page's anti-adblock script as the text.
+  return [...body.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/g)].map(clean).filter(Boolean).join('\n\n');
 }
 
 const DM_WORD_STARS = { one: 1, two: 2, three: 3, four: 4, five: 5 };
