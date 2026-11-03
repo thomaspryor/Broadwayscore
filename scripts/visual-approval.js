@@ -21,7 +21,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const va = require('./lib/visual-approval.js');
 const link = require('../src/lib/owner-decision-link.js');
 
-const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run]';
+const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run] [--shared-style-change]';
 
 function arg(argv, name) { const a = argv.find((x) => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : ''; }
 
@@ -34,15 +34,15 @@ async function request(argv) {
   const branch = va.git(['branch', '--show-current'], { cwd }) || 'detached';
   const dir = arg(argv, 'dir') || path.join('.claude', 'visual-qa', branch);
 
+  if (va.git(['status', '--porcelain'], { cwd })) { console.error('Refused: uncommitted changes. Commit first so the owner approves exactly what is saved.'); return 1; }
   va.git(['fetch', 'origin', 'main', '--quiet'], { cwd });
   // BRO-6876: only a change to a UI file is the owner's to judge. A data/scraper/lib fix that makes a page
   // look different is rendered by components nobody touched; asking costs the owner an email and a pause for nothing.
   const surface = va.visualSurfaceFiles('origin/main...HEAD', cwd);
-  if (!surface.length) {
-    console.error('Refused: this change touches no UI file (src/**/*.tsx|jsx|css|scss, tailwind/postcss config), so there is nothing visual for the owner to approve. Do NOT ask. Verify the page renders it (load it, check the output), then land it: git push origin HEAD:refs/heads/land/<name>. Copy-only edits are exempt too.');
+  if (!surface.length && !argv.includes('--shared-style-change')) {
+    console.error('Refused: this change touches no UI file (src/**/*.tsx|jsx|css|scss, tailwind/postcss config), so there is nothing visual for the owner to approve. Do NOT ask. Verify the page renders it (load it, check the output), then land it: git push origin HEAD:refs/heads/land/<name>. Copy-only edits are exempt too. Only if a shared .ts/.js module (colors, score buckets, layout constants) changes how existing pages LOOK, re-run with --shared-style-change.');
     return 1;
   }
-  if (va.git(['status', '--porcelain'], { cwd })) { console.error('Refused: uncommitted changes. Commit first so the owner approves exactly what is saved.'); return 1; }
   let verdict;
   try { verdict = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch { console.error(`Refused: no verdict.json in ${dir}. Run node scripts/visual-qa.mjs first.`); return 1; }
   if (!verdict.contentHash) { console.error('Refused: verdict.json has no contentHash.'); return 1; }

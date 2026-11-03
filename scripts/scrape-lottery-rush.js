@@ -23,7 +23,7 @@
  */
 
 const fs = require('fs');
-const { mapSpecialToSpecialLottery } = require('./lib/special-lottery');
+const { mapSpecialToSpecialLottery, isNamedSpecialProgram } = require('./lib/special-lottery');
 const path = require('path');
 const https = require('https');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
@@ -1584,7 +1584,7 @@ function sanitizeData(existing) {
     }
 
     // --- Deduplicate lottery & specialLottery ---
-    if (show.lottery && show.specialLottery) {
+    if (show.lottery && show.specialLottery && !isNamedSpecialProgram(show.specialLottery)) {
       const priceDiff = Math.abs(show.lottery.price - show.specialLottery.price);
       const priceClose = priceDiff < 2 || priceDiff / Math.max(show.lottery.price, show.specialLottery.price) < 0.1;
       const normPlatform = (p) => (p || '').toLowerCase().replace(/\s*(lottery|digital)\s*/g, '').trim();
@@ -1607,7 +1607,7 @@ function sanitizeData(existing) {
     }
 
     // --- Promote lone specialLottery → lottery ---
-    if (show.specialLottery && !show.lottery) {
+    if (show.specialLottery && !show.lottery && !isNamedSpecialProgram(show.specialLottery)) {
       show.lottery = {
         type: 'digital',
         platform: show.specialLottery.platform,
@@ -1906,8 +1906,12 @@ async function main() {
   console.log('='.repeat(60));
 }
 
-main().catch(err => {
-  console.error('\n[Fatal]', err.message);
-  if (verbose) console.error(err.stack);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('\n[Fatal]', err.message);
+    if (verbose) console.error(err.stack);
+    process.exit(1);
+  });
+}
+
+module.exports = { sanitizeData };

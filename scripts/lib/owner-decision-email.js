@@ -82,7 +82,7 @@ function evidenceHtml(evidence) {
   const first = pickEmailImage(list);
   const rest = list.filter((e) => e !== first);
   return `<p style="margin:0 0 10px;"><a href="${esc(first.url)}"><img src="${esc(first.url)}" alt="${esc(noDash(first.label))}" style="display:block;width:100%;max-width:280px;height:auto;border:1px solid #ddd;border-radius:8px;"></a><span style="font-size:13px;color:#666;">${esc(noDash(first.label))}</span></p>`
-    + (rest.length ? `<p style="margin:0 0 12px;font-size:13px;color:#666;">Other sizes: ${rest.map((e) => `<a href="${esc(e.url)}" style="color:#666;">${esc(noDash(e.label))}</a>`).join(', ')}</p>` : '');
+    + (rest.length ? `<p style="margin:0 0 12px;font-size:13px;color:#666;">More screenshots: ${rest.map((e) => `<a href="${esc(e.url)}" style="color:#666;">${esc(noDash(e.label))}</a>`).join(', ')}</p>` : '');
 }
 
 // The task body: why it needs the owner, the numbered steps, then Done /

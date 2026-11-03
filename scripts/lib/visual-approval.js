@@ -37,10 +37,27 @@ function patchId(base, head, cwd) {
  * existing components render the new data, so there is nothing for the owner to judge.
  * Fails closed: a diff error keeps the file.
  */
+function scopedChangedFiles(cwd, re) {
+  try {
+    const gate = path.join(__dirname, 'review-gate.mjs');
+    if (!fs.existsSync(gate)) return null;
+    const out = JSON.parse(execFileSync('node', [gate, '--query=changed-files', `--repo=${cwd}`, '--ref=HEAD', `--pattern=${re.source}`], { encoding: 'utf8', cwd, stdio: ['ignore', 'pipe', 'ignore'] }));
+    return Array.isArray(out.files) && !out.error ? out.files : null;
+  } catch { return null; }
+}
+
 function visualSurfaceFiles(range, cwd) {
   const { UI_PATH_RE } = require('./headless-dispatchability.js'); // lazy: that module requires this one
   const { filterFiles } = require('./visual-text-only-diff.js');
-  const files = git(['diff', '--name-only', range], { cwd }).split('\n').filter((f) => UI_PATH_RE.test(f));
+  let files;
+  try {
+    // Same own-merge-scoped query the push gate uses, so on a shared local main another session's
+    // already-merged .tsx commit does not count as this change's. Falls back to the plain diff.
+    files = range === 'origin/main...HEAD' ? scopedChangedFiles(cwd, UI_PATH_RE) : null;
+    if (!files) files = git(['diff', '--name-only', range], { cwd }).split('\n').filter((f) => UI_PATH_RE.test(f));
+  } catch {
+    return ['(could not diff against main)']; // fail closed: when unsure, the owner may be asked
+  }
   return filterFiles(range, files, (r, f) => git(['diff', r, '--', f], { cwd }));
 }
 
@@ -88,7 +105,7 @@ function labelFor(name) {
 /** The email needs one picture, not five: prefer a phone-width shot (the owner reads on a phone), else the first. */
 function pickEmailImage(evidence) {
   const list = Array.isArray(evidence) ? evidence : [];
-  return list.find((e) => /\b(414|390|375|360)\b/.test(`${e.label} ${e.url}`)) || list[0] || null;
+  return list.find((e) => /\b(414|390|375|360)\b/.test(String(e.label))) || list[0] || null;
 }
 
 function buildBlock({ what, patch, verdict, hold, evidence, summary }) {
