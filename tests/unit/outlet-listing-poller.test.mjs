@@ -416,6 +416,27 @@ describe('findMatchingShows — whole-word matching (ship-check on #940)', () =>
   });
 });
 
+// BRO-6921: NYTG "this song cycle with heart passes the test" put a School
+// Pictures review on "The Heart". A one-word title seen only in the headline
+// must be written capitalized there; a slug match still counts.
+describe('findMatchingShows: one-word titles in lowercase prose (BRO-6921)', () => {
+  const shows = [
+    { id: 'the-heart-off-broadway-2026', title: 'The Heart', status: 'open' },
+    { id: 'school-pictures-off-broadway-2026', title: 'School Pictures', status: 'open' },
+    { id: 'hamilton-2015', title: 'Hamilton', status: 'open' },
+  ];
+  const ids = (h, u) => findMatchingShows(h, u, shows).map(s => s.id);
+  test('lowercase common word in a headline does not match the one-word title', () => {
+    assert.deepEqual(ids("'School Pictures' Off-Broadway review: this song cycle with heart passes the test", '/reviews/school-pictures-off-broadway-review-cherry-lane-theatre'), ['school-pictures-off-broadway-2026']);
+  });
+  test('capitalized or all-caps headline title, and a slug title, still match', () => {
+    assert.deepEqual(ids("'The Heart' Off-Broadway review", '/2026/10/x'), ['the-heart-off-broadway-2026']);
+    assert.deepEqual(ids('THE HEART review: an organ musical', '/2026/10/x'), ['the-heart-off-broadway-2026']);
+    assert.deepEqual(ids('', '/reviews/the-heart-off-broadway-review'), ['the-heart-off-broadway-2026']);
+    assert.deepEqual(ids('Hamilton tour review', '/2026/10/x'), ['hamilton-2015']);
+  });
+});
+
 // BRO-6340: a proxied retry can return a 200 block/interstitial page. It must be
 // rejected (so the poller falls back to SERP) instead of parsing as an empty feed.
 describe('looksLikeFeed', () => {

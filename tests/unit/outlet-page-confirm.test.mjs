@@ -229,3 +229,59 @@ describe('review findings (BRO-6921 second opinion)', () => {
     assert.deepEqual(ids(out), [FISH.id]);
   });
 });
+
+describe('pageText article focus', () => {
+  test('a credit only in the sidebar does not confirm', () => {
+    const filler = ' A long review paragraph about the evening.'.repeat(20);
+    const html = `<nav>Melis Aker</nav><article><h1>Fish</h1><p>${filler}</p></article><aside>More: Melis Aker's new play</aside>`;
+    assert.equal(pageConfirmsShow(pageText(html), FISH, { nowMs: NOW }), false);
+    const ok = html.replace('<h1>Fish</h1>', '<h1>Fish</h1><p>by Melis Aker</p>');
+    assert.equal(pageConfirmsShow(pageText(ok), FISH, { nowMs: NOW }), true);
+  });
+});
+
+describe('ship-check P1 fixes (BRO-6921)', () => {
+  const stats = () => ({ fetched: 0, confirmed: 0, unconfirmed: 0, overBudget: 0, failed: 0 });
+  test('an undated item (listing page) needs the page date, and only while the show runs', async () => {
+    const c = findPageConfirmCandidates({ url: 'https://x.com/reviews/fish-review', headline: 'Fish' }, SHOWS, { nowMs: NOW, reviewOnlyFeed: true });
+    assert.deepEqual(c.map((x) => [x.show.id, x.needsPageDate]), [[FISH.id, true]]);
+    assert.deepEqual(findPageConfirmCandidates({ url: 'https://x.com/reviews/fish-review', headline: 'Fish' }, SHOWS, { nowMs: Date.parse('2027-03-01'), reviewOnlyFeed: true }), []);
+    const page = (d) => `<meta property="article:published_time" content="${d}T10:00:00Z"><h1>Fish</h1><p>by Melis Aker</p>`;
+    const inRun = await poller.confirmOnPage('https://x.com/reviews/fish-review', c, stats(), { fetcher: async () => page('2026-10-14') });
+    assert.deepEqual(ids(inRun), [FISH.id]); assert.equal(inRun.pageDate, '2026-10-14');
+    const oldRun = await poller.confirmOnPage('https://x.com/reviews/fish-review', c, stats(), { fetcher: async () => page('2024-03-01') });
+    assert.equal(oldRun.length, 0);
+    const noDate = await poller.confirmOnPage('https://x.com/reviews/fish-review', c, stats(), { fetcher: async () => '<h1>Fish</h1><p>by Melis Aker</p>' });
+    assert.equal(noDate.length, 0);
+    assert.deepEqual(ids(findPageConfirmCandidates({ url: 'https://x.com/reviews/fish-review', headline: 'Fish', publishDate: '2026-10-15' }, SHOWS, { nowMs: NOW, reviewOnlyFeed: true })), [FISH.id]);
+  });
+  test('a page without the title (bot wall) is unreadable for a day, never "not this show" for a week', async () => {
+    const cache = {}; const st = stats();
+    const out = await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }], st, { fetcher: async () => '<p>Checking your browser</p>', unconfirmedCache: cache });
+    assert.deepEqual(out, []);
+    assert.equal(st.failed, 1); assert.equal(st.unconfirmed, 0);
+    assert.deepEqual(Object.keys(cache), ['https://x.com/fish|*unreadable*']);
+    assert.equal(poller.isUnconfirmedCached(cache, 'https://x.com/fish', THE_ASK.id), true);
+  });
+  test('a failed fetch is marked unreadable too', async () => {
+    const cache = {}; const st = stats();
+    await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }], st, { fetcher: async () => { throw new Error('403'); }, unconfirmedCache: cache });
+    assert.equal(Object.keys(cache).length, 1);
+  });
+  test('unreadable marks expire after a day, unconfirmed after a week', () => {
+    const fs = require('fs'); const os = require('os'); const path = require('path');
+    const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'uc-')), 'c.json');
+    fs.writeFileSync(f, JSON.stringify({ entries: { 'u|*unreadable*': '2026-10-18T00:00:00Z', 'u|show': '2026-10-18T00:00:00Z' } }));
+    assert.deepEqual(Object.keys(poller.loadUnconfirmedCache(f, Date.parse('2026-10-20T00:00:00Z'))), ['u|show']);
+  });
+  test('the fetcher gets a check that the page names a candidate title', async () => {
+    let check;
+    await poller.confirmOnPage('https://x.com/fish', [{ show: FISH }], stats(), { fetcher: async (u, looksRight) => { check = looksRight; return '<p>Fish by Melis Aker</p>'; } });
+    assert.equal(check('<p>Checking your browser</p>'), false);
+    assert.equal(check('<h1>Fish</h1>'), true);
+  });
+  test('general-arts feeds must page-confirm every match', () => {
+    for (const id of ['artsfuse', 'exeunt-magazine']) assert.equal(poller.OUTLET_STRATEGY_CONFIG[id].pageConfirmAll, true, id);
+    assert.ok(!poller.OUTLET_STRATEGY_CONFIG.totaltheater1.pageConfirmAll);
+  });
+});

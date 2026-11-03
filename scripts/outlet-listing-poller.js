@@ -56,12 +56,15 @@ const {
   isFlaggedMergeTarget,
 } = require('./lib/review-normalization');
 const { normalizeUrl } = require('./lib/url-utils');
+const { extractPublishDate } = require('./lib/article-extractor');
 const { describeSkip } = require('./lib/ingest-skip-classify');
 const {
   findMatchingShows,
   findPageConfirmCandidates,
   pageConfirmsShow,
   pageText,
+  pageNamesTitle,
+  publishedInRunWindow,
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,
   parseRssFeed,
@@ -265,8 +268,10 @@ const OUTLET_STRATEGY_CONFIG = {
   // engine had indexed it inside the lookback (totaltheater1 Fish, Arts Fuse
   // Slam Frank, Exeunt Creation Stories were all hand-ingested). Feeds probed 200.
   totaltheater1:             { strategy: 'rss', url: 'https://totaltheater1.wordpress.com/feed/' },
-  artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i },
-  'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/feed/' },
+  // pageConfirmAll: general-arts feeds (film, books, Boston stages). A feed
+  // match alone is not trusted here: every match must also page-confirm.
+  artsfuse:                  { strategy: 'rss', url: 'https://artsfuse.org/feed/', titleFilter: /\b(theat(er|re)|review|stage|play|musical|off-broadway)\b/i, pageConfirmAll: true },
+  'exeunt-magazine':         { strategy: 'rss', url: 'https://exeuntnyc.com/feed/', pageConfirmAll: true },
 };
 
 // Outlets where we use WordPress REST API (separate — API approach, no URL scraping needed)
@@ -730,10 +735,12 @@ async function fetchViaHtml(outletId, domain, outletEntry, cutoff) {
 // headline or slug plus a run-window date, so a normal day yields a handful.
 const PAGE_CONFIRM_MAX_FETCHES = parseInt(process.env.PAGE_CONFIRM_MAX_FETCHES || '30', 10);
 
-async function fetchArticleHtml(url) {
+// looksRight: the plain-fetch page must pass it (it names a candidate's title),
+// otherwise it is a bot wall, paywall stub or JS shell and the scraper chain runs.
+async function fetchArticleHtml(url, looksRight = () => true) {
   try {
     const html = await fetchSimple(url, 20000);
-    if (html && html.length >= 2000) return html;
+    if (html && html.length >= 2000 && looksRight(html)) return html;
   } catch { /* fall through to the scraper chain */ }
   const result = await fetchPage(url, { timeout: 25000 });
   return result && typeof result === 'object' ? result.content : result;
@@ -746,16 +753,28 @@ async function fetchArticleHtml(url) {
 const UNCONFIRMED_CACHE = path.join(__dirname, '..', 'data', 'audit', 'outlet-page-confirm-unconfirmed.json');
 const UNCONFIRMED_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const unconfirmedKey = (url, showId) => `${normalizeUrl(url)}|${showId}`;
+// An unreadable page (fetch failed, or no candidate title in its text) is marked
+// for one day, so a dead or walled URL does not spend paid fetches every run.
+const FAILED_SHOW_ID = '*unreadable*';
+const FAILED_TTL_MS = 24 * 60 * 60 * 1000;
 function loadUnconfirmedCache(file = UNCONFIRMED_CACHE, nowMs = Date.now()) {
   let raw = {};
   try { raw = JSON.parse(fs.readFileSync(file, 'utf-8')).entries || {}; } catch { /* first run */ }
   const live = {};
-  for (const [k, at] of Object.entries(raw)) if (nowMs - Date.parse(at) < UNCONFIRMED_TTL_MS) live[k] = at;
+  for (const [k, at] of Object.entries(raw)) {
+    const ttl = k.endsWith(`|${FAILED_SHOW_ID}`) ? FAILED_TTL_MS : UNCONFIRMED_TTL_MS;
+    if (nowMs - Date.parse(at) < ttl) live[k] = at;
+  }
   return live;
 }
-function isUnconfirmedCached(cache, url, showId) { return !!cache[unconfirmedKey(url, showId)]; }
+function isUnconfirmedCached(cache, url, showId) { return !!(cache[unconfirmedKey(url, showId)] || cache[unconfirmedKey(url, FAILED_SHOW_ID)]); }
 function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
-  fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days', entries: cache }, null, 2) + '\n');
+  try {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, JSON.stringify({ note: 'BRO-6921: url|showId pages that did not confirm the show; skipped for 7 days', entries: cache }, null, 2) + '\n');
+  } catch (err) {
+    console.warn(`  ⚠ could not save ${file}: ${err.message}`);
+  }
 }
 
 /**
@@ -767,14 +786,23 @@ function saveUnconfirmedCache(cache, file = UNCONFIRMED_CACHE) {
 async function confirmOnPage(url, candidates, stats, { fetcher = fetchArticleHtml, activeShows = [], publishDate = null, unconfirmedCache = null } = {}) {
   if (stats.fetched >= PAGE_CONFIRM_MAX_FETCHES) { stats.overBudget += candidates.length; return []; }
   stats.fetched++;
+  const markUnreadable = () => { stats.failed++; if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, FAILED_SHOW_ID)] = new Date().toISOString(); return []; };
+  const namesACandidate = (h) => { const t = pageText(h); return candidates.some(({ show }) => pageNamesTitle(t, show)); };
   let html;
-  try { html = await fetcher(url); } catch (err) { console.log(`  [page-confirm] fetch failed ${url}: ${err.message}`); }
-  if (!html) { stats.failed++; return []; }
+  try { html = await fetcher(url, namesACandidate); } catch (err) { console.log(`  [page-confirm] fetch failed ${url}: ${err.message}`); }
+  if (!html) return markUnreadable();
   const text = pageText(html);
-  const nowMs = publishDate ? (Date.parse(publishDate) || Date.now()) : Date.now();
+  // No candidate's title anywhere on the page: not a verdict on the show, an
+  // unreadable page. Never record it as "does not confirm" for a week.
+  if (!candidates.some(({ show }) => pageNamesTitle(text, show))) return markUnreadable();
+  // Undated (listing) items: the page's own date stands in, and must be in the run.
+  const pageDate = publishDate ? null : extractPublishDate(html, url);
+  const nowMs = Date.parse(publishDate || pageDate || '') || Date.now();
   const out = [];
-  for (const { show } of candidates) {
-    if (pageConfirmsShow(text, show, { nowMs, otherShows: activeShows })) { out.push(show); stats.confirmed++; }
+  out.pageDate = pageDate;
+  for (const { show, needsPageDate } of candidates) {
+    const dated = !needsPageDate || (pageDate && publishedInRunWindow(show, pageDate));
+    if (dated && pageConfirmsShow(text, show, { nowMs, otherShows: activeShows })) { out.push(show); stats.confirmed++; }
     else {
       stats.unconfirmed++;
       if (unconfirmedCache) unconfirmedCache[unconfirmedKey(url, show.id)] = new Date().toISOString();
@@ -936,20 +964,27 @@ async function main() {
 
     for (const { url, headline, publishDate, description } of articles) {
       const urlSlug = (() => { try { return new URL(url).pathname; } catch { return url; } })();
-      const matchedShows = findMatchingShows(headline, urlSlug, activeShows, description, { publishDate });
+      const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
+      const feedMatched = findMatchingShows(headline, urlSlug, activeShows, description, { publishDate });
+      // pageConfirmAll outlets: feed matches go through the page check too.
+      const matchedShows = outletCfg.pageConfirmAll ? [] : feedMatched;
 
       // BRO-6921: subtitled or short titles the headline alone cannot prove.
-      const outletCfg = WP_API_CONFIG[outletId] || OUTLET_STRATEGY_CONFIG[outletId] || {};
       const reviewOnlyFeed = !viaSerp && !!outletCfg.reviewsOnly;
-      const candidates = findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: matchedShows, reviewOnlyFeed })
+      const candidates = [
+        ...(outletCfg.pageConfirmAll ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
+        ...findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: feedMatched, reviewOnlyFeed }),
+      ]
         .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id)
           && !isUnconfirmedCached(unconfirmedCache, url, c.show.id));
+      let stubDate = publishDate;
       if (candidates.length > 0) {
         const confirmed = await confirmOnPage(url, candidates, pageConfirmStats, {
           activeShows, publishDate, unconfirmedCache,
           // A dry run never spends paid scraper fetches: plain fetch only.
           fetcher: opts.dryRun ? (u => fetchSimple(u, 20000)) : fetchArticleHtml,
         });
+        if (!publishDate && confirmed.pageDate) stubDate = confirmed.pageDate;
         for (const show of confirmed) {
           console.log(`  Page-confirmed: "${(headline || url).slice(0, 80)}" → ${show.id}`);
           matchedShows.push(show);
@@ -971,7 +1006,7 @@ async function main() {
         // writer would just reject them again and we'd burn classifier work.
         if (isRejectedCached(url, show.id)) continue;
 
-        const result = createStub(show.id, outletId, displayName, url, headline, publishDate, isMultiShow, nytCriticsPick, opts.dryRun);
+        const result = createStub(show.id, outletId, displayName, url, headline, stubDate, isMultiShow, nytCriticsPick, opts.dryRun);
         // Only count NEW writes — the shared writer may also reject (cross-market
         // classifier), reroute, or merge into an existing file. None of those
         // are "new stubs" for the workflow output.

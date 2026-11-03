@@ -190,6 +190,20 @@ function looksLikeBookReview(headline, urlSlug) {
   return (BOOK_REVIEW_RE.test(text) || BOOKS_SECTION_RE.test(String(urlSlug || ''))) && !THEATRE_WORD_RE.test(text);
 }
 
+// Is the one-word title `word` (normalized, lowercase) a whole word of the URL path?
+function slugNamesWord(urlSlug, word) {
+  return ` ${hyphenSpaced(String(urlSlug || '').replace(/[/_.]+/g, ' '))} `.includes(` ${word} `);
+}
+
+// Does the headline write `word` with a capital first letter (or in capitals)?
+function headlineCapitalizes(headline, word) {
+  const h = foldDiacritics(String(headline || ''));
+  const w = foldDiacritics(word);
+  const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const cap = w.charAt(0).toUpperCase() + w.slice(1);
+  return new RegExp(`(^|[^A-Za-z])(${esc(cap)}|${esc(w.toUpperCase())})(?![A-Za-z])`).test(h);
+}
+
 function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { nowMs = Date.now(), publishDate = null } = {}) {
   if (!headline && !urlSlug) return [];
   if (looksLikeBookReview(headline, urlSlug)) return [];
@@ -252,6 +266,12 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
       ok = !(tokens[0] === 'and' && at > 0);
       at = hay.indexOf(` ${norm} `, at + 1);
     }
+    // A one-word title found only in the headline (not the URL) must be written
+    // as a title there, capitalized: "this song cycle with heart" is not a
+    // review of "The Heart" (NYTG, BRO-6921). Slugs are lowercase, so a slug
+    // match (whole-word or glued, below) still counts on its own.
+    if (ok && tokens.length === 1 && !needsCredit && !slugNamesWord(urlSlug, norm)
+      && !headlineCapitalizes(headline, norm)) ok = false;
     if (!ok) {
       const glued = foldDiacritics(norm).replace(/[^a-z0-9]/g, '');
       ok = glued.length >= 6 && tokens[0] !== 'and'
@@ -369,17 +389,29 @@ function findPageConfirmCandidates(item, activeShows, { alreadyMatched = [], rev
     // A review: the review-only feed, the word "review", or a headline that is the bare title.
     const bare = forms.some((f) => hyphenSpaced(headline.replace(/[_/]+/g, ' ')) === f);
     if (!reviewOnlyFeed && !bare && !REVIEW_WORD_RE.test(rawText)) continue;
-    // Dated by the feed, or (listing pages carry no date) by the poll itself.
-    if (!publishedInRunWindow(show, item.publishDate || new Date(nowMs).toISOString().slice(0, 10))) continue;
-    out.push({ show, form });
+    // Dated by the feed. An undated listing item could be a review of an earlier
+    // run of the same show (same cast, so the page check would pass), so it is a
+    // candidate only while the show runs now, and confirmOnPage then requires the
+    // page's own publish date to fall in the run window (needsPageDate).
+    if (item.publishDate) {
+      if (!publishedInRunWindow(show, item.publishDate)) continue;
+      out.push({ show, form });
+    } else {
+      if (!publishedInRunWindow(show, new Date(nowMs).toISOString().slice(0, 10))) continue;
+      out.push({ show, form, needsPageDate: true });
+    }
   }
   return out;
 }
 
 /** Visible text of an article page, entity-decoded, scripts and styles dropped. */
 function pageText(html) {
+  // Nav menus, sidebars ("more reviews" rails) and footers name other shows'
+  // casts, which must not confirm this one. Not <article>/<main>: TheaterMania
+  // puts the review body outside <article> and uses it only for sidebar teasers.
   return decodeEntities(String(html || '')
     .replace(/<(script|style|noscript)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<(nav|aside|footer)\b[^>]*>[\s\S]*?<\/\1>/gi, ' ')
     .replace(/<[^>]+>/g, ' '));
 }
 
@@ -396,8 +428,13 @@ function pageText(html) {
  *   was published (the young-production writer rule); otherShows: the shows
  *   running now, for the shared-venue rule.
  */
+function pageHay(text) { return ` ${hyphenSpaced(String(text || '').replace(/[_/]+/g, ' '))} `; }
+
+/** Does the page text carry one of the show's title forms at all? (A bot wall or paywall stub does not.) */
+function pageNamesTitle(text, show) { const hay = pageHay(text); return titleForms(show).some((f) => formInHay(f, hay)); }
+
 function pageConfirmsShow(text, show, { nowMs = Date.now(), otherShows = [] } = {}) {
-  const hay = ` ${hyphenSpaced(String(text || '').replace(/[_/]+/g, ' '))} `;
+  const hay = pageHay(text);
   if (!titleForms(show).some((f) => formInHay(f, hay))) return false;
   const credits = creditNames(show, nowMs);
   if (credits.length) return credits.some((n) => hay.includes(` ${n} `) || hay.includes(` ${n}s `));
@@ -769,6 +806,7 @@ function isFeedStale({ newestFiltered, filteredCount, newestAny = null, oldestAn
 }
 
 module.exports = {
+  publishedInRunWindow,
   OUTLET_FEED_HEALTH_REL,
   FEED_STALE_DAYS,
   OUTLET_ALIVE_DAYS,
@@ -781,6 +819,7 @@ module.exports = {
   findMatchingShows,
   findPageConfirmCandidates,
   pageConfirmsShow,
+  pageNamesTitle,
   pageText,
   titleForms,
   deriveQualifyingOutlets,
