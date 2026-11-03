@@ -8,7 +8,7 @@ import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useIsOperaDomain } from '@/hooks/useIsOperaDomain';
 import { isOperaShowPath } from '@/lib/opera-show-ids';
 import { featureFlags } from '@/config/feature-flags';
-import { HUB_CITIES } from '@/lib/city-hub';
+import { HUB_CITIES, hubForPath } from '@/lib/city-hub';
 
 interface MarketStats {
   nyc: { openShows: number; theaters: number };
@@ -36,7 +36,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   const isUkRegional = marketId === 'uk-regional';
-  const isHubPath = (slug: string) => pathname === `/tours/${slug}` || pathname.startsWith(`/tours/${slug}/`);
+  const activeHub = hubForPath(pathname);
+  const isHubPath = (slug: string) => activeHub?.slug === slug;
   const isWestEnd = marketId === 'west-end' || isUkRegional;
   const isOffWestEnd = marketId === 'off-west-end';
   // Treat opera show pages as NOT off-broadway for the pill label, even though
@@ -53,7 +54,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   // domain flag only matters on opera-specific pages.
   const isExplicitNonOperaMarket = isWestEnd || isOffWestEnd || isOffBroadway || isRegional || isTour;
   const isOpera = (isOperaDomain || isOperaShowPage || isOperaPage) && !isExplicitNonOperaMarket;
-  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isTour && !isOpera;
+  const isBroadway = !isWestEnd && !isOffWestEnd && !isOffBroadway && !isRegional && !isTour && !isOpera && !activeHub;
   const currentMarket = isWestEnd || isOffWestEnd ? 'west-end' : 'nyc';
 
   const closeDropdown = useCallback(() => setIsOpen(false), []);
@@ -103,7 +104,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
                     ? 'bg-teal-500/[0.12] border-teal-500/25 text-teal-300 hover:bg-teal-500/20'
                   : isRegional
                     ? 'bg-emerald-500/[0.12] border-emerald-500/25 text-emerald-300 hover:bg-emerald-500/20'
-                    : isTour
+                    : isTour || activeHub
                       ? 'bg-sky-500/[0.12] border-sky-500/25 text-sky-300 hover:bg-sky-500/20'
                       : 'bg-white/[0.06] border-white/[0.12] text-gray-300 hover:bg-white/10 hover:text-white'
           }
@@ -112,7 +113,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isRegional ? 'Regional' : isTour ? 'Tours' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
+        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isRegional ? 'Regional' : isTour ? 'Tours' : activeHub ? activeHub.hub.cardLabel : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
         {/* Always visible — below 400px this used to be `hidden`, so the pill
             read as a plain label with no dropdown cue on narrow phones (task
             #78: rage clicks on "Broadway" traced to missing affordance here).
