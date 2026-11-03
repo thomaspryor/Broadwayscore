@@ -89,7 +89,7 @@ test('only files this push carried are considered', () => {
 
 test('parseChangedFiles keeps show/file.json only, deduped', () => {
   assert.deepEqual(
-    lib.parseChangedFiles(['a/b.json', 'a/b.json', 'a/failed-fetches.json', 'README.md', 'x.json', 'a/b/c.json', '', ' c/d.json ']),
+    lib.parseChangedFiles(['a/b.json', 'a/b.json', 'a/failed-fetches.json', 'a/_blocklist.json', 'a/_ingest-rejections.json', 'README.md', 'x.json', 'a/b/c.json', '', ' c/d.json ']),
     [{ showId: 'a', file: 'b.json' }, { showId: 'c', file: 'd.json' }],
   );
 });

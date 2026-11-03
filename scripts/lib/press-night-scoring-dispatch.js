@@ -33,6 +33,7 @@
 
 const path = require('path');
 const { urgentScoringShowIds } = require('./scoring-lane');
+const { isReviewTextFile } = require('./review-text-sidecars');
 
 /**
  * Show ids named by an llm-ensemble-score.yml run title
@@ -50,18 +51,18 @@ const MAX_RUNS_PER_HOUR = 4;
 /**
  * Parse a changed-path list into { showId, file } pairs. Paths are relative to
  * the review-texts repo root ("show-id/outlet--critic.json"); anything else
- * (failed-fetches.json, nested or top-level files) is ignored.
+ * (sidecars like _blocklist.json or failed-fetches.json, nested or top-level
+ * files) is ignored.
  */
 function parseChangedFiles(lines) {
   const out = [];
   const seen = new Set();
   for (const raw of lines || []) {
     const p = String(raw || '').trim();
-    if (!p.endsWith('.json')) continue;
     const parts = p.split('/');
     if (parts.length !== 2) continue;
     const [showId, file] = parts;
-    if (!showId || !file || file === 'failed-fetches.json') continue;
+    if (!showId || !isReviewTextFile(file)) continue;
     const key = `${showId}/${file}`;
     if (seen.has(key)) continue;
     seen.add(key);
