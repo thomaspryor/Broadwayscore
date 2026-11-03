@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-11-03T00:08:55.376Z",
-  "processed": 6,
-  "failed": 4,
-  "successRate": "60.0%",
+  "updatedAt": "2026-11-03T01:04:33.500Z",
+  "processed": 40,
+  "failed": 50,
+  "successRate": "44.4%",
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 22,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingdog": 4,
+    "scrapingbee": 4,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 4
+    "archiveToday": 12,
+    "archive": 7
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-11-03T00:06:14.997Z",
@@ -32,6 +32,80 @@
       "event": "bb-session",
       "session": "ab46dc17",
       "url": "https://deadline.com/2026/05/andrey-zvyagintsev-minotaur-gets-ten-minute-applaus"
+    },
+    {
+      "t": "2026-11-03T00:39:02.939Z",
+      "event": "bb-session",
+      "session": "7200b4b3",
+      "url": "http://www.talkinbroadway.com/ob/12_2_15.html"
+    },
+    {
+      "t": "2026-11-03T00:39:03.433Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T00:40:00.428Z",
+      "event": "bb-session",
+      "session": "3ef6eea2",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/theater-review-waiting-for-godo"
+    },
+    {
+      "t": "2026-11-03T00:40:08.528Z",
+      "event": "bb-session",
+      "session": "591a8f8a",
+      "url": "http://www.hollywoodreporter.com/hr/film-reviews/theater-review-waiting-for-godo"
+    },
+    {
+      "t": "2026-11-03T00:40:22.055Z",
+      "event": "bb-session",
+      "session": "7f471e21",
+      "url": "http://www.talkinbroadway.com/page/ob/2_08_16.html"
+    },
+    {
+      "t": "2026-11-03T00:40:22.471Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T00:44:16.650Z",
+      "event": "bb-session",
+      "session": "13d37336",
+      "url": "https://www.talkinbroadway.com/ob/10_14_15a.html"
+    },
+    {
+      "t": "2026-11-03T00:44:17.155Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T00:51:12.884Z",
+      "event": "bb-session",
+      "session": "da877f56",
+      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
+    },
+    {
+      "t": "2026-11-03T00:51:13.331Z",
+      "event": "bb-cookie-inject",
+      "domain": "bloomberg.com"
+    },
+    {
+      "t": "2026-11-03T00:53:01.676Z",
+      "event": "bb-session",
+      "session": "53dd3306",
+      "url": "https://www.londontheatre1.com/.well-known/captcha/?y=ipr:20.83.175.21:179330283"
+    },
+    {
+      "t": "2026-11-03T00:54:40.220Z",
+      "event": "bb-session",
+      "session": "a19f8373",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
+    },
+    {
+      "t": "2026-11-03T01:03:52.707Z",
+      "event": "bb-session",
+      "session": "52859e8d",
+      "url": "https://deadline.com/2026/10/billy-crystal-860-broadway-closing-date-1237206061/"
     }
   ]
 }
