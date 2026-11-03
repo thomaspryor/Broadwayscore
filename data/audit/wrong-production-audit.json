@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-02T23:52:03.846Z",
+  "timestamp": "2026-11-03T00:09:38.479Z",
   "stats": {
-    "totalReviews": 79427,
-    "alreadyFlagged": 21981,
+    "totalReviews": 79559,
+    "alreadyFlagged": 21983,
     "dateGuardCatches": 219,
-    "directorMismatch": 3424,
-    "tvFilmSignals": 2253,
-    "londonSignals": 3585,
+    "directorMismatch": 3432,
+    "tvFilmSignals": 2260,
+    "londonSignals": 3584,
     "offBroadwaySignals": 734,
-    "yearMismatch": 350,
-    "noPublishDate": 8399
+    "yearMismatch": 355,
+    "noPublishDate": 8432
   },
   "findings": [
     {
@@ -2574,6 +2574,7 @@
     {
       "showId": "a-time-to-kill-regional-2026",
       "file": "stage-raw--steven-morris.json",
+      "score": 78,
       "publishDate": "2026-05-26",
       "url": "https://stageraw.com/stage-raw-review-a-time-to-kill/",
       "findings": [
@@ -5298,6 +5299,7 @@
     {
       "showId": "anastasia-regional-2026",
       "file": "broadwayworld--michael-quintos.json",
+      "score": 94,
       "publishDate": "2026-06-11",
       "url": "https://www.broadwayworld.com/los-angeles/article/Review-ANASTASIA-THE-MUSICAL-Enchants-at-La-Mirada-Theatre-20260611",
       "findings": [
@@ -19867,7 +19869,7 @@
     {
       "showId": "evening-at-the-talk-house-off-broadway-2017",
       "file": "off-off-online--edward-karam.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2017-02-18",
       "url": "https://www.offoffonline.com/offoffonline/2017/2/14/evening-at-the-talk-house",
       "findings": [
@@ -19881,7 +19883,7 @@
     {
       "showId": "evening-at-the-talk-house-off-broadway-2017",
       "file": "the-clyde-fitch-report--david-finkle.json",
-      "score": null,
+      "score": 68,
       "publishDate": "2017-02-20",
       "url": "http://www.clydefitchreport.com/2017/02/wallace-shawn-talk-house-off-broadway/",
       "findings": [
@@ -19895,6 +19897,7 @@
     {
       "showId": "evening-at-the-talk-house-off-broadway-2017",
       "file": "theatres-leiter-side--samuel-l-leiter.json",
+      "score": 44,
       "publishDate": "2017-03-02",
       "url": "http://slleiter.blogspot.com/2017/03/144-review-evening-at-talk-house-seen.html",
       "findings": [
@@ -20183,7 +20186,7 @@
     {
       "showId": "everybody-off-broadway-2017",
       "file": "broadway-and-me--janice-c-simpson.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2017-03-11",
       "url": "http://broadwayandme.blogspot.com/2017/03/meditations-on-death-everybody-wakey.html?utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+BroadwayMe+%28Broadway+%26amp%3B+Me%29",
       "findings": [
@@ -20435,7 +20438,7 @@
     {
       "showId": "fade-off-broadway-2017",
       "file": "deadline--jeremy-gerard.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2017-02-10",
       "url": "http://deadline.com/2017/02/review-fade-big-river-romeo-et-juliette-rusalka-1201907001/",
       "findings": [
@@ -20454,7 +20457,7 @@
     {
       "showId": "fade-off-broadway-2017",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2017-02-08",
       "url": "https://newyorktheater.me/2017/02/08/fade-play-review-latina-tv-writer-on-how-horrible-tv-is/",
       "findings": [
@@ -20468,7 +20471,7 @@
     {
       "showId": "fade-off-broadway-2017",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": null,
+      "score": 41,
       "publishDate": "February 8th, 2017",
       "url": "http://www.talkinbroadway.com/page/ob/2_08_17a.html",
       "findings": [
@@ -21036,6 +21039,19 @@
       "score": 86,
       "publishDate": "2026-09-17",
       "url": "https://northernartsreview.co.uk/central-north/review-august-wilsons-fences-at-leeds-playhouse/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel bailey\" from fences-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "fences-leeds-regional-2026",
+      "file": "thestage--matt-barton.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.thestage.co.uk/reviews/fences-review-leeds-playhouse",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -25171,6 +25187,48 @@
       ]
     },
     {
+      "showId": "good-night-oscar-2023",
+      "file": "culturesauce--thom-geier.json",
+      "score": 88,
+      "publishDate": null,
+      "url": "https://culturesauce.com/good-night-oscar-sean-hayes-broadway-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2023 (1x). 2026 matches production: good-night-oscar-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-2023",
+      "file": "deadline--greg-evans.json",
+      "score": 56,
+      "publishDate": "April 24, 2023",
+      "url": "https://deadline.com/2023/04/good-night-oscar-sean-hayes-broadway-review-deadline-1235334934/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2023 (0x). 2026 matches production: good-night-oscar-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "good-night-oscar-2023",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 69,
+      "publishDate": "April 24, 2023",
+      "url": "https://www.vulture.com/2023/04/theater-review-sean-hayes-levant-good-night-oscar.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (11x) more than 2023 (1x). 2026 matches production: good-night-oscar-regional-2026"
+        }
+      ]
+    },
+    {
       "showId": "good-night-oscar-regional-2022",
       "file": "chicagotribune--chris-jones.json",
       "score": 91,
@@ -25466,6 +25524,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from guys-and-dolls-1992"
+        }
+      ]
+    },
+    {
+      "showId": "guys-and-dolls-2009",
+      "file": "usatoday--elysa-gardner.json",
+      "score": 42,
+      "publishDate": "2009-03-01",
+      "url": "http://www.usatoday.com/life/theater/reviews/2009-03-01-guys-and-dolls_N.htm?csp=34",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2009 (0x). 2026 matches production: guys-and-dolls-regional-2026"
         }
       ]
     },
@@ -27183,6 +27255,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2018 (2x) more than 2024 (1x). 2018 matches production: hadestown-west-end-2018"
+        }
+      ]
+    },
+    {
+      "showId": "hairspray-regional-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-06-16",
+      "url": "https://www.sandiegouniontribune.com/2026/06/16/review-new-villages-hairspray-is-fun-but-uneven/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -31109,7 +31194,7 @@
     {
       "showId": "if-i-forget-off-broadway-2017",
       "file": "northjerseycom--robert-feldberg.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2017-02-23",
       "url": "http://www.northjersey.com/story/entertainment/theater/2017/02/23/theater-review-family-fights-together/98201248/",
       "findings": [
@@ -35889,7 +35974,7 @@
     {
       "showId": "kid-victory-off-broadway-2017",
       "file": "theatre-is-easy--keith-paul-medelis.json",
-      "score": null,
+      "score": 62,
       "publishDate": "February 23rd, 2017",
       "url": "http://www.theasy.com/Reviews/2017/K/kidvictory.php",
       "findings": [
@@ -36209,6 +36294,58 @@
       "file": "thestage--unknown.json",
       "publishDate": null,
       "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "kims-convenience-regional-2026",
+      "file": "broadwayworld--erinmarie-reiter.json",
+      "publishDate": "2026-05-22",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-KIMS-CONVENIENCE-at-The-Old-Globe-20260522",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "kims-convenience-regional-2026",
+      "file": "san-diego-jewish-world--unknown.json",
+      "publishDate": null,
+      "url": "https://www.sdjewishworld.com/2026/05/24/television-sit-com-kims-convenience-comes-to-old-globe-stage/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "kims-convenience-regional-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-05-22",
+      "url": "https://www.sandiegouniontribune.com/2026/05/22/review-kims-convenience-a-funny-and-touching-look-at-the-immigrant-experience/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "kims-convenience-regional-2026",
+      "file": "theatrereviewskurahashi--yuko-kurahashi.json",
+      "publishDate": "2026-05-24",
+      "url": "https://theatrereviewskurahashi.wordpress.com/2026/05/25/humanity-love-and-caring-in-the-old-globe-theatres-kims-convenience/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -38731,19 +38868,6 @@
       "score": 63,
       "publishDate": null,
       "url": "https://www.theatermania.com/news/review-dule-hill-and-daniel-j-watts-are-unforgettable-in-a-murky-lights-out_1779864/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "limonade-tous-les-jours-a-paris-love-story-regional-2026",
-      "file": "ticketholdersla--unknown.json",
-      "publishDate": null,
-      "url": "https://www.ticketholdersla.com/current-reviews/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -44522,6 +44646,84 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2011 (2x) more than 2023 (0x). 2011 matches production: noises-off-west-end-2011"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "broadwayworld--erinmarie-reiter.json",
+      "publishDate": "2026-07-11",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-NORTH-BY-NORTHWEST-at-The-Old-Globe-20260711",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "san-diego-jewish-world--unknown.json",
+      "publishDate": null,
+      "url": "https://www.sdjewishworld.com/2026/07/19/north-by-northwest-not-exactly-a-musical-something-else-altogether/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "san-diego-story--david-dixon.json",
+      "publishDate": "2026-07-14",
+      "url": "https://sandiegostory.com/creative-interpretation-of-a-hitchcock-classic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-07-10",
+      "url": "https://www.sandiegouniontribune.com/2026/07/10/review-funny-and-dance-fueled-north-by-northwest-dazzles-in-its-american-premiere/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "stageandcinema--michael-m-landman-karny.json",
+      "publishDate": "2026-07-14",
+      "url": "https://stageandcinema.com/2026/07/14/north-by-northwest-old-globe-review-san-diego/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-old-regional-2026",
+      "file": "theatrereviewskurahashi--yuko-kurahashi.json",
+      "publishDate": "2026-07-13",
+      "url": "https://theatrereviewskurahashi.wordpress.com/2026/07/13/a-hitchcock-thriller-in-physical-theatre-north-by-northwest-at-the-old-globe/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
         }
       ]
     },
@@ -53556,6 +53758,19 @@
       ]
     },
     {
+      "showId": "scapin-regional-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-07-28",
+      "url": "https://www.sandiegouniontribune.com/2026/07/28/review-in-north-coast-reps-scapin-the-actors-are-having-the-most-fun/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "scene-partners-off-broadway-2023",
       "file": "vulture--sara-holdren.json",
       "score": 73,
@@ -61055,7 +61270,7 @@
     {
       "showId": "tell-hector-i-miss-him-off-broadway-2017",
       "file": "dctheatrescene--jonathan-mandell.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2017-01-23",
       "url": "http://dctheatrescene.com/2017/01/23/tell-hector-miss-love-puzzles-puerto-rico/",
       "findings": [
@@ -61069,7 +61284,7 @@
     {
       "showId": "tell-hector-i-miss-him-off-broadway-2017",
       "file": "talkinbroadway--matthew-murray.json",
-      "score": null,
+      "score": 17,
       "publishDate": "January 23rd, 2017",
       "url": "http://www.talkinbroadway.com/page/ob/1_23_17a.html",
       "findings": [
@@ -61083,7 +61298,7 @@
     {
       "showId": "tell-hector-i-miss-him-off-broadway-2017",
       "file": "variety--marilyn-stasio.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2017-01-23",
       "url": "http://variety.com/2017/legit/reviews/tell-hector-i-miss-him-review-1201967411/",
       "findings": [
@@ -61617,7 +61832,7 @@
     {
       "showId": "the-bands-visit-off-broadway-2016",
       "file": "broadwayworld--michael-dale.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2016-12-16",
       "url": "https://www.broadwayworld.com/article/BWW-Review-David-Yazbek-and-Itamar-Moses-THE-BANDS-VISIT-Is-A-Captivating-Cultural-Blend-20161217",
       "findings": [
@@ -61631,6 +61846,7 @@
     {
       "showId": "the-bands-visit-off-broadway-2016",
       "file": "hollywood-reporter--frank-scheck.json",
+      "score": 81,
       "publishDate": "2016-12-08",
       "url": "https://www.hollywoodreporter.com/news/general-news/bands-visit-review-954287/",
       "findings": [
@@ -61644,6 +61860,7 @@
     {
       "showId": "the-bands-visit-off-broadway-2016",
       "file": "nytimes--unknown.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.nytimes.com/2016/12/08/theater/the-bands-visit-review.html",
       "findings": [
@@ -61671,6 +61888,7 @@
     {
       "showId": "the-bands-visit-off-broadway-2016",
       "file": "variety--marilyn-stasio.json",
+      "score": 90,
       "publishDate": "2016-12-09",
       "url": "https://variety.com/2016/legit/reviews/the-bands-visit-review-musical-tony-shalhoub-1201938052/",
       "findings": [
@@ -64912,6 +65130,24 @@
       ]
     },
     {
+      "showId": "the-family-album-lajolla-regional-2026",
+      "file": "san-diego-story--david-dixon.json",
+      "publishDate": "2026-07-31",
+      "url": "https://sandiegostory.com/an-emotionally-truthful-la-jolla-playhouse-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jess mcleod\" from the-family-album-regional-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-family-album-regional-2026",
       "file": "playbill--andrew-gans.json",
       "publishDate": "2026-08-07",
@@ -65193,7 +65429,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "broadwayworld--michael-dale.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2017-03-12",
       "url": "http://www.broadwayworld.com/article/BWW-Review-Sally-Field-Stars-In-Sam-Golds-Exquisite-Production-of-THE-GLASS-MENAGERIE-20170312",
       "findings": [
@@ -65207,7 +65443,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "dc-theater-arts--richard-seff.json",
-      "score": null,
+      "score": 82,
       "publishDate": "2017-03-28",
       "url": "http://dcmetrotheaterarts.com/2017/03/28/review-glass-menagerie-belasco-theatre/",
       "findings": [
@@ -65221,7 +65457,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "exeunt-magazine--nicole-serratore.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2017-03-10",
       "url": "http://exeuntmagazine.com/reviews/review-glass-menagerie-belasco-theater/",
       "findings": [
@@ -65235,7 +65471,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "lighting-and-sound-america--david-barbour.json",
-      "score": null,
+      "score": 35,
       "publishDate": "2017-04-05",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-KT4U8C",
       "findings": [
@@ -65282,7 +65518,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "stagezine--scott-harrah.json",
-      "score": null,
+      "score": 49,
       "publishDate": "2017-03-09",
       "url": "http://www.stagezine.com/a-minimalist-revival-glass-menagerie/",
       "findings": [
@@ -65296,6 +65532,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "theater-life--david-sheward.json",
+      "score": 44,
       "publishDate": "2017-03-14",
       "url": "http://theaterlife.com/the-glass-menagerie-sweeney-todd-man-from-nebraska/",
       "findings": [
@@ -65309,7 +65546,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "theatermania--zachary-stewart.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2017-03-09",
       "url": "http://www.theatermania.com/broadway/reviews/the-glass-menagerie_80281.html",
       "findings": [
@@ -65323,7 +65560,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "towleroad--naveen-kumar.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2017-03-16",
       "url": "http://www.towleroad.com/2017/03/glass-menagerie-broadway/",
       "findings": [
@@ -73741,6 +73978,19 @@
       ]
     },
     {
+      "showId": "the-spongebob-musical-regional-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-06-15",
+      "url": "https://www.sandiegouniontribune.com/2026/06/15/review-cygnets-spongebob-musical-a-joyful-cartoon-come-to-life/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-spy-who-came-in-from-the-cold-chichester-festival-regional-2024",
       "file": "guardian--mark-lawson.json",
       "score": 85,
@@ -79688,6 +79938,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "we-will-rock-you-west-end-2023",
+      "file": "london-box-office--stuart-king.json",
+      "score": 44,
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/we-will-rock-you-review-2023",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (5x) more than 2023 (1x). 2026 matches production: we-will-rock-you-regional-2026"
         }
       ]
     },
@@ -95938,7 +96207,7 @@
     {
       "showId": "fade-off-broadway-2017",
       "file": "huffpost--david-finkle.json",
-      "score": null,
+      "score": 74,
       "publishDate": "2017-02-09",
       "url": "http://www.huffingtonpost.com/david-finkle/first-nighter-tanya-sarac_b_14670012.html",
       "findings": [
@@ -105457,7 +105726,7 @@
     {
       "showId": "kid-victory-off-broadway-2017",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2017-02-22",
       "url": "https://frontmezzjunkies.com/2017/02/22/kid-victory/",
       "findings": [
@@ -107976,7 +108245,7 @@
     {
       "showId": "man-from-nebraska-off-broadway-2017",
       "file": "village-voice--michael-feingold.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2017-02-28",
       "url": "http://www.villagevoice.com/arts/tracy-letts-man-from-nebraska-raises-and-drops-searching-questions-9722914",
       "findings": [
@@ -116826,7 +117095,7 @@
     {
       "showId": "ring-twice-for-miranda-off-broadway-2017",
       "file": "off-off-online--edward-karam.json",
-      "score": null,
+      "score": 66,
       "publishDate": "2017-03-11",
       "url": "https://www.offoffonline.com/offoffonline/2017/2/24/ring-twice-for-miranda",
       "findings": [
@@ -122534,7 +122803,7 @@
     {
       "showId": "the-babylon-line-off-broadway-2016",
       "file": "broadway-blog--samuel-l-leiter.json",
-      "score": null,
+      "score": 60,
       "publishDate": "2016-12-08",
       "url": "http://thebroadwayblog.com/2016/12/08/15783-babylon-line-review-lincoln-center",
       "findings": [
@@ -125865,7 +126134,7 @@
     {
       "showId": "the-glass-menagerie-2017",
       "file": "frontmezzjunkies--steven-ross.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2017-03-09",
       "url": "http://frontmezzjunkies.com/2017/03/09/the-glass-menagerie/",
       "findings": [
@@ -134727,19 +134996,6 @@
     },
     {
       "showId": "triumph-off-west-end-2026",
-      "file": "british-theatre--keith-mckenna.json",
-      "publishDate": "2026-10-20",
-      "url": "https://www.britishtheatreguide.info/reviews/triumph-almeida-theatre-26141",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "triumph-off-west-end-2026",
       "file": "everything-theatre--rebecca-clifton.json",
       "score": 97,
       "publishDate": "2026-10-19",
@@ -136032,20 +136288,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"nytw\""
-        }
-      ]
-    },
-    {
-      "showId": "we-will-rock-you-west-end-2023",
-      "file": "london-box-office--stuart-king.json",
-      "score": 44,
-      "publishDate": null,
-      "url": "https://www.londonboxoffice.co.uk/news/post/we-will-rock-you-review-2023",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
