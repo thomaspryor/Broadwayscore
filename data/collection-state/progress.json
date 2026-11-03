@@ -242,13 +242,10 @@
     "love-me-off-broadway-2026/consequence--unknown.json",
     "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
     "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
-    "the-lives-of-others-west-end-2026/standard--nick-curtis.json",
     "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
     "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
-    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
     "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-    "the-lives-of-others-west-end-2026/whatsonstage--alex-wood.json",
     "the-bridge-off-west-end-2026/thestage--siobhan-murphy.json",
     "girls-off-west-end-2026/londontheatre1--unknown.json",
     "girls-off-west-end-2026/radio-times--molly-moss.json",
@@ -327,7 +324,12 @@
     "harry-potter-2021/front-row-center--tulis-mccall.json",
     "harry-potter-2021/woman-around-town--alix-cohen.json",
     "hamilton-west-end-2021/ew--unknown.json",
-    "hamilton-west-end-2021/theatermania--zachary-stewart.json"
+    "hamilton-west-end-2021/theatermania--zachary-stewart.json",
+    "msblackforpresident-off-broadway-2026/backstage--unknown.json",
+    "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+    "a-few-good-men-2026/variety--anna-tingley.json",
+    "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+    "a-few-good-men-2026/goldderby--ethan-alter.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -467,7 +469,10 @@
       "data/review-texts/conscience-regional-2026/broadstreetreview--cameron-kelsall.json",
       "data/review-texts/conscience-regional-2026/tap-into--elizabeth-keill.json",
       "data/review-texts/girls-off-west-end-2026/londontheatre1--unknown.json",
-      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json"
+      "data/review-texts/hadestown-2019/broadwaynews--charles-isherwood.json",
+      "data/review-texts/msblackforpresident-off-broadway-2026/backstage--unknown.json",
+      "data/review-texts/medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "archive": [
       "a-case-for-the-existence-of-god-regional-2026/broadwayworld--richard-sasanow.json",
@@ -538,7 +543,7 @@
     ]
   },
   "startTime": "2026-11-03T00:05:33.847Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+  "lastProcessed": "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
   "log": [
     {
       "t": "2026-11-03T00:06:14.997Z",
@@ -692,6 +697,23 @@
       "event": "bb-session",
       "session": "d3e7a1e1",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-11-03T04:31:29.353Z",
+      "event": "bb-session",
+      "session": "109ba24f",
+      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+    },
+    {
+      "t": "2026-11-03T04:34:11.776Z",
+      "event": "bb-session",
+      "session": "cdec2641",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-11-03T04:34:12.568Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
