@@ -243,7 +243,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -256,7 +256,8 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
-      "sweptTracker": "BRO-6656"
+      "sweptTracker": "BRO-6656",
+      "resolvedAt": "2026-11-03T01:38:22.777Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26930,7 +26931,7 @@
       },
       "absentRunIds": [],
       "silentRefires": 1,
-      "resolvedAt": "2026-11-03T01:28:38.421Z",
+      "resolvedAt": "2026-11-03T01:38:22.543Z",
       "resolveReason": "job-green"
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
