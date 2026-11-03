@@ -21,6 +21,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { criticProfileKey } = require('./lib/url-slug');
 const { classifyVariantPair, foldTokens } = require('./lib/critic-variant-match');
 
@@ -126,6 +127,10 @@ function applyMerges(pairs, aliasPath = path.join(ROOT, 'data', 'auto-critic-ali
 
 if (require.main === module) {
   const argv = process.argv.slice(2);
+  if (hasHelpFlag(argv)) {
+    console.log('Usage: node scripts/audit-critic-splits.js [--json] [--strict] [--update-baseline] [--apply]\nFinds critic pages split by byline spelling variants (BRO-6928).');
+    process.exit(0);
+  }
   const reviews = readJson(REVIEWS, null);
   if (!reviews || !Array.isArray(reviews.reviews)) {
     console.log('data/reviews.json missing; nothing to audit (core data not attached).');
