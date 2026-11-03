@@ -22,7 +22,11 @@ const fs = require('fs');
 const path = require('path');
 
 const GAP_PTS = 8;
-const DEFAULT_THRESHOLDS = Object.freeze({ minOnTimeRecall: 0.85, maxFalsePositives: 2, maxDuplicates: 0, maxPublishErrors: 0, maxMeanAbsDiff: 6 });
+// A gap smaller than the answer key's OWN ensemble spread (reviews.json scoreDelta: how far the three models were apart
+// on that same text) is not a lane defect: rescoring the site's text would move it that far too. The 2026-10 replays
+// flagged nytg 62/48 and theatermania 62/48 as 14-point gaps on complete text, where the site rows' own spreads are 18
+// and 13 with "2/3 models agree" at medium confidence. Only gaps BEYOND that spread say the lane read different text.
+const DEFAULT_THRESHOLDS = Object.freeze({ minOnTimeRecall: 0.85, maxFalsePositives: 2, maxDuplicates: 0, maxPublishErrors: 0, maxMeanAbsDiff: 6, maxScoreGapsBeyondEnsemble: 1 });
 
 function outletKey(r) {
   try {
@@ -149,9 +153,29 @@ function gradeShadowReport(rep, opts = {}) {
     }
   }
 
-  const diffs = both.filter((r) => r.laneScore != null && r.siteScore != null).map((r) => ({ ...brief(r), delta: r.laneScore - r.siteScore, laneTextChars: r.laneTextChars ?? null, laneContentTier: r.laneContentTier || null }));
+  const spreadOf = (r) => lookupMeta(opts.siteScoreSpread, r.siteUrl || r.url);
+  const diffs = both.filter((r) => r.laneScore != null && r.siteScore != null).map((r) => {
+    const sp = spreadOf(r);
+    const delta = r.laneScore - r.siteScore;
+    const spread = sp && Number.isFinite(sp.spread) ? sp.spread : null;
+    // The GAP_PTS floor comes FIRST: a gap smaller than the reporting bar is never a defect, whatever the spread.
+    // Without it a row whose three models agreed exactly (spread 0, 1026 such rows in reviews.json) would fail the
+    // replay on a 1-point difference, which the lane's own ensemble produces on the same text.
+    // Above the floor the spread excuses the gap, EXCEPT when the lane's text is not complete: a paywall teaser
+    // scored 15 points off a row with an 18-point spread is a text defect, not model variance, so tier decides.
+    const big = Math.abs(delta) >= GAP_PTS;
+    const partialText = !!(r.laneContentTier && r.laneContentTier !== 'complete');
+    return {
+      ...brief(r), delta, laneTextChars: r.laneTextChars ?? null, laneContentTier: r.laneContentTier || null,
+      siteScoreSpread: spread,
+      siteModelAgreement: (sp && sp.agreement) || null, siteScoreConfidence: (sp && sp.confidence) || null,
+      beyondEnsemble: big && (spread == null || partialText || Math.abs(delta) > spread),
+    };
+  });
   const meanAbsDiff = diffs.length ? round1(diffs.reduce((a, d) => a + Math.abs(d.delta), 0) / diffs.length) : null;
-  const scoreGaps = diffs.filter((d) => Math.abs(d.delta) >= GAP_PTS).sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+  const byGap = (a, b) => Math.abs(b.delta) - Math.abs(a.delta);
+  const scoreGaps = diffs.filter((d) => Math.abs(d.delta) >= GAP_PTS).sort(byGap);
+  const scoreGapsBeyondEnsemble = diffs.filter((d) => d.beyondEnsemble).sort(byGap);
 
   const t0 = ms(opts.replayAnchorAt) ?? ms(rep && rep.startedAt);
   const tts = t0 == null ? [] : scored.map((r) => ms(r.laneScoredAt)).filter((t) => t != null).map((t) => Math.round((t - t0) / 60000));
@@ -175,6 +199,7 @@ function gradeShadowReport(rep, opts = {}) {
     { name: 'duplicates', value: duplicates.length, threshold: `<= ${th.maxDuplicates}`, pass: duplicates.length <= th.maxDuplicates },
     { name: 'publishErrors', value: publishErrors, threshold: `<= ${th.maxPublishErrors}`, pass: publishErrors <= th.maxPublishErrors },
     { name: 'meanAbsScoreDiff', value: meanAbsDiff, threshold: `<= ${th.maxMeanAbsDiff}`, pass: meanAbsDiff == null || meanAbsDiff <= th.maxMeanAbsDiff },
+    { name: 'scoreGapsBeyondEnsemble', value: scoreGapsBeyondEnsemble.length, threshold: `<= ${th.maxScoreGapsBeyondEnsemble}`, pass: scoreGapsBeyondEnsemble.length <= th.maxScoreGapsBeyondEnsemble },
   ];
   if (sandboxPublished != null) checks.push({ name: 'sandboxPublished', value: sandboxPublished, threshold: '> 0 when anything scored', pass: !scored.length || sandboxPublished > 0 });
 
@@ -184,6 +209,8 @@ function gradeShadowReport(rep, opts = {}) {
     counts: { laneScored: scored.length, siteLive: siteLive.length, both: both.length, laneOnly: falsePositives.length, siteOnly: reviews.filter((r) => r.side === 'site-only').length, laneUnscored: reviews.filter((r) => r.side === 'lane-unscored').length },
     recall, onTimeRecall, meanAbsScoreDiff: meanAbsDiff,
     siteMeta: opts.siteMeta ? { reviews: opts.siteMeta.size } : null,
+    siteScoreSpread: opts.siteScoreSpread ? { reviews: opts.siteScoreSpread.size, matched: diffs.filter((d) => d.siteScoreSpread != null).length, ofDiffs: diffs.length } : null,
+    scoreGapsBeyondEnsemble,
     falsePositives, excluded, missed: reviews.filter((r) => r.side === 'site-only').map((r) => ({ ...brief(r), siteDate: r.siteDate || null, late: r.onTimeVerdict === 'late', excluded: r.onTimeVerdict === 'already-live' })), duplicates, scoreGaps,
     timeToScoreMin: { median: pct(tts, 50), p90: pct(tts, 90), max: tts.length ? Math.max(...tts) : null, from: opts.replayAnchorAt ? 'embargo' : 'shadow start' },
     publish: { errors: publishErrors, sandboxPublished },
@@ -197,13 +224,18 @@ function gradeMarkdown(g) {
     '',
     ...g.checks.map((c) => `- ${c.pass ? 'ok' : 'FAIL'} ${c.name}: ${c.value == null ? 'n/a' : c.value} (${c.threshold})`),
     `- All-time recall ${g.recall ?? 'n/a'} (not gated: includes reviews published after the night).`,
+    // Say the coverage out loud: an unreadable reviews.json or a URL that does not canonicalise the same on both
+    // sides would otherwise silently put every gap back on the flat rule with nothing in the report to show it.
+    `- Answer-key ensemble spread known for ${g.siteScoreSpread ? `${g.siteScoreSpread.matched} of ${g.siteScoreSpread.ofDiffs}` : 'none'} of the shared reviews${g.siteScoreSpread ? '' : ' (no reviews.json: every gap on the flat rule)'}.`,
     `- Lane scored ${g.counts.laneScored}, site has ${g.counts.siteLive}, both ${g.counts.both}, lane only ${g.counts.laneOnly}, site only ${g.counts.siteOnly}, lane unscored ${g.counts.laneUnscored}.`,
     `- Time to score (min from ${g.timeToScoreMin.from}): median ${g.timeToScoreMin.median ?? 'n/a'}, p90 ${g.timeToScoreMin.p90 ?? 'n/a'}, max ${g.timeToScoreMin.max ?? 'n/a'}.`,
     ...(g.falsePositives.length ? ['', 'Lane only:', ...g.falsePositives.map((r) => `- ${row(r)} ${r.laneScore} ${r.url}`)] : []),
     ...(g.missed.length ? ['', 'Site only (missed):', ...g.missed.map((r) => `- ${row(r)} ${r.siteScore} ${r.url}${r.late ? ` (dated ${r.siteDate || 'by first sighting'}, after the night)` : ''}${r.excluded ? ' (not gated, see below)' : ''}`)] : []),
     ...(g.excluded && g.excluded.length ? ['', 'Not gated (already live before the lane starts):', ...g.excluded.map((r) => `- ${row(r)} ${r.url} (${r.why})`)] : []),
     ...(g.duplicates.length ? ['', 'Duplicates:', ...g.duplicates.map((d) => `- ${d.map((r) => r.url).join(' | ')}`)] : []),
-    ...(g.scoreGaps.length ? ['', `Score gaps of ${GAP_PTS}+ (lane / site, lane text chars, tier):`, ...g.scoreGaps.map((d) => `- ${row(d)} ${d.laneScore} / ${d.siteScore} (${d.delta > 0 ? '+' : ''}${d.delta}), ${d.laneTextChars ?? '?'} chars, ${d.laneContentTier || '?'}`)] : []),
+    ...(g.scoreGaps.length ? ['', `Score gaps of ${GAP_PTS}+ (lane / site, lane text chars, tier; "within ensemble" = smaller than the site row's own model spread, so not a text difference):`,
+      ...g.scoreGaps.map((d) => `- ${row(d)} ${d.laneScore} / ${d.siteScore} (${d.delta > 0 ? '+' : ''}${d.delta}), ${d.laneTextChars ?? '?'} chars, ${d.laneContentTier || '?'}`
+        + (d.siteScoreSpread == null ? ', site spread unknown' : `, site spread ${d.siteScoreSpread}${d.siteModelAgreement ? ` (${d.siteModelAgreement})` : ''}: ${d.beyondEnsemble ? 'BEYOND ensemble' : 'within ensemble'}`))] : []),
   ];
   return `${lines.join('\n')}\n`;
 }
@@ -229,6 +261,33 @@ function loadSiteMetaFromDir(dir, files = null) {
   return meta;
 }
 
+/**
+ * The answer key's own ensemble spread per review, from data/reviews.json: Map canonical URL ->
+ * {spread, agreement, confidence, source}. Only ensemble rows (scoreSource llm-*) carry a spread; a row scored another
+ * way (a star rating) has none, and its gaps fall back to the flat GAP_PTS rule.
+ * @param {string} reviewsJsonPath path to data/reviews.json
+ * @param {string} showId
+ */
+function loadSiteScoreSpread(reviewsJsonPath, showId) {
+  const { canonicalUrl } = require('./opening-night-lane/discovery');
+  const out = new Map();
+  let raw;
+  try { raw = JSON.parse(fs.readFileSync(reviewsJsonPath, 'utf8')); } catch { return out; }
+  const rows = Array.isArray(raw) ? raw : (raw && raw.reviews) || [];
+  for (const r of rows) {
+    if (!r || r.showId !== showId) continue;
+    if (!/^llm/i.test(String(r.scoreSource || ''))) continue;
+    const k = canonicalUrl(r.url);
+    if (!k || !Number.isFinite(r.scoreDelta)) continue;
+    const m = { spread: r.scoreDelta, agreement: r.modelAgreement || null, confidence: r.scoreConfidence || null, source: r.scoreSource || null };
+    // Two rows for one URL: keep the NARROWER spread. The wider one would excuse more gaps on a row we are not
+    // even sure we matched; the narrow one keeps the gate strict (BRO-6872 review).
+    const prev = out.get(k);
+    if (!prev || m.spread < prev.spread) out.set(k, m);
+  }
+  return out;
+}
+
 function writeGrade(outDir, g) {
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'shadow-grade.json'), `${JSON.stringify(g, null, 2)}\n`);
@@ -237,4 +296,4 @@ function writeGrade(outDir, g) {
   return md;
 }
 
-module.exports = { GAP_PTS, DEFAULT_THRESHOLDS, LANE_LEAD_MS, gradeShadowReport, gradeMarkdown, writeGrade, siteRowVerdict, joinNearSlugs, loadSiteMetaFromDir };
+module.exports = { GAP_PTS, DEFAULT_THRESHOLDS, LANE_LEAD_MS, gradeShadowReport, gradeMarkdown, writeGrade, siteRowVerdict, joinNearSlugs, loadSiteMetaFromDir, loadSiteScoreSpread };
