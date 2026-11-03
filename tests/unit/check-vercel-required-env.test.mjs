@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 // require() the real modules, never copies (CLAUDE.md rule 15).
 const { RUNTIME_ENV, requiredNames, checkEnv, scanApiRouteEnv } = require('../../scripts/lib/check-vercel-required-env.js');
 const { parseEnvFile } = require('../../scripts/lib/load-env.js');
-const { planUpsert, parseNames } = require('../../scripts/lib/sync-vercel-env.js');
+const { planUpsert, parseNames, SENSITIVE } = require('../../scripts/lib/sync-vercel-env.js');
 const { pageTitle } = require('../../scripts/lib/probe-dispatch-link.js');
 
 const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..');
@@ -61,6 +61,15 @@ test('sync only accepts allowlisted names', () => {
   assert.deepEqual(parseNames(['--names=LINEAR_API_KEY']), ['LINEAR_API_KEY']);
   assert.throws(() => parseNames(['--names=VERCEL_TOKEN']), /allowlist/);
   assert.throws(() => parseNames(['--names=PATH']), /allowlist/);
+});
+
+test('critic claims env syncs (BRO-6895): service role key is sensitive, OWNER_EMAIL is not', () => {
+  assert.deepEqual(parseNames(['--names=OWNER_EMAIL,SUPABASE_SERVICE_ROLE_KEY']), ['OWNER_EMAIL', 'SUPABASE_SERVICE_ROLE_KEY']);
+  assert.equal(planUpsert([], 'SUPABASE_SERVICE_ROLE_KEY', 'v').body.type, 'sensitive');
+  assert.equal(planUpsert([], 'OWNER_EMAIL', 'v').body.type, 'encrypted');
+  assert.equal(planUpsert([], 'LINEAR_API_KEY', 'v').body.type, 'encrypted');
+  assert.ok(!SENSITIVE.has('VERCEL_TOKEN'));
+  assert.throws(() => parseNames(['--names=RESEND_API_KEY']), /allowlist/);
 });
 
 test('probe reads the route page title', () => {

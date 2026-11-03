@@ -137,7 +137,8 @@ function freshnessMsFor(show, lastEntry, opts = {}) {
   // A clean row (nothing uncollected, nothing the rollup counts) past the
   // opening week re-audits exactly daily, not at the 12h default, to keep the
   // tier's daily cost near one audit per show.
-  const clean = !!lastEntry && !(lastEntry.uncollected > 0) && typeof lastEntry.slowMarketResidual === 'number' && !(lastEntry.slowMarketResidual > 0);
+  // BRO-6910: a blind audit (no Verdict/BWW article found) is not clean.
+  const clean = !!lastEntry && !lastEntry.aggregatorBlind && !(lastEntry.uncollected > 0) && typeof lastEntry.slowMarketResidual === 'number' && !(lastEntry.slowMarketResidual > 0);
   if (clean && !inOpeningPriorityWindow(show, now)) return SLOW_MARKET_DAILY_FRESHNESS_MS;
   return Math.min(base, SLOW_MARKET_DAILY_FRESHNESS_MS);
 }

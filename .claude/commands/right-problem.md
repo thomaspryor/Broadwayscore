@@ -8,7 +8,7 @@ Run `/right-problem` BEFORE writing a detailed plan or using `/plan-review`. The
 
 `/plan-review` finds implementation bugs. `/right-problem` finds wrong-approach bugs. Both are needed for high-stakes work.
 
-**Mandatory for any feature estimated at >1 day of work.** See CLAUDE.md §10.
+**Mandatory for any substantial effort** (the "substantial" tier of CLAUDE.md §20: a new system, such as a 4th new file in a new directory, a new workflow or a new secret).
 
 ## Instructions
 

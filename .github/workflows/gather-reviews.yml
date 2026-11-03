@@ -414,7 +414,8 @@ jobs:
           WSJ_COOKIES: ${{ secrets.WSJ_COOKIES }}
           WSJ_COOKIES_META: ${{ secrets.WSJ_COOKIES_META }}
           # BRO-4859: shows the time budget stops short of; the follow-up job re-dispatches them.
-          GATHER_DEFERRED_FILE: ${{ runner.temp }}/deferred-shows.txt
+          # File name carries the batch id: a lone artifact downloads with no per-artifact folder (BRO-6910).
+          GATHER_DEFERRED_FILE: ${{ runner.temp }}/deferred-shows-${{ matrix.batch_id }}.txt
         run: |
           SHOWS="${{ matrix.shows }}"
 
@@ -541,7 +542,7 @@ jobs:
         uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: gather-deferred-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
-          path: ${{ runner.temp }}/deferred-shows.txt
+          path: ${{ runner.temp }}/deferred-shows-${{ matrix.batch_id }}.txt
           retention-days: 1
           if-no-files-found: ignore
           overwrite: true
@@ -1101,19 +1102,8 @@ jobs:
           REF: ${{ github.ref_name }}
         run: |
           SHOWS=$(node -e '
-            const fs = require("fs"), path = require("path");
-            const { collectDeferredShows, redispatchPlan, unreportedShardShows } = require("./scripts/lib/gather-deferred");
-            const texts = [];
-            const reported = [];
-            const walk = (d) => { try { for (const e of fs.readdirSync(d, { withFileTypes: true })) {
-              const p = path.join(d, e.name);
-              if (e.isDirectory()) walk(p); else if (e.name === "deferred-shows.txt") {
-                texts.push(fs.readFileSync(p, "utf8"));
-                const m = /-(\d+)$/.exec(path.basename(path.dirname(p)));
-                if (m) reported.push(m[1]);
-              }
-            } } catch {} };
-            walk(process.env.DEFERRED_DIR);
+            const { collectDeferredShows, redispatchPlan, unreportedShardShows, readDeferredReports } = require("./scripts/lib/gather-deferred");
+            const { texts, reported } = readDeferredReports(process.env.DEFERRED_DIR);
             let matrix = [];
             try { matrix = JSON.parse(process.env.PREPARE_MATRIX || "{}").include || []; } catch { console.error("::warning::could not parse the prepare matrix; unreported shards are not re-dispatched"); }
             texts.push(unreportedShardShows(matrix, reported).join("\n"));

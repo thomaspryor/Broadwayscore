@@ -59,6 +59,7 @@ const { mergeOutletRegistryStaging } = require('./merge-outlet-registry-staging'
 const { mergeOutletRegistry } = require('./merge-outlet-registry');
 const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
+const { mergeCrossShowUrlLedger } = require('./merge-cross-show-url-ledger');
 const { mergeScraperSpendLedger } = require('./merge-scraper-spend-ledger');
 const { mergeOwnerEmailLog } = require('./merge-owner-email-log');
 const { mergeCensusRecallTrend } = require('./merge-census-recall-trend');
@@ -225,6 +226,11 @@ const CORE_DATA_MERGE_REGISTRY = [
   // genuinely unregistered — see the "NOT added, deliberately" block above —
   // so this alone does not yet make that whole step fallback-eligible.)
   { file: 'audit/bww-roundup-miss-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeBwwRoundupLedger, format: 'jsonl', apiFallbackMerge: true },
+  // BRO-6910: every review URL gather-reviews' cross-show URL guard dropped.
+  // Multi-writer (parallel gather shards and per-show dispatches all append via
+  // `git add data/audit/`), so it gets a union merge keyed (showId, url) on both
+  // the local reconcile and the Git Data API fallback paths.
+  { file: 'audit/cross-show-url-holds.jsonl', surface: 'public-repo', status: 'active', merge: mergeCrossShowUrlLedger, format: 'jsonl', apiFallbackMerge: true },
   {
     file: 'audit/express-retry-queue.json',
     surface: 'public-repo',

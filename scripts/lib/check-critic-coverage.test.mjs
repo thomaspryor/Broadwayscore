@@ -8,6 +8,14 @@ test('urlKey normalizes protocol, www, trailing slash, and query string', () => 
   assert.equal(urlKey('https://www.vulture.com/article/foo.html?utm_source=x'), 'vulture.com/article/foo.html');
 });
 
+test('urlKey keeps article-id query params (BRO-6927: LSA story.asp?ID=)', () => {
+  const a = urlKey('http://www.lightingandsoundamerica.com/news/story.asp?ID=5FYBTJ');
+  const b = urlKey('https://lightingandsoundamerica.com/news/story.asp?ID=-JZMS30');
+  assert.equal(a, 'lightingandsoundamerica.com/news/story.asp?id=5FYBTJ');
+  assert.notEqual(a, b);
+  assert.equal(urlKey('https://www.talkinbroadway.com/d.php?id=12&utm_source=x'), 'talkinbroadway.com/d.php?id=12');
+});
+
 test('urlKey returns null for unparseable input', () => {
   assert.equal(urlKey('not a url'), null);
   assert.equal(urlKey(''), null);

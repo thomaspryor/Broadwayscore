@@ -51,6 +51,8 @@ process.env.INGEST_CALLER = process.env.INGEST_CALLER || 'audit-show-review-gap'
 const fs = require('fs');
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
+const { readCrossShowUrlRows } = require('./lib/cross-show-url-ledger'); // BRO-6910
+const { isAggregatorBlind, majorOutletCountFor } = require('./lib/aggregator-blind'); // BRO-6910
 const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
 
@@ -417,6 +419,17 @@ function getAllShowsForShowScore() {
   return _allShowsForShowScore;
 }
 
+// BRO-6910: tier-1/2 outlets known for an off-Broadway show (live reviews +
+// cross-show guard drops), only computed when it can change the BLIND verdict;
+// reviews.json is parsed once per run, not once per show.
+let _reviewsForBlind = null;
+function blindOutletCount(show, row) {
+  if (!show || show.category !== 'off-broadway') return 0;
+  if (Array.isArray(row.aggregatorArticles) && row.aggregatorArticles.length) return 0;
+  if (!_reviewsForBlind) _reviewsForBlind = loadReviews();
+  return majorOutletCountFor(show.id, { reviews: _reviewsForBlind, ledgerRows: readCrossShowUrlRows({ showId: show.id }) });
+}
+
 function loadReviews() {
   const data = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
   return Array.isArray(data) ? data : (data.reviews || []);
@@ -602,7 +615,7 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
   });
 }
 
-const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings } = require('./lib/show-title-tokens');
+const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings, proofInSegments } = require('./lib/show-title-tokens');
 const { foldDiacritics } = require('./lib/title-match');
 const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
@@ -720,7 +733,9 @@ function urlPathSegments(href) {
 function matchingTitleVariants(href, show, { context = 'census' } = {}) {
   const row = fullShowRow(show);
   const out = [];
-  for (const v of titleVariantInfo(row)) {
+  const variants = titleVariantInfo(row);
+  const head = variants.find(o => o.labelHead);
+  for (const v of variants) {
     const tokens = titleTokens(v.title);
     if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show, null, tokens)) continue;
     if (v.kind !== 'billed' && !urlHasPhrase(href, v.title)) continue;
@@ -729,10 +744,17 @@ function matchingTitleVariants(href, show, { context = 'census' } = {}) {
     // labelled production's venue or initials, and not this show's venue, is its.
     if (v.kind === 'billed' && context !== 'article-link') {
       const own = venueTokens(row).some(w => segs.has(w));
-      if (!own && labelledSiblings(row).some(x => x.proof.some(w => segs.has(w)))) continue;
+      if (!own && labelledSiblings(row).some(x => proofInSegments(x.proof, segs))) continue;
+      // "Tosca - English National Opera" passes the n-1 token gate on
+      // "tosca-welsh-national-opera": three of four words. When a labelled
+      // title matches with a word missing, it needs this show's venue or label
+      // as well. A URL with every word ("school-of-rock-review" for "School of
+      // Rock – The Musical") is the full name and needs nothing more.
+      if (head && !tokens.every(w => segs.has(w))
+          && !proofInSegments([...venueTokens(row), ...(head.proofTokens || [])], segs)) continue;
     }
     if (v.clashIds.length) {
-      const venueHit = [...venueTokens(row), ...(v.proofTokens || [])].some(w => segs.has(w));
+      const venueHit = proofInSegments([...venueTokens(row), ...(v.proofTokens || [])], segs);
       const ok = venueHit || context === 'article-link'
         // A one-word head ("Stories", "Tosca") is too common to pass on dates alone.
         || (context === 'article' && !v.fromVenue && !(v.labelHead && tokens.length < 2)
@@ -1356,6 +1378,23 @@ async function auditShow(show, opts = {}) {
   // BRO-5252: census provenance is census-ONLY. A URL an aggregator also cites is
   // an aggregator-cited gap; tagging it serpCensus would report-only it and (via
   // currentRunUncollected) hide it from the opening-window alert.
+  // BRO-6910: every URL gather-reviews' cross-show URL guard dropped for this
+  // show is a citation the site does not carry. Feeding it in as a source makes
+  // a dropped review MISSING (slow-market-grade FAILs) unless it went live some
+  // other way, instead of the drop vanishing from every audit.
+  // A row whose URL is live under the show the guard named was a correct drop
+  // (real contamination, owned elsewhere), so it is not a gap here.
+  const crossShowDrops = readCrossShowUrlRows({ showId: show.id });
+  if (crossShowDrops.length) {
+    const ownedElsewhere = new Set(loadReviews()
+      .filter(r => r && r.url && crossShowDrops.some(d => d.matchedShowId && d.matchedShowId === r.showId))
+      .map(r => `${r.showId}|${canonicalizeUrlForDedup(r.url) || r.url}`));
+    for (const row of crossShowDrops) {
+      if (!row.url || !isReviewUrl(row.url)) continue;
+      if (ownedElsewhere.has(`${row.matchedShowId}|${canonicalizeUrlForDedup(row.url) || row.url}`)) continue;
+      addSourceUrl(normalizeReviewUrl(row.url), 'cross-show-url-drop', row.sourceUrl || null);
+    }
+  }
   const serpCensusOnlyUrls = new Set([...serpCensusUrls].filter(u => !aggUrls.has(u)));
   for (const u of serpCensusUrls) addSourceUrl(u, 'serp-census');
 
@@ -2721,6 +2760,10 @@ async function main(argv = process.argv.slice(2)) {
         // exclusions, which `uncollected` leaves out), so a show the rollup still
         // alerts on keeps the 12h alerting cadence instead of the clean 48h one.
         ...(SLOW_MARKETS.has(s.category) ? { slowMarketResidual: slowMarketListedGap(r).residual } : {}),
+        // BRO-6910: no Verdict/BWW article found 2+ days past opening, for a show
+        // that should have one, means the audit had nothing to compare against,
+        // so its 0 gaps is not "clean" (freshness keeps it on the short cadence).
+        ...(isAggregatorBlind(s, r.aggregatorArticles, Date.now(), { majorOutletCount: blindOutletCount(s, r) }) ? { aggregatorBlind: true } : {}),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         ...(zeroCharStored && Object.keys(zeroCharStored).length ? { zeroChar: zeroCharStored } : {}),

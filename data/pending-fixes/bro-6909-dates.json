@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6909-dates",
   "planId": "be4071c9-bfe4-49c5-93dd-ed148ddb7ebd",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T21:56:00.114Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: msblackforpresident-off-broadway-2026.previewsStartDate"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T22:47:38.291Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dogstar-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for msblackforpresident-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for msblackforpresident-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }

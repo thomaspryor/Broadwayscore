@@ -30,6 +30,10 @@ runs:
         git config --local user.name "github-actions[bot]"
         git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
         git add data/audit/gemini-usage-ledger.jsonl 2>/dev/null || true
+        # BRO-6910: reviews the cross-show URL guard dropped. Written by
+        # createReviewFile in whichever job ran gather; the audit-show-review-gap
+        # reader needs it on main. Union-merged by core-data-merge-registry.
+        git add data/audit/cross-show-url-holds.jsonl 2>/dev/null || true
         if git diff --staged --quiet; then
           echo "No ledger changes to commit"
         else

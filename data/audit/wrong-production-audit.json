@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T22:35:24.900Z",
+  "timestamp": "2026-11-03T23:13:48.409Z",
   "stats": {
-    "totalReviews": 79963,
-    "alreadyFlagged": 22064,
+    "totalReviews": 79969,
+    "alreadyFlagged": 22067,
     "dateGuardCatches": 216,
     "directorMismatch": 3457,
     "tvFilmSignals": 2263,
-    "londonSignals": 3592,
+    "londonSignals": 3593,
     "offBroadwaySignals": 734,
     "yearMismatch": 361,
-    "noPublishDate": 8497
+    "noPublishDate": 8494
   },
   "findings": [
     {
@@ -105325,6 +105325,20 @@
           "severity": "MEDIUM",
           "detail": "Published 91d before show (2026-07-17 vs 2026-10-16)"
         },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "seatplan--hannah-lewis.json",
+      "score": 87,
+      "publishDate": "2026-10-30",
+      "url": "https://seatplan.com/london/news/reasons-to-see-jesus-christ-superstar-london/",
+      "findings": [
         {
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",

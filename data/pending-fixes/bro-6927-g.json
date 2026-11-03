@@ -1,0 +1,170 @@
+{
+  "issueNumber": "bro-6927-g",
+  "planId": "ddc232cd-63c7-4540-87d9-b53fd716f4fe",
+  "status": "pending",
+  "createdAt": "2026-11-03T22:44:29.693Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6927 critic gap fill (part 7/10): ingest 25 reviews by the 50 outreach critics that Show Score lists for tracked shows but reviews.json lacks.",
+    "steps": [
+      "Ingest each review URL with ingest-review-from-url.js under the named critic",
+      "Next rebuild and scheduled scoring pick them up"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=make-believe-off-broadway-2019 --url=https://newyorktheater.me/2019/08/15/make-believe-review-bess-wohls-elliptical-look-at-child-neglect/ --critic=\"Jonathan Mandell\" --publish-date=2019-08-15",
+        "description": "BRO-6927 gap: Jonathan Mandell (New York Theater) review of make-believe-off-broadway-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mary-gets-hers-off-broadway-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=OW8POC --critic=\"David Barbour\" --publish-date=2023-09-22",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of mary-gets-hers-off-broadway-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-Q3Y34H --critic=\"David Barbour\" --publish-date=2025-04-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of othello-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=othello-the-remix-off-broadway-2016 --url=http://www.vulture.com/2016/12/theater-review-a-pair-of-othellos.html --critic=\"Jesse Green\" --publish-date=2016-12-12",
+        "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of othello-the-remix-off-broadway-2016, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=pirates-the-penzance-musical-2025 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=SVLM9L --critic=\"David Barbour\" --publish-date=2025-05-01",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of pirates-the-penzance-musical-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=ring-twice-for-miranda-off-broadway-2017 --url=http://thebroadwayblog.com/2017/02/14/16022-review-ring-twice-for-miranda --critic=\"Samuel L. Leiter\" --publish-date=2017-02-14",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Broadway Blog) review of ring-twice-for-miranda-off-broadway-2017, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stephen-sondheims-old-friends-2025 --url=https://theaterlife.com/sondheims-old-friends/ --critic=\"Samuel L. Leiter\" --publish-date=2025-04-20",
+        "description": "BRO-6927 gap: Samuel L. Leiter (Theater Life) review of stephen-sondheims-old-friends-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=stereophonic-off-broadway-2023 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-6T6KMR --critic=\"David Barbour\" --publish-date=2023-10-30",
+        "description": "BRO-6927 gap: David Barbour (Lighting & Sound America) review of stereophonic-off-broadway-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-good-house-west-end-2025 --url=https://www.thetimes.com/article/40b4f4a1-ab27-4137-8d6a-956ae7f93da9 --critic=\"Clive Davis\" --publish-date=2025-01-20",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of a-good-house-west-end-2025, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=aint-too-proud-west-end-2023 --url=https://www.thetimes.co.uk/article/aint-too-proud-review-the-temptations-musical-wont-get-you-dancing-in-the-aisles-v0nrbvzcm --critic=\"Clive Davis\" --publish-date=2023-04-21",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of aint-too-proud-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=and-juliet-west-end-2019 --url=https://www.thetimes.co.uk/article/amp-juliet-review-shakespeare-on-steroids-is-not-for-the-sober-tj9mg2fcd --critic=\"Clive Davis\" --publish-date=2019-11-21",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of and-juliet-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bad-jews-west-end-2022 --url=https://www.thetimes.co.uk/article/bad-jews-review-so-boring-i-started-counting-the-cupboards-5hbkwh0dj --critic=\"Clive Davis\" --publish-date=2022-07-26",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of bad-jews-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=brokeback-mountain-west-end-2023 --url=https://www.thetimes.co.uk/article/brokeback-mountain-review-theatre-play-london-2023-lmhgcwvwg --critic=\"Clive Davis\" --publish-date=2023-05-19",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of brokeback-mountain-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cock-west-end-2022 --url=https://www.thetimes.co.uk/article/cock-review-sexual-identity-study-is-about-as-plausible-as-bridgerton-jndq9pqwz --critic=\"Clive Davis\" --publish-date=2022-03-16",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of cock-west-end-2022, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=constellations-west-end-2021 --url=https://www.thetimes.co.uk/article/constellations-review-rotating-cast-of-couples-keep-spark-alive-pmzjlwmds --critic=\"Clive Davis\" --publish-date=2021-07-05",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of constellations-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cuckoo-west-end-2023 --url=https://www.thetimes.co.uk/article/cuckoo-review-jerwood-theatre-downstairs-royal-court-l55hqtfcc --critic=\"Clive Davis\" --publish-date=2023-07-13",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of cuckoo-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=groundhog-day-west-end-2023 --url=https://www.thetimes.co.uk/article/groundhog-day-review-the-same-magic-and-satire-all-over-again-qgzxnw0j7 --critic=\"Clive Davis\" --publish-date=2023-06-09",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of groundhog-day-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=jouvert-west-end-2021 --url=https://www.timeout.com/london/theatre/jouvert-review --critic=\"Clive Davis\" --publish-date=2021-06-25",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of jouvert-west-end-2021, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=long-days-journey-into-night-west-end-2024 --url=https://www.thetimes.co.uk/article/long-days-journey-into-night-review-brian-cox-puts-in-the-work-but-its-a-tough-job-r3zwnsxvf --critic=\"Clive Davis\" --publish-date=2024-04-03",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of long-days-journey-into-night-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lungs-west-end-2019 --url=https://www.thetimes.co.uk/article/lungs-review-crown-co-stars-breathe-life-into-a-dark-drama-t9zsplztj --critic=\"Clive Davis\" --publish-date=2019-10-21",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of lungs-west-end-2019, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=medea-west-end-2023 --url=https://www.thetimes.co.uk/article/medea-review-sophie-okonedos-hellish-descent-into-darkness-90st570z7 --critic=\"Clive Davis\" --publish-date=2023-02-18",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of medea-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oklahoma-west-end-2023 --url=https://www.thetimes.co.uk/article/oklahoma-theatre-review-wyndham-hm7p5kjth --critic=\"Clive Davis\" --publish-date=2023-03-01",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of oklahoma-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=old-friends-west-end-2023 --url=https://www.thetimes.co.uk/article/stephen-sondheim-s-old-friends-review-this-is-unmissable-musical-theatre-rfkbcxdwd --critic=\"Clive Davis\" --publish-date=2023-10-04",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of old-friends-west-end-2023, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=opening-night-west-end-2024 --url=https://www.thetimes.co.uk/article/opening-night-review-sheridan-smith-shines-in-a-bizarre-drama-2thlqkf6n --critic=\"Clive Davis\" --publish-date=2024-03-27",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of opening-night-west-end-2024, listed on Show Score but missing from reviews.json"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=orlando-west-end-2022 --url=https://www.thetimes.co.uk/article/orlando-review-nudges-winks-and-a-pack-of-woolfs-make-orlando-bloom-gqlpz8h7c --critic=\"Clive Davis\" --publish-date=2022-12-06",
+        "description": "BRO-6927 gap: Clive Davis (The Times (UK)) review of orlando-west-end-2022, listed on Show Score but missing from reviews.json"
+      }
+    ]
+  }
+}

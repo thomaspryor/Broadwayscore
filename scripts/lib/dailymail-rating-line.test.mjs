@@ -116,3 +116,18 @@ import __assert from 'node:assert/strict';
     __assert.equal(extractScore('Only one out of five stars in the cast truly shines', '', 'some-blog'), null);
   });
 }
+
+// BRO-6448: a 2013 review prints plain <p> tags in the articleBody div (no mol-para
+// class). The extractor returned '' and the generic fallback kept the anti-adblock
+// script as the stored text, so the file was tiered invalid. Synthetic markup only.
+test('a pre-2014 articleBody with plain <p> paragraphs is extracted, scripts dropped', () => {
+  const plain = Array.from({ length: 10 }, (_, i) =>
+    `<p><font style="font-size: 1.2em;">Legacy paragraph ${i} covers the staging and the cast in enough detail to count.</font></p>`).join('');
+  const html = '<html><head><script>var adblock = "' + 'x'.repeat(5000) + '";</script></head><body>'
+    + '<div itemprop="articleBody"><p><strong>Show title</strong></p>' + plain + '</div>'
+    + '<div class="related">' + 'Other story headline. '.repeat(40) + '</div></body></html>';
+  const text = extractArticleTextFromUrl(html, 'http://www.dailymail.co.uk/tvshowbiz/reviews/article-1/x.html', 'Quentin Letts');
+  assert.match(text, /^Show title\n\nLegacy paragraph 0/);
+  assert.doesNotMatch(text, /adblock|Other story headline/);
+  assert.equal(extractDailyMailBody(html).split('\n\n').length, 11);
+});

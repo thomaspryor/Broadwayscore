@@ -5014,6 +5014,17 @@ jobs:
         continue-on-error: true
         run: node scripts/resize-show-images.js --check-variants
 
+      - name: Cross-show URL guard corpus regression (BRO-6910, advisory)
+        # Runs detectCrossShowUrlMismatch over every included review URL in
+        # data/reviews.json. Each hit is a review gather-reviews would refuse
+        # today, so a guard change that raises the count is about to drop real
+        # reviews (Waiting for Lefty lost 4 this way on 2026-11-02). --max is the
+        # committed baseline: lower it when false flags are fixed, never raise it
+        # without reading the new hits. 117 = count with the BRO-6909 author-credit
+        # fix on 2026-11-03 core data. Advisory first (CLAUDE.md section 19).
+        continue-on-error: true
+        run: node scripts/audit-cross-show-url.js --source=reviews.json --strict --max=117
+
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
         # per CLAUDE.md §15 test-extraction pattern. Covered helpers:

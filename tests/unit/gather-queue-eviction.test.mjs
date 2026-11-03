@@ -129,7 +129,10 @@ test('repo: gather-reviews.js records deferred shows and the workflow re-dispatc
   assert.match(js, /recordDeferredShows\(showIds\);\s*for \(let i = 0; i < showIds\.length/);
   assert.match(js, /recordDeferredShows\(showIds\.slice\(i \+ 1\)\)/);
   const y = readFileSync(join(wfDir, 'gather-reviews.yml'), 'utf8');
-  assert.match(y, /GATHER_DEFERRED_FILE: \$\{\{ runner\.temp \}\}\/deferred-shows\.txt/);
+  // BRO-6910: the batch id rides in the file name (a lone artifact has no per-artifact folder).
+  assert.match(y, /GATHER_DEFERRED_FILE: \$\{\{ runner\.temp \}\}\/deferred-shows-\$\{\{ matrix\.batch_id \}\}\.txt/);
+  assert.match(y, /path: \$\{\{ runner\.temp \}\}\/deferred-shows-\$\{\{ matrix\.batch_id \}\}\.txt/);
+  assert.match(y, /readDeferredReports\(process\.env\.DEFERRED_DIR\)/);
   assert.match(y, /name: gather-deferred-\$\{\{ github\.run_id \}\}/);
   // Current attempt only: earlier attempts already re-dispatched their own lists.
   assert.match(y, /pattern: gather-deferred-\$\{\{ github\.run_id \}\}-\$\{\{ github\.run_attempt \}\}-\*/);

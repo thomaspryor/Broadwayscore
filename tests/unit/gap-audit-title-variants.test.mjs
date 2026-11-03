@@ -107,6 +107,23 @@ test('a company-labelled title matches its bare head only with venue or initials
   const nyc = 'https://www.nytimes.com/2026/11/02/arts/music/tosca-metropolitan-opera-review.html';
   assert.equal(urlMatchesShowTitle(nyc, eno, { context: 'census' }), false);
   assert.equal(urlMatchesShowTitle(nyc, met, { context: 'census' }), true);
+  // The label spelled out is proof too (Bachtrack writes "english-national-opera").
+  for (const u of ['https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026',
+    'https://bachtrack.com/review-tosca-english-national-opera-london-coliseum-october-2026']) {
+    assert.equal(urlMatchesShowTitle(u, eno, { context: 'census' }), true, `eno ${u}`);
+    assert.equal(urlMatchesShowTitle(u, met, { context: 'census' }), false, `met ${u}`);
+  }
+  // One word of the label alone names too many houses.
+  const welsh = 'https://bachtrack.com/review-tosca-welsh-national-opera-cardiff-october-2026';
+  assert.equal(urlMatchesShowTitle(welsh, eno, { context: 'census' }), false);
+  assert.equal(urlMatchesShowTitle(welsh, met, { context: 'census' }), true);
+  // Every word of the full name present: no extra proof needed.
+  const rock = { id: 'school-of-rock-the-musical-2015', title: 'School of Rock – The Musical', venue: 'Winter Garden Theatre', openingDate: '2015-12-06' };
+  assert.equal(urlMatchesShowTitle('https://www.nytimes.com/2015/12/07/theater/review-school-of-rock-the-musical.html', rock, { context: 'census' }), true);
+  // A descriptive subtitle is not a company label: the 2024 Old Vic run keeps
+  // "live-aid-musical" reviews although the 2025 West End row is billed with it.
+  const jfod = { id: 'just-for-one-day-west-end-2024', title: 'Just For One Day', venue: 'Old Vic', openingDate: '2024-02-12' };
+  assert.equal(urlMatchesShowTitle('https://www.theguardian.com/stage/2024/feb/13/just-for-one-day-review-live-aid-musical-bob-geldof', jfod, { context: 'census' }), true);
 });
 
 test('a one-word head never passes on dates alone (Stories)', () => {

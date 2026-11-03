@@ -52,6 +52,8 @@ jobs:
           # Also needs the name in ALLOWED (scripts/lib/sync-vercel-env.js) to sync.
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           NAMES: ${{ inputs.names }}
         run: node scripts/lib/sync-vercel-env.js "--names=$NAMES"
 
@@ -61,8 +63,8 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
           npx --yes vercel pull --yes --environment=production --token=$VERCEL_TOKEN >/dev/null
+          trap 'rm -f .vercel/.env.production.local' EXIT
           node scripts/lib/check-vercel-required-env.js --strict
-          rm -f .vercel/.env.production.local
 
       - name: Live dispatch probe
         if: ${{ inputs.probe_condition_key != '' }}

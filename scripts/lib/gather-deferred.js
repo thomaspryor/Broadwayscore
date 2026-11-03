@@ -94,4 +94,39 @@ function unreportedShardShows(matrix, reportedBatchIds) {
   return collectDeferredShows(texts);
 }
 
-module.exports = { recordDeferredShows, collectDeferredShows, redispatchPlan, unreportedShardShows };
+/**
+ * Read every shard's deferred list under `dir` (the follow-up job's
+ * download-artifact path). Returns { texts, reported } where `reported` holds
+ * the batch ids that uploaded a list.
+ *
+ * The batch id comes from the FILE name (deferred-shows-<batch>.txt). It used
+ * to come only from the parent folder (gather-deferred-<run>-<attempt>-<batch>),
+ * but download-artifact v5 extracts a lone pattern match straight into `dir`
+ * with no per-artifact folder (run 41648864401: "Starting download of artifact
+ * to: .../_temp/gather-deferred"). The id was lost, unreportedShardShows
+ * re-added every show as unreported, and a clean single-shard run failed as
+ * "every show was deferred" (BRO-6910). The legacy name still reads its id
+ * from the folder.
+ */
+function readDeferredReports(dir) {
+  const path = require('path');
+  const texts = [];
+  const reported = [];
+  const walk = (d) => {
+    let entries;
+    try { entries = fs.readdirSync(d, { withFileTypes: true }); } catch { return; }
+    for (const e of entries) {
+      const p = path.join(d, e.name);
+      if (e.isDirectory()) { walk(p); continue; }
+      const own = /^deferred-shows-(\d+)\.txt$/.exec(e.name);
+      if (!own && e.name !== 'deferred-shows.txt') continue;
+      try { texts.push(fs.readFileSync(p, 'utf8')); } catch { continue; }
+      const id = own ? own[1] : (/-(\d+)$/.exec(path.basename(path.dirname(p))) || [])[1];
+      if (id !== undefined) reported.push(id);
+    }
+  };
+  if (dir) walk(dir);
+  return { texts, reported };
+}
+
+module.exports = { recordDeferredShows, collectDeferredShows, redispatchPlan, unreportedShardShows, readDeferredReports };
