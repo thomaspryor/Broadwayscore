@@ -140,6 +140,8 @@ async function main() {
   const shows = showsFile.shows || showsFile;
   const byId = new Map(shows.map(s => [s.id, s]));
   const tours = shows.filter(s => s.category === 'tour');
+  // City hubs list each metro's own productions beside its tour stops (BRO-6728).
+  const localShows = shows.filter(s => s.category === 'regional');
   const schedules = readJson('data/tour-schedules.json').tours || {};
   const tickets = readJson('data/tour-tickets.json').tours || {};
   if (!tours.length) { console.error('No category:tour shows in data/shows.json (stub data?)'); process.exit(2); }
@@ -258,7 +260,7 @@ async function main() {
       const r = await fetchText(`${BASE}${url}`);
       pagesChecked++;
       if (r.status !== 200) { findings.push({ severity: 'error', code: 'city-page-status', where: url, message: `HTTP ${r.status} (data says ${c.city} has a page)` }); return; }
-      add(A.checkCityPage({ url, page: A.parseCityPage(r.text), expected: c, tours, schedules, tickets, todays, inSitemap: sitemap.has(url) }));
+      add(A.checkCityPage({ url, page: A.parseCityPage(r.text), expected: c, tours, schedules, tickets, todays, inSitemap: sitemap.has(url), localShows }));
     });
 
     // 6. Mobile overflow.

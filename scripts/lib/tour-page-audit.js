@@ -571,11 +571,18 @@ function expectedCities({ tours, schedules, listedIds, today, minTours = 3, inde
   return out;
 }
 
-function checkCityPage({ url, page, expected, tours, schedules, tickets, todays, inSitemap }) {
+/**
+ * `localShows`: regional productions (category 'regional'). A city hub page
+ * (BRO-6517, data/city-hubs.json) lists the metro's own productions under the
+ * tour stops; a row for one of those whose `city` is this page's slug is fine.
+ */
+function checkCityPage({ url, page, expected, tours, schedules, tickets, todays, inSitemap, localShows = [] }) {
   const out = [];
   const err = (c, m) => out.push(finding('error', c, url, m));
   const today = todays[todays.length - 1];
   const byId = new Map(tours.map(t => [t.id, t]));
+  const localById = new Map();
+  for (const s of localShows) { localById.set(s.id, s); if (s.slug) localById.set(s.slug, s); }
   const noindex = /noindex/.test(page.robots);
   if (expected.indexed && noindex) err('city-should-index', `${expected.city} has 5+ listed tours ahead but is noindex`);
   if (!expected.indexed && !noindex) err('city-should-noindex', `${expected.city} is indexable with under 5 listed tours ahead`);
@@ -587,7 +594,13 @@ function checkCityPage({ url, page, expected, tours, schedules, tickets, todays,
 
   for (const r of page.rows) {
     const show = byId.get(r.showId);
-    if (!show) { err('city-row-unknown-show', `row links /show/${r.showId}, not a tour`); continue; }
+    if (!show) {
+      const local = localById.get(r.showId);
+      if (local && local.city === expected.slug) continue;
+      if (local) err('city-row-wrong-city', `row links /show/${r.showId}, a ${local.city || 'city-less'} production, not ${expected.city}`);
+      else err('city-row-unknown-show', `row links /show/${r.showId}, not a tour or ${expected.city} production`);
+      continue;
+    }
     if (show.status === 'closed') err('city-row-closed-tour', `${show.title} is closed but listed`);
     const stops = ((schedules[r.showId] && schedules[r.showId].stops) || []).filter(s => citySlug(s.city) === expected.slug);
     const s = stops.find(x => rangeMatchesStop(r.when, x));

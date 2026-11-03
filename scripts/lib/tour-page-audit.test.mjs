@@ -128,3 +128,37 @@ test('poster-missing: parentless tour whose art search found nothing warns, anyt
   assert.deepEqual(level({ artSearchedNone: true }), ['warn', 'poster-unfindable']);
   assert.deepEqual(level({ artSearchedNone: true, parent: { id: 'x-2020', title: 'X', category: 'broadway' } }), ['error', 'poster-missing']);
 });
+
+// BRO-6728: city hubs (BRO-6517) list the metro's own productions under the
+// tour stops. 62 city-row-unknown-show errors were those rows, not bad data.
+test('city hub rows for that city\'s own productions are not unknown shows (BRO-6728)', () => {
+  const { checkCityPage, parseCityPage } = require('./tour-page-audit.js');
+  const html = `<html><head><meta name="robots" content="index"></head><body><h1>Chicago Theater</h1>
+    <section aria-labelledby="tc-now"><ul>
+      <li><p>Oct 1–Nov 30 · Nederlander Theatre</p><a href="/show/t-tour-2026">T</a></li>
+      <li><p>Oct 5, 2026 · Goodman Theatre</p><a href="/show/mud-row-regional-2026">Mud Row</a></li>
+      <li><p>Oct 5, 2026 · Arena Stage</p><a href="/show/dc-play-regional-2026">DC Play</a></li>
+      <li><p>Oct 5, 2026 · Nowhere</p><a href="/show/ghost-2026">Ghost</a></li>
+    </ul></section></body></html>`;
+  const page = parseCityPage(html);
+  assert.equal(page.rows.length, 4);
+  const tours = [{ id: 't-tour-2026', title: 'T', status: 'open' }];
+  const schedules = { 't-tour-2026': { stops: [{ city: 'Chicago, IL', venue: 'Nederlander Theatre', start: '2026-10-01', end: '2026-11-30' }] } };
+  const localShows = [
+    { id: 'mud-row-regional-2026', category: 'regional', city: 'chicago-il' },
+    { id: 'dc-play-regional-2026', category: 'regional', city: 'washington-dc' },
+  ];
+  const expected = { slug: 'chicago-il', city: 'Chicago, IL', stops: schedules['t-tour-2026'].stops.map(s => ({ ...s, showId: 't-tour-2026' })), indexed: true };
+  const run = ls => checkCityPage({ url: '/tours/chicago-il', page, expected, tours, schedules, tickets: {}, todays: ['2026-11-02', '2026-11-03'], inSitemap: true, localShows: ls })
+    .filter(f => /^city-row-/.test(f.code)).map(f => `${f.code}:${f.message.split(',')[0]}`);
+  assert.deepEqual(run(localShows), [
+    'city-row-wrong-city:row links /show/dc-play-regional-2026',
+    'city-row-unknown-show:row links /show/ghost-2026',
+  ]);
+  assert.equal(run(undefined).filter(c => c.startsWith('city-row-unknown-show')).length, 3, 'without localShows every local row is unknown');
+});
+
+test('audit script passes regional shows into checkCityPage (BRO-6728)', () => {
+  const src = readFileSync(new URL('../audit-tour-pages.js', import.meta.url), 'utf8');
+  assert.match(src, /A\.checkCityPage\(\{.*\blocalShows \}\)/);
+});
