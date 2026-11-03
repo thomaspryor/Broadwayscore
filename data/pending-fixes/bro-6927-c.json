@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-c",
   "planId": "6bb17075-a422-460b-a127-2dad05825ce5",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,134 @@
         "description": "BRO-6927 gap: Jesse Green (New York Magazine / Vulture) review of party-people-off-broadway-2016, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:53:04.982Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=300-paintings-off-broadway-2024 --url=https://pagesonstages.com/2025/02/08/300-paintings/ --critic=\"Mason Pilevsky\" --publish-date=2025-02-04"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=building-the-wall-off-broadway-2017 --url=http://thebroadwayblog.com/2017/05/30/16593-building-the-wall-review --critic=\"Samuel L. Leiter\" --publish-date=2017-05-30"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=building-the-wall-off-broadway-2017 --url=http://www.amny.com/news/building-the-wall-review-immigrant-interrogation-drama-focuses-on-individuals-1.13661323 --critic=\"Matt Windman\" --publish-date=2017-05-24"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=cardinal-off-broadway-2018 --url=https://cititour.com/NYC_Broadway/Cardinal/130 --critic=\"Brian Scott Lipton\" --publish-date=2018-01-31"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=church-and-state-off-broadway-2017 --url=http://thebroadwayblog.com/2017/03/31/16291-church-state-off-broadway --critic=\"Samuel L. Leiter\" --publish-date=2017-03-31"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=finians-rainbow-off-broadway-2016 --url=http://thebroadwayblog.com/2016/11/14/15615-finians-rainbow-irish-rep --critic=\"Samuel L. Leiter\" --publish-date=2016-11-14"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=if-i-forget-off-broadway-2017 --url=https://newyorktheater.me/2017/03/05/if-i-forget-review-jewish-family-argues-about-identity-and-dad/ --critic=\"Jonathan Mandell\" --publish-date=2017-03-05"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=kid-victory-off-broadway-2017 --url=http://slleiter.blogspot.co.uk/2017/02/139-review-kid-victory-seen-february-21.html --critic=\"Samuel L. Leiter\" --publish-date=2017-02-23"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=marie-and-rosetta-off-broadway-2016 --url=https://www.timeout.com/newyork/blog/theater-review-gospel-singers-make-heavenly-music-in-marie-and-rosetta-091416 --critic=\"Adam Feldman\" --publish-date=2016-09-14"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=marie-and-rosetta-off-broadway-2016 --url=http://thebroadwayblog.com/2016/09/20/15346-review-marie-and-rosetta --critic=\"Samuel L. Leiter\" --publish-date=2016-09-20"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=marry-harry-off-broadway-2017 --url=http://www.huffingtonpost.com/entry/j-b-priestleys-rediscovered-the-roundabout-a-must_us_590c9c03e4b0f711807243ef --critic=\"David Finkle\" --publish-date=2017-05-05"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=marry-harry-off-broadway-2017 --url=http://www.broadstreetreview.com/theater/york-theatre-presents-michael-biello-and-dan-martins-marry-harry# --critic=\"Elysa Gardner\" --publish-date=2017-05-04"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=napoli-brooklyn-off-broadway-2017 --url=http://www.hollywoodreporter.com/review/napoli-brooklyn-1017046 --critic=\"Frank Scheck\" --publish-date=2017-06-27"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=napoli-brooklyn-off-broadway-2017 --url=https://slleiter.blogspot.fr/2017/07/40-2017-2018-review-napoli-brooklyn.html --critic=\"Samuel L. Leiter\" --publish-date=2017-07-07"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=party-people-off-broadway-2016 --url=http://www.vulture.com/2016/11/theater-the-death-of-the-last-black-man.html --critic=\"Jesse Green\" --publish-date=2016-11-15"
+    }
+  ],
+  "executedIn": "ci"
 }
