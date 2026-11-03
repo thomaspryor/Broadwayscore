@@ -602,7 +602,7 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
   });
 }
 
-const { titleTokens, titleVariantInfo, venueTokens } = require('./lib/show-title-tokens');
+const { titleTokens, titleVariantInfo, venueTokens, labelledSiblings } = require('./lib/show-title-tokens');
 const { foldDiacritics } = require('./lib/title-match');
 const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
@@ -724,11 +724,19 @@ function matchingTitleVariants(href, show, { context = 'census' } = {}) {
     const tokens = titleTokens(v.title);
     if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show, null, tokens)) continue;
     if (v.kind !== 'billed' && !urlHasPhrase(href, v.title)) continue;
+    const segs = urlPathSegments(href);
+    // The Met's "Tosca" vs "Tosca - English National Opera": a URL naming the
+    // labelled production's venue or initials, and not this show's venue, is its.
+    if (v.kind === 'billed' && context !== 'article-link') {
+      const own = venueTokens(row).some(w => segs.has(w));
+      if (!own && labelledSiblings(row).some(x => x.proof.some(w => segs.has(w)))) continue;
+    }
     if (v.clashIds.length) {
-      const segs = urlPathSegments(href);
-      const venueHit = venueTokens(row).some(w => segs.has(w));
+      const venueHit = [...venueTokens(row), ...(v.proofTokens || [])].some(w => segs.has(w));
       const ok = venueHit || context === 'article-link'
-        || (context === 'article' && !v.fromVenue && !sameTitleRunNearby(row, v.clashIds));
+        // A one-word head ("Stories", "Tosca") is too common to pass on dates alone.
+        || (context === 'article' && !v.fromVenue && !(v.labelHead && tokens.length < 2)
+          && !sameTitleRunNearby(row, v.clashIds));
       if (!ok) continue;
     }
     out.push(tokens);

@@ -89,3 +89,28 @@ test('alternate titles must appear as a phrase, so a venue alias or a short bill
   const quinn = { id: 'q', title: 'Colin Quinn: Long Story Short', cast: [{ name: 'Colin Quinn' }], venue: 'Helen Hayes' };
   assert.equal(urlMatchesShowTitle('https://www.nypost.com/seven/02202009/entertainment/theater/story_isnt_long_for_life_155990.htm', quinn), false);
 });
+
+test('a company-labelled title matches its bare head only with venue or initials proof (ENO Tosca)', () => {
+  const eno = { id: 'tosca-english-national-opera-west-end-2026', title: 'Tosca - English National Opera', venue: 'London Coliseum', openingDate: '2026-10-30' };
+  const met = { id: 'tosca-off-broadway-2026', title: 'Tosca', venue: 'Metropolitan Opera House', openingDate: '2026-11-01' };
+  const london = ['https://thestage.co.uk/reviews/tosca-review-london-coliseum-puccini-annilese-miskimmon',
+    'https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/', 'https://www.thereviewshub.com/eno-tosca-london-coliseum/'];
+  for (const u of london) {
+    assert.equal(urlMatchesShowTitle(u, eno, { context: 'census' }), true, `eno ${u}`);
+    assert.equal(urlMatchesShowTitle(u, met, { context: 'census' }), false, `met ${u}`);
+  }
+  const bare = 'https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves';
+  assert.equal(urlMatchesShowTitle(bare, eno, { context: 'census' }), false);
+  assert.equal(urlMatchesShowTitle(bare, eno, { context: 'article' }), false);
+  assert.equal(urlMatchesShowTitle(bare, eno, { context: 'article-link' }), true);
+  assert.equal(urlMatchesShowTitle(bare, met, { context: 'census' }), true);
+  const nyc = 'https://www.nytimes.com/2026/11/02/arts/music/tosca-metropolitan-opera-review.html';
+  assert.equal(urlMatchesShowTitle(nyc, eno, { context: 'census' }), false);
+  assert.equal(urlMatchesShowTitle(nyc, met, { context: 'census' }), true);
+});
+
+test('a one-word head never passes on dates alone (Stories)', () => {
+  const s = { id: 'stories-the-tap-dance-sensation-west-end-2026', title: 'STORIES – The Tap Dance Sensation', venue: 'Peacock Theatre', openingDate: '2026-07-01' };
+  assert.equal(urlMatchesShowTitle('https://chicagoreader.com/arts-culture/theater-review/harlem-stories/', s, { context: 'article' }), false);
+  assert.equal(urlMatchesShowTitle('https://www.thetimes.com/culture/theatre-dance/article/stories-review-rb-dance-company-peacock-theatre-5c6q83q2d', s, { context: 'census' }), true);
+});

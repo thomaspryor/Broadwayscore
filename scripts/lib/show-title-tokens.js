@@ -87,7 +87,8 @@ function knownTitles() {
   return _knownTitles;
 }
 // Words every venue name shares; they say nothing about WHICH house.
-const GENERIC_VENUE_WORDS = new Set(['theatre', 'theater', 'theatres', 'theaters', 'house', 'company', 'stage',
+// opera/music: a /opera/ or /music/ section path is not a venue (Metropolitan Opera House).
+const GENERIC_VENUE_WORDS = new Set(['opera', 'music', 'theatre', 'theater', 'theatres', 'theaters', 'house', 'company', 'stage',
   'playhouse', 'center', 'centre', 'hall', 'studio', 'studios', 'arts', 'club', 'new', 'york', 'nyc', 'london',
   'off', 'broadway', 'west', 'end', 'space', 'room']);
 /** Distinctive venue words ("Classic Stage Company" -> ['classic']). */
@@ -137,8 +138,45 @@ function titleVariantInfo(showOrTitle, opts = {}) {
   if (sub && dWords.join(' ').length >= 4 && vWords.length && (within(dWords, vWords) || within(vWords, dWords))) {
     add(sub[1], 'derived', 2, true);
   }
+  // "Tosca - English National Opera": critics write "Tosca". The bare head is
+  // another show's exact title by construction, so it always carries clashIds
+  // and a URL needs proof (a venue word, or a link inside this show's own
+  // roundup) before it counts. One word is enough for that reason.
+  // The dropped label's initials are proof too ("tosca-eno-review").
+  if (sub && sub[2] && titles.has(normName(sub[1]))) {
+    add(sub[1], 'derived', 1);
+    const words = normName(sub[2]).split(' ').filter(w => w && !['the', 'a', 'an', 'of', 'and', 'at'].includes(w));
+    const initials = words.map(w => w[0]).join('');
+    const v = out.find(o => o.title === String(sub[1]).trim() && o.kind === 'derived');
+    if (v) v.labelHead = true;
+    if (v && words.length >= 3 && initials.length >= 3) v.proofTokens = [initials];
+  }
   return out;
 }
+let _labelled = null;
+/**
+ * Shows billed as "<this show's title> - <label>" ("Tosca - English National
+ * Opera" for the Met's "Tosca"), with the proof words that tie a URL to them:
+ * their venue words and, for a 3+ word label, its initials.
+ * @returns {{id: string, proof: string[]}[]}
+ */
+function labelledSiblings(show) {
+  if (!_labelled) {
+    _labelled = new Map();
+    try {
+      const raw = require('../../data/shows.json');
+      for (const s of (Array.isArray(raw) ? raw : raw.shows || [])) {
+        const v = s && s.title ? titleVariantInfo(s).find(o => o.kind === 'derived' && o.labelHead) : null;
+        if (!v) continue;
+        const k = normName(v.title);
+        if (!_labelled.has(k)) _labelled.set(k, []);
+        _labelled.get(k).push({ id: s.id, proof: [...venueTokens(s), ...(v.proofTokens || [])] });
+      }
+    } catch (_) { /* no shows.json: no labelled siblings */ }
+  }
+  return (_labelled.get(normName(show && show.title)) || []).filter(x => x.id !== (show && show.id));
+}
+
 /** @returns {string[]} the full title first, then each variant */
 function titleVariants(showOrTitle, opts = {}) {
   return titleVariantInfo(showOrTitle, opts).map(o => o.title);
@@ -149,4 +187,4 @@ function titleTokenSets(showOrTitle) {
   return titleVariants(showOrTitle).map(titleTokens);
 }
 
-module.exports = { titleTokens, titleVariants, titleVariantInfo, titleTokenSets, venueTokens };
+module.exports = { titleTokens, titleVariants, titleVariantInfo, titleTokenSets, venueTokens, labelledSiblings };
