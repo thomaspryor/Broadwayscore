@@ -135,3 +135,68 @@ test('end to end: the NY Stage Review item is admitted, not rejected as not revi
   assert.ok(!r.rejected.some((x) => /nystagereview/.test(x.url || x.key || '') && x.reason === 'not-review-like'), JSON.stringify(r.rejected));
   assert.ok(r.admitted.some((a) => /nystagereview\.com/.test(a.url)), JSON.stringify(r));
 });
+
+// Google News (billy-crystal-860-2026 shadow runs 41562664962 and the 8-min run before it): Time Out and TheaterMania
+// file reviews under /news/, and the unwrap dropped them without a recorded reason. A Google News item is already tied
+// to a registry outlet by its <source url>, the same vetting the regular pipeline needs before it accepts /news/.
+const GN_ITEMS = [
+  ['Broadway review: Billy Crystal in 860 - Time Out New York', 'https://www.timeout.com', 'https://www.timeout.com/newyork/news/broadway-review-billy-crystal-in-860-102226'],
+  ["Review: 860, Billy Crystal's one-man show - TheaterMania", 'https://www.theatermania.com', 'https://www.theatermania.com/news/review-860-billy-crystals-one-man-show'],
+  ['860 Broadway Review: Billy Crystal - New York Theatre Guide', 'https://www.newyorktheatreguide.com', 'https://www.newyorktheatreguide.com/reviews/860-broadway-review-billy-crystal'],
+  ['860 review roundup: what the critics said - TheaterMania', 'https://www.theatermania.com', 'https://www.theatermania.com/news/860-broadway-review-roundup'],
+  ['Billy Crystal 860 extends at the Barrymore - TheaterMania', 'https://www.theatermania.com', 'https://www.theatermania.com/news/860-extends-at-the-barrymore'],
+];
+const gnRss = (items) => `<rss><channel>${items.map((x, i) => `<item><title>${x[0]}</title><link>https://news.google.com/rss/articles/W${i}</link><pubDate>Thu, 23 Oct 2026 02:00:00 GMT</pubDate><source url="${x[1]}">s</source></item>`).join('')}</channel></rss>`;
+const gnFetch = (items) => async (u) => {
+  if (u.includes('/rss/search')) return gnRss(items);
+  const m = u.match(/rss\/articles\/W(\d+)/);
+  if (m) return { content: '<html></html>', finalUrl: items[Number(m[1])][2] };
+  return '<html></html>';
+};
+
+test('google news: /news/ reviews from registry outlets are admitted; a /news/ roundup is rejected with a reason; a non-review story is not admitted', async () => {
+  const T = Date.parse('2026-10-23T03:00:00Z');
+  const r = await d.runDiscoveryPass({ show: SHOW, night: SHOW.openingDate, now: T, startedAt: T - 2 * 3600e3, adapters: [d.googleNewsAdapter({ now: () => T })], fetchText: gnFetch(GN_ITEMS) });
+  const admitted = r.admitted.map((a) => d.canonicalUrl(a.url)).sort();
+  assert.deepEqual(admitted, GN_ITEMS.slice(0, 3).map((x) => d.canonicalUrl(x[2])).sort(), JSON.stringify(r.rejected));
+  assert.ok(!admitted.some((u) => /roundup|extends/.test(u)));
+  assert.ok(r.rejected.some((x) => /roundup/.test(x.url) && x.reason), 'the roundup is rejected with a recorded reason, not dropped silently');
+});
+
+test('vettedOutlet opens /news/ only for a review slug; other news, roundups and unvetted finds stay refused', () => {
+  const tm = 'https://www.theatermania.com/news/review-860-billy-crystals-one-man-show';
+  assert.equal(d.nonReviewReason(tm), 'non-review-path');
+  assert.equal(d.nonReviewReason(tm, { vettedOutlet: true }), null);
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/860-extends-at-the-barrymore', { vettedOutlet: true }), 'non-review-path');
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/860-broadway-review-roundup', { vettedOutlet: true }), 'non-review-path');
+});
+
+test('vettedOutlet: only a slug that leads with the review opens /news/ ("week-in-review" and "responds-to-review" do not)', () => {
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/week-in-review-860', { vettedOutlet: true }), 'non-review-path');
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/crystal-responds-to-review', { vettedOutlet: true }), 'non-review-path');
+  assert.equal(d.nonReviewReason('https://www.timeout.com/newyork/news/broadway-review-billy-crystal-in-860-102226', { vettedOutlet: true }), null);
+  // The aggregator-cited rule is unchanged.
+  assert.equal(d.nonReviewReason('https://www.theatermania.com/news/crystal-responds-to-review', { aggregatorCited: true }), null);
+});
+
+test('a /news/ review an RSS feed rejected first is judged again when Google News finds it vetted', async () => {
+  const tm = GN_ITEMS[1][2];
+  const memo = { rejected: { [d.canonicalUrl(tm)]: { reason: 'non-review-path', attempts: 3 } } };
+  const T = Date.parse('2026-10-23T03:00:00Z');
+  const r = await d.runDiscoveryPass({ show: SHOW, night: SHOW.openingDate, now: T, startedAt: T - 2 * 3600e3, memo, adapters: [d.googleNewsAdapter({ now: () => T })], fetchText: gnFetch(GN_ITEMS.slice(0, 2)) });
+  assert.ok(r.admitted.some((a) => d.canonicalUrl(a.url) === d.canonicalUrl(tm)), JSON.stringify(r));
+  // An unvetted sighting of the same URL still stands rejected.
+  const plain = { name: 'rss', phase: 'cheap', discover: async () => [{ url: tm, title: "Review: 860, Billy Crystal's one-man show", source: 'outlet-index' }] };
+  const memo2 = { rejected: { [d.canonicalUrl(tm)]: { reason: 'non-review-path', attempts: 1 } } };
+  const r2 = await d.runDiscoveryPass({ show: SHOW, night: SHOW.openingDate, now: T, startedAt: T - 2 * 3600e3, memo: memo2, adapters: [plain], fetchText: async () => '<html></html>' });
+  assert.deepEqual(r2.admitted, []);
+});
+
+test('unwrap: a single publisher anchor beats a refused landed URL; the refused review-worded URL is only the last resort', () => {
+  const src = 'https://www.theatermania.com';
+  const article = 'https://www.theatermania.com/reviews/860-billy-crystal';
+  const landedTag = 'https://www.theatermania.com/tag/860-review';
+  assert.equal(d.publisherUrlFromWrapperPage(`<a href="${article}">x</a>`, src, landedTag, { vettedOutlet: true }), article);
+  assert.equal(d.publisherUrlFromWrapperPage('', src, landedTag, { vettedOutlet: true }), landedTag);
+  assert.equal(d.publisherUrlFromWrapperPage('', src, 'https://www.theatermania.com/account/login', { vettedOutlet: true }), null);
+});

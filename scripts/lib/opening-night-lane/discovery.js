@@ -149,16 +149,24 @@ function extractAnchors(html, pageUrl) {
  * Why a URL cannot be one production's review, or null when nothing rules it out.
  * `aggregatorCited`: an aggregator lists this link as a review. Some outlets file every review under /news/
  * (TheaterMania "/news/review-...", Time Out "/newyork/news/broadway-review-..."), so for a cited link a news segment
- * stands down when the slug itself says review and the URL is not a review roundup (BRO-6066). A feed or index find
- * under /news/ is still rejected: "/news/<show>-reviews-what-critics-say" carries the review word too.
+ * stands down when the slug itself says review and the URL is not a review roundup (BRO-6066). An uncited feed or index
+ * find under /news/ is still rejected: "/news/<show>-reviews-what-critics-say" carries the review word too.
+ * `vettedOutlet`: the find is tied to a registry outlet by its source (Google News <source url>, BRO-6872). It opens
+ * /news/ only for a slug that leads with the review ("review-860-...", "broadway-review-..."), never "week-in-review".
  */
-function nonReviewReason(url, { aggregatorCited = false } = {}) {
+const VETTED_NEWS_REVIEW_SLUG = /^(?:(?:off )?broadway |theat(?:er|re) )?review\b|\b(?:broadway|theat(?:er|re)) review\b/;
+function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false } = {}) {
   let u;
   try { u = new URL(url); } catch { return 'unparseable-url'; }
   if (u.pathname === '/' || u.pathname === '') return 'homepage';
   const segs = decodeURIComponent(u.pathname).toLowerCase().split('/').filter(Boolean);
   const words = segs.join(' ').replace(/[-_]+/g, ' ');
-  const citedNewsReview = (s) => s === 'news' && aggregatorCited && /\breview\b/.test(segs[segs.length - 1].replace(/[-_]+/g, ' ')) && !ROUNDUP_SLUG.test(words);
+  // A /news/ path whose last slug names a review counts when an aggregator cites it, or when the find is already tied to
+  // a registry outlet by its source (Google News <source url>): Time Out and TheaterMania file reviews under /news/, and
+  // the regular pipeline refuses /news/ only for unvetted SERP sources (domain-filters.js). BRO-6872.
+  const lastSlug = segs[segs.length - 1].replace(/[-_]+/g, ' ');
+  const newsReviewSlug = aggregatorCited ? /\breview\b/.test(lastSlug) : vettedOutlet && VETTED_NEWS_REVIEW_SLUG.test(lastSlug);
+  const citedNewsReview = (s) => s === 'news' && newsReviewSlug && !ROUNDUP_SLUG.test(words);
   // A /features/ section whose path names a review is a review (The Independent files its Broadway reviews under
   // /theatre-dance/features/; A Few Good Men 2026 was lost to this rule, BRO-6066). The regular pipeline's rule
   // (domain-filters.js isFeatureSectionReviewPath, BRO-6585), so the two paths agree; a round-up still never passes.
@@ -607,7 +615,7 @@ const unescapeJs = (v) => String(v).replace(/\\u003d/gi, '=').replace(/\\u0026/g
  * wrapper's opaque token is never read, and a page full of unrelated links is not a destination): canonical, og:url,
  * meta refresh, a JS location, data-n-au, then a single distinct anchor.
  */
-function publisherUrlFromWrapperPage(html, sourceUrl, finalUrl) {
+function publisherUrlFromWrapperPage(html, sourceUrl, finalUrl, { vettedOutlet = false } = {}) {
   const sourceHost = hostOf(sourceUrl);
   if (!sourceHost) return null;
   const accept = (value) => {
@@ -628,11 +636,14 @@ function publisherUrlFromWrapperPage(html, sourceUrl, finalUrl) {
   // Google's JavaScript redirect is the answer (BRO-6066: Vulture, found by the regular pipeline only). It comes after the
   // canonical so a same-host login or consent redirect does not stand in for the article, and must not be a non-review path.
   const landed = finalUrl && accept(finalUrl);
-  if (landed && !nonReviewReason(landed)) return landed;
+  if (landed && !nonReviewReason(landed, { vettedOutlet })) return landed;
   const found = new Set();
   for (const m of s.matchAll(/data-n-au=["']([^"']+)["']/gi)) { const u = accept(m[1]); if (u) found.add(u); }
   for (const a of extractAnchors(s, 'https://news.google.com/')) { const u = accept(a.url); if (u) found.add(u); }
-  return found.size === 1 ? [...found][0] : null;
+  if (found.size === 1) return [...found][0];
+  // Last resort: a landed URL that names a review is returned even on a refused path, so the pass rejects it with a
+  // recorded reason instead of the find vanishing here (BRO-6872: Time Out and TheaterMania /news/ reviews left no trace).
+  return landed && hasReviewSignal(landed, '') ? landed : null;
 }
 
 /**
@@ -685,7 +696,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
         if (decodeImpl && (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) && decodes < maxDecode && now() < decodeUntil) {
           decodes++;
           const decoded = await decodeImpl(it.link).catch(() => null);
-          const url = decoded ? publisherUrlFromWrapperPage('', it.sourceUrl, decoded) : null;
+          const url = decoded ? publisherUrlFromWrapperPage('', it.sourceUrl, decoded, { vettedOutlet: true }) : null;
           if (url) { r = { url, tries: ((r && r.tries) || 0) + 1 }; resolved.set(it.link, r); }
         }
         if (!r || (!r.url && r.tries < MAX_UNWRAP_TRIES)) {
@@ -699,14 +710,14 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
               // often never settles. Same selector google-news-rss.js uses.
               playwrightWaitForSelector: waitForPublisher(hostOf(it.sourceUrl)),
             });
-            url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl);
+            url = typeof page === 'string' ? publisherUrlFromWrapperPage(page, it.sourceUrl, null, { vettedOutlet: true }) : publisherUrlFromWrapperPage(page && page.content, it.sourceUrl, page && page.finalUrl, { vettedOutlet: true });
           } catch { /* counted below */ }
           r = { url, tries: ((r && r.tries) || 0) + 1 };
           resolved.set(it.link, r);
         }
         if (!r.url) continue;
         const date = feedDateInfo(it.pubDate, { atom: false });
-        out.push({ url: r.url, title: it.title, source: 'outlet-index', ...date, via: 'google-news' });
+        out.push({ url: r.url, title: it.title, source: 'outlet-index', ...date, via: 'google-news', vettedOutlet: true });
       }
       return out;
     },
@@ -986,14 +997,16 @@ async function runDiscoveryPass({
     // A path rejected for an uncited sighting (a /news/ review Google News found first) is judged again now that it is
     // cited, since a citation is what lets a /news/ review through (BRO-6066).
     const citedNow = c.aggregatorCited && memoed && memoed.reason === 'non-review-path' && !nonReviewReason(c.url, { aggregatorCited: true });
-    const stands = memoed && !citedNow && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
-    if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited)) continue; // decided before
+    // Same for a vetted Google News find of a /news/ review an RSS feed or section index saw first (BRO-6872).
+    const vettedNow = c.vettedOutlet === true && memoed && memoed.reason === 'non-review-path' && !!resolveOutletFromUrl(c.url) && !nonReviewReason(c.url, { vettedOutlet: true });
+    const stands = memoed && !citedNow && !vettedNow && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
+    if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited && !vettedNow)) continue; // decided before
     // The deadline guards fetches only (the date check below). The checks before it are synchronous, so a candidate an
     // aggregator already cites is admitted even when the adapters ran long. Deferring every candidate on a late pass
     // starved the lane: each pass re-runs every adapter, so a night whose adapters take more than 90 s never admitted
     // anything (shadow run 39803830568, Billy Crystal 860: Google News link resolution took 108 s, 0 admitted).
 
-    const bad = nonReviewReason(c.url, { aggregatorCited: c.aggregatorCited === true });
+    const bad = nonReviewReason(c.url, { aggregatorCited: c.aggregatorCited === true, vettedOutlet: c.vettedOutlet === true && !!resolveOutletFromUrl(c.url) });
     if (bad) { reject(c, key, bad); continue; }
     if (c.source === 'aggregator') {
       // An aggregator page lists many links; only ones on a KNOWN outlet's host are taken, the rest are reported.
