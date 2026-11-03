@@ -577,6 +577,34 @@
     "queuedAt": "2026-11-03T19:13:31.632Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:clifford-odets-waiting-for-lefty-off-broadway-2026",
+    "title": "1 review(s) for clifford-odets-waiting-for-lefty-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- talkinbroadway--1c15b69d.json (talkinbroadway): fetch failed: All scraping methods failed https://www.talkinbroadway.com/page/ob/11_02_26.html",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T20:14:33.279Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:in-the-heights-off-broadway-2026",
+    "title": "1 review(s) for in-the-heights-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nycitycenter-org--7d6014eb.json (nycitycenter-org): fetch failed: All scraping methods failed https://www.nycitycenter.org/pdps/2026-2027/in-the-heights34/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T20:15:28.814Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:lincoln-in-the-bardo-off-broadway-2026",
     "title": "Review gap — \"Lincoln in the Bardo\" missing 1 cited review(s)",
     "description": "Lincoln in the Bardo (lincoln-in-the-bardo-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lincoln-in-the-bardo-off-broadway-2026 --checkpoint --ingest-missing",
@@ -589,19 +617,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T20:13:25.001Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T20:13:56.324Z"
   }
 ]
