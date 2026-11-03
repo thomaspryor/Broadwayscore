@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T08:26:08.168Z",
+  "generatedAt": "2026-11-03T10:48:07.808Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -141,8 +141,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -151,6 +155,10 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "plays-international",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -163,10 +171,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 767,
-  "matchedGaps": 7,
+  "itemsScanned": 714,
+  "matchedGaps": 8,
   "possibleGaps": 10,
   "gaps": [
     {
@@ -204,6 +216,15 @@
       "url": "https://onin.london/dolphin-house-spa/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=dolphin-house-spa",
       "headline": "Dolphin House Spa at Dolphin Square officially launches, bringing a new wellness retreat to the heart of Pimlico",
       "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "matched",
+      "outletId": "onin",
+      "url": "https://onin.london/world-heart-beat-announces-two-festive-evenings-of-music-and-celebration-at-embassy-gardens/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=world-heart-beat-announces-two-festive-evenings-of-music-and-celebration-at-embassy-gardens",
+      "headline": "World Heart Beat Announces Two Festive Evenings of Music and Celebration at Embassy Gardens",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-morbs-off-broadway-2026",
