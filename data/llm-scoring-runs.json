@@ -1214332,21 +1214332,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-03T00:19:11.815Z",
-    "completedAt": "2026-11-03T00:19:45.273Z",
-    "totalReviews": 6,
-    "processed": 6,
+    "startedAt": "2026-11-03T00:20:50.762Z",
+    "completedAt": "2026-11-03T00:21:00.185Z",
+    "totalReviews": 2,
+    "processed": 2,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 39753,
-      "output": 1887,
-      "cacheRead": 22842,
+      "input": 10140,
+      "output": 636,
+      "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 95938
+      "total": 27452
     },
-    "costUsd": 0.1477838,
-    "runId": "41551065849",
+    "costUsd": 0.0401329,
+    "runId": "41551287609",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1251146,6 +1251146,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-best-medicine-regional-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-bfg-royal-shakespeare-regional-2025",
         "ourDistribution": {
           "up": 6,
@@ -1263598,8 +1263608,8 @@
     ]
   },
   {
-    "startedAt": "2026-11-03T00:24:42.200Z",
-    "completedAt": "2026-11-03T00:24:42.202Z",
+    "startedAt": "2026-11-03T00:25:58.024Z",
+    "completedAt": "2026-11-03T00:25:58.025Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1263612,7 +1263622,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "41551065849",
+    "runId": "41551287609",
     "source": "comparative-rescore",
     "errorDetails": []
   }
