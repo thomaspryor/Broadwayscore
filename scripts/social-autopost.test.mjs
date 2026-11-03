@@ -63,14 +63,26 @@ test('every score is posted, but only once the gate passes and the site shows a 
   assert.equal(sel.findScoreEvents({ ...base(s, { slim: {} }), now }).length, 0, 'no site score yet');
 });
 
-test('Off-Broadway uses the London floors; Off-West End needs 10 reviews with 5 tier-1', () => {
+test('Off-Broadway needs 8 reviews and no tier-1 (BRO-6920); Off-West End uses the London floors', () => {
   const now = Date.parse('2026-11-06T15:00:00Z');
   const ob = show({ category: 'off-broadway' });
-  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(3, 2, 3) } }), now }).length, 1);
+  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(0, 2, 6) } }), now }).length, 1, 'no tier-1 review needed');
+  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(2, 2, 3) } }), now }).length, 0, '7 reviews is short');
+  assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(0, 1, 7) } }), now }).length, 0, 'T2 short');
   const owe = show({ category: 'off-west-end' });
   const ow = { ...base(owe), now: Date.parse('2026-11-06T10:00:00Z') };
-  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(4, 3, 5) } }).length, 0);
-  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(5, 3, 4) } }).length, 1);
+  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(2, 3, 5) } }).length, 0, 'T1 short');
+  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 2) } }).length, 0, '7 reviews is short');
+  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 3) } }).length, 1);
+});
+
+test('roundup fills its rows with main-stage openings before Off shows, each best score first (BRO-6920)', () => {
+  const mk = (id, category) => ({ id, category });
+  const cands = [mk('ob1', 'off-broadway'), mk('ob2', 'off-broadway'), mk('b1', 'broadway'), mk('ob3', 'off-broadway'), mk('b2', 'broadway')];
+  assert.deepEqual(sel.roundupFillOrder(cands, 'broadway').map(s => s.id), ['b1', 'b2', 'ob1', 'ob2', 'ob3']);
+  const we = [mk('owe1', 'off-west-end'), mk('we1', 'west-end')];
+  assert.deepEqual(sel.roundupFillOrder(we, 'west-end').map(s => s.id), ['we1', 'owe1']);
+  assert.deepEqual(sel.roundupFillOrder([], 'broadway'), []);
 });
 
 test('opera, provisional and cancelled shows never post', () => {

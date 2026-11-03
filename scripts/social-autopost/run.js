@@ -29,7 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require('../lib/score-tiers');
-const { findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
+const { roundupFillOrder, findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
 const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
@@ -443,7 +443,7 @@ async function hostPng(png, keyPrefix, now) {
  */
 async function buildRoundup(ev, ctx, outDir, { cfg = WEEKLY_ROUNDUP } = {}) {
   const rows = [], held = [];
-  for (const show of ev.candidates) {
+  for (const show of roundupFillOrder(ev.candidates, ev.set)) {
     if (rows.length >= MAX_ROWS) break;
     let d;
     try { d = describe(show, ctx); } catch (e) { held.push(`${show.id}: ${e.message}`); continue; }
@@ -451,6 +451,7 @@ async function buildRoundup(ev, ctx, outDir, { cfg = WEEKLY_ROUNDUP } = {}) {
     if (!poster.poster) { held.push(`${show.id}: ${poster.reason}`); continue; }
     rows.push({ show, title: show.title, venue: show.venue, category: show.category, score: d.score, tierId: d.tierId, tierLabel: d.tierLabel, poster });
   }
+  rows.sort((a, b) => ev.candidates.indexOf(a.show) - ev.candidates.indexOf(b.show)); // card lists best score first
   if (rows.length < cfg.minShows) {
     throw Object.assign(new Error(`${ev.id}: only ${rows.length} of ${ev.candidates.length} opening(s) have a usable poster (${held.join(' | ').slice(0, 200)})`), { code: 'NO_POSTER' });
   }

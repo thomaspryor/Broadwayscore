@@ -308,6 +308,18 @@ function roundupCandidates(ymd, set, { shows, reviewsByShow, slim, getOutletTier
 }
 
 /**
+ * The order a roundup fills its capped rows in (BRO-6920): the set's main-stage openings
+ * (Broadway for 'broadway', West End for 'west-end') before Off shows, each group best score
+ * first. With looser Off-Broadway/Off-West End floors a busy week can have more scored Off
+ * shows than rows, and a main-stage opening must not be pushed off the card by them.
+ * The card itself still lists the chosen rows best score first (buildRoundup re-sorts).
+ */
+function roundupFillOrder(candidates, set) {
+  const main = s => (s.category === set ? 0 : 1);
+  return candidates.map((s, i) => ({ s, i })).sort((a, b) => main(a.s) - main(b.s) || a.i - b.i).map(x => x.s);
+}
+
+/**
  * Roundup posts due now, one per set with at least cfg.minShows candidates.
  * {type: 'weekly-roundup', id, set, ymd, first, last, candidates, show (best-scored), slot, dueAt}.
  */
@@ -413,4 +425,4 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
   return out.sort((a, b) => a.firstDay.localeCompare(b.firstDay) || a.show.id.localeCompare(b.show.id));
 }
 
-module.exports = { scoreSettled, roundupDay, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };

@@ -73,12 +73,16 @@ const HIGH_PROFILE = {
 };
 
 // Score-post floors layered on the shared gate, which carries only the opening-night
-// email's Broadway and London floors. Off-Broadway: 3 tier-1 outlets marks a major
-// show. Off-West End: London's national critics review most fringe openings, so it
-// needs more (2025-26 season: 88 shows clear 8 total / 3 T1, 53 clear 10 / 5).
+// email's Broadway and London floors. The floors ask only "is the score settled",
+// never "is this a major show" (owner, BRO-6920: the old 3 tier-1 Off-Broadway / 5
+// tier-1 Off-West End floors posted 33 of 278 Off-Broadway and 47 of 179 Off-West End
+// shows in the year to 2026-10, and skipped I Became We, King of the Yees, Copperfield).
+// Off-Broadway rarely draws 3 tier-1 critics, so it needs no tier-1 review, only 8 scored
+// reviews (108 of 278 clear it within 10 days of opening). Off-West End has no entry,
+// so it uses the shared gate's London floors (London's nationals review most fringe
+// openings, so 3 tier-1 is common there).
 const SCORE_FLOORS = {
-  'off-broadway': { total: 8, t1: 3, t2: 2, highConfidence: 6 },
-  'off-west-end': { total: 10, t1: 5, t2: 2, highConfidence: 6 },
+  'off-broadway': { total: 8, t1: 0, t2: 2, highConfidence: 6 },
 };
 
 const ELIGIBLE_CATEGORIES = Object.keys(MARKETS).filter(k => k !== 'opera'); // categories; opera is a market by type (marketOf)
