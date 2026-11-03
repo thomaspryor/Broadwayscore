@@ -13,6 +13,7 @@ This file governs captions written by code (`captions.js`), hooks written by a s
 5. No em dashes. No "not X, but Y" or "it's not just A, it's B". No slop words: delve, robust, leverage, unlock, tapestry, realm, deep dive, landscape of, journey of, navigate, "excited to share", "thrilled to".
 6. The code builds the question from the facts (direction and size of a gap, the tally split, the tier). A session never writes a number or a direction into a question.
 7. On X and Bluesky the question outranks the caveat and the lead-in. Fit order: drop the hook, drop the caveat, shorten the title, shorten the question, and only then drop the question.
+8. Audience reception is a letter grade, never a number (owner rule 2026-11-03). Say "audiences give it an A-" or "audiences are Loving It", from `getAudienceGrade` with the site's minimum-review gate. Never "audiences give it 82" and never a critic-versus-audience point gap.
 
 ## Examples by post type
 

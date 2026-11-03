@@ -1139,6 +1139,17 @@ test('voice: no banned phrase, no em dash, and no question that is only engageme
   const voice = fs.readFileSync(new URL('./social-autopost/VOICE.md', import.meta.url), 'utf8');
   assert.doesNotMatch(voice, /[—–]/, 'VOICE.md has a dash');
   assert.match(voice, /replies/i, 'VOICE.md covers replies');
+  // Audience reception is a letter grade, never a number (VOICE.md rule 8).
+  const AUDIENCE_NUMBER = [/audiences?\b[^.\n]{0,40}?\b\d{2,3}\b/i, /\b\d{2,3}\b[^.\n]{0,25}?\baudiences?\b/i];
+  for (const f of voiceFixtures()) {
+    for (const [net, text] of Object.entries(f.caps)) for (const re of AUDIENCE_NUMBER) assert.doesNotMatch(text, re, `${f.name} ${net} gives audiences a number`);
+  }
+  const plansDir = new URL('./video-proto/plans/', import.meta.url);
+  for (const file of fs.readdirSync(plansDir).filter(n => n.endsWith('.json'))) {
+    const plan = fs.readFileSync(new URL(file, plansDir), 'utf8');
+    for (const re of AUDIENCE_NUMBER) assert.doesNotMatch(plan, re, `${file} gives audiences a number`);
+  }
+  assert.match(voice, /Audience reception is a letter grade, never a number/, 'VOICE.md states the audience-grade rule');
   assert.match(fs.readFileSync(new URL('../.claude/commands/social-post.md', import.meta.url), 'utf8'), /VOICE\.md/, 'social-post.md points at VOICE.md');
 });
 
