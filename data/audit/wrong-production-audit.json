@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T14:42:21.363Z",
+  "timestamp": "2026-11-03T15:13:57.942Z",
   "stats": {
-    "totalReviews": 79839,
+    "totalReviews": 79840,
     "alreadyFlagged": 22026,
-    "dateGuardCatches": 219,
+    "dateGuardCatches": 217,
     "directorMismatch": 3454,
     "tvFilmSignals": 2262,
     "londonSignals": 3586,
     "offBroadwaySignals": 735,
     "yearMismatch": 360,
-    "noPublishDate": 8449
+    "noPublishDate": 8451
   },
   "findings": [
     {
@@ -105179,7 +105179,7 @@
       "file": "london-theatre--marianka-swain.json",
       "score": 94,
       "publishDate": "2026-07-08",
-      "url": null,
+      "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -105253,7 +105253,7 @@
       "file": "standard--nick-curtis.json",
       "score": 78,
       "publishDate": "2026-07-08",
-      "url": null,
+      "url": "https://www.standard.co.uk/culture/theatre/jesus-christ-superstar-review-b1289073.html",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -105301,34 +105301,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "thestage--sam-marlowe.json",
-      "score": 64,
-      "publishDate": "2026-07-08",
-      "url": "https://www.thestage.co.uk/your-views/reviews-response-jesus-christ-superstar-and-fun-home-this-month-in-your-views",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "times-uk--dominic-maxwell.json",
-      "score": 75,
-      "publishDate": "2026-07-07",
-      "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 101d before show (2026-07-07 vs 2026-10-16)"
         }
       ]
     },
