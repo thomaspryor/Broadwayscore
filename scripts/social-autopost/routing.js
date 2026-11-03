@@ -75,8 +75,9 @@ function operaConfigured(sets = C.CHANNEL_SETS) {
 /**
  * Channel sets this show posts to: [home] or [home, other] when high profile.
  * sets: config CHANNEL_SETS. A set with no channel ids is not configured yet; a show
- * whose home set is unconfigured keeps posting to 'broadway' (the behavior before
- * per-market accounts existed), and cross-posting to an unconfigured set is skipped.
+ * whose home set is unconfigured posts to 'broadway' when its category is in
+ * BROADWAY_FALLBACK_CATEGORIES (main-stage West End) and nowhere otherwise (Off-West
+ * End, BRO-6932), and cross-posting to an unconfigured set is skipped.
  * A set counts as configured only when it has every network the Broadway set has, so
  * adding the accounts one at a time never moves shows onto fewer networks.
  */
@@ -85,9 +86,15 @@ function targetSets(show, showReviews, sets = C.CHANNEL_SETS, shows = null) {
   if (!home) return [];
   if (home === 'opera') return operaConfigured(sets) ? ['opera'] : []; // never cross-posted, never a fallback
   const configured = name => Object.keys(sets.broadway || {}).every(svc => (sets[name] || {})[svc]);
-  if (!configured(home)) return ['broadway'];
+  if (!configured(home)) return C.BROADWAY_FALLBACK_CATEGORIES.includes(show.category) ? ['broadway'] : [];
   const other = home === 'broadway' ? 'west-end' : 'broadway';
   return configured(other) && isHighProfile(show, showReviews, shows) ? [home, other] : [home];
+}
+
+/** True when the show posts to its own market's accounts (not the Broadway fallback). */
+function postsToOwnSet(show, sets = C.CHANNEL_SETS) {
+  const home = homeSet(show);
+  return !!home && targetSets(show, [], sets).includes(home);
 }
 
 /** Ledger/log key for a channel: the bare service for the Broadway set (history stays valid), service@set otherwise. */
@@ -112,4 +119,4 @@ function tagChannels(channels, sets = C.CHANNEL_SETS) {
   });
 }
 
-module.exports = { homeSet, operaConfigured, isHighProfile, targetSets, channelKey, tagChannels, hasCrossMarketTransfer, hasCrossMarketTwin, titleKey };
+module.exports = { homeSet, operaConfigured, isHighProfile, targetSets, postsToOwnSet, channelKey, tagChannels, hasCrossMarketTransfer, hasCrossMarketTwin, titleKey };

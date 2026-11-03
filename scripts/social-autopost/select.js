@@ -13,7 +13,7 @@ const { hasEnoughReviews } = require('../lib/min-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
-const { homeSet, targetSets, operaConfigured } = require('./routing');
+const { homeSet, targetSets, operaConfigured, postsToOwnSet } = require('./routing');
 
 const DAY_MS = 864e5;
 const MIN_MS = 60e3;
@@ -46,6 +46,8 @@ function addDaysYmd(ymd, n) {
 function isEligibleShow(show, { allowOpera = false } = {}) {
   if (!show || !show.id || !show.openingDate) return false;
   if (!C.ELIGIBLE_CATEGORIES.includes(show.category)) return false;
+  // No accounts to post to (Off-West End before the West End accounts exist, BRO-6932).
+  if (C.marketOf(show) !== 'opera' && !targetSets(show, []).length) return false;
   const operaOk = allowOpera && C.marketOf(show) === 'opera' && operaConfigured();
   if (show.type && C.SKIP_TYPES.has(String(show.type).toLowerCase()) && !operaOk) return false;
   if (show.provisional) return false;
@@ -70,6 +72,14 @@ function nextWindowSlot(t, tz) {
   const lp = localParts(new Date(t), tz);
   const ymd = lp.hour >= C.SCORE_POST_WINDOW.end ? addDaysYmd(lp.ymd, 1) : lp.ymd;
   return zonedTime(ymd, C.SCORE_POST_WINDOW.start, tz).getTime();
+}
+
+/**
+ * doneKeys for the quiet-day backfill: a show skipped only because it opened before
+ * automatic posting went live was never posted on merit, so it stays owed (BRO-6932).
+ */
+function backfillDoneKeys(ledger) {
+  return doneKeys({ ...ledger, posts: ((ledger && ledger.posts) || []).filter(p => p.skipped !== 'backlog at go-live') });
 }
 
 function doneKeys(ledger) {
@@ -158,7 +168,9 @@ function backfillCandidate(show, ctx, cfg = C.BACKFILL) {
 
 /** backfillCandidate without the score check: the show would post on a quiet day once its score settles. */
 function backfillWindow(show, ctx, cfg = C.BACKFILL) {
-  if (!cfg || !cfg.enabled || !isEligibleShow(show) || show.status !== 'open') return false;
+  if (!cfg || !cfg.enabled || !isEligibleShow(show, { allowOpera: true }) || show.status !== 'open') return false;
+  // Filler stays on the show's own accounts: no old London show on the Broadway fallback.
+  if (!postsToOwnSet(show)) return false;
   const today = localParts(new Date(ctx.now), C.MARKETS.broadway.tz).ymd;
   const closing = String(show.closingDate || '').slice(0, 10);
   if (/^\d{4}-\d{2}-\d{2}$/.test(closing) && closing < addDaysYmd(today, cfg.minDaysLeft)) return false;
@@ -185,7 +197,7 @@ function findBackfillEvents({ shows, ledger, now, reviewsByShow, slim, getOutlet
   if (todays.some(p => !p.backfill)) return [];
   const room = cfg.maxPerDay - todays.length;
   if (room <= 0) return [];
-  const ctx = { done: doneKeys(ledger), now, reviewsByShow, slim, getOutletTier, shows };
+  const ctx = { done: backfillDoneKeys(ledger), now, reviewsByShow, slim, getOutletTier, shows };
   const out = [];
   for (const show of shows) {
     if (blocked(show.id) || !backfillCandidate(show, ctx, cfg)) continue;
@@ -479,4 +491,4 @@ function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutle
   return out.sort((a, b) => a.firstDay.localeCompare(b.firstDay) || a.show.id.localeCompare(b.show.id));
 }
 
-module.exports = { backfillCandidate, backfillWindow, findBackfillEvents, scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { backfillCandidate, backfillDoneKeys, backfillWindow, findBackfillEvents, scoreSettled, roundupDay, roundupFillOrder, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };

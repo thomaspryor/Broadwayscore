@@ -10,6 +10,14 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const sel = require('./social-autopost/select.js');
+// Runs fn with the live config's West End accounts filled in (dummy ids), so Off-West End
+// shows have somewhere to post (BRO-6932: they never fall back to the Broadway accounts).
+const withWestEnd = fn => {
+  const sets = require('./social-autopost/config.js').CHANNEL_SETS;
+  const prev = sets['west-end'];
+  sets['west-end'] = Object.fromEntries(Object.keys(sets.broadway).map(svc => [svc, `we-${svc}`]));
+  try { return fn(); } finally { sets['west-end'] = prev; }
+};
 const { buildCaptions, postMarkers, showUrl, LIMITS } = require('./social-autopost/captions.js');
 const { isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle } = require('./social-autopost/art.js');
 const { buildCardHtml, SITE_CSS } = require('./social-autopost/render.js');
@@ -71,9 +79,26 @@ test('Off-Broadway needs 8 reviews and no tier-1 (BRO-6920); Off-West End uses t
   assert.equal(sel.findScoreEvents({ ...base(ob, { reviewsByShow: { [ob.id]: reviews(0, 1, 7) } }), now }).length, 0, 'T2 short');
   const owe = show({ category: 'off-west-end' });
   const ow = { ...base(owe), now: Date.parse('2026-11-06T10:00:00Z') };
-  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(2, 3, 5) } }).length, 0, 'T1 short');
-  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 2) } }).length, 0, '7 reviews is short');
-  assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 3) } }).length, 1);
+  withWestEnd(() => {
+    assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(2, 3, 5) } }).length, 0, 'T1 short');
+    assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 2) } }).length, 0, '7 reviews is short');
+    assert.equal(sel.findScoreEvents({ ...ow, reviewsByShow: { [owe.id]: reviews(3, 2, 3) } }).length, 1);
+  });
+});
+
+test('Off-West End never posts to the Broadway accounts; main-stage West End still falls back until its own accounts exist (BRO-6932)', () => {
+  const both = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'w1' } };
+  const bwOnly = { broadway: { instagram: 'b1' }, 'west-end': {} };
+  assert.deepEqual(routing.targetSets(show({ category: 'off-west-end' }), [], bwOnly), []);
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), [], bwOnly), ['broadway']);
+  assert.deepEqual(routing.targetSets(show({ category: 'off-west-end' }), [], both), ['west-end']);
+  assert.equal(routing.postsToOwnSet(show({ category: 'west-end' }), bwOnly), false, 'the fallback is not its own set');
+  assert.equal(routing.postsToOwnSet(show({ category: 'off-broadway' }), bwOnly), true);
+  // the live config has no West End accounts yet: an Off-West End show is not even a candidate
+  const owe = show({ category: 'off-west-end' });
+  assert.equal(sel.isEligibleShow(owe), false);
+  assert.equal(sel.findScoreEvents({ ...base(owe, { reviewsByShow: { [owe.id]: reviews(3, 3, 6) } }), now: Date.parse('2026-11-06T10:00:00Z') }).length, 0);
+  assert.equal(withWestEnd(() => sel.isEligibleShow(owe)), true);
 });
 
 test('roundup fills its rows with main-stage openings before Off shows, each best score first (BRO-6920)', () => {
@@ -531,7 +556,12 @@ test('routing: channels are tagged by set; the Broadway ledger key stays the bar
 test('routing: the live config has Broadway channels and routes every eligible category somewhere', () => {
   const C = require('./social-autopost/config.js');
   assert.ok(Object.keys(C.CHANNEL_SETS.broadway).length >= 5);
-  for (const cat of C.ELIGIBLE_CATEGORIES) assert.ok(routing.targetSets(show({ category: cat }), NONE).length >= 1, cat);
+  // Off-West End waits for the West End accounts (BRO-6932); every other category posts somewhere.
+  for (const cat of C.ELIGIBLE_CATEGORIES) {
+    const configured = Object.keys(C.CHANNEL_SETS.broadway).every(svc => (C.CHANNEL_SETS['west-end'] || {})[svc]);
+    const want = cat === 'off-west-end' && !configured ? 0 : 1;
+    assert.ok(routing.targetSets(show({ category: cat }), NONE).length >= want, cat);
+  }
 });
 
 test('routing: a partly filled West End set is not active; duplicate ids across sets are rejected', () => {
@@ -926,7 +956,7 @@ test('roundup: a West End week goes to the West End set, Off-Broadway stays with
   const we = [lshow('wa-west-end-2026', 'WA', 'west-end', 'play', '2026-10-16', { status: 'open' }), lshow('wb-off-west-end-2026', 'WB', 'off-west-end', 'play', '2026-10-17', { status: 'open' }), rShow('ob-off-broadway-2026', '2026-10-16', { category: 'off-broadway' })];
   const slim = { 'wa-west-end-2026': { cs: 80, rc: 14 }, 'wb-off-west-end-2026': { cs: 71, rc: 14 }, 'ob-off-broadway-2026': { cs: 75, rc: 14 } };
   const rev = Object.fromEntries(we.map(s => [s.id, reviews(6, 3, 6)]));
-  const ev = sel.findRoundupEvents({ shows: we, ledger: { posts: [] }, now: at('2026-10-23T09:05:00Z'), slim, getOutletTier, reviewsByShow: rev, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true } });
+  const ev = withWestEnd(() => sel.findRoundupEvents({ shows: we, ledger: { posts: [] }, now: at('2026-10-23T09:05:00Z'), slim, getOutletTier, reviewsByShow: rev, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true } }));
   const bySet = Object.fromEntries(ev.map(e => [e.set, e.candidates.map(s => s.id)]));
   assert.deepEqual(bySet['west-end'], ['wa-west-end-2026', 'wb-off-west-end-2026']);
   assert.equal(bySet.broadway, undefined, 'one Off-Broadway show alone is under the minimum');
@@ -1333,7 +1363,10 @@ test('quiet-day backfill candidates: open, not closing soon, recent, unposted, s
   assert.equal(bFind({ s: bShow({ closingDate: '2026-11-05' }) }).length, 1, 'closes in two days');
   assert.equal(bFind({ s: bShow({ openingDate: '2026-09-10' }) }).length, 0, 'opened more than 45 days ago');
   assert.equal(bFind({ s: bShow({ openingDate: '2026-10-28' }) }).length, 0, 'still inside the 10-day window: the normal lane owns it');
-  assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', skipped: 'backlog at go-live' }] } } }).length, 0, 'already handled');
+  assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', date: '2026-10-25', channels: { twitter: { postId: 'p0' } } }] } } }).length, 0, 'already posted');
+  assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', skipped: 'backlog at go-live' }] } } }).length, 1, 'a go-live backlog skip is still owed');
+  assert.equal(bFind({ s: bShow({ category: 'west-end' }) }).length, 0, 'no old London show on the Broadway fallback');
+  assert.equal(withWestEnd(() => bFind({ s: bShow({ category: 'west-end', openingDate: '2026-10-19' }), now: '2026-11-03T19:05:00Z' })).length, 1, 'on its own accounts it can');
   assert.equal(bFind({ args: { reviewsByShow: { 'bf-2026': reviews(0, 1, 3) } } }).length, 0, 'score not settled');
   assert.equal(bFind({ args: { blocked: id => id === 'bf-2026' } }).length, 0, 'failed too often');
   const a = bShow({ id: 'a-2026', openingDate: '2026-10-18' }), b = bShow({ id: 'z-2026', openingDate: '2026-10-22' }), c = bShow({ id: 'c-2026', openingDate: '2026-10-20' });
