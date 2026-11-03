@@ -16,6 +16,7 @@ export const LOCAL_RATINGS_MIGRATED_EVENT = 'bsc-local-ratings-migrated';
 // the next page load (a few tries per load, like the watchlist migration).
 const MAX_RUNS = 3;
 let runs = 0;
+let runsFor: string | null = null;
 let inFlight: string | null = null;
 
 /**
@@ -29,18 +30,27 @@ export default function LocalRatingsMigrator() {
   const userId = user?.id ?? null;
 
   useEffect(() => {
-    if (!userId || inFlight === userId || runs >= MAX_RUNS) return;
-    const local = getLocalRatings();
-    if (local.length === 0) return;
+    if (!userId) return;
+    if (runsFor !== userId) { runsFor = userId; runs = 0; }
+    if (inFlight === userId || runs >= MAX_RUNS) return;
+    if (getLocalRatings().length === 0) return;
     inFlight = userId;
     runs++;
-    (async () => {
+    // Two tabs sign in together: a Web Lock makes the second one wait, then
+    // re-read storage (the first removed what it saved) so nothing inserts twice.
+    const withLock = <T,>(fn: () => Promise<T>): Promise<T> =>
+      typeof navigator !== 'undefined' && navigator.locks
+        ? navigator.locks.request('bsc-local-ratings-migrate', fn) as Promise<T>
+        : fn();
+    withLock(async () => {
       try {
-        const { data, error } = await supabaseRestSelect<{ show_id: string }>(
-          'reviews', `user_id=eq.${userId}&select=show_id&limit=2000`,
+        const local = getLocalRatings();
+        if (local.length === 0) return;
+        const { data, error } = await supabaseRestSelect<{ show_id: string; rating: number }>(
+          'reviews', `user_id=eq.${userId}&select=show_id,rating&limit=2000`,
         );
         if (error) return;
-        const rated = new Set((data ?? []).map(r => r.show_id));
+        const rated = (data ?? []).map(r => ({ showId: r.show_id, rating: Number(r.rating) }));
         const toAdd = ratingsToMigrate(local, rated);
         let added = 0;
         for (const r of toAdd) {
@@ -62,8 +72,9 @@ export default function LocalRatingsMigrator() {
             removeLocalShow(r.showId); // rated = seen, off the want-to-see list
           }
         }
-        // Skipped (already rated on the account) are done too.
-        for (const r of local) if (rated.has(r.showId)) removeLocalRating(r.showId);
+        // Skipped (the account already holds this exact rating) are done too.
+        const have = new Set(rated.map(a => `${a.showId}|${a.rating}`));
+        for (const r of local) if (have.has(`${r.showId}|${r.rating}`)) removeLocalRating(r.showId);
         trackUgc('rating_local_migrated', { local_count: local.length, added, failed: toAdd.length - added });
         if (added > 0) {
           invalidateRatingsCache();
@@ -71,10 +82,13 @@ export default function LocalRatingsMigrator() {
           document.dispatchEvent(new Event(LOCAL_RATINGS_MIGRATED_EVENT));
           showToast?.(added === 1 ? 'Your rating is saved to your account.' : `Your ${added} ratings are saved to your account.`, 'success');
         }
+        if (toAdd.length - added > 0) {
+          showToast?.("We couldn't save a rating to your account yet. It stays on this device and we'll try again.", 'error');
+        }
       } finally {
         inFlight = null;
       }
-    })();
+    }).catch(() => { inFlight = null; });
   }, [userId, showToast]);
 
   return null;

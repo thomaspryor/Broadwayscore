@@ -53,8 +53,9 @@ interface RatingEditorProps {
    * typed text intact and shows an inline error + Retry. Resolve on success.
    * Resolve with 'auth-gated' when the save was deferred to a sign-in flow:
    * the editor stays open (draft visible behind the sign-in modal), no error.
+   * Resolve with 'saved-local' when it was kept on this device (signed out):
+   * the editor closes but it is not a submitted rating yet.
    */
-  /** 'saved-local': kept on this device (signed out), closes the editor but is not a submitted rating yet. */
   onSave: (data: RatingEditorSaveData) => Promise<void | 'auth-gated' | 'saved-local'>;
   /** Called after a successful save so the parent can close the editor. */
   onSaved: () => void;

@@ -49,10 +49,12 @@ test('upsert: newest first, same show replaces, invalid ignored, bounded', () =>
   assert.deepEqual(removeRatingEntry(list, 'a').map(e => e.showId), ['b']);
 });
 
-test('migrate: skips shows the account already rated, oldest first', () => {
+test('migrate: skips an identical account rating, keeps new viewings, oldest first', () => {
   const local = upsertRating(upsertRating(upsertRating([], { showId: 'a', rating: 3 }, 1), { showId: 'b', rating: 4 }, 2), { showId: 'c', rating: 5 }, 3);
-  assert.deepEqual(ratingsToMigrate(local, ['b']).map(e => e.showId), ['a', 'c']);
+  assert.deepEqual(ratingsToMigrate(local, [{ showId: 'b', rating: 4 }]).map(e => e.showId), ['a', 'c']);
   assert.deepEqual(ratingsToMigrate(local, []).map(e => e.showId), ['a', 'b', 'c']);
+  // a different star rating for an already-rated show is a new viewing, so it migrates
+  assert.deepEqual(ratingsToMigrate(local, [{ showId: 'b', rating: 2 }]).map(e => e.showId), ['a', 'b', 'c']);
 });
 
 test('storage: blocked localStorage keeps the rating in memory for the page', () => {

@@ -59,7 +59,7 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
 import { useUserLists } from '@/hooks/useUserLists';
 import { useToastSafe } from '@/components/ui/Toast';
-import { savePendingAction } from '@/lib/deferred-auth';
+import { savePendingAction, clearPendingAction } from '@/lib/deferred-auth';
 import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { removeLocalShow } from '@/lib/local-watchlist';
 import { getWatchlistCtaLabel } from '@/lib/watchlist-cta-label';
