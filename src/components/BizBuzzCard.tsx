@@ -461,7 +461,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <RecoupmentProgressBar estimatedPct={analystRange} variant="headline" />
             )}
             <div className="mt-1">
-              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} ours={!!ourRecoupRangePct(commercial) || !commercial.analystRecoupPct} />
+              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} ours={!!ourRecoupRangePct(commercial) || !commercial.analystRecoupPct} closed={showStatus === 'closed'} />
             </div>
           </div>
         )}

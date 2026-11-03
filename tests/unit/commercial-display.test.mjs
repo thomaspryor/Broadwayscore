@@ -704,3 +704,56 @@ test('loss labels and missing, contradictory or overly wide model returns stay h
     { modelInvestorMultiple: [1, 2, 5] },
   ]) assert.doesNotMatch(render({ ...winner, ...patch }), /data-testid="estimated-return"/);
 });
+
+const closedAnalyst = {
+  ...base,
+  designation: 'TBD',
+  recouped: false,
+  analystRecoupPct: [20, 40],
+  analystRecoupAsOf: '2026-10-13',
+  analystRecoupUrl: 'https://www.reddit.com/r/Broadway/comments/example/',
+  modelTaxCreditCounted: 3_000_000,
+};
+const closingCaveat = /Analyst estimate may exclude any NY tax credit \(up to \$3M\) or unspent reserves returned after closing\./;
+
+test('BRO-5605: a closed analyst show with a tax credit gets a caveat, without adding to its range', () => {
+  assert.equal(getRecoupmentDisplayMode({ ...closedAnalyst, status: 'closed' }), 'analyst');
+  const pub = toPublicShowCommercial(closedAnalyst);
+  assert.deepEqual(getDisplayableAnalystRange({ ...pub, status: 'closed' }), [20, 40]);
+  assert.match(render(closedAnalyst), closingCaveat);
+  // The analyst may omit closing distributions even when our model has no credit data.
+  assert.match(render({ ...closedAnalyst, modelTaxCreditCounted: undefined, analystRecoupUrl: null }), closingCaveat);
+  assert.match(render({ ...closedAnalyst, modelDataQuality: 'high', modelRecoupmentPct: [30, 50, 70] }), closingCaveat);
+});
+
+test('BRO-5605: running shows, our own estimates and reported returns get no analyst closing caveat', () => {
+  for (const status of ['open', 'previews', 'upcoming']) {
+    assert.doesNotMatch(render(closedAnalyst, status), closingCaveat);
+  }
+  for (const patch of [
+    { analystRecoupPct: undefined, ourEstimateRangePct: [20, 40] },
+    { ourRecoupEstimatePct: 30, ourRecoupEstimateAsOf: '2026-10-20' },
+    { recouped: true },
+    { designation: 'Nonprofit' },
+    { designation: 'Flop', analystRecoupPct: [60, 60] },
+    { designation: 'Fizzle', reportedReturn: { lo: 30, hi: 40, outlet: 'Variety', asOf: '2026-10-20' } },
+  ]) assert.doesNotMatch(render({ ...closedAnalyst, ...patch }), closingCaveat);
+});
+
+test('BRO-5605: both analyst table branches show the caveat only on closed analyst estimates', () => {
+  const AllShowsTable = require('../../src/components/biz/AllShowsTable.tsx').default;
+  const { AppRouterContext } = require('next/dist/shared/lib/app-router-context.shared-runtime');
+  const table = (patch = {}) => renderToStaticMarkup(React.createElement(
+    AppRouterContext.Provider, { value: {} },
+    React.createElement(AllShowsTable, { shows: [{
+      ...closedAnalyst, status: 'closed', slug: 'test-production', title: 'Test production',
+      weeklyCost: 600_000, ...patch,
+    }] }),
+  ));
+  assert.match(table(), closingCaveat);
+  assert.match(table({ analystRecoupPct: [100, 100] }), closingCaveat);
+  assert.match(table({ analystRecoupUrl: null }), closingCaveat);
+  assert.doesNotMatch(table({ status: 'open' }), closingCaveat);
+  assert.doesNotMatch(table({ analystRecoupPct: null, ourEstimateRangePct: [20, 40] }), closingCaveat);
+  assert.doesNotMatch(table({ designation: 'Fizzle', reportedReturn: { lo: 30, hi: 40, outlet: 'Variety', asOf: null } }), closingCaveat);
+});

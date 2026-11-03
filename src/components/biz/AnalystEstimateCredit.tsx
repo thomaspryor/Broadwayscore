@@ -11,11 +11,13 @@ interface AnalystEstimateCreditProps {
   url: string | null | undefined;
   compact?: boolean;
   withModel?: boolean;
+  /** Closed analyst estimates may omit distributions made after the run (BRO-5605). */
+  closed?: boolean;
   /** Our own range, no analyst figure behind it (ourEstimateRangePct): credited "Our estimate", nothing else. */
   ours?: boolean;
 }
 
-export default function AnalystEstimateCredit({ asOf, url, compact = false, withModel = false, ours = false }: AnalystEstimateCreditProps) {
+export default function AnalystEstimateCredit({ asOf, url, compact = false, withModel = false, ours = false, closed = false }: AnalystEstimateCreditProps) {
   if (ours) {
     return <p className={compact ? 'text-[10px] text-fg-muted mt-1' : 'text-[11px] text-fg-muted'} data-testid="analyst-credit">Our estimate</p>;
   }
@@ -31,13 +33,21 @@ export default function AnalystEstimateCredit({ asOf, url, compact = false, with
     </>
   );
   const className = compact ? 'text-[10px] text-fg-muted mt-1' : 'text-[11px] text-fg-muted';
-  if (!url) return <p className={className} data-testid="analyst-credit">{text}</p>;
   return (
-    <p className={className} data-testid="analyst-credit">
-      <a href={url} target="_blank" rel="noopener noreferrer" className="underline decoration-white/20 hover:text-gray-300">
-        {text}
-        <span className="sr-only"> (opens in a new tab)</span>
-      </a>
-    </p>
+    <>
+      <p className={className} data-testid="analyst-credit">
+        {url ? (
+          <a href={url} target="_blank" rel="noopener noreferrer" className="underline decoration-white/20 hover:text-gray-300">
+            {text}
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+        ) : text}
+      </p>
+      {closed && (
+        <p className="text-xs text-fg-muted mt-1" data-testid="analyst-closing-caveat">
+          Analyst estimate may exclude any NY tax credit (up to $3M) or unspent reserves returned after closing.
+        </p>
+      )}
+    </>
   );
 }
