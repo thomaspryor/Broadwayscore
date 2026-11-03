@@ -104,3 +104,91 @@ test('a missing byline alone does not make two same-outlet reviews a duplicate',
   ] };
   assert.equal(grade.gradeShadowReport(rep).duplicates.length, 0);
 });
+
+// BRO-6872 round 9: the regular pipeline's own first sighting (firstSeenAt, sources) settles the rows a publish date
+// cannot. Cases are the Oct 2026 replays: Max Hechtman (preview-period blog post production had the morning of opening day),
+// Thedaviddesk2 (found 8 days later, dated "2026-10"), Cititour and Lighting & Sound America (undated pages).
+test('site rows: already live, undated pages by first sighting', () => {
+  const ctx = (meta) => ({ nightPlus1: '2026-10-22', laneStartMs: Date.parse('2026-10-21T23:00:00Z'), meta });
+  const v = grade.siteRowVerdict;
+  assert.equal(v({ siteDate: '2026-10-04' }, ctx({ firstSeenAt: '2026-10-21T09:36:12Z', sources: ['submit-review-form'] })), 'already-live');
+  // 'submit-review-form' is every ingest-review-from-url caller's label, so it is no reason to set a row aside.
+  assert.equal(v({ siteDate: '2026-10' }, ctx({ firstSeenAt: '2026-10-29T01:16:08Z', sources: ['submit-review-form'] })), 'late');
+  assert.equal(v({ siteDate: '2026-10-22' }, ctx({ firstSeenAt: '2026-10-31T20:49:28Z', sources: ['submit-review-form', 'bww-reviews'] })), 'on-time');
+  // Undated: the day production first saw it, in New York time (03:17Z on the 22nd is still the 21st there).
+  assert.equal(v({ siteDate: null }, ctx({ firstSeenAt: '2026-10-22T03:17:25Z', sources: ['ingest-urls'] })), 'on-time');
+  assert.equal(v({ siteDate: null }, ctx({ firstSeenAt: '2026-10-29T17:24:00Z', sources: ['outlet-listing-poller'] })), 'late');
+  // A month-only date is no date: it used to compare as on time ("2026-10" < "2026-10-22").
+  assert.equal(v({ siteDate: '2026-10' }, ctx({ firstSeenAt: '2026-10-29T17:24:00Z', sources: ['outlet-listing-poller'] })), 'late');
+  // A full date still wins over a late first sighting (the lane can find what production found late).
+  assert.equal(v({ siteDate: '2026-10-22' }, ctx({ firstSeenAt: '2026-10-23T12:10:16Z', sources: ['serp-discovery'] })), 'on-time');
+  assert.equal(v({ siteDate: '2026-10-25' }, ctx(null)), 'late');
+  // Nothing known: on time, as before.
+  assert.equal(v({ siteDate: null }, ctx(null)), 'on-time');
+});
+
+test('one review under a typo URL and its real URL is one review (near-identical slug)', () => {
+  const j = grade.joinNearSlugs([
+    { side: 'site-only', url: 'https://culturesauce.com/ther-desert-cities-julia-louis-dreyfus-broadway-review', siteScore: 80, outlet: 'Culture Sauce' },
+    { side: 'lane-only', url: 'https://culturesauce.com/other-desert-cities-julia-louis-dreyfus-broadway-review/', laneScore: 82, outlet: 'culturesauce' },
+    // Two different reviews on one host stay apart, and so do short slugs.
+    { side: 'site-only', url: 'https://example.com/review-of-show-one-at-the-imperial', siteScore: 70 },
+    { side: 'lane-only', url: 'https://example.com/review-of-show-two-at-the-booth-theatre', laneScore: 70 },
+    { side: 'site-only', url: 'https://example.com/a/review-1', siteScore: 60 },
+    { side: 'lane-only', url: 'https://example.com/a/review-2', laneScore: 60 },
+  ]);
+  const cs = j.filter((r) => /culturesauce/.test(r.url));
+  assert.equal(cs.length, 1);
+  assert.equal(cs[0].side, 'both'); assert.equal(cs[0].joinedBy, 'near-slug'); assert.equal(cs[0].siteScore, 80);
+  assert.equal(j.filter((r) => r.side !== 'both').length, 4);
+});
+
+test('near-slug join never pairs two articles', () => {
+  const pairs = (rows) => grade.joinNearSlugs(rows).filter((r) => r.joinedBy === 'near-slug').length;
+  const L = (url) => ({ side: 'lane-only', url, laneScore: 80 }); const S = (url) => ({ side: 'site-only', url, siteScore: 40 });
+  // WordPress "-2" for a repeated slug, and part-1 / part-2: two articles.
+  assert.equal(pairs([L('https://x.com/a/hamlet-broadway-review-2'), S('https://x.com/a/hamlet-broadway-review')]), 0);
+  assert.equal(pairs([L('https://x.com/a/review-hamlet-part-2'), S('https://x.com/a/review-hamlet-part-1')]), 0);
+  // Same slug under another section is another article.
+  assert.equal(pairs([L('https://x.com/news/hamlet-broadway-reviews'), S('https://x.com/blog/hamlet-broadway-review')]), 0);
+  // Two lane rows that could both claim one site row: neither pairs.
+  assert.equal(pairs([L('https://x.com/a/hamlet-broadway-reviews'), L('https://x.com/a/hamlet-broadway-reviewx'), S('https://x.com/a/hamlet-broadway-review')]), 0);
+  // A one-letter typo in the same section pairs.
+  assert.equal(pairs([L('https://x.com/a/hamlet-broadway-review'), S('https://x.com/a/hamlet-brodway-review')]), 1);
+});
+
+test('duplicate review files for one URL keep the earliest first sighting', () => {
+  const m = grade.loadSiteMetaFromDir(null, [
+    { name: 'a.json', json: { url: 'https://x.com/a/review-of-the-show', firstSeenAt: '2026-10-19T17:17:20Z' } },
+    { name: 'b.json', json: { url: 'https://x.com/a/review-of-the-show/', firstSeenAt: '2026-10-19T05:24:03Z' } },
+  ]);
+  assert.equal([...m.values()][0].firstSeenAt, '2026-10-19T05:24:03Z');
+});
+
+test('the grade sets aside already-live rows on both sides and reads undated rows by first sighting', () => {
+  const r = (side, url, siteDate = null) => ({ side, url, siteDate, laneScoredAt: side === 'site-only' ? null : '2026-10-22T03:00:00Z', laneScore: side === 'site-only' ? null : 70, siteScore: side === 'lane-only' ? null : 70 });
+  const rep = { show: 'x-2026', night: '2026-10-21', startedAt: '2026-10-21T23:00:00Z', laneErrorsByAdapter: {}, reviews: [
+    r('both', 'https://a.com/review-aaaaaaaaaaaa', '2026-10-21'),
+    r('both', 'https://b.com/review-bbbbbbbbbbbb', '2026-10-21'),
+    r('both', 'https://c.com/review-cccccccccccc', '2026-10-21'),
+    r('site-only', 'https://maxhechtmanfilms.com/blog/billy-crystal-860-filmmaker-review', '2026-10-04'),
+    r('site-only', 'https://thedaviddesk2.blogspot.com/2026/10/broadway-review-billy-crystal-860.html', '2026-10'),
+    r('site-only', 'https://cititour.com/NYC_Broadway/860/1402'),
+    r('site-only', 'https://lightingandsoundamerica.com/news/story.asp?ID=TNMYVQ'),
+  ] };
+  const { canonicalUrl: cu } = require('../../scripts/lib/opening-night-lane/discovery.js');
+  const siteMeta = new Map([
+    [cu('https://maxhechtmanfilms.com/blog/billy-crystal-860-filmmaker-review'), { firstSeenAt: '2026-10-21T09:36:12Z', sources: ['submit-review-form'] }],
+    [cu('https://thedaviddesk2.blogspot.com/2026/10/broadway-review-billy-crystal-860.html'), { firstSeenAt: '2026-10-29T01:16:08Z', sources: ['submit-review-form'] }],
+    [cu('https://cititour.com/NYC_Broadway/860/1402'), { firstSeenAt: '2026-10-22T03:17:25Z', sources: ['ingest-urls', 'playbill-verdict'] }],
+    [cu('https://lightingandsoundamerica.com/news/story.asp?ID=TNMYVQ'), { firstSeenAt: '2026-10-29T17:24:00Z', sources: ['outlet-listing-poller'] }],
+  ]);
+  const before = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-22T02:00:00Z' });
+  assert.equal(before.onTimeRecall, 0.429); // 3 of 7: every site-only row counted
+  const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-22T02:00:00Z', siteMeta });
+  assert.equal(g.onTimeRecall, 0.75); // 3 of 4: Cititour is a real miss, L&SA and the David Desk late, Hechtman already live
+  assert.deepEqual(g.excluded.map((x) => x.why).sort(), ['already-live']);
+  assert.equal(g.missed.find((m) => /lightingandsound/.test(m.url)).late, true);
+  assert.equal(rep.reviews[3].onTimeVerdict, undefined, 'the report itself is not modified');
+  assert.match(grade.gradeMarkdown(g), /Not gated/);
+});

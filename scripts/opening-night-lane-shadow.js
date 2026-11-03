@@ -30,6 +30,7 @@ const shadow = require('./lib/opening-night-lane-shadow');
 const argv = process.argv.slice(2);
 const arg = (n) => (argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3) || null;
 
+
 async function main() {
   if (hasHelpFlag(argv)) { console.log(fs.readFileSync(__filename, 'utf8').split('*/')[0]); return 0; }
   const repoDir = path.resolve(__dirname, '..');
@@ -84,13 +85,17 @@ async function main() {
   // A live fetch with no timeout could hang the recorder past the window; 20 s is a missed poll, not a stall.
   const fetchImpl = (url, opts = {}) => globalThis.fetch(url, { ...opts, signal: AbortSignal.timeout(20000) });
   const live = shadow.createLiveRecorder({ fetchLiveShow: publish.fetchLiveShowFrom(liveBase, { fetchImpl }), showId, now, logFile: path.join(out, 'live-first-seen.jsonl') });
+  // The regular pipeline's first sighting of each site review (firstSeenAt, sources), read from the private review
+  // files (metadata only, the text is dropped), settles undated pages and reader submissions in the grade. A failed
+  // read grades by publish dates alone and says so.
+  const siteMeta = replay ? await shadow.loadSiteMeta({ repoDir, showId, token: env.REVIEW_TEXTS_TOKEN }).catch((e) => { console.error(`shadow: site review metadata unavailable (${e.message}); grading by publish dates only`); return null; }) : null;
   const startedAt = now();
   let result = null; let endedAt = null;
   const writeReport = () => {
     const rep = shadow.buildShadowReport({ show, night, ledgerDir, scores: scores.snapshot(), rows, live: live.snapshot(), startedAt, endedAt, result });
     const md = shadow.writeShadowReport(out, rep);
     if (!replay) return md;
-    return md + grader.writeGrade(out, grader.gradeShadowReport(rep, { replayAnchorAt: replay.anchorAt, sandbox: site.live() }));
+    return md + grader.writeGrade(out, grader.gradeShadowReport(rep, { replayAnchorAt: replay.anchorAt, sandbox: site.live(), siteMeta }));
   };
   await live.poll();
   const timer = setInterval(() => {
