@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5582",
   "planId": "503f45e3-4e8c-4709-a5f8-9ff5c5cc2762",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-29T09:50:00.000Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "description": "Stamp the audit field on 1643 legacy wrongProduction flags"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T17:45:12.287Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script backfill-wrongproduction-legacy-audit.js failed: Command failed: node scripts/backfill-wrongproduction-legacy-audit.js --apply --expect=1643"
+    }
+  ],
+  "executedIn": "ci"
 }
