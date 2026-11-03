@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-11-03T12:41:50.207Z",
+  "generatedAt": "2026-11-03T14:15:59.028Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 319,
-  "clean": 318,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "title": "Clifford Odets’ Waiting for Lefty",
-      "openingDate": "2026-11-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 65.61 vs local 65.18 (Δ0.43)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 3,
-      "deployedCount": 3,
-      "firstDefectAt": "2026-11-03T12:41:45.919Z"
-    }
-  ],
+  "clean": 319,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T12:41:23.611Z",
+  "generatedAt": "2026-11-03T14:15:33.295Z",
   "windowDays": 45,
   "showsScanned": 249,
   "gaps": [
@@ -21,9 +21,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 210.81243583333332,
+      "fileAgeHours": 212.3817838888889,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 196.2686788888889,
+      "nonTerminalAgeHours": 197.83803555555556,
       "needsManualRecovery": true
     },
     {
@@ -41,9 +41,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=msblackforpresident-off-broadway-2026 --url=https://www.backstage.com/forums/callback-corner/ms-blakk-president-2-38883/ --outlet=backstage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T09:52:12.991Z",
-      "fileAgeHours": 26.81837,
+      "fileAgeHours": 28.387719166666667,
       "gapSeenAt": "2026-11-03T07:11:27.100Z",
-      "nonTerminalAgeHours": 5.499030833333333,
+      "nonTerminalAgeHours": 7.0683875,
       "needsManualRecovery": false
     },
     {
@@ -64,9 +64,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=an-evening-with-an-immigrant-off-west-end-2026 --url=https://www.thetimes.co.uk/article/an-evening-with-an-immigrant-review-emotional-tale-sold-short-by-its-presentation-r889z8vj2 --outlet=times-uk --critic=\"Clive Davis\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-11-02T13:39:16.086Z",
-      "fileAgeHours": 23.03491222222222,
+      "fileAgeHours": 24.604275277777777,
       "gapSeenAt": "2026-11-02T15:11:01.899Z",
-      "nonTerminalAgeHours": 21.50603111111111,
+      "nonTerminalAgeHours": 23.075387777777777,
       "needsManualRecovery": false
     }
   ],
