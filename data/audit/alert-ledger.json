@@ -243,22 +243,20 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-11-02T13:27:28.778Z",
-      "lastSeen": "2026-11-02T18:09:50.081Z",
-      "lastNotifiedAt": "2026-11-02T13:27:28.778Z",
-      "lastSurfacedAt": "2026-11-02T13:27:28.778Z",
-      "notifyCount": 203,
+      "incidentOpenedAt": "2026-11-03T01:03:22.449Z",
+      "lastSeen": "2026-11-03T01:03:22.449Z",
+      "lastNotifiedAt": "2026-11-03T01:03:22.449Z",
+      "lastSurfacedAt": "2026-11-03T01:03:22.449Z",
+      "notifyCount": 204,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 192,
-      "sweptTracker": "BRO-6656",
-      "silentRefires": 6,
-      "resolvedAt": "2026-11-02T18:34:42.253Z"
+      "sweptTracker": "BRO-6656"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26919,7 +26917,7 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
       "firstSeen": "2026-10-25T10:32:37.769Z",
       "incidentOpenedAt": "2026-11-03T00:22:08.087Z",
-      "lastSeen": "2026-11-03T00:22:08.087Z",
+      "lastSeen": "2026-11-03T01:03:22.406Z",
       "lastNotifiedAt": "2026-11-03T00:22:08.087Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
@@ -26931,7 +26929,8 @@
         "runId": "41548456159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41548456159"
       },
-      "absentRunIds": []
+      "absentRunIds": [],
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-empty-cast:the-morbs-off-broadway-2026": {
       "status": "resolved",
