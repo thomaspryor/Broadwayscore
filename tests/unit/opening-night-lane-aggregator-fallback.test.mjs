@@ -200,3 +200,20 @@ test('unwrap: a single publisher anchor beats a refused landed URL; the refused 
   assert.equal(d.publisherUrlFromWrapperPage('', src, landedTag, { vettedOutlet: true }), landedTag);
   assert.equal(d.publisherUrlFromWrapperPage('', src, 'https://www.theatermania.com/account/login', { vettedOutlet: true }), null);
 });
+
+test('google news: a never-tried wrapper is opened before a retry of a failed one (budget rotates through the feed)', async () => {
+  const xml = gnRss(GN_ITEMS.slice(0, 3));
+  const opened = [];
+  const fetchText = async (url) => {
+    if (url.includes('/rss/search')) return xml;
+    opened.push(url);
+    return { content: '', finalUrl: null }; // every unwrap fails
+  };
+  const ad = d.googleNewsAdapter({ maxUnwrap: 1, now: () => Date.parse('2026-10-23T03:00:00Z') });
+  for (let i = 0; i < 3; i++) await ad.discover({ show: SHOW, fetchText });
+  assert.equal(new Set(opened).size, 3, `each pass should open a new wrapper first: ${opened.join(' ')}`);
+  // Once every wrapper has been tried, retries resume (none is starved for good).
+  await ad.discover({ show: SHOW, fetchText });
+  assert.equal(opened.length, 4);
+  assert.ok(opened.slice(0, 3).includes(opened[3]));
+});

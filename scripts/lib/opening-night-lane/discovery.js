@@ -683,7 +683,13 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       }
       // The unwrap budget goes to national outlets first, as in google-news-rss.js: in feed order smaller outlets could use it
       // up before a national outlet's wrapper was opened (BRO-6066). Stable sort, so feed order holds within a tier.
-      items.sort((a, b) => a.tier - b.tier);
+      // Within that, an item never tried goes before a retry of one that failed: otherwise up to maxUnwrap failing wrappers
+      // take the whole budget for MAX_UNWRAP_TRIES passes before anything later in the feed is opened once (BRO-6872:
+      // the NYTG review sat past the eighth item in a 15-pass replay). Resolved items cost nothing and keep their place.
+      // Retries go fewest-tries first. Trade-off: a national wrapper that failed once waits behind new smaller outlets
+      // for a pass; keeping national retries first would let failing paywalled wrappers starve the feed again.
+      const triesOf = (it) => { const r = resolved.get(it.link); return r && !r.url ? r.tries : 0; };
+      items.sort((a, b) => triesOf(a) - triesOf(b) || a.tier - b.tier);
       const out = [];
       let unwrapped = 0;
       // Decodes call Google directly, outside the pass deadline's fetch wrapper, so they get their own count and time cap.
