@@ -1,27 +1,6 @@
 {
-  "generatedAt": "2026-11-02T23:16:31.472Z",
-  "promoted": [
-    {
-      "id": "saving-alan-turing-off-west-end-2027",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    },
-    {
-      "id": "thinking-drinkers-great-british-pub-ride-off-west-end-2027",
-      "source": "venue-page:king-s-head-theatre",
-      "sourceUrl": "https://kingsheadtheatre.com/whats-on/"
-    },
-    {
-      "id": "mrs-macbeth-off-west-end-2027",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "yippee-ki-yay-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    }
-  ],
+  "generatedAt": "2026-11-03T21:15:33.581Z",
+  "promoted": [],
   "rejected": [
     {
       "title": "Golden Boy",
@@ -864,12 +843,28 @@
       "reason": "already in shows.json as god-is-a-woman-the-musical-off-west-end-2026 (normalized-equal)"
     },
     {
+      "title": "Saving Alan Turing",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as saving-alan-turing-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "Stand Up If You're Here Tonight",
       "venue": "King's Head Theatre",
       "source": "venue-page:king-s-head-theatre",
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as stand-up-if-youre-here-tonight-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Thinking Drinkers' Great British Pub Ride",
+      "venue": "King's Head Theatre",
+      "source": "venue-page:king-s-head-theatre",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as thinking-drinkers-great-british-pub-ride-off-west-end-2027 (normalized-equal)"
     },
     {
       "title": "Thou Shalt Sit The F*** Down",
@@ -1200,6 +1195,14 @@
       "reason": "already in shows.json as mother-ignacia-off-west-end-2027 (normalized-equal)"
     },
     {
+      "title": "Mrs Macbeth",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as mrs-macbeth-off-west-end-2027 (normalized-equal)"
+    },
+    {
       "title": "The Crimes of Pete",
       "venue": "Riverside Studios",
       "source": "venue-page:riverside-studios",
@@ -1214,6 +1217,14 @@
       "sourceUrl": null,
       "kind": "skip-duplicate",
       "reason": "already in shows.json as tinderella-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Yippee Ki Yay",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as yippee-ki-yay-off-west-end-2026 (normalized-equal)"
     },
     {
       "title": "An Iliad",
