@@ -1,26 +1,37 @@
 {
-  "updatedAt": "2026-11-03T03:19:21.202Z",
-  "processed": 201,
-  "failed": 17,
-  "successRate": "92.2%",
+  "updatedAt": "2026-11-03T03:43:46.118Z",
+  "processed": 133,
+  "failed": 77,
+  "successRate": "63.3%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 63,
     "amp": 0,
-    "browserbase": 9,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 3,
+    "scrapingdog": 13,
+    "scrapingbee": 5,
     "brightdata": 0,
     "archiveToday": 3,
-    "archive": 11
+    "archive": 33
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 11,
   "recentActivity": [
     {
-      "t": "2026-11-03T02:07:24.635Z",
+      "t": "2026-11-03T00:06:15.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-11-03T00:08:02.689Z",
       "event": "bb-session",
-      "session": "20bc99fe",
-      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+      "session": "ab46dc17",
+      "url": "https://deadline.com/2026/05/andrey-zvyagintsev-minotaur-gets-ten-minute-applaus"
+    },
+    {
+      "t": "2026-11-03T02:44:14.961Z",
+      "event": "bb-session",
+      "session": "6b6b0a0f",
+      "url": "http://www.talkinbroadway.com/ob/12_2_15.html"
     },
     {
       "t": "2026-11-03T02:44:15.253Z",
@@ -70,36 +81,52 @@
     {
       "t": "2026-11-03T03:00:46.668Z",
       "event": "bb-session",
-      "session": "395c94c7",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "eec7a186",
+      "url": "https://deadline.com/2026/10/billy-crystal-860-broadway-review-1237168548/"
     },
     {
-      "t": "2026-11-03T03:12:10.635Z",
+      "t": "2026-11-03T03:31:09.567Z",
       "event": "bb-session",
-      "session": "e4f0d79c",
-      "url": "https://bachtrack.com/review-medea-yoncheva-spyres-met-opera-new-york-october-20"
+      "session": "2ee62aee",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
     },
     {
-      "t": "2026-11-03T03:13:58.089Z",
-      "event": "bb-session",
-      "session": "b1ea6372",
-      "url": "http://www.bloomberg.com/apps/news?pid=newsarchive&sid=a1.pt6hSV1IM"
-    },
-    {
-      "t": "2026-11-03T03:13:58.963Z",
-      "event": "bb-cookie-inject",
-      "domain": "bloomberg.com"
-    },
-    {
-      "t": "2026-11-03T03:16:22.809Z",
-      "event": "bb-session",
-      "session": "084b1852",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-11-03T03:16:23.754Z",
+      "t": "2026-11-03T03:31:09.844Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-11-03T03:39:12.449Z",
+      "event": "bb-session",
+      "session": "2420afc1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-03T03:39:12.726Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-03T03:39:57.353Z",
+      "event": "bb-session",
+      "session": "76802b20",
+      "url": "https://www.nytimes.com/2026/09/26/theater/jake-shears-scissor-sisters-rocky-hor"
+    },
+    {
+      "t": "2026-11-03T03:39:57.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-03T03:40:49.633Z",
+      "event": "bb-session",
+      "session": "0157b11b",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-03T03:40:49.980Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
