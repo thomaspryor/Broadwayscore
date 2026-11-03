@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-03T14:15:59.428Z",
+  "generatedAt": "2026-11-03T15:35:51.180Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -7,6 +7,11 @@
       "id": "in-the-heights-off-broadway-2026",
       "title": "In the Heights",
       "openingDate": "2026-10-28"
+    },
+    {
+      "id": "well-see-off-broadway-2026",
+      "title": "We'll See",
+      "openingDate": "2026-11-03"
     },
     {
       "id": "the-lives-of-others-west-end-2026",
@@ -126,10 +131,6 @@
   ],
   "skipped": [
     {
-      "showId": "well-see-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    },
-    {
       "showId": "parcel-from-america-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     },
@@ -169,7 +170,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 754,
+  "itemsScanned": 752,
   "matchedGaps": 10,
   "possibleGaps": 9,
   "gaps": [

@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-11-03T14:15:59.028Z",
+  "generatedAt": "2026-11-03T15:35:50.763Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 319,
-  "clean": 319,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 317,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "title": "Jesus Christ Superstar",
+      "openingDate": "2026-10-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.64 vs local 76.78 (Δ1.14)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 30,
+      "deployedCount": 30,
+      "firstDefectAt": "2026-11-03T15:35:46.561Z"
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "title": "The Devil Wears Prada",
+      "openingDate": "2024-12-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 58.32 vs local 57.87 (Δ0.45)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-11-03T15:35:46.561Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
