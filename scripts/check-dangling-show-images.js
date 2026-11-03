@@ -17,6 +17,7 @@
  *
  * Exit: 0 = no dangling refs, 1 = dangling refs found, 2 = could not run.
  */
+require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 const { findDanglingLocalImageRefs, danglingImageNullingActions } = require('./lib/image-pointers');
