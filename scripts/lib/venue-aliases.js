@@ -153,6 +153,117 @@ const VENUE_ALIASES = {
 };
 
 /**
+ * Sub-stages inside a bigger building (BRO-6923). Critics name the building
+ * ("at the Young Vic", "the National Theatre") while shows.json files the show
+ * at the stage ("The Maria Theatre", "Lyttelton Theatre"), so a venue check
+ * read the building name as a different production (Girls lost London Theatre,
+ * Theatre Weekly and The Recs reviews; Inter Alia lost 9).
+ *
+ * Deliberately NOT part of VENUE_ALIASES: findCanonical() maps one name to ONE
+ * canonical, and the National Theatre's three stages share a parent name, so a
+ * reverse lookup of the parent must never pick a single stage (it returns the
+ * whole stage list via stagesOfBuilding()). Every findCanonical consumer is
+ * therefore unaffected.
+ *
+ * stageKeys are normalized substrings matched on word boundaries against the
+ * shows.json venue string ("National Theatre (Olivier)", "The Other Palace -
+ * Studio"). Soho Theatre Walthamstow is a separate site and has no key.
+ */
+const PARENT_BUILDINGS = [
+  { parent: 'National Theatre', region: 'london',
+    parentNames: ['National Theatre', 'Royal National Theatre', 'the National'],
+    stages: ['Lyttelton Theatre', 'Olivier Theatre', 'Dorfman Theatre'],
+    stageKeys: ['lyttelton', 'olivier', 'dorfman', 'cottesloe'] },
+  { parent: 'Young Vic', region: 'london',
+    parentNames: ['Young Vic', 'Young Vic Theatre'],
+    stages: ['The Maria', 'The Clare', 'Main House'],
+    stageKeys: ['the maria', 'maria theatre', 'maria studio', 'the clare', 'clare theatre', 'clare studio', 'main house'] },
+  { parent: "Shakespeare's Globe", region: 'london',
+    parentNames: ["Shakespeare's Globe", 'Shakespeares Globe'],
+    stages: ['Sam Wanamaker Playhouse', "Shakespeare's Globe Theatre"],
+    stageKeys: ['wanamaker'] },
+  { parent: 'Hampstead Theatre', region: 'london',
+    parentNames: ['Hampstead Theatre'],
+    stages: ['Hampstead Theatre Downstairs', 'Hampstead Theatre Main Stage'],
+    stageKeys: ['hampstead theatre downstairs', 'hampstead downstairs'] },
+  { parent: 'Soho Theatre', region: 'london',
+    parentNames: ['Soho Theatre'],
+    stages: ['Soho Theatre Upstairs', 'Soho Theatre Downstairs'],
+    stageKeys: ['soho theatre upstairs', 'soho theatre downstairs'] },
+  { parent: 'The Other Palace', region: 'london',
+    parentNames: ['The Other Palace', 'Other Palace'],
+    stages: ['The Other Palace Studio', 'The Other Palace Main Auditorium'],
+    stageKeys: ['other palace studio', 'other palace - studio', 'other palace main'] },
+  { parent: 'Royal Court Theatre', region: 'london',
+    parentNames: ['Royal Court Theatre', 'Royal Court'],
+    stages: ['Jerwood Theatre Downstairs', 'Jerwood Theatre Upstairs'],
+    stageKeys: ['jerwood'] },
+];
+
+function _stageKeyMatches(normVenue, key) {
+  const k = _normalize(key);
+  const i = normVenue.indexOf(k);
+  if (i < 0) return false;
+  const before = i === 0 ? ' ' : normVenue[i - 1];
+  const after = i + k.length >= normVenue.length ? ' ' : normVenue[i + k.length];
+  return !/[a-z0-9]/.test(before) && !/[a-z0-9]/.test(after);
+}
+
+function _regionOk(entry, market) {
+  const region = _marketToRegion(market);
+  return !region || !entry.region || entry.region === region;
+}
+
+/**
+ * If `venue` is a stage inside a bigger building, return that building.
+ * Returns null for the building itself and for unrelated venues.
+ * @returns {{ parent: string, parentNames: string[], stages: string[] } | null}
+ */
+function parentBuildingOf(venue, market) {
+  if (!venue) return null;
+  const n = _normalize(venue);
+  for (const b of PARENT_BUILDINGS) {
+    if (!_regionOk(b, market)) continue;
+    if (b.parentNames.some((p) => _normalize(p) === n)) continue; // the building itself
+    if (b.stageKeys.some((k) => _stageKeyMatches(n, k))) {
+      return { parent: b.parent, parentNames: b.parentNames.slice(), stages: b.stages.slice() };
+    }
+  }
+  return null;
+}
+
+/**
+ * Reverse lookup: given a building name, return ALL its stages (never one).
+ * Empty when `name` is not a known multi-stage building.
+ */
+function stagesOfBuilding(name, market) {
+  if (!name) return [];
+  const n = _normalize(name);
+  for (const b of PARENT_BUILDINGS) {
+    if (!_regionOk(b, market)) continue;
+    if (b.parentNames.some((p) => _normalize(p) === n)) return b.stages.slice();
+  }
+  return [];
+}
+
+/**
+ * Prompt text for a show filed at a stage (or at the building): tells the
+ * verifier that a review naming the building is NOT a different venue.
+ * Empty string when the venue is neither.
+ */
+function buildParentBuildingNote(venue, market) {
+  const p = parentBuildingOf(venue, market);
+  if (p) {
+    return `${venue} is one stage inside ${p.parent} (other stages: ${p.stages.filter((s) => _normalize(s) !== _normalize(venue)).join(', ')}). A review that names "${p.parent}" instead of the stage is NOT by itself evidence of a different venue or production; still check the title, cast and dates`;
+  }
+  const stages = stagesOfBuilding(venue, market);
+  if (stages.length) {
+    return `${venue} is a building with several stages (${stages.join(', ')}); a review naming any one stage is NOT by itself evidence of a different production; still check the title, cast and dates`;
+  }
+  return '';
+}
+
+/**
  * Map a shows.json market/category value to an alias region.
  * 'west-end' / 'off-west-end' → 'london'; 'broadway' / 'off-broadway' → 'nyc'.
  * ABSENT market → null → no region filtering (legacy market-less callers).
@@ -240,6 +351,8 @@ function buildVenueContext(venue, market) {
     const aliasList = entry.aliases.join(', ');
     return `${venue} (${entry.label || 'formerly known as:'} ${aliasList}. ${entry.note})`;
   }
+  const buildingNote = buildParentBuildingNote(venue, market);
+  if (buildingNote) return `${venue} (${buildingNote})`;
   // shows.json can carry the OLD name while reviews use the new one (Rent 2026
   // is filed at the Duke of York's, reviewed at the Tom Stoppard): name the
   // building's other names from the alias side too.
@@ -289,4 +402,8 @@ module.exports = {
   hasAliases,
   buildVenueContext,
   otherVenueNames,
+  PARENT_BUILDINGS,
+  parentBuildingOf,
+  stagesOfBuilding,
+  buildParentBuildingNote,
 };

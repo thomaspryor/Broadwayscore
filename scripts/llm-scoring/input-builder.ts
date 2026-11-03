@@ -19,7 +19,7 @@ const { isOperaShow, getOperaHouse } = require('../lib/opera-prompt-context');
 const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket, getTourPromptContext } = require('../lib/market-label');
 // A renamed house is the same venue (BRO-4956: Rent at the Duke of York's,
 // reviewed as the Tom Stoppard Theatre, was rejected as wrong_production).
-const { otherVenueNames } = require('../lib/venue-aliases');
+const { otherVenueNames, buildParentBuildingNote } = require('../lib/venue-aliases');
 const { isShortPartialReview } = require('../lib/scorable-text');
 const { buildPriorRunsNote } = require('../lib/prior-runs-note');
 const { buildSplitExcerptNote } = require('../lib/split-excerpt-note');
@@ -203,6 +203,10 @@ export function buildScoringInput(review: ReviewInputData): ScoringInput {
       ? ` at ${review.venue}${formerly.length ? ` (same building, also called ${formerly.join(' / ')})` : ''}`
       : '';
     contextParts.push(`Show: ${review.showTitle}${venueInfo} (${marketLabel})`);
+    // A show filed at a stage inside a bigger building (The Maria / Young Vic,
+    // Lyttelton / National Theatre): the critic names the building (BRO-6923).
+    const buildingNote = review.venue && !isTour ? buildParentBuildingNote(review.venue, review.category) : '';
+    if (buildingNote) contextParts.push(`NOTE: ${buildingNote}.`);
     if (!isOpera && isNonMetroMarket(review.category)) {
       contextParts.push(getRegionalPromptContext(review.venue));
     }
