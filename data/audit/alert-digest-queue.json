@@ -319,5 +319,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T13:56:28.916Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-bridge-off-west-end-2026",
+    "title": "1 review(s) for the-bridge-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--82c17cf.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T14:17:47.844Z"
   }
 ]
