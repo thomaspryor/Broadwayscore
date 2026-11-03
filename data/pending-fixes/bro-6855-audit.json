@@ -1,0 +1,123 @@
+{
+  "issueNumber": "bro-6855-audit",
+  "planId": "4cb40f06-2707-4d4a-88b9-36a4d854c1b2",
+  "status": "pending",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6855 LA accuracy audit: correct Stage Raw critic names to the article byline, flag two files that are not reviews of the tracked show.",
+    "steps": [
+      "Apply the review-field-edit actions",
+      "Rebuild reviews so scores reflect the corrections"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-swan-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "G. Bruce Smith",
+        "description": "Article byline reads 'Reviewed by G. Bruce Smith'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heroes-of-the-fourth-turning-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-case-for-the-existence-of-god-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "painted-ponies-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "Mart\u00edn Hern\u00e1ndez",
+        "description": "Article byline reads 'Reviewed by Mart\u00edn Hern\u00e1ndez'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "millennials-are-killing-musicals-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grangeville-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "angry-raucous-and-shamelessly-gorgeous-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pericles-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "brigadoon-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "texas-sodomy-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "F. Kathleen Foley",
+        "description": "Article byline reads 'Reviewed by F. Kathleen Foley'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "begin-again-regional-2026/stage-raw--steven-morris.json",
+        "field": "criticName",
+        "oldValue": "Steven Morris",
+        "newValue": "Keelyn McDermott",
+        "description": "Article byline reads 'Reviewed by Keelyn McDermott'; the stored critic came from the Theatre In LA listing, not the byline (BRO-6855 audit)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rorschach-regional-2026/broadwayworld--aidan-oconnor.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "URL and text review SPARKED: THE VANISHING at Rorschach Theatre in Washington DC, a different show and company than Rorschach at Skylight Theatre, Los Angeles."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heartbreak-house-regional-2026/theatreinla--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is theatreinla.com page navigation and template code, no review of Heartbreak House."
+      }
+    ]
+  }
+}
