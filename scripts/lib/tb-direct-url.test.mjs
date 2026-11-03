@@ -144,3 +144,10 @@ test('resolveTbObIndexUrl needs a critic name and ignores Jr. suffix', async () 
   assert.equal((await resolveTbObIndexUrl({ ...base, criticName: 'Marc Miller Jr.' })).found, true);
   assert.equal((await resolveTbObIndexUrl({ ...base, criticName: 'Ill Mill' })).found, false);
 });
+
+test('buildTbCandidateUrls never repeats a name (all-digit titles give equal camel and lowercase slugs, BRO-6872)', () => {
+  for (const title of ['1776', '1984', 'A Few Good Men', 'Billy Crystal: 860', 'Beaches, A New Musical']) {
+    const urls = buildTbCandidateUrls(title, 2026);
+    assert.equal(new Set(urls).size, urls.length, title);
+  }
+});

@@ -738,6 +738,7 @@ const TB_DIRECT_PROBE_EVERY_MS = 15 * 60 * 1000;
 // TB is read through Browserbase (BRO-6073): navigation plus the Cloudflare challenge wait runs past 45 s; still under
 // the 90 s pass deadline, which caps it either way.
 const TB_FETCH_TIMEOUT_MS = 75000;
+const TB_PROBE_BATCH = 4; // named pages fetched side by side per probe (BRO-6872)
 /**
  * Broadway reviews are also filed as named pages ("/page/world/TheImaginaryInvalid.html") that no index lists on the night,
  * which is how the regular pipeline found The Imaginary Invalid (BRO-6066). Those names are built by tb-direct-url and
@@ -751,6 +752,7 @@ function talkinBroadwayAdapter({
 } = {}) {
   let lastProbeAt = -Infinity;
   let found = null; // the verified named page, once one is found
+  let probeTurn = 0; // which batch of names the next probe fetches, when there are more than TB_PROBE_BATCH
   async function probeNamedPages(show, fetchText) {
     if (found) return [found];
     if (now() - lastProbeAt < directProbeEveryMs) return [];
@@ -759,10 +761,20 @@ function talkinBroadwayAdapter({
     const year = String(show.openingDate || '').slice(0, 4);
     if (!/^\d{4}$/.test(year)) return [];
     let undated = null;
-    for (const url of buildTbCandidateUrls(show.title, year)) {
-      if (/\/index\.html?$/i.test(url)) continue;
-      let html;
-      try { html = await fetchText(url); } catch { continue; } // a missing page is the normal answer before it is filed
+    // Up to TB_PROBE_BATCH names are fetched at once and judged in candidate order. Fetched one by one, a missing page
+    // can take about a minute (the per-fetch timeout while a challenge is pending), so the 90 s pass deadline let only
+    // the first name be tried each probe and a later name could starve for hours (BRO-6872). In one Browserbase session
+    // the extra tabs cost no extra sessions; the cap bounds paid-scraper spend when the Browserbase route is off. Longer
+    // name lists (subtitled or comma titles) are covered over successive probes by rotating the batch.
+    const all = buildTbCandidateUrls(show.title, year).filter((url) => !/\/index\.html?$/i.test(url));
+    const start = all.length > TB_PROBE_BATCH ? (probeTurn * TB_PROBE_BATCH) % all.length : 0;
+    probeTurn++;
+    const picked = new Set(Array.from({ length: Math.min(TB_PROBE_BATCH, all.length) }, (_, k) => all[(start + k) % all.length]));
+    const names = all.filter((url) => picked.has(url)); // judged in the order tb-direct-url ranks them
+    const pages = await Promise.all(names.map((url) => fetchText(url).catch(() => null))); // a missing page is the normal answer before it is filed
+    for (const [i, url] of names.entries()) {
+      const html = pages[i];
+      if (typeof html !== 'string' || !html) continue;
       const verdict = verifyTbPage(html, { showTitle: show.title, openingDate: show.openingDate });
       if (!verdict.ok) continue;
       // TB prints the date in the byline ("Theatre Review by ... - October 22, 2026"), which verifyTbPage reads and the
@@ -1082,7 +1094,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, serpAdapter,
+  nonReviewReason, hasReviewSignal, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, TB_PROBE_BATCH, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

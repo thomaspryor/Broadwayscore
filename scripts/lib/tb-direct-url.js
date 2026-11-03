@@ -50,12 +50,14 @@ function buildTbCandidateUrls(title, year) {
   const lower = toLowerSlug(title);
   const y4 = String(year);
   const y2 = y4.slice(-2);
-  const urls = [
+  // A Set: for an all-digit title ("1776") the camel and lowercase slugs are the same, and a repeated name would be
+  // fetched twice (BRO-6872).
+  const urls = [...new Set([
     `${TB_HOST}/page/world/${camel}${y4}.html`,
     `${TB_HOST}/page/world/${camel}${y2}.html`,
     `${TB_HOST}/page/world/${camel}.html`,
     `${TB_HOST}/page/world/${lower}${y4}.html`,
-  ];
+  ])];
   // Comma-subtitled shows ("Beaches, A New Musical") get indexed by TB under the
   // short title only ("Beaches.html"). See verifyTbPage's short-title fallback for
   // the same guard rationale (Beaches 2026-04-22 opening night).

@@ -767,6 +767,70 @@ test('Talkin\' Broadway: an undated named page does not stop the probe from reac
   assert.ok(out[0].publishDate);
 });
 
+test('Talkin\' Broadway: every candidate name is fetched in the same probe, so a slow miss cannot starve the real page (BRO-6872)', async () => {
+  const byline = '<p>The Play by Some Writer. Directed by Jane Director. Theatre Review by Ann Critic</p>' + '<p>filler text for length. </p>'.repeat(40);
+  const show = { id: 'a-few-good-men-2026', title: 'A Few Good Men', openingDate: '2026-10-29' };
+  const tb = require('../../scripts/lib/tb-direct-url.js');
+  const names = tb.buildTbCandidateUrls(show.title, '2026');
+  const real = 'https://www.talkinbroadway.com/page/world/AFewGoodMen.html';
+  assert.ok(names.includes(real) && names.indexOf(real) > 0);
+  let inFlight = 0; let peak = 0; const asked = [];
+  const fetchText = async (url) => {
+    asked.push(url); inFlight++; peak = Math.max(peak, inFlight);
+    await new Promise((r) => setTimeout(r, 20));
+    inFlight--;
+    if (url === real) return `<html><head><title>A Few Good Men</title></head><body><p>October 29, 2026</p>${byline}</body></html>`;
+    throw new Error('All scraping methods failed');
+  };
+  const a = d.talkinBroadwayAdapter({ indexUrls: [], now: () => T0 });
+  const out = await a.discover({ show, fetchText });
+  assert.deepEqual(out.map((c) => c.url), [real]);
+  assert.equal(peak, names.length, 'every name of a plain title all fit one batch and are fetched together');
+  assert.deepEqual(asked.sort(), [...names].sort());
+});
+
+test('Talkin\' Broadway: a dated earlier name wins even when a dated later name answers first (BRO-6872)', async () => {
+  const byline = '<p>The Play by Some Writer. Directed by Jane Director. Theatre Review by Ann Critic</p>' + '<p>filler text for length. </p>'.repeat(40);
+  const show = { id: 'a-few-good-men-2026', title: 'A Few Good Men', openingDate: '2026-10-29' };
+  const names = require('../../scripts/lib/tb-direct-url.js').buildTbCandidateUrls(show.title, '2026');
+  const [first, , third] = names;
+  const page = `<html><head><title>A Few Good Men</title></head><body><p>October 29, 2026</p>${byline}</body></html>`;
+  const fetchText = async (url) => {
+    if (url === first) { await new Promise((r) => setTimeout(r, 40)); return page; }
+    if (url === third) return page; // answers first
+    throw new Error('All scraping methods failed');
+  };
+  const out = await d.talkinBroadwayAdapter({ indexUrls: [], now: () => T0 }).discover({ show, fetchText });
+  assert.deepEqual(out.map((c) => c.url), [first]);
+});
+
+test('Talkin\' Broadway: a long name list is fetched in capped batches that rotate across probes (BRO-6872)', async () => {
+  const show = { id: 'billy-crystal-860-2026', title: 'Billy Crystal: 860', openingDate: '2026-10-21' };
+  const names = require('../../scripts/lib/tb-direct-url.js').buildTbCandidateUrls(show.title, '2026').filter((u) => !/\/index\.html?$/i.test(u));
+  assert.ok(names.length > d.TB_PROBE_BATCH, 'this title has more names than one batch');
+  let clock = T0; let inFlight = 0; let peak = 0; const asked = [];
+  const fetchText = async (url) => { asked.push(url); inFlight++; peak = Math.max(peak, inFlight); await new Promise((r) => setTimeout(r, 5)); inFlight--; throw new Error('404'); };
+  const a = d.talkinBroadwayAdapter({ indexUrls: [], now: () => clock });
+  const probes = Math.ceil(names.length / d.TB_PROBE_BATCH);
+  for (let i = 0; i < probes; i++) { await a.discover({ show, fetchText }); clock += 16 * 60 * 1000; }
+  assert.equal(peak, d.TB_PROBE_BATCH, 'never more than one batch in flight');
+  assert.deepEqual([...new Set(asked)].sort(), [...names].sort(), 'every name is tried within a few probes');
+});
+
+test('Talkin\' Broadway: a name list that is not a multiple of the batch wraps and still covers every name (BRO-6872)', async () => {
+  const tb = require('../../scripts/lib/tb-direct-url.js');
+  const show = ['9 to 5: The Musical', 'Billy Crystal: 860', 'Beaches, A New Musical', 'Oh, Mary!']
+    .map((title) => ({ id: 'x', title, openingDate: '2026-10-21' }))
+    .find((s) => { const n = tb.buildTbCandidateUrls(s.title, '2026').length; return n > d.TB_PROBE_BATCH && n % d.TB_PROBE_BATCH; });
+  assert.ok(show, 'a title whose name count is not a multiple of the batch');
+  const names = tb.buildTbCandidateUrls(show.title, '2026').filter((u) => !/\/index\.html?$/i.test(u));
+  let clock = T0; const asked = [];
+  const fetchText = async (url) => { asked.push(url); throw new Error('404'); };
+  const a = d.talkinBroadwayAdapter({ indexUrls: [], now: () => clock });
+  for (let i = 0; i < Math.ceil(names.length / d.TB_PROBE_BATCH); i++) { await a.discover({ show, fetchText }); clock += 16 * 60 * 1000; }
+  assert.deepEqual([...new Set(asked)].sort(), [...names].sort());
+});
+
 test('section index: every <article> card on an index page is read, not only the first', async () => {
   const card = (slug, t) => `<article><a href="https://www.theguardian.com/stage/2026/oct/18/${slug}">${t}</a></article>`;
   const html = `<html><body><nav><a href="https://www.theguardian.com/stage/2026/oct/18/nav-other-desert-cities">Other Desert Cities nav</a></nav><main>${card('hamlet-review', 'Hamlet review')}${card('other-desert-cities-review', 'Other Desert Cities review')}</main></body></html>`;
