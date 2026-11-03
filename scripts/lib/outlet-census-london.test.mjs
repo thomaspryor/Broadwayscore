@@ -115,6 +115,29 @@ test('datedSitemapUrls steps months and years from the since date', () => {
   assert.deepEqual(script.datedSitemapUrls('https://x/{yyyy}.xml', 'year', '2012-09-01', '2014-02-01'), ['https://x/2012.xml', 'https://x/2013.xml', 'https://x/2014.xml']);
 });
 
+test('sitemapPeriodDate reads path and query-string periods (BRO-6488)', () => {
+  assert.equal(script.sitemapPeriodDate('https://www.standard.co.uk/sitemaps/sitemap-articles-2019-06.xml'), '2019-06-01');
+  assert.equal(script.sitemapPeriodDate('https://www.express.co.uk/entertainment/201906.xml'), '2019-06-01');
+  assert.equal(script.sitemapPeriodDate('https://inews.co.uk/sitemap.xml?yyyy=2019&mm=06&dd=12'), '2019-06-12');
+  assert.equal(script.sitemapPeriodDate('https://www.independent.co.uk/sitemaps/sitemap-articles-2019-06-12.xml'), '2019-06-12');
+  assert.equal(script.sitemapPeriodDate('https://x/sitemap.xml'), null);
+});
+
+test('a dated-sitemap walk with failed periods is an incomplete enumeration', () => {
+  assert.equal(census.isIncompleteEnumeration(['171 sitemaps from 2012-09-01, 0 without a matching URL, 0 not found (404)', 'dated sitemaps: 3 failed']), true);
+  assert.equal(census.isIncompleteEnumeration(['171 sitemaps from 2012-09-01, 4 without a matching URL, 2 not found (404)']), false);
+});
+
+test('enumerationStatus separates unreadable, incomplete and complete', () => {
+  assert.equal(census.enumerationStatus({ kind: 'unreadable', reason: 'x' }, []), 'unreadable');
+  assert.equal(census.enumerationStatus({ kind: 'sitemap-dated' }, ['dated sitemaps: 2 failed']), 'incomplete');
+  assert.equal(census.enumerationStatus({ kind: 'guardian-api' }, []), 'complete');
+});
+
+test('every unreadable London source says why', () => {
+  for (const [id, s] of Object.entries(LONDON_SOURCES)) if (s.kind === 'unreadable') assert.ok(s.reason && s.reason.length > 10, id);
+});
+
 test('emitted CENSUS-ITEMS lines round-trip through a saved log, chunks and all', () => {
   const payload = { items: Array.from({ length: 4000 }, (_, i) => ({ url: `https://x/${i}-${Math.random()}`, headline: `Review ${i}` })), notes: ['n'] };
   const lines = [];

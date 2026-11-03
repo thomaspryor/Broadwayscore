@@ -358,7 +358,15 @@ Extra pieces:
   `cloud-run-script.js` stdout and bucket locally with
   `--items-in=<file>` against the full review-texts. `--source='<json>'`
   overrides a source definition for one run (regex strings become `i` RegExps)
-  so a sitemap shape can be tried without re-landing.
+  so a sitemap shape can be tried without re-landing. The Guardian API,
+  Telegraph, Standard, Independent and i enumerate this way; the other
+  newspapers are `unreadable` (below).
+- **Enumeration status.** Every report's `source.status` is `complete`,
+  `incomplete` (a fetch failed, a page cap was hit, or `dated sitemaps: N
+  failed`) or `unreadable` (with `source.reason`). A dated sitemap that answers
+  404 counts as "not found", not as a failure. Unreadable reports still record
+  the corpus-side held rows in the window and how many of them the census could
+  not list.
 - **Seasons.** Reports carry a per-season (Sep-Aug) breakdown; `--summary`
   prints the per-outlet, per-season table.
 - **Headline guards (London only).** `titleOnlyInTagline` drops a match whose
@@ -399,6 +407,32 @@ Friend, britishtheatre.com) is mostly real coverage we never ingested;
 British Theatre Guide's undated slug headlines also leave 383 ambiguous rows.
 Catalog gaps are grouped in `catalog-gaps.json`; most have no venue in the
 headline, so "unknown venue" is the largest Off-West End group.
+
+### London newspapers (2026-11-03, CI hand-back, review-texts corpus)
+
+| Outlet | Source | Corpus rows | Enumerated | Held | Held (other URL) | Gap | Misfile | Ambiguous | Catalog gap | Other market | Recall |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| observer | guardian-api | 363 | 2038 | 98 | 102 | 100 | 2 | 24 | 642 | 587 | 0.662 |
+| i-paper | sitemap-dated (daily, from 2016-04) | 326 | 2109 | 11 | 9 | 7 | 0 | 0 | 262 | 181 | 0.741 |
+| independent | sitemap-dated (daily) | 477 | 2489 | 291 | 48 | 93 | 1 | 5 | 731 | 277 | 0.783 |
+| guardian | guardian-api | 1056 | 10100 | 637 | 81 | 54 | 0 | 2 | 3124 | 3866 | 0.93 |
+| telegraph | sitemap (/theatre/, lastmod 2015 on) | 812 | 4187 | 380 | 36 | 27 | 2 | 0 | 480 | 425 | 0.935 |
+| standard | sitemap-dated (monthly) | 855 | 5118 | 506 | 93 | 35 | 2 | 1 | 690 | 87 | 0.942 |
+
+Unreadable for free (corpus held rows in window / not listed): times-uk 877/727,
+sunday-times 299/160 (robots.txt disallows all), financialtimes 531/354
+(opaque uuid sitemaps, /theatre 403), daily-mail 500/297 and mail-on-sunday
+204/43 (two-day news sitemap only; robots and terms forbid scraping),
+express-uk 240/152 (sitemaps 403), the-spectator-uk 275/23 (sectionless
+spectator.com sitemaps, API 401), londontheatre1 413/273 (sgcaptcha),
+broadwayworld 555/462 (Cloudflare; read per show by gather-reviews).
+
+Caveats: Telegraph's theatre sitemap starts in 2015, so earlier Telegraph
+reviews are not listed. Sitemap dates are soft (period or lastmod). The i's
+175 held-unmatched rows are reviews we hold whose slug headline did not match a
+show. The i run came from main's code, which does not split 404s from failed
+fetches; two runs listed the same 2109 URLs. Gaps are listed in each manifest
+and were not ingested.
 
 Shows the census adds through an `add-show` plan are now gathered when the plan is applied
 (BRO-6629): `execute-approved-fix.yml` dispatches `gather-reviews.yml` through
