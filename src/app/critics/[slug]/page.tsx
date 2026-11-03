@@ -5,6 +5,7 @@ import { generateBreadcrumbSchema, generateCriticSchema, generateCriticFAQSchema
 import { criticMarketLabel, showCountPhrase } from '@/lib/critic-market';
 import { isThinCriticPage } from '@/lib/seo-indexability';
 import { getCriticBio } from '@/config/critic-bios';
+import { getPublicCriticProfile } from '@/lib/critic-server';
 import CriticDetailClient from './CriticDetailClient';
 
 export const revalidate = 43200;
@@ -50,6 +51,8 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     { name: critic.name, url: `${BASE_URL}/critics/${params.slug}` },
   ]);
 
+  const profile = await getPublicCriticProfile(params.slug);
+
   const criticSchema = generateCriticSchema({
     name: critic.name,
     slug: critic.slug,
@@ -58,7 +61,7 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
     avgScore: critic.avgScore,
     outlets: critic.outlets,
     marketLabel: criticMarketLabel(critic.reviews),
-    bio: getCriticBio(critic.slug),
+    bio: profile?.bio || getCriticBio(critic.slug),
   });
 
   const faqSchema = generateCriticFAQSchema({
@@ -78,7 +81,7 @@ export default async function CriticDetailPage(props: { params: Promise<{ slug: 
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, criticSchema, faqSchema]) }}
       />
-      <CriticDetailClient critic={critic} />
+      <CriticDetailClient critic={critic} profile={profile} />
     </>
   );
 }

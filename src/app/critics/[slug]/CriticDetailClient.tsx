@@ -6,11 +6,14 @@ import type { CriticProfile, ProfileReview } from '@/lib/data-types';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { getScoreClass, getScoreTextColor, formatDate, ordinalSuffix } from '@/lib/critic-page-utils';
 import { ToggleBar, StatGrid } from '@/components/show-cards';
+import AvatarImage from '@/components/AvatarImage';
 import Breadcrumb from '@/components/Breadcrumb';
 import { getReviewKey } from '../../../../scripts/lib/review-list-key';
 import { nestQuotes } from '@/lib/nest-quotes';
 import { getInitials } from '@/lib/name-initials';
 import { getCriticBio } from '@/config/critic-bios';
+import type { PublicCriticProfile } from '@/lib/critic-server-types';
+import CriticClaimPanel from '@/components/critics/CriticClaimPanel';
 
 type SortMode = 'recent' | 'highest' | 'lowest';
 type MarketFilter = 'all' | 'broadway' | 'west-end' | 'off-west-end' | 'off-broadway';
@@ -99,7 +102,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: ProfileRev
 
 const INITIAL_REVIEWS = 100;
 
-export default function CriticDetailClient({ critic }: { critic: CriticProfile }) {
+export default function CriticDetailClient({ critic, profile }: { critic: CriticProfile; profile?: PublicCriticProfile | null }) {
   const [sortMode, setSortMode] = useState<SortMode>('recent');
   const [showCount, setShowCount] = useState(INITIAL_REVIEWS);
 
@@ -187,13 +190,21 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-12 h-12 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0">
-            <span className="text-white font-bold text-lg">
-              {getInitials(critic.name)}
-            </span>
+          <div className="w-12 h-12 rounded-full bg-surface-overlay flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <AvatarImage
+              src={profile?.photoUrl}
+              className="w-full h-full object-cover"
+              fallback={<span className="text-white font-bold text-lg">{getInitials(critic.name)}</span>}
+            />
           </div>
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">{critic.name}</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2 flex-wrap">
+              {critic.name}
+              {profile && (
+                <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-brand text-gray-900 align-middle">&#10003; Verified critic</span>
+              )}
+            </h1>
+            {profile?.jobTitle && <p className="text-sm text-fg-muted">{profile.jobTitle}</p>}
             <div className="flex items-center gap-2 text-sm text-gray-400">
               {critic.outlets[0] && (
                 <Link href={`/critics/outlets/${critic.reviews.find(r => r.outlet === critic.outlets[0])?.outletSlug || ''}`} className="hover:text-brand transition-colors">
@@ -209,9 +220,24 @@ export default function CriticDetailClient({ critic }: { critic: CriticProfile }
           </div>
         </div>
 
-        {/* Hand-written bio (src/config/critic-bios.ts) */}
-        {getCriticBio(critic.slug) && (
-          <p className="text-fg-muted text-sm mb-4">{getCriticBio(critic.slug)}</p>
+        <CriticClaimPanel
+          slug={critic.slug}
+          name={critic.name}
+          claimed={!!profile}
+          reviewOptions={critic.reviews.map(r => ({ key: `${r.showSlug}-${getReviewKey(r)}`, label: `${r.showTitle} (${r.outlet})` }))}
+        />
+
+        {/* Bio: the critic's own when verified, else the hand-written one (src/config/critic-bios.ts) */}
+        {(profile?.bio || getCriticBio(critic.slug)) && (
+          <p className="text-fg-muted text-sm mb-4">{profile?.bio || getCriticBio(critic.slug)}</p>
+        )}
+
+        {profile && profile.links.length > 0 && (
+          <div className="flex flex-wrap gap-2 mb-4">
+            {profile.links.map(l => (
+              <a key={l.url} href={l.url} target="_blank" rel="noopener noreferrer nofollow ugc" className="inline-flex items-center text-xs px-3 py-1 rounded-full border border-white/10 bg-surface-raised text-white hover:text-brand transition-colors">{l.label}</a>
+            ))}
+          </div>
         )}
 
         {/* All outlets if multi */}
