@@ -62,3 +62,8 @@ test('generic stage names do not match other London venues; note does not list t
   assert.match(n, /other stages: The Clare, Main House\)/);
   assert.match(buildParentBuildingNote('Dorfman (Cottesloe)', 'west-end'), /other stages: Lyttelton Theatre, Olivier Theatre\)/);
 });
+
+test('Other Palace studio does not list itself; National Theatre of Scotland is not the National Theatre', () => {
+  assert.match(buildParentBuildingNote('The Other Palace - Studio', 'off-west-end'), /other stages: The Other Palace Main Auditorium\)/);
+  assert.deepEqual(stagesOfBuilding('National Theatre of Scotland'), []);
+});

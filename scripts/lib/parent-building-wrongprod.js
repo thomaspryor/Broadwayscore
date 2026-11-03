@@ -15,7 +15,7 @@ function _reasonText(d) {
 
 function _mentions(text, name) {
   const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(`(^|[^A-Za-z])${esc}([^A-Za-z]|$)`, 'i').test(text);
+  return new RegExp(`(^|[^A-Za-z])${esc}(?!\\s+of\\s)([^A-Za-z]|$)`, 'i').test(text);
 }
 
 /**

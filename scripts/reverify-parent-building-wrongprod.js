@@ -70,17 +70,22 @@ const ONLY_PARENT = opt('parent');
       });
     } catch (e) { errors++; console.log(`[ERROR] ${c.show.id}/${c.file}: ${e.message}`); continue; }
     const clean = cv && cv.isValid === true && cv.wrongProduction !== true && cv.wrongArticle !== true
-      && cv.isFilmTv !== true && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
+      && cv.isFilmTv !== true && cv.confidence !== 'low' && typeof cv.verifiedBy === 'string' && cv.verifiedBy.startsWith('llm');
     console.log(`[${clean ? 'CLEAR' : 'UPHELD'}] ${c.show.id}/${c.file} (${c.parent}) valid=${cv?.isValid} wp=${cv?.wrongProduction}`);
     if (!clean) { upheld++; continue; }
-    actions.push({
-      type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProduction',
-      oldValue: true, newValue: false,
-      description: `BRO-6923: ${c.show.venue} is a stage inside ${c.parent}; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.`,
-    });
+    const description = `BRO-6923: ${c.show.venue} is a stage inside ${c.parent}; the flag reason named the building. Alias-aware re-verify: valid, not wrong production.`;
+    // The ManualClear marker stops the rebuild's CV pre-pass re-promoting a stale
+    // contentVerification.wrongProduction === true back onto the file.
+    actions.push(
+      { type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProduction', oldValue: true, newValue: false, description },
+      { type: 'review-field-edit', file: `${c.show.id}/${c.file}`, field: 'wrongProductionManualClear', oldValue: null, newValue: true, description },
+    );
   }
-  console.log(`SUMMARY: verified=${n} clear=${actions.length} upheld=${upheld} errors=${errors} tooShort=${short}`);
-  console.log('PLAN-ACTIONS-BEGIN');
-  console.log(JSON.stringify(actions));
-  console.log('PLAN-ACTIONS-END');
+  console.log(`SUMMARY: verified=${n} clear=${actions.length / 2} upheld=${upheld} errors=${errors} tooShort=${short}`);
+  // 24 actions (12 files) per chunk: plans split at 25 and a file's two edits stay together.
+  for (let i = 0, k = 1; i < actions.length; i += 24, k++) {
+    console.log(`PLAN-ACTIONS-BEGIN ${k}`);
+    console.log(JSON.stringify(actions.slice(i, i + 24)));
+    console.log('PLAN-ACTIONS-END');
+  }
 })();

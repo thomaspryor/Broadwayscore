@@ -171,7 +171,7 @@ const VENUE_ALIASES = {
  */
 const PARENT_BUILDINGS = [
   { parent: 'National Theatre', region: 'london',
-    parentNames: ['National Theatre', 'Royal National Theatre', 'the National'],
+    parentNames: ['National Theatre', 'Royal National Theatre'],
     stages: ['Lyttelton Theatre', 'Olivier Theatre', 'Dorfman Theatre'],
     stageKeys: ['lyttelton', 'olivier', 'dorfman', 'cottesloe'] },
   { parent: 'Young Vic', region: 'london',
@@ -211,7 +211,7 @@ function _stageKeyMatches(normVenue, key) {
 
 // "Dorfman (Cottesloe)" must not list "Dorfman Theatre" as an OTHER stage.
 function _stageCore(x) {
-  return _normalize(x).replace(/\b(the|theatre)\b/g, ' ').replace(/[()]/g, ' ').replace(/\s+/g, ' ').trim();
+  return _normalize(x).replace(/\b(the|theatre)\b/g, ' ').replace(/[()-]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
 function _regionOk(entry, market) {
@@ -263,7 +263,7 @@ function buildParentBuildingNote(venue, market) {
   }
   const stages = stagesOfBuilding(venue, market);
   if (stages.length) {
-    return `${venue} is a building with several stages (${stages.join(', ')}); a review naming any one stage is NOT by itself evidence of a different production; still check the title, cast and dates`;
+    return `${venue} is a building with several stages (${stages.join(', ')}); a review naming any one stage is NOT by itself evidence of a different production, but the same title can run on different stages as separate productions, so check the title, cast and dates`;
   }
   return '';
 }

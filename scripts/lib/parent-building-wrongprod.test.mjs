@@ -27,3 +27,6 @@ test('a human-confirmed flag (true) or human-cleared (false) is never a candidat
   assert.equal(pick(girls, flagged('at the Young Vic', { humanReviewedWrongProduction: true })).candidate, false);
   assert.equal(pick(girls, flagged('at the Young Vic', { humanReviewedWrongProduction: false })).candidate, false);
 });
+test('other national companies are not the National Theatre', () => {
+  assert.equal(pick({ venue: 'Lyttelton Theatre', category: 'west-end' }, flagged('National Theatre of Scotland production')).candidate, false);
+});
