@@ -500,7 +500,13 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // /<slug>-review/; britishtheatre /review-...; didtheylikeit /shows/<show>/<review>/).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/event\//i, reason: 'event-listing' },
   { host: /(^|\.)chiswickcalendar\.co\.uk$/, path: /^\/event\//i, reason: 'event-listing' },
-  { host: /(^|\.)britishtheatre\.com$/, path: /^\/shows\//i, reason: 'show-hub' },
+  // BRO-5489: the same hub is served under a locale prefix (/pl/shows/, /de/shows/);
+  // the census cited four of them as Buffy Revamped's missing reviews. Locale
+  // reviews live at /<lang>/posts/ (22 in reviews.json), which this never matches.
+  { host: /(^|\.)britishtheatre\.com$/, path: /^\/(?:[a-z]{2}(?:-[a-z]{2})?\/)?shows\//i, reason: 'show-hub' },
+  // BRO-5489: Sounds & Stage /show/<slug> is a "tickets, cast and reviews" hub;
+  // its one review in reviews.json sits at a root /<slug>-review/ path.
+  { host: /(^|\.)soundsandstage\.com$/, path: /^\/shows?\//i, reason: 'show-hub' },
   { host: /(^|\.)didtheylikeit\.com$/, path: /^\/shows\/[^/]+\/?$/i, reason: 'show-hub' },
   { host: /(^|\.)theatre\.reviews$/, path: /^\/london-productions\//i, reason: 'show-hub' },
   // BRO-5169: theatre.reviews' own per-show roundups (/reviews-roundup/<slug>/)
