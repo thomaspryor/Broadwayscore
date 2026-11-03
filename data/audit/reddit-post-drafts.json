@@ -2,7 +2,7 @@
   "_meta": {
     "postedDetection": "ok",
     "description": "Reddit \"reviews are in\" post drafts for Broadway, WE/OWE/OB openings (BRO-4333). Written by scripts/draft-reddit-opening-posts.js, shown in the opening digest email.",
-    "lastRun": "2026-11-02T18:54:22.531Z"
+    "lastRun": "2026-11-03T01:51:58.012Z"
   },
   "drafts": {
     "delirium-off-broadway-2026": {
@@ -2320,32 +2320,33 @@
       "market": "off-west-end",
       "subreddit": "TheWestEnd",
       "score": 55,
-      "reviewCount": 10,
+      "reviewCount": 11,
       "url": "https://westendscorecard.com/show/the-moth-off-west-end",
-      "notability": 32,
+      "notability": 33,
       "createdAt": "2026-11-01T21:26:51.268Z",
       "status": "ready",
-      "source": "claude-sonnet-5-5",
-      "lintProblems": [],
-      "title": "10 reviews are in for The Moth at the Finborough. 55/100, and most of them are about the length",
-      "body": "I found 10 reviews: 1 rave, 1 positive, 2 mixed, 6 negative.\n\nIt opened at the Finborough Theatre, and it grew out of a short monologue. A lot of the reviews say the stretching shows. John Groves at LondonTheatre1 wrote \"The Moth is just too long and runs out of steam well before the end, even though it is a very worthy attempt at what the playwright sets out to do.\" Which I GET. Several others pointed to repetition and characters who don't really change, though the apartheid-era premise and the tense look at forgiveness and reconciliation still got some credit. The Reviews Hub's Fiona Paterson was one of the more positive ones.\n\nNo audience grade yet, since hardly any users have reviewed it on any of the sites.\n\nhttps://westendscorecard.com/show/the-moth-off-west-end\n\nI haven't seen this one yet, and I'm still undecided on going. Anyone seen it?",
-      "why": "Leads with the review count and score, then the one thing most critics agree on (too long for what began as a monologue), anchored by a Groves quote that is respectful of the attempt, so it reads as a report and not a pan.",
-      "expectedPushback": "Small fringe shows shouldn't be reduced to a number, and one review roundup of a Finborough play is hardly worth a post.",
-      "suggestedReply": "Fair, the number's only a rough summary and I mostly wanted to share what the critics actually wrote. The Finborough does interesting work, so I'm curious what people who've seen it thought.",
-      "personalLines": [
-        "I haven't seen it yet, and I'm still undecided on this one.",
-        "I haven't seen it, and the premise has me curious even with the length complaints.",
-        "I haven't seen it, and I'm not sure this one's for me, but I'd like to hear from anyone who has."
+      "source": "template",
+      "lintProblems": [
+        "body uses a pronoun for a critic (\"The Reviews Hub's Fiona Paterson noted \"In develop\"); use their name or \"the review\""
       ],
-      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=10+reviews+are+in+for+The+Moth+at+the+Finborough.+55%2F100%2C+and+most+of+them+are+about+the+length&text=I+found+10+reviews%3A+1+rave%2C+1+positive%2C+2+mixed%2C+6+negative.%0A%0AIt+opened+at+the+Finborough+Theatre%2C+and+it+grew+out+of+a+short+monologue.+A+lot+of+the+reviews+say+the+stretching+shows.+John+Groves+at+LondonTheatre1+wrote+%22The+Moth+is+just+too+long+and+runs+out+of+steam+well+before+the+end%2C+even+though+it+is+a+very+worthy+attempt+at+what+the+playwright+sets+out+to+do.%22+Which+I+GET.+Several+others+pointed+to+repetition+and+characters+who+don%27t+really+change%2C+though+the+apartheid-era+premise+and+the+tense+look+at+forgiveness+and+reconciliation+still+got+some+credit.+The+Reviews+Hub%27s+Fiona+Paterson+was+one+of+the+more+positive+ones.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-moth-off-west-end%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+still+undecided+on+going.+Anyone+seen+it%3F",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=10+reviews+are+in+for+The+Moth+at+the+Finborough.+55%2F100%2C+and+most+of+them+are+about+the+length&text=I+found+10+reviews%3A+1+rave%2C+1+positive%2C+2+mixed%2C+6+negative.%0A%0AIt+opened+at+the+Finborough+Theatre%2C+and+it+grew+out+of+a+short+monologue.+A+lot+of+the+reviews+say+the+stretching+shows.+John+Groves+at+LondonTheatre1+wrote+%22The+Moth+is+just+too+long+and+runs+out+of+steam+well+before+the+end%2C+even+though+it+is+a+very+worthy+attempt+at+what+the+playwright+sets+out+to+do.%22+Which+I+GET.+Several+others+pointed+to+repetition+and+characters+who+don%27t+really+change%2C+though+the+apartheid-era+premise+and+the+tense+look+at+forgiveness+and+reconciliation+still+got+some+credit.+The+Reviews+Hub%27s+Fiona+Paterson+was+one+of+the+more+positive+ones.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-moth-off-west-end%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+still+undecided+on+going.+Anyone+seen+it%3F",
+      "title": "11 reviews are in for The Moth. 55/100",
+      "body": "It opened at Finborough Theatre, and I found 11 reviews: 1 rave, 2 positive, 2 mixed, 6 negative. That works out to a 55/100.\n\nCritics are divided on this expansion of a COVID monologue into a full-length drama about apartheid and forgiveness, with most finding it bloated and repetitive despite its compelling premise and occasional powerful moments.\n\nNo audience grade yet, since hardly any users have reviewed it on any of the sites.\n\nI haven't seen it yet. Anyone been?\n\nhttps://westendscorecard.com/show/the-moth-off-west-end",
+      "why": "Template fallback: plain roundup with the score, breakdown and critic consensus.",
+      "expectedPushback": "Someone may say numbers can't capture theater.",
+      "suggestedReply": "Totally fair, the number is just a quick way to see where critics landed. Which review do you think got it most right?",
+      "personalLines": [
+        "I haven't seen it yet, and now I really want to.",
+        "Still undecided on going to this one."
+      ],
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=11+reviews+are+in+for+The+Moth.+55%2F100&text=It+opened+at+Finborough+Theatre%2C+and+I+found+11+reviews%3A+1+rave%2C+2+positive%2C+2+mixed%2C+6+negative.+That+works+out+to+a+55%2F100.%0A%0ACritics+are+divided+on+this+expansion+of+a+COVID+monologue+into+a+full-length+drama+about+apartheid+and+forgiveness%2C+with+most+finding+it+bloated+and+repetitive+despite+its+compelling+premise+and+occasional+powerful+moments.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-moth-off-west-end",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=11+reviews+are+in+for+The+Moth.+55%2F100&text=It+opened+at+Finborough+Theatre%2C+and+I+found+11+reviews%3A+1+rave%2C+2+positive%2C+2+mixed%2C+6+negative.+That+works+out+to+a+55%2F100.%0A%0ACritics+are+divided+on+this+expansion+of+a+COVID+monologue+into+a+full-length+drama+about+apartheid+and+forgiveness%2C+with+most+finding+it+bloated+and+repetitive+despite+its+compelling+premise+and+occasional+powerful+moments.%0A%0ANo+audience+grade+yet%2C+since+hardly+any+users+have+reviewed+it+on+any+of+the+sites.%0A%0AI+haven%27t+seen+it+yet.+Anyone+been%3F%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-moth-off-west-end",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-11-02T18:55:32.288Z",
+      "emailedAt": "2026-11-03T01:55:03.826Z",
+      "reminderAt": "2026-11-03T01:55:03.826Z",
       "emailedScore": 55,
-      "emailedReviewCount": 10,
-      "reminderAt": "2026-11-02T18:55:32.288Z",
-      "updateCount": 1
+      "emailedReviewCount": 11,
+      "updateCount": 2
     },
     "medea-off-broadway-2026": {
       "showId": "medea-off-broadway-2026",
@@ -2419,30 +2420,63 @@
       "market": "west-end",
       "subreddit": "TheWestEnd",
       "score": 79,
-      "reviewCount": 11,
+      "reviewCount": 23,
       "url": "https://westendscorecard.com/show/the-lives-of-others-west-end",
-      "notability": 39,
+      "notability": 45,
       "createdAt": "2026-11-02T08:19:28.659Z",
       "status": "ready",
       "source": "claude-sonnet-5-5",
       "lintProblems": [],
-      "title": "Reviews are in for The Lives of Others! 79/100 from 11 critics, and the argument is whether Icke's staging overwhelms the story",
-      "body": "I found 11 reviews: 5 raves, 4 positive, 1 mixed, 1 negative. It opened at the Adelphi with Keira Knightley, Stephen Dillane and Luke Thompson. Audiences are at an A (across Show Score, Mezzanine, Seatplan, Reddit, London Theatre Direct, and London Box Office).\n\nhttps://westendscorecard.com/show/the-lives-of-others-west-end\n\nNick Curtis at the Evening Standard wrote \"Icke stunningly and elegantly opens up the closed worlds of the observer and the observed depicted in the film.\" Meanwhile Clive Davis at The Times said you're \"often left admiring the bravura flourishes rather than being drawn into the story itself.\" The Guardian was the one negative, writing that \"this does not manage the immensely difficult task it sets itself.\"\n\nSo it sounds like a very Icke evening, and whether that works seems to be the whole fight. Which I GET. Anyone seen it?\n\nI haven't seen this one yet, and I'm pretty curious.",
-      "why": "The hook is the real split in the reviews (dazzling staging vs. admiring the flourishes but not feeling the story), backed by a strong audience A and short, plainly attributed quotes.",
-      "expectedPushback": "Eleven reviews is a tiny sample, and a 79 doesn't tell you anything about whether Icke's staging will work for you.",
-      "suggestedReply": "Fair, 11 is a small pile, which is why I quoted the critics instead of leaning on the number. I'm genuinely curious which side of the Icke debate people land on after seeing it.",
+      "title": "Reviews are in for The Lives of Others. 79/100 from 23 critics, with scores ranging from a 99 at WhatsOnStage to a 51 at The Guardian",
+      "body": "It opened at the Adelphi with Keira Knightley, Stephen Dillane and Luke Thompson, and I found 23 reviews: 9 raves, 10 positive, 3 mixed, 1 negative. Audiences are at an A (across Show Score, Mezzanine, Seatplan, Reddit, London Theatre Direct, and London Box Office).\n\nhttps://westendscorecard.com/show/the-lives-of-others-west-end\n\nSarah Crompton at WhatsOnStage gave it a 99 and wrote \"His vision is an immense achievement not least because it is nigh-on perfect in execution.\" Meanwhile Arifa Akbar at The Guardian wrote \"this does not manage the immensely difficult task it sets itself.\" Chris Omaweng at LondonTheatre1 was one of the mixed ones, finding \"The pacing in this play was too slow for my liking.\"\n\nStephen Dillane gets singled out a lot, and a few reviews found it technically brilliant but colder than the film. Which I GET, that sounds like a hard thing to translate to a stage.\n\nI haven't seen this one yet, but it's moved up my list. Anyone seen it?",
+      "why": "It leads with the widest gap in the reviews (a 99 and a 51) so the number has some drama behind it, then lets three short quotes and the audience A carry the post.",
+      "expectedPushback": "Someone will say a 79 average tells you nothing about a play like this and that reducing it to a number is silly.",
+      "suggestedReply": "Fair, I mostly just like reading every review and telling people what I found. The Critic Score is a weighted average of the published critic reviews, and honestly the quotes are the useful part.",
       "personalLines": [
-        "I haven't seen this one yet, and the Icke debate has me curious.",
-        "I haven't seen this one yet, and I'm leaning toward going.",
-        "I haven't seen this one yet, so I remain undecided on going."
+        "I haven't seen this one yet, but it's moved up my list.",
+        "I haven't seen this one yet, and I'm still undecided on going.",
+        "I haven't seen this one yet, and the reviews have made me properly curious."
       ],
-      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+The+Lives+of+Others%21+79%2F100+from+11+critics%2C+and+the+argument+is+whether+Icke%27s+staging+overwhelms+the+story&text=I+found+11+reviews%3A+5+raves%2C+4+positive%2C+1+mixed%2C+1+negative.+It+opened+at+the+Adelphi+with+Keira+Knightley%2C+Stephen+Dillane+and+Luke+Thompson.+Audiences+are+at+an+A+%28across+Show+Score%2C+Mezzanine%2C+Seatplan%2C+Reddit%2C+London+Theatre+Direct%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-lives-of-others-west-end%0A%0ANick+Curtis+at+the+Evening+Standard+wrote+%22Icke+stunningly+and+elegantly+opens+up+the+closed+worlds+of+the+observer+and+the+observed+depicted+in+the+film.%22+Meanwhile+Clive+Davis+at+The+Times+said+you%27re+%22often+left+admiring+the+bravura+flourishes+rather+than+being+drawn+into+the+story+itself.%22+The+Guardian+was+the+one+negative%2C+writing+that+%22this+does+not+manage+the+immensely+difficult+task+it+sets+itself.%22%0A%0ASo+it+sounds+like+a+very+Icke+evening%2C+and+whether+that+works+seems+to+be+the+whole+fight.+Which+I+GET.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+pretty+curious.",
-      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+The+Lives+of+Others%21+79%2F100+from+11+critics%2C+and+the+argument+is+whether+Icke%27s+staging+overwhelms+the+story&text=I+found+11+reviews%3A+5+raves%2C+4+positive%2C+1+mixed%2C+1+negative.+It+opened+at+the+Adelphi+with+Keira+Knightley%2C+Stephen+Dillane+and+Luke+Thompson.+Audiences+are+at+an+A+%28across+Show+Score%2C+Mezzanine%2C+Seatplan%2C+Reddit%2C+London+Theatre+Direct%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-lives-of-others-west-end%0A%0ANick+Curtis+at+the+Evening+Standard+wrote+%22Icke+stunningly+and+elegantly+opens+up+the+closed+worlds+of+the+observer+and+the+observed+depicted+in+the+film.%22+Meanwhile+Clive+Davis+at+The+Times+said+you%27re+%22often+left+admiring+the+bravura+flourishes+rather+than+being+drawn+into+the+story+itself.%22+The+Guardian+was+the+one+negative%2C+writing+that+%22this+does+not+manage+the+immensely+difficult+task+it+sets+itself.%22%0A%0ASo+it+sounds+like+a+very+Icke+evening%2C+and+whether+that+works+seems+to+be+the+whole+fight.+Which+I+GET.+Anyone+seen+it%3F%0A%0AI+haven%27t+seen+this+one+yet%2C+and+I%27m+pretty+curious.",
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+The+Lives+of+Others.+79%2F100+from+23+critics%2C+with+scores+ranging+from+a+99+at+WhatsOnStage+to+a+51+at+The+Guardian&text=It+opened+at+the+Adelphi+with+Keira+Knightley%2C+Stephen+Dillane+and+Luke+Thompson%2C+and+I+found+23+reviews%3A+9+raves%2C+10+positive%2C+3+mixed%2C+1+negative.+Audiences+are+at+an+A+%28across+Show+Score%2C+Mezzanine%2C+Seatplan%2C+Reddit%2C+London+Theatre+Direct%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-lives-of-others-west-end%0A%0ASarah+Crompton+at+WhatsOnStage+gave+it+a+99+and+wrote+%22His+vision+is+an+immense+achievement+not+least+because+it+is+nigh-on+perfect+in+execution.%22+Meanwhile+Arifa+Akbar+at+The+Guardian+wrote+%22this+does+not+manage+the+immensely+difficult+task+it+sets+itself.%22+Chris+Omaweng+at+LondonTheatre1+was+one+of+the+mixed+ones%2C+finding+%22The+pacing+in+this+play+was+too+slow+for+my+liking.%22%0A%0AStephen+Dillane+gets+singled+out+a+lot%2C+and+a+few+reviews+found+it+technically+brilliant+but+colder+than+the+film.+Which+I+GET%2C+that+sounds+like+a+hard+thing+to+translate+to+a+stage.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+it%27s+moved+up+my+list.+Anyone+seen+it%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+The+Lives+of+Others.+79%2F100+from+23+critics%2C+with+scores+ranging+from+a+99+at+WhatsOnStage+to+a+51+at+The+Guardian&text=It+opened+at+the+Adelphi+with+Keira+Knightley%2C+Stephen+Dillane+and+Luke+Thompson%2C+and+I+found+23+reviews%3A+9+raves%2C+10+positive%2C+3+mixed%2C+1+negative.+Audiences+are+at+an+A+%28across+Show+Score%2C+Mezzanine%2C+Seatplan%2C+Reddit%2C+London+Theatre+Direct%2C+and+London+Box+Office%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fthe-lives-of-others-west-end%0A%0ASarah+Crompton+at+WhatsOnStage+gave+it+a+99+and+wrote+%22His+vision+is+an+immense+achievement+not+least+because+it+is+nigh-on+perfect+in+execution.%22+Meanwhile+Arifa+Akbar+at+The+Guardian+wrote+%22this+does+not+manage+the+immensely+difficult+task+it+sets+itself.%22+Chris+Omaweng+at+LondonTheatre1+was+one+of+the+mixed+ones%2C+finding+%22The+pacing+in+this+play+was+too+slow+for+my+liking.%22%0A%0AStephen+Dillane+gets+singled+out+a+lot%2C+and+a+few+reviews+found+it+technically+brilliant+but+colder+than+the+film.+Which+I+GET%2C+that+sounds+like+a+hard+thing+to+translate+to+a+stage.%0A%0AI+haven%27t+seen+this+one+yet%2C+but+it%27s+moved+up+my+list.+Anyone+seen+it%3F",
       "crosspostSubreddit": null,
       "crosspostSubmitUrl": null,
-      "emailedAt": "2026-11-02T08:24:05.137Z",
+      "emailedAt": "2026-11-03T01:55:00.284Z",
       "emailedScore": 79,
-      "emailedReviewCount": 11
+      "emailedReviewCount": 23,
+      "reminderAt": "2026-11-03T01:55:00.284Z",
+      "updateCount": 1
+    },
+    "ceilidh-the-musical-off-west-end-2026": {
+      "showId": "ceilidh-the-musical-off-west-end-2026",
+      "showTitle": "Ceilidh The Musical",
+      "market": "off-west-end",
+      "subreddit": "TheWestEnd",
+      "score": 81,
+      "reviewCount": 18,
+      "url": "https://westendscorecard.com/show/ceilidh-the-musical-off-west-end",
+      "notability": 29,
+      "createdAt": "2026-11-03T01:51:09.487Z",
+      "status": "ready",
+      "source": "claude-sonnet-5-5",
+      "lintProblems": [],
+      "title": "Reviews are in for Ceilidh The Musical! 81/100 from 18 critics and not a single negative",
+      "body": "I found 18 reviews: 10 raves, 7 positive, 1 mixed, zero negative. It opened at Shoreditch Town Hall, and audiences are at an A+ (across Show Score, Mezzanine, and London Theatre Direct).\n\nhttps://westendscorecard.com/show/ceilidh-the-musical-off-west-end\n\nDebbie Gilpin at BroadwayWorld wrote that the hype is real: \"it well and truly lives up to it.\" Steven Wang at The Reviews Hub called it \"a high-quality production worth seeing again and again.\"\n\nThe one mixed review is from Emma John at The Guardian, which opens with \"As an inveterate joiner-inner, I loved the experience\" before wondering whether people who just want to watch get enough from the story. Fair, for a show where you're invited to get up and dance.\n\nI haven't seen this one yet, and am desperate to. Anyone been?",
+      "why": "It leads with a clean 81 and zero negatives, then gives the one mixed review a human angle (the joiner-inner vs. the observer) that ends in a real question to the sub.",
+      "expectedPushback": "Small off-West End shows always get friendly reviews, and this one is basically a dance party, so the score doesn't tell you much.",
+      "suggestedReply": "Ha, fair, I'm definitely the wrong person to judge a dance party. That's why I pulled the one mixed review, since it's the most useful read if you'd rather watch than join in.",
+      "personalLines": [
+        "I haven't seen this one yet, and am desperate to.",
+        "I haven't seen this one yet, but this has moved way up my list.",
+        "I haven't seen this one yet, and I'm still undecided on whether I'd be a joiner-inner or an observer."
+      ],
+      "submitUrl": "https://www.reddit.com/r/TheWestEnd/submit?type=TEXT&title=Reviews+are+in+for+Ceilidh+The+Musical%21+81%2F100+from+18+critics+and+not+a+single+negative&text=I+found+18+reviews%3A+10+raves%2C+7+positive%2C+1+mixed%2C+zero+negative.+It+opened+at+Shoreditch+Town+Hall%2C+and+audiences+are+at+an+A%2B+%28across+Show+Score%2C+Mezzanine%2C+and+London+Theatre+Direct%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fceilidh-the-musical-off-west-end%0A%0ADebbie+Gilpin+at+BroadwayWorld+wrote+that+the+hype+is+real%3A+%22it+well+and+truly+lives+up+to+it.%22+Steven+Wang+at+The+Reviews+Hub+called+it+%22a+high-quality+production+worth+seeing+again+and+again.%22%0A%0AThe+one+mixed+review+is+from+Emma+John+at+The+Guardian%2C+which+opens+with+%22As+an+inveterate+joiner-inner%2C+I+loved+the+experience%22+before+wondering+whether+people+who+just+want+to+watch+get+enough+from+the+story.+Fair%2C+for+a+show+where+you%27re+invited+to+get+up+and+dance.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+am+desperate+to.+Anyone+been%3F",
+      "oldRedditSubmitUrl": "https://old.reddit.com/r/TheWestEnd/submit?selftext=true&title=Reviews+are+in+for+Ceilidh+The+Musical%21+81%2F100+from+18+critics+and+not+a+single+negative&text=I+found+18+reviews%3A+10+raves%2C+7+positive%2C+1+mixed%2C+zero+negative.+It+opened+at+Shoreditch+Town+Hall%2C+and+audiences+are+at+an+A%2B+%28across+Show+Score%2C+Mezzanine%2C+and+London+Theatre+Direct%29.%0A%0Ahttps%3A%2F%2Fwestendscorecard.com%2Fshow%2Fceilidh-the-musical-off-west-end%0A%0ADebbie+Gilpin+at+BroadwayWorld+wrote+that+the+hype+is+real%3A+%22it+well+and+truly+lives+up+to+it.%22+Steven+Wang+at+The+Reviews+Hub+called+it+%22a+high-quality+production+worth+seeing+again+and+again.%22%0A%0AThe+one+mixed+review+is+from+Emma+John+at+The+Guardian%2C+which+opens+with+%22As+an+inveterate+joiner-inner%2C+I+loved+the+experience%22+before+wondering+whether+people+who+just+want+to+watch+get+enough+from+the+story.+Fair%2C+for+a+show+where+you%27re+invited+to+get+up+and+dance.%0A%0AI+haven%27t+seen+this+one+yet%2C+and+am+desperate+to.+Anyone+been%3F",
+      "crosspostSubreddit": null,
+      "crosspostSubmitUrl": null,
+      "emailedAt": "2026-11-03T01:55:07.772Z",
+      "emailedScore": 81,
+      "emailedReviewCount": 18
     }
   }
 }
