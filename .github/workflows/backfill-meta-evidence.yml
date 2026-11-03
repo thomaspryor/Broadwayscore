@@ -126,6 +126,7 @@ jobs:
         with:
           workflow-name: backfill-meta-evidence
 
+      # severity-low-ok: weekly enrichment sweep that only adds evidence to reviews already live; a missed week changes no score and check-cron-health raises a chronic-stale card after 3 days
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

@@ -144,6 +144,7 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
         run: node scripts/run-script-sealed.js
 
+      # severity-low-ok: manual workflow_dispatch only: the person who dispatched it is watching the run, and nothing scheduled or user-facing depends on it (cloud-session helper, the dispatching script waits and prints the result)
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
