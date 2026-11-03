@@ -83,16 +83,19 @@ test('stopDates never uses an en dash', () => {
 
 test('isLetterboxed: wide art between two blurred bands is flagged, a full poster is not', () => {
   const w = 40, h = 60;
-  const img = (bandRows: number) => {
+  const img = (bandRows: number, fill = false) => {
     const g = new Uint8Array(w * h);
     for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
       const inBand = y < bandRows || y >= h - bandRows;
-      // Blurred band: smooth vertical shading. Picture: busy checkerboard.
-      g[y * w + x] = inBand ? 60 + y : ((x + y) % 2 ? 200 : 20);
+      // Blurred band: smooth shading that still varies a lot. Flat fill: one colour. Picture: checkerboard.
+      g[y * w + x] = inBand ? (fill ? 250 : 40 + Math.round(160 * y / h)) : ((x + y) % 2 ? 200 : 20);
     }
     return g;
   };
   assert.equal(isLetterboxed(img(18), w, h), true, 'landscape art: 30% bands');
-  assert.equal(isLetterboxed(img(6), w, h), false, 'square art: thin bands read fine');
+  assert.equal(isLetterboxed(img(10), w, h, true), true, 'regional square art: bands of a sixth still read as blurry');
+  assert.equal(isLetterboxed(img(10, true), w, h, true), true, 'regional composites can be dark and flat; the bands decide');
+  assert.equal(isLetterboxed(img(3), w, h), false, 'a thin plain border is not padding');
   assert.equal(isLetterboxed(img(0), w, h), false, 'a real poster');
+  assert.equal(isLetterboxed(img(18, true), w, h), false, 'plain white top and bottom (Dear Evan Hansen) is design, not padding');
 });

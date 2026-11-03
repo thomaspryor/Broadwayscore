@@ -91,7 +91,7 @@ async function main() {
       if (!fs.existsSync(file)) continue;
       try {
         const { data, info } = await sharp(file).greyscale().raw().toBuffer({ resolveWithObject: true });
-        if (isLetterboxed(new Uint8Array(data.buffer, data.byteOffset, data.length), info.width, info.height)) badPosters.add(p);
+        if (isLetterboxed(new Uint8Array(data.buffer, data.byteOffset, data.length), info.width, info.height, s.cat === 'regional')) badPosters.add(p);
       } catch { /* unreadable image: leave it to the existing checks */ }
     }
   }

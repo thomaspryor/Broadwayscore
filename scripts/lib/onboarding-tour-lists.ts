@@ -200,15 +200,18 @@ export function nationalTopTours(i: Omit<CityListsInput, 'cityName' | 'localSeen
 /**
  * Letterbox check (BRO-6734). Small Chicago art is composed onto a 480x720
  * poster as the art fitted inside, over a blurred copy of itself
- * (scripts/tic-make-images.js). Square art leaves thin blurred bands and reads
- * fine; landscape art (Iceboy) leaves a thin strip of picture between two big
- * blurred bands and looks low-res in a grid. A blurred row has almost no
+ * (scripts/tic-make-images.js). Landscape art (Iceboy) leaves a thin strip of
+ * picture between two big blurred bands; square art leaves bands of about a
+ * sixth of the height, and the independent review still read those as blurry
+ * in a grid, so both are dropped. A blurred row has almost no
  * pixel-to-pixel change, so count such rows from the top and from the bottom:
- * when both bands cover at least LETTERBOX_BAND of the height, drop the poster.
+ * when both bands cover at least LETTERBOX_BAND of the height and are not a flat
+ * fill, drop the poster.
  * `gray` is the full-size poster, one byte per pixel, row by row.
  */
-export const LETTERBOX_BAND = 0.2;
-export function isLetterboxed(gray: Uint8Array, w: number, h: number): boolean {
+export const LETTERBOX_BAND = 0.1;
+export const LETTERBOX_MIN_SD = 8;
+export function isLetterboxed(gray: Uint8Array, w: number, h: number, regional = false): boolean {
   const flat = (y: number) => {
     let sum = 0;
     for (let x = 1; x < w; x++) sum += Math.abs(gray[y * w + x] - gray[y * w + x - 1]);
@@ -218,5 +221,19 @@ export function isLetterboxed(gray: Uint8Array, w: number, h: number): boolean {
   while (top < h && flat(top)) top++;
   let bottom = 0;
   while (bottom < h && flat(h - 1 - bottom)) bottom++;
-  return Math.min(top, bottom) >= LETTERBOX_BAND * h;
+  if (Math.min(top, bottom) < LETTERBOX_BAND * h) return false;
+  // Only regional shows get composed art (tic-make-images.js), and darkened composites can have
+  // little brightness variation left, so for them the bands alone decide.
+  if (regional) return true;
+  // A flat fill (Dear Evan Hansen's white, Tina's black) has smooth rows too, but no picture in
+  // it; a blurred copy of the art still varies in brightness. Measured: padded bands >= 9,
+  // real posters with plain tops and bottoms <= 7.6.
+  const sd = (y0: number, y1: number) => {
+    let sum = 0, sq = 0;
+    const n = (y1 - y0) * w;
+    for (let i = y0 * w; i < y1 * w; i++) { sum += gray[i]; sq += gray[i] * gray[i]; }
+    const mean = sum / n;
+    return Math.sqrt(Math.max(0, sq / n - mean * mean));
+  };
+  return Math.min(sd(0, top), sd(h - bottom, h)) >= LETTERBOX_MIN_SD;
 }
