@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6221-b",
   "planId": "843f14a0-fed2-4073-bb46-50b9d27b553c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T15:03:22.151Z",
   "submitter": {
     "name": null,
@@ -464,5 +464,134 @@
         "description": "shows.json: the-ride-down-mt-morgan-2000.images thumbnail -> null (file missing from public/, BRO-6221)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T16:29:06.266Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sight-unseen-2004"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-man-who-came-to-dinner-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-dinner-party-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-tale-of-the-allergists-wife-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-search-for-signs-of-intelligent-life-in-the-universe-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for seussical-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for jane-eyre-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for a-class-act-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for judgment-at-nuremberg-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-invention-of-love-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-adventures-of-tom-sawyer-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for george-gershwin-alone-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for 42nd-street-2001"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for voices-in-the-dark-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for kat-and-the-kings-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for epic-proportions-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for saturday-night-fever-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for marie-christine-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for swing-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for amadeus-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for waiting-in-the-wings-1999"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for james-joyces-the-dead-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for riverdance-on-broadway-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for aida-2000"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-ride-down-mt-morgan-2000"
+    }
+  ],
+  "executedIn": "ci"
 }
