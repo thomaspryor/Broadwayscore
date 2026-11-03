@@ -22,6 +22,10 @@ if [ -n "$BAD" ]; then
 fi
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
+# Advisory: build artifacts can be swept into an otherwise unrelated commit.
+if [ -f "$REPO_ROOT/scripts/lib/prebuild-outputs.js" ]; then
+  node "$REPO_ROOT/scripts/lib/prebuild-outputs.js" || echo "warning: could not check staged prebuild outputs" >&2
+fi
 if [ -f "$REPO_ROOT/scripts/check-image-aspect.js" ]; then
   node "$REPO_ROOT/scripts/check-image-aspect.js" --staged
   RC=$?

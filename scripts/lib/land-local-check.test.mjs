@@ -135,11 +135,16 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
     if (cmd === 'bash' && args[0] === 'scripts/lib/land-gauntlet.sh') {
       fs.mkdirSync(args[1], { recursive: true });
       fs.writeFileSync(join(args[1], 'meta.json'), '{}');
+      fs.writeFileSync(join(args[1], 'tsc.exit'), '1');
+      fs.writeFileSync(join(args[1], 'tsc.log'), "src/example.ts(2,3): error TS2322: Type 'string' is not assignable to type 'number'.\n");
+      fs.writeFileSync(join(args[1], 'unit-tests-node.exit'), '1');
+      fs.writeFileSync(join(args[1], 'unit-tests-node.log'), 'TAP version 13\n# Subtest: staged output regression\nnot ok 1 - staged output regression\n  ---\n  location: tests/unit/example.test.mjs:3:1\n  failureType: testCodeFailure\n  ...\n');
       t.after(() => rmSync(join(args[1], '..'), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
       return result();
     }
     if (cmd === 'bash') {
       compared = true;
+      messages.push('base run started');
       assert.equal(args.length, 2, 'no --checkout/--return-to: the tree under test is already the base');
       assert.match(opts.cwd, /basewt$/, 'the base gates run inside the throwaway worktree');
       for (const name of ['land-gauntlet.sh', 'tsc-node-options.sh']) {
@@ -148,17 +153,58 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
       }
       return result();
     }
-    if (cmd === 'node' && args[1] === '--red-gates') return result('tsc');
+    if (cmd === 'node' && args[1] === '--red-gates') return result('tsc,unit-tests-node');
     if (cmd === 'node' && args[1] === '--base-dir') return result('no new failures');
     assert.fail(`unexpected command: ${cmd} ${args.join(' ')}`);
   });
-  assert.equal(checker.main(['--gates', 'tsc']), 0);
+  assert.equal(checker.main(['--gates', 'tsc,unit-tests-node']), 0);
   assert.ok(compared, 'the red gate was compared against the base');
+  const beforeBase = messages.slice(0, messages.indexOf('base run started'));
+  assert.ok(beforeBase.some((m) => /tsc.*tsc\.log/.test(m)), 'print the gate log path before the base run');
+  assert.ok(beforeBase.some((m) => m.includes('src/example.ts') && m.includes('TS2322')), 'print the tsc finding before the base run');
+  assert.ok(beforeBase.some((m) => /unit-tests-node.*unit-tests-node\.log/.test(m)), 'print the test gate log path');
+  assert.ok(beforeBase.some((m) => m.includes('staged output regression')), 'print failing test names before the base run');
   assert.equal(gitCalls.filter((a) => a[0] === 'checkout').length, 0, 'this checkout is never switched');
   const add = gitCalls.find((a) => a[0] === 'worktree' && a[1] === 'add');
   assert.deepEqual([add[2], add[add.length - 1]], ['--detach', base]);
   assert.ok(gitCalls.some((a) => a[0] === 'worktree' && a[1] === 'remove'), 'the worktree is removed afterwards');
   assert.ok(messages.some((message) => message.includes('CLEAN, no new failures')));
+});
+
+test('pre-commit warns for staged prebuild outputs without generator changes', () => {
+  const root = mkdtempSync(join(tmpdir(), 'prebuild-warning-'));
+  const repo = new URL('../..', import.meta.url).pathname;
+  const sh = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' });
+  try {
+    sh('init', '-q');
+    fs.mkdirSync(join(root, 'scripts/lib'), { recursive: true });
+    const helper = join(repo, 'scripts/lib/prebuild-outputs.js');
+    if (existsSync(helper)) fs.copyFileSync(helper, join(root, 'scripts/lib/prebuild-outputs.js'));
+    const stage = (file) => {
+      fs.mkdirSync(join(root, file, '..'), { recursive: true });
+      writeFileSync(join(root, file), '{}\n');
+      sh('add', '--', file);
+    };
+    const hook = () => {
+      const r = spawnSync('bash', [join(repo, 'scripts/hooks/pre-commit')], { cwd: root, encoding: 'utf8' });
+      assert.equal(r.status, 0, r.stderr);
+      return r.stdout + r.stderr;
+    };
+    for (const file of ['data/gold-lists-computed.json', 'public/data/mobile-shows.json', 'src/config/outlet-logos-generated.json']) {
+      sh('read-tree', '--empty');
+      stage(file);
+      const output = hook();
+      assert.match(output, /WARNING: staged prebuild outputs/);
+      assert.ok(output.includes(file), file);
+    }
+    stage('docs/example.md');
+    assert.match(hook(), /WARNING: staged prebuild outputs/, 'docs do not suppress the warning');
+    stage('scripts/generate-mobile-data.js');
+    assert.doesNotMatch(hook(), /WARNING: staged prebuild outputs/, 'generator change explains the output');
+    sh('read-tree', '--empty');
+    stage('public/data/research/example.json');
+    assert.doesNotMatch(hook(), /WARNING: staged prebuild outputs/, 'unrelated datasets are not prebuild output');
+  } finally { rmSync(root, { recursive: true, force: true }); }
 });
 
 // BRO-6252: the caller keeps committing while the ~20 min base run is in flight. Real git, no mocks.
