@@ -249,5 +249,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T13:12:47.132Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-verge-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-verge-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-verge-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T13:56:27.652Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:222-a-ghost-story-off-broadway-2026",
+    "title": "Auto-remediation gave up on 222-a-ghost-story-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"222-a-ghost-story-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T13:56:28.916Z"
   }
 ]
