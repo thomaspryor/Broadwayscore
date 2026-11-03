@@ -74,6 +74,7 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
+      # severity-low-ok: weekly bot-country digest, silent on no findings; a missed week only delays a digest line and check-cron-health raises a chronic-stale card after 3 days
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

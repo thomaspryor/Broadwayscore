@@ -319,10 +319,10 @@ function describeQualifyGaps(q) {
   return gaps.join(', ');
 }
 
-function getAudience(audienceBuzz, showId) {
+function getAudience(audienceBuzz, showId, showInfo) {
   const row = audienceBuzz?.shows?.[showId];
   if (!row) return null;
-  const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(row.sources);
+  const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(row.sources, showInfo);
   // Parity with the live site: no audience letter grade below MIN_AUDIENCE_REVIEWS.
   const enoughForGrade = totalReviews >= MIN_AUDIENCE_REVIEWS;
   return {
@@ -349,7 +349,7 @@ function buildRows(shows, reviewMap, audienceBuzz, sentData, importantSet, exclu
       // Same gate as the site badge (deduped scored count, +2 when no T1/T2), BRO-4312.
       const score = displayedCriticScore(reviews, market, s.type);
       const q = scoreQualifies(reviews, market);
-      const audience = getAudience(audienceBuzz, s.id);
+      const audience = getAudience(audienceBuzz, s.id, s);
       const excluded = excludedMap.has(s.id);
       const prediction = excluded
         ? { expected: null, p25: null, p75: null, cohort: null, n: 0 }

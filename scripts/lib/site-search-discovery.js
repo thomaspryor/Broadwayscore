@@ -598,7 +598,9 @@ const SITE_SEARCH_ENDPOINTS = {
     //
     // COVERAGE NOTE: this index is a rolling window of ~30-40 recent reviews, so
     // it does NOT cover older reviews the way the search endpoint did. The
-    // 'telegraph-search' entry below keeps that path alive for backfill.
+    // 'telegraph-search' entry below was meant to keep that backfill path alive but
+    // returns no results on any provider (BRO-6898), so older Telegraph reviews are
+    // only reachable through aggregators or manual ingest.
     // showId → showInfo is needed by the one-word-title disambiguator gate; the
     // dispatcher passes showId as the 4th fetchAndParse arg.
     fetchAndParse: async (showTitle, market, openingDate, showId) => {
@@ -610,7 +612,7 @@ const SITE_SEARCH_ENDPOINTS = {
       return discoverTelegraphReviewUrls(showTitle, fetchSSR, (msg) => console.warn(msg), showInfo);
     },
   },
-  // Telegraph site search — the pre-#720 config, kept so the rolling section
+  // Telegraph site search (DISABLED, see applies below) — the pre-#720 config, kept so the rolling section
   // index above doesn't silently narrow coverage to "recent reviews only"
   // (ship-check finding). requiresJs keeps it in the poller's JS tier, which
   // only fires for outlets still missing after the free SSR pass, so it costs a
@@ -624,6 +626,13 @@ const SITE_SEARCH_ENDPOINTS = {
     linkPattern: /href="(https:\/\/www\.telegraph\.co\.uk\/theatre\/[^"]*)"/gi,
     requiresJs: true,
     outletIdOverride: 'telegraph',
+    // BRO-6898: disabled. Ledger 2026-11-01..03: ScrapingBee returned HTTP 500 on
+    // 626 of 660 telegraph.co.uk renders (3,190 credits). Scrapingdog returns 200
+    // but the byte-identical 152,030-byte "Search the Telegraph" shell for three
+    // different queries (Hamilton, Oedipus, Kiss Me Kate) even with dynamic=true JS rendering, and its only /theatre/ link is
+    // the nav item /theatre/tickets/: the endpoint no longer returns results on either
+    // provider. The 'telegraph' section index above is the working path.
+    applies: () => false,
   },
 
   'lighting-and-sound-america': {

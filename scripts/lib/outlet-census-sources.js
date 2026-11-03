@@ -139,7 +139,6 @@ const SOURCES = {
  * policy), so they run on CI through cloud-run-script with --emit-items; their sitemap shapes
  * were confirmed from there with --probe before an entry left 'unreadable'.
  */
-const ciOnly = (tier, reason = 'site refused from the cloud container; enumerate on CI (--probe first)') => ({ kind: 'unreadable', tier, reason });
 
 const LONDON_SOURCES = {
   // The Content API lists every review the Guardian and Observer ran (section stage, tone/reviews).
@@ -173,17 +172,29 @@ const LONDON_SOURCES = {
   'everything-theatre': wp('https://everything-theatre.co.uk/wp-json/wp/v2/posts', { tier: 3, linkFilter: /review/i, sourceSaysReview: true }),
   'all-that-dazzles-uk': { kind: 'sitemap', tier: 3, url: 'https://www.allthatdazzles.co.uk/blog-posts-sitemap.xml', urlFilter: /review/i, headlineFromSlug: true, sourceSaysReview: true },
   'west-end-best-friend': { kind: 'sitemap', tier: 3, url: 'https://www.westendbestfriend.co.uk/sitemap.xml', urlFilter: /westendbestfriend\.co\.uk\/news\/review-[^/]+$/, headlineFromSlug: true, sourceSaysReview: true },
-  telegraph: ciOnly(1),
-  standard: ciOnly(1),
-  'times-uk': ciOnly(1),
-  'sunday-times': ciOnly(1),
-  financialtimes: ciOnly(1),
-  'daily-mail': ciOnly(1),
-  'mail-on-sunday': ciOnly(1),
-  independent: ciOnly(1),
-  'i-paper': ciOnly(1),
-  'express-uk': ciOnly(3),
-  'the-spectator-uk': ciOnly(2, 'WordPress API needs a login; sitemap_index.xml to probe from CI'),
+  // BRO-6488 round 2 (probed 2026-11-03): the Standard, Independent and i archive sitemaps,
+  // enumerated on CI (the cloud container's egress refuses them). Each is dated by its own period (month or day),
+  // and the slug is the headline, so the slug must say "review" (sourceSaysReview unset).
+  standard: { kind: 'sitemap-dated', tier: 1, template: 'https://www.standard.co.uk/sitemaps/sitemap-articles-{yyyy}-{mm}.xml', step: 'month',
+    urlFilter: /standard\.co\.uk\/(?:(?:culture|go\/london|goingout)\/)?theatre\/[^/?#]+$|standard\.co\.uk\/going-?out\/[^/?#]*(?:theatre|musical)-review[^/?#]*$/, headlineFromSlug: true },
+  independent: { kind: 'sitemap-dated', tier: 1, template: 'https://www.independent.co.uk/sitemaps/sitemap-articles-{yyyy}-{mm}-{dd}.xml', step: 'day', concurrency: 8,
+    urlFilter: /independent\.co\.uk\/(?:arts-entertainment\/theatre-dance\/(?:reviews\/)?[^/?#]+|independentpremium\/culture\/[^/?#]*review[^/?#]*)$/, headlineFromSlug: true },
+  // Daily sitemaps start 2016-04 (the i's site launch); stage reviews sit under /culture/arts/ or bare /culture/.
+  'i-paper': { kind: 'sitemap-dated', tier: 1, template: 'https://inews.co.uk/sitemap.xml?yyyy={yyyy}&mm={mm}&dd={dd}', step: 'day', start: '2016-03-01', concurrency: 8,
+    urlFilter: /inews\.co\.uk\/culture\/(?:arts\/)?[^/?#]*review[^/?#]*$/, headlineFromSlug: true },
+  // Express keeps monthly entertainment sitemaps back to 2012, but they answer HTTP 403 to the
+  // census client from CI and from the cloud container (BRO-6488, 2026-11-03).
+  'express-uk': { ...unreadable('monthly entertainment sitemaps (/entertainment/YYYYMM.xml) answer HTTP 403 to the census client from CI and the cloud container'), tier: 3 },
+  // The theatre section sitemap lists every /theatre/ article (about 4.2k, lastmod back to 2015);
+  // reviews from before the 2015 move to /theatre/ (/culture/theatre/...) are not listed. Read
+  // from CI (the site refuses the cloud container); lastmod is a soft date.
+  telegraph: { kind: 'sitemap', tier: 1, url: 'https://www.telegraph.co.uk/theatre/sitemap.xml', urlFilter: /telegraph\.co\.uk\/theatre\/[^?#]+$/, headlineFromSlug: true },
+  'times-uk': { ...unreadable('robots.txt disallows every path to every agent (User-agent: * / Disallow: /; probed from CI 2026-11-03), so the census does not read thetimes.com'), tier: 1 },
+  'sunday-times': { ...unreadable('robots.txt disallows every path to every agent (User-agent: * / Disallow: /; probed from CI 2026-11-03), so the census does not read thetimes.com'), tier: 1 },
+  financialtimes: { ...unreadable('sitemaps list opaque /content/<uuid> URLs with no section or title (about 1M in window) and the /theatre stream answers HTTP 403'), tier: 1 },
+  'daily-mail': { ...unreadable('only a two-day Google News sitemap (no archive sitemap), and robots.txt and the terms forbid automated scraping (probed from CI 2026-11-03)'), tier: 1 },
+  'mail-on-sunday': { ...unreadable('only a two-day Google News sitemap (no archive sitemap), and robots.txt and the terms forbid automated scraping (probed from CI 2026-11-03)'), tier: 1 },
+  'the-spectator-uk': unreadable('spectator.co.uk now redirects to spectator.com: post sitemaps list about 150k /article/<slug>/ URLs with no section, the theatre critics list is rendered by script, and the WordPress API answers HTTP 401'),
   londontheatre1: unreadable('site answers an sgcaptcha 202 challenge to the census client'),
   broadwayworld: unreadable('Cloudflare challenge; the BWW reviews pages are read per show by gather-reviews instead'),
 };

@@ -1,0 +1,468 @@
+{
+  "issueNumber": "bro-6221-g",
+  "planId": "a0ca5479-920c-4bfd-a41b-fa6d0bb826e1",
+  "status": "pending",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 7 of 9)",
+    "steps": [
+      "shows.json: a-texas-trilogy-the-last-meeting-of-the-knights-of-the-white-magnolia-1976.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: oh-calcutta-1976.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: porgy-and-bess-1976.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-robber-bridegroom-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: wheelbarrow-closers-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: best-friend-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: poor-murderer-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-innocents-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-eccentricities-of-a-nightingale-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: comedians-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: herzl-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: music-is-1976.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: something-old-something-new-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-trip-back-down-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: dirty-linen-and-newfoundland-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: otherwise-engaged-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: a-party-with-betty-comden-and-adolph-green-1977.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: caesar-and-cleopatra-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: unexpected-guests-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: ladies-at-the-alamo-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: i-love-my-wife-1977.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: side-by-side-by-sondheim-1977.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-basic-training-of-pavlo-hummel-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: happy-end-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: vieux-carre-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-texas-trilogy-the-last-meeting-of-the-knights-of-the-white-magnolia-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-texas-trilogy-the-last-meeting-of-the-knights-of-the-white-magnolia-1976/thumbnail.jpg",
+          "poster": "/images/shows/a-texas-trilogy-the-last-meeting-of-the-knights-of-the-white-magnolia-1976/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-texas-trilogy-the-last-meeting-of-the-knights-of-the-white-magnolia-1976.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "oh-calcutta-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/oh-calcutta-1976/thumbnail.jpg",
+          "poster": "/images/shows/oh-calcutta-1976/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: oh-calcutta-1976.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "porgy-and-bess-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/porgy-and-bess-1976/thumbnail.jpg",
+          "poster": "/images/shows/porgy-and-bess-1976/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: porgy-and-bess-1976.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-robber-bridegroom-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-robber-bridegroom-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-robber-bridegroom-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wheelbarrow-closers-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wheelbarrow-closers-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: wheelbarrow-closers-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "best-friend-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/best-friend-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: best-friend-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "poor-murderer-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/poor-murderer-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: poor-murderer-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-innocents-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-innocents-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-innocents-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-eccentricities-of-a-nightingale-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-eccentricities-of-a-nightingale-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-eccentricities-of-a-nightingale-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "comedians-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/comedians-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: comedians-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "herzl-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/herzl-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: herzl-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "music-is-1976",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/music-is-1976/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: music-is-1976.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "something-old-something-new-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/something-old-something-new-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: something-old-something-new-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-trip-back-down-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-trip-back-down-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-trip-back-down-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dirty-linen-and-newfoundland-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/dirty-linen-and-newfoundland-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: dirty-linen-and-newfoundland-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "otherwise-engaged-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/otherwise-engaged-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: otherwise-engaged-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-party-with-betty-comden-and-adolph-green-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/a-party-with-betty-comden-and-adolph-green-1977/thumbnail.jpg",
+          "poster": "/images/shows/a-party-with-betty-comden-and-adolph-green-1977/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: a-party-with-betty-comden-and-adolph-green-1977.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "caesar-and-cleopatra-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/caesar-and-cleopatra-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: caesar-and-cleopatra-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unexpected-guests-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/unexpected-guests-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: unexpected-guests-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ladies-at-the-alamo-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ladies-at-the-alamo-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: ladies-at-the-alamo-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "i-love-my-wife-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/i-love-my-wife-1977/thumbnail.jpg",
+          "poster": "/images/shows/i-love-my-wife-1977/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: i-love-my-wife-1977.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "side-by-side-by-sondheim-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/side-by-side-by-sondheim-1977/thumbnail.jpg",
+          "poster": "/images/shows/side-by-side-by-sondheim-1977/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: side-by-side-by-sondheim-1977.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-basic-training-of-pavlo-hummel-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-basic-training-of-pavlo-hummel-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-basic-training-of-pavlo-hummel-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "happy-end-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/happy-end-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: happy-end-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "vieux-carre-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/vieux-carre-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: vieux-carre-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  }
+}

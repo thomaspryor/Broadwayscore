@@ -165,6 +165,7 @@ jobs:
             echo "No ledger changes to commit."
           fi
 
+      # severity-low-ok: per-push process detector; a failure leaves one sha unevaluated, the next push to main re-runs it, and the landings ledger keeps the audit trail
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

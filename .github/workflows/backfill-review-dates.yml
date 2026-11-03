@@ -180,6 +180,7 @@ jobs:
         with:
           workflow-name: backfill-review-dates
 
+      # severity-low-ok: daily date recheck of reviews already live; a missed day leaves yesterday's dates in place and check-cron-health raises a chronic-stale card after 3 days
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

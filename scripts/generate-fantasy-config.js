@@ -215,7 +215,7 @@ const MIN_AUDIENCE_REVIEWS = require('../src/config/audience-grade.json').fullCo
 function getAudienceGrade(showId) {
   const data = audienceData[showId];
   if (!data || !data.sources) return null;
-  const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(data.sources);
+  const totalReviews = require('./lib/audience-review-count').countVisibleAudienceReviews(data.sources, showById.get(showId));
   if (totalReviews < MIN_AUDIENCE_REVIEWS) return null;
   return gradeFromAudienceScore(data.combinedScore);
 }

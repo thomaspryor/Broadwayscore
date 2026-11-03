@@ -81,3 +81,47 @@ test('a repaired baseline pointer stops producing warnings', () => {
   const id = 'the-ford-hill-project-off-broadway-2026';
   assert.deepEqual(findImagePointerProblems([{ id, images: { hero: poster } }], options), []);
 });
+
+// BRO-6221: 272 thumbnail/poster refs on closed shows pointed at files never in public/.
+const { findDanglingLocalImageRefs, danglingImageNullingActions } = require('./image-pointers');
+
+test('dangling refs: missing local thumbnail/poster/hero are listed; present files, query strings, null and remote pass', () => {
+  const shows = [
+    { id: 'show', images: { thumbnail: `${poster}?v=abc`, poster, hero: null } },
+    { id: 'gone', images: { thumbnail: '/images/shows/gone/thumbnail.jpg', poster: '/images/shows/gone/poster.jpg', hero: 'https://images.ctfassets.net/our-space/h.jpg' } },
+    { id: 'dir', images: { thumbnail: '/images/shows/show' } },
+    { id: 'bad', images: { poster: '/images/%zz.jpg' } },
+    { id: 'none' },
+  ];
+  assert.deepEqual(findDanglingLocalImageRefs(shows, { publicDir }), [
+    { id: 'gone', key: 'thumbnail', value: '/images/shows/gone/thumbnail.jpg' },
+    { id: 'gone', key: 'poster', value: '/images/shows/gone/poster.jpg' },
+    { id: 'dir', key: 'thumbnail', value: '/images/shows/show' },
+    { id: 'bad', key: 'poster', value: '/images/%zz.jpg' },
+  ]);
+});
+
+test('nulling actions: one compare-and-set images edit per show, only dangling keys nulled, input unchanged', () => {
+  const shows = [
+    { id: 'gone', images: { thumbnail: '/images/shows/gone/thumbnail.jpg', poster: '/images/shows/gone/poster.jpg', hero: '/images/shows/show/poster.jpg' } },
+    { id: 'show', images: { poster } },
+  ];
+  const before = JSON.stringify(shows);
+  const actions = danglingImageNullingActions(shows, findDanglingLocalImageRefs(shows, { publicDir }));
+  assert.equal(actions.length, 1);
+  assert.equal(actions[0].showId, 'gone');
+  assert.equal(actions[0].field, 'images');
+  assert.deepEqual(actions[0].oldValue, shows[0].images);
+  assert.deepEqual(actions[0].newValue, { thumbnail: null, poster: null, hero: '/images/shows/show/poster.jpg' });
+  assert.equal(JSON.stringify(shows), before);
+});
+
+test('the plan executor accepts the generated nulling edit (data-edit-action images rules)', () => {
+  const { applyDataEdit } = require('./data-edit-action');
+  const shows = [{ id: 'gone', images: { thumbnail: '/images/shows/gone/thumbnail.jpg', poster: null, hero: null } }];
+  const [action] = danglingImageNullingActions(shows, findDanglingLocalImageRefs(shows, { publicDir }));
+  const data = { shows: JSON.parse(JSON.stringify(shows)) };
+  const res = applyDataEdit(data, action, { root: path.dirname(publicDir) });
+  assert.equal(res.ok, true, res.reason);
+  assert.deepEqual(data.shows[0].images, { thumbnail: null, poster: null, hero: null });
+});

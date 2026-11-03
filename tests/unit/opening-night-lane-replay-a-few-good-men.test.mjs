@@ -21,6 +21,7 @@ const require = createRequire(import.meta.url);
 const {
   d, inline, SHOW, NIGHT, T0, SITE, U, a, BWW_RR, PODCAST, quote, bwwPage, NYT_FEED, ALL_FEEDS, TEASER, FULL, nightFetch, replay,
 } = require('../../scripts/lib/lane-recorded-nights/a-few-good-men-2026.js');
+const { LANE_FEEDS } = require('../../scripts/lib/opening-night-lane/lane-sources.js');
 const has = (r, k) => r.scored.has(d.canonicalUrl(U[k]));
 
 test('replay of 2026-10-29: the lane scores all 22 published reviews, Talkin\' Broadway through Browserbase (BRO-6073)', async () => {
@@ -87,14 +88,15 @@ test('New York Theater comes from its own feed when no BWW roundup is found all 
   assert.ok(!has(off, 'nytheater'), 'with neither source it is not found: the feed is what finds it');
 });
 
-test('the lane reads the regular pipeline\'s feed list by default, every feed within two passes despite the per-pass cap', async () => {
+test('the lane reads the regular pipeline\'s feed list plus its own direct-only list, every feed within ceil(n / 24) passes', async () => {
   const feeds = d.defaultLaneFeeds(SHOW);
   assert.ok(feeds.some((f) => f.url === NYT_FEED));
-  assert.ok(feeds.every((f) => ALL_FEEDS.some((x) => x.url === f.url)), 'no second list');
+  // BRO-6872: on-time outlets the regular list lacks come from lane-sources.js LANE_FEEDS, fetched direct only.
+  assert.ok(feeds.every((f) => ALL_FEEDS.some((x) => x.url === f.url) || (f.directOnly && LANE_FEEDS.some((x) => x.url === f.url))));
   assert.ok(!feeds.some((f) => /whatsonstage|standard\.co\.uk|theatreweekly/.test(f.url)), 'West End feeds are not read for a Broadway show');
   const asked = new Set();
   const adapter = d.rssAdapter();
-  for (let i = 0; i < 2; i++) await adapter.discover({ show: SHOW, fetchText: async (u) => { asked.add(u); return '<rss></rss>'; } });
+  for (let i = 0; i < Math.ceil(feeds.length / 24); i++) await adapter.discover({ show: SHOW, fetchText: async (u) => { asked.add(u); return '<rss></rss>'; } });
   assert.deepEqual([...asked].sort(), feeds.map((f) => f.url).sort());
 });
 

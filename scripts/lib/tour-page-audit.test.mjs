@@ -128,3 +128,67 @@ test('poster-missing: parentless tour whose art search found nothing warns, anyt
   assert.deepEqual(level({ artSearchedNone: true }), ['warn', 'poster-unfindable']);
   assert.deepEqual(level({ artSearchedNone: true, parent: { id: 'x-2020', title: 'X', category: 'broadway' } }), ['error', 'poster-missing']);
 });
+
+// BRO-6728: city hubs (BRO-6517) list the metro's own productions under the
+// tour stops. 62 city-row-unknown-show errors were those rows, not bad data.
+const hubHtml = rows => `<html><head><meta name="robots" content="index"></head><body><h1>Chicago Theater</h1>${
+  Object.entries(rows).map(([sec, lis]) => `<section aria-labelledby="tc-${sec}"><ul>${lis.map(([when, href]) => `<li><p>${when} · V</p><a href="/show/${href}">x</a></li>`).join('')}</ul></section>`).join('')
+}</body></html>`;
+const hubCase = (rows, { hub = { name: 'Chicago, IL' }, localShows } = {}) => {
+  const { checkCityPage, parseCityPage } = require('./tour-page-audit.js');
+  const tours = [{ id: 't-tour-2026', title: 'T', status: 'open' }];
+  const schedules = { 't-tour-2026': { stops: [{ city: 'Chicago, IL', venue: 'V', start: '2026-10-01', end: '2026-11-30' }] } };
+  const expected = { slug: 'chicago-il', city: 'Chicago, IL', stops: schedules['t-tour-2026'].stops.map(s => ({ ...s, showId: 't-tour-2026' })), indexed: true, hub };
+  return checkCityPage({ url: '/tours/chicago-il', page: parseCityPage(hubHtml(rows)), expected, tours, schedules, tickets: {}, todays: ['2026-11-02', '2026-11-03'], inSitemap: true, localShows })
+    .filter(f => /^city-row-/.test(f.code)).map(f => `${f.code} ${f.message.split(/[,"]/)[0].trim()}`);
+};
+const locals = [
+  { id: 'mud-row-regional-2026', slug: 'mud-row', category: 'regional', city: 'chicago-il', status: 'open', openingDate: '2026-10-01' },
+  { id: 'old-regional-2025', category: 'regional', city: 'chicago-il', status: 'closed', openingDate: '2025-01-01', closingDate: '2025-02-01' },
+  { id: 'soon-regional-2027', category: 'regional', city: 'chicago-il', status: 'upcoming', openingDate: '2027-01-01' },
+  { id: 'dc-play-regional-2026', category: 'regional', city: 'washington-dc', status: 'open' },
+];
+
+test('hub rows for the city\'s own productions pass; other rows still error (BRO-6728)', () => {
+  const rows = { now: [['Oct 1–Nov 30', 't-tour-2026'], ['Oct 1, 2026', 'mud-row'], ['x', 'dc-play-regional-2026'], ['x', 'ghost-2026']], ahead: [['x', 'soon-regional-2027']], past: [['x', 'old-regional-2025']] };
+  assert.deepEqual(hubCase(rows, { localShows: locals }), [
+    'city-row-wrong-city row links /show/dc-play-regional-2026',
+    'city-row-unknown-show row links /show/ghost-2026',
+  ]);
+  assert.equal(hubCase(rows).filter(c => c.startsWith('city-row-unknown-show')).length, 5, 'without localShows every local row is unknown');
+});
+
+test('hub local rows are checked for their section and the hub start date (BRO-6728)', () => {
+  const rows = { now: [['x', 'old-regional-2025']], past: [['x', 'mud-row'], ['x', 'soon-regional-2027']] };
+  assert.deepEqual(hubCase(rows, { localShows: locals }), [
+    'city-row-section old-regional-2025 is under',
+    'city-row-section mud-row-regional-2026 is under',
+    'city-row-section soon-regional-2027 is under',
+  ]);
+  assert.deepEqual(hubCase({ past: [['x', 'old-regional-2025']] }, { localShows: locals, hub: { name: 'Chicago, IL', since: '2026-05-01' } }),
+    ['city-row-local-hidden old-regional-2025 closed before the hub\'s 2026-05-01 start but is listed']);
+});
+
+test('local rows on a non-hub city page are an error (BRO-6728)', () => {
+  assert.deepEqual(hubCase({ now: [['x', 'mud-row']] }, { localShows: locals, hub: null }),
+    ['city-row-local-not-hub row links /show/mud-row']);
+});
+
+test('withHubs adds every launched hub as an indexed page, whatever its tour count (BRO-6728)', () => {
+  const { withHubs } = require('./tour-page-audit.js');
+  const expected = new Map([['ames-ia', { slug: 'ames-ia', city: 'Ames, IA', stops: [1], indexed: false }], ['chicago-il', { slug: 'chicago-il', city: 'Chicago, IL', stops: [2], indexed: false }]]);
+  const out = withHubs(expected, { 'chicago-il': { name: 'Chicago, IL' }, 'washington-dc': { name: 'Washington, DC', since: '2026-05-01' } });
+  assert.deepEqual([...out.keys()], ['ames-ia', 'chicago-il', 'washington-dc']);
+  assert.equal(out.get('ames-ia').indexed, false);
+  assert.equal(out.get('ames-ia').hub, undefined);
+  assert.deepEqual([out.get('chicago-il').indexed, out.get('chicago-il').stops], [true, [2]]);
+  assert.deepEqual([out.get('washington-dc').indexed, out.get('washington-dc').stops, out.get('washington-dc').hub.since], [true, [], '2026-05-01']);
+  assert.equal(expected.get('chicago-il').indexed, false, 'input untouched');
+});
+
+test('audit script passes regional shows and launched hubs to the city checks (BRO-6728)', () => {
+  const src = readFileSync(new URL('../audit-tour-pages.js', import.meta.url), 'utf8');
+  assert.match(src, /A\.checkCityPage\(\{[\s\S]*?\blocalShows\b/);
+  assert.match(src, /A\.withHubs\(expected, hubs\)/);
+  assert.match(src, /pool\(Array\.from\(pagesToCheck\.values\(\)\)/);
+});

@@ -425,6 +425,8 @@ export interface AudienceBuzzSource {
 }
 
 export interface AudienceBuzzData {
+  /** Attached by data-audience so review gates share scoring's show context. */
+  showInfo?: { category?: string; status?: string; closingDate?: string | null };
   title: string;
   designation: AudienceBuzzDesignation;
   combinedScore: number;

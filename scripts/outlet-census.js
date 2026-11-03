@@ -193,6 +193,19 @@ async function fetchSitemapUrls(url, urlFilter, opts = {}) {
   return parseSitemapXml(body, opts.since ? new Date(opts.since) : new Date(0), urlFilter);
 }
 
+/**
+ * PURE. The period a dated sitemap URL covers, as YYYY-MM-DD (month sitemaps the 1st):
+ * path or query digits, so "sitemap-articles-2019-06.xml", "201906.xml" and
+ * "sitemap.xml?yyyy=2019&mm=06&dd=12" all read. Null when the URL names no year.
+ */
+function sitemapPeriodDate(u) {
+  const m = /(?:19|20)(\d{2})\D{0,4}(\d{2})?(?:\D{0,4}(\d{2}))?/.exec(String(u).replace(/^https?:\/\/[^/]+/, ''));
+  if (!m) return null;
+  const mm = m[2] && Number(m[2]) >= 1 && Number(m[2]) <= 12 ? m[2] : '01';
+  const dd = m[2] && m[3] && Number(m[3]) >= 1 && Number(m[3]) <= 31 ? m[3] : '01';
+  return `${m[0].slice(0, 4)}-${mm}-${dd}`;
+}
+
 /** {yyyy} {mm} {dd} in a sitemap URL template, stepped by year, month or day from since. */
 function datedSitemapUrls(template, step, since, until) {
   const out = [];
@@ -226,18 +239,32 @@ async function enumerateSitemap(src, since) {
     return { items: items.filter((i) => !seen.has(i.url) && seen.add(i.url)), notes };
   } else if (src.kind === 'sitemap-dated') {
     const items = [];
-    const maps = datedSitemapUrls(src.template, src.step || 'month', since, src.until);
-    let empty = 0;
+    // start: the first period the outlet publishes a sitemap for (the i's begin 2016-04);
+    // earlier periods would only 404.
+    const from = src.start && src.start > since ? src.start : since;
+    const maps = datedSitemapUrls(src.template, src.step || 'month', from, src.until);
+    let empty = 0; let missing = 0; let failed = 0;
     await pool(maps, src.concurrency || 4, async (u) => {
-      try {
-        const got = await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter });
-        if (!got.length) empty++;
-        // The sitemap's own period stands in for the date until page meta replaces it.
-        const period = /(\d{4})[-/]?(\d{2})?[-/]?(\d{2})?/.exec(u.replace(/^https?:\/\/[^/]+/, '')) || [];
-        for (const g of got) items.push({ url: g.url, lastmod: g.publishDate || null, sitemap: u, periodDate: period[1] ? `${period[1]}-${period[2] || '01'}-${period[3] || '01'}` : null });
-      } catch (e) { empty++; if (notes.length < 30) notes.push(`${u}: ${e.message}`); }
+      for (let attempt = 1; attempt <= 3; attempt++) {
+        try {
+          const got = await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter });
+          if (!got.length) empty++;
+          // The sitemap's own period stands in for the date until page meta replaces it.
+          const periodDate = sitemapPeriodDate(u);
+          for (const g of got) items.push({ url: g.url, lastmod: g.publishDate || null, sitemap: u, periodDate });
+          return;
+        } catch (e) {
+          // A 404 is an answer (no sitemap for that period); anything else is retried, then
+          // counted as a failure that marks the enumeration incomplete (BRO-6488).
+          const status = Number((/HTTP (\d{3})\b/.exec(e.message) || [])[1]) || 0;
+          if (status === 404) { missing++; return; }
+          if (attempt < 3 && census.isTransientFetch(status, status ? null : e)) { await new Promise((ok) => setTimeout(ok, 2000 * attempt)); continue; }
+          failed++; if (notes.length < 30) notes.push(`${u}: ${e.message}`); return;
+        }
+      }
     });
-    notes.push(`${maps.length} sitemaps, ${empty} empty or failed`);
+    notes.push(`${maps.length} sitemaps from ${from}, ${empty} without a matching URL, ${missing} not found (404)`);
+    if (failed) notes.push(`dated sitemaps: ${failed} failed`);
     const seen = new Set();
     return { items: items.filter((i) => !seen.has(i.url) && seen.add(i.url)), notes };
   } else {
@@ -469,6 +496,9 @@ async function runOutlet(outletId, o, shared) {
   const bulkDays = census.bulkLastmodDays(enumerated.items);
   if (bulkDays.size) console.log(`  lastmod ignored on bulk re-touch day(s) ${[...bulkDays].join(', ')}`);
   for (const i of enumerated.items) {
+    // Re-read the period from the sitemap URL: hand-backs from older code dated query-string
+    // sitemaps (the i's ?yyyy=&mm=&dd=) to January 1st.
+    if (i.sitemap) i.periodDate = sitemapPeriodDate(i.sitemap) || i.periodDate;
     if (i.lastmod && bulkDays.has(String(i.lastmod).slice(0, 10))) i.lastmod = null;
     if (!i.headline && (src.headlineFromSlug || src.needsMeta)) Object.assign(i, { headline: census.slugHeadline(i.url), headlineFromSlug: true });
     if (!i.publishDate && (i.periodDate || i.lastmod)) Object.assign(i, { publishDate: i.periodDate || String(i.lastmod).slice(0, 10), dateSoft: true });
@@ -523,7 +553,10 @@ async function runOutlet(outletId, o, shared) {
     market: o.market,
     generatedAt: new Date().toISOString(),
     since: o.since,
-    source: { kind: src.kind, notes: enumerated.notes, incomplete: census.isIncompleteEnumeration(enumerated.notes), enumerated: enumerated.items.length, inWindow: items.length, undated, meta: enumerated.meta || null },
+    // status: 'unreadable' (no listing read: zero counts mean nothing), 'incomplete' (a walk stopped
+    // part way) or 'complete'. Consumers must not read an unreadable outlet's empty buckets as full coverage.
+    source: { kind: src.kind, status: census.enumerationStatus(src, enumerated.notes), reason: src.kind === 'unreadable' ? src.reason : undefined,
+      notes: enumerated.notes, incomplete: census.isIncompleteEnumeration(enumerated.notes), enumerated: enumerated.items.length, inWindow: items.length, undated, meta: enumerated.meta || null },
     corpus: shared.corpus.kind,
     summary,
     seasons,
@@ -670,4 +703,4 @@ async function main() {
 
 if (require.main === module) main().then((c) => process.exit(c), (e) => { console.error(e); process.exit(1); });
 
-module.exports = { parseArgs, readEmittedItems, emitItems, datedSitemapUrls, cdxItems };
+module.exports = { parseArgs, readEmittedItems, emitItems, datedSitemapUrls, sitemapPeriodDate, cdxItems };

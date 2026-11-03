@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Metadata } from 'next';
 import { getAllShows } from '@/lib/data-core';
-import { getAudienceBuzz, getAudienceBuzzLastUpdated, getAudienceGrade } from '@/lib/data-audience';
+import { getAudienceBuzz, getAudienceBuzzLastUpdated, getTotalAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
 import { generateBreadcrumbSchema, marketAlternates, BASE_URL, WEST_END_OG_IMAGE } from '@/lib/seo';
 import { AudienceBuzzTable } from '@/components/SortableAudienceBuzzTable';
 import { featureFlags } from '@/config/feature-flags';
@@ -57,7 +57,7 @@ export default function WestEndAudienceBuzzPage() {
     }))
     .filter(item => {
       if (!item.buzz || item.buzz.combinedScore <= 0) return false;
-      const total = Object.values(item.buzz.sources || {}).reduce((sum, s) => sum + (s?.reviewCount || 0), 0);
+      const total = getTotalAudienceReviews(item.buzz, item.show);
       return total >= MIN_WE_AUDIENCE_REVIEWS;
     })
     .sort((a, b) => (b.buzz?.combinedScore || 0) - (a.buzz?.combinedScore || 0));
@@ -71,7 +71,7 @@ export default function WestEndAudienceBuzzPage() {
 
   const totalReviews = showsWithBuzz.reduce((sum, item) => {
     if (!item.buzz) return sum;
-    return sum + Object.values(item.buzz.sources || {}).reduce((s, src) => s + (src?.reviewCount || 0), 0);
+    return sum + getTotalAudienceReviews(item.buzz, item.show);
   }, 0);
 
   const breadcrumbSchema = generateBreadcrumbSchema([

@@ -88,7 +88,10 @@ function isolateColumnSection(text, showTitle, { aliases = [], knownTitles = [] 
   const unchanged = { action: 'single-section', text };
   if (!text || !showTitle) return unchanged;
   const segments = String(text).split(/\n+/).map((s) => s.trim()).filter(Boolean);
-  if (segments.length < 4) return unchanged;
+  if (segments.length < 4) {
+    const flat = isolateFlatColumnSection(text, showTitle, { aliases, knownTitles });
+    return flat || unchanged;
+  }
 
   const targetKey = norm(showTitle);
   const targetVariants = sectionTitleVariants(showTitle, aliases);
@@ -147,4 +150,120 @@ function isolateColumnSection(text, showTitle, { aliases = [], knownTitles = [] 
   return { action: 'isolated', text: out, sectionCount: sectionKeys.length };
 }
 
-module.exports = { COLUMN_POST_HOSTS, isColumnPostUrl, isolateColumnSection, countOtherCriticAttributions };
+// ---------------------------------------------------------------------------------------------------------------
+// Flattened columns (BRO-6872). Some fetch routes return the column as one line (the 10-23 column covering The
+// Imaginary Invalid arrived as 9,120 characters with no newline), so the paragraph openers above cannot be seen.
+// Each review in these columns ends with its listing footer ("About 1 hour 30 minutes. roundabouttheatre.org."), so
+// the footers mark the sections. A section belongs to the show it names first; a show must own exactly one section.
+// Titles count only capitalized and two words or longer after a leading article ("The Doctor" is everyday prose), the
+// same rule the lane's column hold uses. Sentences that name another show are dropped from the section kept.
+
+const FLAT_MIN_CHARS = 1500;
+const FLAT_OWNER_CHARS = 400; // a section names its show this early
+const FLAT_UNSPLITTABLE_OTHERS = 3; // other shows each reviewed (named twice+) that make an unsplittable page a column
+const SECTION_FOOTER = /About\s+\d+\s+(?:hours?|minutes?)(?:\s+\d+\s+minutes?)?(?:,\s*(?:including|with)\s+(?:an?\s+|one\s+|two\s+)?intermissions?)?\.\s+[\w.-]+\.(?:com|org|net|nyc|co\.uk)\/?\S*\.?/g;
+
+/** Sentences: split after . ! ? (and a closing quote) before a capital or an opening quote. */
+function splitSentences(text) {
+  return String(text).split(/(?<=[.!?\u2026]["\u201d\u2019')\]]?)\s+(?=["\u201c\u2018(]?[A-Z0-9])/).map((s) => s.trim()).filter(Boolean);
+}
+
+const foldText = (s) => String(s || '').normalize('NFKD').replace(/[\u0300-\u036f]/g, '');
+/** Title words for matching: no parenthetical, no leading article, letters and digits only. */
+function flatTitleWords(title) {
+  const words = foldText(String(title || '').replace(/\([^)]*\)/g, ' ')).replace(/[^A-Za-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+  if (words.length && /^(the|a|an)$/i.test(words[0])) words.shift();
+  return words.length >= 2 ? words : null;
+}
+
+/** First character offsets of each title in `text` (case-insensitive words, capitalized first letter), longest first. */
+function flatMentions(text, defs) {
+  const words = []; const re = /[A-Za-z0-9]+/g; let m;
+  const folded = foldText(text);
+  while ((m = re.exec(folded)) !== null) words.push({ w: m[0], lw: m[0].toLowerCase(), pos: m.index });
+  const taken = new Array(words.length).fill(false);
+  const found = [];
+  const all = [];
+  for (const d of defs) for (const v of d.variants) all.push({ key: d.key, v: v.map((x) => x.toLowerCase()) });
+  all.sort((a, b) => b.v.length - a.v.length);
+  for (const { key, v } of all) {
+    for (let i = 0; i + v.length <= words.length; i++) {
+      if (taken[i] || !/^[A-Z0-9]/.test(words[i].w)) continue;
+      let ok = true;
+      for (let j = 0; j < v.length; j++) if (taken[i + j] || words[i + j].lw !== v[j]) { ok = false; break; }
+      if (!ok) continue;
+      for (let j = 0; j < v.length; j++) taken[i + j] = true;
+      found.push({ key, pos: words[i].pos });
+    }
+  }
+  return found;
+}
+
+/**
+ * @returns {null | { action: 'isolated'|'refuse', text: string|null, reason?: string, sectionCount: number }}
+ *   null: not a flattened multi-review column (the caller treats the page as one review).
+ */
+function isolateFlatColumnSection(text, showTitle, { aliases = [], knownTitles = [] } = {}) {
+  const str = String(text || '');
+  if (str.length < FLAT_MIN_CHARS || /\n/.test(str.trim())) return null;
+  const ends = []; let m; SECTION_FOOTER.lastIndex = 0;
+  while ((m = SECTION_FOOTER.exec(str)) !== null) ends.push(m.index + m[0].length);
+  const sections = []; let start = 0;
+  for (const e of ends) { sections.push(str.slice(start, e).trim()); start = e; }
+  const tail = str.slice(start).trim();
+  if (tail) sections[sections.length - 1] += ` ${tail}`; // closing credits after the last footer stay with it
+
+  const targetKey = norm(showTitle);
+  const targetVariants = [showTitle, ...aliases].map(flatTitleWords).filter(Boolean);
+  if (!targetVariants.length) return { action: 'refuse', text: null, reason: 'show-not-found', sectionCount: sections.length };
+  const defs = [{ key: targetKey, variants: targetVariants }];
+  const seen = new Set([targetKey]);
+  const targetSig = new Set(targetVariants.map((v) => v.join(' ').toLowerCase()));
+  for (const t of knownTitles) {
+    const key = norm(t); const w = flatTitleWords(t);
+    if (!key || !w || seen.has(key) || targetSig.has(w.join(' ').toLowerCase())) continue;
+    seen.add(key);
+    defs.push({ key, variants: [w] });
+  }
+
+  // Too few footers to split on. Returning null here would hand the caller the WHOLE column as one review, which is
+  // the defect this module exists to stop, so when the page is plainly a column anyway (several OTHER shows each
+  // reviewed, i.e. named more than once) refuse instead and store nothing. A single review that name-drops a couple
+  // of other shows stays on the old path.
+  if (ends.length < 2) {
+    const counts = new Map();
+    for (const x of flatMentions(str, defs)) if (x.key !== targetKey) counts.set(x.key, (counts.get(x.key) || 0) + 1);
+    const reviewedElsewhere = [...counts.values()].filter((n) => n >= MIN_TITLE_MENTIONS).length;
+    if (reviewedElsewhere >= FLAT_UNSPLITTABLE_OTHERS) {
+      return { action: 'refuse', text: null, reason: 'unsplittable-column', sectionCount: sections.length };
+    }
+    return null;
+  }
+
+  // A section's owner must be named at least MIN_TITLE_MENTIONS times in it AND be the only show named in its
+  // opening window: the newline path has both rules (openers must name exactly one show), and without them a passing
+  // reference wins the section. Real case: the Washington Post 5-show column of 2026-10, where "Charlie and the
+  // Chocolate Factory" (named once, as a Roald Dahl aside) took ownership of the section reviewing "Giant".
+  const owners = sections.map((sec) => {
+    const found = flatMentions(sec, defs);
+    const counts = new Map();
+    for (const x of found) counts.set(x.key, (counts.get(x.key) || 0) + 1);
+    const window = found.filter((x) => x.pos <= FLAT_OWNER_CHARS).sort((a, b) => a.pos - b.pos);
+    const distinct = new Set(window.map((x) => x.key));
+    if (distinct.size !== 1) return null;
+    const key = window[0].key;
+    return (counts.get(key) || 0) >= MIN_TITLE_MENTIONS ? key : null;
+  });
+  const mine = owners.map((o, i) => (o === targetKey ? i : -1)).filter((i) => i >= 0);
+  if (mine.length === 0) return { action: 'refuse', text: null, reason: 'show-not-found', sectionCount: sections.length };
+  if (mine.length > 1) return { action: 'refuse', text: null, reason: 'ambiguous', sectionCount: sections.length };
+  const kept = splitSentences(sections[mine[0]])
+    .filter((s) => !flatMentions(s, defs).some((x) => x.key !== targetKey))
+    .filter((s) => /[A-Za-z]{2}/.test(s)); // a previous section's footer can leave a ". " shard at the head
+  const out = kept.join(' ');
+  if (wordCount(out) < MIN_TARGET_WORDS) return { action: 'refuse', text: null, reason: 'too-short', sectionCount: sections.length };
+  if (countOtherCriticAttributions(out) >= 1) return { action: 'refuse', text: null, reason: 'roundup', sectionCount: sections.length };
+  return { action: 'isolated', text: out, sectionCount: sections.length };
+}
+
+module.exports = { COLUMN_POST_HOSTS, isColumnPostUrl, isolateColumnSection, countOtherCriticAttributions, isolateFlatColumnSection, splitSentences };

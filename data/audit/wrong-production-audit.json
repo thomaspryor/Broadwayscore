@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T15:13:57.942Z",
+  "timestamp": "2026-11-03T17:08:13.605Z",
   "stats": {
-    "totalReviews": 79840,
-    "alreadyFlagged": 22026,
-    "dateGuardCatches": 217,
-    "directorMismatch": 3454,
+    "totalReviews": 79938,
+    "alreadyFlagged": 22033,
+    "dateGuardCatches": 216,
+    "directorMismatch": 3455,
     "tvFilmSignals": 2262,
-    "londonSignals": 3586,
+    "londonSignals": 3589,
     "offBroadwaySignals": 735,
     "yearMismatch": 360,
-    "noPublishDate": 8451
+    "noPublishDate": 8539
   },
   "findings": [
     {
@@ -19493,6 +19493,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "end-of-the-rainbow-west-end-2010",
+      "file": "independent--matilda-battersby.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/end-of-the-rainbow-trafalgar-studios-london-2144093.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"terry johnson\" from end-of-the-rainbow-2012"
         }
       ]
     },
@@ -92114,6 +92128,19 @@
       ]
     },
     {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "publishDate": "2026-11-02",
+      "url": "https://www.nytimes.com/2026/11/02/theater/odets-waiting-for-lefty-awake-sing-golden-boy.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "close-to-you-bacharach-reimagined-west-end-2015",
       "file": "standard--fiona-mountford.json",
       "score": 73,
@@ -100243,6 +100270,19 @@
     },
     {
       "showId": "hamilton-west-end-2021",
+      "file": "britishtheatrecom--douglas-mayo.json",
+      "publishDate": "2017-12-24",
+      "url": "https://www.britishtheatre.com/posts/review-hamilton-victoria-palace-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamilton-west-end-2021",
       "file": "hollywood-reporter--demetrios-matheou.json",
       "score": 94,
       "publishDate": "2017-12-21",
@@ -105166,20 +105206,6 @@
       "score": 77,
       "publishDate": "2026-07-08",
       "url": null,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "london-theatre--marianka-swain.json",
-      "score": 94,
-      "publishDate": "2026-07-08",
-      "url": "https://www.londontheatre.co.uk/reviews/jesus-christ-superstar-review-theatre-royal-drury-lane",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -114087,6 +114113,20 @@
       "score": 94,
       "publishDate": null,
       "url": "https://theatreweekly.com/review-oliver-at-the-gielgud-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "score": 82,
+      "publishDate": "2024-07-25",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-musical-review-matthew-bourne-revival-tqnw6rp2z",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

@@ -72,7 +72,9 @@ function parseArgs(argv) {
 
 // Job logs prefix every line with an ISO timestamp and a space.
 function stripTimestamp(line) {
-  return line.replace(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z ?/, '');
+  // Long job logs can carry a byte-order mark at a storage-chunk boundary, right before a
+  // timestamp; left in, it corrupts the sealed blob (BRO-6488: a 2.8MB census hand-back).
+  return line.replace(/^\uFEFF?\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z ?/, '');
 }
 
 /**

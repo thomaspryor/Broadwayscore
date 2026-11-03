@@ -334,8 +334,15 @@ const MID_TEXT_CHROME_BLOCKS = [
   // tiered full 4-7K reviews `invalid` and tripped the outlet invalid-content health row.
   { name: 'bristol247-member-appeal', maxGap: 300,
     start: 'Independent journalism is needed now', end: 'Community\\s+member\\s+Find\\s+out\\s+more' },
-  { name: 'warwickshireworld-newsletter', maxGap: 600,
-    start: 'Sign up to our daily WarwickshireWorld Today newsletter', end: 'Google\\s+Privacy\\s+Notice\\s+and\\s+Terms\\s+of\\s+Service\\s+apply\\.' },
+  // The newsletter block is the shared National World template (BRO-6824 follow-up, 11-03):
+  // the same widget with a different newsletter name ships on Portsmouth News ("daily"),
+  // The Scotsman ("Arts and Culture"), Yorkshire Post, Derbyshire Times and WarwickshireWorld
+  // ("daily WarwickshireWorld Today"). Matching only the WarwickshireWorld name left Portsmouth
+  // News 3/3 recent `invalid` ("premium content") and 8 Scotsman reviews too. Anchored on the
+  // widget's fixed "Sign up Thank you for signing up!" + the reCAPTCHA notice ending it.
+  { name: 'nationalworld-newsletter', maxGap: 600,
+    start: "Sign\\s+up\\s+to\\s+our\\s+(?:[\\w'’&-]+\\s+){0,5}?newsletter\\s+Sign\\s+up\\s+Thank\\s+you\\s+for\\s+signing\\s+up!",
+    end: 'Google\\s+Privacy\\s+Notice\\s+and\\s+Terms\\s+of\\s+Service\\s+apply\\.' },
 ].map((b) => ({
   ...b,
   re: new RegExp(`${b.start}[\\s\\S]{0,${b.maxGap}}?${b.end}`, 'gi'),
@@ -347,6 +354,10 @@ const MID_TEXT_CHROME_BLOCKS = [
 // two-part marker matches and a review of at least MID_TEXT_CHROME_MIN_BODY chars precedes it.
 const TAIL_CHROME_CUTS = [
   { name: 'bristol247-footer', re: /Become a member of Bristol24\/7\s+Share\s+Share on Facebook[\s\S]*$/i },
+  // National World article footer: "... Until October 26. Continue Reading Related topics: Chichester
+  // summer Devon". The tag list hid the review's real last sentence, so Portsmouth News reviews
+  // read as truncated. Only a short, sentence-free tag list at the very end is cut.
+  { name: 'nationalworld-related-topics', re: /\s*(?:\bContinue\s+Reading\s+)?\bRelated\s+topics:[^.!?\n]{0,200}$/i },
 ];
 // Same floor as DOW_JONES_MIN_BODY: article text must follow the block, and what is left must still be a review.
 const MID_TEXT_CHROME_MIN_BODY = 300;

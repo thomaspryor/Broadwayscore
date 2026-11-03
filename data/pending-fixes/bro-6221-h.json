@@ -1,0 +1,468 @@
+{
+  "issueNumber": "bro-6221-h",
+  "planId": "1b694b5c-c454-449c-91f2-0a2e64d7bede",
+  "status": "pending",
+  "createdAt": "2026-11-03T15:03:22.151Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6221: null images.thumbnail/poster that point at local files missing from public/ (272 refs on 215 closed shows). A placeholder beats a 404; the Mon/Thu fetch-show-images run refills a slot when art is found. Board-lead approved, no paid image search. (part 8 of 9)",
+    "steps": [
+      "shows.json: gemini-1977.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-trial-of-the-catonsville-nine-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: no-place-to-be-somebody-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: double-solitaire-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: solitaire-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-incomparable-max-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: aint-supposed-to-die-a-natural-death-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: to-live-another-summer-to-pass-another-winter-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: eli-the-fanatic-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-grass-harp-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-prisoner-of-second-avenue-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: ma-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: only-fools-are-sad-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: two-gentlemen-of-verona-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: wild-and-wonderful-1971.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: inner-city-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)",
+      "shows.json: fun-city-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: theres-one-in-every-marriage-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: narrow-road-to-the-deep-north-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: vivat-vivat-regina-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: wise-child-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: the-love-suicide-at-schofield-barracks-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: moonchildren-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: night-watch-1972.images thumbnail -> null (file missing from public/, BRO-6221)",
+      "shows.json: children-children-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "gemini-1977",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/gemini-1977/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: gemini-1977.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-trial-of-the-catonsville-nine-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-trial-of-the-catonsville-nine-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-trial-of-the-catonsville-nine-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "no-place-to-be-somebody-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/no-place-to-be-somebody-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: no-place-to-be-somebody-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "double-solitaire-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/double-solitaire-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: double-solitaire-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "solitaire-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/solitaire-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: solitaire-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-incomparable-max-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-incomparable-max-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-incomparable-max-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aint-supposed-to-die-a-natural-death-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/aint-supposed-to-die-a-natural-death-1971/thumbnail.jpg",
+          "poster": "/images/shows/aint-supposed-to-die-a-natural-death-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: aint-supposed-to-die-a-natural-death-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "to-live-another-summer-to-pass-another-winter-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/to-live-another-summer-to-pass-another-winter-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: to-live-another-summer-to-pass-another-winter-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "eli-the-fanatic-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/eli-the-fanatic-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: eli-the-fanatic-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-grass-harp-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-grass-harp-1971/thumbnail.jpg",
+          "poster": "/images/shows/the-grass-harp-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-grass-harp-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-prisoner-of-second-avenue-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-prisoner-of-second-avenue-1971/thumbnail.jpg",
+          "poster": "/images/shows/the-prisoner-of-second-avenue-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-prisoner-of-second-avenue-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ma-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/ma-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: ma-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "only-fools-are-sad-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/only-fools-are-sad-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: only-fools-are-sad-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "two-gentlemen-of-verona-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/two-gentlemen-of-verona-1971/thumbnail.jpg",
+          "poster": "/images/shows/two-gentlemen-of-verona-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: two-gentlemen-of-verona-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wild-and-wonderful-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wild-and-wonderful-1971/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: wild-and-wonderful-1971.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "inner-city-1971",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/inner-city-1971/thumbnail.jpg",
+          "poster": "/images/shows/inner-city-1971/poster.jpg",
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: inner-city-1971.images thumbnail+poster -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "fun-city-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/fun-city-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: fun-city-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "theres-one-in-every-marriage-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/theres-one-in-every-marriage-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: theres-one-in-every-marriage-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "narrow-road-to-the-deep-north-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/narrow-road-to-the-deep-north-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: narrow-road-to-the-deep-north-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "vivat-vivat-regina-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/vivat-vivat-regina-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: vivat-vivat-regina-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "wise-child-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/wise-child-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: wise-child-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-love-suicide-at-schofield-barracks-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-love-suicide-at-schofield-barracks-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: the-love-suicide-at-schofield-barracks-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "moonchildren-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/moonchildren-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: moonchildren-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "night-watch-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/night-watch-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: night-watch-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "children-children-1972",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/children-children-1972/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "shows.json: children-children-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
+      }
+    ]
+  }
+}

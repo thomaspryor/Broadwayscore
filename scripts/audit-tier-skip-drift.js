@@ -20,7 +20,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { evaluateDegradeDrift, evaluateRecoveryProbe, resolveDegradeConfig, DEFAULT_RECOVERY_PROBE_SIZE } = require('./lib/tier-skip-drift');
+const { aggregateLedgerRows, evaluateDegradeDrift, evaluateRecoveryProbe, resolveDegradeConfig, DEFAULT_RECOVERY_PROBE_SIZE } = require('./lib/tier-skip-drift');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const LEDGER_WINDOW_DAYS = 7;
@@ -38,25 +38,18 @@ function loadDomainTierSkip() {
  */
 function aggregateLedger(windowDays = LEDGER_WINDOW_DAYS) {
   const cutoff = Date.now() - windowDays * 24 * 60 * 60 * 1000;
-  const agg = {};
   let raw;
   try {
     raw = fs.readFileSync(LEDGER_PATH, 'utf8');
   } catch {
-    return agg;
+    return {};
   }
+  const rows = [];
   for (const line of raw.split('\n')) {
     if (!line.trim()) continue;
-    let row;
-    try { row = JSON.parse(line); } catch { continue; }
-    if (!row.host || !row.provider || !row.ts) continue;
-    if (new Date(row.ts).getTime() < cutoff) continue;
-    if (!agg[row.host]) agg[row.host] = {};
-    if (!agg[row.host][row.provider]) agg[row.host][row.provider] = { successes: 0, failures: 0 };
-    if (row.success) agg[row.host][row.provider].successes++;
-    else agg[row.host][row.provider].failures++;
+    try { rows.push(JSON.parse(line)); } catch { /* partial line */ }
   }
-  return agg;
+  return aggregateLedgerRows(rows, cutoff); // BRO-6898: pure + tested; skips memo-skip rows
 }
 
 async function runRecoveryProbe(host, tier) {

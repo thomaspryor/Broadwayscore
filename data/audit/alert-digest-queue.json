@@ -293,20 +293,6 @@
     "queuedAt": "2026-11-03T14:17:47.844Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-11-03T15:38:36.669Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:clifford-odets-waiting-for-lefty-off-broadway-2026",
     "title": "Auto-remediation gave up on clifford-odets-waiting-for-lefty-off-broadway-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"clifford-odets-waiting-for-lefty-off-broadway-2026\"}",
@@ -319,5 +305,154 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-11-03T15:18:34.000Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6872-lane-sources",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6872-lane-sources",
+    "description": "land.yml did not land land/bro-6872-lane-sources: the unit-tests-node gate went red at 251a3f7344. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41663383962",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6872-lane-sources"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "251a3f7344aa3ca1dae294be9724b7900b2b1adf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41663383962"
+      }
+    ],
+    "queuedAt": "2026-11-03T15:55:59.749Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6895-claim",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6895-claim",
+    "description": "land.yml did not land land/bro-6895-claim: the unit-tests-node gate went red at 73d0d3d220. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41669727700",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6895-claim"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "73d0d3d220bfc219f548cfcb2cba0b82d5d0da13"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41669727700"
+      }
+    ],
+    "queuedAt": "2026-11-03T16:34:03.991Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-11-03.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T17:29:25.647Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:a-train-to-woking-off-west-end-2026",
+    "title": "Review gap — \"A Train To Woking\" missing 1 cited review(s)",
+    "description": "A Train To Woking (a-train-to-woking-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-train-to-woking-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T17:21:07.429Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tosca-off-broadway-2026",
+    "title": "Review gap — \"Tosca\" missing 3 cited review(s)",
+    "description": "Tosca (tosca-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tosca-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T17:21:07.762Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Lincoln in the Bardo (washpost)). Checked 2026-11-03.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-03T17:21:42.909Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6734-tour-city-onboarding-lists",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6734-tour-city-onboarding-lists",
+    "description": "land.yml did not land land/bro-6734-tour-city-onboarding-lists: the unit-tests-node gate went red at 1eab67e1fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41678750260",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6734-tour-city-onboarding-lists"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1eab67e1fe5238b003117cb4b93d489e5bd146b4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41678750260"
+      }
+    ],
+    "queuedAt": "2026-11-03T17:34:08.668Z"
   }
 ]
