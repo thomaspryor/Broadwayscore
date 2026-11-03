@@ -8,7 +8,9 @@ import {
   resolveShowtimeDefault,
   scheduledShowtime,
 } from '@/lib/data-showtimes';
+import { useScheduleHistory } from '@/lib/schedule-history';
 import { formatTime } from '@/lib/calendar/format';
+import type { ShowSchedule } from '@/lib/data-types';
 import type { ShowtimeSeat, TimeSlot } from '@/lib/review-showtime';
 
 type Value = Pick<ShowtimeSeat, 'time_slot' | 'curtain_time'>;
@@ -47,9 +49,11 @@ export default function ShowtimeSegmented({
 }: ShowtimeSegmentedProps) {
   const [moreOpen, setMoreOpen] = useState(value.time_slot === 'custom');
   const slot = value.time_slot;
+  // Past dates (before the live window) read the lazily fetched archive (BRO-6877).
+  const history = useScheduleHistory(showId, date);
 
   const timeFor = (s: 'matinee' | 'evening'): string | null =>
-    genericFallback ? resolveShowtimeDefault(showId, date, s) : scheduledShowtime(showId, date, s);
+    genericFallback ? resolveShowtimeDefault(showId, date, s, history) : scheduledShowtime(showId, date, s, history);
 
   // A new date invalidates the old performance: re-pick (single-show day) or clear.
   // Keyed on the previous date, not a first-run flag, so React's dev double
@@ -66,7 +70,7 @@ export default function ShowtimeSegmented({
     valueAtLastDate.current = value;
     if (parentSetBoth) return;
     if (isMount && (!autoSelectOnMount || value.time_slot)) return;
-    const only = autoPick && date ? onlyPerformanceSlot(showId, date) : null;
+    const only = autoPick && date ? onlyPerformanceSlot(showId, date, history) : null;
     const next: Value = only
       ? { time_slot: only, curtain_time: toDbTime(timeFor(only)) }
       : { time_slot: null, curtain_time: null };
@@ -78,14 +82,26 @@ export default function ShowtimeSegmented({
 
   useEffect(() => { valueAtLastDate.current = value; }, [value]);
 
+  // A Matinee/Evening tap that landed before the archive arrived saved no
+  // time; fill it in once the archive has it. Only for a tap in this form
+  // (an existing entry saved with no time stays as saved).
+  const tapped = useRef<'matinee' | 'evening' | null>(null);
+  useEffect(() => {
+    if (!history || !tapped.current || tapped.current !== slot || value.curtain_time) return;
+    const t = toDbTime(timeFor(slot));
+    if (t) onChange({ time_slot: slot, curtain_time: t });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history]);
+
   const pick = (s: 'matinee' | 'evening') => {
-    if (slot === s) { onChange({ time_slot: null, curtain_time: null }); return; }
+    if (slot === s) { tapped.current = null; onChange({ time_slot: null, curtain_time: null }); return; }
+    tapped.current = s;
     onChange({ time_slot: s, curtain_time: toDbTime(timeFor(s)) });
     setMoreOpen(false);
   };
 
   const segment = (s: 'matinee' | 'evening', label: string) => {
-    const dark = !!date && isKnownDarkForSlot(showId, date, s);
+    const dark = !!date && isKnownDarkForSlot(showId, date, s, history);
     const selected = slot === s;
     return (
       <button
@@ -109,7 +125,7 @@ export default function ShowtimeSegmented({
     );
   };
 
-  const caption = captionFor(showId, date, value, genericFallback);
+  const caption = captionFor(showId, date, value, genericFallback, history);
 
   return (
     <div data-testid="showtime-segmented">
@@ -151,18 +167,18 @@ function toDbTime(hhmm: string | null): string | null {
   return hhmm ? `${hhmm}:00` : null;
 }
 
-function captionFor(showId: string, date: string, v: Value, genericFallback: boolean): string {
+function captionFor(showId: string, date: string, v: Value, genericFallback: boolean, history?: ShowSchedule): string {
   const time = v.curtain_time ? formatTime(v.curtain_time.slice(0, 5)) : null;
   if (v.time_slot === 'custom') return time ? `Curtain ${time}` : 'Pick a time';
   if (v.time_slot === 'matinee' || v.time_slot === 'evening') {
-    const fromSchedule = !!date && scheduledShowtime(showId, date, v.time_slot) === v.curtain_time?.slice(0, 5);
+    const fromSchedule = !!date && scheduledShowtime(showId, date, v.time_slot, history) === v.curtain_time?.slice(0, 5);
     if (!time) return 'Time not listed for that date';
     if (fromSchedule) return `Curtain ${time}, from the schedule`;
     // Only a plan ever fills in the generic 2:00 / 7:00 PM; say so.
     return genericFallback ? `Curtain ${time} (usual time)` : `Curtain ${time}`;
   }
-  const darkM = !!date && isKnownDarkForSlot(showId, date, 'matinee');
-  const darkE = !!date && isKnownDarkForSlot(showId, date, 'evening');
+  const darkM = !!date && isKnownDarkForSlot(showId, date, 'matinee', history);
+  const darkE = !!date && isKnownDarkForSlot(showId, date, 'evening', history);
   if (darkM && darkE) return 'No performance listed that day';
   if (darkM) return 'No matinee that day';
   if (darkE) return 'No evening show that day';
