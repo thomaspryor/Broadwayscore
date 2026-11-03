@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-11-01T22:41:18.599Z",
-    "completedAt": "2026-11-01T22:41:24.400Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "41356963797",
-    "source": "comparative-rescore",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-11-01T23:31:55.859Z",
-    "completedAt": "2026-11-01T23:32:00.756Z",
-    "totalReviews": 5,
-    "processed": 1,
-    "skipped": 4,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 5446,
-      "output": 294,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 14219
-    },
-    "costUsd": 0.03392785,
-    "runId": "41361884042",
-    "source": "index",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-11-01T23:36:58.419Z",
     "completedAt": "2026-11-01T23:36:58.420Z",
     "totalReviews": 0,
@@ -1074536,6 +1074498,50 @@
     },
     "costUsd": 0,
     "runId": "41572744343",
+    "source": "comparative-rescore",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-11-03T03:43:12.681Z",
+    "completedAt": "2026-11-03T03:50:01.429Z",
+    "totalReviews": 79973,
+    "processed": 387,
+    "skipped": 78674,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 2283443,
+      "output": 121178,
+      "cacheRead": 818268,
+      "cacheWrite": 699772,
+      "total": 5851116
+    },
+    "costUsd": 5.60339545,
+    "runId": "41572908736",
+    "source": "index",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-11-03T03:50:18.537Z",
+    "completedAt": "2026-11-03T03:50:46.712Z",
+    "totalReviews": 9,
+    "processed": 9,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 22130,
+      "output": 2085,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 24215
+    },
+    "costUsd": 0.0638493,
+    "runId": "41572908736",
     "source": "comparative-rescore",
     "errorDetails": []
   }
