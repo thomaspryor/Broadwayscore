@@ -458,7 +458,6 @@ async function fetchVerdictCategoryOnce(url) {
 async function findAggregatorArticles(show) {
   const title = show.title;
   const id = show.id;
-  const tokens = titleTokens(title);
   const queries = [
     `site:playbill.com/article "${title}" reviews`,
     `site:broadwayworld.com "Review Roundup" "${title}"`,
@@ -478,7 +477,7 @@ async function findAggregatorArticles(show) {
         // girl-interrupted 2026-06-06). Verdict slugs embed the title, so a real
         // match passes; "weather-girl" matches only "girl" and is rejected.
         const clean = u.split('?')[0].split('#')[0];
-        if (!urlMatchesShow(clean, tokens) || namesLongerShowTitle(clean, show)) continue;
+        if (!urlMatchesShowTitle(clean, show, { context: 'article' })) continue;
         // Playbill Verdict article patterns
         if (/playbill\.com\/article\/(read|what|reviews|critics)/i.test(u) && /\.html?$|article\//.test(u)) {
           urls.add(clean);
@@ -510,7 +509,7 @@ async function findAggregatorArticles(show) {
       const hit = await searchPlaybillVerdict(show, { fetchHtml: fetchVerdictCategoryOnce });
       const clean = hit && hit.articleUrl ? hit.articleUrl.split('?')[0].split('#')[0] : null;
       // Same slug gate the SERP results above pass through.
-      if (clean && urlMatchesShow(clean, tokens) && !namesLongerShowTitle(clean, show)) urls.add(clean);
+      if (clean && urlMatchesShowTitle(clean, show, { context: 'article' })) urls.add(clean);
     } catch (e) {
       if (verbose) console.error(`  Playbill Verdict lookup error for ${id}: ${e.message}`);
     }
@@ -603,7 +602,7 @@ function dropRoundupsOwnedByOtherShows(urls, showId, owners) {
   });
 }
 
-const { titleTokens } = require('./lib/show-title-tokens');
+const { titleTokens, titleVariantInfo, venueTokens } = require('./lib/show-title-tokens');
 const { foldDiacritics } = require('./lib/title-match');
 const { titleExtendedInUrl, vetTimeoutListingCandidates, vetTourCandidatesByPageDate } = require('./lib/gap-census-noise');
 
@@ -634,8 +633,8 @@ function urlMatchesShow(href, tokens) {
 // exposed. Reject a URL whose path spells out the whole title of ANOTHER show
 // in shows.json that is longer and contains this show's tokens.
 let _showTitleTokens = null;
-function namesLongerShowTitle(href, show, shows = null) {
-  const tokens = titleTokens(show && show.title);
+function namesLongerShowTitle(href, show, shows = null, tokensOverride = null) {
+  const tokens = tokensOverride || titleTokens(show && show.title);
   if (!tokens.length) return false;
   if (shows || !_showTitleTokens) {
     const list = (shows || (() => { try { return loadShows(); } catch { return []; } })())
@@ -644,6 +643,100 @@ function namesLongerShowTitle(href, show, shows = null) {
     _showTitleTokens = list;
   }
   return _namesLonger(href, show, tokens, _showTitleTokens);
+}
+// BRO-6909: accept a URL that names this show under ANY title it is billed by
+// (show-title-tokens.titleVariants: akaTitles, an author credit dropped, a
+// performer prefix dropped, a venue label dropped). The full-title-only gate threw
+// out Playbill's Verdict for "Clifford Odets’ Waiting for Lefty" (slug
+// .../waiting-for-lefty-at-classic-stage-company, 2 of 4 tokens) plus two of the
+// review URLs it listed, and the audit reported 0 gaps with 4 of 7 reviews missing.
+// Each variant still gets the longer-title guard with its own tokens.
+let _showRowsById = null;
+function fullShowRow(show) {
+  // Callers often pass {id, title} only; the credit and venue rules need the row.
+  // Always merged: run dates decide whether a same-title production is nearby.
+  if (!show || !show.id) return show;
+  if (!_showRowsById) {
+    _showRowsById = new Map();
+    try { for (const s of loadShows()) _showRowsById.set(s.id, s); } catch { /* title-only variants */ }
+  }
+  return Object.assign({}, _showRowsById.get(show.id) || {}, show);
+}
+// A derived variant is shorter and more generic than the billed title ("Long
+// Story Short", "The Best Man"), so it must appear in the URL as the exact
+// phrase; the n-1 token tolerance applies only to the billed title (an akaTitle
+// such as "The Fever (Greenwich House Theater)" matched every Greenwich House review).
+// Measured over 42k stored review URLs: token-matching derived variants let 226
+// other shows' URLs through, the phrase rule keeps the same-show recall.
+const slugPhrase = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  .replace(/[’']/g, '').replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+function urlHasPhrase(href, phrase) {
+  let path;
+  try { const p = new URL(href); path = decodeURIComponent(p.pathname); } catch { path = String(href || ''); }
+  const slug = slugPhrase(phrase);
+  return !!slug && `-${slugPhrase(path)}-`.includes(`-${slug}-`);
+}
+// A variant that is ANOTHER production's exact title ("Waiting for Lefty" is also
+// the 2024 regional; "A Midsummer Night's Dream" has 9 other rows) can name that
+// production, and a same-year one gets past every year guard (review of this
+// commit: the Unicorn's AMND accepted the Globe 2026 reviews). Such a variant
+// counts only with evidence it is THIS production:
+//   - a distinctive venue word in the URL (".../waiting-for-lefty-at-classic-stage-company"), or
+//   - context 'article-link': the link sits inside a round-up already accepted for
+//     this show (the Verdict's own list is the evidence), or
+//   - context 'article', a credit-made variant (not a venue label), and no
+//     same-title production ran within a year of this one; the article is then
+//     dated against this run by articleRunIdentity.
+// context 'census' (un-scoped SERP results, the default) gets only the first.
+const DAY_MS = 86400000;
+function runWindow(row) {
+  const t = (d) => { const x = Date.parse(d); return Number.isFinite(x) ? x : null; };
+  const start = t(row && (row.previewsStartDate || row.openingDate));
+  const end = t(row && row.closingDate);
+  return { start, end };
+}
+function sameTitleRunNearby(row, clashIds) {
+  const me = runWindow(row);
+  if (me.start == null) return true; // undated: can't rule the other run out
+  const lo = me.start - 365 * DAY_MS;
+  const hi = (me.end != null ? me.end : Date.now()) + 365 * DAY_MS;
+  fullShowRow({ id: '__warm__' });
+  return clashIds.some(id => {
+    const o = runWindow(_showRowsById && _showRowsById.get(id));
+    if (o.start == null) return true;
+    const oEnd = o.end != null ? o.end : Date.now();
+    return o.start <= hi && oEnd >= lo;
+  });
+}
+function urlPathSegments(href) {
+  let path;
+  try { path = decodeURIComponent(new URL(href).pathname); } catch { path = String(href || ''); }
+  return new Set(slugPhrase(path).split('-').filter(Boolean));
+}
+/**
+ * Token lists of every billed title of `show` that `href` names (empty = none).
+ * @param {{context?: 'census'|'article'|'article-link'}} [opts]
+ */
+function matchingTitleVariants(href, show, { context = 'census' } = {}) {
+  const row = fullShowRow(show);
+  const out = [];
+  for (const v of titleVariantInfo(row)) {
+    const tokens = titleTokens(v.title);
+    if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show, null, tokens)) continue;
+    if (v.kind !== 'billed' && !urlHasPhrase(href, v.title)) continue;
+    if (v.clashIds.length) {
+      const segs = urlPathSegments(href);
+      const venueHit = venueTokens(row).some(w => segs.has(w));
+      const ok = venueHit || context === 'article-link'
+        || (context === 'article' && !v.fromVenue && !sameTitleRunNearby(row, v.clashIds));
+      if (!ok) continue;
+    }
+    out.push(tokens);
+  }
+  return out;
+}
+function urlMatchesShowTitle(href, show, opts) {
+  return matchingTitleVariants(href, show, opts).length > 0;
 }
 function _namesLonger(href, show, tokens, list) {
   // the slug's significant words, filtered the way titles are, so stopwords
@@ -781,8 +874,8 @@ function isOwnVenueUrl(u, show) {
 function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   const u = sr && (sr.url || sr.link);
   if (!u || !isReviewUrl(u)) return null;
-  const tokens = titleTokens(show.title);
-  if (!urlMatchesShow(u, tokens) || namesLongerShowTitle(u, show)) return null;
+  const passing = matchingTitleVariants(u, show, { context: 'census' });
+  if (!passing.length) return null;
   // BRO-5732: fail closed. An unregistered host must show review-shaped evidence
   // (url/title/snippet), not merely avoid every known-bad pattern. `priorVetted`:
   // a URL seeded from the prior census already passed this once and its SERP
@@ -799,10 +892,17 @@ function acceptSerpCensusResult(sr, { show, showInfo, priorVetted = false }) {
   // the census, require EVERY title token in the URL path or in the SERP
   // title/snippet, and drop book-review/bookstore pages (the same title also
   // names novels).
-  if (tokens.length >= 3) {
+  // BRO-6909: checked per billed title (titleVariants), so "Clifford Odets’
+  // Waiting for Lefty" accepts a URL that carries every token of "Waiting for
+  // Lefty". A 1-2 token variant already had to match all its tokens in the path.
+  const tokens = titleTokens(show && show.title);
+  {
     const segs = new Set(new URL(u).pathname.toLowerCase().split(/[\/\-_.\s]+/).filter(Boolean));
     const hay = new Set(titleTokens(`${sr.title || ''} ${sr.snippet || ''}`));
-    if (!tokens.every(t => segs.has(t) || hay.has(t))) return null;
+    // Same variant must pass both checks (review: billed-title n-1 tolerance
+    // plus a different variant's bare token match reopened BRO-4540).
+    const ok = passing.some(ts => ts.length < 3 || ts.every(t => segs.has(t) || hay.has(t)));
+    if (!ok) return null;
   }
   if (isBookPageUrl(u)) return null;
   if (isOwnVenueUrl(u, show)) return null;
@@ -908,12 +1008,11 @@ async function extractAggregatorReviewUrls(articleUrl, show) {
   }
   if (html == null) return null;
   const $ = cheerio.load(html);
-  const tokens = titleTokens(show.title);
   const urls = new Set();
   $('a[href]').each((_, el) => {
     const href = $(el).attr('href') || '';
     if (!isReviewUrl(href)) return;
-    if (!urlMatchesShow(href, tokens) || namesLongerShowTitle(href, show)) return;
+    if (!urlMatchesShowTitle(href, show, { context: 'article-link' })) return;
     urls.add(normalizeReviewUrl(href));
   });
   // Production identity (2026-07-11): urlMatchesShow filters wrong SHOWS, not
@@ -3627,4 +3726,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
+module.exports = { urlMatchesShowTitle, matchingTitleVariants, auditShow, dropRoundupsOwnedByOtherShows, roundupOwnerMap, planRoundupGapAlerts, openLegacyRoundupGapKeys, buildRoundupGapAlert, syncRollupCard, ROUNDUP_GAP_ROLLUP_KEY, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, namesLongerShowTitle, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, gapUrlIdentity, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, otherProductionUrlSignal, computeResidualCounts, currentRunUncollected, openingWindowClearedKeys, main, USAGE, dispatchGatherFor };
