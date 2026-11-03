@@ -32,15 +32,33 @@ const chi = cities.filter(c => /^Chicago\b/.test(c.name));
 assert(chi.length === 1 && chi[0].tag === 'Local shows + tours', 'exactly one Chicago, tagged Local shows + tours');
 assert(cities.filter(c => c.kind === 'tour').every(c => c.tag), 'tour cities carry a tag');
 
-const { hits, fallback, minCityHits } = read('public/data/onboarding-hits.json');
+const { hits, fallback, minCityHits, want = {} } = read('public/data/onboarding-hits.json');
+// Touring-city lists name tour ids, which the mobile feed leaves out; they must be real scheduled tours (BRO-6734).
+const tourIds = new Set(Object.keys(read('data/tour-schedules.json').tours));
+const cityKind = new Map(cities.map(c => [c.id, c.kind]));
 for (const city of Object.keys(hits)) {
   const rows = hits[city] || [];
   const home = city === 'nyc' || city === 'london';
-  assert(rows.length >= (home ? 10 : minCityHits), `${city}: enough hits (${rows.length}, min ${home ? 10 : minCityHits})`);
-  assert(rows.every(r => ids.has(r.showId) && r.poster && r.productions.length >= 1), `${city}: every hit maps to a real show with a poster and a production`);
+  const touring = cityKind.get(city) === 'tour';
+  assert(rows.length >= (home ? 10 : touring ? 8 : minCityHits), `${city}: enough hits (${rows.length})`);
+  assert(rows.every(r => (ids.has(r.showId) || tourIds.has(r.showId)) && r.poster && r.productions.length >= 1), `${city}: every hit maps to a real show or tour with a poster and a production`);
+  if (touring) {
+    // No touring-city list may hand out a New York production (the BRO-6734 bug).
+    const nycOnly = rows.filter(r => { const m = mobile.find(s => s.id === r.showId); return m && (m.cat === undefined || m.cat === 'broadway' || m.cat === 'off-broadway'); });
+    assert(nycOnly.length === 0, `${city}: no New York production in the Seen list (${nycOnly.map(r => r.showId).join(', ')})`);
+    continue;
+  }
   assert(rows.every((r, i) => i === 0 || rows[i - 1].days >= r.days), `${city}: sorted by days played`);
   if (!home) assert(rows.every(r => r.productions.every(p => p.closed)), `${city}: regional runs all have a closing date (no stale open rows counted to today)`);
 }
+for (const [city, rows] of Object.entries(want)) {
+  assert(cityKind.get(city) === 'tour', `want: ${city} is a touring city`);
+  assert(rows.every(r => (ids.has(r.showId) || tourIds.has(r.showId)) && r.poster && r.title), `want ${city}: every row is a real show or tour with a poster`);
+  assert(rows.every(r => !mobile.some(s => s.id === r.showId && (s.cat === undefined || s.cat === 'broadway'))), `want ${city}: no Broadway production`);
+}
+const tourCities = cities.filter(c => c.kind === 'tour');
+assert(tourCities.every(c => typeof c.stops === 'number'), 'every touring city carries its stop count');
+assert(tourCities.filter(c => hits[c.id]).length >= tourCities.length * 0.9, '>=90% of touring cities have their own Seen list');
 
 // Every city either has its own list or names the home list it falls back to (BRO-6647); no city is left without one.
 const own = new Set(Object.keys(hits));

@@ -1,14 +1,19 @@
 /**
  * Builds the data the app's quiz onboarding ships/fetches (BRO-6579):
  *   public/data/onboarding-cities.json  city picker (nyc, london, UK regional, touring)
- *   public/data/onboarding-hits.json    per city: the longest-running titles of the last 10 years
+ *   public/data/onboarding-hits.json    per city: the longest-running titles of the last 10 years;
+ *                                       per touring city also `want` (tours booked there, BRO-6734)
  *
  * Every row derives from mobile-shows.json / uk-regional-venues.json / tour data; nothing is typed in.
  * Run: npx tsx scripts/generate-onboarding-data.ts
  */
 import fs from 'fs';
 import path from 'path';
+import sharp from 'sharp';
 import { getTourCities } from '../src/lib/data-tour-cities';
+import { getAllShows } from '../src/lib/data-core';
+import { getTourSchedule } from '../src/lib/data-tour-schedule';
+import { cityLists, isLetterboxed, nationalTopTours, type TitleArt, type TourIn, type WantRow } from './lib/onboarding-tour-lists';
 
 const ROOT = path.join(__dirname, '..');
 const OUT_DIR = path.join(ROOT, 'public', 'data');
@@ -45,6 +50,10 @@ const daysInWindow = (s: Show) => {
   return Math.max(0, Math.round(ms / DAY));
 };
 
+// Posters that are blur-padded landscape art (BRO-6734), filled in by main() before any list is built.
+const badPosters = new Set<string>();
+const isBad = (poster: string | undefined) => !!poster && badPosters.has(poster);
+
 function hitsFor(match: (s: Show) => boolean) {
   const byTitle = new Map<string, Show[]>();
   for (const s of shows) {
@@ -56,7 +65,7 @@ function hitsFor(match: (s: Show) => boolean) {
     const days = prods.reduce((n, p) => n + daysInWindow(p), 0);
     // Newest production with art is the current one; poster comes from any production that has it.
     const lead = [...prods].sort((a, b) => daysInWindow(b) - daysInWindow(a))[0];
-    const art = [...prods].sort((a, b) => (a.od! < b.od! ? 1 : -1)).find(p => p.img?.po || p.img?.th);
+    const art = [...prods].sort((a, b) => (a.od! < b.od! ? 1 : -1)).find(p => (p.img?.po || p.img?.th) && !isBad(p.img?.po || p.img?.th));
     if (!art) return null;
     return {
       title: lead.t,
@@ -73,67 +82,125 @@ function hitsFor(match: (s: Show) => boolean) {
   return rows.filter(r => r.days > 0).sort((a, b) => b.days - a.days || (b.score ?? 0) - (a.score ?? 0)).slice(0, TOP);
 }
 
-const ukRegional: { match: string; city: string; aliases?: string[] }[] = JSON.parse(
-  fs.readFileSync(path.join(ROOT, 'data', 'uk-regional-venues.json'), 'utf8'),
-);
+async function main() {
+  // Scan every poster once: a blur-padded one never reaches a quiz grid (BRO-6734).
+  for (const s of shows) {
+    for (const p of [s.img?.po, s.img?.th]) {
+      if (!p || badPosters.has(p)) continue;
+      const file = path.join(ROOT, 'public', p.split('?')[0]);
+      if (!fs.existsSync(file)) continue;
+      try {
+        const { data, info } = await sharp(file).greyscale().raw().toBuffer({ resolveWithObject: true });
+        if (isLetterboxed(new Uint8Array(data.buffer, data.byteOffset, data.length), info.width, info.height)) badPosters.add(p);
+      } catch { /* unreadable image: leave it to the existing checks */ }
+    }
+  }
+  console.log('blur-padded posters left out', badPosters.size);
+  const ukRegional: { match: string; city: string; aliases?: string[] }[] = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'data', 'uk-regional-venues.json'), 'utf8'),
+  );
 
-const cities: any[] = [
-  { id: 'nyc', name: 'New York', kind: 'home', market: 'nyc' },
-  { id: 'london', name: 'London', kind: 'home', market: 'london' },
-];
-const hits: Record<string, any[]> = {
-  nyc: hitsFor(s => s.cat === undefined || s.cat === 'broadway'),
-  london: hitsFor(s => s.cat === 'west-end'),
-};
+  const cities: any[] = [
+    { id: 'nyc', name: 'New York', kind: 'home', market: 'nyc' },
+    { id: 'london', name: 'London', kind: 'home', market: 'london' },
+  ];
+  const hits: Record<string, any[]> = {
+    nyc: hitsFor(s => s.cat === undefined || s.cat === 'broadway'),
+    london: hitsFor(s => s.cat === 'west-end'),
+  };
 
-// A city gets its own hit list only with this many distinct titles that played in the window and have
-// art; below it the app falls back to the home market's list (listed in `fallback`). Never padded.
-const MIN_CITY_HITS = 5;
-const fallback: Record<string, string> = {};
+  // A city gets its own hit list only with this many distinct titles that played in the window and have
+  // art; below it the app falls back to the home market's list (listed in `fallback`). Never padded.
+  const MIN_CITY_HITS = 5;
+  const fallback: Record<string, string> = {};
 
-const seenUk = new Set<string>();
-for (const v of ukRegional) {
-  if (seenUk.has(v.city)) continue;
-  seenUk.add(v.city);
-  const id = `uk-${norm(v.city).replace(/ /g, '-')}`;
-  cities.push({ id, name: v.city, kind: 'uk-regional', market: 'london' });
-  // Venues of this city (a city can have several rows in uk-regional-venues.json).
-  const keys = ukRegional.filter(r => r.city === v.city).flatMap(r => [r.match, ...(r.aliases || [])]).map(k => k.toLowerCase());
-  const own = hitsFor(s => s.cat === 'regional' && !!s.v && keys.some(k => s.v!.toLowerCase().includes(k)));
-  if (own.length >= MIN_CITY_HITS) hits[id] = own; else fallback[id] = 'london';
+  const seenUk = new Set<string>();
+  for (const v of ukRegional) {
+    if (seenUk.has(v.city)) continue;
+    seenUk.add(v.city);
+    const id = `uk-${norm(v.city).replace(/ /g, '-')}`;
+    cities.push({ id, name: v.city, kind: 'uk-regional', market: 'london' });
+    // Venues of this city (a city can have several rows in uk-regional-venues.json).
+    const keys = ukRegional.filter(r => r.city === v.city).flatMap(r => [r.match, ...(r.aliases || [])]).map(k => k.toLowerCase());
+    const own = hitsFor(s => s.cat === 'regional' && !!s.v && keys.some(k => s.v!.toLowerCase().includes(k)));
+    if (own.length >= MIN_CITY_HITS) hits[id] = own; else fallback[id] = 'london';
+  }
+  for (const c of getTourCities().values()) {
+    cities.push({
+      id: `tour-${c.slug}`, name: c.city, kind: 'tour', market: 'nyc',
+      tag: /^Chicago\b/.test(c.city) ? 'Local shows + tours' : 'Touring city',
+    });
+  }
+
+  // Chicago is a first-class app market (local shows + tours), not just a tour stop.
+  if (!cities.some(c => /^Chicago\b/.test(c.name))) {
+    cities.push({ id: 'chicago', name: 'Chicago', kind: 'tour', market: 'chicago', tag: 'Local shows + tours' });
+  }
+  const chicago = cities.find(c => /^Chicago\b/.test(c.name))!;
+  {
+    // Local Chicago productions (venue "..., Chicago, IL"); tour stops stay out, their venue text lists many cities.
+    const own = hitsFor(s => s.cat === 'regional' && /,\s*Chicago,\s*IL\s*$/i.test(s.v || ''));
+    if (own.length >= MIN_CITY_HITS) hits[chicago.id] = own; else fallback[chicago.id] = 'nyc';
+  }
+
+  // Touring cities (BRO-6734): their own Seen and Want lists from the tour stops, never New York's.
+  const ymd = (d: Date) => d.toISOString().slice(0, 10);
+  const tours: TourIn[] = getAllShows()
+    .filter(s => s.category === 'tour')
+    .map(s => ({ id: s.id, title: s.title, status: s.status, score: s.criticScore?.score != null ? Math.round(s.criticScore.score) : null, stops: getTourSchedule(s.id) }))
+    .filter(t => t.stops.length > 0);
+  // A tour's poster is its Broadway (else West End) production's: the tour rows carry no art of their own.
+  const artByTitle = new Map<string, TitleArt>();
+  for (const cat of ['west-end', 'broadway'] as const) {
+    const isCat = (s: Show) => (cat === 'broadway' ? s.cat === undefined || s.cat === 'broadway' : s.cat === cat);
+    const byTitle = new Map<string, Show[]>();
+    for (const s of shows) if (isCat(s)) byTitle.set(norm(s.t), [...(byTitle.get(norm(s.t)) || []), s]);
+    for (const [k, prods] of byTitle) {
+      const art = [...prods].sort((a, b) => ((a.od || '') < (b.od || '') ? 1 : -1)).find(p => p.img?.po && !isBad(p.img.po));
+      if (!art) continue;
+      artByTitle.set(k, { poster: art.img!.po!, showId: art.id, days: prods.reduce((n, p) => n + daysInWindow(p), 0) });
+    }
+  }
+  const tourInput = { tours, art: (t: string) => artByTitle.get(norm(t)) ?? null, badPoster: isBad, today: ymd(today), windowStart: ymd(windowStart) };
+  const topUp = nationalTopTours(tourInput);
+  const want: Record<string, WantRow[]> = {};
+  const chicagoLocalWant: WantRow[] = shows
+    .filter(s => s.cat === 'regional' && /,\s*Chicago,\s*IL\s*$/i.test(s.v || '') && ['open', 'previews', 'upcoming'].includes(s.st) && s.img?.po && !isBad(s.img.po))
+    .sort((a, b) => (b.cs ?? 0) - (a.cs ?? 0))
+    .map(s => ({ showId: s.id, title: s.t, poster: s.img!.po!, score: s.cs ?? null, category: 'regional', note: (s.v || '').replace(/,\s*Chicago,\s*IL\s*$/i, '') || null }));
+  for (const c of cities.filter(x => x.kind === 'tour')) {
+    const tc = getTourCities().get(String(c.id).replace(/^tour-/, ''));
+    if (!tc) continue;
+    const isChicago = c.id === chicago.id;
+    const out = cityLists({
+      ...tourInput,
+      cityName: tc.city,
+      localSeen: isChicago ? (hits[c.id] ?? []) : [],
+      localWant: isChicago ? chicagoLocalWant : [],
+      topUp,
+    });
+    c.stops = out.stops;
+    if (out.seen.length >= MIN_CITY_HITS) { hits[c.id] = out.seen; delete fallback[c.id]; }
+    if (out.want.length > 0) want[c.id] = out.want;
+  }
+
+  const stamp = today.toISOString().slice(0, 10);
+  // Rewrite a file only when its content changed, ignoring the `generated` date. Open runs grow a day
+  // each day, so hits change daily; this only avoids a pure date-stamp rewrite of identical data.
+  const writeIfChanged = (name: string, body: Record<string, unknown>) => {
+    const file = path.join(OUT_DIR, name);
+    const strip = (o: any) => JSON.stringify({ ...o, generated: undefined });
+    try {
+      if (strip(JSON.parse(fs.readFileSync(file, 'utf8'))) === strip(body)) return console.log(`${name}: unchanged`);
+    } catch { /* missing or unreadable: write it */ }
+    fs.writeFileSync(file, JSON.stringify({ generated: stamp, ...body }) + '\n');
+    console.log(`${name}: written`);
+  };
+  writeIfChanged('onboarding-cities.json', { cities });
+  writeIfChanged('onboarding-hits.json', { windowYears: YEARS, minCityHits: MIN_CITY_HITS, hits, fallback, want });
+  for (const [k, v] of Object.entries(hits)) console.log(k, v.length, v.slice(0, 5).map(h => `${h.title}(${h.days}d)`).join(', '));
+  console.log('cities', cities.length, 'own lists', Object.keys(hits).length, 'fallback', Object.keys(fallback).length);
+  console.log('fallback', Object.entries(fallback).map(([k, v]) => `${k}->${v}`).join(' '));
 }
-for (const c of getTourCities().values()) {
-  cities.push({
-    id: `tour-${c.slug}`, name: c.city, kind: 'tour', market: 'nyc',
-    tag: /^Chicago\b/.test(c.city) ? 'Local shows + tours' : 'Touring city',
-  });
-}
 
-// Chicago is a first-class app market (local shows + tours), not just a tour stop.
-if (!cities.some(c => /^Chicago\b/.test(c.name))) {
-  cities.push({ id: 'chicago', name: 'Chicago', kind: 'tour', market: 'chicago', tag: 'Local shows + tours' });
-}
-const chicago = cities.find(c => /^Chicago\b/.test(c.name))!;
-{
-  // Local Chicago productions (venue "..., Chicago, IL"); tour stops stay out, their venue text lists many cities.
-  const own = hitsFor(s => s.cat === 'regional' && /,\s*Chicago,\s*IL\s*$/i.test(s.v || ''));
-  if (own.length >= MIN_CITY_HITS) hits[chicago.id] = own; else fallback[chicago.id] = 'nyc';
-}
-
-const stamp = today.toISOString().slice(0, 10);
-// Rewrite a file only when its content changed, ignoring the `generated` date. Open runs grow a day
-// each day, so hits change daily; this only avoids a pure date-stamp rewrite of identical data.
-const writeIfChanged = (name: string, body: Record<string, unknown>) => {
-  const file = path.join(OUT_DIR, name);
-  const strip = (o: any) => JSON.stringify({ ...o, generated: undefined });
-  try {
-    if (strip(JSON.parse(fs.readFileSync(file, 'utf8'))) === strip(body)) return console.log(`${name}: unchanged`);
-  } catch { /* missing or unreadable: write it */ }
-  fs.writeFileSync(file, JSON.stringify({ generated: stamp, ...body }) + '\n');
-  console.log(`${name}: written`);
-};
-writeIfChanged('onboarding-cities.json', { cities });
-writeIfChanged('onboarding-hits.json', { windowYears: YEARS, minCityHits: MIN_CITY_HITS, hits, fallback });
-for (const [k, v] of Object.entries(hits)) console.log(k, v.length, v.slice(0, 5).map(h => `${h.title}(${h.days}d)`).join(', '));
-console.log('cities', cities.length, 'own lists', Object.keys(hits).length, 'fallback', Object.keys(fallback).length);
-console.log('fallback', Object.entries(fallback).map(([k, v]) => `${k}->${v}`).join(' '));
+main().catch(e => { console.error(e); process.exit(1); });
