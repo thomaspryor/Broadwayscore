@@ -4,7 +4,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, sanitizeFlagInput, selectNoticeReviews, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
+import { signClaimLink, verifyClaimLink, sanitizeProfileEdit, sanitizeClaimInput, sanitizeFlagInput, selectNoticeReviews, cleanSocialLink, claimHints, CLAIM_LINK_TTL_SECONDS } from '../../src/lib/critic-claim';
 
 const SECRET = 'test-secret';
 const ID = '11111111-2222-3333-4444-555555555555';
@@ -65,10 +65,11 @@ test('non-object bodies yield an empty profile, not a throw', () => {
 });
 
 test('claim input validates slug, email and work link', () => {
-  assert.deepEqual(sanitizeClaimInput({ slug: 'jordan-ellis', contactEmail: 'j@e.com', workUrl: '', note: ' hi ' }), { slug: 'jordan-ellis', contactEmail: 'j@e.com', workUrl: null, note: 'hi' });
+  const soc = [{ platform: 'instagram', value: '@jordan' }];
+  assert.deepEqual(sanitizeClaimInput({ slug: 'jordan-ellis', contactEmail: 'j@e.com', socials: soc, workUrl: '', note: ' hi ' }), { slug: 'jordan-ellis', contactEmail: 'j@e.com', socials: [{ platform: 'instagram', url: 'https://instagram.com/jordan' }], workUrl: null, note: 'hi' });
   assert.ok('error' in sanitizeClaimInput({ slug: '../x', contactEmail: 'j@e.com' }));
   assert.ok('error' in sanitizeClaimInput({ slug: 'a', contactEmail: 'nope' }));
-  assert.ok('error' in sanitizeClaimInput({ slug: 'a', contactEmail: 'j@e.com', workUrl: 'ftp://x' }));
+  assert.ok('error' in sanitizeClaimInput({ slug: 'a', contactEmail: 'j@e.com', socials: soc, workUrl: 'ftp://x' }));
 });
 
 test('a score flag must name one of the critic\'s own reviews and carries only text', () => {
@@ -95,4 +96,36 @@ test('opening-night notice picks recent, unsent reviews once per show', () => {
   const out = selectNoticeReviews(reviews, new Set(['c']), now, 3);
   assert.deepEqual(out.map((r) => r.showSlug), ['a']);
   assert.equal(out[0].parsedDate, now - 1 * day);
+});
+
+test('social links: URL on the platform host or an @handle; anything else is refused', () => {
+  assert.deepEqual(cleanSocialLink('instagram', '@jane'), { platform: 'instagram', url: 'https://instagram.com/jane' });
+  assert.deepEqual(cleanSocialLink('bluesky', 'jane'), { platform: 'bluesky', url: 'https://bsky.app/profile/jane.bsky.social' });
+  assert.equal(cleanSocialLink('x', 'https://twitter.com/jane')?.url, 'https://twitter.com/jane');
+  assert.equal(cleanSocialLink('instagram', 'https://x.com/jane'), null);
+  assert.equal(cleanSocialLink('instagram', 'https://instagram.com/'), null);
+  assert.equal(cleanSocialLink('instagram', 'https://instagram.com.evil.example/jane'), null);
+  assert.equal(cleanSocialLink('instagram', 'javascript:alert(1)'), null);
+  assert.equal(cleanSocialLink('myspace', '@jane'), null);
+  assert.equal(cleanSocialLink('x', '@bad handle'), null);
+});
+
+test('claim form needs one to three social accounts, other fields optional', () => {
+  const base = { slug: 'jane-doe', contactEmail: 'jane@nytimes.com' };
+  assert.ok('error' in sanitizeClaimInput({ ...base, socials: [] }));
+  assert.ok('error' in sanitizeClaimInput({ ...base }));
+  assert.ok('error' in sanitizeClaimInput({ ...base, socials: [{ platform: 'x', value: 'https://evil.example/x' }] }));
+  const ok = sanitizeClaimInput({ ...base, socials: [{ platform: 'x', value: '@jane' }, { platform: 'x', value: '@jane' }, { platform: 'instagram', value: 'jane' }, { platform: 'tiktok', value: 'fourth-is-ignored' }] });
+  assert.ok(!('error' in ok));
+  if (!('error' in ok)) { assert.equal(ok.socials.length, 2); assert.equal(ok.workUrl, null); assert.equal(ok.note, null); }
+});
+
+test('claim hints are information only and cover the four cases', () => {
+  const h = (o: Partial<Parameters<typeof claimHints>[0]>) => claimHints({ contactEmail: 'a@nytimes.com', accountEmail: 'a@nytimes.com', outletDomain: 'nytimes.com', otherClaimStatuses: [], ...o });
+  assert.deepEqual(h({}), ['Email domain matches their outlet (nytimes.com)']);
+  assert.deepEqual(h({ contactEmail: 'a@gmail.com', accountEmail: 'a@gmail.com' }), ['Personal email (gmail etc.)']);
+  assert.ok(h({ accountEmail: 'b@gmail.com' }).includes('Signed-in account email differs from contact email'));
+  assert.ok(h({ otherClaimStatuses: ['pending'] }).includes('Another claim on this page is pending'));
+  assert.ok(h({ otherClaimStatuses: ['pending', 'approved'] }).includes('Another claim on this page is approved'));
+  assert.ok(!h({ contactEmail: 'a@notnytimes.com', accountEmail: 'a@notnytimes.com' }).some((x) => x.startsWith('Email domain matches')));
 });

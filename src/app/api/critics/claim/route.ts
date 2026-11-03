@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getCriticBySlug } from '@/lib/data-reviews';
-import { sanitizeClaimInput, signClaimLink } from '@/lib/critic-claim';
+import { getCriticBySlug, getOutletBySlug, getOutletSlugById } from '@/lib/data-reviews';
+import { sanitizeClaimInput, signClaimLink, claimHints } from '@/lib/critic-claim';
 import { criticBackendReady, getRequestUser, sbAdmin, emailOwner, escHtml, getClaimsForUser } from '@/lib/critic-server';
 
 export const dynamic = 'force-dynamic';
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
 
   const ins = await sbAdmin('/rest/v1/critic_claims', {
     method: 'POST', prefer: 'return=representation',
-    body: JSON.stringify({ critic_slug: input.slug, user_id: user.id, contact_email: input.contactEmail, work_url: input.workUrl, note: input.note }),
+    body: JSON.stringify({ critic_slug: input.slug, user_id: user.id, contact_email: input.contactEmail, work_url: input.workUrl, social_links: input.socials, note: input.note }),
   });
   if (!ins.ok) {
     console.error('[critics/claim] insert failed', ins.status);
@@ -47,11 +47,27 @@ export async function POST(req: NextRequest) {
     const p = signClaimLink(secret || '', action, row.id);
     return `${SITE}/api/critics/decide?${new URLSearchParams({ c: p.c, a: p.a, e: String(p.e), s: p.s })}`;
   };
-  const html = `<p><b>${escHtml(critic.name)}</b> (${escHtml(critic.primaryOutlet)}) asked to claim <a href="${SITE}/critics/${input.slug}">${SITE}/critics/${input.slug}</a>.</p>
-<p>Contact: ${escHtml(input.contactEmail)} (sign-in account: ${escHtml(user.email)})<br>
-Work: ${input.workUrl ? `<a href="${escHtml(input.workUrl)}">${escHtml(input.workUrl)}</a>` : 'not given'}<br>
+  const others = await sbAdmin(`/rest/v1/critic_claims?critic_slug=eq.${encodeURIComponent(input.slug)}&id=neq.${row.id}&status=in.(pending,approved)&select=status`);
+  const otherClaimStatuses = others.ok ? ((await others.json()) as { status: string }[]).map((r) => r.status) : [];
+  const outletSlug = getOutletSlugById(critic.primaryOutletId);
+  const outletDomain = (outletSlug && getOutletBySlug(outletSlug)?.logoDomain) || null;
+  const hints = claimHints({ contactEmail: input.contactEmail, accountEmail: user.email, outletDomain, otherClaimStatuses });
+  const recent = [...critic.reviews]
+    .map((r) => ({ r, t: (r as { parsedDate?: number | null }).parsedDate ?? Date.parse((r as { publishDate?: string }).publishDate || '') }))
+    .filter((x) => Number.isFinite(x.t))
+    .sort((x, y) => (y.t as number) - (x.t as number))
+    .slice(0, 3);
+  const socialHtml = input.socials.map((l) => `<a href="${escHtml(l.url)}">${escHtml(l.url)}</a>`).join('<br>');
+  const first = critic.name.split(' ')[0];
+  const reply = `Hi ${first}, thanks for claiming your page on Broadway Scorecard. To confirm it's you, could you send a quick DM to @bwayscorecard from ${input.socials[0].url}? Once I see it I'll switch your page on.`;
+  const html = `<p><b>${escHtml(critic.name)}</b> asked to claim <a href="${SITE}/critics/${input.slug}">${SITE}/critics/${input.slug}</a></p>
+<p>Social accounts they gave:<br>${socialHtml}</p>
+<p><b>What we already know</b><br>Outlets: ${escHtml(critic.outlets.join(', ') || critic.primaryOutlet)}<br>Reviews on file: ${critic.reviewCount}<br>Most recent:<br>${recent.map(({ r }) => { const rv = r as { url?: string; showTitle?: string; outlet?: string }; return rv.url ? `<a href="${escHtml(rv.url)}">${escHtml(rv.showTitle || rv.url)}</a> (${escHtml(rv.outlet || '')})` : escHtml(rv.showTitle || ''); }).join('<br>') || 'none'}</p>
+<p><b>Hints</b> (information only, nothing is approved for you)<br>${hints.map((h) => `&bull; ${escHtml(h)}`).join('<br>') || 'none'}</p>
+<p>Contact: ${escHtml(input.contactEmail)} (signed in as ${escHtml(user.email)})<br>
+Work link: ${input.workUrl ? `<a href="${escHtml(input.workUrl)}">${escHtml(input.workUrl)}</a>` : 'not given'}<br>
 Note: ${escHtml(input.note || 'none')}</p>
-<p>Reply to this email to reach them. When you are satisfied it is them:</p>
+<p><b>Reply you can paste</b> (this email is reply-to them):<br><i>${escHtml(reply)}</i></p>
 <p><a href="${link('approve')}">Approve</a> &nbsp;|&nbsp; <a href="${link('decline')}">Decline</a></p>
 <p style="color:#888;font-size:12px">Each link opens a confirm page first; nothing changes until you press the button there.</p>`;
   const sent = secret ? await emailOwner(`Critic page claim: ${critic.name}`, html, input.contactEmail) : false;

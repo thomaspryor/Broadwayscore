@@ -103,6 +103,7 @@ function ClaimModal({ open, onClose, slug, name, defaultEmail, onDone }: {
 }) {
   const [email, setEmail] = useState(defaultEmail);
   const [workUrl, setWorkUrl] = useState('');
+  const [socials, setSocials] = useState<{ platform: string; value: string }[]>([{ platform: 'instagram', value: '' }]);
   const [note, setNote] = useState('');
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -117,7 +118,7 @@ function ClaimModal({ open, onClose, slug, name, defaultEmail, onDone }: {
       if (!token) { setError('Please sign in again.'); return; }
       const res = await fetch('/api/critics/claim', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ slug, contactEmail: email, workUrl, note }),
+        body: JSON.stringify({ slug, contactEmail: email, socials, workUrl, note }),
       });
       const j = await res.json().catch(() => ({}));
       if (!res.ok) { setError(j.error || 'Something went wrong. Please try again.'); return; }
@@ -141,9 +142,24 @@ function ClaimModal({ open, onClose, slug, name, defaultEmail, onDone }: {
               <label htmlFor="claim-email" className="block text-sm font-medium text-gray-200 mb-1">Best email to reach you</label>
               <input id="claim-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} className={inputClasses} />
             </div>
+            <fieldset>
+              <legend className="block text-sm font-medium text-gray-200 mb-1">Your main social account (at least one)</legend>
+              {socials.map((s, i) => (
+                <div key={i} className="flex gap-2 mb-2">
+                  <select aria-label={`Platform ${i + 1}`} value={s.platform} onChange={(e) => setSocials((all) => all.map((x, j) => (j === i ? { ...x, platform: e.target.value } : x)))} className={inputClasses + ' !w-auto'}>
+                    {['instagram', 'x', 'bluesky', 'threads', 'tiktok', 'linkedin', 'facebook'].map((p) => <option key={p} value={p}>{p === 'x' ? 'X' : p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
+                  </select>
+                  <input aria-label={`Social link ${i + 1}`} id={`claim-social-${i}`} type="text" required={i === 0} value={s.value} onChange={(e) => setSocials((all) => all.map((x, j) => (j === i ? { ...x, value: e.target.value } : x)))} placeholder="@handle or link" className={inputClasses} />
+                </div>
+              ))}
+              {socials.length < 3 && (
+                <button type="button" onClick={() => setSocials((all) => [...all, { platform: 'x', value: '' }])} className="text-sm text-brand hover:underline">Add another account</button>
+              )}
+              <p className="text-xs text-fg-muted mt-1">We&apos;ll message you there or by email to confirm it&apos;s you.</p>
+            </fieldset>
             <div>
               <label htmlFor="claim-url" className="block text-sm font-medium text-gray-200 mb-1">Where can we see your work? (optional)</label>
-              <input id="claim-url" type="url" value={workUrl} onChange={(e) => setWorkUrl(e.target.value)} placeholder="Outlet author page, website or social" className={inputClasses} />
+              <input id="claim-url" type="url" value={workUrl} onChange={(e) => setWorkUrl(e.target.value)} placeholder="Outlet author page or website" className={inputClasses} />
             </div>
             <div>
               <label htmlFor="claim-note" className="block text-sm font-medium text-gray-200 mb-1">Anything else (optional)</label>
