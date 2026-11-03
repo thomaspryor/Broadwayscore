@@ -160,6 +160,7 @@ function isolateColumnSection(text, showTitle, { aliases = [], knownTitles = [] 
 
 const FLAT_MIN_CHARS = 1500;
 const FLAT_OWNER_CHARS = 400; // a section names its show this early
+const FLAT_UNSPLITTABLE_OTHERS = 3; // other shows each reviewed (named twice+) that make an unsplittable page a column
 const SECTION_FOOTER = /About\s+\d+\s+(?:hours?|minutes?)(?:\s+\d+\s+minutes?)?(?:,\s*(?:including|with)\s+(?:an?\s+|one\s+|two\s+)?intermissions?)?\.\s+[\w.-]+\.(?:com|org|net|nyc|co\.uk)\/?\S*\.?/g;
 
 /** Sentences: split after . ! ? (and a closing quote) before a capital or an opening quote. */
@@ -207,7 +208,6 @@ function isolateFlatColumnSection(text, showTitle, { aliases = [], knownTitles =
   if (str.length < FLAT_MIN_CHARS || /\n/.test(str.trim())) return null;
   const ends = []; let m; SECTION_FOOTER.lastIndex = 0;
   while ((m = SECTION_FOOTER.exec(str)) !== null) ends.push(m.index + m[0].length);
-  if (ends.length < 2) return null;
   const sections = []; let start = 0;
   for (const e of ends) { sections.push(str.slice(start, e).trim()); start = e; }
   const tail = str.slice(start).trim();
@@ -226,14 +226,40 @@ function isolateFlatColumnSection(text, showTitle, { aliases = [], knownTitles =
     defs.push({ key, variants: [w] });
   }
 
+  // Too few footers to split on. Returning null here would hand the caller the WHOLE column as one review, which is
+  // the defect this module exists to stop, so when the page is plainly a column anyway (several OTHER shows each
+  // reviewed, i.e. named more than once) refuse instead and store nothing. A single review that name-drops a couple
+  // of other shows stays on the old path.
+  if (ends.length < 2) {
+    const counts = new Map();
+    for (const x of flatMentions(str, defs)) if (x.key !== targetKey) counts.set(x.key, (counts.get(x.key) || 0) + 1);
+    const reviewedElsewhere = [...counts.values()].filter((n) => n >= MIN_TITLE_MENTIONS).length;
+    if (reviewedElsewhere >= FLAT_UNSPLITTABLE_OTHERS) {
+      return { action: 'refuse', text: null, reason: 'unsplittable-column', sectionCount: sections.length };
+    }
+    return null;
+  }
+
+  // A section's owner must be named at least MIN_TITLE_MENTIONS times in it AND be the only show named in its
+  // opening window: the newline path has both rules (openers must name exactly one show), and without them a passing
+  // reference wins the section. Real case: the Washington Post 5-show column of 2026-10, where "Charlie and the
+  // Chocolate Factory" (named once, as a Roald Dahl aside) took ownership of the section reviewing "Giant".
   const owners = sections.map((sec) => {
-    const first = flatMentions(sec, defs).filter((x) => x.pos <= FLAT_OWNER_CHARS).sort((a, b) => a.pos - b.pos)[0];
-    return first ? first.key : null;
+    const found = flatMentions(sec, defs);
+    const counts = new Map();
+    for (const x of found) counts.set(x.key, (counts.get(x.key) || 0) + 1);
+    const window = found.filter((x) => x.pos <= FLAT_OWNER_CHARS).sort((a, b) => a.pos - b.pos);
+    const distinct = new Set(window.map((x) => x.key));
+    if (distinct.size !== 1) return null;
+    const key = window[0].key;
+    return (counts.get(key) || 0) >= MIN_TITLE_MENTIONS ? key : null;
   });
   const mine = owners.map((o, i) => (o === targetKey ? i : -1)).filter((i) => i >= 0);
   if (mine.length === 0) return { action: 'refuse', text: null, reason: 'show-not-found', sectionCount: sections.length };
   if (mine.length > 1) return { action: 'refuse', text: null, reason: 'ambiguous', sectionCount: sections.length };
-  const kept = splitSentences(sections[mine[0]]).filter((s) => !flatMentions(s, defs).some((x) => x.key !== targetKey));
+  const kept = splitSentences(sections[mine[0]])
+    .filter((s) => !flatMentions(s, defs).some((x) => x.key !== targetKey))
+    .filter((s) => /[A-Za-z]{2}/.test(s)); // a previous section's footer can leave a ". " shard at the head
   const out = kept.join(' ');
   if (wordCount(out) < MIN_TARGET_WORDS) return { action: 'refuse', text: null, reason: 'too-short', sectionCount: sections.length };
   if (countOtherCriticAttributions(out) >= 1) return { action: 'refuse', text: null, reason: 'roundup', sectionCount: sections.length };
