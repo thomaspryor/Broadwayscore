@@ -109,6 +109,7 @@ const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpenin
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { recordDeferredShows } = require('./lib/gather-deferred');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
+const { appendCrossShowUrlRow } = require('./lib/cross-show-url-ledger'); // BRO-6910
 const { detectForeignTitlePosting, foreignTitleEntriesFromHtml, isForeignTitleReview } = require('./lib/bww-foreign-title');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { checkReviewTextsPreflight } = require('./lib/review-texts-preflight');
@@ -2484,6 +2485,7 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
         rejected++;
         console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch.matchedTitle}" not "${crossShowMatch.showTitle}" — ${candidateUrl.substring(0, 80)}`);
         logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch.matchedTitle } });
+        appendCrossShowUrlRow({ showId, url: candidateUrl, outletId: review.outletId, criticName: review.criticName, matchedShowId: crossShowMatch.matchedShowId, matchedTitle: crossShowMatch.matchedTitle, source: 'bww-roundup-url-assign' });
         continue;
       }
       review.url = candidateUrl;
@@ -3485,6 +3487,15 @@ function createReviewFile(showId, reviewData, options = {}) {
         return createReviewFile(mismatch.matchedShowId, reviewData, { ...options, _crossShowVisited: visited });
       }
       console.log(`    ✗ Skipping ${filename}: URL belongs to "${mismatch.matchedTitle}" not "${mismatch.showTitle}" — ${reviewData.url}`);
+      // BRO-6910: this drop used to leave no durable trace, so Waiting for
+      // Lefty lost 4 Playbill-Verdict-listed reviews and still graded PASS.
+      // The ledger row makes the gap audit count the URL as cited-not-live.
+      appendCrossShowUrlRow({
+        showId, url: reviewData.url, outletId: reviewData.outletId, criticName: reviewData.criticName,
+        matchedShowId: mismatch.matchedShowId, matchedTitle: mismatch.matchedTitle,
+        matchedStatus: matchedShow ? matchedShow.status : null,
+        source: reviewData.source || null, sourceUrl: reviewData.sourceUrl || null,
+      });
       return 'crossShowUrl';
     }
   }

@@ -699,6 +699,9 @@ jobs:
           # checkouts for isInRoundupMissCooldown() to see prior misses at all; without
           # this commit every run starts from an empty ledger and the cooldown never fires.
           { [ -f data/audit/bww-roundup-miss-ledger.jsonl ] && git add data/audit/bww-roundup-miss-ledger.jsonl; } || true
+          # BRO-6910: reviews createReviewFile's cross-show URL guard dropped; the gap
+          # audit reads this to FAIL a show whose real review vanished.
+          { [ -f data/audit/cross-show-url-holds.jsonl ] && git add data/audit/cross-show-url-holds.jsonl; } || true
           # Task #752: Browserbase/BD/SB/SD call-attribution ledger. This workflow is the
           # heaviest caller (BWW RR discovery + Stage cookie fetch via bww-rr-discover.js /
           # opening-night-poller.js's own BB session) — without this line every session it
