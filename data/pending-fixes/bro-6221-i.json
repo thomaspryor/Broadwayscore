@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6221-i",
   "planId": "c2cb4ff9-8963-426a-8a89-4e6fb273b41f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-03T15:03:22.151Z",
   "submitter": {
     "name": null,
@@ -284,5 +284,84 @@
         "description": "shows.json: heathen-1972.images thumbnail -> null (file missing from public/, BRO-6221)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T18:08:39.995Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-selling-of-the-president-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for elizabeth-i-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for sugar-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for thats-entertainment-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for promenade-all-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for captain-brassbounds-conversion-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for lost-in-the-stars-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for all-the-girls-came-out-to-play-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-little-black-book-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for an-evening-with-richard-nixon-and-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for different-times-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for tough-to-get-help-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for hard-job-being-god-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for dont-play-us-cheap-1972"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for heathen-1972"
+    }
+  ],
+  "executedIn": "ci"
 }

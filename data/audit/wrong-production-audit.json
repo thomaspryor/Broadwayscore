@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-03T17:08:13.605Z",
+  "timestamp": "2026-11-03T18:07:01.344Z",
   "stats": {
-    "totalReviews": 79938,
-    "alreadyFlagged": 22033,
+    "totalReviews": 79925,
+    "alreadyFlagged": 22047,
     "dateGuardCatches": 216,
-    "directorMismatch": 3455,
+    "directorMismatch": 3459,
     "tvFilmSignals": 2262,
     "londonSignals": 3589,
     "offBroadwaySignals": 735,
     "yearMismatch": 360,
-    "noPublishDate": 8539
+    "noPublishDate": 8500
   },
   "findings": [
     {
@@ -472,6 +472,30 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2016",
+      "file": "essentialsurrey--samantha-laurie.json",
+      "score": null,
+      "publishDate": "2016-10-10",
+      "url": "https://www.essentialsurrey.co.uk/theatre-arts/review-1984-west-end/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from 1984-2017"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -44945,19 +44969,6 @@
     },
     {
       "showId": "north-by-northwest-old-regional-2026",
-      "file": "san-diego-union-tribune--pam-kragen.json",
-      "publishDate": "2026-07-10",
-      "url": "https://www.sandiegouniontribune.com/2026/07/10/review-funny-and-dance-fueled-north-by-northwest-dazzles-in-its-american-premiere/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
-        }
-      ]
-    },
-    {
-      "showId": "north-by-northwest-old-regional-2026",
       "file": "stageandcinema--michael-m-landman-karny.json",
       "score": 77,
       "publishDate": "2026-07-14",
@@ -73795,8 +73806,8 @@
       "showId": "the-scottsboro-boys-west-end-2014",
       "file": "financialtimes--sarah-hemming.json",
       "score": 85,
-      "publishDate": "2014-10-21T18:58:19-04:00",
-      "url": "https://www.ft.com/intl/cms/s/0/fe402b3a-5854-11e4-b331-00144feab7de.html#axzz3Gp54Ejyp",
+      "publishDate": "2014-10-20",
+      "url": "https://www.ft.com/intl/cms/s/0/fe402b3a-5854-11e4-b331-00144feab7de.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -73863,6 +73874,53 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 70,
+      "publishDate": "2014-10-21",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11177121/Scottsboro-Boys-Garrick-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "timeout-london--laura-barnett.json",
+      "score": 74,
+      "publishDate": "2014-10-19",
+      "url": "http://www.timeout.com/london/theatre/the-scottsboro-boys",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "times-uk--sam-marlowe.json",
+      "score": 90,
+      "publishDate": "2014-10-21T18:58:19-04:00",
+      "url": "https://www.thetimes.co.uk/tto/news/uk/article4242562.ece",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -75289,7 +75347,7 @@
     {
       "showId": "the-weir-west-end-2014",
       "file": "telegraph--dominic-cavendish.json",
-      "publishDate": null,
+      "publishDate": "2014-01-23",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/10589792/The-Weir-Wyndhams-Theatre-review.html",
       "findings": [
         {
@@ -102704,20 +102762,6 @@
       ]
     },
     {
-      "showId": "how-the-other-half-loves-west-end-2016",
-      "file": "standard--henry-hitchings.json",
-      "score": 75,
-      "publishDate": "2016-04-05",
-      "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-theatre-review-no-love-lost-in-this-sharp-and-funny-revival-of-a-classic-a3215886.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "all-allam--margaux.json",
       "score": 82,
@@ -111348,7 +111392,7 @@
     },
     {
       "showId": "motown-the-musical-west-end-2016",
-      "file": "londontheatre1--unknown.json",
+      "file": "londontheatre1--neil-cheesman.json",
       "score": null,
       "publishDate": null,
       "url": "https://www.londontheatre1.com/london-theatre/motown-the-musical/",
@@ -117781,20 +117825,6 @@
       ]
     },
     {
-      "showId": "romeo-and-juliet-west-end-2016",
-      "file": "standard--henry-hitchings.json",
-      "score": 62,
-      "publishDate": "2016-05-26",
-      "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-theatre-review-not-romantic-or-deeply-moving-a3257446.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
-        }
-      ]
-    },
-    {
       "showId": "romeo-and-juliet-west-end-2024",
       "file": "guardian--susannah-clapp.json",
       "score": 89,
@@ -118248,6 +118278,20 @@
       "score": 66,
       "publishDate": "2013-09-29",
       "url": "https://www.britishtheatreguide.info/reviews/routes-royal-court-the-9435",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "routes-west-end-2013",
+      "file": "standard--the-standard.json",
+      "score": 76,
+      "publishDate": "2013-09-26",
+      "url": "https://www.standard.co.uk/culture/theatre/routes-royal-court-upstairs-theatre-review-8841052.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -129368,20 +129412,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
-        }
-      ]
-    },
-    {
-      "showId": "the-mentalists-west-end-2015",
-      "file": "standard--unknown.json",
-      "score": null,
-      "publishDate": "2015-07-14",
-      "url": "https://www.standard.co.uk/showbiz/celebrity-news/stephen-merchant-exhausted-but-relieved-after-theatre-debut-in-the-mentalists-10387206.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
