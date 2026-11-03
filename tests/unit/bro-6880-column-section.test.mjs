@@ -63,3 +63,33 @@ test('non-column hosts are untouched; short text is returned unchanged', () => {
   assert.equal(isolateMultiShowSection('https://example.com/a', COLUMN, 'The Imaginary Invalid', [], TITLES).action, 'not-multi-show');
   assert.equal(isolateColumnSection('Short.', 'The Imaginary Invalid', { knownTitles: TITLES }).action, 'single-section');
 });
+
+// BRO-6872: some fetch routes flatten the column to one line. Sections are then found from each review's listing
+// footer ("About 1 hour 30 minutes. example.org."), and a section belongs to the show it names first.
+const foot = (site) => `Through Nov. 22 at the Example Theatre. About 1 hour 30 minutes. ${site}.org.`;
+const FLAT_ODC = `Two big names lead this week. ‘Other Desert Cities’ returns with a family fight over a memoir. ${filler('ODC', 8)} ${foot('odc')}`;
+const FLAT_SG = `Here are two more. ‘School Girls; Or, The African Mean Girls Play’ follows a clique in Ghana. ${filler('SG', 8)} ${foot('sg')}`;
+const FLAT_TII = `If anyone can adapt Moliere, it is this company with ‘The Imaginary Invalid,’ a farce about a man sure he is dying. ${filler('TII', 6)} Unlike ‘Other Desert Cities,’ it never sags. Sometimes that is just what the doctor ordered. ${foot('tii')}`;
+const FLAT = [FLAT_ODC, FLAT_SG, FLAT_TII].join(' ');
+const FLAT_TITLES = [...TITLES, 'The Doctor', 'Broadway'];
+
+test('flattened column: the target section is kept, sentences naming another show are dropped', () => {
+  assert.ok(!FLAT.includes('\n') && FLAT.length > 1500);
+  const iso = isolateMultiShowSection(URL, FLAT, 'The Imaginary Invalid', [], FLAT_TITLES);
+  assert.equal(iso.action, 'isolated');
+  assert.match(iso.text, /^If anyone can adapt Moliere/);
+  assert.match(iso.text, /just what the doctor ordered/, 'lower-case prose is not the title "The Doctor"');
+  assert.match(iso.text, /tii\.org\.$/);
+  assert.doesNotMatch(iso.text, /Desert Cities|School Girls|ODC|SG cast/);
+  const sg = isolateMultiShowSection(URL, FLAT, 'School Girls; Or, The African Mean Girls Play', [], FLAT_TITLES);
+  assert.equal(sg.action, 'isolated');
+  assert.doesNotMatch(sg.text, /Imaginary|ODC/);
+});
+
+test('flattened column: refuses when the show owns no section or two; one footer is a single review', () => {
+  assert.equal(isolateMultiShowSection(URL, FLAT, 'Hamilton', [], FLAT_TITLES).action, 'refuse');
+  const twice = `${FLAT} ‘The Imaginary Invalid’ again, briefly. ${filler('again', 6)} ${foot('again')}`;
+  assert.equal(isolateMultiShowSection(URL, twice, 'The Imaginary Invalid', [], FLAT_TITLES).reason, 'ambiguous');
+  const one = `${FLAT_TII} ${filler('more', 10)}`;
+  assert.equal(isolateMultiShowSection(URL, one, 'The Imaginary Invalid', [], FLAT_TITLES).action, 'single-section');
+});
