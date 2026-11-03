@@ -856,5 +856,36 @@
       }
     ],
     "queuedAt": "2026-11-03T23:01:09.856Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6928-critic-splits",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6928-critic-splits",
+    "description": "land.yml did not land land/bro-6928-critic-splits: the unit-tests-node gate went red at ccd7f6ad37. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41733456491",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6928-critic-splits"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "ccd7f6ad3700f48eb874a6c8fd880c2f1a0ce830"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41733456491"
+      }
+    ],
+    "queuedAt": "2026-11-03T23:14:38.433Z"
   }
 ]
