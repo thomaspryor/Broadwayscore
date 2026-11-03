@@ -17,7 +17,7 @@ test('real splits merge', () => {
     [pg('Andrjez Lukowski', 1, 'Time Out London'), pg('Andrzej Lukowski', 371, 'Time Out London')],
     [pg('David Fargnoli', 1, 'Stage Left'), pg('Dave Fargnoli', 30, 'Stage Left')],
     [pg('Chris Caggiano', 15, 'Dc Metro'), pg('Christopher Caggiano', 12, 'Dc Metro')],
-    [pg('Jospeh Verlezza', 1, 'X'), pg('Joseph Verlezza', 40, 'Y')],
+    [pg('Jospeh Verlezza', 1, 'Theatre Reviews Limited'), pg('Joseph Verlezza', 40, 'Theatre Reviews Limited')],
     [pg('Erickson Elisabeth Vincentelli', 1, 'X'), pg('Elisabeth Vincentelli', 200, 'Y')],
   ];
   for (const [a, b] of cases) assert.equal(classifyVariantPair(a, b).verdict, 'merge', `${a.name} / ${b.name}`);
