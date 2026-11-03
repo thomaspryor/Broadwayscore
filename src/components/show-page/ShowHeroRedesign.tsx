@@ -28,7 +28,6 @@
  * resumed when the user lands back on this page authenticated.
  */
 
-import { liveInHdLine } from '@/lib/met-live-in-hd';
 import { foldVenueName } from '@/lib/venue-fold';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -130,6 +129,8 @@ interface ShowHeroRedesignProps {
    *  doesn't apply. Computed server-side for the same reason as tourReviewYears,
    *  and shared with the legacy hero so both show it for the same shows. */
   reviewAgeNote?: string | null;
+  /** Wording computed with metadata on the server, preserved for cached pages. */
+  liveInHdText?: string | null;
   /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
    *  shared with the legacy header so the redesign keeps those links. */
   trustLines?: React.ReactNode;
@@ -176,6 +177,7 @@ function Inner({
   ranks,
   tourReviewYears,
   reviewAgeNote,
+  liveInHdText,
   trustLines,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
@@ -560,9 +562,9 @@ function Inner({
               {show.runtime ? <span className="whitespace-nowrap"> · {show.runtime}</span> : null}
             </p>
             <DateLine show={show} tourReviewYears={tourReviewYears ?? null} />
-            {isOperaShow(show) && liveInHdLine(show.liveInHd) ? (
+            {isOperaShow(show) && liveInHdText ? (
               <p className="text-xs text-fg-muted" data-testid="live-in-hd">
-                <a href={show.liveInHd!.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-brand transition-colors">{liveInHdLine(show.liveInHd)}</a>
+                <a href={show.liveInHd!.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-brand transition-colors">{liveInHdText}</a>
                 {' '}<span className="text-fg-muted">(Met Live in HD)</span>
               </p>
             ) : null}

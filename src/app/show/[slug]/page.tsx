@@ -3,7 +3,7 @@ import { foldVenueName } from '@/lib/venue-fold';
 import { noCriticReviewsExpected } from '@/lib/review-expectation';
 import Link from 'next/link';
 import { Metadata } from 'next';
-import { Suspense } from 'react';
+import { cache, Suspense } from 'react';
 import { isCategoryEnabled } from '@/lib/markets';
 import { HIDDEN_LONDON_IDS } from '../../../../scripts/lib/page-name-sources';
 import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
@@ -35,7 +35,7 @@ import { generateShowSchema, generateBreadcrumbSchema, generateShowFAQSchema, ge
 import { isLondonMarket } from '@/lib/venue-classification';
 import { getCurrencySymbol, isUkRegionalShow } from '@/lib/market-utils';
 import { isOperaShow, getOperaHouseSuffix, getOperaMarketLabel } from '@/lib/show-market';
-import { liveInHdLine, liveInHdDescription, liveInHdIsCurrent } from '@/lib/met-live-in-hd';
+import { liveInHdLine, liveInHdDescription } from '@/lib/met-live-in-hd';
 import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
@@ -81,6 +81,15 @@ import { isShowIndexable } from '@/lib/seo-indexability';
 import { ShowPageWatchlistButton, ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 
 export const revalidate = 86400;
+
+// Metadata and both hero layouts share one request snapshot, even across UTC
+// midnight. The cached page passes the wording through hydration unchanged.
+const getLiveInHdForRender = cache((slug: string) => {
+  const show = getShowBySlug(slug);
+  const hd = isOperaShow(show) ? show?.liveInHd : null;
+  const today = new Date().toISOString().slice(0, 10);
+  return { line: liveInHdLine(hd, today), description: liveInHdDescription(hd, today) };
+});
 
 // getBrowseSlug moved to src/lib/browse-slugs.ts so WhereItRanks + breadcrumb
 // share the same mapping (plays land on best-broadway-dramas, etc.). See that
@@ -184,7 +193,6 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     ? ` Now in ${tourNow.city} (${tourNow.venue}) through ${formatShowDate(tourNow.end, { month: 'short', day: 'numeric' })}.`
     : isTourMeta ? ` ${label} on tour.` : show.venue ? ` ${label} at ${show.venue}.` : ` ${label}.`);
   const statusPart = statusLabel ? venuePhrase(statusLabel) : '';
-  const synopsisPart = synopsisSnippet ? ` ${synopsisSnippet}` : '';
   const SENTIMENT_PHRASES: Record<string, string> = {
     'Critical Gold': `Critics rave about ${show.title}: ${roundedScore}/100 from ${reviewCount} reviews.`,
     'Recommended': `${show.title} earns positive reviews: ${roundedScore}/100 from ${reviewCount} critics.`,
@@ -192,19 +200,17 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     'Mixed': `Critics are mixed on ${show.title}: ${roundedScore}/100 from ${reviewCount} reviews.`,
     'Critical Miss': `${show.title} gets poor reviews from critics: ${roundedScore}/100 from ${reviewCount} reviews.`,
   };
-  const description = (score && roundedScore && tier
-    ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
+  const descriptionLead = (score && roundedScore && tier
+    ? SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`
     : `${noCriticReviewsExpected(show, reviewCount)
       ? `${show.title} ${marketLabel}: no critic reviews were found for this event.`
       : isLiveTour(show) && reviewCount === 0
       ? `Reviews of ${show.title} ${marketLabel} are coming in as local critics see it in each city.`
-      : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
+      : `Read ${reviewCount > 0 ? `${reviewCount} ` : ''}critic reviews for ${show.title} ${marketLabel}.`}`
   ).trim();
-  // The Live in HD sentence goes before the synopsis snippet (which is what gets cut at 160 chars).
-  const hdSentence = isOperaMeta ? liveInHdDescription(show.title, show.liveInHd) : null;
-  const fullDescription = hdSentence && synopsisSnippet && description.endsWith(synopsisSnippet)
-    ? `${description.slice(0, description.length - synopsisSnippet.length).trimEnd()} ${hdSentence} ${synopsisSnippet}`
-    : hdSentence ? `${description} ${hdSentence}` : description;
+  // Put the date immediately after the verdict, ahead of venue and synopsis.
+  const hd = getLiveInHdForRender(params.slug);
+  const fullDescription = `${descriptionLead}${hd.description ? ` ${hd.description}` : ''}${statusPart}${synopsisSnippet ? ` ${synopsisSnippet}` : ''}`.trim();
   const truncatedDescription = fullDescription.length > 160
     ? fullDescription.slice(0, 157).replace(/\s\S*$/, '...')
     : fullDescription;
@@ -218,7 +224,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
   return {
     title: {
-      absolute: isOperaMeta && liveInHdIsCurrent(show.liveInHd)
+      absolute: hd.line
         ? `${seoTitle}${titleYearSuffix} Reviews & Met Live in HD${roundedScore && titleSentimentWord ? ` (${roundedScore}/100)` : ''} | ${siteName}`
         : roundedScore && titleSentimentWord
         ? `${seoTitle}${titleYearSuffix} Reviews: ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
@@ -288,6 +294,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const isRegional = show.category === 'regional';
   const isTour = show.category === 'tour';
   const isOpera = isOperaShow(show);
+  const hd = getLiveInHdForRender(params.slug);
 
   // Theater scorecard lookup (Broadway only) — regional/off-broadway/tour venues aren't Broadway houses
   const theater = !isWestEnd && !isOffBroadway && !isRegional && !isTour && show.venue ? getTheaterBySlug(slugify(foldVenueName(show.venue))) : undefined;
@@ -557,6 +564,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               hasAudience={hasAudience}
               hasEnoughCriticReviews={!showTBD}
               reviewAgeNote={reviewAgeNote}
+              liveInHdText={hd.line}
               sortedTicketLinks={sortedTicketLinks}
               lotteryRush={lotteryRush ?? null}
               isWestEnd={isWestEnd}
@@ -772,8 +780,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 {show.runtime && (
                   <span className="whitespace-nowrap"> <span aria-hidden="true" className="text-white/25">·</span> {show.runtime}</span>
                 )}
-                {isOpera && liveInHdLine(show.liveInHd) && (
-                  <span className="whitespace-nowrap" data-testid="live-in-hd"> <span aria-hidden="true" className="text-white/25">·</span> <a href={show.liveInHd!.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-brand transition-colors">{liveInHdLine(show.liveInHd)}</a></span>
+                {hd.line && (
+                  <span className="whitespace-nowrap" data-testid="live-in-hd"> <span aria-hidden="true" className="text-white/25">·</span> <a href={show.liveInHd!.sourceUrl} target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-brand transition-colors">{hd.line}</a></span>
                 )}
                 {/* Date-line segments come from the shared show-date-line
                     module (src/lib/show-date-line.ts) — the single source
