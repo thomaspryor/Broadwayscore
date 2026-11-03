@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const { countReviewVerdicts, countReviewSentiments, getReviewBadgePresentation } = require('./review-breakdown');
+const { getSiteReviewStats, getShowReviewStats } = require('./opening-night-review-stats');
 require('tsx/cjs');
 const React = require('react');
 const previousReact = globalThis.React;
@@ -49,6 +50,22 @@ for (const fixture of cases) {
     const html = renderToStaticMarkup(React.createElement(ScoreBreakdownBar, fixture));
     const c = fixture.counts;
     assert.ok(html.includes(`${fixture.reviews.length} reviews: ${c.rave} rave, ${c.positive} positive, ${c.mixed} mixed, ${c.negative} negative`), html);
+    const site = getSiteReviewStats({
+      cs: 67, rc: fixture.reviews.length, cat: fixture.category,
+      rv: fixture.reviews.map(r => ({ s: r.reviewScore, v: r.verdict })),
+      bd: { positive: 99, mixed: 99, negative: 99 },
+    });
+    assert.deepEqual(site, { score: 67, reviewCount: fixture.reviews.length, ...fixture.sentiments });
+    // Readiness intentionally excludes zero-score reviews from live stats.
+    const scored = fixture.reviews.filter(r => r.reviewScore > 0);
+    const live = getShowReviewStats(scored.map(r => ({
+      showId: 'test-show', outletId: 'nytimes', assignedScore: r.reviewScore, verdict: r.verdict,
+    })), 'test-show', {}, fixture.category, site);
+    const { positive, mixed, negative } = live;
+    assert.deepEqual({ positive, mixed, negative }, countReviewSentiments(scored, fixture.category));
+    assert.equal(live.siteScore, site.score);
+    assert.equal(live.score, site.score);
+    assert.equal(live.total, scored.length);
   });
 }
 
@@ -57,6 +74,32 @@ test('absent verdicts and invalid scores do not manufacture negative reviews', (
     { rave: 0, positive: 0, mixed: 0, negative: 0 });
   assert.deepEqual(countReviewSentiments([]), { positive: 0, mixed: 0, negative: 0 });
   assert.equal(getReviewBadgePresentation('bogus', 67).label, 'Positive');
+});
+
+test('opening-night stats retain missing-site fallback and readiness filtering', () => {
+  assert.equal(getSiteReviewStats(null), null);
+  assert.equal(getSiteReviewStats({ rc: 1 }), null);
+  assert.deepEqual(getSiteReviewStats({ cs: 0, rc: 0 }), {
+    score: 0, reviewCount: 0, positive: 0, mixed: 0, negative: 0,
+  });
+  const rows = [
+    { showId: 'target', outletId: 'nytimes', assignedScore: 67, verdict: 'Mixed' },
+    { showId: 'target', outletId: 'nytimes', assignedScore: 0, verdict: 'Pan' },
+    { showId: 'target', outletId: 'nytimes', assignedScore: null, verdict: 'Pan' },
+    { showId: 'other', outletId: 'nytimes', assignedScore: 90, verdict: 'Rave' },
+  ];
+  const stats = getShowReviewStats(rows, 'target', {}, 'broadway');
+  assert.equal(stats.total, 1);
+  assert.equal(stats.positive, 0);
+  assert.equal(stats.mixed, 1);
+  assert.equal(stats.negative, 0);
+  assert.equal(stats.score, stats.liveScore);
+  assert.equal(stats.siteScore, null);
+  assert.equal(stats.scoreDrift, null);
+  assert.deepEqual(stats.outletsSeen, ['nytimes']);
+  const empty = getShowReviewStats(rows, 'missing', {}, 'broadway');
+  assert.equal(empty.total, 0);
+  assert.equal(empty.score, null);
 });
 
 test('actual review badges use verdict labels and colors, retaining the numeric score and size', () => {
@@ -72,7 +115,7 @@ test('actual review badges use verdict labels and colors, retaining the numeric 
 });
 
 test('status and email callers normalize source rows into the shared counter', () => {
-  for (const file of ['scripts/generate-status-page.js', 'scripts/opening-night-status.js']) {
+  for (const file of ['scripts/generate-status-page.js', 'scripts/lib/opening-night-review-stats.js']) {
     const source = read(file);
     assert.match(source, /countReviewSentiments\(\s*showRevs\.map\(r => \(\{ reviewScore: r\.assignedScore, verdict: r\.verdict \}\)\), show(?:\.category|Category)\)/);
     assert.doesNotMatch(source, /r\.assignedScore >= (75|55)/);

@@ -20,14 +20,12 @@
  */
 
 const fs = require('fs');
-const { countReviewSentiments } = require('./lib/review-breakdown');
+const { getSiteReviewStats, getShowReviewStats } = require('./lib/opening-night-review-stats');
 const path = require('path');
 const { execSync } = require('child_process');
 
 // Reuse existing infrastructure
 const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./lib/opening-night-readiness'); // not the poller: avoids pulling in the LLM extractor chain (BRO-2378)
-const { getTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
-const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { findOpeningShows } = require('./lib/find-opening-shows');
 const { showBroadcastStatus } = require('./lib/broadcast-status');
@@ -74,55 +72,7 @@ function ghJSON(cmd) {
 function getSiteScore(showId) {
   const sitePath = path.join(SITE_SHOWS_DIR, `${showId}.json`);
   const data = loadJSON(sitePath);
-  if (!data || data.cs == null) return null;
-  return {
-    score: data.cs,
-    reviewCount: data.rc,
-    ...countReviewSentiments((data.rv || []).map(r => ({ reviewScore: r.s, verdict: r.v })), data.cat),
-  };
-}
-
-/**
- * Get review stats for a show from reviews.json (live data, may be ahead of site).
- * Uses assignedScore > 0 to match checkReadiness() in the poller.
- */
-function getShowReviewStats(reviewsArr, showId, outletRegistry, showCategory) {
-  const showRevs = reviewsArr.filter(r => r.showId === showId && r.assignedScore > 0);
-  const outlets = outletRegistry.outlets || outletRegistry;
-
-  let t1 = 0, t2 = 0, t3 = 0;
-  const { positive, mixed, negative } = countReviewSentiments(
-    showRevs.map(r => ({ reviewScore: r.assignedScore, verdict: r.verdict })), showCategory);
-  const outletsSeen = new Set();
-
-  for (const r of showRevs) {
-    const tier = getTier(r.outletId);
-    if (tier === 1) t1++;
-    else if (tier === 2) t2++;
-    else t3++;
-
-    outletsSeen.add(r.outletId);
-  }
-
-  // Live-computed score (may differ from site if rebuild hasn't run)
-  const scoreResult = computeCriticScore(showRevs, outlets, showCategory);
-
-  // Site score (what's actually on broadwayscorecard.com)
-  const siteData = getSiteScore(showId);
-
-  const liveScore = scoreResult ? Math.round(scoreResult.s) : null;
-  const siteScore = siteData?.score ?? null;
-
-  return {
-    total: showRevs.length,
-    t1, t2, t3,
-    positive, mixed, negative,
-    score: siteScore ?? liveScore, // Prefer site score — that's what users see
-    liveScore,                      // Live-computed from reviews.json
-    siteScore,                      // From pre-built file (matches site)
-    scoreDrift: (siteScore != null && liveScore != null) ? liveScore - siteScore : null,
-    outletsSeen: [...outletsSeen],
-  };
+  return getSiteReviewStats(data);
 }
 
 /**
@@ -374,7 +324,7 @@ function renderDashboard() {
 
   for (const show of openingShows) {
     const market = isLondonMarket(show.category) ? 'west-end' : 'broadway';
-    const stats = getShowReviewStats(reviewsArr, show.id, outletRegistry, show.category);
+    const stats = getShowReviewStats(reviewsArr, show.id, outletRegistry, show.category, getSiteScore(show.id));
     const readiness = checkReadiness(show.id, market);
     const missing = getMissingT1T2Outlets(show.id, market);
     const broadcast = getBroadcastStatus(sentData, show.id, market);
