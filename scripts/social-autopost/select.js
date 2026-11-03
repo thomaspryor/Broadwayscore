@@ -74,12 +74,22 @@ function nextWindowSlot(t, tz) {
   return zonedTime(ymd, C.SCORE_POST_WINDOW.start, tz).getTime();
 }
 
+// Post types that already gave a show its own card, so the backfill does not repeat it.
+const COVERS_SHOW = new Set(['brief', 'closing-soon', 'london-compare']);
+
 /**
  * doneKeys for the quiet-day backfill: a show skipped only because it opened before
- * automatic posting went live was never posted on merit, so it stays owed (BRO-6932).
+ * automatic posting went live was never posted on merit, so it stays owed; a show that
+ * already had a brief, closing-soon or London-compare card is covered (BRO-6932).
  */
 function backfillDoneKeys(ledger) {
-  return doneKeys({ ...ledger, posts: ((ledger && ledger.posts) || []).filter(p => p.skipped !== 'backlog at go-live') });
+  const posts = (ledger && ledger.posts) || [];
+  const keys = doneKeys({ ...ledger, posts: posts.filter(p => p.skipped !== 'backlog at go-live') });
+  for (const p of posts) {
+    if (p.skipped || !COVERS_SHOW.has(p.type)) continue;
+    for (const id of [p.showId, ...(p.showIds || [])]) if (id) keys.add(`score:${id}`);
+  }
+  return keys;
 }
 
 function doneKeys(ledger) {

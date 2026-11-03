@@ -575,8 +575,7 @@ test('routing: the live config has Broadway channels and routes every eligible c
   assert.ok(Object.keys(C.CHANNEL_SETS.broadway).length >= 5);
   // Off-West End waits for the West End accounts (BRO-6932); every other category posts somewhere.
   for (const cat of C.ELIGIBLE_CATEGORIES) {
-    const configured = Object.keys(C.CHANNEL_SETS.broadway).every(svc => (C.CHANNEL_SETS['west-end'] || {})[svc]);
-    const want = cat === 'off-west-end' && !configured ? 0 : 1;
+    const want = cat === 'off-west-end' && !routing.postsToOwnSet(show({ category: cat })) ? 0 : 1;
     assert.ok(routing.targetSets(show({ category: cat }), NONE).length >= want, cat);
   }
 });
@@ -1382,6 +1381,9 @@ test('quiet-day backfill candidates: open, not closing soon, recent, unposted, s
   assert.equal(bFind({ s: bShow({ openingDate: '2026-10-28' }) }).length, 0, 'still inside the 10-day window: the normal lane owns it');
   assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', date: '2026-10-25', channels: { twitter: { postId: 'p0' } } }] } } }).length, 0, 'already posted');
   assert.equal(bFind({ args: { ledger: { posts: [{ type: 'score', showId: 'bf-2026', skipped: 'backlog at go-live' }] } } }).length, 1, 'a go-live backlog skip is still owed');
+  for (const type of ['brief', 'closing-soon', 'london-compare']) {
+    assert.equal(bFind({ args: { ledger: { posts: [{ type, showIds: ['bf-2026', 'other'], date: '2026-10-27', channels: { twitter: { postId: 'p0' } } }] } } }).length, 0, `${type} card already covered it`);
+  }
   assert.equal(bFind({ s: bShow({ category: 'west-end' }) }).length, 0, 'no old London show on the Broadway fallback');
   assert.equal(withWestEnd(() => bFind({ s: bShow({ category: 'west-end', openingDate: '2026-10-19' }), now: '2026-11-03T19:05:00Z' })).length, 1, 'on its own accounts it can');
   assert.equal(bFind({ args: { reviewsByShow: { 'bf-2026': reviews(0, 1, 3) } } }).length, 0, 'score not settled');
