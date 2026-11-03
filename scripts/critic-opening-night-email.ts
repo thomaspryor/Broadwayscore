@@ -25,7 +25,7 @@ const WINDOW = Number(arg('window') || 3);
 const MAX = Number(arg('max') || 25);
 
 async function sb(path: string, init: RequestInit = {}) {
-  const res = await fetch(`${SB}${path}`, { ...init, headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json', ...(init.headers || {}) } });
+  const res = await fetch(`${SB}${path}`, { ...init, headers: { apikey: KEY, Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json', ...(init.headers || {}) }, signal: AbortSignal.timeout(20000) });
   if (!res.ok) throw new Error(`Supabase ${path} -> ${res.status}`);
   return res;
 }
@@ -47,6 +47,7 @@ async function send(to: string, subject: string, html: string) {
     method: 'POST',
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: 'Broadway Scorecard <critics@broadwayscorecard.com>', to: [to], subject, html }),
+    signal: AbortSignal.timeout(20000),
   });
   if (!res.ok) throw new Error(`Resend ${res.status}`);
 }
