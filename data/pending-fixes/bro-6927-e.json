@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6927-e",
   "planId": "cb3d93b8-9d3a-453d-9b4f-e112632a30ce",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-11-03T22:44:29.693Z",
   "submitter": {
     "name": null,
@@ -166,5 +166,134 @@
         "description": "BRO-6927 gap: David Cote (Time Out New York) review of wicked-2003, listed on Show Score but missing from reviews.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-03T23:50:44.486Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-sign-in-sidney-brusteins-window-2023 --url=https://www.talkinbroadway.com/page/world/index.html --critic=\"Howard Miller\" --publish-date=2023-05-05"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=the-sign-in-sidney-brusteins-window-2023 --url=https://newyorktheater.me/2023/05/05/broadway-review-the-sign-in-sidney-brusteins-window/ --critic=\"Jonathan Mandell\" --publish-date=2023-05-05"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=a-christmas-carol-2022 --url=https://www.timeout.com/newyork/theater/christmas-carol-broadway-review-jefferson-mays --critic=\"Adam Feldman\" --publish-date=2022-11-22"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=aubergine-off-broadway-2016 --url=http://thebroadwayblog.com/2016/09/13/15306-review-aubergine-playwrights-horizons --critic=\"Samuel L. Leiter\" --publish-date=2016-09-13"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=incident-at-vichy-off-broadway-2015 --url=http://thebroadwayblog.com/2015/11/15/13555-review-incident-at-vichy --critic=\"Samuel L. Leiter\" --publish-date=2015-11-15"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=oklahoma-2019 --url=https://www.timeout.com/newyork/theater/oklahoma --critic=\"Adam Feldman\" --publish-date=2019-04-07"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=springsteen-on-broadway-2017 --url=https://broadway.news/2017/10/12/review/review-springsteen-connects-with-his-sensitive-side-in-broadway-debut/ --critic=\"Charles Isherwood\" --publish-date=2017-10-12"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=a-view-from-the-bridge-2015 --url=http://www.timeout.com/newyork/theater/a-view-from-the-bridge --critic=\"David Cote\" --publish-date=2015-11-12"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=art-2025 --url=https://observer.com/2025/09/art-review-james-corden-neil-patrick-harris-bobby-cannavale/ --critic=\"David Cote\" --publish-date=2025-09-16"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=book-of-mormon-2011 --url=http://www.timeout.com/newyork/theater/the-book-of-mormon-on-broadway-tickets-reviews-and-video --critic=\"David Cote\" --publish-date=2015-01-08"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=people-places-and-things-off-broadway-2017 --url=https://www.villagevoice.com/2017/11/07/denise-gough-is-pure-acting-ecstasy-in-rehab-drama-people-places-things/ --critic=\"David Cote\" --publish-date=2017-11-07"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=people-places-and-things-off-broadway-2017 --url=http://thebroadwayblog.com/people-places-and-things-review/ --critic=\"Samuel L. Leiter\" --publish-date=2017-10-29"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=rancho-viejo-off-broadway-2016 --url=https://www.timeout.com/newyork/blog/theater-review-in-ranch-viejo-suburbia-has-never-seemed-weirder-120616 --critic=\"David Cote\" --publish-date=2016-12-06"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
