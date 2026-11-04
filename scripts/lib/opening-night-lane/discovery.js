@@ -806,11 +806,18 @@ function outletTier(outletId) {
 // (reviewSignalGiven); the scorer's not_a_review verdict and the night window still judge the page.
 const GOOGLE_NEWS_SITE_QUERY_HOSTS = Object.freeze(['nysun.com']);
 
+/** True when a feed date is a full date-time that admitLaneCandidate would refuse for this night. No night or no date: false. */
+function outsideNightWindow(rawDate, night, timeZone) {
+  if (!night) return false;
+  const { publishDate } = feedDateInfo(rawDate, { atom: false });
+  return !!publishDate && !admitLaneCandidate({ source: 'outlet-index', publishDate, night, ...(timeZone ? { timeZone } : {}) }).admit;
+}
+
 function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now, siteQueryHosts = GOOGLE_NEWS_SITE_QUERY_HOSTS } = {}) {
   const resolved = new Map(); // wrapper link -> { url|null, tries }
   return {
     name: 'google-news', kind: 'feed', phase: 'cheap',
-    async discover({ show, fetchText }) {
+    async discover({ show, fetchText, night, timeZone }) {
       const london = /west[-\s]?end|london/i.test(String(show.category || ''));
       // Press titles too (show.akaTitles): critics reviewed Billy Crystal 860 as "860", and the listing-title search
       // found 1 of 13 (BRO-5891 fixed it in the regular pipeline's google-news-rss.js; BRO-5993 here).
@@ -836,6 +843,10 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
             if (!hostMatches(hostOf(sourceUrl), [site])) continue; // a site search keeps only that outlet's items
           } else if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
           seenLinks.add(link);
+          // Google's own date is the date the night window judges this find by (feedDateInfo below), so an item already
+          // outside the window is never opened: the School Girls replay's New York Sun review sat behind about 40 such
+          // items (2017 Variety, 2023 Guardian, unrelated Sun stories) and waited three passes for a decode (BRO-6872).
+          if (outsideNightWindow(grab('pubDate'), night, timeZone)) continue;
           items.push({ title, link, sourceUrl, pubDate: grab('pubDate'), tier: outletTier(outlet.outletId), siteQuery: !!site });
         }
       }

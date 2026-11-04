@@ -1134,3 +1134,25 @@ test("Bob's Theater Blog: a post headed with the show title alone is a review; a
   assert.ok(r.rejected.some((x) => x.url === d.canonicalUrl(BULLETIN)), 'the bulletin is refused');
   assert.equal(FEED, feed.url);
 });
+
+test('BRO-6872: Google News items dated outside the night window are never decoded, so they cannot use up the budget', async () => {
+  const OLD = 'https://news.google.com/rss/articles/CBMiOLD?oc=5';
+  const UNDATED = 'https://news.google.com/rss/articles/CBMiUNDATED?oc=5';
+  const item = (link, date, title) => `<item><title>${title} - The New York Times</title><link>${link}</link>${date ? `<pubDate>${date}</pubDate>` : ''}<source url="https://www.nytimes.com">The New York Times</source></item>`;
+  // The 2011 production's review comes first in Google's order, as the 2017 Variety review did for School Girls.
+  const feed = `<rss><channel>${item(OLD, 'Tue, 11 Jan 2011 03:00:00 GMT', 'Other Desert Cities review: 2011')}${item(GN_LINK, 'Mon, 19 Oct 2026 03:00:00 GMT', 'Other Desert Cities review: a family at war')}${item(UNDATED, null, 'Other Desert Cities review: undated')}</channel></rss>`;
+  const decoded = [];
+  const decodeImpl = async (link) => { decoded.push(link); return link === GN_LINK ? NYT_RAW : null; };
+  const track = pages({ [GN_FEED_URL]: feed });
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, ...track,
+    adapters: [d.googleNewsAdapter({ decodeImpl, maxDecode: 1, maxUnwrap: 0 })] });
+  assert.deepEqual(r.admitted.map((a) => a.key), [NYT]);
+  assert.deepEqual(decoded, [GN_LINK], 'the 2011 item is skipped and the one decode goes to the night\'s review');
+  // No night (direct adapter use): nothing is skipped; an undated item is never skipped.
+  const all = [];
+  await d.googleNewsAdapter({ decodeImpl: async (l) => { all.push(l); return null; }, maxUnwrap: 0, maxDecode: 5 }).discover({ show: SHOW, fetchText: track.fetchText });
+  assert.deepEqual(all.sort(), [GN_LINK, OLD, UNDATED].sort());
+  const dated = [];
+  await d.googleNewsAdapter({ decodeImpl: async (l) => { dated.push(l); return null; }, maxUnwrap: 0, maxDecode: 5 }).discover({ show: SHOW, night: NIGHT, fetchText: track.fetchText });
+  assert.deepEqual(dated.sort(), [GN_LINK, UNDATED].sort());
+});
