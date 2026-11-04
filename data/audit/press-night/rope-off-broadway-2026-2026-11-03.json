@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "showId": "rope-off-broadway-2026",
+  "night": "2026-11-03",
+  "market": "off-broadway",
+  "embargoAt": "2026-11-04T03:00:00.000Z",
+  "embargoSource": "market-default",
+  "probe": {
+    "startedAt": "2026-11-04T02:30:04.806Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 30,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-11-04T04:55:12.970Z",
+    "lastOkSampleAt": "2026-11-04T04:55:12.970Z"
+  },
+  "firstLiveAt": "2026-11-04T02:30:04.806Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-11-04T03:45:09.413Z",
+  "liveCount": 3,
+  "liveCountAt": {
+    "1h": 3,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-11-04T04:00:10.357Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-11-04",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "acsntn|august cosentino",
+      "outlet": "Acsntn",
+      "critic": "August Cosentino",
+      "tier": 4,
+      "publishAt": "2026-10-29",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T02:30:04.806Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": "2026-11-04",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T03:05:06.735Z",
+      "prevOkSampleAt": "2026-11-04T03:00:06.396Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theatermania|pete hempstead",
+      "outlet": "TheaterMania",
+      "critic": "Pete Hempstead",
+      "tier": 2,
+      "publishAt": "2026-11-04",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-11-04T03:45:09.413Z",
+      "prevOkSampleAt": "2026-11-04T03:40:08.946Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "complete",
+      "source": [
+        "bww-roundup-live"
+      ],
+      "count": 6,
+      "covered": 6,
+      "coverage": 1,
+      "missing": [],
+      "suppressedMissing": [],
+      "liveCount": 8,
+      "fetchedAt": "2026-11-04T05:00:27.672Z",
+      "censusNote": "archive + live BWW roundup (6 rows): https://www.broadwayworld.com/article/Review-Roundup-Elizabeth-Gillies-and-More-Star-in-ROPE-Off-Broadway-20261103"
+    }
+  },
+  "manualActions": [],
+  "publishedBy": {
+    "path": "regular",
+    "method": "lane-only-decision",
+    "checks": [
+      {
+        "at": "2026-11-04T05:00:27.729Z",
+        "label": "2h",
+        "standDown": false,
+        "reason": "market not lane-only"
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-11-04T05:00:31.302Z",
+    "files": [
+      {
+        "file": "acsntn--august-cosentino.json",
+        "outletId": "acsntn",
+        "outlet": "Acsntn",
+        "critic": "August Cosentino",
+        "firstSeenAt": "2026-11-03T00:23:06.553Z",
+        "scoredAt": "2026-11-03T04:42:11.574Z",
+        "publishDate": "2026-10-29",
+        "url": "acsntn.substack.com/p/theatre-rope-theatre-at-st-clements",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-11-04T02:17:35.343Z",
+        "scoredAt": "2026-11-04T02:41:26.397Z",
+        "publishDate": "2026-11-04",
+        "url": "culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "exeunt-magazine--lane-williamson.json",
+        "outletId": "exeunt-magazine",
+        "outlet": "Exeunt Magazine",
+        "critic": "Lane Williamson",
+        "firstSeenAt": "2026-11-04T04:06:50.057Z",
+        "scoredAt": "2026-11-04T04:39:11.652Z",
+        "publishDate": "2026-11-03",
+        "url": "exeuntnyc.com/reviews/review-rope-at-the-theatre-at-st-clements",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--michael-sommers.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Michael Sommers",
+        "firstSeenAt": "2026-11-04T04:06:50.580Z",
+        "scoredAt": "2026-11-04T04:39:17.025Z",
+        "publishDate": "2026-11-03",
+        "url": "nystagereview.com/2026/11/03/rope-murders-most-foul",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outletId": "nyt-theater",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell",
+        "firstSeenAt": "2026-11-04T04:06:49.831Z",
+        "scoredAt": "2026-11-04T04:39:21.863Z",
+        "publishDate": "2026-11-03",
+        "url": "newyorktheater.me/2026/11/03/rope-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytg--kyle-turner.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Kyle Turner",
+        "firstSeenAt": "2026-11-04T04:06:49.494Z",
+        "scoredAt": "2026-11-04T04:39:27.567Z",
+        "publishDate": "2026-11-03",
+        "url": "newyorktheatreguide.com/reviews/rope-off-broadway-review",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theater-pizzazz--ron-fassler.json",
+        "outletId": "theater-pizzazz",
+        "outlet": "Theater Pizzazz",
+        "critic": "Ron Fassler",
+        "firstSeenAt": "2026-11-04T04:06:50.349Z",
+        "scoredAt": "2026-11-04T04:39:32.041Z",
+        "publishDate": null,
+        "url": "theaterpizzazz.com/rope-winds-up-on-the-ropes",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--brian-scott-lipton.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Brian Scott Lipton",
+        "firstSeenAt": "2026-11-03T08:14:33.588Z",
+        "scoredAt": null,
+        "publishDate": "2026-10-15",
+        "url": "theatermania.com/news/interview-shamelesss-cameron-monaghan-takes-the-stage-in-the-new-groups-rope_1857100",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--pete-hempstead.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Pete Hempstead",
+        "firstSeenAt": "2026-11-04T01:25:28.979Z",
+        "scoredAt": "2026-11-04T03:15:46.016Z",
+        "publishDate": "2026-11-04",
+        "url": "theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
