@@ -1,46 +1,30 @@
 {
-  "generatedAt": "2026-11-04T07:53:24.958Z",
+  "generatedAt": "2026-11-04T08:22:39.133Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 318,
-  "clean": 316,
-  "defective": 2,
+  "clean": 317,
+  "defective": 1,
   "byType": {
-    "score-drift": 2
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "the-imaginary-invalid-2026",
-      "title": "The Imaginary Invalid",
-      "openingDate": "2026-10-22",
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "openingDate": "2026-10-29",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 67.17 vs local 67.41 (Δ0.24)"
+          "detail": "deployed cs 77.14 vs local 76.89 (Δ0.25)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 26,
-      "deployedCount": 26,
-      "firstDefectAt": "2026-11-04T07:53:20.652Z"
-    },
-    {
-      "showId": "murder-cathedral-off-west-end-2026",
-      "title": "Murder in the Cathedral",
-      "openingDate": "2026-10-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.28 vs local 84.21 (Δ0.07)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 24,
-      "firstDefectAt": "2026-11-04T07:53:20.652Z"
+      "localCount": 18,
+      "deployedCount": 20,
+      "firstDefectAt": "2026-11-04T08:22:32.179Z"
     }
   ],
   "persistentDefective": 0,
