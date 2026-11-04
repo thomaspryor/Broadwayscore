@@ -29,5 +29,75 @@
       }
     ],
     "queuedAt": "2026-11-04T09:12:07.406Z"
+  },
+  {
+    "conditionKey": "coverage-holes:tosca-off-broadway-2026",
+    "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: tosca-off-broadway-2026/broadwayworld--dc-felton.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T09:19:36.562Z"
+  },
+  {
+    "conditionKey": "coverage-holes:a-few-good-men-2026",
+    "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: a-few-good-men-2026/cnn--david-mack.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T09:19:36.586Z"
+  },
+  {
+    "conditionKey": "coverage-holes:the-pianist-off-west-end-2026",
+    "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: the-pianist-off-west-end-2026/blogcritics--jon-sobel.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T09:19:36.617Z"
+  },
+  {
+    "conditionKey": "coverage-holes:the-moth-off-west-end-2026",
+    "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+    "description": "- rejected as not-a-review, verification says review: the-moth-off-west-end-2026/letterboxd--unknown.json\n\nRead each text. Genuine review: clear isNonReview / rejectionReason (and rejectedAt/rejectedBy from the same verdict) with nonReviewManualClear via data/pending-fixes (model: bro-4838-b.json). Out-of-band score: store the outlet's own rating as originalScore if it is real, else correct the rating.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T09:19:36.645Z"
+  },
+  {
+    "conditionKey": "guard-audit:bd-web_unlocker2",
+    "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
+    "description": "bd-circuit-breaker-web_unlocker2 ceiling 1750 (opening-window-reserve) is below 1.5x the 14-day median demand 2333. A guard that trips more than 2 days a week is mis-sized (or its provider needs an owner-accepted exemption in scripts/config/provider-spend-thresholds.json acceptedDailyTrip). Rerouted spend on trip days: $0.17.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-11-04T09:21:31.384Z"
   }
 ]

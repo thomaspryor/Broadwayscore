@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T01:51:53.516Z",
+  "generatedAt": "2026-11-04T09:21:31.001Z",
   "window": {
     "since": "2026-10-29",
     "until": "2026-11-04"
@@ -12,7 +12,7 @@
     },
     {
       "title": "bd-circuit-breaker-web_unlocker2",
-      "detail": "ACCEPTED: 5 trip day(s); rerouted spend on trip days $0.17 (1358 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2316"
+      "detail": "ACCEPTED: 5 trip day(s); rerouted spend on trip days $0.17 (1358 rows) — 'bd-budget' also marks per-run budget skips · CAP DRIFT: ceiling 1750 (opening-window-reserve) < 1.5x 14-day median 2333"
     },
     {
       "title": "sb-circuit-breaker",
@@ -20,7 +20,7 @@
     },
     {
       "title": "sd-circuit-breaker",
-      "detail": "OK: 0 trip day(s); rerouted spend on trip days $0.00 (0 rows) · CAP DRIFT: ceiling 167145 (plan) < 1.5x 14-day median 129750"
+      "detail": "OK: 0 trip day(s); rerouted spend on trip days $0.00 (0 rows) · CAP DRIFT: ceiling 179617 (plan) < 1.5x 14-day median 122904"
     },
     {
       "title": "Data Validation fallback risk",
@@ -50,7 +50,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 517,
+        "median14d": 548,
         "drift": false,
         "note": null
       }
@@ -83,7 +83,7 @@
         "source": "opening-window-reserve",
         "from": "trip-row",
         "currentZero": false,
-        "median14d": 2316,
+        "median14d": 2333,
         "drift": true,
         "note": null
       }
@@ -106,11 +106,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 231996,
+        "ceiling": 315663,
         "source": "plan+opening-window-reserve",
         "from": "state",
         "currentZero": false,
-        "median14d": 22400,
+        "median14d": 21671,
         "drift": false,
         "note": "not enforcing (shadow)"
       }
@@ -133,11 +133,11 @@
         "caveat": null
       },
       "drift": {
-        "ceiling": 167145,
+        "ceiling": 179617,
         "source": "plan",
         "from": "state",
         "currentZero": false,
-        "median14d": 129750,
+        "median14d": 122904,
         "drift": true,
         "note": null
       }

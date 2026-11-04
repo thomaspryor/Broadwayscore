@@ -1014,9 +1014,9 @@
       "lastSurfacedAt": "2026-11-03T10:11:49.916Z",
       "notifyCount": 45,
       "cardId": null,
-      "linearIdentifier": "BRO-6885",
-      "notifyCountAtRelease": 30,
-      "sweptTracker": "BRO-5544",
+      "linearIdentifier": null,
+      "notifyCountAtRelease": 45,
+      "sweptTracker": "BRO-6885",
       "resolvedAt": "2026-11-04T03:30:51.361Z"
     },
     "bd-circuit-breaker-serp_api1": {
@@ -9954,16 +9954,15 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 7 P0 older than 24h, 16 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 9 P0 older than 24h, 17 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-11-04T01:49:08.178Z",
-      "lastNotifiedAt": "2026-11-03T09:35:56.457Z",
+      "lastSeen": "2026-11-04T09:19:00.052Z",
+      "lastNotifiedAt": "2026-11-04T09:19:00.052Z",
       "lastSurfacedAt": "2026-11-01T09:17:56.266Z",
-      "notifyCount": 31,
+      "notifyCount": 32,
       "cardId": null,
-      "linearIdentifier": "BRO-5613",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-5613"
     },
     "opening-night-remediation-exhausted-t1-missing:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -17792,13 +17791,12 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-11-04T01:51:53.909Z",
-      "lastNotifiedAt": "2026-10-28T08:32:12.361Z",
-      "lastSurfacedAt": "2026-10-28T08:32:12.361Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-04T09:21:31.384Z",
+      "lastNotifiedAt": "2026-11-04T09:21:31.384Z",
+      "lastSurfacedAt": "2026-11-04T09:21:31.384Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 9
+      "linearIdentifier": null
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -18758,13 +18756,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-11-04T08:22:02.097Z",
+      "lastSeen": "2026-11-04T09:21:31.620Z",
       "lastNotifiedAt": "2026-11-04T03:20:43.596Z",
       "lastSurfacedAt": "2026-11-04T03:20:43.596Z",
       "notifyCount": 19,
       "cardId": null,
       "linearIdentifier": "BRO-6732",
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -23902,13 +23900,12 @@
       "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T07:38:11.543Z",
       "incidentOpenedAt": "2026-10-22T07:38:11.543Z",
-      "lastSeen": "2026-11-04T01:49:51.799Z",
-      "lastNotifiedAt": "2026-11-03T09:36:24.582Z",
-      "lastSurfacedAt": "2026-11-03T09:36:24.582Z",
-      "notifyCount": 13,
+      "lastSeen": "2026-11-04T09:19:36.617Z",
+      "lastNotifiedAt": "2026-11-04T09:19:36.617Z",
+      "lastSurfacedAt": "2026-11-04T09:19:36.617Z",
+      "notifyCount": 14,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "land:land/bro-5887-probe": {
       "status": "resolved",
@@ -34537,13 +34534,12 @@
       "title": "a-few-good-men-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.554Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.554Z",
-      "lastSeen": "2026-11-04T01:49:51.765Z",
-      "lastNotifiedAt": "2026-11-03T09:36:24.553Z",
-      "lastSurfacedAt": "2026-11-03T09:36:24.553Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-04T09:19:36.586Z",
+      "lastNotifiedAt": "2026-11-04T09:19:36.586Z",
+      "lastSurfacedAt": "2026-11-04T09:19:36.586Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "coverage-holes:the-moth-off-west-end-2026": {
       "status": "open",
@@ -34551,13 +34547,12 @@
       "title": "the-moth-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T09:18:39.622Z",
       "incidentOpenedAt": "2026-11-01T09:18:39.622Z",
-      "lastSeen": "2026-11-04T01:49:51.832Z",
-      "lastNotifiedAt": "2026-11-03T09:36:24.598Z",
-      "lastSurfacedAt": "2026-11-03T09:36:24.598Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-04T09:19:36.645Z",
+      "lastNotifiedAt": "2026-11-04T09:19:36.645Z",
+      "lastSurfacedAt": "2026-11-04T09:19:36.645Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "land:land/job/linear-BRO-6736-mvxsck8q": {
       "status": "resolved",
@@ -34620,13 +34615,12 @@
       "title": "tosca-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-11-01T14:15:28.863Z",
       "incidentOpenedAt": "2026-11-01T14:15:28.863Z",
-      "lastSeen": "2026-11-04T01:49:51.740Z",
-      "lastNotifiedAt": "2026-11-03T09:36:24.509Z",
-      "lastSurfacedAt": "2026-11-03T09:36:24.509Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-11-04T09:19:36.561Z",
+      "lastNotifiedAt": "2026-11-04T09:19:36.561Z",
+      "lastSurfacedAt": "2026-11-04T09:19:36.561Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 1
+      "linearIdentifier": null
     },
     "land:land/bro-6737-video-clean": {
       "status": "open",
@@ -35852,13 +35846,13 @@
       "title": "Spend guard sd-circuit-breaker: cap drift",
       "firstSeen": "2026-11-03T09:37:52.310Z",
       "incidentOpenedAt": "2026-11-03T09:37:52.310Z",
-      "lastSeen": "2026-11-04T01:51:53.928Z",
+      "lastSeen": "2026-11-04T09:21:31.400Z",
       "lastNotifiedAt": "2026-11-03T09:37:52.310Z",
       "lastSurfacedAt": "2026-11-03T09:37:52.310Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-remediation-exhausted-empty-cast:the-verge-off-broadway-2026": {
       "status": "open",
