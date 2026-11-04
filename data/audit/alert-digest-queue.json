@@ -1131,5 +1131,36 @@
       }
     ],
     "queuedAt": "2026-11-04T00:37:02.194Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6933-session-cost",
+    "title": "Landing blocked: rebase red on land/bro-6933-session-cost",
+    "description": "land.yml did not land land/bro-6933-session-cost: the rebase gate went red at af2de206cf. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6933-session-cost @ af2de206cf (origin/land/bro-6933-session-cost) → origin/main @ 46e61da4d3 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 46e61da4d3: Rebasing (1/1) error: could not apply af2de206cfe... session cost row for the seen-vs-to-see ribbon session (BRO-6933) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <conflic Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41748323666",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6933-session-cost"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "af2de206cfe86f3d3c0c26c82c1b890b8b388851"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41748323666"
+      }
+    ],
+    "queuedAt": "2026-11-04T00:41:33.900Z"
   }
 ]
