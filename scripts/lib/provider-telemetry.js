@@ -166,19 +166,39 @@ function trimLedgerLines(lines, max = MAX_LEDGER_LINES, now = new Date(), hardMa
   return sorted.slice(Math.max(0, sorted.length - keep)).map((e) => e[2]);
 }
 
+// BRO-6988: the full trim reads, dedupes, sorts and rewrites the whole ledger
+// (~44MB / ~114K rows by 2026-11). Doing that on EVERY append froze the event
+// loop 0.5-5.6s per fetch batch in the long-lived opening-night lane (CPU
+// profile: trimLedgerLines + readFileSync + writeFileSync were every top
+// stall). So a process trims on its first append to a path (short scripts
+// behave as before, and the rewrite guarantees a trailing newline), then
+// appends one line at a time and re-trims every TRIM_EVERY_APPENDS appends,
+// which bounds the file at hardMax + TRIM_EVERY_APPENDS rows.
+const TRIM_EVERY_APPENDS = 1000;
+let _trimState = { path: null, appendsSinceTrim: 0 };
+
 function _appendLedgerLine(record) {
   const ledgerPath = _ledgerPath();
   try {
+    const line = JSON.stringify(record);
+    if (_trimState.path === ledgerPath && _trimState.appendsSinceTrim < TRIM_EVERY_APPENDS) {
+      fs.appendFileSync(ledgerPath, line + '\n');
+      _trimState.appendsSinceTrim++;
+      return;
+    }
     fs.mkdirSync(path.dirname(ledgerPath), { recursive: true });
     let lines = [];
     try {
       lines = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean);
     } catch { /* first write */ }
-    lines.push(JSON.stringify(record));
+    lines.push(line);
     lines = trimLedgerLines(lines);
     fs.writeFileSync(ledgerPath, lines.join('\n') + '\n');
+    _trimState = { path: ledgerPath, appendsSinceTrim: 0 };
   } catch {
     // Ledger persistence must never break scraping — the stdout line still fired.
+    // Force a full rewrite next time (e.g. the file was deleted under us).
+    _trimState = { path: null, appendsSinceTrim: 0 };
   }
 }
 
@@ -481,5 +501,7 @@ module.exports = {
   LEDGER_PATH,
   MAX_LEDGER_LINES,
   trimLedgerLines,
+  TRIM_EVERY_APPENDS,
+  _resetLedgerTrimStateForTests: () => { _trimState = { path: null, appendsSinceTrim: 0 }; },
   HARD_MAX_LEDGER_LINES,
 };
