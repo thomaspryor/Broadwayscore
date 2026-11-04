@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-11-04T08:49:46.703Z",
+  "runDate": "2026-11-04T08:52:38.705Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 10,
     "priority": "all",
-    "showFilter": "the-bridge-off-west-end-2026",
+    "showFilter": "",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 2,
+    "failed": 0,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "100.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,11 +25,11 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -44,7 +44,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 1,
+    "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,29 +54,55 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 1,
+    "processed": 2,
+    "failed": 0,
     "shows": [
-      "the-bridge-off-west-end-2026"
+      "a-few-good-men-2026",
+      "other-desert-cities-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 0,
-      "failed": 0
+      "processed": 1,
+      "failed": 19
     }
   },
-  "processed": [],
-  "failed": [
-    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+  "processed": [
+    "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+    "other-desert-cities-2026/bobs-theater-blog--unknown.json"
   ],
+  "failed": [],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json",
+      "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+      "other-desert-cities-2026/bobs-theater-blog--unknown.json"
+    ],
     "failed": [
-      "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json"
+      "a-few-good-men-2026/variety--anna-tingley.json",
+      "a-few-good-men-2026/goldderby--ethan-alter.json",
+      "medea-off-broadway-2026/express-uk--neil-norman.json",
+      "medea-off-broadway-2026/bachtrack--susan-stempleski.json",
+      "the-heart-off-broadway-2026/variety--cynthia-littleton.json",
+      "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
+      "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+      "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+      "i-became-we-off-broadway-2026/timeout--unknown.json",
+      "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+      "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "love-me-off-broadway-2026/consequence--unknown.json",
+      "love-me-off-broadway-2026/daily-mail--codie-bullen.json",
+      "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "the-imaginary-invalid-2026/washpost--thomas-floyd.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "a-few-good-men-2026/bobs-theater-blog--unknown.json",
+      "other-desert-cities-2026/bobs-theater-blog--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
@@ -84,7 +110,9 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "kelly-mccaughan-catholic-guilt-off-broadway-2026/broadway-baby--unknown.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
