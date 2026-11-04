@@ -1094132,21 +1094132,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-11-04T00:12:30.943Z",
-    "completedAt": "2026-11-04T00:12:37.241Z",
-    "totalReviews": 6,
-    "processed": 1,
-    "skipped": 5,
+    "startedAt": "2026-11-04T00:12:45.452Z",
+    "completedAt": "2026-11-04T00:13:15.118Z",
+    "totalReviews": 80222,
+    "processed": 6,
+    "skipped": 80194,
     "errors": 0,
     "tokensUsed": {
-      "input": 5600,
-      "output": 332,
-      "cacheRead": 3807,
-      "cacheWrite": 0,
-      "total": 14537
+      "input": 33832,
+      "output": 1833,
+      "cacheRead": 19035,
+      "cacheWrite": 3760,
+      "total": 87139
     },
-    "costUsd": 0.021979699999999998,
-    "runId": "41744190699",
+    "costUsd": 0.1424204,
+    "runId": "41744165405",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -1097762,9 +1097762,9 @@
         "showId": "alan-bennetts-untold-stories-west-end-2013",
         "ourDistribution": {
           "up": 4,
-          "flat": 1,
+          "flat": 0,
           "down": 0,
-          "total": 5
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -1104294,10 +1104294,10 @@
       {
         "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
         "ourDistribution": {
-          "up": 4,
+          "up": 5,
           "flat": 3,
           "down": 2,
-          "total": 9
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -1132023,6 +1132023,16 @@
         "disagreementDetails": "BWW: Flat thumbs differ by 28% (ours: 28%, theirs: 0%)"
       },
       {
+        "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 0,
+          "down": 1,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-body-of-an-american-off-broadway-2016",
         "ourDistribution": {
           "up": 4,
@@ -1133085,10 +1133095,10 @@
       {
         "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
         "ourDistribution": {
-          "up": 30,
+          "up": 31,
           "flat": 3,
           "down": 2,
-          "total": 35
+          "total": 36
         },
         "bwwDistribution": {
           "up": 9,
@@ -1141678,10 +1141688,10 @@
       {
         "showId": "tosca-english-national-opera-west-end-2026",
         "ourDistribution": {
-          "up": 4,
-          "flat": 0,
-          "down": 3,
-          "total": 7
+          "up": 5,
+          "flat": 1,
+          "down": 4,
+          "total": 10
         },
         "hasDisagreement": false
       },
@@ -1144709,21 +1144719,21 @@
     ]
   },
   {
-    "startedAt": "2026-11-04T00:17:33.528Z",
-    "completedAt": "2026-11-04T00:17:33.530Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-11-04T00:18:16.821Z",
+    "completedAt": "2026-11-04T00:18:54.486Z",
+    "totalReviews": 14,
+    "processed": 14,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 39495,
+      "output": 3044,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 42539
     },
-    "costUsd": 0,
-    "runId": "41744190699",
+    "costUsd": 0.10727300000000001,
+    "runId": "41744165405",
     "source": "comparative-rescore",
     "errorDetails": []
   }
