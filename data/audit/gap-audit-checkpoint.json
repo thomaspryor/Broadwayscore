@@ -1457,10 +1457,12 @@
     "slowMarketResidual": 0
   },
   "hadestown-west-end-2024": {
-    "at": "2026-10-12T02:00:11.414Z",
+    "at": "2026-11-04T11:46:09.913Z",
     "gaps": 1,
-    "priorProductionGaps": 35,
+    "priorProductionGaps": 0,
     "uncollected": 0,
+    "alertUncollected": 0,
+    "slowMarketResidual": 1,
     "refVersion": 2
   },
   "oh-mary-west-end-2025": {
@@ -1487,10 +1489,12 @@
     "refVersion": 2
   },
   "my-neighbour-totoro-west-end-2025": {
-    "at": "2026-10-12T02:01:30.148Z",
-    "gaps": 0,
+    "at": "2026-11-04T11:53:45.960Z",
+    "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 0,
+    "alertUncollected": 0,
+    "slowMarketResidual": 1,
     "refVersion": 2
   },
   "kinky-boots-the-musical-west-end-2026": {
@@ -7915,9 +7919,9 @@
     "serpCensusAt": "2026-11-03T20:12:16.586Z"
   },
   "ceilidh-the-musical-off-west-end-2026": {
-    "at": "2026-11-04T07:33:20.691Z",
+    "at": "2026-11-04T11:46:39.624Z",
     "gaps": 7,
-    "priorProductionGaps": 1,
+    "priorProductionGaps": 0,
     "uncollected": 1,
     "alertUncollected": 1,
     "slowMarketResidual": 1,
@@ -8374,11 +8378,11 @@
     "serpCensusAt": "2026-11-03T17:14:06.970Z"
   },
   "the-bridge-off-west-end-2026": {
-    "at": "2026-11-04T10:29:39.317Z",
+    "at": "2026-11-04T11:59:18.679Z",
     "gaps": 11,
-    "priorProductionGaps": 7,
-    "uncollected": 7,
-    "alertUncollected": 7,
+    "priorProductionGaps": 11,
+    "uncollected": 6,
+    "alertUncollected": 6,
     "slowMarketResidual": 6,
     "refVersion": 2,
     "weAlert": {
@@ -8393,13 +8397,13 @@
         "since": "2026-11-04T04:19:43.523Z"
       },
       "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b": {
-        "n": 1,
-        "at": "2026-11-04T10:30:43.698Z",
+        "n": 2,
+        "at": "2026-11-04T12:01:37.923Z",
         "since": "2026-11-04T10:30:43.698Z"
       },
       "https://www.thetimes.com/culture/theatre-dance/article/theatre-review-julius-caesar-bridge-theatre-david-morrissey-ben-whishaw-8f6fcfxnh": {
-        "n": 1,
-        "at": "2026-11-04T10:30:43.698Z",
+        "n": 2,
+        "at": "2026-11-04T12:01:37.923Z",
         "since": "2026-11-04T10:30:43.698Z"
       }
     },
@@ -8428,13 +8432,13 @@
     "serpCensusAt": "2026-11-03T22:27:06.883Z"
   },
   "parcel-from-america-off-broadway-2026": {
-    "at": "2026-11-04T09:29:25.730Z",
+    "at": "2026-11-04T11:56:24.277Z",
     "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
     "slowMarketResidual": 0,
-    "serpCensusAt": "2026-11-04T04:11:28.045Z"
+    "serpCensusAt": "2026-11-04T11:56:24.285Z"
   },
   "starstuff-off-broadway-2026": {
     "at": "2026-11-03T22:34:44.139Z",
@@ -9210,11 +9214,11 @@
     "refVersion": 2
   },
   "tosca-english-national-opera-west-end-2026": {
-    "at": "2026-11-04T07:41:00.456Z",
-    "gaps": 7,
+    "at": "2026-11-04T11:52:26.910Z",
+    "gaps": 5,
     "priorProductionGaps": 0,
-    "uncollected": 0,
-    "alertUncollected": 0,
+    "uncollected": 1,
+    "alertUncollected": 1,
     "slowMarketResidual": 0,
     "refVersion": 2,
     "zeroChar": {
@@ -10302,11 +10306,11 @@
     "alertUncollected": 0
   },
   "tosca-off-broadway-2026": {
-    "at": "2026-11-04T07:38:05.481Z",
-    "gaps": 7,
-    "priorProductionGaps": 3,
-    "uncollected": 2,
-    "alertUncollected": 2,
+    "at": "2026-11-04T11:49:44.942Z",
+    "gaps": 10,
+    "priorProductionGaps": 6,
+    "uncollected": 3,
+    "alertUncollected": 3,
     "slowMarketResidual": 0,
     "zeroChar": {
       "https://theatreweekly.com/review-tosca-at-london-coliseum/": {
@@ -10315,7 +10319,7 @@
         "since": "2026-11-01T05:19:39.172Z"
       }
     },
-    "serpCensusAt": "2026-11-04T04:06:11.945Z"
+    "serpCensusAt": "2026-11-04T11:49:44.945Z"
   },
   "msblackforpresident-off-broadway-2026": {
     "at": "2026-11-03T22:37:52.169Z",
@@ -10334,20 +10338,25 @@
     "serpCensusAt": "2026-11-03T18:29:55.861Z"
   },
   "tristan-and-yseult-off-broadway-2026": {
-    "at": "2026-11-04T07:36:31.531Z",
+    "at": "2026-11-04T11:48:01.080Z",
     "gaps": 7,
-    "priorProductionGaps": 0,
-    "uncollected": 0,
-    "alertUncollected": 0,
+    "priorProductionGaps": 2,
+    "uncollected": 1,
+    "alertUncollected": 1,
     "slowMarketResidual": 0,
     "zeroChar": {
       "https://www.ayoungertheatre.com/review-on-tour-tristan-and-yseult-kneehigh-theatre-bristol-old-vic/": {
         "n": 5,
         "at": "2026-11-02T16:46:30.407Z",
         "since": "2026-11-01T15:03:53.622Z"
+      },
+      "https://www.thetimes.com/culture/theatre-dance/article/emma-rices-tristan-and-yseult-review-t8jmccphs": {
+        "n": 1,
+        "at": "2026-11-04T11:48:21.828Z",
+        "since": "2026-11-04T11:48:21.828Z"
       }
     },
-    "serpCensusAt": "2026-11-04T04:01:15.994Z"
+    "serpCensusAt": "2026-11-04T11:48:01.088Z"
   },
   "lanny-bristol-old-vic-regional-2026": {
     "at": "2026-10-29T19:11:38.295Z",
@@ -10358,7 +10367,7 @@
     "serpCensusAt": "2026-10-29T19:11:38.297Z"
   },
   "violets-magic-glasses-off-broadway-2026": {
-    "at": "2026-11-04T07:36:08.584Z",
+    "at": "2026-11-04T11:46:55.969Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -10367,13 +10376,13 @@
     "serpCensusAt": "2026-11-04T07:36:08.931Z"
   },
   "the-blue-violinist-over-west-end-avenue-off-broadway-2026": {
-    "at": "2026-11-04T07:39:07.098Z",
+    "at": "2026-11-04T11:51:53.619Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
     "slowMarketResidual": 0,
-    "serpCensusAt": "2026-11-04T04:08:38.978Z"
+    "serpCensusAt": "2026-11-04T11:51:53.627Z"
   },
   "the-infinite-fright-off-broadway-2026": {
     "at": "2026-11-03T12:22:11.548Z",
@@ -10712,7 +10721,7 @@
     "alertUncollected": 0
   },
   "well-see-off-broadway-2026": {
-    "at": "2026-11-04T10:31:50.778Z",
+    "at": "2026-11-04T12:02:15.297Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -12508,16 +12517,16 @@
     "alertUncollected": 0
   },
   "the-steel-man-off-broadway-2026": {
-    "at": "2026-11-04T08:14:31.326Z",
-    "gaps": 0,
+    "at": "2026-11-04T11:55:13.907Z",
+    "gaps": 1,
     "priorProductionGaps": 0,
-    "uncollected": 0,
-    "alertUncollected": 0,
+    "uncollected": 1,
+    "alertUncollected": 1,
     "slowMarketResidual": 0,
-    "serpCensusAt": "2026-11-04T02:22:12.152Z"
+    "serpCensusAt": "2026-11-04T11:55:13.913Z"
   },
   "a-train-to-woking-off-west-end-2026": {
-    "at": "2026-11-04T10:28:23.329Z",
+    "at": "2026-11-04T11:57:43.272Z",
     "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 1,
@@ -12526,8 +12535,8 @@
     "refVersion": 2,
     "zeroChar": {
       "https://www.uktw.co.uk/Tour/Play/A-Train-to-Woking/T0635056768/": {
-        "n": 6,
-        "at": "2026-11-04T10:28:24.411Z",
+        "n": 7,
+        "at": "2026-11-04T11:57:44.571Z",
         "since": "2026-11-03T17:11:51.630Z"
       }
     },
@@ -15981,8 +15990,8 @@
     }
   },
   "the-royale-regional-2026": {
-    "at": "2026-11-04T07:42:11.866Z",
-    "gaps": 1,
+    "at": "2026-11-04T11:54:38.259Z",
+    "gaps": 0,
     "priorProductionGaps": 5,
     "uncollected": 0,
     "alertUncollected": 0,
@@ -16614,6 +16623,39 @@
     "at": "2026-11-04T10:31:00.439Z",
     "gaps": 0,
     "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0
+  },
+  "pulman-and-stilgoe-hooray-for-hollywood-off-west-end-2026": {
+    "at": "2026-11-04T11:44:56.575Z",
+    "gaps": 2,
+    "priorProductionGaps": 0,
+    "uncollected": 1,
+    "alertUncollected": 1,
+    "slowMarketResidual": 0,
+    "refVersion": 2,
+    "serpCensusAt": "2026-11-04T11:44:56.576Z",
+    "zeroChar": {
+      "https://www.uktw.co.uk/Tour/Concert/Liza-Pulman-and-Joe-Stilgoe-Hooray-for-Hollywood/T983397770/": {
+        "n": 1,
+        "at": "2026-11-04T11:44:57.795Z",
+        "since": "2026-11-04T11:44:57.795Z"
+      }
+    }
+  },
+  "witness-for-the-prosecution-off-west-end-2022": {
+    "at": "2026-11-04T11:48:45.243Z",
+    "gaps": 1,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0,
+    "slowMarketResidual": 1,
+    "refVersion": 2
+  },
+  "fiddler-on-the-roof-regional-2025": {
+    "at": "2026-11-04T11:56:41.291Z",
+    "gaps": 0,
+    "priorProductionGaps": 21,
     "uncollected": 0,
     "alertUncollected": 0
   }

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T10:36:18.788Z",
+  "generatedAt": "2026-11-04T12:02:59.854Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,6 +133,10 @@
   "feedsChecked": 78,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
@@ -165,7 +169,7 @@
       "error": "fetchPage returned an unexpected page for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&o"
     }
   ],
-  "itemsScanned": 767,
+  "itemsScanned": 762,
   "matchedGaps": 7,
   "possibleGaps": 11,
   "gaps": [
