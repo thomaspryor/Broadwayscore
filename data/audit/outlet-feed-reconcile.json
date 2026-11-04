@@ -1,17 +1,22 @@
 {
-  "generatedAt": "2026-11-03T22:38:53.172Z",
+  "generatedAt": "2026-11-04T00:02:48.526Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
     {
-      "id": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "openingDate": "2026-10-28"
+      "id": "the-unbelievers-off-broadway-2026",
+      "title": "The Unbelievers",
+      "openingDate": "2026-11-05"
     },
     {
       "id": "well-see-off-broadway-2026",
       "title": "We'll See",
       "openingDate": "2026-11-03"
+    },
+    {
+      "id": "the-verge-off-broadway-2026",
+      "title": "The Verge",
+      "openingDate": "2026-11-05"
     },
     {
       "id": "the-lives-of-others-west-end-2026",
@@ -39,14 +44,9 @@
       "openingDate": "2026-11-01"
     },
     {
-      "id": "msblackforpresident-off-broadway-2026",
-      "title": "Ms. Blakk for President",
-      "openingDate": "2026-11-01"
-    },
-    {
-      "id": "dogstar-off-west-end-2026",
-      "title": "Dogstar",
-      "openingDate": "2026-10-31"
+      "id": "222-a-ghost-story-off-broadway-2026",
+      "title": "2:22 - A Ghost Story",
+      "openingDate": "2026-11-05"
     },
     {
       "id": "a-few-good-men-2026",
@@ -72,11 +72,6 @@
       "id": "the-heart-off-broadway-2026",
       "title": "The Heart",
       "openingDate": "2026-10-29"
-    },
-    {
-      "id": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "openingDate": "2026-10-28"
     },
     {
       "id": "kelly-mccaughan-catholic-guilt-off-broadway-2026",
@@ -119,11 +114,6 @@
       "openingDate": "2026-10-29"
     },
     {
-      "id": "all-the-worlds-a-stage-regional-2026",
-      "title": "All The World's A Stage",
-      "openingDate": "2026-10-28"
-    },
-    {
       "id": "the-royale-regional-2026",
       "title": "The Royale",
       "openingDate": "2026-10-30"
@@ -139,15 +129,11 @@
       "reason": "no data/review-texts directory for this show"
     }
   ],
-  "feedsChecked": 73,
+  "feedsChecked": 76,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "slantmagazine",
@@ -168,12 +154,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 752,
-  "matchedGaps": 6,
-  "possibleGaps": 12,
+  "itemsScanned": 767,
+  "matchedGaps": 10,
+  "possibleGaps": 13,
   "gaps": [
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/rope-hitchcock-play-adaptation-off-broadway-review/",
+      "headline": "Hitchcock&#8217;s &#8216;Rope&#8217; gets a queerer, bloodier makeover that goes for shock over suspense (Off Broadway review)",
+      "publishDate": "2026-11-04"
+    },
     {
       "showId": "slanted-floors-off-broadway-2026",
       "title": "Slanted Floors",
@@ -223,28 +222,64 @@
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "level": "matched",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/11/02/review-tosca-2/",
+      "headline": "REVIEW: Tosca",
+      "publishDate": "2026-11-02"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/tosca-17/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=tosca-17",
+      "headline": "TOSCA",
+      "publishDate": "2026-10-31"
+    },
+    {
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
       "outletId": "london-unattached",
       "url": "https://www.london-unattached.com/tosca-english-national-opera/",
       "headline": "Tosca, English National Opera",
       "publishDate": "2026-11-01"
     },
     {
-      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
-      "title": "Clifford Odets’ Waiting for Lefty",
-      "level": "possible",
-      "outletId": "theater-pizzazz",
-      "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
-      "headline": "FINALLY: “WAITING FOR LEFTY” HAS ARRIVED",
-      "publishDate": "2026-11-02"
+      "showId": "tosca-off-broadway-2026",
+      "title": "Tosca",
+      "level": "matched",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
+      "headline": "ENO: Tosca &#8211; London Coliseum",
+      "publishDate": "2026-10-31"
     },
     {
-      "showId": "the-blue-violinist-over-west-end-avenue-off-broadway-2026",
-      "title": "The Blue Violinist Over West End Avenue",
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "level": "possible",
+      "outletId": "nyt-theater",
+      "url": "https://newyorktheater.me/2026/11/03/rope-review/",
+      "headline": "Rope Review",
+      "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
+      "level": "possible",
+      "outletId": "theater-pizzazz",
+      "url": "https://theaterpizzazz.com/rope-winds-up-on-the-ropes/",
+      "headline": "“ROPE” WINDS UP ON THE ROPES",
+      "publishDate": "2026-11-03"
+    },
+    {
+      "showId": "rope-off-broadway-2026",
+      "title": "Rope",
       "level": "possible",
       "outletId": "theatermania",
-      "url": "https://www.theatermania.com/news/review-the-blue-violinist-over-west-end-avenue-shouting-about-israel-on-the-upper-west-side_1858817/",
-      "headline": "Review: The Blue Violinist Over West End Avenue, Shouting About Israel on the Upper West Side",
-      "publishDate": null
+      "url": "https://www.theatermania.com/news/review-as-a-thiller-gordon-greenbergs-rope-isnt-all-that-taut_1858790/",
+      "headline": "Review: As a Thiller, Gordon Greenberg’s Rope Isn’t All That Taut",
+      "publishDate": "2026-11-03"
     },
     {
       "showId": "the-bridge-off-west-end-2026",

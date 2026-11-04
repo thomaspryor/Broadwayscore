@@ -1,13 +1,64 @@
 {
-  "generatedAt": "2026-11-03T22:38:52.761Z",
+  "generatedAt": "2026-11-04T00:02:48.120Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 321,
-  "clean": 321,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 317,
+  "clean": 314,
+  "defective": 3,
+  "byType": {
+    "score-drift": 3
+  },
+  "shows": [
+    {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "openingDate": "2026-11-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.43 vs local 77.38 (Δ0.05)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 13,
+      "deployedCount": 13,
+      "firstDefectAt": "2026-11-04T00:02:42.064Z"
+    },
+    {
+      "showId": "clifford-odets-waiting-for-lefty-off-broadway-2026",
+      "title": "Clifford Odets’ Waiting for Lefty",
+      "openingDate": "2026-11-02",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 64.74 vs local 62.22 (Δ2.52)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 6,
+      "firstDefectAt": "2026-11-04T00:02:42.064Z"
+    },
+    {
+      "showId": "murder-cathedral-off-west-end-2026",
+      "title": "Murder in the Cathedral",
+      "openingDate": "2026-10-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.19 vs local 84.47 (Δ0.28)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 24,
+      "firstDefectAt": "2026-11-04T00:02:42.064Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

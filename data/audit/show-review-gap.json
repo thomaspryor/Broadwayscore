@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-11-03T22:38:02.538Z",
+  "generatedAt": "2026-11-03T23:57:50.737Z",
   "windowDays": 1095,
-  "targets": 881,
+  "targets": 890,
   "auditedThisRun": 15,
-  "carriedForward": 1977,
+  "carriedForward": 1979,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 627,
-    "missingCurrentRun": 1174,
+    "withGap": 628,
+    "missingCurrentRun": 1172,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 919,
-    "totalRecoverable": 56,
+    "totalRecoverable": 58,
     "totalRecovered": 94,
     "humanExcluded": 25,
     "automatedExcluded": 996,
     "automatedExcludedListed": 721,
-    "priorProductionCitations": 6267
+    "priorProductionCitations": 6327
   },
   "results": [
     {
@@ -11284,6 +11284,44 @@
       "computedAt": "2026-10-31T17:07:08.919Z"
     },
     {
+      "showId": "a-toast-fae-the-lassies-pitlochry-festival-regional-2025",
+      "title": "A Toast Fae the Lassies",
+      "openingDate": "2025-08-31",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-03T23:57:50.737Z"
+    },
+    {
       "showId": "a-train-to-woking-off-west-end-2026",
       "title": "A Train To Woking",
       "openingDate": null,
@@ -11359,12 +11397,76 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Train To Woking\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Train To Woking\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Train To Woking\" review waterloo",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Train To Woking Waterloo East Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 26,
+        "byReason": {
+          "roundup-page": 1,
+          "write-path-blocked": 1,
+          "non-review-host": 20,
+          "non-stage-review": 1,
+          "no-review-evidence": 2,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -11413,7 +11515,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-03T19:34:00.851Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "a-tupperware-of-ashes-west-end-2024",
@@ -16481,50 +16583,135 @@
       "status": "open",
       "category": "regional",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "aggregatorListedUrls": [
+        "https://mdtheatreguide.com/2026/10/theatre-review-all-the-worlds-a-stage-at-signature-theatre/",
+        "https://www.broadwayworld.com/washington-dc/article/Review-ALL-THE-WORLDS-A-STAGE-at-Signature-Theatre-20261030"
+      ],
+      "dirFiles": 5,
+      "dirClean": 5,
+      "inReviewsJson": 5,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "morristheatredc.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "washingtoncitypaper.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"All The World's A Stage\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"All The World's A Stage\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"All The World's A Stage\" review signature",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "All The World's A Stage Signature Theatre, Arlington, VA review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "All The World's A Stage Signature Theatre, Arlington, VA review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "All The World's A Stage Signature Theatre, Arlington, VA review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 35,
+        "byReason": {
+          "roundup-page": 1,
+          "write-path-blocked": 1,
+          "non-review-host": 17,
+          "venue-production-page": 3,
+          "news-roundup-site": 1,
+          "aggregator-internal-nav": 4,
+          "non-stage-review": 2,
+          "census-junk-host": 1,
+          "ticketing-reseller": 3,
+          "no-review-evidence": 1,
+          "show-listing-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
-      "recoveryResults": [
-        {
-          "url": "https://stageandcinema.com/2026/10/30/all-the-worlds-a-stage-signature-review/",
-          "host": "stageandcinema.com",
-          "file": "stageandcinema--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
+        "verdict": "complete",
         "missing": [],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://mdtheatreguide.com/2026/10/theatre-review-all-the-worlds-a-stage-at-signature-theatre/",
+            "outletId": "mdtheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/washington-dc/article/Review-ALL-THE-WORLDS-A-STAGE-at-Signature-Theatre-20261030",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          }
+        ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 2,
+        "candidateCount": 2
       },
-      "computedAt": "2026-11-03T19:34:00.851Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "allegra-west-end-2026",
@@ -65287,56 +65474,260 @@
       "status": "open",
       "category": "off-broadway",
       "previewsStartDate": "2026-10-15",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [
-        "https://culturesauce.com/waiting-for-lefty-clifford-odets-off-broadway-review/"
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-reviews-think-of-waiting-for-lefty-at-classic-stage-company"
       ],
-      "dirFiles": 4,
-      "dirClean": 3,
-      "inReviewsJson": 3,
-      "missing": [],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Waiting-for-Lefty/1408",
+        "https://culturesauce.com/waiting-for-lefty-clifford-odets-off-broadway-review/",
+        "https://nystagereview.com/2026/11/02/waiting-for-lefty-the-play-has-aged-the-injustice-has-not/",
+        "https://nystagereview.com/2026/11/02/waiting-for-lefty-no-no-odets/",
+        "https://www.newyorktheatreguide.com/reviews/waiting-for-lefty-off-broadway-review",
+        "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
+        "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
+        "https://www.vulture.com/article/theater-reviews-waiting-for-lefty-odets-specky-clark-doherty.html"
+      ],
+      "dirFiles": 10,
+      "dirClean": 7,
+      "inReviewsJson": 6,
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-do-reviews-think-of-waiting-for-lefty-at-classic-stage-company"
+            }
+          ]
+        }
+      ],
       "dirOnly": [
         {
-          "host": "nystagereview.com",
-          "count": 1
-        },
-        {
-          "host": "newyorktheatreguide.com",
+          "host": "theatermania.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "recoverable": true,
+          "recoverableFile": "theater-pizzazz--unknown.json",
+          "recoverableOutletId": "theater-pizzazz",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theater-pizzazz--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-do-reviews-think-of-waiting-for-lefty-at-classic-stage-company"
+            }
+          ],
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Clifford Odets’ Waiting for Lefty\" review classic",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Clifford Odets’ Waiting for Lefty Classic Stage Company review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 130,
+        "byReason": {
+          "roundup-page": 1,
+          "non-review-host": 40,
+          "not-http-url": 20,
+          "news-roundup-site": 2,
+          "aggregator-internal-nav": 43,
+          "non-stage-review": 2,
+          "census-junk-host": 5,
+          "show-listing-page": 2,
+          "aggregator-section-root": 5,
+          "production-database-listing": 10
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
+          "host": "theaterpizzazz.com",
+          "file": "theater-pizzazz--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html"
+          },
+          {
+            "outletId": "theater-pizzazz",
+            "outlet": "theater-pizzazz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://cititour.com/NYC_Broadway/Waiting-for-Lefty/1408",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
           {
             "url": "https://culturesauce.com/waiting-for-lefty-clifford-odets-off-broadway-review/",
             "outletId": "culturesauce.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T12:40:56.402Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/11/02/waiting-for-lefty-the-play-has-aged-the-injustice-has-not/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/11/02/waiting-for-lefty-no-no-odets/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/waiting-for-lefty-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-reviews-waiting-for-lefty-odets-specky-clark-doherty.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2026/11/03/theater/waiting-for-lefty-review-odets-pasquale.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/",
+            "outletId": "theater-pizzazz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
           }
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 1,
-        "candidateCount": 1
+        "liveCount": 5,
+        "candidateCount": 7
       },
-      "computedAt": "2026-11-03T20:13:24.189Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "clinamen-off-broadway-2026",
@@ -112244,12 +112635,27 @@
       "previewsStartDate": "2026-10-28",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.michaelcorcoran.net/ghost-notes-review/",
         "https://www.stagelightmagazine.com/product/ghost-notes/"
       ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.michaelcorcoran.net/ghost-notes-review/",
+          "host": "michaelcorcoran.net",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-08-25",
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
         {
           "url": "https://www.stagelightmagazine.com/product/ghost-notes/",
           "host": "stagelightmagazine.com",
@@ -112268,17 +112674,91 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ghost Notes\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ghost Notes\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ghost Notes\" review family",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ghost Notes The Royal Family Performing Arts Space review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ghost Notes The Royal Family Performing Arts Space review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ghost Notes The Royal Family Performing Arts Space review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 36,
+        "byReason": {
+          "non-review-host": 18,
+          "aggregator-internal-nav": 1,
+          "non-stage-review": 1,
+          "census-junk-host": 2,
+          "no-review-evidence": 2,
+          "show-listing-page": 1,
+          "merch-store": 3,
+          "review-hub-page": 2,
+          "bare-host": 6
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.michaelcorcoran.net/ghost-notes-review/",
+          "host": "michaelcorcoran.net",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.stagelightmagazine.com/product/ghost-notes/",
           "host": "stagelightmagazine.com",
@@ -112315,7 +112795,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-11-03T19:34:00.851Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "ghost-of-john-mccain-off-broadway-2024",
@@ -150576,12 +151056,12 @@
         "https://www.newyorktheatreguide.com/reviews/i-became-we-off-broadway-review",
         "https://www.nytimes.com/2026/10/28/theater/i-became-we-review-mona-pirnot.html",
         "https://www.theatermania.com/news/review-i-became-we-is-a-musical-monologue-about-thoughts-of-motherhood_1858228/",
-        "https://getpodcast.com/podcast/the-present-stage-conversations-with-theater-writers/mona-pirnot-and-jack-d-coen-i-became-we_dc48ea09e0",
-        "https://www.timeout.com/newyork/theater/i-became-we"
+        "https://www.theatrereviews.com/off-broadway-review-i-became-we-a-play-for-a-choir-at-atlantic-theater-companys-linda-gross-theater-through-sunday-december-6-2026/",
+        "https://getpodcast.com/podcast/the-present-stage-conversations-with-theater-writers/mona-pirnot-and-jack-d-coen-i-became-we_dc48ea09e0"
       ],
-      "dirFiles": 12,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 13,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [
         {
           "url": "https://getpodcast.com/podcast/the-present-stage-conversations-with-theater-writers/mona-pirnot-and-jack-d-coen-i-became-we_dc48ea09e0",
@@ -150610,41 +151090,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://www.timeout.com/newyork/theater/i-became-we",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.timeout.com/newyork/theater/i-became-we"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "confirmedNonReview": true,
-          "confirmedBasis": [
-            "non-review"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -150658,7 +151104,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 0,
             "error": null
           },
@@ -150669,7 +151115,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -150689,7 +151135,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -150709,21 +151155,21 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 135,
+        "count": 132,
         "byReason": {
-          "non-review-host": 43,
-          "no-review-evidence": 2,
-          "venue-production-page": 2,
           "roundup-page": 1,
-          "aggregator-internal-nav": 42,
+          "non-review-host": 42,
+          "venue-production-page": 1,
           "not-http-url": 20,
-          "production-database-listing": 12,
-          "aggregator-section-root": 5,
+          "news-roundup-site": 5,
+          "aggregator-internal-nav": 41,
           "non-stage-review": 1,
-          "news-roundup-site": 4,
-          "census-junk-host": 1,
-          "merch-store": 1,
-          "write-path-blocked": 1
+          "census-junk-host": 2,
+          "no-review-evidence": 1,
+          "show-listing-page": 1,
+          "aggregator-section-root": 5,
+          "production-database-listing": 11,
+          "merch-store": 1
         }
       },
       "dedupedVariants": [],
@@ -150784,6 +151230,12 @@
             "firstSeenAt": "2026-10-29T07:30:38.899Z"
           },
           {
+            "url": "https://www.theatrereviews.com/off-broadway-review-i-became-we-a-play-for-a-choir-at-atlantic-theater-companys-linda-gross-theater-through-sunday-december-6-2026/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
             "url": "https://getpodcast.com/podcast/the-present-stage-conversations-with-theater-writers/mona-pirnot-and-jack-d-coen-i-became-we_dc48ea09e0",
             "outletId": "getpodcast.com",
             "state": "GAP",
@@ -150792,17 +151244,11 @@
           }
         ],
         "censusSchema": 4,
-        "excluded": [
-          {
-            "url": "https://www.timeout.com/newyork/theater/i-became-we",
-            "host": "timeout.com",
-            "reason": "confirmed-non-review"
-          }
-        ],
-        "liveCount": 5,
-        "candidateCount": 6
+        "excluded": [],
+        "liveCount": 6,
+        "candidateCount": 7
       },
-      "computedAt": "2026-11-03T10:44:11.039Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "i-can-die-too-pitlochry-festival-regional-2026",
@@ -250707,7 +251153,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-03T19:34:00.851Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "parsifal-off-west-end-2026",
@@ -269016,49 +269462,35 @@
       "previewsStartDate": "2026-10-23",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.thereviewshub.com/roleplay-soho-theatre-london/",
-        "https://uk.style.yahoo.com/roleplay-soho-theatre-ensluttification-feminism-093742497.html",
-        "https://oazis.app/en/event/roleplay",
-        "https://www.allthatdazzles.co.uk/post/review-roleplay-soho-theatre",
-        "https://theatreandtonic.co.uk/blog/roleplay-at-soho-theatre-review",
-        "https://loureviews.blog/2026/10/27/play-review-roleplay-at-soho-theatre/",
-        "https://everything-theatre.co.uk/2026/10/review-roleplay-soho-theatre/",
-        "https://liamodell.com/2026/10/27/roleplay-review-soho-theatre-francesca-moody-productions-hannah-reilly-paige-rattray/",
         "https://www.londonboxoffice.co.uk/news/post/roleplay-soho-theatre-review",
-        "https://sierz.co.uk/reviews/roleplay-soho-theatre/",
+        "https://loureviews.blog/2026/10/27/play-review-roleplay-at-soho-theatre/",
+        "https://theatreandtonic.co.uk/blog/roleplay-at-soho-theatre-review",
         "https://www.westendbestfriend.co.uk/news/review-roleplay-soho-theatre",
+        "https://everything-theatre.co.uk/2026/10/review-roleplay-soho-theatre/",
+        "https://www.broadwayworld.com/westend/article/Review-ROLEPLAY-Soho-Theatre-20261027",
+        "https://www.thereviewshub.com/roleplay-soho-theatre-london/",
+        "https://www.allthatdazzles.co.uk/post/review-roleplay-soho-theatre",
+        "https://sierz.co.uk/reviews/roleplay-soho-theatre/",
         "https://www.standard.co.uk/culture/theatre/roleplay-at-soho-theatre-review-b1302458.html",
         "https://broadwaybaby.com/shows/roleplay/837578",
         "https://www.theguardian.com/stage/2026/aug/10/roleplay-review-summerhall-edinburgh",
-        "https://www.broadwayworld.com/westend/article/Review-ROLEPLAY-Soho-Theatre-20261027",
         "https://www.britishtheatreguide.info/reviews/roleplay-soho-theatre-l-26161",
         "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/roleplay-summerhall",
         "https://theatreweekly.com/roleplay-to-transfer-to-soho-theatre-following-edinburgh-festival-fringe-premiere/",
+        "https://liamodell.com/2026/10/27/roleplay-review-soho-theatre-francesca-moody-productions-hannah-reilly-paige-rattray/",
         "https://thetheatretimes.com/hannah-reillys-roleplay-at-soho-theatre-new-play-about-sex-positivity-on-the-internet-is-sadly-superficial-and-banal/",
         "https://firstnightmagazine.com/2026/10/29/review-of-roleplay-sex-driven-show-is-worth-a-second-coming-but-it-needs-a-bigger-load/",
         "https://www.sierz.co.uk/reviews/roleplay-soho-theatre/",
         "https://list.co.uk/news/roleplay-theatre-review-asking-big-questions-48997",
         "https://www.theaureview.com/arts/edinburgh-fringe-festival-review-roleplay-hannah-reilly/",
+        "https://oazis.app/en/event/roleplay",
         "https://www.whatsonstage.com/news/roleplay-at-summerhall-edinburgh-fringe-review_1729463/",
         "https://fringereview.co.uk/review/edinburgh-fringe/2026/roleplay/"
       ],
       "dirFiles": 27,
       "dirClean": 14,
       "inReviewsJson": 15,
-      "missing": [
-        {
-          "url": "https://uk.style.yahoo.com/roleplay-soho-theatre-ensluttification-feminism-093742497.html",
-          "host": "yahoo.com",
-          "knownOutletId": "yahoo",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -269106,35 +269538,6 @@
           "weRefStars": 3,
           "weRefStarsSource": "bestoftheatre",
           "reverify": false
-        },
-        {
-          "url": "https://oazis.app/en/event/roleplay",
-          "host": "oazis.app",
-          "knownOutletId": "oazis",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oazis--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://oazis.app/en/event/roleplay"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
         },
         {
           "url": "https://broadwaybaby.com/shows/roleplay/837578",
@@ -269261,6 +269664,35 @@
           "reverify": false
         },
         {
+          "url": "https://oazis.app/en/event/roleplay",
+          "host": "oazis.app",
+          "knownOutletId": "oazis",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "oazis--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://oazis.app/en/event/roleplay"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://www.whatsonstage.com/news/roleplay-at-summerhall-edinburgh-fringe-review_1729463/",
           "host": "whatsonstage.com",
           "knownOutletId": "whatsonstage",
@@ -269384,8 +269816,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
-            "accepted": 3,
+            "results": 10,
+            "accepted": 7,
             "error": null
           },
           {
@@ -269395,7 +269827,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 9,
+            "accepted": 3,
             "error": null
           },
           {
@@ -269405,7 +269837,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -269431,18 +269863,17 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 18,
+        "resultCount": 15,
         "error": null
       },
       "candidatesRejected": {
         "count": 19,
         "byReason": {
-          "non-review-host": 13,
-          "no-review-evidence": 1,
-          "venue-production-page": 1,
-          "bare-host": 1,
           "roundup-page": 1,
-          "ticketing-listing": 2
+          "write-path-blocked": 1,
+          "non-review-host": 9,
+          "venue-production-page": 1,
+          "not-http-url": 7
         }
       },
       "dedupedVariants": [],
@@ -269458,34 +269889,9 @@
       ],
       "automatedExcludedListed": 5,
       "unextractable": [],
-      "ingestResults": [
-        {
-          "url": "https://uk.style.yahoo.com/roleplay-soho-theatre-ensluttification-feminism-093742497.html",
-          "host": "yahoo.com",
-          "outletId": "yahoo",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": true,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
-        }
-      ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "oazis",
-            "outlet": "oazis",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://oazis.app/en/event/roleplay"
-          },
           {
             "outletId": "broadway-baby",
             "outlet": "broadway-baby",
@@ -269499,6 +269905,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theguardian.com/stage/2026/aug/10/roleplay-review-summerhall-edinburgh"
+          },
+          {
+            "outletId": "oazis",
+            "outlet": "oazis",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://oazis.app/en/event/roleplay"
           },
           {
             "outletId": "whatsonstage",
@@ -269518,14 +269931,8 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-roleplay-soho-theatre",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T00:08:34.874Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/roleplay-at-soho-theatre-review",
-            "outletId": "theatreandtonic.co.uk",
+            "url": "https://www.londonboxoffice.co.uk/news/post/roleplay-soho-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
@@ -269536,26 +269943,8 @@
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
           {
-            "url": "https://everything-theatre.co.uk/2026/10/review-roleplay-soho-theatre/",
-            "outletId": "everything-theatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T00:08:34.874Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/10/27/roleplay-review-soho-theatre-francesca-moody-productions-hannah-reilly-paige-rattray/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T00:08:34.874Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/roleplay-soho-theatre-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-01T00:08:34.874Z"
-          },
-          {
-            "url": "https://sierz.co.uk/reviews/roleplay-soho-theatre/",
-            "outletId": "sierz.co.uk",
+            "url": "https://theatreandtonic.co.uk/blog/roleplay-at-soho-theatre-review",
+            "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
@@ -269566,8 +269955,8 @@
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/roleplay-at-soho-theatre-review-b1302458.html",
-            "outletId": "standard.co.uk",
+            "url": "https://everything-theatre.co.uk/2026/10/review-roleplay-soho-theatre/",
+            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
@@ -269578,8 +269967,32 @@
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-roleplay-soho-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T00:08:34.874Z"
+          },
+          {
+            "url": "https://sierz.co.uk/reviews/roleplay-soho-theatre/",
+            "outletId": "sierz.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T00:08:34.874Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/roleplay-at-soho-theatre-review-b1302458.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T00:08:34.874Z"
+          },
+          {
             "url": "https://www.britishtheatreguide.info/reviews/roleplay-soho-theatre-l-26161",
             "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-11-01T00:08:34.874Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/27/roleplay-review-soho-theatre-francesca-moody-productions-hannah-reilly-paige-rattray/",
+            "outletId": "liamodell.com",
             "state": "live",
             "firstSeenAt": "2026-11-01T00:08:34.874Z"
           },
@@ -269614,13 +270027,6 @@
             "firstSeenAt": "2026-11-02T02:40:23.651Z"
           },
           {
-            "url": "https://oazis.app/en/event/roleplay",
-            "outletId": "oazis",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-02T12:00:31.364Z"
-          },
-          {
             "url": "https://broadwaybaby.com/shows/roleplay/837578",
             "outletId": "broadway-baby",
             "state": "GAP",
@@ -269630,6 +270036,13 @@
           {
             "url": "https://www.theguardian.com/stage/2026/aug/10/roleplay-review-summerhall-edinburgh",
             "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-02T12:00:31.364Z"
+          },
+          {
+            "url": "https://oazis.app/en/event/roleplay",
+            "outletId": "oazis",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-02T12:00:31.364Z"
@@ -269657,11 +270070,6 @@
             "reason": "page-date-before-run"
           },
           {
-            "url": "https://uk.style.yahoo.com/roleplay-soho-theatre-ensluttification-feminism-093742497.html",
-            "host": "yahoo.com",
-            "reason": "syndication-portal"
-          },
-          {
             "url": "https://www.thereviewshub.com/roleplay-soho-theatre-london/",
             "host": "thereviewshub.com",
             "reason": "confirmed-non-review"
@@ -269670,7 +270078,7 @@
         "liveCount": 15,
         "candidateCount": 20
       },
-      "computedAt": "2026-11-03T10:44:11.039Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "roller-rink-at-electric-summer-off-west-end-2026",
@@ -317105,67 +317513,12 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Blue Violinist Over West End Avenue\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Blue Violinist Over West End Avenue Theatre Row review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 4,
-        "queriesTotal": 4,
-        "resultCount": 0,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 28,
-        "byReason": {
-          "census-junk-host": 10,
-          "news-roundup-site": 2,
-          "tag-index-page": 1,
-          "non-review-host": 9,
-          "bare-host": 3,
-          "aggregator-section-root": 1,
-          "review-hub-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -317179,7 +317532,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-11-03T19:34:00.851Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -319189,84 +319542,60 @@
       "status": "open",
       "category": "off-west-end",
       "previewsStartDate": "2026-10-28",
-      "aggregatorArticles": [
-        "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+        "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
+        "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+        "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
+        "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
+        "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
+        "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
+        "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
+        "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
+        "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
+        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+        "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
+        "https://www.timeout.com/london/theatre/the-bridge-4",
+        "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
+        "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
+        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
         "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
-        "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
-        "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
         "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
         "https://www.standard.co.uk/go/london/theatre/beat-the-devil-review-david-hare-the-bridge-a4536291.html",
         "https://theatreweekly.com/review-the-bridge-at-bush-theatre/",
-        "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
         "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
-        "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-THE-BRIDGE-Bush-Theatre-20261103",
-        "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
-        "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
-        "https://www.timeout.com/london/theatre/the-bridge-4",
         "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
         "https://www.whatsonstage.com/news/the-oresteia-at-the-bridge-theatre-review_1727392/",
         "https://www.broadwayworld.com/westend/article/Review-THE-ORESTEIA-Bridge-Theatre-20260715",
+        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
         "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
-        "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
-        "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
-        "https://newyorktheater.me/2026/09/03/the-bridge-review-a-palestinians-journey-at-the-fringe/",
         "https://snackmag.co.uk/alaa-shehada-one-people-not-two-a-conversation-about-and-review-of-the-bridge",
         "https://www.bestoftheatre.co.uk/blog/post/alaa-shehada-brings-his-fringe-first-winner-the-bridge-to-the-bush-theatre",
         "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
         "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-oresteia-review-david-morrissey-the-bridge-b3015202.html",
         "https://www.theguardian.com/stage/2026/jul/15/the-oresteia-review-bridge-theatre-london-david-morrissey-mary-louise-parker",
-        "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-oresteia-bridge-theatre-review/",
         "https://www.thetimes.com/culture/theatre-dance/article/the-oresteia-review-david-morrissey-bg8qzzhhn"
       ],
-      "dirFiles": 21,
-      "dirClean": 10,
-      "inReviewsJson": 10,
+      "dirFiles": 24,
+      "dirClean": 13,
+      "inReviewsJson": 13,
       "missing": [
         {
-          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
+          "url": "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-11-03",
           "sources": [
             {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
+              "source": "serp-census",
+              "sourceUrl": null
             }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
-          "host": "independent.co.uk",
-          "knownOutletId": "independent",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          ]
         },
         {
           "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
@@ -319284,20 +319613,6 @@
           "url": "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
-          "sources": [
-            {
-              "source": "theatre-reviews",
-              "sourceUrl": "https://theatre.reviews/reviews-roundup/oresteia-bridge-reviews/"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [],
-          "priorRun": true
-        },
-        {
-          "url": "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
-          "host": "ft.com",
-          "knownOutletId": "financialtimes",
           "sources": [
             {
               "source": "theatre-reviews",
@@ -319365,17 +319680,41 @@
           "priorRun": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "liamodell.com",
-          "count": 1
-        },
-        {
-          "host": "pinkprincetheatre.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "recoverable": true,
+          "recoverableFile": "theatreandtonic--emmie-newitt.json",
+          "recoverableOutletId": "theatreandtonic",
+          "recoverableCritic": "Emmie Newitt",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreandtonic--emmie-newitt.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "confirmedBasis": [
+            "non-review"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.britishtheatreguide.info/reviews/the-bridge-139-upstairs-at-25855",
           "host": "britishtheatreguide.info",
@@ -319539,28 +319878,80 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Bridge\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Bridge\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 7,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Bridge\" review bush",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Bridge Bush Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Bridge Bush Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Bridge Bush Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 15,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 97,
+        "count": 22,
         "byReason": {
-          "aggregator-internal-nav": 56,
-          "not-http-url": 5,
-          "production-database-listing": 10,
-          "aggregator-section-root": 4,
-          "non-review-host": 20,
-          "non-stage-review": 1,
-          "write-path-blocked": 1
+          "write-path-blocked": 1,
+          "non-review-host": 12,
+          "aggregator-internal-nav": 1,
+          "census-junk-host": 1,
+          "no-review-evidence": 2,
+          "ticketing-listing": 1,
+          "event-listing": 3,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london",
-          "publishDate": "2020-02-20"
-        }
-      ],
       "nonReviewCandidates": [
         {
           "url": "https://www.timeout.com/london/theatre/the-bridge-4",
@@ -319582,22 +319973,8 @@
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
-          "host": "independent.co.uk",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
-          "host": "telegraph.co.uk",
+          "url": "https://theartsdesk.com/theatre/old-bridge-bush-theatre-review-powerful-poetic-and-profound",
+          "host": "theartsdesk.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -319605,13 +319982,6 @@
         {
           "url": "https://www.timeout.com/london/news/oresteia-bridge-theatre-2026-071526",
           "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
-          "host": "ft.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -319665,16 +320035,15 @@
       "ingestSkippedByCap": [],
       "recoveryResults": [
         {
-          "url": "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
-          "host": "allthatdazzles.co.uk",
-          "file": "all-that-dazzles-uk--unknown.json",
+          "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+          "host": "theatreandtonic.co.uk",
+          "file": "theatreandtonic--emmie-newitt.json",
           "recovered": true,
           "skipped": false,
           "provisional": false,
           "starFallback": false,
           "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
+          "recoveryCount": 0
         }
       ],
       "censusVerdict": {
@@ -319719,14 +320088,74 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+            "url": "https://www.londontheatre.co.uk/reviews/the-bridge-review-bush-theatre",
             "outletId": "londontheatre.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-11-03T20:13:24.189Z"
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
+            "url": "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
+            "outletId": "chiswickcalendar.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-bridge-bush-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.pinkprincetheatre.com/post/review-the-bridge-bush-theatre",
+            "outletId": "pinkprincetheatre.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
             "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-bridge-bush-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/11/03/the-bridge-review-bush-theatre-alaa-shehada-palestine/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T14:15:10.547Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-30T22:24:22.326Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-03T20:13:24.189Z"
           },
@@ -319749,20 +320178,8 @@
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
           },
           {
-            "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
-          },
-          {
             "url": "https://www.standard.co.uk/culture/theatre/the-oresteia-at-the-bridge-review-b1290028.html",
             "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://everything-theatre.co.uk/2026/11/review-the-bridge-bush-theatre/",
-            "outletId": "everything-theatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
           },
@@ -319771,24 +320188,6 @@
             "outletId": "broadwayworld.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://chiswickcalendar.co.uk/the-bridge-bush-theatre-review/",
-            "outletId": "chiswickcalendar.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-bridge-at-bush-theatre-review_1736389/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-bridge-4",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-30T22:24:22.326Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/the-oresteia-review-bridge-theatre",
@@ -319809,16 +320208,16 @@
             "firstSeenAt": "2026-11-03T18:35:27.526Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-bridge-review-bush-theatre-london-alaa-shehada",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T14:15:10.547Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/the-oresteia-review-bridge-theatre-london-simon-stone-mary-louise-parker",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-11-03T20:13:24.189Z"
+          },
+          {
+            "url": "https://www.ft.com/content/72ed002f-cbf6-4a25-ab42-8f60cfec48a6",
+            "outletId": "ft.com",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
           },
           {
             "url": "https://www.theskinny.co.uk/festivals/edinburgh-fringe/theatre/the-bridge-assembly-roxy",
@@ -319867,12 +320266,17 @@
             "url": "https://www.theguardian.com/culture/2026/aug/30/the-bridge-review-alaa-shehada",
             "host": "theguardian.com",
             "reason": "page-date-before-run"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+            "host": "theatreandtonic.co.uk",
+            "reason": "confirmed-non-review"
           }
         ],
-        "liveCount": 10,
-        "candidateCount": 15
+        "liveCount": 15,
+        "candidateCount": 20
       },
-      "computedAt": "2026-11-03T20:13:24.189Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "the-brief-wondrous-life-of-oscar-wao-regional-2026",
@@ -332761,6 +333165,1692 @@
         "candidateCount": 29
       },
       "computedAt": "2026-11-01T07:08:50.714Z"
+    },
+    {
+      "showId": "the-great-gatsby-pitlochry-festival-regional-2025",
+      "title": "The Great Gatsby",
+      "openingDate": "2025-08-31",
+      "status": "closed",
+      "category": "regional",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway",
+        "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby",
+        "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann",
+        "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424",
+        "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
+        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.broadwaynews.com/the-broadway-review-with-the-great-gatsby-a-production-thats-more-pyrite-than-treasure/",
+        "https://cititour.com/NYC_Broadway/The-Great-Gatsby/1231",
+        "https://www.digitaljournal.com/entertainment/review-jeremy-jordan-and-eva-noblezada-star-in-the-great-gatsby-musical-on-broadway/article",
+        "https://ew.com/the-great-gatsby-review-musical-broadway-8637932",
+        "https://www.theguardian.com/stage/2024/apr/25/great-gatsby-broadway-review",
+        "https://www.vulture.com/article/theater-review-great-gatsby-musical-broadway.html",
+        "https://nystagereview.com/2024/04/25/the-great-gatsby-fitzgeralds-roaring-20s-classic-musicalized-as-a-loud-whimper/",
+        "https://nystagereview.com/2024/04/25/the-great-gatsby-all-that-glitters-but-short-on-depth/",
+        "https://newyorktheater.me/2024/04/26/the-great-gatsby-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-broadway-review-jeremy-jordan-eva-noblezada",
+        "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
+        "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-season/",
+        "https://www.slantmagazine.com/theater/the-great-gatsby-review-broadway-musical/",
+        "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-new-york-by-f-scott-fitzgerald",
+        "https://www.theatermania.com/news/review-a-no-expense-spared-great-gatsby-on-broadway-with-jeremy-jordan-belting-to-the-rafters_1738140/",
+        "https://www.theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/",
+        "https://www.theatrely.com/post/big-ol-fashioned-broadway-fun-at-the-great-gatsby-review",
+        "https://www.timeout.com/newyork/theater/the-great-gatsby-musical-broadway-review-jeremy-jordan-eva-noblezada",
+        "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/",
+        "https://www.washingtonpost.com/entertainment/theater/2024/04/25/great-gatsby-musical-broadway-review/",
+        "https://www.thewrap.com/the-great-gatsby-broadway-review/",
+        "https://www.broadwayworld.com/new-jersey/article/Review-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-The-Exceptional-World-Premiere-20231024",
+        "https://nystagereview.com/2023/10/24/the-great-gatsby-fitzergeralds-classic-impressively-staged-once-again-defies-translation/",
+        "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
+        "https://www.theatermania.com/news/review-the-great-gatsby-reflects-the-excesses-of-the-roaring-twenties-in-all-the-wrong-ways_1719309/",
+        "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/",
+        "https://1883magazine.com/great-gatsby-musical-review-london/",
+        "https://www.dailymail.co.uk/tvshowbiz/article-14645813/VERONICA-LEE-reviews-Great-Gatsby.html",
+        "https://www.theguardian.com/stage/2025/apr/24/the-great-gatsby-a-new-musical-review-coliseum-london-f-scott-fitzgerald",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/the-great-gatsby-musical-west-end-review-b2738859.html",
+        "https://inews.co.uk/culture/arts/great-gatsby-musical-review-vacuous-pretty-costumes-3657293",
+        "https://www.londontheatre.co.uk/reviews/the-great-gatsby-review-london-coliseum",
+        "https://www.thestage.co.uk/reviews/the-great-gatsby-review-london-coliseum-marc-bruni-jamie-muscato",
+        "https://www.standard.co.uk/culture/theatre/the-great-gatsby-coliseum-review-b1224186.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-great-gatsby-coliseum-review/",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-great-gatsby-review-west-end-2025-vj3f6hcsj",
+        "https://www.timeout.com/london/theatre/the-great-gatsby-9-review",
+        "https://www.theupcoming.co.uk/2025/04/25/the-great-gatsby-at-london-coliseum-theatre-review/",
+        "https://www.whatsonstage.com/news/the-great-gatsby-review-luxuriously-glitzy-yet-glib-west-end-musical_1674830/",
+        "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+        "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+        "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+        "https://www.theatermania.com/news/review-the-great-gatsby-is-a-trip-back-to-the-roaring-20s_1706563/",
+        "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
+        "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
+        "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
+        "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
+        "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
+        "https://dallasvoice.com/stage-notes-kdt-partners-with-art-galleries-review-of-bds-the-great-gatsby/",
+        "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php",
+        "https://www.statesman.com/entertainment/arts/article/austin-great-gatsby-musical-broadway-tour-22071169.php",
+        "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/",
+        "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
+        "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
+        "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
+        "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668",
+        "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/",
+        "https://www.news-herald.com/2026/06/11/the-great-gatsby-at-playhouse-square-review-pretty-close-to-great-yes/",
+        "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
+        "https://stageandcinema.com/2026/07/12/the-great-gatsby-review-tour/",
+        "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
+        "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
+        "https://ourtheatrevoice.com/a-dazzling-great-gatsby/",
+        "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html",
+        "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/",
+        "https://www.leagueofcincytheatres.info/review-green-light-means-go-see-the-great-gatsby/",
+        "https://www.leagueofcincytheatres.info/review-the-great-gatsby-roars-into-the-aronoff-center-in-grand-style/",
+        "https://www.courant.com/2026/10/01/theater-review-opulent-great-gatsby-brings-luxury-and-razzle-dazzle-to-the-bushnell/",
+        "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
+        "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review"
+      ],
+      "dirFiles": 7,
+      "dirClean": 1,
+      "inReviewsJson": 1,
+      "missing": [
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-with-the-great-gatsby-a-production-thats-more-pyrite-than-treasure/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Great-Gatsby/1231",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-jeremy-jordan-and-eva-noblezada-star-in-the-great-gatsby-musical-on-broadway/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/the-great-gatsby-review-musical-broadway-8637932",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2024/apr/25/great-gatsby-broadway-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-great-gatsby-musical-broadway.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/25/the-great-gatsby-fitzgeralds-roaring-20s-classic-musicalized-as-a-loud-whimper/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/25/the-great-gatsby-all-that-glitters-but-short-on-depth/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://newyorktheater.me/2024/04/26/the-great-gatsby-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-broadway-review-jeremy-jordan-eva-noblezada",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-season/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/the-great-gatsby-review-broadway-musical/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-new-york-by-f-scott-fitzgerald",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-no-expense-spared-great-gatsby-on-broadway-with-jeremy-jordan-belting-to-the-rafters_1738140/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/big-ol-fashioned-broadway-fun-at-the-great-gatsby-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-great-gatsby-musical-broadway-review-jeremy-jordan-eva-noblezada",
+          "host": "timeout.com",
+          "knownOutletId": "timeout",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/25/great-gatsby-musical-broadway-review/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/the-great-gatsby-broadway-review/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwayworld.com/new-jersey/article/Review-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-The-Exceptional-World-Premiere-20231024",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2023/10/24/the-great-gatsby-fitzergeralds-classic-impressively-staged-once-again-defies-translation/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-the-great-gatsby-reflects-the-excesses-of-the-roaring-twenties-in-all-the-wrong-ways_1719309/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1883magazine.com/great-gatsby-musical-review-london/",
+          "host": "1883magazine.com",
+          "knownOutletId": "1883magazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            }
+          ]
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14645813/VERONICA-LEE-reviews-Great-Gatsby.html",
+          "host": "dailymail.co.uk",
+          "knownOutletId": "mail-on-sunday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/apr/24/the-great-gatsby-a-new-musical-review-coliseum-london-f-scott-fitzgerald",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ]
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/the-great-gatsby-musical-west-end-review-b2738859.html",
+          "host": "the-independent.com",
+          "knownOutletId": "independent",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/great-gatsby-musical-review-vacuous-pretty-costumes-3657293",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            }
+          ]
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-great-gatsby-review-london-coliseum",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-london-coliseum-marc-bruni-jamie-muscato",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ]
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-great-gatsby-coliseum-review-b1224186.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            }
+          ]
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-great-gatsby-coliseum-review/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-great-gatsby-review-west-end-2025-vj3f6hcsj",
+          "host": "thetimes.com",
+          "knownOutletId": "sunday-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ]
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-great-gatsby-9-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            }
+          ]
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2025/04/25/the-great-gatsby-at-london-coliseum-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "knownOutletId": "theupcoming",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ]
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-great-gatsby-review-luxuriously-glitzy-yet-glib-west-end-musical_1674830/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ]
+        },
+        {
+          "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-the-great-gatsby-is-a-trip-back-to-the-roaring-20s_1706563/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway"
+            },
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
+          "host": "baltimoresun.com",
+          "knownOutletId": "baltimoresun",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dallasvoice.com/stage-notes-kdt-partners-with-art-galleries-review-of-bds-the-great-gatsby/",
+          "host": "dallasvoice.com",
+          "knownOutletId": "dallasvoice",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php",
+          "host": "houstonchronicle.com",
+          "knownOutletId": "houston-chronicle",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.statesman.com/entertainment/arts/article/austin-great-gatsby-musical-broadway-tour-22071169.php",
+          "host": "statesman.com",
+          "knownOutletId": "austin-american-statesman",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/",
+          "host": "chicagoreader.com",
+          "knownOutletId": "chicago-reader",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
+          "host": "suntimes.com",
+          "knownOutletId": "chicago-sun-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
+          "host": "triblive.com",
+          "knownOutletId": "trib-live",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668",
+          "host": "startribune.com",
+          "knownOutletId": "minneapolis-star-tribune",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/",
+          "host": "twincities.com",
+          "knownOutletId": "pioneer-press",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.news-herald.com/2026/06/11/the-great-gatsby-at-playhouse-square-review-pretty-close-to-great-yes/",
+          "host": "news-herald.com",
+          "knownOutletId": "the-news-herald",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
+          "host": "cleveland.com",
+          "knownOutletId": "cleveland-plain-dealer",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://stageandcinema.com/2026/07/12/the-great-gatsby-review-tour/",
+          "host": "stageandcinema.com",
+          "knownOutletId": "stageandcinema",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
+          "host": "revuewm.com",
+          "knownOutletId": "revue",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
+          "host": "captimes.com",
+          "knownOutletId": "the-cap-times",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ourtheatrevoice.com/a-dazzling-great-gatsby/",
+          "host": "ourtheatrevoice.com",
+          "knownOutletId": "ourtheatrevoice",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html",
+          "host": "thestar.com",
+          "knownOutletId": "toronto-star",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/",
+          "host": "apt613.ca",
+          "knownOutletId": "apt-613",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-green-light-means-go-see-the-great-gatsby/",
+          "host": "leagueofcincytheatres.info",
+          "knownOutletId": "leagueofcincytheatres",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-the-great-gatsby-roars-into-the-aronoff-center-in-grand-style/",
+          "host": "leagueofcincytheatres.info",
+          "knownOutletId": "leagueofcincytheatres",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.courant.com/2026/10/01/theater-review-opulent-great-gatsby-brings-luxury-and-razzle-dazzle-to-the-bushnell/",
+          "host": "courant.com",
+          "knownOutletId": "hartford-courant",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "sources": [
+            {
+              "source": "aggregator-article",
+              "sourceUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424"
+            }
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "corrblimey.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 2104,
+        "byReason": {
+          "roundup-page": 12,
+          "non-review-host": 166,
+          "not-http-url": 359,
+          "aggregator-internal-nav": 1438,
+          "non-stage-review": 5,
+          "aggregator-section-root": 38,
+          "production-database-listing": 60,
+          "bare-host": 2,
+          "podcast-episode": 24
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-are-critics-saying-about-the-great-gatsby-on-broadway",
+          "publishDate": "2024-04-25"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-critics-sound-off-on-paper-mill-playhouses-the-great-gatsby",
+          "publishDate": "2023-10-26"
+        },
+        {
+          "url": "https://playbill.com/article/what-are-reviews-saying-about-the-great-gatsby-in-the-west-end-starring-corbin-bleu-jamie-muscato-frances-mayli-mccann",
+          "publishDate": "2025-04-25"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-critics-weigh-in-on-immersive-the-great-gatsby-off-broadway",
+          "publishDate": "2023-06-30"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Opens-On-Broadway-Starring-Jeremy-Jordan-and-Eva-Noblezda-20240425",
+          "publishDate": "2024-04-25"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-Embarks-on-Tour-20260211",
+          "publishDate": "2026-02-11"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-GREAT-GATSBY-in-Londons-West-End-20250424",
+          "publishDate": "2025-04-24"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Immersive-THE-GREAT-GATSBY-Opens-in-NYC-20230627",
+          "publishDate": "2023-06-27"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-20231024",
+          "publishDate": "2023-10-24"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.broadwaynews.com/the-broadway-review-with-the-great-gatsby-a-production-thats-more-pyrite-than-treasure/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Great-Gatsby/1231",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-jeremy-jordan-and-eva-noblezada-star-in-the-great-gatsby-musical-on-broadway/article",
+          "host": "digitaljournal.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/the-great-gatsby-review-musical-broadway-8637932",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2024/apr/25/great-gatsby-broadway-review",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/theater-review-great-gatsby-musical-broadway.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/25/the-great-gatsby-fitzgeralds-roaring-20s-classic-musicalized-as-a-loud-whimper/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/04/25/the-great-gatsby-all-that-glitters-but-short-on-depth/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://newyorktheater.me/2024/04/26/the-great-gatsby-broadway-review/",
+          "host": "newyorktheater.me",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-broadway-review-jeremy-jordan-eva-noblezada",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2024/04/25/theater/the-great-gatsby-review-noblezada-jordan.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://observer.com/2024/04/review-flashy-and-fake-great-gatsby-caps-a-weak-season/",
+          "host": "observer.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/the-great-gatsby-review-broadway-musical/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-at-broadway-theatre-new-york-by-f-scott-fitzgerald",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-a-no-expense-spared-great-gatsby-on-broadway-with-jeremy-jordan-belting-to-the-rafters_1738140/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/the-great-gatsby-a-hundred-years-later/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/big-ol-fashioned-broadway-fun-at-the-great-gatsby-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-great-gatsby-musical-broadway-review-jeremy-jordan-eva-noblezada",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2024/legit/reviews/the-great-gatsby-review-broadway-musical-jeremy-jordan-1235981841/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/25/great-gatsby-musical-broadway-review/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/the-great-gatsby-broadway-review/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.broadwayworld.com/new-jersey/article/Review-THE-GREAT-GATSBY-at-Paper-Mill-Playhouse-The-Exceptional-World-Premiere-20231024",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2023/10/24/the-great-gatsby-fitzergeralds-classic-impressively-staged-once-again-defies-translation/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/10/26/theater/great-gatsby-musical-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-the-great-gatsby-reflects-the-excesses-of-the-roaring-twenties-in-all-the-wrong-ways_1719309/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/the-great-gatsby-at-paper-mill-playhouse/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://1883magazine.com/great-gatsby-musical-review-london/",
+          "host": "1883magazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14645813/VERONICA-LEE-reviews-Great-Gatsby.html",
+          "host": "dailymail.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/apr/24/the-great-gatsby-a-new-musical-review-coliseum-london-f-scott-fitzgerald",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/the-great-gatsby-musical-west-end-review-b2738859.html",
+          "host": "the-independent.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/great-gatsby-musical-review-vacuous-pretty-costumes-3657293",
+          "host": "inews.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/the-great-gatsby-review-london-coliseum",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-great-gatsby-review-london-coliseum-marc-bruni-jamie-muscato",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/the-great-gatsby-coliseum-review-b1224186.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-great-gatsby-coliseum-review/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-great-gatsby-review-west-end-2025-vj3f6hcsj",
+          "host": "thetimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-great-gatsby-9-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theupcoming.co.uk/2025/04/25/the-great-gatsby-at-london-coliseum-theatre-review/",
+          "host": "theupcoming.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/the-great-gatsby-review-luxuriously-glitzy-yet-glib-west-end-musical_1674830/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/the-great-gatsby-is-now-an-immersive-playor-is-it-a-party",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/the-great-gatsby-the-immersive-show-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2023/06/29/theater/the-great-gatsby-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-the-great-gatsby-is-a-trip-back-to-the-roaring-20s_1706563/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/immersive-great-gatsby-brings-the-roarin-20s-to-midtown-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/2024/04/25/broadway-review-the-great-gatsby-brings-back-big-broadway-lacks-heart/",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2024/04/25/entertainment/great-gatsby-review-broadway-musical-messes-up-beloved-novel/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/02/theatre-review-the-great-gatsby-a-new-musical-at-the-hippodrome/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.baltimoresun.com/2026/02/06/great-gatsby-hippodrome-review/",
+          "host": "baltimoresun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://dallasvoice.com/stage-notes-kdt-partners-with-art-galleries-review-of-bds-the-great-gatsby/",
+          "host": "dallasvoice.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.houstonchronicle.com/entertainment/theater/article/the-great-gatsby-hobby-center-21955604.php",
+          "host": "houstonchronicle.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.statesman.com/entertainment/arts/article/austin-great-gatsby-musical-broadway-tour-22071169.php",
+          "host": "statesman.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/",
+          "host": "chicagoreader.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://chicago.suntimes.com/theater/2026/04/24/review-great-gatsby-musical-broadway-chicago-theater-things-to-do",
+          "host": "suntimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/05/theatre-review-the-great-gatsby-a-new-musical-at-the-national-theatre/",
+          "host": "mdtheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://triblive.com/aande/theater-arts/review-musical-adaptation-of-the-great-gatsby-at-the-benedum-center-is-heavy-on-style/",
+          "host": "triblive.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.startribune.com/review-this-gatsby-aint-so-great-after-all/601852668",
+          "host": "startribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.twincities.com/2026/06/03/theater-review-great-gatsby-turns-st-paul-native-f-scott-fitzgeralds-novel-into-a-romcom/",
+          "host": "twincities.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.news-herald.com/2026/06/11/the-great-gatsby-at-playhouse-square-review-pretty-close-to-great-yes/",
+          "host": "news-herald.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.cleveland.com/entertainment/2026/06/the-great-gatsby-review-lavish-musical-delivers-the-full-broadway-experience-at-playhouse-square.html",
+          "host": "cleveland.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://stageandcinema.com/2026/07/12/the-great-gatsby-review-tour/",
+          "host": "stageandcinema.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://revuewm.com/arts/review-spectacle-steals-the-show-in-the-great-gatsby",
+          "host": "revuewm.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://captimes.com/entertainment/arts-and-theatre/the-party-drags-on-at-the-great-gatsby-in-overture-hall/article_2247e0bb-0560-4952-9ecf-7ad7573be9a4.html",
+          "host": "captimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ourtheatrevoice.com/a-dazzling-great-gatsby/",
+          "host": "ourtheatrevoice.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestar.com/entertainment/stage/the-great-gatsby-musical-at-mirvish-is-a-sparkly-but-soulless-broadway-tour/article_88994544-e44d-4fef-ac44-bcd9f7be019b.html",
+          "host": "thestar.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://apt613.ca/review-the-great-gatsby-roars-into-the-nac-until-sept-13/",
+          "host": "apt613.ca",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-green-light-means-go-see-the-great-gatsby/",
+          "host": "leagueofcincytheatres.info",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.leagueofcincytheatres.info/review-the-great-gatsby-roars-into-the-aronoff-center-in-grand-style/",
+          "host": "leagueofcincytheatres.info",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.courant.com/2026/10/01/theater-review-opulent-great-gatsby-brings-luxury-and-razzle-dazzle-to-the-bushnell/",
+          "host": "courant.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-great-gatsby-a-new-musical-london-coliseum/",
+          "host": "musicaltheatrereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/the-great-gatsby-at-london-coliseum-review",
+          "host": "theatreandtonic.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 4,
+        "excluded": [],
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "the-great-gatsby-tour-2026",
@@ -367789,15 +369879,15 @@
         "http://www.nydailynews.com/entertainment/theater-arts/royale-draws-life-boxing-champ-jack-johnson-article-1.2555782",
         "http://deadline.com/2016/03/boxing-drama-the-royale-review-1201715898/",
         "https://chicago.suntimes.com/theater/2026/11/02/review-writers-theatre-the-royale",
-        "https://aroundthetownchicago.com/theatre-reviews/the-royale-2/",
-        "https://www.chicagotribune.com/2026/11/02/review-royale-writers-theatre/",
         "https://www.conversationswithedtracy.com/picksinsix/2026/11/1/picksinsix-review-the-royale-writers-theatre",
+        "https://www.chicagotribune.com/2026/11/02/review-royale-writers-theatre/",
+        "https://aroundthetownchicago.com/theatre-reviews/the-royale-2/",
         "https://www.chicagostageandscreen.com/post/stunning-powerful-royale-at-writers",
         "https://evanstonroundtable.com/2026/11/02/the-royale-at-writers-theatre-delivers-a-knockout-punch/"
       ],
-      "dirFiles": 6,
-      "dirClean": 6,
-      "inReviewsJson": 6,
+      "dirFiles": 9,
+      "dirClean": 9,
+      "inReviewsJson": 9,
       "missing": [
         {
           "url": "http://www.nytimes.com/2016/03/08/theater/review-the-royale-harks-back-to-the-fighter-jack-johnson.html",
@@ -367865,21 +369955,94 @@
           ]
         }
       ],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "chicagotheatrereview.com",
+          "count": 1
+        },
+        {
+          "host": "chicagoonstage.com",
+          "count": 1
+        },
+        {
+          "host": "letsplaytheatricalreview.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Royale\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Royale\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 6,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Royale\" review writers",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Royale Writers Theatre, Glencoe, IL review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Royale Writers Theatre, Glencoe, IL review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Royale Writers Theatre, Glencoe, IL review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 281,
+        "count": 312,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-section-root": 4,
+          "non-review-host": 37,
           "not-http-url": 38,
-          "aggregator-internal-nav": 224
+          "news-roundup-site": 2,
+          "aggregator-internal-nav": 226,
+          "census-junk-host": 3,
+          "aggregator-section-root": 5,
+          "production-database-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -367942,8 +370105,8 @@
             "firstSeenAt": "2026-11-02T23:10:09.112Z"
           },
           {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/the-royale-2/",
-            "outletId": "aroundthetownchicago.com",
+            "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/1/picksinsix-review-the-royale-writers-theatre",
+            "outletId": "conversationswithedtracy.com",
             "state": "live",
             "firstSeenAt": "2026-11-02T23:10:09.112Z"
           },
@@ -367954,8 +370117,8 @@
             "firstSeenAt": "2026-11-02T23:10:09.112Z"
           },
           {
-            "url": "https://www.conversationswithedtracy.com/picksinsix/2026/11/1/picksinsix-review-the-royale-writers-theatre",
-            "outletId": "conversationswithedtracy.com",
+            "url": "https://aroundthetownchicago.com/theatre-reviews/the-royale-2/",
+            "outletId": "aroundthetownchicago.com",
             "state": "live",
             "firstSeenAt": "2026-11-02T23:10:09.112Z"
           },
@@ -367977,7 +370140,7 @@
         "liveCount": 6,
         "candidateCount": 6
       },
-      "computedAt": "2026-11-03T19:34:00.851Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "the-saviors-off-broadway-2026",
@@ -388533,21 +390696,38 @@
       "previewsStartDate": "2026-10-30",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
+        "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
         "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
+        "https://theatreweekly.com/review-tosca-at-london-coliseum/",
         "https://www.london-unattached.com/tosca-english-national-opera-review/",
+        "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
+        "https://www.thestage.co.uk/reviews/tosca-review-london-coliseum-puccini-annilese-miskimmon",
         "https://www.classicalsource.com/concert/english-national-opera-tosca/",
         "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
-        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
         "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
       ],
-      "dirFiles": 7,
-      "dirClean": 3,
-      "inReviewsJson": 3,
+      "dirFiles": 13,
+      "dirClean": 10,
+      "inReviewsJson": 2,
       "missing": [
         {
           "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
           "host": "bachtrack.com",
           "knownOutletId": "bachtrack",
+          "serpCensus": true,
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ]
+        },
+        {
+          "url": "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
+          "host": "cherylmarkosky.com",
+          "knownOutletId": "cherylmarkosky",
           "serpCensus": true,
           "sources": [
             {
@@ -388569,8 +390749,121 @@
           ]
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "ft.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "playstosee.com",
+          "count": 1
+        },
+        {
+          "host": "telegraph.co.uk",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thereviewshub--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thereviewshub.com/eno-tosca-london-coliseum/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongContentNoUsableSignal"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/review-tosca-at-london-coliseum/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongContentNoUsableSignal"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
+          "host": "thetimes.com",
+          "knownOutletId": "sunday-times",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--richard-morrison.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongContentNoUsableSignal"
+          ],
+          "sources": [
+            {
+              "source": "serp-census",
+              "sourceUrl": null
+            }
+          ],
+          "serpCensus": true,
+          "reverify": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -388617,12 +390910,81 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Tosca - English National Opera\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Tosca - English National Opera\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Tosca - English National Opera\" review london",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Tosca - English National Opera London Coliseum review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "roundup-page": 1,
+          "non-review-host": 16,
+          "not-http-url": 7,
+          "aggregator-internal-nav": 1,
+          "census-junk-host": 1,
+          "no-review-evidence": 3,
+          "ticketing-listing": 4,
+          "event-listing": 1,
+          "show-hub": 1,
+          "tag-index-page": 1,
+          "ticket-seller-product-page": 1
+        }
       },
       "dedupedVariants": [],
       "nonReviewCandidates": [
@@ -388635,9 +390997,24 @@
           "nonReviewDetail": "2010-05-17"
         }
       ],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 3,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
+          "host": "cherylmarkosky.com",
+          "outletId": "cherylmarkosky",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
           "host": "bachtrack.com",
@@ -388681,15 +391058,49 @@
             "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
           },
           {
+            "outletId": "cherylmarkosky",
+            "outlet": "cherylmarkosky",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/"
+          },
+          {
             "outletId": "bachtrack",
             "outlet": "bachtrack",
             "critic": "Unknown",
             "stars": null,
             "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
+          },
+          {
+            "outletId": "thereviewshub",
+            "outlet": "thereviewshub",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/"
+          },
+          {
+            "outletId": "sunday-times",
+            "outlet": "sunday-times",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/tosca-review-london-coliseum",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
           {
             "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
             "outletId": "musicomh.com",
@@ -388703,16 +391114,16 @@
             "firstSeenAt": "2026-11-03T15:34:54.267Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/tosca-review-london-coliseum-puccini-annilese-miskimmon",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
             "url": "https://www.classicalsource.com/concert/english-national-opera-tosca/",
             "outletId": "classicalsource.com",
             "state": "live",
             "firstSeenAt": "2026-11-03T15:34:54.267Z"
-          },
-          {
-            "url": "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
-            "outletId": "cherylmarkosky.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-31T23:09:19.251Z"
           },
           {
             "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
@@ -388722,11 +391133,39 @@
             "firstSeenAt": "2026-11-02T22:50:23.850Z"
           },
           {
+            "url": "https://cherylmarkosky.com/2026/10/31/london-theatre-review-tosca-english-national-opera-the-coliseum/",
+            "outletId": "cherylmarkosky",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-31T23:09:19.251Z"
+          },
+          {
             "url": "https://bachtrack.com/es_ES/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
             "outletId": "bachtrack",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-01T06:34:49.647Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/eno-tosca-london-coliseum/",
+            "outletId": "thereviewshub",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/classical-opera/article/tosca-review-london-coliseum-nqwpdjr9t",
+            "outletId": "sunday-times",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-11-03T23:57:50.737Z"
           }
         ],
         "censusSchema": 4,
@@ -388737,10 +391176,10 @@
             "reason": "page-date-before-run"
           }
         ],
-        "liveCount": 4,
-        "candidateCount": 5
+        "liveCount": 5,
+        "candidateCount": 10
       },
-      "computedAt": "2026-11-03T19:34:00.851Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -388757,48 +391196,21 @@
           "inheritReviews": false
         }
       ],
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
-        "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-        "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
-        "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
-        "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-        "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
         "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
         "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
-        "https://operacanada.ca/metropolitan-opera-tosca-review/",
         "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
-        "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
         "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
-        "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629",
         "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-15428",
         "https://groups.io/g/crusting-pipe/topic/tosca_review_it_s/119464695",
         "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/",
-        "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
-        "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
-        "https://theatreweekly.com/review-tosca-at-london-coliseum/",
-        "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/"
+        "https://www.viewlogue.com/film/the-metropolitan-opera-tosca"
       ],
-      "dirFiles": 26,
+      "dirFiles": 13,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
-        {
-          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
-            }
-          ]
-        },
         {
           "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
           "host": "bachtrack.com",
@@ -388824,38 +391236,12 @@
           ]
         },
         {
-          "url": "https://operacanada.ca/metropolitan-opera-tosca-review/",
-          "host": "operacanada.ca",
-          "knownOutletId": "operacanada",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2018-11-08",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
           "host": "classicalsource.com",
           "knownOutletId": "classical-source",
           "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true,
           "priorRun": true,
-          "priorRunSource": "pending-file-date:2020-12-31",
+          "priorRunSource": "pending-file-date:2009-09-28",
           "sources": [
             {
               "source": "serp-census",
@@ -388912,18 +391298,6 @@
           ]
         },
         {
-          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
-          "host": "bachtrack.com",
-          "knownOutletId": "bachtrack",
-          "serpCensus": true,
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
           "host": "viewlogue.com",
           "knownOutletId": null,
@@ -388936,311 +391310,27 @@
           ]
         }
       ],
-      "dirOnly": [],
-      "flaggedMisses": [
+      "dirOnly": [
         {
-          "url": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/",
-          "host": "zealnyc.com",
-          "knownOutletId": "zeal-nyc",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "zeal-nyc--herman-spencer.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.zealnyc.com/review-a-traditional-tosca-returns-with-cheers-to-the-met/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "aggregator-article",
-              "sourceUrl": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date",
-          "reverify": false
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--gary-naylor.json",
-              "flag": "clean",
-              "urlInDir": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "rejectionReason"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-          "host": "musicomh.com",
-          "knownOutletId": "musicomh",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musicomh--keith-mcdonnell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--flora-willson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/music/2026/nov/01/tosca-review-axelle-fanyo-christopher-purves"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:venue-verified:the Coliseum, London",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "broadwayworld--aliya-al-hassan.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-Des-Moines-Metro-Opera-20260629"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-06-29",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/review-tosca-at-london-coliseum/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "sunday-telegraph--nicholas-kenyon.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ],
-          "serpCensus": true,
-          "reverify": true
+          "host": "newyorkclassicalreview.com",
+          "count": 1
         }
       ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Tosca\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Tosca\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Tosca\" review metropolitan",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Tosca Metropolitan Opera House review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Tosca Metropolitan Opera House review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Tosca Metropolitan Opera House review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 10,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 125,
-        "byReason": {
-          "not-http-url": 8,
-          "non-review-host": 37,
-          "aggregator-internal-nav": 55,
-          "aggregator-section-root": 4,
-          "production-database-listing": 10,
-          "non-stage-review": 2,
-          "no-review-evidence": 3,
-          "roundup-page": 2,
-          "ticketing-reseller": 4
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-did-critics-think-of-the-metropolitan-operas-new-production-of-tosca",
-          "publishDate": "2018-01-02"
-        }
-      ],
-      "automatedExcludedListed": 4,
+      "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
-        {
-          "url": "https://www.nytimes.com/2018/01/01/arts/music/tosca-metropolitan-opera.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
         {
           "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan",
           "host": "aatmanvakil.substack.com",
@@ -389249,15 +391339,8 @@
           "censusGateOn": true
         },
         {
-          "url": "https://operacanada.ca/metropolitan-opera-tosca-review/",
-          "host": "operacanada.ca",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/tosca-metropolitan-op-19674",
-          "host": "britishtheatreguide.info",
+          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
+          "host": "classicalsource.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -389285,21 +391368,6 @@
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
-          "host": "classicalsource.com",
-          "outletId": "classical-source",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tosca-off-broadway-2026: https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/ dated 2009-09-28 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
         {
           "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
           "host": "bachtrack.com",
@@ -389344,21 +391412,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "tosca-off-broadway-2026: https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
-        {
-          "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
-          "host": "bachtrack.com",
-          "outletId": "bachtrack",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Article extraction returned 124 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         }
       ],
       "ingestSkippedByCap": [],
@@ -389378,13 +391431,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://aatmanvakil.substack.com/p/review-tosca-at-the-metropolitan"
-          },
-          {
-            "outletId": "classical-source",
-            "outlet": "classical-source",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/"
           },
           {
             "outletId": "interclassical.com",
@@ -389415,56 +391461,15 @@
             "url": "https://aroundthetownchicago.com/theatre-reviews/tosca-reviewed-by-jacob-davis/"
           },
           {
-            "outletId": "bachtrack",
-            "outlet": "bachtrack",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026"
-          },
-          {
             "outletId": "viewlogue.com",
             "outlet": "viewlogue.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca"
-          },
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031"
-          },
-          {
-            "outletId": "musicomh",
-            "outlet": "musicomh",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/"
-          },
-          {
-            "outletId": "sunday-telegraph",
-            "outlet": "sunday-telegraph",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "http://newyorkclassicalreview.com/2018/01/yoncheva-triumphs-in-premiere-of-mets-new-and-dazzling-tosca/",
-            "outletId": "newyorkclassicalreview.com",
-            "state": "live",
-            "firstSeenAt": "2026-11-03T10:44:11.039Z"
-          },
           {
             "url": "https://bachtrack.com/review-tosca-terfel-giannattasio-pirgu-oxford-interational-opera-september-2026",
             "outletId": "bachtrack",
@@ -389478,13 +391483,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
-            "url": "https://www.classicalsource.com/concert/the-metropolitan-opera-tosca/",
-            "outletId": "classical-source",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-03T18:35:27.526Z"
           },
           {
             "url": "https://interclassical.com/review-puccinis-tosca-metropolitan-opera/",
@@ -389515,43 +391513,8 @@
             "firstSeenAt": "2026-11-01T15:55:41.663Z"
           },
           {
-            "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-opera-london-october-2026",
-            "outletId": "bachtrack",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
             "url": "https://www.viewlogue.com/film/the-metropolitan-opera-tosca",
             "outletId": "viewlogue.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-TOSCA-London-Coliseum-20261031",
-            "outletId": "broadwayworld",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://www.musicomh.com/classical/opera-reviews/tosca-review-puccini-english-national-opera-coliseum",
-            "outletId": "musicomh",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T23:23:22.746Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-tosca-at-london-coliseum/",
-            "outletId": "theatre-weekly",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-11-01T02:12:48.530Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/opera/what-to-see/tosca-eno-review/",
-            "outletId": "sunday-telegraph",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-11-01T02:12:48.530Z"
@@ -389559,10 +391522,10 @@
         ],
         "censusSchema": 4,
         "excluded": [],
-        "liveCount": 1,
-        "candidateCount": 13
+        "liveCount": 0,
+        "candidateCount": 7
       },
-      "computedAt": "2026-11-03T18:35:27.526Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -390526,12 +392489,8 @@
       "previewsStartDate": "2026-11-01",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://exeuntnyc.com/reviews/tristan-yseult/",
         "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
         "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice",
-        "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
-        "https://www.timeout.com/newyork/theater/tristan-yseult",
-        "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html",
         "https://www.londontheatre1.com/reviews/review-tristan-yseult-kneehigh-the-globe/",
         "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/",
         "https://fairypoweredproductions.com/tristan-yseult-review/",
@@ -390543,20 +392502,6 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://exeuntnyc.com/reviews/tristan-yseult/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2014-11-29",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
         {
           "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
           "host": "corrblimey.uk",
@@ -390582,52 +392527,12 @@
           ]
         },
         {
-          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
-          "host": "artsfuse.org",
-          "knownOutletId": "artsfuse",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2015-03-08",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/tristan-yseult",
-          "host": "timeout.com",
-          "knownOutletId": "timeout",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2014-11-26",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
-          "url": "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "serpCensus": true,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2015-01-30",
-          "sources": [
-            {
-              "source": "serp-census",
-              "sourceUrl": null
-            }
-          ]
-        },
-        {
           "url": "https://www.londontheatre1.com/reviews/review-tristan-yseult-kneehigh-the-globe/",
           "host": "londontheatre1.com",
           "knownOutletId": "londontheatre1",
           "serpCensus": true,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-06-14",
           "sources": [
             {
               "source": "serp-census",
@@ -390770,125 +392675,26 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Tristan and Yseult\" Off-Broadway review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Tristan and Yseult\" Off-Broadway review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Tristan and Yseult\" review warehouse",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 7,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Tristan and Yseult St. Ann's Warehouse review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Tristan and Yseult St. Ann's Warehouse review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Tristan and Yseult St. Ann's Warehouse review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 7,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 27,
-        "byReason": {
-          "non-review-host": 20,
-          "aggregator-internal-nav": 1,
-          "no-review-evidence": 2,
-          "census-junk-host": 3,
-          "static-asset": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 4,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://exeuntnyc.com/reviews/tristan-yseult/",
-          "host": "exeuntnyc.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://artsfuse.org/123965/fuse-theater-review-kneehigh-wows-with-tristan-yseult-love-raucous-and-romantic/",
-          "host": "artsfuse.org",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/tristan-yseult",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.latimes.com/socal/daily-pilot/entertainment/tn-dpt-et-0130-tristan-yseult-20150129-story.html",
-          "host": "latimes.com",
+          "url": "https://www.londontheatre1.com/reviews/review-tristan-yseult-kneehigh-the-globe/",
+          "host": "londontheatre1.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         }
       ],
       "ingestResults": [
-        {
-          "url": "https://www.londontheatre1.com/reviews/review-tristan-yseult-kneehigh-the-globe/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "tristan-and-yseult-off-broadway-2026: https://www.londontheatre1.com/reviews/review-tristan-yseult-kneehigh-the-globe/ dated 2017-06-14 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
         {
           "url": "https://corrblimey.uk/2026/10/05/review-tristan-yseult-the-citizens-theatre-glasgow/",
           "host": "corrblimey.uk",
@@ -390954,13 +392760,6 @@
             "url": "https://www.theguardian.com/stage/2026/sep/19/tristan-and-yseult-review-theatre-royal-bath-kneehigh-emma-rice"
           },
           {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/review-tristan-yseult-kneehigh-the-globe/"
-          },
-          {
             "outletId": "whatsonstage",
             "outlet": "whatsonstage",
             "critic": "Unknown",
@@ -391014,13 +392813,6 @@
             "firstSeenAt": "2026-11-02T06:46:27.997Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/review-tristan-yseult-kneehigh-the-globe/",
-            "outletId": "londontheatre1",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-11-03T18:35:27.526Z"
-          },
-          {
             "url": "https://www.whatsonstage.com/news/tristan-yseult-at-theatre-royal-bath-and-on-tour-review_1731590/",
             "outletId": "whatsonstage",
             "state": "IN_FLIGHT",
@@ -391059,9 +392851,9 @@
         "censusSchema": 4,
         "excluded": [],
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 7
       },
-      "computedAt": "2026-11-03T18:35:27.526Z"
+      "computedAt": "2026-11-03T23:57:50.737Z"
     },
     {
       "showId": "tristan-and-yseult-royal-bath-regional-2026",
@@ -415415,27 +417207,27 @@
     }
   ],
   "staleness": {
-    "at": "2026-11-03T22:38:02.538Z",
+    "at": "2026-11-03T23:57:50.736Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "hamilton-west-end-2021",
-      "witness-for-the-prosecution-west-end-2022"
+      "roleplay-off-west-end-2026",
+      "i-became-we-off-broadway-2026"
     ],
     "catalogueReserveEvery": 8,
     "catalogueAttempted": [
-      "wallace-oran-mor-regional-2025",
-      "the-f-ck-house-regional-2025"
+      "a-toast-fae-the-lassies-pitlochry-festival-regional-2025",
+      "the-great-gatsby-pitlochry-festival-regional-2025"
     ],
-    "neverAuditedDueAtStart": 623,
+    "neverAuditedDueAtStart": 621,
     "oldestDueRowAtStart": {
-      "showId": "hamilton-west-end-2021",
+      "showId": "the-book-of-mormon-west-end-2024",
       "computedAt": "2026-10-11T22:49:53.446Z",
-      "ageHours": 551.5
+      "ageHours": 552.8
     },
     "oldestDueRowAfterRun": {
       "showId": "the-book-of-mormon-west-end-2024",
       "computedAt": "2026-10-11T22:49:53.446Z",
-      "ageHours": 551.8
+      "ageHours": 553.1
     }
   }
 }
