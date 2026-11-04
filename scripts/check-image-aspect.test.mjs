@@ -28,7 +28,7 @@ async function image(file, width, height) {
 
 function scratch(t) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4734-'));
-  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   return dir;
 }
 
