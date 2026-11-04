@@ -1,10 +1,10 @@
 {
-  "runDate": "2026-11-04T06:32:20.169Z",
+  "runDate": "2026-11-04T07:33:51.680Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1,
+    "maxReviews": 20,
     "priority": "all",
-    "showFilter": "the-imaginary-invalid-2026",
+    "showFilter": "other-desert-cities-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
@@ -12,28 +12,28 @@
   },
   "summary": {
     "processed": 1,
-    "failed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
     "playwright": 0,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 1
   },
   "statistics": {
     "tier1Attempts": 1,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
     "tier2Attempts": 0,
@@ -42,22 +42,22 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.3,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
     "processed": 1,
-    "failed": 0,
+    "failed": 1,
     "shows": [
-      "the-imaginary-invalid-2026"
+      "other-desert-cities-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,28 +66,31 @@
     }
   },
   "processed": [
-    "the-imaginary-invalid-2026/washpost--thomas-floyd.json"
+    "other-desert-cities-2026/new-york-city-theatre--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "other-desert-cities-2026/bobs-theater-blog--unknown.json"
+  ],
   "cumulativeResumedState": {
     "processed": [
-      "the-imaginary-invalid-2026/washpost--thomas-floyd.json"
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
     ],
-    "failed": []
+    "failed": [
+      "other-desert-cities-2026/bobs-theater-blog--unknown.json"
+    ]
   },
   "tierDetails": {
     "playwright": [],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-imaginary-invalid-2026/washpost--thomas-floyd.json",
-      "the-imaginary-invalid-2026/washpost--thomas-floyd.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
