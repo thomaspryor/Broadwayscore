@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6951",
   "planId": "b6b98214-d395-4f1b-988e-19d838d5d263",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-11-04T17:07:28.906Z",
   "submitter": {
     "name": null,
@@ -86,5 +86,49 @@
         "description": "BRO-6923: Mitzi E. Newhouse Theater is a stage inside Lincoln Center Theater; the flag reason named the building. Alias-aware re-verify: valid, not wrong production."
       }
     ]
-  }
+  },
+  "executedAt": "2026-11-04T18:19:52.377Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ragtime-2025/america-magazine--weinert-kendt.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "ragtime-2025/america-magazine--weinert-kendt.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "uncle-vanya-2024/observer--david-cote.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "uncle-vanya-2024/observer--david-cote.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "south-pacific-2008/newsday--unknown.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "south-pacific-2008/newsday--unknown.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oslo-off-broadway-2016/times-square-chronicles--suzanna-bowling.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oslo-off-broadway-2016/times-square-chronicles--suzanna-bowling.json wrongProductionManualClear: null -> true"
+    }
+  ],
+  "executedIn": "ci"
 }
