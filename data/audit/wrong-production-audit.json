@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T00:06:52.185Z",
+  "timestamp": "2026-11-04T00:39:49.443Z",
   "stats": {
-    "totalReviews": 79967,
-    "alreadyFlagged": 22054,
+    "totalReviews": 79968,
+    "alreadyFlagged": 22050,
     "dateGuardCatches": 216,
-    "directorMismatch": 3457,
-    "tvFilmSignals": 2264,
-    "londonSignals": 3596,
+    "directorMismatch": 3458,
+    "tvFilmSignals": 2267,
+    "londonSignals": 3603,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8496
+    "noPublishDate": 8490
   },
   "findings": [
     {
@@ -43835,6 +43835,25 @@
     },
     {
       "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
+      "file": "london-theatre--mark-shenton.json",
+      "score": null,
+      "publishDate": "2022-01-25",
+      "url": "https://www.londontheatre.co.uk/reviews/review-my-brilliant-friend-at-the-national-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "my-brilliant-friend-part-1-part-2-west-end-2019",
       "file": "standard--nick-curtis.json",
       "score": 82,
       "publishDate": null,
@@ -45108,6 +45127,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 7\""
+        }
+      ]
+    },
+    {
+      "showId": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "score": null,
+      "publishDate": "2025-10-09",
+      "url": "https://www.nytimes.com/2025/10/09/theater/jen-tullock-severance-hand-of-god.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -53454,6 +53487,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "rockets-and-blue-lights-west-end-2021",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "September 3rd, 2021",
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/rockets-and-blue-lights-national_54823.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -65979,6 +66026,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2013 (2x) more than 2017 (1x). 2013 matches production: the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "file": "timeout--david-cote.json",
+      "score": 84,
+      "publishDate": "2017-03-10",
+      "url": "https://www.timeout.com/newyork/blog/broadway-review-the-glass-menagerie-gets-a-modern-minimalist-look-with-sally-field-030917",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
         }
       ]
     },
@@ -98495,6 +98556,20 @@
     },
     {
       "showId": "girls-off-west-end-2026",
+      "file": "theatre-weekly--matthew-plampton.json",
+      "score": null,
+      "publishDate": "2026-10-27",
+      "url": "https://theatreweekly.com/review-girls-at-young-vic-maria-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "girls-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 86,
       "publishDate": "2026-10-29",
@@ -102609,6 +102684,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "home-im-darling-west-end-2018",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2018-07-04",
+      "url": "https://www.theguardian.com/stage/2018/jul/04/home-im-darling-review-laura-wade-katherine-parkinson",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -113184,6 +113273,20 @@
     },
     {
       "showId": "nye-west-end-2024",
+      "file": "broadwayworld--persson-gary-naylor.json",
+      "score": 86,
+      "publishDate": "2024-03-07",
+      "url": "https://www.broadwayworld.com/westend/article/Review-NYE-National-Theatre-20240307",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "nye-west-end-2024",
       "file": "monstagigz--unknown.json",
       "score": null,
       "publishDate": "2024-02-25",
@@ -114219,6 +114322,19 @@
       "score": 82,
       "publishDate": "2024-07-25",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/oliver-musical-review-matthew-bourne-revival-tqnw6rp2z",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "whatsonstage--unknown.json",
+      "score": 97,
+      "publishDate": "January 14th, 2025",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -123888,6 +124004,20 @@
       ]
     },
     {
+      "showId": "the-bridge-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2026-11-03",
+      "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-brightening-air-west-end-2025",
       "file": "all-that-dazzles-uk--sam-admin.json",
       "score": 37,
@@ -132080,6 +132210,20 @@
       "score": 78,
       "publishDate": "2026-02-16",
       "url": "https://playsinternational.org.uk/the-shitheads-royal-court-theatre-upstairs/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-shitheads-west-end-2026",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "February 13th, 2026",
+      "url": "https://www.whatsonstage.com/news/the-shtheads-at-the-royal-court-review_1712175/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
