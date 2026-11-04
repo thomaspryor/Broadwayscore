@@ -43,10 +43,11 @@ test('an outlet with no source and no gap is reported missing (the check can fai
   assert.match(cov.gaps.talkinbroadway, /own adapter/);
 });
 
-test('no gap is stale: a gapped outlet has no polled source (remove the gap once it has one)', () => {
+test('no gap is stale: a gapped outlet lacks a polled source in at least one market (remove the gap once it has one in all)', () => {
   const ids = Object.keys(ls.LANE_SOURCE_GAPS);
-  const cov = ls.laneSourceCoverage(ids, BROADWAY);
-  assert.deepEqual(Object.keys(cov.covered), []);
+  const markets = [BROADWAY, { category: 'west-end' }];
+  const coveredEverywhere = ids.filter((id) => markets.every((m) => ls.laneSourceCoverage([id], m).covered[id]));
+  assert.deepEqual(coveredEverywhere, []);
   for (const id of ids) assert.ok(ls.LANE_SOURCE_GAPS[id].length > 20, `${id}: give a checkable reason`);
 });
 
@@ -169,4 +170,10 @@ test('NYT and WSJ are found through feeds: WSJ Arts & Culture (where its theater
   assert.deepEqual(cov.missing, []);
   assert.ok(cov.covered.wsj.some((s) => s.startsWith('feed ') && s.includes('RSSArtsCulture')), JSON.stringify(cov.covered.wsj));
   assert.ok(cov.covered.nytimes.some((s) => s.startsWith('feed ')), JSON.stringify(cov.covered.nytimes));
+});
+
+test('NYT on a West End night is a stated gap, not a silent miss (its Theater feed is Broadway-only)', () => {
+  const cov = ls.laneSourceCoverage(['nytimes'], { category: 'west-end' });
+  assert.deepEqual(cov.missing, []);
+  assert.match(cov.gaps.nytimes || "", /Broadway only/);
 });

@@ -11,18 +11,18 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 const lib = (f) => JSON.stringify(path.join(ROOT, 'scripts/lib', f));
 
 function runChild(code, env = {}) {
-  const r = spawnSync(process.execPath, ['-e', code], { encoding: 'utf8', env: { ...process.env, NET_AUTOSELECT_FAMILY: '', ...env }, timeout: 20000 });
+  const r = spawnSync(process.execPath, ['-e', code], { encoding: 'utf8', env: { ...process.env, NET_AUTOSELECT_FAMILY: '', GITHUB_ACTIONS: 'true', ...env }, timeout: 20000 });
   assert.equal(r.status, 0, r.stderr);
   return JSON.parse(r.stdout.trim().split('\n').pop());
 }
 
-// A server on 127.0.0.1 and a host that resolves to [127.0.0.1, 127.0.0.2]; nothing listens on .2, so it fails at once,
-// as IPv6 does on a runner. The loop pauses 400 ms right after the first attempt starts, as a large page parse would.
+// A server on 127.0.0.1 only and a host that resolves to [127.0.0.1, ::1]; ::1 fails at once (refused, or no IPv6 at
+// all) on Linux and macOS, as IPv6 does on a runner. The loop pauses 400 ms right after the first attempt starts, as a large page parse would.
 const STALLED_CONNECT = (requireLine) => `
 ${requireLine}
 const net = require('net'); const http = require('http');
 const lookup = (host, opts, cb) => { if (typeof opts === 'function') { cb = opts; opts = {}; }
-  const all = [{ address: '127.0.0.1', family: 4 }, { address: '127.0.0.2', family: 4 }];
+  const all = [{ address: '127.0.0.1', family: 4 }, { address: '::1', family: 6 }];
   setImmediate(() => (opts && opts.all ? cb(null, all) : cb(null, all[0].address, 4))); }; // async, like real DNS
 const srv = http.createServer((q, r) => r.end('ok')).listen(0, '127.0.0.1', () => {
   const s = net.connect({ host: 'two-address.test', port: srv.address().port, lookup });
@@ -52,5 +52,10 @@ test('scraper.js and rss-discovery.js each switch the process to one IPv4-first 
 
 test('NET_AUTOSELECT_FAMILY=on leaves Node defaults alone', () => {
   const r = runChild(`require(${lib('ipv4-connections.js')}); console.log(JSON.stringify({ auto: require('net').getDefaultAutoSelectFamily() }));`, { NET_AUTOSELECT_FAMILY: 'on' });
+  assert.deepEqual(r, { auto: true });
+});
+
+test('off GitHub Actions (the Mac, cloud sessions) Node defaults stay', () => {
+  const r = runChild(`require(${lib('ipv4-connections.js')}); console.log(JSON.stringify({ auto: require('net').getDefaultAutoSelectFamily() }));`, { GITHUB_ACTIONS: '' });
   assert.deepEqual(r, { auto: true });
 });

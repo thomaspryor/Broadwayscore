@@ -94,7 +94,21 @@ async function main() {
   const siteMeta = replay ? await shadow.loadSiteMeta({ repoDir, showId, token: env.REVIEW_TEXTS_TOKEN }).catch((e) => { console.error(`shadow: site review metadata unavailable (${e.message}); grading by publish dates only`); return null; }) : null;
   const startedAt = now();
   let result = null; let endedAt = null;
+  // BRO-6872: CI passes froze the event loop for 2-7 s (never locally), which cut off connections mid-handshake. Log every
+  // freeze over 500 ms with its wall time so it can be lined up against recording/fetches.jsonl and the ledger.
+  const loopDelay = require('perf_hooks').monitorEventLoopDelay({ resolution: 20 });
+  loopDelay.enable();
+  const stalls = []; let lastTick = Date.now();
+  setInterval(() => {
+    const t = Date.now(); const ms = t - lastTick - 50; lastTick = t;
+    if (ms > 500 && stalls.length < 1000) stalls.push({ at: new Date(t - ms).toISOString(), ms });
+  }, 50).unref();
+  const writeEventLoop = () => fs.writeFileSync(path.join(out, 'event-loop.json'), JSON.stringify({
+    maxMs: Math.round(loopDelay.max / 1e6), p99Ms: Math.round(loopDelay.percentile(99) / 1e6), meanMs: Math.round(loopDelay.mean / 1e6),
+    stallsOver500ms: stalls.length, stalls,
+  }, null, 1));
   const writeReport = () => {
+    try { writeEventLoop(); } catch (e) { console.error(`shadow: event-loop log failed: ${e.message}`); }
     const rep = shadow.buildShadowReport({ show, night, ledgerDir, scores: scores.snapshot(), rows, live: live.snapshot(), startedAt, endedAt, result });
     const md = shadow.writeShadowReport(out, rep);
     if (!replay) return md;

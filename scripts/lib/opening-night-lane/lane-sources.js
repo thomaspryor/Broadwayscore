@@ -97,6 +97,8 @@ const LANE_SOURCE_GAPS = {
   people: 'people.com answers 402 to datacenter fetches (feed and theater section, probed 2026-11-03); Google News and SERP',
   usatoday: 'usatoday.com answers 402 to datacenter fetches (feed and theater section, probed 2026-11-03); BWW roundup and SERP',
   purewow: 'purewow.com has no feed (404, probed 2026-11-03) and no theater section; SERP',
+  // Broadway is covered by NYT's Theater RSS; that feed is Broadway-market only, and the section page answers runners 403.
+  nytimes: 'West End shows: the NYT Theater feed is read for Broadway only and nytimes.com/section/theater answers 403 (2026-11-04); Google News and SERP',
 };
 
 const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return null; } };
