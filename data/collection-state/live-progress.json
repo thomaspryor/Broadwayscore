@@ -1,19 +1,50 @@
 {
-  "updatedAt": "2026-11-04T19:26:49.062Z",
-  "processed": 8,
-  "failed": 2,
-  "successRate": "80.0%",
+  "updatedAt": "2026-11-04T19:41:07.981Z",
+  "processed": 12,
+  "failed": 9,
+  "successRate": "57.1%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 5,
     "amp": 2,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 5
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-11-04T19:32:57.657Z",
+      "event": "bb-session",
+      "session": "e0fe4924",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-04T19:34:28.422Z",
+      "event": "bb-session",
+      "session": "799d79ee",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T19:35:47.533Z",
+      "event": "bb-session",
+      "session": "d2c160f6",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-04T19:37:18.477Z",
+      "event": "bb-session",
+      "session": "c89f314b",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-04T19:38:31.784Z",
+      "event": "bb-session",
+      "session": "939acbe6",
+      "url": "https://seenandheard-international.com/2026/11/a-new-tosca-at-the-eno-when-the-m"
+    }
+  ]
 }

@@ -7,24 +7,40 @@
     "china-doll-2015/talkinbroadway--matthew-murray.json",
     "china-doll-2015/financialtimes--ellen-brait.json",
     "china-doll-2015/lighting-and-sound-america--david-barbour.json",
-    "august-osage-county-2007/ew--unknown.json"
+    "august-osage-county-2007/ew--unknown.json",
+    "tosca-english-national-opera-west-end-2026/seen-and-heard-international--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+    "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
   ],
   "failed": [
     "china-doll-2015/american-theater-web--andy-propst.json",
-    "august-osage-county-2007/theatermania--unknown.json"
+    "august-osage-county-2007/theatermania--unknown.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--mark-pullinger.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+    "tosca-english-national-opera-west-end-2026/cherylmarkosky--cherylmarkosky.json",
+    "tosca-english-national-opera-west-end-2026/times-uk--richard-morrison.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "china-doll-2015/timeout--david-cote.json",
       "china-doll-2015/financialtimes--brendan-lemon.json",
-      "august-osage-county-2007/ew--unknown.json"
+      "august-osage-county-2007/ew--unknown.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--emma-john.json",
+      "ceilidh-the-musical-off-west-end-2026/guardian--unknown.json"
     ],
     "amp": [
       "data/review-texts/china-doll-2015/lighting-and-sound-america--david-barbour.json",
       "china-doll-2015/lighting-and-sound-america--david-barbour.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/tosca-english-national-opera-west-end-2026/seen-and-heard-international--unknown.json",
+      "tosca-english-national-opera-west-end-2026/seen-and-heard-international--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
@@ -34,10 +50,42 @@
       "china-doll-2015/abc-news--mark-kennedy.json",
       "china-doll-2015/american-theater-web--andy-propst.json",
       "china-doll-2015/njcom--christopher-kelly.json",
-      "china-doll-2015/talkinbroadway--matthew-murray.json"
+      "china-doll-2015/talkinbroadway--matthew-murray.json",
+      "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json"
     ]
   },
   "startTime": "2026-11-04T19:23:53.664Z",
-  "lastProcessed": "august-osage-county-2007/theatermania--unknown.json",
-  "log": []
+  "lastProcessed": "ceilidh-the-musical-off-west-end-2026/daily-echo--william-dalgleish.json",
+  "log": [
+    {
+      "t": "2026-11-04T19:32:57.657Z",
+      "event": "bb-session",
+      "session": "e0fe4924",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-04T19:34:28.422Z",
+      "event": "bb-session",
+      "session": "799d79ee",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T19:35:47.533Z",
+      "event": "bb-session",
+      "session": "d2c160f6",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    },
+    {
+      "t": "2026-11-04T19:37:18.477Z",
+      "event": "bb-session",
+      "session": "c89f314b",
+      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+    },
+    {
+      "t": "2026-11-04T19:38:31.784Z",
+      "event": "bb-session",
+      "session": "939acbe6",
+      "url": "https://seenandheard-international.com/2026/11/a-new-tosca-at-the-eno-when-the-m"
+    }
+  ]
 }
