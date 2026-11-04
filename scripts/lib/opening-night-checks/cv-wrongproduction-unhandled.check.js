@@ -173,11 +173,18 @@ function run(show, context) {
   // url+outlet+critic of every file whose own top-level wrongProduction is not
   // set: the files that can account for a shipped row (BRO-5437 not-shipped).
   const siblingKeys = new Set();
+  // BRO-6459: urls of those same files. A row whose url another file carries was
+  // shipped by that file, even when its critic name differs (a byline re-credit
+  // pending): the outlet+critic fallback must not pin it on this flagged file.
+  const siblingUrls = new Set();
   if (context.setAsideHandled) {
     for (const f of files) {
       try {
         const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-        if (d.wrongProduction !== true) siblingKeys.add(`${d.url}::${d.outletId}::${d.criticName}`);
+        if (d.wrongProduction !== true) {
+          siblingKeys.add(`${d.url}::${d.outletId}::${d.criticName}`);
+          if (d.url) siblingUrls.add(d.url);
+        }
       } catch { /* unreadable file: cannot vouch for a row */ }
     }
   }
@@ -208,8 +215,8 @@ function run(show, context) {
     // name normalized differently in reviews.json) treat it as this file's.
     const matchedRows = shippedReviews.filter(r => (data.url && r.url === data.url)
       || (r.outletId === data.outletId && r.criticName === data.criticName));
-    const exactShipped = matchedRows.length === 0 || matchedRows.some(r => !siblingKeys.has(
-      `${r.url}::${r.outletId}::${r.criticName}`) || (r.url === data.url
+    const exactShipped = matchedRows.length === 0 || matchedRows.some(r => (!siblingKeys.has(
+      `${r.url}::${r.outletId}::${r.criticName}`) && !(r.url && r.url !== data.url && siblingUrls.has(r.url))) || (r.url === data.url
       && r.outletId === data.outletId && r.criticName === data.criticName));
     // BRO-4427: judged before the sweep's set-aside so the lifetime audit counts them.
     if (isCorroboratedTemporalOverride(data, show)) {
