@@ -1,24 +1,20 @@
 {
-  "generatedAt": "2026-11-04T02:11:05.604Z",
+  "generatedAt": "2026-11-04T09:40:26.575Z",
   "apply": true,
-  "auditGeneratedAt": "2026-11-04T02:00:06.342Z",
+  "auditGeneratedAt": "2026-11-04T09:29:06.896Z",
   "counts": {
     "skip:no-verify-command": 1,
-    "bounce:no-auto-worker": 2,
     "bounce:recheck-after-pending": 1,
-    "recent-activity": 2,
+    "bounce:no-auto-worker": 2,
+    "bounce:recent-activity": 1,
+    "recent-activity": 4,
     "no-commit-naming-card-touched-test": 1,
+    "no-landing-naming-card": 1,
     "landing-evidence-needs-in-review": 2,
     "sweep:eligible": 1,
-    "sweep:no-auto-worker": 1
+    "sweep:bounced": 1
   },
   "rows": [
-    {
-      "id": "BRO-6608",
-      "state": "In Review",
-      "action": "leave",
-      "reason": "no-auto-worker"
-    },
     {
       "id": "BRO-6571",
       "state": "In Review",
@@ -32,6 +28,24 @@
       "reason": "no-auto-worker"
     },
     {
+      "id": "BRO-5516",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-auto-worker"
+    },
+    {
+      "id": "BRO-6960",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6822",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
       "id": "BRO-6663",
       "state": "In Progress",
       "action": "leave",
@@ -42,6 +56,12 @@
       "state": "In Review",
       "action": "leave",
       "reason": "no-commit-naming-card-touched-test"
+    },
+    {
+      "id": "BRO-6608",
+      "state": "In Review",
+      "action": "leave",
+      "reason": "no-landing-naming-card"
     },
     {
       "id": "BRO-6441",
@@ -62,10 +82,15 @@
       "reason": "landing-evidence-needs-in-review"
     },
     {
-      "id": "BRO-5516",
+      "id": "BRO-4315",
+      "state": "In Progress",
+      "action": "leave",
+      "reason": "recent-activity"
+    },
+    {
+      "id": "BRO-6745",
       "state": "In Review",
-      "action": "sweep-leave",
-      "reason": "gate-refused, no-auto-worker"
+      "action": "sweep-bounced"
     }
   ]
 }
