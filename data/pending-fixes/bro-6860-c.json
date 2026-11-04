@@ -1,0 +1,54 @@
+{
+  "issueNumber": "bro-6860-c",
+  "planId": "d306b13e-a681-4fdb-8ccc-f79479b52aa8",
+  "status": "pending",
+  "createdAt": "2026-11-04T02:29:05.121Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6860: mark 2 more legitimate cross-outlet bylines reviewed",
+    "steps": [
+      "BRO-6860: byline checked, legitimate",
+      "BRO-6860: mark reviewed",
+      "BRO-6860: byline checked, legitimate",
+      "BRO-6860: mark reviewed"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/howlround--jonathan-mandell.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6860: The article text carries the byline line 'Jonathan Mandell's newcrit piece usually appears' on howlround.com, the outlet it is credited to.",
+        "description": "BRO-6860: byline checked, legitimate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "invisible-thread-off-broadway-2015/howlround--jonathan-mandell.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6860: mark reviewed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "smart-people-off-broadway-2016/nytg--diandra-rivera.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6860: The review URL is on nytheatreguide.com, the outlet it is credited to, and Diandra Rivera has 3 files there.",
+        "description": "BRO-6860: byline checked, legitimate"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "smart-people-off-broadway-2016/nytg--diandra-rivera.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6860: mark reviewed"
+      }
+    ]
+  }
+}
