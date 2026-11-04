@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T19:21:40.090Z",
+  "timestamp": "2026-11-04T19:58:31.804Z",
   "stats": {
-    "totalReviews": 80136,
+    "totalReviews": 80142,
     "alreadyFlagged": 22016,
     "dateGuardCatches": 217,
     "directorMismatch": 3500,
     "tvFilmSignals": 2275,
-    "londonSignals": 3606,
+    "londonSignals": 3608,
     "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8514
+    "noPublishDate": 8509
   },
   "findings": [
     {
@@ -124741,6 +124741,20 @@
     },
     {
       "showId": "the-bridge-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 60,
+      "publishDate": "2026-11-04",
+      "url": "https://theartsdesk.com/theatre/bridge-bush-theatre-review-entertaining-stand-one-sided-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bridge-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
       "score": 82,
       "publishDate": "2026-11-03",
@@ -129944,6 +129958,20 @@
       "score": 91,
       "publishDate": "2026-11-02",
       "url": "https://standard.co.uk/culture/theatre/the-lives-of-others-adelphi-theatre-review-keira-knightley-b1302949.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "the-morning-star--unknown.json",
+      "score": 66,
+      "publishDate": "2026-11-02",
+      "url": "https://morningstaronline.co.uk/article/lives-others-review-art-vs-socialism",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

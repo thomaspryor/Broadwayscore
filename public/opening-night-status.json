@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T19:21:57.912Z",
+  "generatedAt": "2026-11-04T19:58:54.338Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -805,23 +805,23 @@
       "status": "open",
       "slug": "the-bridge-off-west-end",
       "thumbnail": "/images/shows/the-bridge-off-west-end-2026/thumbnail.webp",
-      "siteScore": 77.35,
-      "liveScore": 77,
-      "scoreDrift": -0.3499999999999943,
+      "siteScore": 75.77,
+      "liveScore": 76,
+      "scoreDrift": 0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 21,
       "t1": 3,
-      "t2": 5,
-      "t3": 9,
-      "positive": 17,
-      "mixed": 0,
-      "negative": 0,
+      "t2": 6,
+      "t3": 12,
+      "positive": 19,
+      "mixed": 1,
+      "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 17,
+        "highConfidence": 20,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -834,6 +834,10 @@
         "detail": "Ready — awaiting send"
       },
       "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -1056,6 +1060,18 @@
           "p": 17,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-04T19:58:54.338Z",
+          "rc": 21,
+          "s": 75.77,
+          "t1": 3,
+          "t2": 6,
+          "t3": 12,
+          "p": 19,
+          "m": 1,
+          "n": 1,
           "bc": "waiting"
         }
       ]
