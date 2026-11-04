@@ -14,6 +14,9 @@
  * paths), never review text. Cost: one Browserbase session (~$0.10), capped by
  * the 180s session timeout.
  *
+ * Its caller allowance in browserbase-caps.js was retired 2026-11-04 (BRO-6872, unused since 10-22): it now gets
+ * the normal reserves, so it is refused once the account passes its non-reserve limit for the day.
+ *
  * Run from a cloud session:  node scripts/cloud-run-script.js scripts/probe-talkinbroadway-browserbase.js
  */
 'use strict';

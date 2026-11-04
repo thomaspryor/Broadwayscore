@@ -224,6 +224,8 @@ const EXEMPT_NEVER_CI = {
   // BRO-3444 RECHECK-AFTER probe: reads the CI health snapshot on origin/main.
   'tests/live/digest-urgent-visitor-only.test.mjs': 'BRO-3444',
   'tests/live/audit-dependencies-no-expiring.test.mjs': 'BRO-4434',
+  // BRO-6872 card acceptance: reads the wall clock against CALLER_ALLOWANCES (check-provider-spend.js VERIFY line).
+  'tests/live/browserbase-allowance-no-expiring.test.mjs': 'BRO-6872',
 };
 
 const EXEMPT_KNOWN_BROKEN = {

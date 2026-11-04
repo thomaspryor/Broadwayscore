@@ -240,7 +240,8 @@ async function main() {
     console.log(`[provider-spend] ${DAY}: attribution gap — ${gap.provider} ${gap.pcts.map((p) => `${Math.round(p * 100)}%`).join(', ')} (< ${Math.round(attributionAlertMin * 100)}%)`);
   }
 
-  const expiringAllowances = require('./lib/browserbase-caps').expiringCallerAllowances();
+  let expiringAllowances = [];
+  try { expiringAllowances = require('./lib/browserbase-caps').expiringCallerAllowances(); } catch (err) { console.log(`::warning::Browserbase allowance expiry check failed: ${err.message}`); }
   for (const a of expiringAllowances) {
     console.log(`[provider-spend] Browserbase allowance for ${a.caller} ${a.expired ? 'ended' : `ends in ${a.daysLeft} day(s)`} (${a.until})`);
   }
