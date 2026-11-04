@@ -1,0 +1,26 @@
+{
+  "issueNumber": "bro-4315-dup",
+  "planId": "04d2b44d-1c4f-4304-9c7d-5303e67ba708",
+  "status": "pending",
+  "createdAt": "2026-11-04T07:42:58.341Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Delete invalid duplicate Time Out London Translations review file blocking rename-batch validation",
+    "steps": [
+      "Delete the invalid serp-discovery duplicate of Time Out London's Translations review (same URL as timeout-london--andrzej-lukowski.json, byline Tom Wicker is a mis-attribution, contentTier invalid, no score); it trips the same-URL duplicate gate that blocks the BRO-4315 rename batches"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "translations-west-end-2018/timeout-london--tom-wicker.json",
+        "description": "Delete the invalid serp-discovery duplicate of Time Out London's Translations review (same URL as timeout-london--andrzej-lukowski.json, byline Tom Wicker is a mis-attribution, contentTier invalid, no score); it trips the same-URL duplicate gate that blocks the BRO-4315 rename batches",
+        "destinationPath": null
+      }
+    ]
+  }
+}
