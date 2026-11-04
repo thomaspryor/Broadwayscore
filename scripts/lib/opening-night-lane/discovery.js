@@ -793,11 +793,28 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
 // with no "review" word, so the usual review-signal test cannot apply. The path shape stands in for it. The date comes from
 // the page's "Theatre Review by ... - Month D, YYYY" byline (extractPublishDate), never from the filename.
 const TB_REVIEW_PATH = /^\/page\/(?:ob|bwaybway|westend)\/\d{2}_\d{2}_\d{2}[a-z]?\.html?$/i;
+// A Broadway review's named page ("/page/world/SchoolGirls.html") as listed on past.html; never index/past/archive.
+function tbNamedReviewPage(pathname) {
+  return /^\/page\/world\/[^/?#]+\.html$/i.test(pathname) && require('../talkinbroadway-index').isReviewHref(`https://www.talkinbroadway.com${pathname}`);
+}
 const TB_DIRECT_PROBE_EVERY_MS = 15 * 60 * 1000;
 // TB is read through Browserbase (BRO-6073): navigation plus the Cloudflare challenge wait runs past 45 s; still under
 // the 90 s pass deadline, which caps it either way.
 const TB_FETCH_TIMEOUT_MS = 75000;
 const TB_PROBE_BATCH = 4; // named pages fetched side by side per probe (BRO-6872)
+// A name whose fetch was blocked (Cloudflare challenge, rate limit, server error, timeout) has not been answered, so it
+// is fetched again first at the next probe instead of waiting for the rotation to come back to it. School Girls replay
+// 2026-11-04: the real page (SchoolGirls.html) drew a 403 challenge at its one turn, the rotation moved on, and the next
+// turn fell after the window closed. Capped per name so a name that is always blocked cannot hold a slot forever.
+const TB_MAX_CARRIES = 3;
+function tbFetchWasBlocked(err) {
+  const status = Number(err && (err.status || err.httpStatus));
+  if (status === 404 || status === 410) return false;
+  if (status === 403 || status === 429 || status >= 500) return true;
+  const msg = String((err && err.message) || '');
+  if (/^(?:404|410)\b|not found/i.test(msg)) return false;
+  return /^(?:403|429|5\d\d)\b|challenge|timed? ?out|ETIMEDOUT|ECONNRESET|socket hang up/i.test(msg);
+}
 /**
  * Broadway reviews are also filed as named pages ("/page/world/TheImaginaryInvalid.html") that no index lists on the night,
  * which is how the regular pipeline found The Imaginary Invalid (BRO-6066). Those names are built by tb-direct-url and
@@ -806,12 +823,16 @@ const TB_PROBE_BATCH = 4; // named pages fetched side by side per probe (BRO-687
  * fetches came back 200 after the old 15 s cap), so this adapter gets a longer per-fetch timeout.
  */
 function talkinBroadwayAdapter({
-  indexUrls = ['https://www.talkinbroadway.com/page/ob/index.html', 'https://www.talkinbroadway.com/page/bwaybway/index.html'],
+  // /page/bwaybway/index.html answered 404 on every pass that got past the challenge (School Girls replay 2026-11-04).
+  // Broadway reviews are listed on /page/world/past.html, the page collect-talkinbroadway-index.js reads.
+  indexUrls = ['https://www.talkinbroadway.com/page/ob/index.html', 'https://www.talkinbroadway.com/page/world/past.html'],
   directProbeEveryMs = TB_DIRECT_PROBE_EVERY_MS, now = Date.now, fetchTimeoutMs = TB_FETCH_TIMEOUT_MS,
 } = {}) {
   let lastProbeAt = -Infinity;
   let found = null; // the verified named page, once one is found
-  let probeTurn = 0; // which batch of names the next probe fetches, when there are more than TB_PROBE_BATCH
+  let cursor = 0; // where the rotation resumes in the name list, when there are more names than TB_PROBE_BATCH
+  const blockedCount = new Map(); // name -> blocked fetches so far (never reset, so the cap holds)
+  const carryNext = new Set(); // names blocked last time, fetched first at the next probe
   async function probeNamedPages(show, fetchText) {
     if (found) return [found];
     if (now() - lastProbeAt < directProbeEveryMs) return [];
@@ -825,12 +846,35 @@ function talkinBroadwayAdapter({
     // the first name be tried each probe and a later name could starve for hours (BRO-6872). In one Browserbase session
     // the extra tabs cost no extra sessions; the cap bounds paid-scraper spend when the Browserbase route is off. Longer
     // name lists (subtitled or comma titles) are covered over successive probes by rotating the batch.
-    const all = buildTbCandidateUrls(show.title, year).filter((url) => !/\/index\.html?$/i.test(url));
-    const start = all.length > TB_PROBE_BATCH ? (probeTurn * TB_PROBE_BATCH) % all.length : 0;
-    probeTurn++;
-    const picked = new Set(Array.from({ length: Math.min(TB_PROBE_BATCH, all.length) }, (_, k) => all[(start + k) % all.length]));
-    const names = all.filter((url) => picked.has(url)); // judged in the order tb-direct-url ranks them
-    const pages = await Promise.all(names.map((url) => fetchText(url).catch(() => null))); // a missing page is the normal answer before it is filed
+    const ranked = buildTbCandidateUrls(show.title, year).filter((url) => !/\/index\.html?$/i.test(url));
+    // Fetch order (which batch a name lands in): the undated names first. TB mostly files a page under the bare title,
+    // and for a "Title; Or, Subtitle" show under the bare short title ("SchoolGirls.html", "AWonderfulWorld.html"), which
+    // the rank order put in the second or third batch. Judging still follows the rank order below, so a dated page beats
+    // an undated one fetched in the same batch, and an undated page never ends the probing.
+    const dated = (url) => url.endsWith(`${year}.html`) || url.endsWith(`${year.slice(-2)}.html`);
+    const all = [...ranked.filter((url) => !dated(url)), ...ranked.filter(dated)];
+    const size = Math.min(TB_PROBE_BATCH, all.length);
+    // Names blocked last probe go first, then the rotation fills the rest of the batch.
+    const picked = new Set(all.filter((url) => carryNext.has(url)).slice(0, size));
+    for (let step = 0; picked.size < size && step < all.length; step++) {
+      const url = all[cursor % all.length];
+      cursor = (cursor + 1) % all.length;
+      picked.add(url);
+    }
+    const names = ranked.filter((url) => picked.has(url)); // judged in the order tb-direct-url ranks them
+    // A missing page is the normal answer before it is filed; a blocked one is asked again next probe.
+    const pages = await Promise.all(names.map((url) => fetchText(url).then((html) => {
+      carryNext.delete(url);
+      return html;
+    }, (err) => {
+      carryNext.delete(url);
+      if (tbFetchWasBlocked(err)) {
+        const n = (blockedCount.get(url) || 0) + 1;
+        blockedCount.set(url, n);
+        if (n <= TB_MAX_CARRIES) carryNext.add(url);
+      }
+      return null;
+    })));
     for (const [i, url] of names.entries()) {
       const html = pages[i];
       if (typeof html !== 'string' || !html) continue;
@@ -862,7 +906,7 @@ function talkinBroadwayAdapter({
         if (!r) continue;
         for (const a of extractAnchors(indexScope(r.html), r.u)) {
           let u; try { u = new URL(a.url); } catch { continue; }
-          if (hostOf(a.url) !== 'talkinbroadway.com' || !TB_REVIEW_PATH.test(u.pathname)) continue;
+          if (hostOf(a.url) !== 'talkinbroadway.com' || !(TB_REVIEW_PATH.test(u.pathname) || tbNamedReviewPage(u.pathname))) continue;
           if (!titleMatchesShow(a.text, show.title, { fuzzy: true })) continue;
           out.push({ url: a.url, title: a.text, source: 'outlet-index', publishDate: null, needsDate: true, reviewSignalGiven: true, via: r.u, outletId: 'talkinbroadway' });
         }
@@ -1153,7 +1197,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, TB_PROBE_BATCH, serpAdapter,
+  nonReviewReason, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

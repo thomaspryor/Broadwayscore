@@ -114,7 +114,7 @@ function replayFetch({ slowTbIndexMs = 0 } = {}) {
   const reviewFetches = [];
   const fetchPage = async (url) => {
     if (wrapperTarget.has(url)) { calls.push(url); return { content: consentWall, finalUrl: wrapperTarget.get(url) }; }
-    if (/talkinbroadway\.com\/page\/(ob|bwaybway)\/index\.html$/.test(url) && slowTbIndexMs) await new Promise((r) => setTimeout(r, slowTbIndexMs));
+    if (/talkinbroadway\.com\/page\/(?:ob\/index|bwaybway\/index|world\/past)\.html$/.test(url) && slowTbIndexMs) await new Promise((r) => setTimeout(r, slowTbIndexMs));
     if (url in pages) { calls.push(url); return { content: pages[url] }; }
     if (REVIEW_PAGES.has(d.canonicalUrl(url))) { reviewFetches.push(url); return { content: FULL }; }
     calls.push(url);

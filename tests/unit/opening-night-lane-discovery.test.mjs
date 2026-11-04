@@ -592,6 +592,16 @@ test('Talkin\' Broadway adapter: dated review pages that name the show, date rea
   assert.equal(down.errors.length, 1, 'every index failing is reported');
 });
 
+test('Talkin\' Broadway adapter: a Broadway named page listed on past.html is a candidate; index and past pages are not (School Girls replay 2026-11-04)', async () => {
+  const past = 'https://www.talkinbroadway.com/page/world/past.html';
+  const list = `<html><body><main><a href="/page/world/SchoolGirls.html">School Girls; Or, The African Mean Girls Play</a><a href="/page/world/index.html">School Girls</a><a href="/page/world/OtherShow.html">Other Show</a></main></body></html>`;
+  const show = { id: 'school-girls-or-the-african-mean-girls-play-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' };
+  const a = d.talkinBroadwayAdapter({ indexUrls: [past], now: () => T0 });
+  const fetchText = async (url) => { if (url === past) return list; throw Object.assign(new Error('404 not found'), { status: 404 }); };
+  const out = await a.discover({ show, fetchText });
+  assert.deepEqual(out.map((c) => c.url), ['https://www.talkinbroadway.com/page/world/SchoolGirls.html']);
+});
+
 test('SERP adapter: limit caps the searches themselves, results are restricted to the missing outlet\'s host and to this show', async () => {
   const queries = [];
   const search = async (q) => { queries.push(q); const dom = /site:(\S+)/.exec(q)[1];
@@ -829,6 +839,56 @@ test('Talkin\' Broadway: a name list that is not a multiple of the batch wraps a
   const a = d.talkinBroadwayAdapter({ indexUrls: [], now: () => clock });
   for (let i = 0; i < Math.ceil(names.length / d.TB_PROBE_BATCH); i++) { await a.discover({ show, fetchText }); clock += 16 * 60 * 1000; }
   assert.deepEqual([...new Set(asked)].sort(), [...names].sort());
+});
+
+test('Talkin\' Broadway: a "Title; Or, Subtitle" show has its bare short-title page in the first batch (School Girls replay 2026-11-04)', async () => {
+  const show = { id: 'school-girls-or-the-african-mean-girls-play-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' };
+  const real = 'https://www.talkinbroadway.com/page/world/SchoolGirls.html';
+  const asked = [];
+  const fetchText = async (url) => { asked.push(url); throw Object.assign(new Error(`404 not found: ${url}`), { status: 404 }); };
+  await d.talkinBroadwayAdapter({ indexUrls: [], now: () => T0 }).discover({ show, fetchText });
+  assert.equal(asked.length, d.TB_PROBE_BATCH);
+  assert.ok(asked.includes(real), `first batch ${asked.join(' ')}`);
+});
+
+test('Talkin\' Broadway: a name blocked by the Cloudflare challenge is fetched first at the next probe, up to a cap (School Girls replay 2026-11-04)', async () => {
+  const byline = '<p>The Play by Some Writer. Directed by Jane Director. Theatre Review by Ann Critic</p>' + '<p>filler text for length. </p>'.repeat(40);
+  const show = { id: 'school-girls-or-the-african-mean-girls-play-2026', title: 'School Girls; Or, The African Mean Girls Play', openingDate: '2026-09-28' };
+  const real = 'https://www.talkinbroadway.com/page/world/SchoolGirls.html';
+  let blocked = true; let clock = T0; let asked = [];
+  const fetchText = async (url) => {
+    asked.push(url);
+    if (url === real && blocked) throw Object.assign(new Error(`403 still behind the Cloudflare challenge: ${url}`), { status: 403 });
+    if (url === real) return `<html><head><title>School Girls</title></head><body><p>September 28, 2026</p>${byline}</body></html>`;
+    throw Object.assign(new Error(`404 not found: ${url}`), { status: 404 });
+  };
+  const a = d.talkinBroadwayAdapter({ indexUrls: [], now: () => clock });
+  assert.deepEqual(await a.discover({ show, fetchText }), []);
+  clock += 16 * 60 * 1000; asked = [];
+  assert.deepEqual(await a.discover({ show, fetchText }), []);
+  assert.ok(asked.includes(real), 'the blocked name is asked again at the next probe');
+  blocked = false; clock += 16 * 60 * 1000; asked = [];
+  const out = await a.discover({ show, fetchText });
+  assert.deepEqual(out.map((c) => c.url), [real]);
+
+  // An always-blocked name stops being carried after the cap, so the rotation still reaches every name.
+  const b = d.talkinBroadwayAdapter({ indexUrls: [], now: () => clock });
+  const counts = new Map();
+  const alwaysBlocked = async (url) => { counts.set(url, (counts.get(url) || 0) + 1); throw Object.assign(new Error('403 still behind the Cloudflare challenge'), { status: 403 }); };
+  for (let i = 0; i < 12; i++) { await b.discover({ show, fetchText: alwaysBlocked }); clock += 16 * 60 * 1000; }
+  const names = require('../../scripts/lib/tb-direct-url.js').buildTbCandidateUrls(show.title, '2026');
+  assert.deepEqual([...counts.keys()].sort(), [...names].sort(), 'every name is still tried');
+});
+
+test('Talkin\' Broadway: only a blocked fetch is carried; a 404 or a plain failure is not', () => {
+  const blockedErr = (status, message = '') => Object.assign(new Error(message), status ? { status } : {});
+  assert.equal(d.tbFetchWasBlocked(blockedErr(403, '403 still behind the Cloudflare challenge: x')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(429, 'too many')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(503, 'unavailable')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(0, 'request timed out after 75000ms')), true);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(404, '404 not found: x')), false);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(0, '404')), false);
+  assert.equal(d.tbFetchWasBlocked(blockedErr(0, 'All scraping methods failed')), false);
 });
 
 test('section index: every <article> card on an index page is read, not only the first', async () => {
