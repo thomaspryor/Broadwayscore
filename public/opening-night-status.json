@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T17:29:19.176Z",
+  "generatedAt": "2026-11-04T17:43:07.902Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -786,23 +786,23 @@
       "status": "open",
       "slug": "the-bridge-off-west-end",
       "thumbnail": "/images/shows/the-bridge-off-west-end-2026/thumbnail.webp",
-      "siteScore": 77.29,
+      "siteScore": 77.35,
       "liveScore": 77,
-      "scoreDrift": -0.29000000000000625,
+      "scoreDrift": -0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 16,
+      "total": 17,
       "t1": 3,
-      "t2": 4,
+      "t2": 5,
       "t3": 9,
-      "positive": 16,
+      "positive": 17,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 16,
+        "highConfidence": 17,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1031,6 +1031,18 @@
           "t2": 4,
           "t3": 9,
           "p": 16,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-04T17:43:07.902Z",
+          "rc": 17,
+          "s": 77.35,
+          "t1": 3,
+          "t2": 5,
+          "t3": 9,
+          "p": 17,
           "m": 0,
           "n": 0,
           "bc": "waiting"
@@ -1483,26 +1495,23 @@
       "status": "open",
       "slug": "clifford-odets-waiting-for-lefty-off-broadway",
       "thumbnail": "/images/shows/clifford-odets-waiting-for-lefty-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 68.95,
-      "liveScore": 69,
-      "scoreDrift": 0.04999999999999716,
+      "siteScore": 70.23,
+      "liveScore": 70,
+      "scoreDrift": -0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 11,
-      "t1": 2,
+      "total": 13,
+      "t1": 3,
       "t2": 6,
-      "t3": 3,
-      "positive": 8,
-      "mixed": 1,
+      "t3": 4,
+      "positive": 9,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "11/12 total",
-          "T1:2/3"
-        ],
-        "highConfidence": 10,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1512,7 +1521,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1920,6 +1929,18 @@
           "t3": 3,
           "p": 8,
           "m": 1,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-04T17:43:07.902Z",
+          "rc": 13,
+          "s": 70.23,
+          "t1": 3,
+          "t2": 6,
+          "t3": 4,
+          "p": 9,
+          "m": 2,
           "n": 2,
           "bc": "waiting"
         }
