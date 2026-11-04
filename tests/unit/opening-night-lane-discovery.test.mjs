@@ -13,6 +13,7 @@ const require = createRequire(import.meta.url);
 const d = require('../../scripts/lib/opening-night-lane/discovery.js');
 const ledger = require('../../scripts/lib/opening-night-lane/ledger.js');
 const { laneAdapters } = require('../../scripts/lib/opening-night-lane/adapters.js');
+const { resolveOutletFromUrl } = require('../../scripts/lib/review-normalization');
 
 test('unconfigured lane factory sweeps T1 indexes using free requests', async () => {
   const calls = [];
@@ -988,4 +989,98 @@ test('a pass admits a review-only outlet\'s show-titled post with no review word
     ...pages({ 'https://theaterpizzazz.com/feed/': item('OTHER DESERT CITIES: A FAMILY AT WAR', PZ), 'https://variety.com/feed': item('Other Desert Cities: a family at war', NEWS) }) });
   assert.deepEqual(r.admitted.map((a) => a.key), [d.canonicalUrl(PZ)]);
   assert.equal((r.rejected.find((x) => x.url === d.canonicalUrl(NEWS)) || {}).reason, 'not-review-like');
+});
+
+// BRO-6872: Lighting & Sound America serves every story as /news/story.asp?ID=..., so the generic index sweep's links were
+// all refused as a /news/ path, and its story pages carry no date extractPublishDate reads. Card shape of the real
+// "theatre in review" index (2026-11-04): the date sits in its own table above the headline, inside the card's row.
+const LSA_INDEX = 'http://www.lightingandsoundamerica.com/news/result.asp?src=theatre+in+review';
+const lsaCard = (id, date, title, venue) => `<tr><td class="relative" colspan="5"><table align="right"><tr><td><p class="newsfillernobottom"><font>(${date})</font></p></td></tr></table>`
+  + `<p class="newsfiller"><font><a href="story.asp?ID=${id}"><b>Theatre in Review: <i>${title}</i> (${venue})</b></a></font></p>`
+  + `<table><tr><td><a href="story.asp?ID=${id}"><img alt="Theatre in Review: ${title}"></a></td></tr></table><p>Excerpt ...<a href="story.asp?ID=${id}"><img alt="More"></a></p></td></tr>`;
+const lsaPage = (cards) => `<html><body><table><tr><td><a href="/MediaKit2026.pdf">Media kit</a></td></tr>${cards.join('')}</table><a href="story.asp?ID=NEWS01">Other Desert Cities star joins tour</a></body></html>`;
+
+test('L&SA: its index review is admitted on time with the card date, despite the /news/story.asp path', async () => {
+  const html = lsaPage([lsaCard('-K88YDJ', '11/2/2026', 'Specky Clark', 'Irish Arts Center'), lsaCard('TNQ36D', '10/18/2026', 'Other Desert Cities', 'Hayes Theater')]);
+  const fetched = [];
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.sectionIndexAdapter({ outlets: [{ outletId: 'lighting-and-sound-america', indexUrl: LSA_INDEX }] })],
+    fetchText: async (u) => { fetched.push(u); if (u === LSA_INDEX) return html; throw new Error(`404 ${u}`); } });
+  assert.deepEqual(r.admitted.map((a) => [a.key, a.publishDate, a.outletId]), [['https://lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', '2026-10-18', 'lighting-and-sound-america']]);
+  assert.deepEqual(fetched, [LSA_INDEX], 'dated from the index card: no story-page date check');
+  assert.equal(r.rejected.length, 0, 'the non-review headline naming the show is never offered');
+});
+
+test('L&SA: a review dated weeks before the night is not admitted, and the path pass is for the parser only', async () => {
+  const html = lsaPage([lsaCard('OLD123', '9/1/2026', 'Other Desert Cities', 'Hayes Theater')]);
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.sectionIndexAdapter({ outlets: [{ outletId: 'lighting-and-sound-america', indexUrl: LSA_INDEX }] })], fetchText: async () => html });
+  assert.equal(r.admitted.length, 0);
+  assert.equal(d.nonReviewReason('http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D'), 'non-review-path');
+  assert.equal(d.nonReviewReason('http://www.lightingandsoundamerica.com/news/story.asp?ID=TNQ36D', { outletListed: true }), null);
+  assert.equal(d.nonReviewReason('https://x.example.com/photos/story', { outletListed: true }), 'non-review-path', 'only the news segment stands down');
+});
+
+test('own-host section index and feed finds are vetted to their outlet: TheaterMania and amNY /news/ reviews pass', async () => {
+  const TM_INDEX = 'https://www.theatermania.com/news/?categories=reviews';
+  const TM = 'https://www.theatermania.com/news/review-other-desert-cities-returns-to-broadway_1830001/';
+  const TM_NEWS = 'https://www.theatermania.com/news/other-desert-cities-extends-run_1830002/';
+  const AMNY_FEED = 'https://www.amny.com/category/entertainment/theater/feed/';
+  const AMNY = 'https://www.amny.com/news/review-other-desert-cities-broadway/';
+  const dated = '<html><head><meta property="article:published_time" content="2026-10-18T23:00:00Z"></head><body>x</body></html>';
+  const feed = `<?xml version="1.0"?><rss><channel><item><title>Review: Other Desert Cities</title><link>${AMNY}</link><pubDate>Sun, 18 Oct 2026 23:30:00 GMT</pubDate></item></channel></rss>`;
+  const pagesMap = { [TM_INDEX]: `<main><a href="${TM}">Review: Other Desert Cities returns</a><a href="${TM_NEWS}">Other Desert Cities extends run</a></main>`, [AMNY_FEED]: feed, [TM]: dated };
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.sectionIndexAdapter({ outlets: [{ outletId: 'theatermania', indexUrl: TM_INDEX }] }), d.rssAdapter({ feeds: [{ url: AMNY_FEED, outletId: 'amny', name: 'amNY Theater' }] })],
+    fetchText: async (u) => { if (pagesMap[u]) return pagesMap[u]; throw new Error(`404 ${u}`); } });
+  assert.deepEqual(r.admitted.map((a) => a.key).sort(), [d.canonicalUrl(AMNY), d.canonicalUrl(TM)].sort());
+  assert.equal((r.rejected.find((x) => x.url === d.canonicalUrl(TM_NEWS)) || {}).reason, 'non-review-path', 'a /news/ slug that does not lead with the review stays refused');
+});
+
+// Guard (BRO-6872): every lane index and feed outlet must show one real review URL of its (reviews.json, 2026-11-04) passing
+// the path gate the way its adapter offers it. A new source without a sample fails here, so a source whose every review the
+// gate refuses (TheaterMania 309/309, L&SA 101/101 before this) cannot be added silently again.
+const LANE_SOURCE_SAMPLE_REVIEW = {
+  theatermania: 'https://www.theatermania.com/news/review-a-dental-lab-technician-wrestles-with-questions-of-career-and-family-in-off-beat-a-good-day-to-me-not-to-you_1721265/',
+  nytg: 'https://www.newyorktheatreguide.com/reviews/review-of-a-soldiers-play-starring-david-alan-grier-blair-underwood-on-broadway',
+  timeout: 'https://www.timeout.com/newyork/news/broadway-review-aaron-sorkins-a-few-good-men-103026',
+  theatrely: 'https://www.theatrely.com/post/a-dolls-house-a-directors-choice-review',
+  'lighting-and-sound-america': 'http://www.lightingandsoundamerica.com/news/story.asp?ID=TMZ190',
+  'the-100-word-review': 'https://www.the100wordreview.com/billy-crystals-860-at-the-imperial-theatre',
+  independent: 'https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/billy-crystal-860-broadway-review-b3070230.html',
+  chicagotribune: 'http://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-band-together-broadway-review-0814-story.html',
+  guardian: 'https://www.theguardian.com/stage/2026/nov/02/the-lives-of-others-review-keira-knightley-brings-star-power-to-robert-ickes-stasi-drama',
+  'one-minute-critic': 'https://1minutecritic.com/anne-washburn-anon-review-mcc-theater/',
+  culturesauce: 'https://culturesauce.com/dolls-house-jessica-chastain-jamie-lloyd-broadway-review/',
+  thewrap: 'https://www.thewrap.com/act-one-theater-review-tony-shalhoub',
+  'pages-on-stages': 'https://pagesonstages.com/2026/10/29/the-imaginary-invalid/',
+  'theater-life': 'https://theaterlife.com/a-good-day-to-me-not-to-you-1-2/',
+  amny: 'https://www.amny.com/news/review-la-cage-aux-folles-at-encores/',
+  'theater-pizzazz': 'https://www.theaterpizzazz.com/noises-off-review/',
+  frontmezzjunkies: 'https://frontmezzjunkies.com/2026/03/30/a-story-that-still-demands-to-be-heard-joe-turners-come-and-gone-begins-broadway-previews/',
+  'theatre-reviews-limited': 'https://www.theatrereviews.com/broadway-review-1776-at-roundabouts-american-airlines-theatre-through-sunday-january-8-2023/',
+  'the-recs': 'https://therecs.co.uk/the-hunger-games-on-stage/',
+  stageandcinema: 'https://stageandcinema.com/2026/10/30/all-the-worlds-a-stage-signature-review/',
+  'la-voce-di-new-york': 'https://lavocedinewyork.com/en/new-york/2026/10/19/in-other-desert-cities-a-family-grapples-with-speaking-the-unspeakable/',
+  'theater-scene': 'https://theaterscene.com/Bandstand-review.html',
+  'front-row-center': 'https://thefrontrowcenter.com/2026/10/copperfield-the-new-musical/',
+  'the-contending': 'https://thecontending.com/jonathan-spectors-brilliant-new-play-birthright-belongs-on-broadway/',
+  'times-square-chronicles': 'https://t2conline.com/the-whoopi-monologues-review-five-extraordinary-women-prove-whoopi-goldbergs-words-are-timeless/',
+  'josh-at-the-movies': 'https://joshatthemovies.com/2026/10/31/theater-review-a-ghost-in-your-ear/',
+  'new-york-notebook': 'https://newyorknotebook.substack.com/p/oedipus',
+  dailybeast: 'https://www.thedailybeast.com/jersey-boys-refuse-to-grow-up-review-of-gettin-the-band-back-together',
+  mashable: 'https://mashable.com/article/be-more-chill-review-broadway',
+  'the-interested-bystander': 'https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html',
+};
+test('guard: every lane index and feed outlet has a real review URL the path gate admits as its adapter offers it', () => {
+  const ls = require('../../scripts/lib/opening-night-lane/lane-sources.js');
+  const ids = new Set([...Object.keys(ls.LANE_SECTION_INDEXES), ...ls.LANE_FEEDS.map((f) => f.outletId)]);
+  for (const id of ids) {
+    const url = LANE_SOURCE_SAMPLE_REVIEW[id];
+    assert.ok(url, `lane source ${id} has no sample review URL: add one from reviews.json and check the gate admits it`);
+    const outletListed = Object.prototype.hasOwnProperty.call(d.SECTION_INDEX_PARSERS, id);
+    // As runDiscoveryPass applies it: the vetted rule counts only for a host the outlet registry resolves.
+    const vettedOutlet = !!resolveOutletFromUrl(url);
+    assert.equal(d.nonReviewReason(url, { vettedOutlet, outletListed }), null, `${id}: ${url} (vetted ${vettedOutlet})`);
+  }
 });

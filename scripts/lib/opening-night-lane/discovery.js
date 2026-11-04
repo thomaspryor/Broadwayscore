@@ -159,7 +159,7 @@ function extractAnchors(html, pageUrl) {
  * /news/ only for a slug that leads with the review ("review-860-...", "broadway-review-..."), never "week-in-review".
  */
 const VETTED_NEWS_REVIEW_SLUG = /^(?:(?:off )?broadway |theat(?:er|re) )?review\b|\b(?:broadway|theat(?:er|re)) review\b/;
-function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false } = {}) {
+function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false, outletListed = false } = {}) {
   let u;
   try { u = new URL(url); } catch { return 'unparseable-url'; }
   if (u.pathname === '/' || u.pathname === '') return 'homepage';
@@ -175,7 +175,11 @@ function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false } 
   // /theatre-dance/features/; A Few Good Men 2026 was lost to this rule, BRO-6066). The regular pipeline's rule
   // (domain-filters.js isFeatureSectionReviewPath, BRO-6585), so the two paths agree; a round-up still never passes.
   const featureReview = (s) => (s === 'features' || s === 'feature') && isFeatureSectionReviewPath(segs.join('/')) && !ROUNDUP_SLUG.test(words);
-  if (segs.some((s) => NON_REVIEW_SEGMENTS.has(s) && !citedNewsReview(s) && !featureReview(s))) return 'non-review-path';
+  // `outletListed`: the outlet's own review listing, read by its parser (SECTION_INDEX_PARSERS), vouches for the link. Lighting
+  // & Sound America serves every story, reviews included, as /news/story.asp?ID=..., so its index finds were all refused
+  // (101 of 101 2025-26 rows, A Few Good Men 2026 missed on time). Only the news segment stands down.
+  const listedNews = (s) => s === 'news' && outletListed;
+  if (segs.some((s) => NON_REVIEW_SEGMENTS.has(s) && !citedNewsReview(s) && !featureReview(s) && !listedNews(s))) return 'non-review-path';
   // An explicit "review" in the slug wins over a news word ("...-review-photos"): the review signal is the stronger claim.
   if (NON_REVIEW_SLUG.test(words) && !REVIEW_SIGNAL.test(words)) return 'non-review-slug';
   return null;
@@ -552,7 +556,7 @@ function rssAdapter({ feeds } = {}) {
           if (!titleMatchesShow(it.title, show.title, { fuzzy: true }) && !urlSlugMatchesShow(it.link, show.title, { fuzzy: true })) continue;
           const ownHost = hostOf(it.link) === hostOf(feed.url);
           // A reviews-only feed's own item is a review whatever its headline says; a link off the feed's host is not vouched for.
-          out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: ownHost ? feed.outletId : undefined, ...(ownHost && feed.reviewsOnly ? { reviewSignalGiven: true } : {}) });
+          out.push({ url: it.link, title: it.title, source: 'outlet-index', ...it.date, via: feed.name || feed.url, outletId: ownHost ? feed.outletId : undefined, ...(ownHost ? { vettedOutlet: true } : {}), ...(ownHost && feed.reviewsOnly ? { reviewSignalGiven: true } : {}) });
         }
       }
       return out;
@@ -565,6 +569,16 @@ function rssAdapter({ feeds } = {}) {
  * Pinned pages (tier-1 outlets) are read every pass; the rest rotate in the remaining MAX_SOURCES_PER_ADAPTER slots, a
  * window per pass. The pass's pages are fetched side by side.
  */
+/**
+ * Outlets whose section index needs its own reader. Lighting & Sound America's story links carry no title or date words
+ * (story.asp?ID=TNQ36D), and the date sits in the index card, not on the story page in a form extractPublishDate reads.
+ * The regular pipeline's parser keeps only "Theatre in Review:" headlines naming the show and dates each from its card.
+ */
+const SECTION_INDEX_PARSERS = {
+  'lighting-and-sound-america': (html, show) => require('../lighting-sound-america-discovery').parseLightingSoundAmericaIndex(html, show.title, show)
+    .map((r) => ({ url: r.url, title: `Theatre in Review: ${show.title}`, publishDate: r.publishDate })),
+};
+
 function sectionIndexAdapter({ outlets } = {}) {
   let nextWindow = null; let slots = null;
   return {
@@ -581,10 +595,18 @@ function sectionIndexAdapter({ outlets } = {}) {
         if (pages[i].status !== 'fulfilled') continue;
         const html = pages[i].value;
         const host = hostOf(o.indexUrl);
+        const parse = SECTION_INDEX_PARSERS[o.outletId];
+        if (parse) {
+          for (const r of parse(html, show)) out.push({ ...r, source: 'outlet-index', via: o.indexUrl, outletId: o.outletId, outletListed: true, vettedOutlet: true, reviewSignalGiven: true });
+          continue;
+        }
         for (const a of extractAnchors(indexScope(html), o.indexUrl)) {
           if (hostOf(a.url) !== host || new URL(a.url).pathname === new URL(o.indexUrl).pathname) continue;
           if (!titleMatchesShow(a.text, show.title, { fuzzy: true }) && !urlSlugMatchesShow(a.url, show.title, { fuzzy: true })) continue;
-          out.push({ url: a.url, title: a.text, source: 'outlet-index', publishDate: null, needsDate: true, via: o.indexUrl, outletId: o.outletId });
+          // Same host as the outlet's own index page: tied to that registry outlet by its source, like a Google News <source url>
+          // find. TheaterMania and Time Out file reviews under /news/ ("/news/review-...", "/newyork/news/broadway-review-..."),
+          // so without this every TheaterMania index find was refused (309 of 309 2025-26 rows), BRO-6872.
+          out.push({ url: a.url, title: a.text, source: 'outlet-index', publishDate: null, needsDate: true, via: o.indexUrl, outletId: o.outletId, vettedOutlet: true });
         }
       }
       return out;
@@ -1145,7 +1167,7 @@ async function runDiscoveryPass({
     // starved the lane: each pass re-runs every adapter, so a night whose adapters take more than 90 s never admitted
     // anything (shadow run 39803830568, Billy Crystal 860: Google News link resolution took 108 s, 0 admitted).
 
-    const bad = nonReviewReason(c.url, { aggregatorCited: c.aggregatorCited === true, vettedOutlet: c.vettedOutlet === true && !!resolveOutletFromUrl(c.url) });
+    const bad = nonReviewReason(c.url, { aggregatorCited: c.aggregatorCited === true, vettedOutlet: c.vettedOutlet === true && !!resolveOutletFromUrl(c.url), outletListed: c.outletListed === true });
     if (bad) { reject(c, key, bad); continue; }
     if (c.source === 'aggregator') {
       // An aggregator page lists many links; only ones on a KNOWN outlet's host are taken, the rest are reported.
@@ -1215,7 +1237,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, SECTION_INDEX_PARSERS, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };
