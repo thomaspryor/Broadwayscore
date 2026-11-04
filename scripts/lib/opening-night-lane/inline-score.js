@@ -92,12 +92,16 @@ const hostOf = (url) => { try { return new URL(url).hostname.replace(/^www\./, '
  */
 function isTeaserNotAReview(rejection, url, text) {
   // truncated_text too: a page labelled a partial copy (the paywall rule above) can draw that verdict instead (BRO-6872).
-  if (!/^(not_a_review|truncated_text)\b/.test(String(rejection || ''))) return false;
+  // garbage_text judges the page text as unreadable (paywall and sign-in chrome), not the review, at any length: the
+  // 2026-11-04 A Few Good Men replay lost the WSJ review for good to it although the BWW roundup printed a 600-character
+  // quote from it (BRO-6872).
+  const garbled = /^garbage_text\b/.test(String(rejection || ''));
+  if (!garbled && !/^(not_a_review|truncated_text)\b/.test(String(rejection || ''))) return false;
   // The URL must itself say review (WSJ "/articles/<show>-review-..."): a short feature or news piece on the same host,
   // under the floor because it is short, keeps its verdict (ship-check).
   if (!hasReviewSignal(url, '')) return false;
   const domain = getHardPaywallDomain(url);
-  return !!domain && String(text || '').trim().length < HARD_PAYWALL_FLOORS[domain];
+  return !!domain && (garbled || String(text || '').trim().length < HARD_PAYWALL_FLOORS[domain]);
 }
 
 /**

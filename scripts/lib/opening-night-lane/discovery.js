@@ -1209,6 +1209,15 @@ function withTimeout(fetchText, ms, remainingMs = () => Infinity) {
 const TRUST_FLAGS = ['vettedOutlet', 'outletListed', 'reviewSignalGiven'];
 const FINAL_REASONS = new Set(['outside-night-window', 'non-review-path', 'non-review-slug', 'homepage', 'not-review-like', 'unknown-outlet-host', 'wrapped-url', 'unknown-source', 'not-cited-by-an-aggregator']);
 const AGGREGATOR_FINAL = new Set(['non-review-path', 'non-review-slug', 'homepage', 'wrapped-url', 'unknown-outlet-host']);
+// Date checks still running when a pass ends, kept on the memo object between passes (never saved: saveMemo writes only
+// `rejected`). Talkin' Broadway answers a date check in 35-40 s through Bright Data; with the pass cut at 15 s, or at the
+// pass deadline, the School Girls review was fetched, dated 2026-09-28, and thrown away twice (BRO-6872, p15 replay).
+const DATE_CHECKS_IN_FLIGHT = Symbol('dateChecksInFlight');
+
+/** The not-review-like test: a sighting with no review signal from its source, its url/title, or its host. */
+function looksReviewLike(c, show) {
+  return c.reviewSignalGiven === true || hasReviewSignal(c.url, c.title) || hostSignalsReview(c.url, c.title, show && show.title);
+}
 
 /**
  * @param {object} args
@@ -1291,6 +1300,9 @@ async function runDiscoveryPass({
   const admitted = [];
   const deferredDateChecks = [];
   let dateChecks = 0;
+  if (!memo[DATE_CHECKS_IN_FLIGHT]) Object.defineProperty(memo, DATE_CHECKS_IN_FLIGHT, { value: new Map(), enumerable: false });
+  const inFlight = memo[DATE_CHECKS_IN_FLIGHT];
+  const adapterCaps = new Map(adapters.filter((a) => a.fetchTimeoutMs).map((a) => [a.name, a.fetchTimeoutMs]));
   const reject = (c, key, reason) => {
     rejected.push({ url: c.url, adapter: c.adapter, reason });
     const prev = memo.rejected[key] || { attempts: 0 };
@@ -1310,8 +1322,13 @@ async function runDiscoveryPass({
     // review another sighting saw first, or that an earlier deploy's code refused.
     const vettedNow = (c.vettedOutlet === true || c.outletListed === true) && memoed && memoed.reason === 'non-review-path'
       && !nonReviewReason(c.url, { vettedOutlet: c.vettedOutlet === true && !!resolveOutletFromUrl(c.url), outletListed: c.outletListed === true });
-    const stands = memoed && !citedNow && !vettedNow && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
-    if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited && !vettedNow)) continue; // decided before
+    // And a 'not-review-like' rejection, made for a sighting with no review signal (a Talkin' Broadway link on an index
+    // page whose anchor text is the bare title), is judged again when this sighting has one (the TB named-page probe sets
+    // reviewSignalGiven). Other Desert Cities, p15 replay: the probe found the review every pass and the memo refused it.
+    const reviewLikeNow = memoed && memoed.reason === 'not-review-like' && c.source !== 'aggregator' && looksReviewLike(c, show);
+    const rejudge = citedNow || vettedNow || reviewLikeNow;
+    const stands = memoed && !rejudge && (c.aggregatorCited ? AGGREGATOR_FINAL.has(memoed.reason) : FINAL_REASONS.has(memoed.reason));
+    if (stands || (memoed && memoed.attempts >= MAX_DATE_CHECK_ATTEMPTS && !c.aggregatorCited && !rejudge)) continue; // decided before
     // The deadline guards fetches only (the date check below). The checks before it are synchronous, so a candidate an
     // aggregator already cites is admitted even when the adapters ran long. Deferring every candidate on a late pass
     // starved the lane: each pass re-runs every adapter, so a night whose adapters take more than 90 s never admitted
@@ -1322,16 +1339,35 @@ async function runDiscoveryPass({
     if (c.source === 'aggregator') {
       // An aggregator page lists many links; only ones on a KNOWN outlet's host are taken, the rest are reported.
       if (!resolveOutletFromUrl(c.url)) { unknownHosts.add(hostOf(c.url)); reject(c, key, 'unknown-outlet-host'); continue; }
-    } else if (!c.reviewSignalGiven && !hasReviewSignal(c.url, c.title) && !hostSignalsReview(c.url, c.title, show && show.title)) {
+    } else if (!looksReviewLike(c, show)) {
       reject(c, key, 'not-review-like'); continue;
     }
 
     let publishDate = c.publishDate || null;
     if (c.source === 'outlet-index' && !publishDate && c.needsDate) {
-      if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
-      if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
-      dateChecks++;
-      try { publishDate = extractPublishDate(await fetchText(c.fetchUrl || c.url, { recordAs: 'date-check' })) || c.fallbackDate || null; } catch (e) {
+      let check = inFlight.get(key);
+      if (!check) {
+        if (dateChecks >= maxDateChecks) { deferredDateChecks.push(c.url); continue; } // tried first next pass: attempts is still 0
+        if (overDeadline()) { deadlineHit = true; deferredDateChecks.push(c.url); continue; }
+        dateChecks++;
+        // The check runs under its adapter's own cap (TB: 75 s), not the pass's 15 s, and outlives the pass: a page that
+        // answers after the pass deadline is read on the next pass instead of fetched (and paid for) all over again.
+        const capMs = (adapterCaps.get(c.adapter) || fetchTimeoutMs);
+        check = withTimeout(rawFetch, capMs)(c.fetchUrl || c.url, { recordAs: 'date-check' });
+        check.catch(() => {}); // settled later, or never read: no unhandled rejection either way
+        inFlight.set(key, check);
+      }
+      const waitMs = deadlineMs - (Date.now() - startedMs);
+      const outcome = await Promise.race([
+        check.then((html) => ({ html }), (error) => ({ error })),
+        new Promise((resolve) => { const t = setTimeout(() => resolve(null), Math.max(0, waitMs)); if (t.unref) t.unref(); }),
+      ]);
+      if (!outcome) { deadlineHit = true; deferredDateChecks.push(c.url); continue; } // still running: read next pass, no strike
+      inFlight.delete(key);
+      try {
+        if (outcome.error) throw outcome.error;
+        publishDate = extractPublishDate(outcome.html) || c.fallbackDate || null;
+      } catch (e) {
         errors.push({ adapter: c.adapter, error: `date check ${c.url}: ${String((e && e.message) || e).slice(0, 150)}` });
         // A timeout or the pass deadline says nothing about the article: no strike (three strikes end the candidate for the night).
         if (/timed out|deadline reached/.test(String(e && e.message))) { deferredDateChecks.push(c.url); continue; }

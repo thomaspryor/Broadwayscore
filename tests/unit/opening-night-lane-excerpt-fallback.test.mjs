@@ -339,3 +339,32 @@ test('open site, 200-299 chars, no fallback: fails for good on the last attempt 
     await assert.rejects(sc.fetchReview(cand), (e) => e.permanent === true && /under the 300 a partial copy needs/.test(e.message));
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
+
+test('a WSJ page the scorer calls garbage_text rescores from the excerpt, or waits for one; an open site keeps the verdict (BRO-6872)', async () => {
+  // 2026-11-04 A Few Good Men replay: BWW printed a 600-character quote from the WSJ review, and the review was lost
+  // for good to "scorer rejected the review: garbage_text".
+  const body = 'Sign in Subscribe WSJ Membership Customer Center Dow Jones '.repeat(90);
+  const dir = tmp();
+  try {
+    const calls = [];
+    const sc = scoring({ dir, extract: () => body, scoreText: async (text, ctx) => { calls.push(ctx.contentTier); return text ? { rejected: true, rejection: 'garbage_text' } : { score: 43 }; } });
+    const got = await sc.fetchReview(WSJ_CAND);
+    assert.ok(got.fullText.length > 3000, 'over the WSJ floor: garbage at any length is the page, not the review');
+    const res = await sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, got);
+    assert.equal(res.score, 43);
+    assert.equal(res.extra.contentTier, 'excerpt');
+    assert.deepEqual(calls, ['complete', 'excerpt']);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+  // No excerpt yet: a retry (a later aggregator pass may print one), never a final verdict, and the models are not paid again.
+  const dir2 = tmp();
+  try {
+    let paid = 0;
+    const sc = scoring({ dir: dir2, extract: () => body, scoreText: async () => { paid++; return { rejected: true, rejection: 'garbage_text' }; } });
+    const got = await sc.fetchReview(WSJ_CAND);
+    await assert.rejects(sc.scoreReview({ url: WSJ, fullText: got.fullText, showId: SHOW.id }, { ...got, excerpts: {} }), (e) => e instanceof inl.LaneRetryError && /waiting for an aggregator excerpt/.test(e.message));
+    assert.equal(paid, 1);
+  } finally { fs.rmSync(dir2, { recursive: true, force: true }); }
+  // An open site's garbage_text stays a verdict.
+  assert.equal(inl.isTeaserNotAReview('garbage_text', 'https://deadline.com/2026/10/a-few-good-men-broadway-review-1237169589/', body), false);
+  assert.equal(inl.isTeaserNotAReview('garbage_text', 'https://www.wsj.com/arts-culture/theater-season-preview-abc123', body), false, 'no review signal in the URL');
+});
