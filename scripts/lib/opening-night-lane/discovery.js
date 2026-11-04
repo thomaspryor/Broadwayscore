@@ -181,6 +181,20 @@ function nonReviewReason(url, { aggregatorCited = false, vettedOutlet = false } 
   return null;
 }
 
+// Outlets that publish nothing on a show but its review and title the review with the show alone, no review word
+// ("SCHOOL GIRLS ... DELIGHTFUL", "FINALLY: WAITING FOR LEFTY HAS ARRIVED"). Evidence (BRO-6872): every 2025-26 row of
+// theirs in reviews.json lacks a review word (theaterpizzazz 67/67, nystagereview 339/339, offoffonline 181/181,
+// theaterscene.net 214/214, theaterlife 156/156, thefrontrowcenter 131/131, pagesonstages 131/131), and their feeds read
+// 2026-11-04 carried show-titled reviews only. Not frontmezzjunkies: its feed carries show-titled non-reviews ("...
+// I'm Already Kicking Myself About Missing Sleuth"). A host here still needs the show's title in the headline or slug.
+const REVIEW_WITHOUT_WORD_HOSTS = ['theaterpizzazz.com', 'nystagereview.com', 'offoffonline.com', 'theaterscene.net', 'theaterlife.com', 'thefrontrowcenter.com', 'pagesonstages.com'];
+
+/** A review-only outlet's page about this show: its host is in REVIEW_WITHOUT_WORD_HOSTS and the show's title is in the headline or slug. */
+function hostSignalsReview(url, title, showTitle) {
+  if (!showTitle || !hostMatches(hostOf(url), REVIEW_WITHOUT_WORD_HOSTS)) return false;
+  return titleMatchesShow(title || '', showTitle, { fuzzy: true }) || urlSlugMatchesShow(url, showTitle, { fuzzy: true });
+}
+
 /** A positive review signal in the URL or the headline: required for feed and index finds. */
 function hasReviewSignal(url, title) {
   return REVIEW_SIGNAL.test(`${title || ''} ${(() => { try { return decodeURIComponent(new URL(url).pathname); } catch { return ''; } })()}`.replace(/[-_]+/g, ' '));
@@ -1074,7 +1088,7 @@ async function runDiscoveryPass({
     if (c.source === 'aggregator') {
       // An aggregator page lists many links; only ones on a KNOWN outlet's host are taken, the rest are reported.
       if (!resolveOutletFromUrl(c.url)) { unknownHosts.add(hostOf(c.url)); reject(c, key, 'unknown-outlet-host'); continue; }
-    } else if (!c.reviewSignalGiven && !hasReviewSignal(c.url, c.title)) {
+    } else if (!c.reviewSignalGiven && !hasReviewSignal(c.url, c.title) && !hostSignalsReview(c.url, c.title, show && show.title)) {
       reject(c, key, 'not-review-like'); continue;
     }
 
@@ -1139,7 +1153,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, TB_PROBE_BATCH, serpAdapter,
+  nonReviewReason, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, TB_PROBE_BATCH, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };

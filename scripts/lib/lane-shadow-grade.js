@@ -20,6 +20,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { detectBandFromReviewFile } = require('./star-reliability');
 
 const GAP_PTS = 8;
 // A gap smaller than the answer key's OWN ensemble spread (reviews.json scoreDelta: how far the three models were apart
@@ -158,6 +159,10 @@ function gradeShadowReport(rep, opts = {}) {
     const sp = spreadOf(r);
     const delta = r.laneScore - r.siteScore;
     const spread = sp && Number.isFinite(sp.spread) ? sp.spread : null;
+    // A site row scored inside its critic's printed star band (anchored-v6): a lane score inside the same band is the
+    // same verdict, one outside it is a real gap, whatever the models' spread (BRO-6872: NYSR "3/5" site 63 lane 71).
+    const band = sp && sp.band && Number.isFinite(sp.band.floor) && Number.isFinite(sp.band.ceiling) ? sp.band : null;
+    const outsideBand = band ? (r.laneScore < band.floor || r.laneScore > band.ceiling) : null;
     // The GAP_PTS floor comes FIRST: a gap smaller than the reporting bar is never a defect, whatever the spread.
     // Without it a row whose three models agreed exactly (spread 0, 1026 such rows in reviews.json) would fail the
     // replay on a 1-point difference, which the lane's own ensemble produces on the same text.
@@ -167,9 +172,9 @@ function gradeShadowReport(rep, opts = {}) {
     const partialText = !!(r.laneContentTier && r.laneContentTier !== 'complete');
     return {
       ...brief(r), delta, laneTextChars: r.laneTextChars ?? null, laneContentTier: r.laneContentTier || null,
-      siteScoreSpread: spread,
+      siteScoreSpread: spread, siteBand: band ? { floor: band.floor, ceiling: band.ceiling, rating: band.rating || null } : null,
       siteModelAgreement: (sp && sp.agreement) || null, siteScoreConfidence: (sp && sp.confidence) || null,
-      beyondEnsemble: big && (spread == null || partialText || Math.abs(delta) > spread),
+      beyondEnsemble: big && (partialText || (band ? outsideBand : (spread == null || Math.abs(delta) > spread))),
     };
   });
   const meanAbsDiff = diffs.length ? round1(diffs.reduce((a, d) => a + Math.abs(d.delta), 0) / diffs.length) : null;
@@ -209,7 +214,7 @@ function gradeShadowReport(rep, opts = {}) {
     counts: { laneScored: scored.length, siteLive: siteLive.length, both: both.length, laneOnly: falsePositives.length, siteOnly: reviews.filter((r) => r.side === 'site-only').length, laneUnscored: reviews.filter((r) => r.side === 'lane-unscored').length },
     recall, onTimeRecall, meanAbsScoreDiff: meanAbsDiff,
     siteMeta: opts.siteMeta ? { reviews: opts.siteMeta.size } : null,
-    siteScoreSpread: opts.siteScoreSpread ? { reviews: opts.siteScoreSpread.size, matched: diffs.filter((d) => d.siteScoreSpread != null).length, ofDiffs: diffs.length } : null,
+    siteScoreSpread: opts.siteScoreSpread ? { reviews: opts.siteScoreSpread.size, matched: diffs.filter((d) => d.siteScoreSpread != null || d.siteBand).length, ofDiffs: diffs.length } : null,
     scoreGapsBeyondEnsemble,
     falsePositives, excluded, missed: reviews.filter((r) => r.side === 'site-only').map((r) => ({ ...brief(r), siteDate: r.siteDate || null, late: r.onTimeVerdict === 'late', excluded: r.onTimeVerdict === 'already-live' })), duplicates, scoreGaps,
     timeToScoreMin: { median: pct(tts, 50), p90: pct(tts, 90), max: tts.length ? Math.max(...tts) : null, from: opts.replayAnchorAt ? 'embargo' : 'shadow start' },
@@ -235,7 +240,8 @@ function gradeMarkdown(g) {
     ...(g.duplicates.length ? ['', 'Duplicates:', ...g.duplicates.map((d) => `- ${d.map((r) => r.url).join(' | ')}`)] : []),
     ...(g.scoreGaps.length ? ['', `Score gaps of ${GAP_PTS}+ (lane / site, lane text chars, tier; "within ensemble" = smaller than the site row's own model spread, so not a text difference):`,
       ...g.scoreGaps.map((d) => `- ${row(d)} ${d.laneScore} / ${d.siteScore} (${d.delta > 0 ? '+' : ''}${d.delta}), ${d.laneTextChars ?? '?'} chars, ${d.laneContentTier || '?'}`
-        + (d.siteScoreSpread == null ? ', site spread unknown' : `, site spread ${d.siteScoreSpread}${d.siteModelAgreement ? ` (${d.siteModelAgreement})` : ''}: ${d.beyondEnsemble ? 'BEYOND ensemble' : 'within ensemble'}`))] : []),
+        + (d.siteBand ? `, site rating ${d.siteBand.rating || '?'} (band ${d.siteBand.floor}-${d.siteBand.ceiling}): ${d.beyondEnsemble ? 'BEYOND band' : 'inside band'}`
+          : d.siteScoreSpread == null ? ', site spread unknown' : `, site spread ${d.siteScoreSpread}${d.siteModelAgreement ? ` (${d.siteModelAgreement})` : ''}: ${d.beyondEnsemble ? 'BEYOND ensemble' : 'within ensemble'}`))] : []),
   ];
   return `${lines.join('\n')}\n`;
 }
@@ -263,8 +269,11 @@ function loadSiteMetaFromDir(dir, files = null) {
 
 /**
  * The answer key's own ensemble spread per review, from data/reviews.json: Map canonical URL ->
- * {spread, agreement, confidence, source}. Only ensemble rows (scoreSource llm-*) carry a spread; a row scored another
- * way (a star rating) has none, and its gaps fall back to the flat GAP_PTS rule.
+ * {spread, agreement, confidence, source, band?}. Ensemble rows (scoreSource llm-*) and human-review rows carry their
+ * models' spread (scoreDelta). An anchored-v6 row also carries the star band of its own printed rating
+ * (star-reliability.js detectBandFromReviewFile, the band its score was held to); the grader tests the lane score
+ * against that band instead of the spread (BRO-6872). Rows scored any other way have neither, and their gaps fall back
+ * to the flat GAP_PTS rule.
  * @param {string} reviewsJsonPath path to data/reviews.json
  * @param {string} showId
  */
@@ -276,14 +285,24 @@ function loadSiteScoreSpread(reviewsJsonPath, showId) {
   const rows = Array.isArray(raw) ? raw : (raw && raw.reviews) || [];
   for (const r of rows) {
     if (!r || r.showId !== showId) continue;
-    if (!/^llm/i.test(String(r.scoreSource || ''))) continue;
+    const src = String(r.scoreSource || '');
+    const anchored = src === 'anchored-v6';
+    if (!/^llm/i.test(src) && src !== 'human-review' && !anchored) continue;
     const k = canonicalUrl(r.url);
-    if (!k || !Number.isFinite(r.scoreDelta)) continue;
-    const m = { spread: r.scoreDelta, agreement: r.modelAgreement || null, confidence: r.scoreConfidence || null, source: r.scoreSource || null };
+    if (!k) continue;
+    let band = null;
+    if (anchored) {
+      const d = detectBandFromReviewFile(r);
+      if (d && d.band) band = { floor: d.band.floor, ceiling: d.band.ceiling, rating: d.starsRaw || null };
+    }
+    if (!band && !Number.isFinite(r.scoreDelta)) continue;
+    const m = { spread: Number.isFinite(r.scoreDelta) ? r.scoreDelta : null, agreement: r.modelAgreement || null, confidence: r.scoreConfidence || null, source: src || null, ...(band ? { band } : {}) };
     // Two rows for one URL: keep the NARROWER spread. The wider one would excuse more gaps on a row we are not
     // even sure we matched; the narrow one keeps the gate strict (BRO-6872 review).
+    // A band is a stricter, rating-based test, so a row with one wins over one without.
     const prev = out.get(k);
-    if (!prev || m.spread < prev.spread) out.set(k, m);
+    const narrower = (a, b) => (a.spread ?? Infinity) < (b.spread ?? Infinity);
+    if (!prev || (m.band && !prev.band) || (!!m.band === !!prev.band && narrower(m, prev))) out.set(k, m);
   }
   return out;
 }

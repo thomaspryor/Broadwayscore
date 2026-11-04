@@ -879,3 +879,25 @@ test('DTLI sitemap pages: a title the sitemap has no match for falls back to lis
   assert.deepEqual(d.dtliSitemapPages({ candidates: [{ slug: 'a-few-good-men' }], sitemapSlugs }, { title: 'Billy Crystal 860' }),
     ['https://didtheylikeit.com/shows/a-few-good-men/'], 'a real title match is used as before; the fallback only runs without one');
 });
+
+test('hostSignalsReview: a review-only outlet titled with the show alone counts; another host, or no show title, does not (BRO-6872)', () => {
+  const SG = 'School Girls; Or, The African Mean Girls Play';
+  assert.equal(d.hostSignalsReview('https://theaterpizzazz.com/school-girls-or-the-african-mean-girls-play-delightful/', 'SCHOOL GIRLS; OR, THE AFRICAN MEAN GIRLS PLAY: DELIGHTFUL', SG), true);
+  assert.equal(d.hostSignalsReview('https://www.theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED', 'Waiting for Lefty'), true, 'www and an all-caps headline');
+  assert.equal(d.hostSignalsReview('https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED', 'Other Desert Cities'), false, 'another show');
+  assert.equal(d.hostSignalsReview('https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED', ''), false, 'no show title');
+  assert.equal(d.hostSignalsReview('https://variety.com/2026/legit/waiting-for-lefty-has-arrived/', 'Waiting for Lefty has arrived', 'Waiting for Lefty'), false, 'not a review-only host');
+  assert.equal(d.hostSignalsReview('https://thefrontrowcenter.com/2026/11/waiting-for-lefty/', 'Waiting For Lefty', 'Waiting for Lefty'), true);
+  assert.equal(d.hasReviewSignal('https://theaterpizzazz.com/finally-waiting-for-lefty-has-arrived/', 'FINALLY: WAITING FOR LEFTY HAS ARRIVED'), false, 'the review-word check alone still refuses it');
+});
+
+test('a pass admits a review-only outlet\'s show-titled post with no review word, from any source; news on another host stays out (BRO-6872)', async () => {
+  const PZ = 'https://theaterpizzazz.com/other-desert-cities-a-family-at-war/';
+  const NEWS = 'https://variety.com/2026/legit/other-desert-cities-a-family-at-war/';
+  const item = (t, u) => `<rss><channel><item><title>${t}</title><link>${u}</link><pubDate>Mon, 19 Oct 2026 02:00:00 GMT</pubDate></item></channel></rss>`;
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0,
+    adapters: [d.rssAdapter({ feeds: [{ url: 'https://theaterpizzazz.com/feed/', name: 'Theater Pizzazz', outletId: 'theater-pizzazz' }, { url: 'https://variety.com/feed', name: 'Variety', outletId: 'variety' }] })],
+    ...pages({ 'https://theaterpizzazz.com/feed/': item('OTHER DESERT CITIES: A FAMILY AT WAR', PZ), 'https://variety.com/feed': item('Other Desert Cities: a family at war', NEWS) }) });
+  assert.deepEqual(r.admitted.map((a) => a.key), [d.canonicalUrl(PZ)]);
+  assert.equal((r.rejected.find((x) => x.url === d.canonicalUrl(NEWS)) || {}).reason, 'not-review-like');
+});

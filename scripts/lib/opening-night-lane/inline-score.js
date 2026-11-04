@@ -60,6 +60,22 @@ function usableExcerpts(excerpts) {
   return out;
 }
 
+/**
+ * The critic's printed rating ("3/5 stars", "5/5", "B+") as the review-file fields the regular pipeline writes for it
+ * (collect-review-texts.js: setExtractedScore, then scoreSource = the extractor's source). With these on the scoring
+ * file, detectBandFromReviewFile finds the band and the ensemble scores in anchored mode, as it does for the site's own
+ * row; without them every lane score was unanchored (BRO-6872: NYSR "3/5 stars" lane 71 vs site 63, One Minute Critic
+ * "5/5" lane 80 vs site 95). `rating` is extractScore's result ({originalScore, normalizedScore, source}); null when none.
+ */
+function ratingFields(rating) {
+  if (!rating || rating.originalScore == null || rating.originalScore === '' || !rating.source) return null;
+  const { setExtractedScore } = require('../score-routing');
+  const f = {};
+  const routed = setExtractedScore(f, { value: rating.originalScore, normalizedValue: rating.normalizedScore, source: rating.source });
+  if (!routed.wasAggregator) f.scoreSource = rating.source;
+  return f;
+}
+
 const DEFAULT_RETRY_MS = [30 * 1000, 2 * 60 * 1000, 5 * 60 * 1000, 10 * 60 * 1000];
 
 class LaneRetryError extends Error { constructor(msg) { super(msg); this.name = 'LaneRetryError'; } }
@@ -90,13 +106,15 @@ function isTeaserNotAReview(rejection, url, text) {
  *   fetchPage(url) -> {content: string}            (throws on failure)
  *   extractArticle(html, host) -> string|null      (clean body text)
  *   extractMeta?(html, url) -> {criticName?, publishDate?, outlet?}
+ *   extractRating?(html, text, {url, outletId, showTitle}) -> {originalScore, normalizedScore, source}|null
+ *                                                  (the printed star rating or grade; the scorer anchors to its band)
  *   aggregatorFor?(candidate) -> {thumb?, stars?, excerpt?, excerpts?}   (default: the excerpts discovery attached to
  *                                                  the candidate, { bwwExcerpt|dtliExcerpt|playbillVerdictExcerpt })
  *   scoreText(text, ctx) -> {score, rejected?, rejection?, allModelsFailed?}  (throws on failure)
  *   retryMs? (backoff schedule), minTextChars?
  */
 function createInlineScoring({
-  show, night, ledgerDir, now, fetchPage, extractArticle, extractMeta = () => ({}), aggregatorFor = () => ({}), scoreText,
+  show, night, ledgerDir, now, fetchPage, extractArticle, extractMeta = () => ({}), extractRating = () => null, aggregatorFor = () => ({}), scoreText,
   retryMs = DEFAULT_RETRY_MS, minTextChars = trust.MIN_FULL_TEXT_CHARS, allShows = [],
 } = {}) {
   for (const [k, v] of Object.entries({ show, night, ledgerDir, now, fetchPage, extractArticle, scoreText })) {
@@ -176,6 +194,9 @@ function createInlineScoring({
       const sourceMethod = page.source || page.via || null; // what the old path's paywall rule keys on (SCRAPED_SOURCE_METHODS)
       const text = String(extractArticle(html, hostOf(candidate.url)) || '').trim();
       const meta = extractMeta(html, candidate.url) || {};
+      // Read off the page whatever text is kept: a rating printed beside a teaser is still the critic's.
+      let rating = null;
+      try { rating = ratingFields(extractRating(html, text, { url: candidate.url, outletId: candidate.outletId, showTitle: show.title })); } catch { /* no rating is not a failure */ }
       if (text.length < minTextChars && !canFallBack) throw new Error(`no extractable text (${text.length} chars) and no aggregator score or paywall excerpt to fall back on`);
       // Under the scorer's body gate the scorer rejects the text for good (body_too_short), so a teaser or a page the
       // extractor cut short is a FETCH problem: fetch again on the backoff (BRO-6066: Deadline's 956-char extraction and
@@ -229,7 +250,7 @@ function createInlineScoring({
         }
         if (paywallTruncation) contentTier = 'truncated';
       }
-      const out = withExcerpts({ outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: keepText ? text : '', aggregator, ...(contentTier ? { contentTier } : {}), ...(sourceMethod ? { sourceMethod } : {}), ...(paywallTruncation ? { paywallTruncation } : {}) });
+      const out = withExcerpts({ outlet: meta.outlet, criticName: meta.criticName || null, publishDate: meta.publishDate || null, fullText: keepText ? text : '', aggregator, ...(contentTier ? { contentTier } : {}), ...(sourceMethod ? { sourceMethod } : {}), ...(paywallTruncation ? { paywallTruncation } : {}), ...(rating ? { rating } : {}) });
       fetched.set(key, out);
       return out;
     } catch (e) {
@@ -262,7 +283,7 @@ function createInlineScoring({
     const column = multiShowColumnReason(row, otherTitles);
     if (column) return fail('score', key, new Error(column), true);
     const excerpts = usableExcerpts((fetchedReview && fetchedReview.excerpts) || {});
-    const ctx = { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete' };
+    const ctx = { showId: row.showId, showTitle: show.title, category: show.category, venue: show.venue, type: show.type, outletId: row.outletId, outlet: row.outlet, criticName: row.criticName, publishDate: row.publishDate, url: row.url, contentTier: (fetchedReview && fetchedReview.contentTier) || 'complete', ...(fetchedReview && fetchedReview.rating ? { rating: fetchedReview.rating } : {}) };
     // The excerpt is the scorer's text only when there is no page text to score: page text is scored as it always was,
     // with no aggregator quote mixed in (text-quality.js would append it to a short body).
     // Excerpts score a review only on a hard-paywall host (see fetchReview): an open site's page text the scorer refused
@@ -329,6 +350,7 @@ function ensembleScoreText(scorer) {
       outletId: ctx.outletId, outlet: ctx.outlet, criticName: ctx.criticName, publishDate: ctx.publishDate, url: ctx.url,
       fullText: text, contentTier: ctx.contentTier || 'complete', // 'truncated': a partial copy, scored at low confidence
       ...usableExcerpts(ctx.excerpts), // aggregator quotes: context for a partial copy, the only text for an excerpt-only review
+      ...(ctx.rating || {}), // the printed rating (originalScore + its extractor source): anchored mode keys on it
     };
     const res = await scorer.scoreReviewFile(file);
     if (res && res.rejected) return { rejected: true, rejection: res.rejection || 'rejected' };
@@ -337,7 +359,9 @@ function ensembleScoreText(scorer) {
     const ens = res.ensembleResult || {};
     if (ens.singleModelEmergency) throw new Error('only one model scored it (single-model emergency); not trusting that score');
     const sf = res.scoredFile;
-    return { score: sf.assignedScore, extra: { llmScore: sf.llmScore, llmMetadata: sf.llmMetadata, ensembleData: sf.ensembleData } };
+    // The scorer's method label (anchored-v6 / llm-v6) and the star's provenance, as the regular pipeline's file has them.
+    const label = { ...(sf.scoreSource ? { scoreSource: sf.scoreSource } : {}), ...(sf.scoreProvenance ? { scoreProvenance: sf.scoreProvenance } : {}) };
+    return { score: sf.assignedScore, extra: { llmScore: sf.llmScore, llmMetadata: sf.llmMetadata, ensembleData: sf.ensembleData, ...label } };
   };
 }
 
@@ -350,6 +374,16 @@ function realFetchPorts({ fetchPage = require('../scraper').fetchPage } = {}) {
   const { extractArticleText, extractPublishDate } = require('../article-extractor');
   const { extractByline } = require('../byline-extraction');
   return {
+    // The regular pipeline's regex rating extractor (collect-review-texts.js extractScore, with its no-critic-rating
+    // discard). Its LLM extractor is not run: that is a paid call per review on the night's hot path.
+    extractRating: (html, text, { url, outletId, showTitle } = {}) => {
+      const { extractScore, publishesNoCriticRating } = require('../score-extractors');
+      const oid = outletId || ((require('../review-normalization').resolveOutletFromUrl(url) || {}).outletId) || '';
+      if (!oid) return null;
+      const r = extractScore(html, text, oid, showTitle) || null;
+      // A rating-less outlet's page star is a site widget, not the critic's (london-theatre's own page data excepted).
+      return r && !publishesNoCriticRating(oid, { originalScoreSource: r.source }) ? r : null;
+    },
     fetchPage: (url) => fetchPage(url),
     extractArticle: (html, host) => extractArticleText(html, host),
     extractMeta: (html, url) => {
@@ -363,4 +397,4 @@ function realFetchPorts({ fetchPage = require('../scraper').fetchPage } = {}) {
 }
 
 module.exports = {
-  DEFAULT_RETRY_MS, usableExcerpts, excerptMayScore, EXCERPT_FALLBACK_HOSTS, isTeaserNotAReview, LaneRetryError, LanePermanentError, createInlineScoring, ensembleScoreText, realFetchPorts };
+  DEFAULT_RETRY_MS, usableExcerpts, ratingFields, excerptMayScore, EXCERPT_FALLBACK_HOSTS, isTeaserNotAReview, LaneRetryError, LanePermanentError, createInlineScoring, ensembleScoreText, realFetchPorts };

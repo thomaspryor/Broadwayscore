@@ -231,7 +231,7 @@ test('loadSiteScoreSpread reads the ensemble spread of the live answer key (skip
   if (!fs.existsSync(p)) { t.skip('no local core data'); return; }
   const m = grade.loadSiteScoreSpread(p, 'a-few-good-men-2026');
   assert.ok(m.size > 0, 'the show has ensemble-scored reviews');
-  for (const v of m.values()) assert.ok(Number.isFinite(v.spread) && v.spread >= 0, 'every entry carries a numeric spread');
+  for (const v of m.values()) assert.ok((Number.isFinite(v.spread) && v.spread >= 0) || v.band, 'every entry carries a numeric spread or a star band');
   // An unknown show has no entries rather than throwing.
   assert.equal(grade.loadSiteScoreSpread(p, 'no-such-show-9999').size, 0);
 });
@@ -284,4 +284,62 @@ test('duplicate rows for one URL keep the narrower spread, and the flat rule nee
   assert.equal(none.size, 0);
   const g = grade.gradeShadowReport(REPORT, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: none });
   assert.deepEqual(g.scoreGapsBeyondEnsemble.map((d) => d.delta), [8], 'the flat rule gates the 8-point gap it reports');
+});
+
+// BRO-6872: an anchored-v6 site row was held to its critic's printed star band, so its "spread" is the band, not the
+// models' disagreement. Rows from the 2026-10-29 / 09-28 replays, ratings and scores as they stand in reviews.json.
+const ANCHORED_ROWS = [
+  { showId: 's', url: 'https://nystagereview.com/2026/10/29/a-few-good-men-built-to-last/', outletId: 'nysr', criticName: 'Melissa Rose Bernardo', scoreSource: 'anchored-v6', assignedScore: 63, originalRating: '3/5 stars', scoreDelta: 0 },
+  { showId: 's', url: 'https://1minutecritic.com/school-girls-broadway-review/', outletId: 'one-minute-critic', criticName: 'Emily Chackerian', scoreSource: 'anchored-v6', assignedScore: 95, originalRating: '5/5', scoreDelta: 3 },
+  { showId: 's', url: 'https://www.timeout.com/newyork/news/broadway-review-aaron-sorkins-a-few-good-men-103026', outletId: 'timeout', criticName: 'Adam Feldman', scoreSource: 'anchored-v6', assignedScore: 58, originalRating: '3/5 stars', scoreDelta: 9 },
+  { showId: 's', url: 'https://nypost.com/2026/10/29/entertainment/a-few-good-men-review-aaron-sorkins-mediocre-courtroom-drama-is-back-on-broadway/', outletId: 'nypost', criticName: 'Johnny Oleksinski', scoreSource: 'anchored-v6', assignedScore: 51, originalRating: '2/4 stars', scoreDelta: 15 },
+  { showId: 's', url: 'https://www.theatermania.com/reviews/human', outletId: 'theatermania', scoreSource: 'human-review', assignedScore: 50, scoreDelta: 12 },
+];
+function anchoredSpread(rows = ANCHORED_ROWS) {
+  const fs = require('node:fs'); const os = require('node:os'); const path = require('node:path');
+  const p = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'band-')), 'reviews.json');
+  fs.writeFileSync(p, JSON.stringify(rows));
+  return grade.loadSiteScoreSpread(p, 's');
+}
+
+test('loadSiteScoreSpread gives an anchored row the band of its own printed rating, and a human-review row its spread', () => {
+  const m = anchoredSpread();
+  const band = (u) => { const b = m.get(canonicalUrl(u)).band; return [b.floor, b.ceiling]; };
+  assert.deepEqual(band(ANCHORED_ROWS[0].url), [51, 70], 'NYSR 3/5');
+  assert.deepEqual(band(ANCHORED_ROWS[1].url), [91, 100], 'One Minute Critic 5/5');
+  assert.deepEqual(band(ANCHORED_ROWS[2].url), [51, 70], 'Time Out 3/5');
+  assert.deepEqual(band(ANCHORED_ROWS[3].url), [51, 70], 'NY Post 2/4 is half: the 51-70 band');
+  assert.equal(m.get(canonicalUrl(ANCHORED_ROWS[4].url)).spread, 12, 'human-review: the model spread');
+  assert.equal(m.get(canonicalUrl(ANCHORED_ROWS[4].url)).band, undefined);
+});
+
+test('against an anchored row, a lane score inside the band is the same verdict and one outside it is a real gap', () => {
+  const m = anchoredSpread();
+  const [nysr, omc, timeout, nypost, human] = ANCHORED_ROWS;
+  const rep = { ...REPORT, reviews: [
+    rev('both', { url: nysr.url, outlet: 'nysr', critic: nysr.criticName, laneScore: 71, siteScore: 63, laneContentTier: 'complete' }),
+    rev('both', { url: omc.url, outlet: 'one-minute-critic', critic: omc.criticName, laneScore: 80, siteScore: 95, laneContentTier: 'complete' }),
+    rev('both', { url: timeout.url, outlet: 'timeout', critic: timeout.criticName, laneScore: 67, siteScore: 58, laneContentTier: 'complete' }),
+    rev('both', { url: nypost.url, outlet: 'nypost', critic: nypost.criticName, laneScore: 42, siteScore: 51, laneContentTier: 'complete' }),
+    rev('both', { url: human.url, outlet: 'theatermania', laneScore: 60, siteScore: 50, laneContentTier: 'complete' }),
+  ] };
+  const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: m });
+  const beyond = g.scoreGapsBeyondEnsemble.map((d) => d.url).sort();
+  assert.deepEqual(beyond, [nysr.url, omc.url, nypost.url].sort(), 'NYSR 71, OMC 80 and NY Post 42 sit outside their bands');
+  const tOut = g.scoreGaps.find((d) => d.url === timeout.url);
+  assert.equal(tOut.beyondEnsemble, false, 'Time Out 67 is inside 51-70 even though the gap (9) is the site spread');
+  assert.deepEqual(tOut.siteBand, { floor: 51, ceiling: 70, rating: '3/5 stars' });
+  assert.equal(g.scoreGaps.find((d) => d.url === human.url).beyondEnsemble, false, 'human-review: 10 is inside its 12-point spread');
+  assert.equal(g.siteScoreSpread.matched, 5);
+  const md = grade.gradeMarkdown(g);
+  assert.match(md, /site rating 3\/5 stars \(band 51-70\): inside band/);
+  assert.match(md, /BEYOND band/);
+});
+
+test('an anchored row never excuses a wide gap on partial lane text, even inside the band', () => {
+  const m = anchoredSpread();
+  const t = ANCHORED_ROWS[2];
+  const rep = { ...REPORT, reviews: [rev('both', { url: t.url, outlet: 'timeout', laneScore: 67, siteScore: 58, laneContentTier: 'excerpt' })] };
+  const g = grade.gradeShadowReport(rep, { replayAnchorAt: '2026-10-30T02:00:00Z', siteScoreSpread: m });
+  assert.deepEqual(g.scoreGapsBeyondEnsemble.map((d) => d.url), [t.url]);
 });

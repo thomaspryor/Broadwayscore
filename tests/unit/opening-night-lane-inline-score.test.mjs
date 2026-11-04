@@ -101,7 +101,7 @@ test('scored lane rows are persisted in night-specific files before the scored l
   } finally { s.cleanup(); }
 });
 
-function sandbox({ failFetch = {}, failScore = {}, scorer, retryMs, aggregatorFor, extractArticle } = {}) {
+function sandbox({ failFetch = {}, failScore = {}, scorer, retryMs, aggregatorFor, extractArticle, extractRating } = {}) {
   const fixture = buildSyntheticFixture();
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4784-'));
   let t = NIGHT_START;
@@ -130,7 +130,7 @@ function sandbox({ failFetch = {}, failScore = {}, scorer, retryMs, aggregatorFo
     show: fixture.show, night: fixture.night, ledgerDir: path.join(dir, 'ledger'), now, fetchPage,
     extractArticle: extractArticle || ((html) => (html.match(/<article>([\s\S]*)<\/article>/) || [])[1] || null),
     extractMeta: (html, url) => ({ criticName: byKey.get(stripKey(url)).criticName, outlet: byKey.get(stripKey(url)).outletId, publishDate: '2026-10-19' }),
-    aggregatorFor: aggregatorFor || ((c) => (byKey.get(c.key) || {}).aggregator || {}), scoreText, ...(retryMs ? { retryMs } : {}),
+    aggregatorFor: aggregatorFor || ((c) => (byKey.get(c.key) || {}).aggregator || {}), scoreText, ...(retryMs ? { retryMs } : {}), ...(extractRating ? { extractRating } : {}),
   });
   const reviewsFile = path.join(dir, 'reviews.json');
   fs.writeFileSync(reviewsFile, JSON.stringify({ reviews: [] }));
@@ -811,4 +811,74 @@ test('the lane workflow that runs shadow replays is not an exempt Browserbase ca
   const name = wf.match(/^name:\s*(.+)$/m)[1].trim();
   assert.equal(caps.isExemptCaller('opening-night-lane-shadow.js', [], name, null), false, `workflow "${name}" would exempt shadow runs from the reserves`);
   assert.doesNotMatch(wf, /BD_OPENING_NIGHT/, 'the lane workflow must not set BD_OPENING_NIGHT (it exempts shadow runs from the reserves)');
+});
+
+// BRO-6872: the lane never read a printed star rating, so every lane score was unanchored llm-v6 while the site's own
+// rows were anchored-v6 (NYSR "3/5 stars": lane 71, site 63; One Minute Critic "5/5": lane 80, site 95).
+const { detectBandFromReviewFile } = require('../../scripts/lib/star-reliability.js');
+
+test('realFetchPorts reads the printed rating with the regular pipeline extractor, and drops a rating-less outlet\'s widget', () => {
+  const ports = inl.realFetchPorts({ fetchPage: async () => ({ content: '' }) });
+  const nysr = '<html><body><p class="text-xl">\u2605\u2605\u2605\u2606\u2606 A sturdy revival.</p></body></html>';
+  const got = ports.extractRating(nysr, 'A sturdy revival.', { url: 'https://nystagereview.com/2026/10/29/a-few-good-men-built-to-last/', showTitle: 'A Few Good Men' });
+  assert.equal(got.originalScore, '3/5 stars');
+  assert.equal(got.source, 'unicode-stars');
+  const ratingless = '<html><head><script type="application/ld+json">{"@type":"Review","reviewRating":{"ratingValue":4,"bestRating":5}}</script></head><body>text</body></html>';
+  assert.equal(ports.extractRating(ratingless, 'text', { url: 'https://www.londontheatre.co.uk/reviews/x-review', outletId: 'london-theatre' }), null);
+  assert.equal(ports.extractRating('<html></html>', '', { url: 'not a url' }), null, 'no outlet, no rating');
+});
+
+test('ratingFields writes the fields detectBandFromReviewFile anchors on, the same ones the regular pipeline writes', () => {
+  const f = inl.ratingFields({ originalScore: '5/5', normalizedScore: 100, source: 'omc-alt-text' });
+  assert.deepEqual(f, { originalScore: '5/5', originalScoreNormalized: 100, originalScoreSource: 'omc-alt-text', scoreSource: 'omc-alt-text' });
+  const d = detectBandFromReviewFile({ outletId: 'one-minute-critic', ...f });
+  assert.deepEqual([d.band.floor, d.band.ceiling, d.highReliability], [91, 100, true]);
+  const post = detectBandFromReviewFile({ outletId: 'nypost', ...inl.ratingFields({ originalScore: '2/4 stars', normalizedScore: 50, source: 'css-stars' }) });
+  assert.deepEqual([post.band.floor, post.band.ceiling, post.highReliability], [51, 70, true]);
+  assert.equal(inl.ratingFields(null), null);
+  assert.equal(inl.ratingFields({ originalScore: '', source: 'x' }), null);
+});
+
+test('the scoring file carries the page rating, so the ensemble runs anchored; the row gets the rating and the method label', async () => {
+  const files = [];
+  const scorer = { scoreReviewFile: async (f) => { files.push(f); const d = detectBandFromReviewFile(f);
+    return { success: true, ensembleResult: {}, scoredFile: { assignedScore: 63, scoreSource: d && d.highReliability ? 'anchored-v6' : 'llm-v6', scoreProvenance: 'page-parsed', llmScore: { score: 63 } } }; } };
+  const s = sandbox({ scorer: inl.ensembleScoreText(scorer), extractRating: () => ({ originalScore: '3/5 stars', normalizedScore: 60, source: 'unicode-stars' }) });
+  try {
+    const root = path.join(s.dir, 'review-texts');
+    const run = await s.run({ reviewTextsDir: root });
+    assert.equal(run.errors.length, 0);
+    assert.ok(files.length > 0, 'the ensemble was called');
+    for (const f of files) {
+      assert.equal(f.originalScore, '3/5 stars');
+      assert.equal(f.scoreSource, 'unicode-stars', 'the extractor source, which isHighReliabilityStar reads');
+      const d = detectBandFromReviewFile(f);
+      assert.deepEqual([d.band.floor, d.band.ceiling], [51, 70]);
+    }
+    const showDir = path.join(root, s.fixture.show.id);
+    let sawFallback = false;
+    for (const file of fs.readdirSync(showDir)) {
+      const row = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf8'));
+      if (row.scoreSource === 'lane-aggregator-thumb' || row.scoreSource === 'lane-aggregator-stars') {
+        assert.equal(row.originalScore, undefined, 'an aggregator fallback row never scored from the page carries no page rating');
+        sawFallback = true; continue;
+      }
+      assert.equal(row.originalScore, '3/5 stars', 'the row keeps the rating, as the regular pipeline file does');
+      assert.equal(row.originalScoreSource, 'unicode-stars');
+      assert.equal(row.scoreSource, 'anchored-v6', 'the scorer method label replaces the extractor source, as in production');
+      assert.equal(row.scoreProvenance, 'page-parsed');
+    }
+    assert.ok(sawFallback, 'the fixture has a paywalled row scored from aggregator stars');
+  } finally { s.cleanup(); }
+});
+
+test('a page with no rating scores unanchored exactly as before', async () => {
+  const files = [];
+  const scorer = { scoreReviewFile: async (f) => { files.push(f); return { success: true, ensembleResult: {}, scoredFile: { assignedScore: 60, scoreSource: 'llm-v6' } }; } };
+  const s = sandbox({ scorer: inl.ensembleScoreText(scorer) });
+  try {
+    await s.run();
+    assert.ok(files.length > 0);
+    for (const f of files) { assert.equal(f.originalScore, undefined); assert.equal(detectBandFromReviewFile(f), null); }
+  } finally { s.cleanup(); }
 });
