@@ -969,7 +969,7 @@ async function main() {
         } catch (err) {
           if (feedHealth[outletId]) feedHealth[outletId].error = String(err.message || err).slice(0, 200);
           console.warn(`  ⚠ ${sc.strategy} failed (${err.message}); falling back to SERP`);
-          if (!domain) { outletsFailed++; continue; }
+          if (!domain || sc.laneRules) { outletsFailed++; continue; } // lane-derived feeds never fall back to paid SERP (BRO-6965)
           try {
             viaSerp = true;
             articles = await fetchViaSerp(outletId, domain, cutoff, opts);
@@ -1027,7 +1027,7 @@ async function main() {
       }
       // Feeds taken from LANE_FEEDS (BRO-6965) file only what the lane would file.
       if (fromFeed && outletCfg.laneRules) {
-        feedMatched = feedMatched.filter(show => laneFeedAccepts(outletCfg, outletId, { url, headline }, show));
+        feedMatched = feedMatched.filter(show => laneFeedAccepts(outletCfg, outletId, { url, headline, description }, show));
       }
       // pageConfirmAll outlets: feed matches go through the page check too.
       const matchedShows = outletCfg.pageConfirmAll ? [] : feedMatched;
@@ -1037,7 +1037,7 @@ async function main() {
       const candidates = [
         ...(outletCfg.pageConfirmAll ? feedMatched.map(show => ({ show, form: 'feed-match' })) : []),
         ...findPageConfirmCandidates({ url, headline, publishDate, description }, activeShows, { alreadyMatched: feedMatched, reviewOnlyFeed, titleLedReviews: fromFeed && !!outletCfg.titleLedReviews }),
-      ].filter(c => !(fromFeed && outletCfg.laneRules) || laneFeedAccepts(outletCfg, outletId, { url, headline }, c.show))
+      ].filter(c => !(fromFeed && outletCfg.laneRules) || laneFeedAccepts(outletCfg, outletId, { url, headline, description }, c.show))
         .filter(c => !alreadyFiled(c.show.id, outletId, url) && !isRejectedCached(url, c.show.id)
           && !isUnconfirmedCached(unconfirmedCache, url, c.show.id));
       let stubDate = publishDate;
