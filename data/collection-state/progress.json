@@ -139,7 +139,8 @@
     "the-smile-of-her-off-west-end-2026/britishtheatrecom--susan-novak.json",
     "white-rabbit-red-rabbit-west-end-2026/londontheatredirect--matthew-keeley.json",
     "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
-    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json"
+    "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+    "girls-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "tosca-english-national-opera-west-end-2026/theatre-weekly--unknown.json",
@@ -211,7 +212,11 @@
     "kimberly-akimbo-off-west-end-2026/jonathan-baz--unknown.json",
     "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
     "white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
-    "beetlejuice-west-end-2026/amny--matt-windman.json"
+    "beetlejuice-west-end-2026/amny--matt-windman.json",
+    "the-bridge-off-west-end-2026/theatreandtonic--emmie-newitt.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--anna-bogdanova.json",
+    "tosca-english-national-opera-west-end-2026/bachtrack--clare-varney.json",
+    "tosca-english-national-opera-west-end-2026/sunday-telegraph--nicholas-kenyon.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -291,7 +296,8 @@
       "the-smile-of-her-off-west-end-2026/britishtheatrecom--susan-novak.json",
       "white-rabbit-red-rabbit-west-end-2026/londontheatredirect--matthew-keeley.json",
       "white-rabbit-red-rabbit-west-end-2026/whatsonstage--alex-wood.json",
-      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json"
+      "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+      "girls-off-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -355,7 +361,7 @@
     ]
   },
   "startTime": "2026-11-04T00:11:34.063Z",
-  "lastProcessed": "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/off-off-online--edward-karam.json",
+  "lastProcessed": "girls-off-west-end-2026/londonlivinglarge--unknown.json",
   "log": [
     {
       "t": "2026-11-04T00:23:51.736Z",
@@ -419,6 +425,24 @@
       "t": "2026-11-04T02:28:44.078Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T02:52:30.282Z",
+      "event": "bb-session",
+      "session": "8fb6c8ad",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-04T02:54:01.237Z",
+      "event": "bb-session",
+      "session": "6c1a05e6",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T02:55:32.224Z",
+      "event": "bb-session",
+      "session": "c4fb297b",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
     }
   ],
   "recoveredAfterFailure": [
