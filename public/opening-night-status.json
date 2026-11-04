@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T02:08:34.560Z",
+  "generatedAt": "2026-11-04T02:53:45.503Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -958,22 +958,22 @@
       "slug": "rope-off-broadway",
       "thumbnail": "/images/shows/rope-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 80,
+      "liveScore": 53,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "reviewsNeeded": 3,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
       "t2": 0,
-      "t3": 1,
+      "t3": 2,
       "positive": 1,
       "mixed": 0,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/12 total",
+          "2/12 total",
           "T1:0/3",
           "T2:0/3",
           "hi-conf:1/8"
@@ -1333,6 +1333,18 @@
           "p": 1,
           "m": 0,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-11-04T02:53:45.503Z",
+          "rc": 2,
+          "s": 53,
+          "t1": 0,
+          "t2": 0,
+          "t3": 2,
+          "p": 1,
+          "m": 0,
+          "n": 1,
           "bc": "waiting"
         }
       ]
