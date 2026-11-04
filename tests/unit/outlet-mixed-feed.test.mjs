@@ -128,3 +128,37 @@ test('a short title mentioned on its own besides a longer one still matches', ()
   const ids = findMatchingShows('Girls and Two Girls: a double bill review', '/x/', [GIRLS, TWO_GIRLS], '', { publishDate: '2026-10-20' }).map((s) => s.id);
   assert.deepEqual(ids.sort(), [GIRLS.id, TWO_GIRLS.id].sort());
 });
+
+describe('review-shaped vs news-shaped title leads (review-panelist findings)', () => {
+  const HAMLET = { title: 'Hamlet' };
+  const BB = { title: "Brooklyn's Bridge" };
+  const AWF = { title: "August Wilson's Fences" };
+  test('news kickers and title-led news are not reviews', () => {
+    assert.equal(titleLedHeadline('Off-Broadway Theatre News: “Phyl” Extends at the Mint', titleForms(PHYL)), false);
+    assert.equal(titleLedHeadline('Photos: “Phyl” at the Mint', titleForms(PHYL)), false);
+    assert.equal(titleLedHeadline("Broadway News: 'Hamlet' extends run", titleForms(HAMLET)), false);
+    assert.equal(titleLedHeadline('Hamlet: Cast Announced for Spring', titleForms(HAMLET)), false);
+  });
+  test('review kickers and apostrophes inside quoted titles still count', () => {
+    assert.equal(titleLedHeadline('Theater Review: “Phyl” at the Mint', titleForms(PHYL)), true);
+    assert.equal(titleLedHeadline('‘Brooklyn’s Bridge’ spans decades', titleForms(BB)), true);
+    assert.equal(titleLedHeadline('August Wilson’s Fences: A Towering Revival', titleForms(AWF)), true);
+  });
+  test('August Wilson’s Fences in the feed files to that show, not Fences', () => {
+    const show = { id: 'awf', ...AWF, status: 'open', openingDate: '2026-10-01' };
+    const ids = findMatchingShows('August Wilson’s Fences: A Towering Revival', '/august-wilsons-fences-a-towering-revival/', [FENCES, show], '', { publishDate: '2026-10-10' }).map((s) => s.id);
+    assert.deepEqual(ids, ['awf']);
+  });
+  test('a truncated slug does not bring the short title back', () => {
+    const ids = findMatchingShows('School Girls; Or, The African Mean Girls Play: Being Made to Feel Ashamed', '/school-girls-review/', [GIRLS, SCHOOL_GIRLS], '', { publishDate: '2026-10-03' }).map((s) => s.id);
+    assert.deepEqual(ids, [SCHOOL_GIRLS.id]);
+  });
+});
+
+test('SERP news on titleLedReviews outlets is recognised as news', async () => {
+  const { headlineLooksLikeNews } = require('../../scripts/lib/outlet-listing-helpers.js');
+  assert.equal(headlineLooksLikeNews('Memoirs of Amorous Gentlemen Offers a First Look at One of Duncan Sheik’s Final Musicals'), true);
+  assert.equal(headlineLooksLikeNews('Midnight: Todrick Hall Has Created a Musical Masterpiece That Broadway Cannot Afford to Ignore'), false);
+  assert.equal(headlineLooksLikeNews('Other Desert Cities: An All-Star Cast Lost in the Desert'), false);
+  assert.equal(titleLedHeadline('Family affairs: &#8216;Good Time Charlie&#8217; is sweet but shallow', titleForms({ title: 'Good Time Charlie' })), true);
+});

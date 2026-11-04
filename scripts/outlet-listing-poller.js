@@ -62,6 +62,7 @@ const {
   findMatchingShows,
   findPageConfirmCandidates,
   itemReadsAsReview,
+  headlineLooksLikeNews,
   pageConfirmsShow,
   pageText,
   pageNamesTitle,
@@ -937,7 +938,10 @@ async function main() {
           const key = (u) => { try { return normalizeUrl(u); } catch { return u; } };
           const seen = new Set(articles.map(a => key(a.url)));
           for (const a of await fetchViaSerp(outletId, domain, cutoff, opts)) {
-            if (!seen.has(key(a.url))) { seen.add(key(a.url)); articles.push({ ...a, viaSerp: true }); }
+            // SERP found it too: file it on the SERP rules, as before keepSerp.
+            const dup = articles.find(x => key(x.url) === key(a.url));
+            if (dup) dup.viaSerp = true;
+            else { seen.add(key(a.url)); articles.push({ ...a, viaSerp: true }); }
           }
         } catch (err) {
           console.warn(`  ⚠ SERP (keepSerp) failed for ${outletId}: ${err.message}`);
@@ -1010,6 +1014,10 @@ async function main() {
       // A mixed review/news feed: a match must also read as a review (BRO-6921 follow-up).
       if (fromFeed && outletCfg.titleLedReviews) {
         feedMatched = feedMatched.filter(show => itemReadsAsReview({ url, headline, description }, show));
+      } else if (outletCfg.titleLedReviews && headlineLooksLikeNews(headline)) {
+        // The SERP sweep on these outlets returns their news too ("Memoirs of
+        // Amorous Gentlemen Offers a First Look ..."): keep its old recall, minus news.
+        feedMatched = [];
       }
       // pageConfirmAll outlets: feed matches go through the page check too.
       const matchedShows = outletCfg.pageConfirmAll ? [] : feedMatched;

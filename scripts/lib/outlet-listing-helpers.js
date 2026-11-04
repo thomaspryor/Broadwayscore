@@ -299,7 +299,7 @@ function findMatchingShows(headline, urlSlug, activeShows, creditText = '', { no
   // own title: "Hamlet at St. Luke's Theatre ... soon" belongs to Hamlet.
   const kept = matches.filter((show) => !venueOnly.has(show)
     || !matches.some((o) => o !== show && !venueOnly.has(o) && venuePhrase(o) === venuePhrase(show)));
-  return dropTitlesInsideLongerMatch(kept, combined);
+  return dropTitlesInsideLongerMatch(kept, headline ? hyphenSpaced(String(headline).replace(/[_/]+/g, ' ')) : combined);
 }
 
 // A title found only as part of a longer matched title is that longer show:
@@ -385,15 +385,32 @@ function formInHay(form, hay) {
 const Q_OPEN = `'"\u2018\u201C`;
 const Q_ANY = `'"\u2018\u2019\u201C\u201D`;
 const POSSESSIVE = `(?:[^${Q_ANY}:]{1,60}?['\u2019]s\\s+)?`;
-const LEAD_QUOTED_RE = new RegExp(`^(?:[^:${Q_ANY}]{1,40}:\\s*)?${POSSESSIVE}[${Q_OPEN}]([^'"\u2019\u201D]{2,80})['"\u2019\u201D]`);
+// Inside quotes an apostrophe followed by a letter is part of the title
+// ("'Ain't No Mo''", "'Brooklyn's Bridge'"), not the closing quote.
+const QUOTED_BODY = `(?:[^'"\u2019\u201D]|['\u2019](?=[A-Za-z]))`;
+// An optional kicker before the quoted title ("Family affairs: 'Good Time
+// Charlie' ..."); news kickers fail NEWS_WORD_RE below.
+const REVIEW_KICKER = `(?:[^:${Q_ANY}]{1,40}:\\s*)?`;
+const LEAD_QUOTED_RE = new RegExp(`^${REVIEW_KICKER}${POSSESSIVE}[${Q_OPEN}](${QUOTED_BODY}{2,80})['"\u2019\u201D]`, 'i');
 const LEAD_COLON_RE = new RegExp(`^${POSSESSIVE}([^:${Q_ANY}]{2,80}?)\\s*:\\s`);
-
-/** Does the headline open with one of these title forms (quoted, or before a colon)? */
+const LEAD_COLON_WHOLE_RE = /^([^:]{2,100}?)\s*:\s/;
+// Title-led news: "Hamlet: Cast Announced for Spring", "Phyl Extends at the Mint".
+const NEWS_WORD_RE = /\b(?:news|cast(?:ing)?\s+(?:announced|set|change|update)|announce[ds]?|extends?|extension|tickets?|on sale|first look|photos?|video|trailer|clos(?:es|ing)|dies|died|obituary|transfers?|tour|lottery|rush|sets? (?:opening|dates?)|will (?:open|star|return)|to star|joins?|premieres? (?:date|set))\b/i;
+function headlineLooksLikeNews(headline) {
+  return NEWS_WORD_RE.test(decodeEntities(String(headline || '')));
+}
 function titleLedHeadline(headline, forms) {
   const h = decodeEntities(String(headline || '')).trim();
+  if (!h || NEWS_WORD_RE.test(h)) return false;
+  const spaced = (x) => hyphenSpaced(String(x).replace(/[_/]+/g, ' '));
+  // The whole lead before the colon counts too ("August Wilson's Fences: ..."
+  // for a show titled that way); when a shorter show also matches the feed,
+  // dropTitlesInsideLongerMatch keeps only the longer one.
+  const whole = LEAD_COLON_WHOLE_RE.exec(h);
+  if (whole && forms.includes(spaced(whole[1]))) return true;
   for (const re of [LEAD_QUOTED_RE, LEAD_COLON_RE]) {
     const m = re.exec(h);
-    if (m && forms.includes(hyphenSpaced(m[1].replace(/[_/]+/g, ' ')))) return true;
+    if (m && forms.includes(spaced(m[1]))) return true;
   }
   return false;
 }
@@ -886,6 +903,7 @@ module.exports = {
   findPageConfirmCandidates,
   titleLedHeadline,
   itemReadsAsReview,
+  headlineLooksLikeNews,
   pageConfirmsShow,
   pageNamesTitle,
   pageText,
