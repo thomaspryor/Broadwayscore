@@ -1,7 +1,7 @@
 {
-  "generated": "2026-11-04T03:40:24.476Z",
+  "generated": "2026-11-04T04:26:13.922Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 42,
+  "count": 41,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -225,13 +225,6 @@
       "loserFile": "theatre-bee-uk--theatre-bee-uk.json",
       "targetFile": "theatre-bee-uk--theatre-bee.json",
       "reason": "orphaned-duplicate-heal: theatre-bee-uk--theatre-bee.json was flagged invalid after theatre-bee-uk--theatre-bee-uk.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-book-of-mormon-west-end-2024",
-      "loserFile": "the-spectator-uk--unknown.json",
-      "targetFile": "the-spectator-uk--robert-gorelangton.json",
-      "reason": "orphaned-duplicate-heal: the-spectator-uk--robert-gorelangton.json was flagged invalid after the-spectator-uk--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
