@@ -294,7 +294,12 @@ export default function CriticDetailClient({ critic, profile }: { critic: Critic
         {/* Ranks */}
         {/* Plain-words standing (src/lib/critic-standing.ts, owner 2026-11-04). */}
         {(() => {
-          const lines = [volumePhrase(critic.volumeRank, 'critic', 'critics'), positivityPhrase(critic, 'critics')].filter(Boolean);
+          const positivity = positivityPhrase(critic, 'critics');
+          // Standing counts every market; say so when the page is filtered to one.
+          const lines = [
+            volumePhrase(critic.volumeRank, 'critic', 'critics'),
+            positivity && marketFilter !== 'all' ? `${positivity}, across all their reviews` : positivity,
+          ].filter(Boolean);
           return lines.length > 0 && (
             <div className="flex flex-col gap-1 text-sm text-gray-400">
               {lines.map(l => <span key={l}>{l}</span>)}

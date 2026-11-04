@@ -103,10 +103,10 @@ test('peeking at Claim, then dismissing, still joins on a normal sign-in', async
   assert.equal(posts, 1);
 });
 
-test('a stale critic attempt (over 30 min) does not block a later sign-in', async () => {
+test('a stale critic attempt (over 15 min) does not block a later sign-in', async () => {
   const m = await import('../../src/lib/auto-subscribe');
   m.__resetForNewPage();
-  m.markCriticSignInStarted(Date.now() - 31 * 60 * 1000);
+  m.markCriticSignInStarted(Date.now() - 16 * 60 * 1000);
   const u = { id: 'u4', email: 'reader2@example.com' };
   assert.equal(m.shouldSkipAutoSubscribe(u), false);
   await m.autoSubscribeOnSignIn(u.email, u);

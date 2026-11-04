@@ -21,6 +21,7 @@ export interface VideoCreatorProfile {
   generosityRank: number;
   generosityPool?: number;
   peerMedianAvg?: number;
+  generosityShare?: number;
   reviews: VideoCreatorReview[];
 }
 

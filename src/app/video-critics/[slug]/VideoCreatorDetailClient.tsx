@@ -238,11 +238,14 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
             ranked pool (10+). Below that, the ranks are computed but set to 0 in
             data-video-critics.ts so we just hide them here — saves screenshots
             from showing "1st most generous" off n=4. */}
-        {creator.volumeRank > 0 && (
-          <div className="flex flex-col gap-1 text-sm text-gray-400">
-            {[volumePhrase(creator.volumeRank, 'video critic', 'video critics'), positivityPhrase(creator, 'video critics')].filter(Boolean).map(l => <span key={l}>{l}</span>)}
-          </div>
-        )}
+        {(() => {
+          const lines = [volumePhrase(creator.volumeRank, 'video critic', 'video critics'), positivityPhrase(creator, 'video critics')].filter(Boolean);
+          return lines.length > 0 && (
+            <div className="flex flex-col gap-1 text-sm text-gray-400">
+              {lines.map(l => <span key={l}>{l}</span>)}
+            </div>
+          );
+        })()}
       </div>
 
       <ToggleBar

@@ -10,6 +10,8 @@
  */
 
 export const POSITIVITY_MIN_REVIEWS = 5;
+/** "Among the most/least positive" needs this many reviews; a 5-review average is too thin for an extreme. */
+export const EXTREME_TIER_MIN_REVIEWS = 10;
 
 export interface RankableProfile {
   reviewCount: number;
@@ -19,6 +21,8 @@ export interface RankableProfile {
   generosityPool?: number;
   /** Median average of that peer pool, rounded. */
   peerMedianAvg?: number;
+  /** 0 = most positive, 1 = least positive; tied averages share one value. */
+  generosityShare?: number;
 }
 
 /** Rank by average (most positive = 1) among peers with minReviews+; others get 0. */
@@ -28,11 +32,15 @@ export function assignPositivityRanks<T extends RankableProfile>(profiles: T[], 
   const median = avgs.length
     ? (avgs.length % 2 ? avgs[(avgs.length - 1) / 2] : (avgs[avgs.length / 2 - 1] + avgs[avgs.length / 2]) / 2)
     : 0;
-  for (const p of profiles) { p.generosityRank = 0; p.generosityPool = 0; p.peerMedianAvg = 0; }
-  pool.forEach((p, i) => {
-    p.generosityRank = i + 1;
+  for (const p of profiles) { p.generosityRank = 0; p.generosityPool = 0; p.peerMedianAvg = 0; p.generosityShare = undefined; }
+  pool.forEach(p => {
+    // Competition ranking: tied averages get the same rank and the same words.
+    const greater = pool.filter(q => q.avgScore > p.avgScore).length;
+    const equal = pool.filter(q => q.avgScore === p.avgScore).length;
+    p.generosityRank = greater + 1;
     p.generosityPool = pool.length;
     p.peerMedianAvg = Math.round(median);
+    p.generosityShare = pool.length > 1 ? (greater + (equal - 1) / 2) / (pool.length - 1) : 0.5;
   });
 }
 
@@ -42,12 +50,13 @@ export function assignPositivityRanks<T extends RankableProfile>(profiles: T[], 
 export function positivityPhrase(p: RankableProfile, plural: string): string | null {
   const pool = p.generosityPool ?? 0;
   if (!p.generosityRank || pool < POSITIVITY_MIN_REVIEWS) return null;
-  const share = (p.generosityRank - 1) / (pool - 1); // 0 = most positive
+  const share = p.generosityShare ?? (p.generosityRank - 1) / (pool - 1); // 0 = most positive
+  const extremeOk = p.reviewCount >= EXTREME_TIER_MIN_REVIEWS;
   const phrase =
-    share <= 0.1 ? `Among the most positive ${plural}`
+    share <= 0.1 && extremeOk ? `Among the most positive ${plural}`
     : share <= 0.4 ? `More positive than most ${plural}`
     : share < 0.6 ? `About as positive as most ${plural}`
-    : share < 0.9 ? `Less positive than most ${plural}`
+    : share < 0.9 || !extremeOk ? `Less positive than most ${plural}`
     : `Among the least positive ${plural}`;
   return `${phrase} (typical average: ${p.peerMedianAvg})`;
 }

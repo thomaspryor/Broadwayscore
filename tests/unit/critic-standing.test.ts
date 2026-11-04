@@ -30,3 +30,18 @@ test('volume is only shown as a compliment', () => {
   assert.equal(volumePhrase(51, 'critic', 'critics'), null);
   assert.equal(volumePhrase(0, 'critic', 'critics'), null);
 });
+
+test('tied averages get the same words', () => {
+  const ps = [...Array.from({ length: 10 }, (_, i) => mk(30, 50 + i)), mk(30, 70), mk(30, 70), mk(30, 70)];
+  assignPositivityRanks(ps);
+  const tied = ps.slice(10).map(p => positivityPhrase(p, 'critics'));
+  assert.equal(new Set(tied).size, 1);
+  assert.equal(ps[10].generosityRank, ps[12].generosityRank);
+});
+
+test('extreme tiers need 10+ reviews', () => {
+  const ps = [mk(6, 95), mk(6, 20), ...Array.from({ length: 10 }, (_, i) => mk(30, 55 + i))];
+  assignPositivityRanks(ps);
+  assert.match(positivityPhrase(ps[0], 'critics')!, /^More positive than most/);
+  assert.match(positivityPhrase(ps[1], 'critics')!, /^Less positive than most/);
+});

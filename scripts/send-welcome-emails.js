@@ -70,8 +70,23 @@ function label(user) {
 
 // Resolves { statusCode, body }; statusCode 0 on a network error. Never throws
 // for an HTTP status: welcome.sendWelcomeOnce decides what each one means.
+// Critics who signed up from "Claim this page" were promised no mailing list
+// (user_metadata.no_autosub, owner 2026-11-04). On a lookup error, leave the
+// mailing-list sentence out: dropping it for a reader is harmless, wrongly
+// promising it to a critic is not.
+async function onMailingList(userId) {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/auth/v1/admin/users/${encodeURIComponent(userId)}`, {
+      headers: { apikey: process.env.SUPABASE_SERVICE_ROLE_KEY, Authorization: `Bearer ${process.env.SUPABASE_SERVICE_ROLE_KEY}` },
+    });
+    if (!res.ok) return false;
+    const u = await res.json();
+    return u?.user_metadata?.no_autosub !== true;
+  } catch { return false; }
+}
+
 async function resendSend(user, apiKey) {
-  const { subject, html, text } = welcome.buildWelcomeEmail({ displayName: user.display_name, email: user.email });
+  const { subject, html, text } = welcome.buildWelcomeEmail({ displayName: user.display_name, email: user.email, onMailingList: await onMailingList(user.id) });
   try {
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',

@@ -48,7 +48,9 @@ export const INFLIGHT_KEY = 'bsc_autosub_inflight';
  */
 export const SKIP_KEY = 'bsc_autosub_skip';
 export const SKIP_USER_KEY = 'bsc_autosub_skip_user';
-const PENDING_MS = 30 * 60 * 1000;
+// 15 min: long enough to open the magic link, short enough that a shared
+// device's next person is not caught by an earlier critic's attempt.
+const PENDING_MS = 15 * 60 * 1000;
 
 export function markCriticSignInStarted(now: number = Date.now()): void {
   try { localStorage.setItem(SKIP_KEY, String(now)); } catch { /* storage unavailable */ }
