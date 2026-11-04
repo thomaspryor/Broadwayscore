@@ -918,6 +918,34 @@ test('google news searches press titles too, and a press-title-only headline nee
   assert.deepEqual(unwrapped, ['Review: 860, Billy Crystal’s grief-stricken Broadway tribute'], 'the running-shoe headline is never unwrapped');
 });
 
+test('google news: the New York Sun is searched by site with no "review" word, and its headline-style review is admitted (2026 shadow replays)', async () => {
+  const sunUrl = 'https://www.nysun.com/article/republican-family-fireworks-in-other-desert-cities-set-broadway-alight-again';
+  const item = (title, src, id) => `<item><title>${title}</title><link>https://news.google.com/rss/articles/${id}</link><pubDate>Mon, 19 Oct 2026 01:00:00 GMT</pubDate><source url="${src}">x</source></item>`;
+  const mainRss = '<rss><channel></channel></rss>';
+  const siteRss = `<rss><channel>${item('Republican Family Fireworks in ‘Other Desert Cities’ Set Broadway Alight Again - The New York Sun', 'https://www.nysun.com', 'SUN1')}${item('Other Desert Cities review', 'https://www.theatermania.com', 'TM1')}</channel></rss>`;
+  const asked = [];
+  const map = {};
+  const fetchText = async (url) => {
+    asked.push(url);
+    if (url.startsWith('https://news.google.com/rss/search')) return /site%3Anysun\.com|site:nysun\.com/.test(url) ? siteRss : mainRss;
+    if (map[url]) return map[url];
+    throw new Error(`404 ${url}`);
+  };
+  const decodeImpl = async (link) => (link.endsWith('/SUN1') ? sunUrl : null);
+  const r = await d.runDiscoveryPass({ show: SHOW, night: NIGHT, now: T0 + 2 * HOUR, startedAt: T0, adapters: [d.googleNewsAdapter({ decodeImpl })], fetchText });
+  const site = asked.find((u) => /site/.test(decodeURIComponent(u)));
+  assert.equal(new URL(site).searchParams.get('q'), '"Other Desert Cities" site:nysun.com', 'no "review" word in the site search');
+  assert.deepEqual(r.admitted.map((a) => a.url || a.key).filter((u) => /nysun/.test(u)).length, 1, `admitted ${JSON.stringify(r.admitted.map((a) => a.key))} rejected ${JSON.stringify(r.rejected)}`);
+  assert.ok(!r.admitted.some((a) => /theatermania/.test(a.key)), 'a site search keeps only that outlet');
+
+  // West End shows do not run it; a failing site search does not fail the adapter.
+  asked.length = 0;
+  await d.googleNewsAdapter().discover({ show: { ...SHOW, category: 'west-end' }, fetchText });
+  assert.ok(!asked.some((u) => /site/.test(decodeURIComponent(u))));
+  const flaky = async (url) => { if (/site/.test(decodeURIComponent(url))) throw new Error('429'); return mainRss; };
+  assert.deepEqual(await d.googleNewsAdapter().discover({ show: SHOW, fetchText: flaky }), []);
+});
+
 test('DTLI sitemap pages: a title the sitemap has no match for falls back to listed word runs of the title', () => {
   const sitemapSlugs = new Set(['860-2', 'billy-crystal.700-sundays-reviews', 'a-few-good-men', 'the-crucible-2']);
   assert.deepEqual(d.dtliSitemapPages({ candidates: [], sitemapSlugs }, { title: 'Billy Crystal 860' }),

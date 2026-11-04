@@ -717,7 +717,15 @@ function outletTier(outletId) {
   return (o && o.tier) || 3;
 }
 
-function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now } = {}) {
+// Outlets whose theatre reviews carry neither the word "review" nor, often, the full show title in the headline
+// ("Stellar Cast Makes 'School Girls' a Class Act"). The main Google News search ends in "review" and keeps only headlines
+// that name the show, so it never returned one: the New York Sun was missed in every 2026 shadow replay (nysun.com itself
+// answers 429 to datacenter fetches). For these hosts the lane also runs `"<title>" site:<host>` with no "review" word.
+// Google matched the full title phrase in the article, so the headline test is skipped, and the review-word test is too
+// (reviewSignalGiven); the scorer's not_a_review verdict and the night window still judge the page.
+const GOOGLE_NEWS_SITE_QUERY_HOSTS = Object.freeze(['nysun.com']);
+
+function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * maxUnwrap, decodeBudgetMs = 30000, now = Date.now, siteQueryHosts = GOOGLE_NEWS_SITE_QUERY_HOSTS } = {}) {
   const resolved = new Map(); // wrapper link -> { url|null, tries }
   return {
     name: 'google-news', kind: 'feed', phase: 'cheap',
@@ -727,18 +735,28 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
       // found 1 of 13 (BRO-5891 fixed it in the regular pipeline's google-news-rss.js; BRO-5993 here).
       const { searchTitles, headlineNamesShow } = require('../google-news-rss');
       const titles = searchTitles(show);
-      const q = new URLSearchParams({ q: `${titles.map((t) => `"${t}"`).join(' OR ')} review`, hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' });
+      const locale = { hl: london ? 'en-GB' : 'en-US', gl: london ? 'GB' : 'US', ceid: london ? 'GB:en' : 'US:en' };
+      const q = new URLSearchParams({ q: `${titles.map((t) => `"${t}"`).join(' OR ')} review`, ...locale });
       const xml = await fetchText(`https://news.google.com/rss/search?${q}`);
+      const sites = london ? [] : siteQueryHosts;
+      // A site search that fails costs only its own outlet this pass; the main search failing still fails the adapter.
+      const siteXml = await Promise.all(sites.map((host) => fetchText(`https://news.google.com/rss/search?${new URLSearchParams({ q: `"${show.title}" site:${host}`, ...locale })}`).catch(() => '')));
       const items = [];
-      for (const m of String(xml).matchAll(/<item[\s>]([\s\S]*?)<\/item>/gi)) {
-        const grab = (tag) => ((m[1].match(new RegExp(`<${tag}[^>]*>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tag}>`, 'i')) || [])[1] || '').trim();
-        const title = grab('title').replace(/&amp;/g, '&');
-        const link = grab('link');
-        const sourceUrl = ((m[1].match(/<source[^>]*\burl=["']([^"']+)["']/i) || [])[1] || '').trim();
-        const outlet = sourceUrl && resolveOutletFromUrl(sourceUrl);
-        if (hostOf(link) !== 'news.google.com' || !outlet) continue; // unknown publishers are never ingested blind
-        if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
-        items.push({ title, link, sourceUrl, pubDate: grab('pubDate'), tier: outletTier(outlet.outletId) });
+      const seenLinks = new Set();
+      for (const [feedXml, site] of [[xml, null], ...siteXml.map((x, i) => [x, sites[i]])]) {
+        for (const m of String(feedXml).matchAll(/<item[\s>]([\s\S]*?)<\/item>/gi)) {
+          const grab = (tag) => ((m[1].match(new RegExp(`<${tag}[^>]*>(?:<!\\[CDATA\\[)?([\\s\\S]*?)(?:\\]\\]>)?</${tag}>`, 'i')) || [])[1] || '').trim();
+          const title = grab('title').replace(/&amp;/g, '&');
+          const link = grab('link');
+          const sourceUrl = ((m[1].match(/<source[^>]*\burl=["']([^"']+)["']/i) || [])[1] || '').trim();
+          const outlet = sourceUrl && resolveOutletFromUrl(sourceUrl);
+          if (hostOf(link) !== 'news.google.com' || !outlet || seenLinks.has(link)) continue; // unknown publishers are never ingested blind
+          if (site) {
+            if (!hostMatches(hostOf(sourceUrl), [site])) continue; // a site search keeps only that outlet's items
+          } else if (!headlineNamesShow(title, show)) continue; // listing title, or a press title plus a listing word ("New Balance 860" is not 860)
+          seenLinks.add(link);
+          items.push({ title, link, sourceUrl, pubDate: grab('pubDate'), tier: outletTier(outlet.outletId), siteQuery: !!site });
+        }
       }
       // The unwrap budget goes to national outlets first, as in google-news-rss.js: in feed order smaller outlets could use it
       // up before a national outlet's wrapper was opened (BRO-6066). Stable sort, so feed order holds within a tier.
@@ -782,7 +800,7 @@ function googleNewsAdapter({ maxUnwrap = 8, decodeImpl = null, maxDecode = 3 * m
         }
         if (!r.url) continue;
         const date = feedDateInfo(it.pubDate, { atom: false });
-        out.push({ url: r.url, title: it.title, source: 'outlet-index', ...date, via: 'google-news', vettedOutlet: true });
+        out.push({ url: r.url, title: it.title, source: 'outlet-index', ...date, via: it.siteQuery ? 'google-news-site' : 'google-news', vettedOutlet: true, ...(it.siteQuery ? { reviewSignalGiven: true } : {}) });
       }
       return out;
     },
@@ -1197,7 +1215,7 @@ function recordDiscovered(ledgerDir, { show, night, admitted, now = Date.now() }
 module.exports = {
   SERP_AFTER_MS, SERP_COOLDOWN_MS, SERP_NIGHT_MAX, defaultLaneMissingOutlets, defaultLaneSectionIndexes, laneMissingOutlets,
   NON_REVIEW_HOSTS, WRAPPER_HOSTS, canonicalUrl, bodyScope, playbillArticleBody, bwwRoundupBody, storyCitedLinks, extractAnchors, citedExcerpts, extractCitedLinks, extractPublishDate,
-  nonReviewReason, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
+  nonReviewReason, hasReviewSignal, hostSignalsReview, REVIEW_WITHOUT_WORD_HOSTS, pageDatedNear, dtliSitemapPages, defaultLaneFeeds, bwwRoundupAdapter, dtliAdapter, rssAdapter, sectionIndexAdapter, showScoreAdapter, playbillVerdictAdapter, googleNewsAdapter, GOOGLE_NEWS_SITE_QUERY_HOSTS, talkinBroadwayAdapter, TB_PROBE_BATCH, TB_MAX_CARRIES, tbFetchWasBlocked, serpAdapter,
   publisherUrlFromWrapperPage, parseFeedEntries, fetchTextFrom, serpAllowed, memoPath, loadMemo, saveMemo,
   runDiscoveryPass, loadSeen, recordDiscovered,
 };
