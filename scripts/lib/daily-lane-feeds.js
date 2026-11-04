@@ -25,6 +25,7 @@ function dailyLaneFeedConfigs(configured, skipOutlets = new Set()) {
       strategy: 'rss',
       url: f.url,
       laneRules: true,
+      ...(MIXED_TOPIC_OUTLETS.has(f.outletId) ? { mixedTopic: true } : {}),
       ...(f.reviewsOnly ? { reviewsOnly: true } : {}),
       ...(f.titledReviews ? { titledReviews: true } : {}),
     };
@@ -40,12 +41,25 @@ function dailyLaneFeedConfigs(configured, skipOutlets = new Set()) {
  *  - otherwise: a review word (or star rating, or /review/ path) must be in the headline or URL.
  * The show-title match itself stays with findMatchingShows.
  */
+// Mixed-topic feeds (Mashable, Daily Beast, a film blog) carry film and TV reviews of titles that are also stage shows
+// (Wicked, Hamilton). The lane runs per show around opening night; the daily poller matches every open show, so it
+// needs this extra guard: no film/TV word in the headline or URL, and a stage word somewhere in the item.
+const FILM_TV_WORDS = /\b(movies?|films?|streaming|netflix|disney\+?|hbo|hulu|prime video|apple tv\+?|peacock|box office|trailer|tv series|tv show|miniseries|season \d+)\b/i;
+const STAGE_WORDS = /\b(broadway|off-broadway|off broadway|west end|theat(?:er|re)|musical|stage|playhouse|revival|national tour)\b/i;
+// Outlets whose feed is not theater-first.
+const MIXED_TOPIC_OUTLETS = new Set(['dailybeast', 'mashable', 'josh-at-the-movies', 'new-york-notebook', 'the-contending']);
+function looksLikeStageItem(item) {
+  const headUrl = `${item.headline || ''} ${item.url || ''}`;
+  if (FILM_TV_WORDS.test(headUrl)) return false;
+  return STAGE_WORDS.test(`${headUrl} ${item.description || ''}`);
+}
+
 function laneFeedAccepts(cfg, outletId, item, show) {
   if (!cfg || !cfg.laneRules) return true;
   if (!outletInMarket(outletId, laneMarket(show))) return false;
   if (cfg.titledReviews) return headlineIsShowTitle(item.headline, show.title);
   if (cfg.reviewsOnly) return true;
-  return hasReviewSignal(item.url, item.headline);
+  return hasReviewSignal(item.url, item.headline) && (!cfg.mixedTopic || looksLikeStageItem(item));
 }
 
-module.exports = { dailyLaneFeedConfigs, laneFeedAccepts };
+module.exports = { dailyLaneFeedConfigs, laneFeedAccepts, looksLikeStageItem, MIXED_TOPIC_OUTLETS };

@@ -63,3 +63,19 @@ test('DAILY_LANE_FEEDS_DISABLED=1 adds nothing', () => {
   process.env.DAILY_LANE_FEEDS_DISABLED = '1';
   try { assert.deepEqual(dailyLaneFeedConfigs({}), {}); } finally { delete process.env.DAILY_LANE_FEEDS_DISABLED; }
 });
+
+test('mixed-topic feeds: a film review of a stage title is refused, a stage review is accepted (Wicked, Hamilton)', () => {
+  const wicked = { id: 'wicked-2003', title: 'Wicked', category: 'broadway' };
+  const ham = { id: 'hamilton-2015', title: 'Hamilton', category: 'broadway' };
+  const mashable = poller.OUTLET_STRATEGY_CONFIG.mashable;
+  const beast = poller.OUTLET_STRATEGY_CONFIG.dailybeast;
+  assert.equal(mashable.mixedTopic, true);
+  assert.equal(laneFeedAccepts(mashable, 'mashable', { url: 'https://mashable.com/article/wicked-for-good-review', headline: 'Wicked: For Good review: the movie sings', description: 'The film sequel arrives in theaters.' }, wicked), false);
+  assert.equal(laneFeedAccepts(beast, 'dailybeast', { url: 'https://www.thedailybeast.com/review-disney-hamilton-movie', headline: 'Review: Disney+ Hamilton movie', description: 'On Broadway it was a hit.' }, ham), false);
+  assert.equal(laneFeedAccepts(beast, 'dailybeast', { url: 'https://www.thedailybeast.com/hamilton-broadway-review', headline: 'Hamilton review: the Broadway musical returns', description: '' }, ham), true);
+});
+
+test('lane-derived feeds never fall back to paid SERP when the feed fails', () => {
+  const src = require('node:fs').readFileSync(new URL('../../scripts/outlet-listing-poller.js', import.meta.url), 'utf8');
+  assert.match(src, /!domain \|\| sc\.laneRules\) \{ outletsFailed\+\+; continue; \}/);
+});
