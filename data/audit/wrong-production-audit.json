@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T03:15:18.355Z",
+  "timestamp": "2026-11-04T03:48:28.184Z",
   "stats": {
-    "totalReviews": 80037,
-    "alreadyFlagged": 22053,
+    "totalReviews": 80039,
+    "alreadyFlagged": 22054,
     "dateGuardCatches": 217,
-    "directorMismatch": 3475,
-    "tvFilmSignals": 2271,
-    "londonSignals": 3603,
+    "directorMismatch": 3479,
+    "tvFilmSignals": 2272,
+    "londonSignals": 3604,
     "offBroadwaySignals": 736,
     "yearMismatch": 361,
-    "noPublishDate": 8489
+    "noPublishDate": 8468
   },
   "findings": [
     {
@@ -3335,7 +3335,7 @@
     },
     {
       "showId": "affluenza-off-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--louise-penn.json",
       "score": 10,
       "publishDate": "2026-10-06",
       "url": "https://playsinternational.org.uk/affluenza-riverside-studios/",
@@ -6752,6 +6752,19 @@
       "showId": "avenue-q-west-end-2026",
       "file": "timeout--paul-raven.json",
       "score": 74,
+      "publishDate": "2026-04-17",
+      "url": "https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "avenue-q-west-end-2026",
+      "file": "timeout--unknown.json",
       "publishDate": "2026-04-17",
       "url": "https://www.westendtheatre.com/350319/news/reviews/avenue-q-reviews-round-up-at-shaftesbury-theatre-in-london/",
       "findings": [
@@ -11425,6 +11438,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-1990",
+      "file": "nytg--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/cat-on-a-hot-tin-roof-0",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"debbie allen\" from cat-on-a-hot-tin-roof-2008"
         }
       ]
     },
@@ -63247,6 +63274,19 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
+      "file": "the-spectator-uk--unknown.json",
+      "publishDate": "2013-03-14",
+      "url": "https://www.spectator.co.uk/article/book-of-mormon-religion-hits-the-west-end",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
       "file": "thestage--mark-shenton.json",
       "score": 66,
       "publishDate": "2013-03-22",
@@ -66182,6 +66222,20 @@
       "score": 87,
       "publishDate": "2017-03-10",
       "url": "http://exeuntmagazine.com/reviews/review-glass-menagerie-belasco-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
+      "file": "guardian--alexis-soloski.json",
+      "score": 63,
+      "publishDate": "2017-03-09T19:20:33-05:00",
+      "url": "https://www.theguardian.com/stage/2017/mar/09/the-glass-menagerie-review-sally-field-broadway",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -78572,6 +78626,20 @@
       ]
     },
     {
+      "showId": "twelfth-night-west-end-2012",
+      "file": "variety--unknown.json",
+      "score": null,
+      "publishDate": "2012-11-19",
+      "url": "https://variety.com/2012/legit/reviews/twelfth-night-2-1117948779/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim carroll\" from twelfth-night-2013"
+        }
+      ]
+    },
+    {
       "showId": "two-strangers-bway-2025",
       "file": "nypost--johnny-oleksinski.json",
       "score": 78,
@@ -86514,6 +86582,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "american-psycho-2016",
+      "file": "broadway-blog--samuel-l-leiter.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "http://thebroadwayblog.com/2016/04/21/14528-review-american-psycho-musical-broadway",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -124298,7 +124380,7 @@
     {
       "showId": "the-bridge-off-west-end-2026",
       "file": "theatreandtonic--emmie-newitt.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2026-11-03",
       "url": "https://theatreandtonic.co.uk/blog/the-bridge-bush-theatre-london-review",
       "findings": [
