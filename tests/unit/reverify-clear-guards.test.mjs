@@ -367,3 +367,10 @@ test('GUARD 4 REFUSES (BRO-6745): VERBATIM interview and roundup verdicts return
   }
   assert.equal(detectNonReviewAdmission({ reasoning: 'A clear review, not a compilation of critical assessments.' }), null);
 });
+
+test('GUARD 2 (BRO-6745 ship-check): unquoted show title after "not" is a mismatch; conjunction / "no doubt" do not negate a cue', () => {
+  assert.ok(detectTitleMismatch({ reasoning: "It reviews 'The Crucible', not Consumed.", showTitle: 'Consumed' }));
+  assert.ok(detectTitleMismatch({ reasoning: "It reviews 'Hamlet', not Schmigadoon! at all.", showTitle: 'Schmigadoon!' }));
+  assert.ok(detectTitleMismatch({ reasoning: '"Hamlet", which is not Proof but rather a different production.', showTitle: 'Proof' }));
+  assert.ok(detectTitleMismatch({ reasoning: '"Hamlet"; no doubt it is a different show.', showTitle: 'Proof' }));
+});

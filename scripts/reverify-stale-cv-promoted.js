@@ -42,7 +42,7 @@ const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { assessClearSafety } = require('./lib/reverify-clear-guards');
+const { assessClearSafety, CLEAR_GUARD_VERSION } = require('./lib/reverify-clear-guards');
 const { selectCvPromotedNonReview, planClear } = require('./lib/cv-promoted-nonreview-selector');
 const { parseFileSpecs, fileModeHoldReason } = require('./lib/reverify-file-mode');
 
@@ -232,6 +232,9 @@ async function main() {
           ...result,
           verifiedAt: new Date().toISOString(),
           reverifiedFrom: 'stored-fullText',
+          // BRO-6745: a refused clean verdict must not overrule the label in the rebuild
+          // (isNonReviewDemotedByFreshCV) nor be re-paid every week (the selector).
+          ...(safety.safe ? {} : { clearRefusal: { guardVersion: CLEAR_GUARD_VERSION, codes: safety.refusals.map(r => r.code), at: new Date().toISOString() } }),
           previousVerification: data.contentVerification ? {
             issues: data.contentVerification.issues,
             reasoning: data.contentVerification.reasoning,

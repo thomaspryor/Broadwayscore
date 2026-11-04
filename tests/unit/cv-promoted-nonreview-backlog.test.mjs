@@ -163,3 +163,21 @@ test('BRO-6745: clean high verdict on a still-labelled row is re-selected; a not
   const lowArticle = { ...held, contentVerification: { ...held.contentVerification, articleTypeConfidence: 'medium' } };
   assert.equal(alreadyReverified(lowArticle), true, 'planClear would hold it back anyway; do not re-pay weekly');
 });
+
+// Ship-check review (BRO-6745): a held row must be re-checked once per guard
+// change, not every week, or it re-pays and starves the --limit batch.
+const { CLEAR_GUARD_VERSION } = require('../../scripts/lib/reverify-clear-guards.js');
+test('BRO-6745: a row refused under the current guard version stays done; a guard bump re-selects it once', () => {
+  const cv = { reverifiedFrom: 'stored-fullText', contentHash: contentHash(REVIEW_BODY), verifiedBy: 'llm:claude',
+    isValid: true, wrongArticle: false, wrongProduction: false, confidence: 'high', articleTypeConfidence: 'high', articleType: 'review' };
+  const stamped = (v) => ({ ...base, fullText: REVIEW_BODY, contentVerification: { ...cv, clearRefusal: { guardVersion: v, codes: ['same-url-collision'] } } });
+  assert.equal(alreadyReverified(stamped(CLEAR_GUARD_VERSION)), true);
+  assert.equal(alreadyReverified(stamped(CLEAR_GUARD_VERSION - 1)), false);
+  const news = { ...base, fullText: REVIEW_BODY, contentVerification: { ...cv, articleType: 'news' } };
+  assert.equal(alreadyReverified(news), true, 'GUARD 6 refuses it on every run; never re-pay');
+});
+
+test('BRO-6745: reverify script stamps clearRefusal on a refused verdict', () => {
+  const src = fs.readFileSync(new URL('../../scripts/reverify-stale-cv-promoted.js', import.meta.url), 'utf8');
+  assert.match(src, /clearRefusal: \{ guardVersion: CLEAR_GUARD_VERSION/);
+});

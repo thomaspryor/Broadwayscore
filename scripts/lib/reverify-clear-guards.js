@@ -95,14 +95,25 @@ const DOUBLE_QUOTED_RE = /["“”]([^"“”\n]{2,80})["“”]/g;
 const SINGLE_QUOTED_RE = /(?:^|[^\w'’])['‘]([^'’\n]{2,80})['’](?![\w])/g;
 
 const CUE_WINDOW = 90;
+// Bump when a guard changes what it refuses: rows a guard refused are stamped
+// with the version (contentVerification.clearRefusal) and re-checked once per
+// bump instead of every week (cv-promoted-nonreview-selector.js, BRO-6745).
+const CLEAR_GUARD_VERSION = 2;
 // "'X', not 'Y'" / "not the specified show" / "not a theater review of 'Y'" /
 // "not this production" / "not for 'Y'": the negation is about WHICH work this
 // is. "not a different production" / "not the wrong show" are the opposite
 // claim, so a gap word that is itself a contrast word is refused.
 const NOT_CONTRAST_RE = /\bnot\s+(?:(?:for|about|of)\s+)?(?:["“'‘]|(?:a|an|the|this|that)\s+(?:(?!different\b|wrong\b|separate\b|unrelated\b|other\b)[\w-]+\s+){0,2}?(?:review|show|production|play|musical|title|staging)s?\b)/;
 // A cue that is itself negated ("nor does it review a different production",
-// "is not the wrong show") says the opposite of a mismatch.
-const NEGATED_CUE_RE = /\b(?:not|nor|no|never|neither|without)\b(?:\s+[\w'’-]+){0,4}\s*$/;
+// "is not evidence of reviewing a different show") says the opposite of a
+// mismatch. A conjunction in the gap ("not Proof but rather a different
+// production") ends the negation, and "no" reaches one word at most ("no
+// doubt it is a different show" is not a negation of the cue).
+const NEGATED_CUE_RE = /(?:\b(?:not|nor|never|neither|without)\b(?:\s+(?!but\b|rather\b|yet\b|however\b|instead\b)[\w'’-]+){0,4}|\bno\b(?:\s+[\w'’-]+)?)\s*$/;
+
+function _escapeRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
 function _norm(s) {
   if (!s || typeof s !== 'string') return '';
@@ -128,7 +139,7 @@ function _titlesAgree(a, b) {
   return a.includes(b) || b.includes(a);
 }
 
-function _hasCueNear(text, index, length) {
+function _hasCueNear(text, index, length, showTitle) {
   const lower = text.toLowerCase();
   // The quoted span itself is excluded: a pull-quote that contains "not" or
   // "actually" is the critic's prose, not the verdict contrasting two titles.
@@ -148,6 +159,8 @@ function _hasCueNear(text, index, length) {
       }
     }
     if (NOT_CONTRAST_RE.test(str)) return 'not ';
+    // "It reviews 'The Crucible', not Consumed." — the show's own title, unquoted.
+    if (showTitle && new RegExp(`\\bnot\\s+(?:the\\s+)?${_escapeRe(showTitle.toLowerCase())}(?![\\w])`).test(str)) return 'not ';
   }
   return null;
 }
@@ -193,7 +206,7 @@ function detectTitleMismatch({ reasoning, showTitle }) {
       const normQ = _norm(quoted);
       if (!normQ || normQ.length < 3) continue;
       if (_titlesAgree(normQ, normShow)) continue;
-      const cue = _hasCueNear(reasoning, m.index, m[0].length);
+      const cue = _hasCueNear(reasoning, m.index, m[0].length, showTitle);
       if (cue) {
         return {
           quotedTitle: quoted,
@@ -425,6 +438,7 @@ function assessClearSafety({ filePath, data, show, result, showTitle, fsImpl }) 
 }
 
 module.exports = {
+  CLEAR_GUARD_VERSION,
   assessClearSafety,
   detectTitleMismatch,
   detectNonReviewAdmission,

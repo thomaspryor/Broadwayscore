@@ -3046,6 +3046,10 @@ function isNonReviewDemotedByFreshCV(data) {
   // independent-corroboration bar as the other CV-promoted branch below (a confident ensemble score).
   // Without one the label stays and reverify-stale-cv-promoted.js --cv-promoted-nonreview re-checks the body.
   if (isCvPromotedProvenance && isStaleCvNonReviewVerdictOverruled(data)) return true;
+  // BRO-6745: reverify-stale-cv-promoted.js stores a clean verdict even when a clear guard
+  // refused it (a roundup or interview whose booleans said clean). That verdict must not
+  // overrule the label here either, or the refusal only stops the script, not the rebuild.
+  if (cv.clearRefusal) return false;
   if (cv.articleType !== 'review') return false;
   if (cv.isValid === false) return false;
   if (cv.wrongArticle === true) return false;

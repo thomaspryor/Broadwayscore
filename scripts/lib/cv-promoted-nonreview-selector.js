@@ -127,8 +127,15 @@ function storedVerdictCleanButHeld(d) {
   const cv = d?.contentVerification;
   if (!cv || d.isNonReview !== true) return false;
   const articleConfidence = cv.articleTypeConfidence || cv.confidence;
-  return cv.isValid === true && !cv.wrongArticle && !cv.wrongProduction && !cv.isFilmTv
-    && cv.confidence === 'high' && articleConfidence === 'high';
+  const clean = cv.isValid === true && !cv.wrongArticle && !cv.wrongProduction && !cv.isFilmTv
+    && cv.confidence === 'high' && articleConfidence === 'high'
+    && (!cv.articleType || cv.articleType === 'review');
+  if (!clean) return false;
+  // Refused under the current guards: done until a guard changes. Without this
+  // the same held rows are re-paid weekly and, sorted first, fill the --limit
+  // batch so later rows never get a turn (ship-check review, BRO-6745).
+  const { CLEAR_GUARD_VERSION } = require('./reverify-clear-guards');
+  return !(cv.clearRefusal && cv.clearRefusal.guardVersion === CLEAR_GUARD_VERSION);
 }
 
 module.exports = {
