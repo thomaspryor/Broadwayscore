@@ -981,37 +981,6 @@
     "queuedAt": "2026-11-04T00:22:03.250Z"
   },
   {
-    "conditionKey": "land:land/bro-6927-critic-gaps",
-    "title": "Landing blocked: rebase red on land/bro-6927-critic-gaps",
-    "description": "land.yml did not land land/bro-6927-critic-gaps: the rebase gate went red at c5c19a4059. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41744227357",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-6927-critic-gaps"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "c5c19a40599cdb78a7a16562815bc8940f6af757"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41744227357"
-      }
-    ],
-    "queuedAt": "2026-11-04T00:09:39.054Z"
-  },
-  {
     "conditionKey": "land:land/bro-6932-recheck",
     "title": "Landing blocked: lint-workflows red on land/bro-6932-recheck",
     "description": "land.yml did not land land/bro-6932-recheck: the lint-workflows gate went red at ca5fb4fd56. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41742751940",
@@ -1255,5 +1224,36 @@
       }
     ],
     "queuedAt": "2026-11-04T01:27:20.862Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6927-critic-gaps",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6927-critic-gaps",
+    "description": "land.yml did not land land/bro-6927-critic-gaps: the unit-tests-node gate went red at 16f330f0e8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41751824590",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6927-critic-gaps"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "16f330f0e8bb2264a765565d7df0b0cb9066d608"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41751824590"
+      }
+    ],
+    "queuedAt": "2026-11-04T01:34:33.831Z"
   }
 ]
