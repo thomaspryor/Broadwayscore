@@ -381,13 +381,13 @@ function skippedShows({ ctx, ledger, now }) {
         reason = u.due
           ? `its score settled after the ${C.SCORE_LOOKBACK_DAYS}-day window, so it will post on a quiet day (a day with nothing else going out)`
           : `not posted yet: ${plainReason(u)}. It will post on a quiet day once that changes`;
-      } else if (bf && age > backfillMs && show.status === 'open' && postsToOwnSet(show)) {
+      } else if (bf && age > backfillMs && show.status === 'open' && postsToOwnSet(show) && !['regional', 'tour'].includes(show.category)) {
         // Was owed a quiet-day post until bf.lookbackDays; reported once, the week it ages out.
         reason = u.due
           ? `no quiet day came up within ${bf.lookbackDays} days of opening, so it was never posted`
           : `gave up ${bf.lookbackDays} days after opening: ${plainReason(u)}`;
         final = true;
-      } else if (bf && age <= backfillMs && closedRecently(show, now, bf) && postsToOwnSet(show)) {
+      } else if (bf && age <= backfillMs && closedRecently(show, now, bf) && postsToOwnSet(show) && !['regional', 'tour'].includes(show.category)) {
         // Was owed a quiet-day post until it closed (or got too close to closing); said the week that happens.
         if (u.due) reason = 'closed before a quiet day came up, so it was never posted';
         else if (age <= lookbackMs + 7 * DAY_MS) reason = `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;

@@ -6,6 +6,7 @@ const { getScoreTierId, getScoreTierLabel, getReviewBreakdownTierId } = require(
 const { getAudienceGrade, totalAudienceReviews, MIN_AUDIENCE_REVIEWS } = require('../lib/audience-grade.js');
 const { sameTitle, findLondonRun } = require('../lib/transfer-detection.js');
 const { MARKETS, marketOf } = require('./config');
+const { touringEligible } = require('./select');
 const TOURING = new Set(['regional', 'tour']); // posting markets since BRO-6935, but never cited as an "earlier production"
 
 const MIN_RANK_REVIEWS = 8; // a show needs this many reviews to be ranked against its peers
@@ -89,7 +90,7 @@ function buildFactPool(show, ctx, now) {
   // Rank among this season half's openings in the same market, counting only shows with enough reviews.
   const start = seasonStart(now);
   const since = `${MONTHS[new Date(start).getUTCMonth()]} 1`;
-  const peers = ctx.shows.filter(s => s.category === cat && marketOf(s) === market && opened(s) >= start && opened(s) <= now && hasRankableScore(ctx.slim[s.id]));
+  const peers = ctx.shows.filter(s => s.category === cat && marketOf(s) === market && opened(s) >= start && opened(s) <= now && hasRankableScore(ctx.slim[s.id]) && (!TOURING.has(cat) || touringEligible(s, ctx.shows)));
   if (peers.length >= MIN_PEERS && peers.some(s => s.id === show.id)) {
     // Ranked on the rounded score the site shows, so two shows both showing 72 are tied.
     const shown = s => Math.round(ctx.slim[s.id].cs);

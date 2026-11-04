@@ -15,6 +15,7 @@ const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
 const { isUkRegionalVenue } = require('../lib/market-label');
 const { isLocalOnlyShow } = require('../lib/local-market');
+const { titleKey } = require('./routing');
 const { homeSet, targetSets, operaConfigured, postsToOwnSet } = require('./routing');
 
 const DAY_MS = 864e5;
@@ -57,10 +58,12 @@ function touringEligible(show, shows) {
   if (show.tourParent) return false;
   if (show.category === 'regional') return !isUkRegionalVenue(show.venue) && !isLocalOnlyShow(show);
   if (show.category !== 'tour' || !show.tourLaunchEvidence) return false;
-  if (!show.tourOf || !Array.isArray(shows)) return true;
-  const at = Date.parse(show.openingDate);
-  return !shows.some(o => o.id !== show.id && o.category === 'tour' && o.tourOf === show.tourOf && o.tourLaunchEvidence && !o.tourParent
-    && (Date.parse(o.openingDate) < at || (Date.parse(o.openingDate) === at && o.id < show.id)));
+  if (!Array.isArray(shows)) return false; // cannot prove it is the first launch
+  const at = Date.parse(show.openingDate), key = titleKey(show.title);
+  // An earlier tour of the same production: same tourOf, or the same title (a second tour has a new tourOf).
+  const earlier = o => Date.parse(o.openingDate) < at || (Date.parse(o.openingDate) === at && o.id < show.id);
+  return !shows.some(o => o.id !== show.id && o.category === 'tour' && !o.tourParent && o.tourLaunchEvidence
+    && ((show.tourOf && o.tourOf === show.tourOf) || titleKey(o.title) === key) && earlier(o));
 }
 
 /** allowTouring: the score lane only. Roundups, closing-soon and the quiet-day backfill never pick touring shows. */

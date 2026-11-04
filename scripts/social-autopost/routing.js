@@ -87,6 +87,7 @@ function targetSets(show, showReviews, sets = C.CHANNEL_SETS, shows = null) {
   if (home === 'opera') return operaConfigured(sets) ? ['opera'] : []; // never cross-posted, never a fallback
   const configured = name => Object.keys(sets.broadway || {}).every(svc => (sets[name] || {})[svc]);
   if (!configured(home)) return C.BROADWAY_FALLBACK_CATEGORIES.includes(show.category) ? ['broadway'] : [];
+  if (home === 'broadway' && (show.category === 'regional' || show.category === 'tour')) return [home]; // BRO-6935: broadway accounts only, never cross-posted
   const other = home === 'broadway' ? 'west-end' : 'broadway';
   return configured(other) && isHighProfile(show, showReviews, shows) ? [home, other] : [home];
 }

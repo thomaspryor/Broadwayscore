@@ -1691,6 +1691,9 @@ test('touring: only the first national tour launch with launch evidence posts', 
   assert.equal(sel.touringEligible(first, [first, relaunch]), true);
   assert.equal(sel.touringEligible(relaunch, [first, relaunch]), false, 'a relaunch is not the first launch');
   assert.equal(sel.touringEligible(tour({ tourLaunchEvidence: undefined }), []), false, 'no launch evidence');
+  assert.equal(sel.touringEligible(first), false, 'fails closed without the show list');
+  const second = tour({ id: 'a-tour-2026', tourOf: 'a-2025', openingDate: '2026-02-01', title: first.title });
+  assert.equal(sel.touringEligible(second, [first, second]), false, 'a second tour with a new tourOf and the same title');
   assert.equal(sel.touringEligible(tour({ tourParent: 'p' }), []), false);
 });
 
@@ -1700,6 +1703,8 @@ test('touring: score lane only, routed to the Broadway set, floors stricter than
   assert.equal(sel.isEligibleShow(tour), false, 'roundups, closing-soon and backfill never pick touring shows');
   assert.equal(sel.isEligibleShow(tour, { allowTouring: true, shows: [tour] }), true);
   assert.deepEqual(routing.targetSets(tour, NONE), ['broadway']);
+  const lond = { outletId: 'telegraph' };
+  assert.deepEqual(routing.targetSets(tour, [lond], SETS_BOTH, []), ['broadway'], 'never cross-posted to the West End accounts');
   for (const cat of ['regional', 'tour']) {
     assert.ok(C.SCORE_FLOORS[cat].t1 >= 1 && C.SCORE_FLOORS[cat].total >= C.SCORE_FLOORS['off-broadway'].total, cat);
   }
