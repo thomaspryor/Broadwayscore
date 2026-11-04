@@ -1,19 +1,22 @@
 {
-  "updatedAt": "2026-11-04T02:12:52.805Z",
-  "scanned": 4752,
-  "showsWithViolations": 171,
-  "totalViolations": 225,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-11-04T09:42:24.121Z",
+  "scanned": 4754,
+  "showsWithViolations": 170,
+  "totalViolations": 224,
+  "newSinceLastRun": 4,
   "handled": {
-    "temporal-override-low-confidence": 954,
-    "not-shipped": 54,
+    "temporal-override-low-confidence": 950,
+    "not-shipped": 55,
     "duplicate-not-shipped": 54,
     "rebuild-skip-audit": 32,
     "manual-clear-reason": 12,
     "prior-run-or-tour-leg": 43
   },
   "newViolationKeys": [
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026::amny--matt-windman.json"
+    "burlesque-off-west-end-2026::telegraph--claire-allfree.json",
+    "cats-off-west-end-2026::jonathan-baz--jonathan-baz.json",
+    "dark-of-the-moon-off-west-end-2026::artsdesk--unknown.json",
+    "dark-of-the-moon-off-west-end-2026::musical-theatre-review--unknown.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -139,14 +142,14 @@
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-west-end-2026::musical-theatre-review--unknown.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
-    "burlesque-west-end-2026::telegraph--claire-allfree.json",
+    "burlesque-off-west-end-2026::telegraph--claire-allfree.json",
     "making-a-show-of-myself-off-broadway-2026::pages-on-stages--mason-pilevsky.json",
     "ulster-american-irish-repertory-theatre-off-broadway-2026::cititour--brian-scott-lipton.json",
     "ulster-american-irish-repertory-theatre-off-broadway-2026::new-york-sun--ar-hoffman.json",
     "mass-west-end-2026::artsdesk--demetrios-matheou.json",
-    "cats-west-end-2026::jonathan-baz--jonathan-baz.json",
-    "dark-of-the-moon-west-end-2026::artsdesk--unknown.json",
-    "dark-of-the-moon-west-end-2026::musical-theatre-review--unknown.json",
+    "cats-off-west-end-2026::jonathan-baz--jonathan-baz.json",
+    "dark-of-the-moon-off-west-end-2026::artsdesk--unknown.json",
+    "dark-of-the-moon-off-west-end-2026::musical-theatre-review--unknown.json",
     "sherlock-holmes-west-end-2026::standard--nick-curtis.json",
     "trainspotting-the-musical-west-end-2026::musical-theatre-review--scott-matthewman.json",
     "now-you-see-me-live-west-end-2026::london-box-office--stuart-king.json",
@@ -171,7 +174,6 @@
     "vanya-off-broadway-2025::thewrap--robert-hofler.json",
     "vanya-off-broadway-2025::vulture--sara-holdren.json",
     "primary-trust-off-broadway-2023::cititour--brian-scott-lipton.json",
-    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026::amny--matt-windman.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::cititour--brian-scott-lipton.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026::nypost--johnny-oleksinski.json",
     "a-small-and-quiet-light-off-west-end-2026::artsdesk--aleks-sierz.json",
@@ -2555,7 +2557,7 @@
       ]
     },
     {
-      "showId": "burlesque-west-end-2026",
+      "showId": "burlesque-off-west-end-2026",
       "title": "Burlesque",
       "openingDate": "2025-07-22",
       "message": "telegraph/Claire Allfree (telegraph--claire-allfree.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a review of the West End production of Burlesque The Musical, explicitly described by critic Claire Allfree as ' — https://www.telegraph.co.uk/theatre/what-to-see/burlesque-the-musical-a-raunchy-cult-hit-in-the-making/",
@@ -2652,7 +2654,7 @@
       ]
     },
     {
-      "showId": "cats-west-end-2026",
+      "showId": "cats-off-west-end-2026",
       "title": "Cats",
       "openingDate": "2026-08-06",
       "message": "jonathan-baz/Jonathan Baz (jonathan-baz--jonathan-baz.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 9d of opening, likely correct production] This is a genuine review of a Cats production with st — https://www.jonathanbaz.com/2026/08/cats-review.html?m=0",
@@ -2673,7 +2675,7 @@
       ]
     },
     {
-      "showId": "dark-of-the-moon-west-end-2026",
+      "showId": "dark-of-the-moon-off-west-end-2026",
       "title": "Dark of the Moon",
       "openingDate": "2026-05-26",
       "message": "artsdesk/Unknown (artsdesk--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] The review describes a different production of 'Dark — https://theartsdesk.com/theatre/dark-moon-charing-cross-theatre-review-immortals-inject-life-quiet-tennessee-village\nmusical-theatre-review/Unknown (musical-theatre-review--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review appears to evaluate a different production — https://musicaltheatrereview.com/dark-of-the-moon-a-new-musical-charing-cross-theatre/",
@@ -3132,27 +3134,6 @@
           "cvIssues": [
             "Review publish date (2026-07-13) is ~3 years after Off-Broadway opening date (2023-05-25), indicating this may be a review of a different production run",
             "The scraped text is truncated mid-word ('played br') before reaching conclusion and critical assessment"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
-      "title": "The Hairy Ape",
-      "openingDate": "2026-10-04",
-      "message": "amny/Matt Windman (amny--matt-windman.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 7d of opening, likely correct production] This review evaluates a 2017 staging of 'The Hairy Ap — http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
-      "violations": [
-        {
-          "filename": "amny--matt-windman.json",
-          "url": "http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
-          "outletId": "amny",
-          "criticName": "Matt Windman",
-          "matchedBy": "outlet+critic",
-          "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 7d of opening, likely correct production] This review evaluates a 2017 staging of 'The Hairy Ap",
-          "cvIssues": [
-            "Review describes production at Park Avenue Armory (2017), not Irish Repertory Theatre",
-            "Review publish date (2017) does not match expected Off-Broadway opening date (2026-10-04)"
           ]
         }
       ]
