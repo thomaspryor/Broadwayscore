@@ -1,19 +1,71 @@
 {
-  "updatedAt": "2026-11-04T17:52:00.685Z",
-  "processed": 96,
-  "failed": 54,
-  "successRate": "64.0%",
+  "updatedAt": "2026-11-04T18:05:41.650Z",
+  "processed": 395,
+  "failed": 215,
+  "successRate": "64.8%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 202,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 32,
+    "scrapingbee": 21,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 22
+    "archive": 103
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-11-04T13:41:57.353Z",
+      "event": "bb-session",
+      "session": "b357aed1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-11-04T13:41:57.700Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T13:43:20.196Z",
+      "event": "bb-session",
+      "session": "df08d4a2",
+      "url": "https://www.nytimes.com/2026/09/26/theater/jake-shears-scissor-sisters-rocky-hor"
+    },
+    {
+      "t": "2026-11-04T13:43:20.477Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T13:44:16.241Z",
+      "event": "bb-session",
+      "session": "930463f4",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-04T13:44:16.593Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T14:14:44.124Z",
+      "event": "bb-session",
+      "session": "d5cd55e4",
+      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+    },
+    {
+      "t": "2026-11-04T14:16:14.197Z",
+      "event": "bb-session",
+      "session": "311ccede",
+      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+    },
+    {
+      "t": "2026-11-04T14:17:39.023Z",
+      "event": "bb-session",
+      "session": "a16d61c2",
+      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+    }
+  ]
 }
