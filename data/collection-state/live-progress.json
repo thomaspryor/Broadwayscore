@@ -1,44 +1,53 @@
 {
-  "updatedAt": "2026-11-05T00:07:11.093Z",
-  "processed": 103,
-  "failed": 75,
-  "successRate": "57.9%",
+  "updatedAt": "2026-11-05T00:07:50.365Z",
+  "processed": 180,
+  "failed": 100,
+  "successRate": "64.3%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 92,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 3,
-    "brightdata": 0,
+    "scrapingdog": 15,
+    "scrapingbee": 4,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 23
+    "archive": 52
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-11-04T23:59:17.303Z",
+      "t": "2026-11-04T23:44:30.829Z",
       "event": "bb-session",
-      "session": "135c6d0d",
-      "url": "https://bachtrack.com/review-lorfeo-william-kentridge-greek-national-opera-athen"
+      "session": "ee51548f",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-05T00:00:47.958Z",
-      "event": "bb-session",
-      "session": "0a1cecf7",
-      "url": "https://bachtrack.com/review-shostakovich-cherry-town-ahlbom-dutch-national-oper"
+      "t": "2026-11-04T23:44:31.749Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-11-05T00:02:18.644Z",
+      "t": "2026-11-04T23:44:49.668Z",
       "event": "bb-session",
-      "session": "c47d4302",
-      "url": "https://bachtrack.com/review-tosca-miskimmon-glassberg-fanyo-english-national-op"
+      "session": "cddd2479",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-11-05T00:03:49.906Z",
+      "t": "2026-11-04T23:44:50.520Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-11-04T23:46:31.760Z",
       "event": "bb-session",
-      "session": "a08c0ad6",
-      "url": "https://bachtrack.com/review-nozze-figaro-pountney-conta-bucharest-national-oper"
+      "session": "efd12c2b",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-11-04T23:46:32.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
