@@ -21,7 +21,7 @@ const require = createRequire(import.meta.url);
 const { SHOW_ID_KEYED_FILES, validateRegistry } = require('../../scripts/lib/show-id-keyed-files.js');
 const {
   planShowIdRename, applyShowIdRename, buildSqlMigration, formatPlan,
-  SUPABASE_SHOW_ID_TABLES, yearlessSlug, applyShape,
+  SUPABASE_SHOW_ID_TABLES, yearlessSlug, applyShape, countEdits,
 } = require('../../scripts/lib/show-id-rename.js');
 
 const OLD = 'fixture-musical-2026';
@@ -525,6 +525,8 @@ test('resume: an identical leftover old key is dropped, a differing one still re
   const edits = applyShape(same, plain, ctx);
   assert.deepEqual(Object.keys(same.shows), ['x-off-west-end-2026', 'other']);
   assert.deepEqual(edits.map((e) => e.op), ['drop-duplicate-source']);
+  assert.equal(countEdits(edits).duplicatesDropped, 1);
+  assert.equal(countEdits(edits).refs, 0);
   const differ = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [2] } } };
   assert.throws(() => applyShape(differ, plain, ctx), (e) => e.code === 'KEY_COLLISION');
   const fresh = { shows: { 'x-west-end-2026': { wins: [1] }, 'x-off-west-end-2026': { wins: [1] } } };
