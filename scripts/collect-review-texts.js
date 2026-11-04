@@ -6815,10 +6815,11 @@ function findReviewsToProcess() {
   // then never-attempted before previously-attempted,
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
-  // BRO-6972: SHOW_FILTER runs (opening-night poller) collect a show with no scored review
-  // yet before shows that already have some, so its first review goes live first. Bulk runs
-  // skip this: it reads every review file of each queued show.
-  if (isShowFilterActive(CONFIG.showFilterSet, CONFIG.showFilter)) {
+  // BRO-6972: the opening-night poller/express set PRIORITIZE_UNCOVERED=1 so a show with no
+  // scored review yet is collected before shows that already have some (its first review is
+  // what the first-live SLA times). Off everywhere else: it reads each queued show's files.
+  const prioritizeUncovered = process.env.PRIORITIZE_UNCOVERED === '1';
+  if (prioritizeUncovered) {
     markUncoveredShows(reviews, CONFIG.reviewTextsDir);
   }
   reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
@@ -6859,6 +6860,16 @@ function findReviewsToProcess() {
     if (n) console.log(`  needsRefetch drain: ${n} textless review(s) queued first (cap ${NEEDS_REFETCH_DRAIN_PER_RUN}/run)`);
     reviews.length = 0;
     reviews.push(...promoted);
+  }
+  // BRO-6972: the promotions above put old stubs / textless refetches ahead of everything,
+  // including a brand-new show's first review. Re-lift uncovered-show items (stable).
+  if (prioritizeUncovered) {
+    const front = reviews.filter(r => r.showUncovered);
+    if (front.length && front.length < reviews.length) {
+      const rest = reviews.filter(r => !r.showUncovered);
+      reviews.length = 0;
+      reviews.push(...front, ...rest);
+    }
   }
   // Per-run caps, applied in priority order (see DRAIN_NETWORK_PER_RUN).
   {

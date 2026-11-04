@@ -761,6 +761,8 @@ jobs:
           SHOW_FILTER: ${{ steps.find.outputs.shows }}
           MAX_REVIEWS: '100'
           BATCH_SIZE: '10'
+          # BRO-6972: a show with no scored review yet is collected first (collection-priority.js).
+          PRIORITIZE_UNCOVERED: '1'
           # Opt-in soft deadline (scripts/collect-review-texts.js) — stops the
           # loop cleanly with a checkpoint well before the step's own
           # timeout-minutes below, so a big backlog exits 0 instead of being
