@@ -84,3 +84,21 @@ test('an append after another writer dropped the final newline does not glue row
   for (const l of r) JSON.parse(l);
   fs.unlinkSync(LEDGER);
 });
+
+test('switching SCRAPER_SPEND_LEDGER_PATH mid-process forces a full write to the new path', () => {
+  _resetLedgerTrimStateForTests();
+  quiet(() => recordBdCall({ host: 'h.example', success: true }));
+  const other = `${LEDGER}.other`;
+  fs.writeFileSync(other, '{"ts":"2026-11-01T00:00:03.000Z","seed":3}');
+  process.env.SCRAPER_SPEND_LEDGER_PATH = other;
+  try {
+    const orig = fs.readFileSync; let reads = 0;
+    fs.readFileSync = function (p, ...r) { if (p === other) reads++; return orig.call(this, p, ...r); };
+    try { quiet(() => recordBdCall({ host: 'i.example', success: true })); } finally { fs.readFileSync = orig; }
+    assert.equal(reads, 1);
+    assert.equal(fs.readFileSync(other, 'utf8').split('\n').filter(Boolean).length, 2);
+  } finally {
+    process.env.SCRAPER_SPEND_LEDGER_PATH = LEDGER;
+    for (const f of [other, LEDGER]) try { fs.unlinkSync(f); } catch { /* gone */ }
+  }
+});
