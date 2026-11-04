@@ -150,3 +150,16 @@ test('BRO-6745: verifyContent skip-short verdict stays done only while the text 
   assert.equal(alreadyReverified({ fullText: body, contentVerification: stamp }), true);
   assert.equal(alreadyReverified({ fullText: REVIEW_BODY, contentVerification: stamp }), false);
 });
+
+// BRO-6745: a clean, confident verdict on a row that kept its label was refused
+// by a clear guard (title-mismatch false positive). It must be re-selected so a
+// fixed guard gets another look, while a confirmed non-review verdict stays done.
+test('BRO-6745: clean high verdict on a still-labelled row is re-selected; a not-a-review verdict stays done', () => {
+  const stamp = { reverifiedFrom: 'stored-fullText', contentHash: contentHash(REVIEW_BODY), verifiedBy: 'llm:claude' };
+  const held = { ...base, fullText: REVIEW_BODY, contentVerification: { ...stamp, isValid: true, wrongArticle: false, wrongProduction: false, confidence: 'high', articleTypeConfidence: 'high' } };
+  assert.equal(alreadyReverified(held), false);
+  const confirmed = { ...base, fullText: REVIEW_BODY, contentVerification: { ...stamp, isValid: false, wrongArticle: true, confidence: 'high', articleType: 'preview' } };
+  assert.equal(alreadyReverified(confirmed), true);
+  const lowArticle = { ...held, contentVerification: { ...held.contentVerification, articleTypeConfidence: 'medium' } };
+  assert.equal(alreadyReverified(lowArticle), true, 'planClear would hold it back anyway; do not re-pay weekly');
+});

@@ -96,11 +96,13 @@ const SINGLE_QUOTED_RE = /(?:^|[^\w'’])['‘]([^'’\n]{2,80})['’](?![\w])/g
 
 const CUE_WINDOW = 90;
 // "'X', not 'Y'" / "not the specified show" / "not a theater review of 'Y'" /
-// "not the Broadway production": the negation is about WHICH work this is.
-const NOT_CONTRAST_RE = /\bnot\s+(?:["“'‘]|(?:a|an|the)\s+(?:[\w-]+\s+){0,2}?(?:review|show|production|play|musical|title|staging)s?\b)/;
+// "not this production" / "not for 'Y'": the negation is about WHICH work this
+// is. "not a different production" / "not the wrong show" are the opposite
+// claim, so a gap word that is itself a contrast word is refused.
+const NOT_CONTRAST_RE = /\bnot\s+(?:(?:for|about|of)\s+)?(?:["“'‘]|(?:a|an|the|this|that)\s+(?:(?!different\b|wrong\b|separate\b|unrelated\b|other\b)[\w-]+\s+){0,2}?(?:review|show|production|play|musical|title|staging)s?\b)/;
 // A cue that is itself negated ("nor does it review a different production",
 // "is not the wrong show") says the opposite of a mismatch.
-const NEGATED_CUE_RE = /\b(?:not|nor|no|never|neither|without)\b(?:\s+[\w'’-]+){0,3}\s*$/;
+const NEGATED_CUE_RE = /\b(?:not|nor|no|never|neither|without)\b(?:\s+[\w'’-]+){0,4}\s*$/;
 
 function _norm(s) {
   if (!s || typeof s !== 'string') return '';

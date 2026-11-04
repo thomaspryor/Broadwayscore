@@ -315,3 +315,31 @@ test('GUARD 5 PERMITS: an llm:* verdict still clears; a missing verifiedBy is re
   assert.equal(assessClearSafety({ ...base, result: HIGH }).safe, true);
   assert.equal(assessClearSafety({ ...base, result: { ...HIGH, verifiedBy: undefined } }).safe, false);
 });
+
+// BRO-6745: the bare "not " cue fired on any negation within 90 chars of any
+// quoted string, refusing clean verdicts on real reviews. Verbatim corpus verdicts.
+test('GUARD 2 PERMITS (BRO-6745): VERBATIM clean verdicts on real reviews that a nearby "not" used to refuse', () => {
+  const cases = [
+    ['Tristan & Yseult', "This is a substantive review of the regional (Broadway-feeder) production of Tristan & Yseult at Theatre Royal Bath, published 2026-09-19 (opening night). The critic (Arifa Akbar, The Guardian) evaluates the current staging, cast performances (Edward Rowe, Nandi Bhebhe, John Leader, Tom Fox, Matthew Churcher), direction (Emma Rice), design, and creative choices with clear verdicts ('marvel of theatrical innovation,' 'the potion still seduces'). Historical context about Kneehigh's 2003 premiere and past revivals is background, not evidence of reviewing a different production. The review ends cleanly with the run dates ('At Theatre Royal Bath until 19 September. Then touring until 17 April')."],
+    ['Return to the Forest', "The content is a clear review of a theatrical production, providing critical assessment and plot details. It mentions the venue 'Aviva Studios, Manchester' in the expected metadata, and the review itself does not contradict this, nor does it review a different production or a film/TV adaptation. The review is complete and not truncated."],
+    ["The Baker's Wife", "The article is a review of 'The Baker's Wife' at Classic Stage Company, explicitly stating it's the 'NYC premiere Off-Broadway' and providing critical assessment of the production. It is not truncated and focuses on the live stage performance."],
+    ['Pied à Terre', "The content describes the plot and themes of 'Pied à Terre' and mentions its venue, the Anne L. Bernstein Theater, which is an Off-Broadway venue. It also contains evaluative language like 'Not your usual love triangle', indicating a review."],
+  ];
+  for (const [showTitle, reasoning] of cases) {
+    assert.equal(detectTitleMismatch({ reasoning, showTitle }), null, `must not refuse: ${showTitle}`);
+  }
+});
+
+test('GUARD 2 REFUSES (BRO-6745): VERBATIM mismatches still caught after the "not" cue was narrowed', () => {
+  assert.ok(detectTitleMismatch({
+    reasoning: "The scraped content is a review of Arthur Miller's 'The Crucible', not the specified show 'Consumed'. The content is also truncated.",
+    showTitle: 'Consumed',
+  }));
+  assert.ok(detectTitleMismatch({
+    reasoning: "However, the text is truncated, as it transitions into a full review of an unrelated show ('Antlia Pneumatica'), and the specific Off-Broadway venue (Westside Theatre) is not named in the scraped content provided.",
+    showTitle: 'Cagney',
+  }));
+  assert.ok(detectTitleMismatch({ reasoning: "It reviews 'Juniper Blood', not this production.", showTitle: 'Blood of my Blood' }));
+  assert.equal(detectTitleMismatch({ reasoning: "It reviews 'Juniper Blood' at the Court; this is not a different production.", showTitle: 'Blood of my Blood' }), null,
+    'a negated contrast is the opposite claim');
+});
