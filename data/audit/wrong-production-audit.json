@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-11-04T15:54:47.906Z",
+  "timestamp": "2026-11-04T16:14:26.834Z",
   "stats": {
-    "totalReviews": 80022,
-    "alreadyFlagged": 22013,
+    "totalReviews": 80035,
+    "alreadyFlagged": 22016,
     "dateGuardCatches": 217,
     "directorMismatch": 3499,
-    "tvFilmSignals": 2275,
+    "tvFilmSignals": 2274,
     "londonSignals": 3606,
-    "offBroadwaySignals": 736,
+    "offBroadwaySignals": 735,
     "yearMismatch": 361,
-    "noPublishDate": 8464
+    "noPublishDate": 8465
   },
   "findings": [
     {
@@ -77289,20 +77289,6 @@
       ]
     },
     {
-      "showId": "tootsie-2019",
-      "file": "variety--marilyn-stasio.json",
-      "score": 90,
-      "publishDate": "April 23, 2019",
-      "url": "https://variety.com/2019/legit/reviews/tootsie-review-broadway-musical-1203194758/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
       "showId": "topdog-underdog-2022",
       "file": "ew--jessica-wang.json",
       "score": 88,
@@ -138976,20 +138962,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "yellow-face-2024",
-      "file": "vulture--sara-holdren.json",
-      "score": 84,
-      "publishDate": "October 1, 2024",
-      "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
