@@ -283,7 +283,9 @@ function isolateFlatColumnSection(text, showTitle, { aliases = [], knownTitles =
 // Verdict text (issues + reasoning) that says the page covers several shows.
 const MULTI_SHOW_VERDICT_RE = /\bmulti[- ]?show\b|\bround[- ]?up\b|\b(?:multiple|several|various|two|three|four|five|six)\s+(?:different\s+|other\s+|separate\s+)?(?:shows|productions|plays|musicals)\b|\bother shows\b/i;
 // A page built from OTHER critics' verdicts is a true roundup: no section of it is this critic's review.
-const QUOTE_ROUNDUP_VERDICT_RE = /\b(?:other|multiple|several|various)\s+critics\b|\bcritics['’]\s+(?:quotes|opinions|reviews|verdicts)\b|\bpull[- ]?quotes?\b|\baggregat\w*|\bcompilation of\b.*\bquotes\b/i;
+// Bare "aggregation" is NOT enough: the real Imaginary Invalid verdict called the column a "multi-show
+// roundup/aggregation" that "aggregates brief reviews of several Broadway productions" (the critic's own reviews).
+const QUOTE_ROUNDUP_VERDICT_RE = /\b(?:other|multiple|several|various|different)\s+critics\b|\bcritics['’]\s+(?:quotes|opinions|reviews|verdicts|assessments)\b|\bpull[- ]?quotes?\b|\breview aggregator\b|\bcompilation of\b[^.|]*\bquotes\b/i;
 
 /** The verifier rejected this page because it covers several shows (and not because it quotes other critics). */
 function isMultiShowRejection(cv) {

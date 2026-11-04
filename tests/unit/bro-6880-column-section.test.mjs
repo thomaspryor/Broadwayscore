@@ -178,6 +178,19 @@ test('gate: the same column is never cut when the verifier accepted it, or rejec
   assert.equal(gate({ url: 'https://www.nytimes.com/2026/10/23/theater/x.html' }).reason, 'not-column-host');
 });
 
+test('gate: the verdict shape the real Imaginary Invalid column got (roundup/aggregation of the critic\'s own reviews) qualifies', () => {
+  const real = {
+    isValid: false, confidence: 'high', wrongArticle: true, articleType: 'review',
+    issues: [
+      'This is a multi-show roundup/aggregation, not a single-show review. The scraped content reviews at least three different Broadway productions.',
+      'Expected review is for the show but the article is structured as a theater column/roundup covering multiple fall Broadway shows.',
+    ],
+    reasoning: 'It is a multi-show column or roundup that aggregates brief reviews of several Broadway productions.',
+  };
+  assert.equal(isMultiShowRejection(real), true);
+  assert.equal(gate({ verdict: real }).isolated, true);
+});
+
 test('gate: a true roundup (other critics quoted) stays refused', () => {
   const quoteVerdict = { isValid: false, issues: ['Roundup aggregating multiple critics\' quotes, not a single review'], reasoning: 'Pull quotes from other critics.' };
   assert.equal(isMultiShowRejection(quoteVerdict), false);
