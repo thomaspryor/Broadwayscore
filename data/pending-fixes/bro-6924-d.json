@@ -1,0 +1,61 @@
+{
+  "issueNumber": "bro-6924-d",
+  "planId": "1a2970ad-b13c-4a42-bfca-4686720265d3",
+  "status": "pending",
+  "createdAt": "2026-11-04T02:05:02.561Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "riskLevel": "low",
+    "summary": "BRO-6924: clear the stale Met wrong_production flag on the ENO Guardian review; delete an off-work Bachtrack file",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tosca-english-national-opera-west-end-2026/bachtrack--peter-quantrill.json",
+        "description": "BRO-6924: Bachtrack review of Kolomiiets Mothers of Kherson at Polish National Opera, Warsaw: another work, added by site search on label words (fixed in site-search-discovery operaTitleMatch)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": null,
+        "description": "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+        "field": "wrongProductionReason",
+        "oldValue": "CV-promoted: This is a legitimate theater review evaluating a Tosca production, but it reviews the English National Opera staging at the Coliseum in London, not the Met Opera production at the Metropolitan Opera H",
+        "newValue": null,
+        "description": "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+        "field": "incompleteReason",
+        "oldValue": "wrong_content",
+        "newValue": null,
+        "description": "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tosca-english-national-opera-west-end-2026/guardian--flora-willson.json",
+        "field": "incompleteDetail",
+        "oldValue": "CV-promoted: This is a legitimate theater review evaluating a Tosca production, but it reviews the English National Opera staging at the Coliseum in London, not the Met Opera production at the Metropolitan Opera H",
+        "newValue": null,
+        "description": "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true)."
+      }
+    ],
+    "steps": [
+      "BRO-6924: Bachtrack review of Kolomiiets Mothers of Kherson at Polish National Opera, Warsaw: another work, added by site search on label words (fixed in site-search-discovery operaTitleMatch).",
+      "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true).",
+      "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true).",
+      "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true).",
+      "BRO-6924: wrong_production for the Met Tosca, set while this file sat under tosca-off-broadway-2026; it is the ENO Coliseum review and now lives in the ENO folder (wrongProductionManualClear already true)."
+    ]
+  }
+}

@@ -22,6 +22,7 @@ const { isLondonMarket } = require('./venue-classification');
 const { passesGenericTitleIdentity } = require('./generic-title-guard');
 const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
+const { splitLabelledTitle } = require('./market-routing');
 const { namedNonReviewReason } = require('./non-review-url-patterns');
 const { hasNonMetOperaUrlMarker, operaHouseForVenue, isUrlYearOutsideWindow } = require('./content-filters');
 const { withOperaCache } = require('./opera-discovery-cache');
@@ -131,6 +132,31 @@ function filterOperaUrls(urls, outletId, showId, openingDate, venue) {
  */
 function operaTitleWords(title) {
   if (!title) return [];
+  const words = _operaWords(title);
+  // BRO-6924: "Tosca - English National Opera" splits into tosca/english/
+  // national/opera, so "polish-national-opera" scored 2 hits with no "tosca".
+  // The head words ride along so operaTitleMatch can require the opera itself.
+  const split = splitLabelledTitle(title);
+  const headWords = split ? _operaWords(split.head) : [];
+  if (headWords.length) Object.defineProperty(words, 'headWords', { value: headWords });
+  return words;
+}
+
+/**
+ * True when `text` carries at least `minHits` of the title words and, for a
+ * "<head> - <label>" title, at least one head word (BRO-6924). The label alone
+ * (a company or venue name) never makes a match.
+ */
+function operaTitleMatch(text, titleWords, minHits) {
+  const t = String(text || '');
+  const hits = titleWords.filter(w => t.includes(w)).length;
+  if (hits < minHits) return false;
+  if (process.env.DISABLE_OPERA_HEAD_WORD_MATCH === 'true') return true;
+  const head = titleWords.headWords;
+  return !head || head.some(w => t.includes(w));
+}
+
+function _operaWords(title) {
   const stop = new Set(['the','and','und','et','y','le','la','les','el','un','una','di','da','du','dei','der','die','das','of','for','to','at','in','on','with','from']);
   // NFD-normalize + strip diacritics BEFORE the char filter. Without this,
   // "Último Sueño" tokenizes to ["ltimo","sue"] (fragments left after \w
@@ -167,8 +193,7 @@ function parterrePostMatchesShow(post, showWords) {
   const slug = (post.link || '').toLowerCase();
   const excerpt = (post.excerpt?.rendered || '').toLowerCase().replace(/<[^>]+>/g, ' ');
   const text = title + ' ' + slug + ' ' + excerpt;
-  const hits = showWords.filter(w => text.includes(w)).length;
-  return hits >= Math.min(2, showWords.length);
+  return operaTitleMatch(text, showWords, Math.min(2, showWords.length));
 }
 
 /**
@@ -186,8 +211,7 @@ function wpPostMatchesShow(post, titleWords) {
   const title = (post.title?.rendered || '').toLowerCase().replace(/<[^>]+>/g, '');
   const slug = (post.link || '').toLowerCase();
   const text = title + ' ' + slug;
-  const hits = titleWords.filter(w => text.includes(w)).length;
-  return hits >= Math.min(2, titleWords.length);
+  return operaTitleMatch(text, titleWords, Math.min(2, titleWords.length));
 }
 
 /**
@@ -703,8 +727,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleMatched = unique.filter(url => {
         const slug = (url.split('/review-')[1] || '').toLowerCase();
         if (!slug) return false;
-        const hits = titleWords.filter(w => slug.includes(w)).length;
-        return hits >= Math.min(2, titleWords.length);
+        return operaTitleMatch(slug, titleWords, Math.min(2, titleWords.length));
       });
       return filterOperaUrls(titleMatched, 'bachtrack', showId, openingDate);
     },
@@ -937,8 +960,7 @@ const SITE_SEARCH_ENDPOINTS = {
         // surfaces ~10 URLs at a time and Alex Ross writes one Met review per
         // month, so false-positive risk is low. Two-word match would miss
         // "tristan-at-the-met-music-review" (operaTitleWords drops "und").
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'newyorker', showId, openingDate);
     }),
@@ -992,8 +1014,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'washpost', showId, openingDate);
     }),
@@ -1026,8 +1047,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'times-uk', showId, openingDate);
     }),
@@ -1053,8 +1073,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'artsdesk', showId, openingDate);
     }),
@@ -1087,8 +1106,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/').pop() || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= 1;
+        return operaTitleMatch(slug, titleWords, 1);
       });
       return filterOperaUrls(matches, 'nystagereview', showId, openingDate);
     }),
@@ -1142,8 +1160,7 @@ const SITE_SEARCH_ENDPOINTS = {
       const titleWords = operaTitleWords(showTitle);
       const matches = [...new Set(all)].filter((url) => {
         const slug = (url.split('/article/')[1] || '').toLowerCase();
-        const hits = titleWords.filter((w) => slug.includes(w)).length;
-        return hits >= Math.min(2, titleWords.length);
+        return operaTitleMatch(slug, titleWords, Math.min(2, titleWords.length));
       });
       return filterOperaUrls(matches, 'vulture', showId, openingDate);
     }),
@@ -1624,6 +1641,7 @@ function dailyMailHeadlineMatches(showTitle, headline) {
 }
 
 module.exports = {
+  operaTitleMatch,
   dailyMailHeadlineMatches,
   searchOutletSites,
   searchOutletSite,
