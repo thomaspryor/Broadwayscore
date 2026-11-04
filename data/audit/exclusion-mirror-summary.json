@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-11-04T11:49:53.238Z",
-  "totalScanned": 80228,
-  "totalExcluded": 30420,
+  "generatedAt": "2026-11-04T12:05:56.026Z",
+  "totalScanned": 80238,
+  "totalExcluded": 30428,
   "ruleCounts": {
-    "wrongProduction": 19851,
-    "duplicateOf": 2230,
+    "wrongProduction": 19854,
+    "duplicateOf": 2235,
     "rejectionReason": 1425,
     "wrongShow": 1233,
-    "noTextOrScoreSignal": 1074,
+    "noTextOrScoreSignal": 1075,
     "unverifiableWebSearchRow": 900,
     "nonReview": 884,
     "cvWrongArticleHighConfidence": 413,
@@ -35,35 +35,25 @@
     "lateDateMismatch": 10,
     "tourContaminationInText": 9,
     "prematureForUnopenedShow": 3,
-    "wrongContentNoUsableSignal": 3,
     "outletDomainUnvalidated": 2,
     "previewFirstLookPiece": 2,
+    "wrongContentNoUsableSignal": 2,
     "errorPage": 1,
     "personalRepost": 1,
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": -107,
-    "duplicateOf": -14,
-    "rejectionReason": -16,
-    "wrongShow": -21,
-    "noTextOrScoreSignal": -2,
-    "nonReview": -4,
-    "cvWrongArticleHighConfidence": -1,
-    "crossOutletDuplicate": -2,
-    "isSyndicatedDuplicate": -1,
-    "previewPlaceholder": -4,
-    "listingPageUrl": -1,
-    "namedNonReviewUrl": -1,
-    "scoreStatusToBeCalculated": -1,
-    "roundupPageAsReview": -1
+    "wrongProduction": 3,
+    "duplicateOf": 5,
+    "noTextOrScoreSignal": 1,
+    "wrongContentNoUsableSignal": -1
   },
-  "previousGeneratedAt": "2026-11-04T11:30:36.243Z",
+  "previousGeneratedAt": "2026-11-04T11:49:53.238Z",
   "mirror": {
     "comparedShows": 4677,
-    "comparedFiles": 79573,
-    "agreeExcluded": 30280,
-    "agreeIncluded": 48618,
+    "comparedFiles": 79581,
+    "agreeExcluded": 30287,
+    "agreeIncluded": 48619,
     "mirrorOnly": 349,
     "rebuildOnly": 326,
     "disagreements": 675,
@@ -98,7 +88,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 74,
-    "notComparedFiles": 655
+    "notComparedFiles": 657
   },
   "previousDisagreementRate": 0.0085
 }
