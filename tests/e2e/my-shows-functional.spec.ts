@@ -162,7 +162,7 @@ for (const vp of VIEWPORTS) {
       await page.getByRole('button', { name: 'List view' }).click();
       await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      const sortSelect = page.getByRole('combobox', { name: 'Sort diary' });
+      const sortSelect = page.getByRole('combobox', { name: 'Sort Seen' });
       await expect(sortSelect).toBeVisible();
 
       // Get all card titles in default (newest) order

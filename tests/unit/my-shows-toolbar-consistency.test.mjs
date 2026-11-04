@@ -34,8 +34,8 @@ function tagsWith(marker) {
 
 test('sort selects and Share buttons use .toolbar-control', () => {
   const tags = [
-    ...tagsWith('aria-label="Sort diary"'),
-    ...tagsWith('aria-label="Sort watchlist"'),
+    ...tagsWith('aria-label="Sort Seen"'),
+    ...tagsWith('aria-label="Sort To See"'),
     ...tagsWith('data-testid="share-plans-open'),
   ];
   // One controls row at every width since the title-tab header (BRO-6170);

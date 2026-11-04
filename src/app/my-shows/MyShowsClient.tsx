@@ -904,7 +904,7 @@ export default function MyShowsClient() {
             <select
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
-              aria-label="Sort diary"
+              aria-label="Sort Seen"
               className="toolbar-control"
             >
               <option value="date-desc">Newest</option>
@@ -927,7 +927,7 @@ export default function MyShowsClient() {
             <select
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
-              aria-label="Sort watchlist"
+              aria-label="Sort To See"
               className="toolbar-control"
             >
               <option value="added-desc">Recent</option>

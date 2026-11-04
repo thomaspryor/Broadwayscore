@@ -262,7 +262,7 @@ test.describe('My Shows Page Layout', () => {
     }
 
     // The current design has a dedicated row for sort and grid/list controls.
-    const sort = controls.getByRole('combobox', { name: 'Sort diary' });
+    const sort = controls.getByRole('combobox', { name: 'Sort Seen' });
     const grid = controls.getByRole('button', { name: 'Grid view' });
     await expect(sort).toBeVisible();
     await expect(grid).toBeVisible();

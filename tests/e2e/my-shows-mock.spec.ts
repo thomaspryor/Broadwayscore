@@ -126,10 +126,10 @@ test.describe('My Shows — Accessibility', () => {
 
   test('sort dropdowns have aria-labels', async ({ page }) => {
     await goToMock(page);
-    await expect(page.getByRole('combobox', { name: 'Sort diary' })).toBeVisible();
+    await expect(page.getByRole('combobox', { name: 'Sort Seen' })).toBeVisible();
     // Switch to watchlist
     await page.getByRole('tab', { name: /To See/ }).click();
-    await expect(page.getByRole('combobox', { name: 'Sort watchlist' })).toBeVisible();
+    await expect(page.getByRole('combobox', { name: 'Sort To See' })).toBeVisible();
   });
 
   test('To Be Rated posters are labeled rate links', async ({ page }) => {
@@ -235,7 +235,7 @@ test.describe('My Shows — Diary Sections', () => {
 test.describe('My Shows — Sorting', () => {
   test('diary "Top Rated" sort orders correctly', async ({ page }) => {
     await goToMock(page);
-    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
+    await page.getByRole('combobox', { name: 'Sort Seen' }).selectOption('rating-desc');
     // Read the ratings on the rendered cards, independent of star styling.
     const ratings = page.getByTestId('diary-rating');
     await expect(ratings).toHaveCount(9);
@@ -250,7 +250,7 @@ test.describe('My Shows — Sorting', () => {
   test('diary "Oldest" sort shows oldest first', async ({ page }) => {
     await goToMock(page);
     await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17); DiaryGridCard titles aren't <h4> so this test found 0 matches without it (2026-07-22)
-    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('date-asc');
+    await page.getByRole('combobox', { name: 'Sort Seen' }).selectOption('date-asc');
     // Book of Mormon (Mar 2024) should appear before Wicked (Dec 2025) in Past Shows
     const cards = await page.locator('h4').allTextContents();
     const mormonIndex = cards.indexOf('The Book of Mormon');
@@ -270,7 +270,7 @@ test.describe('My Shows — Sorting', () => {
     const listBtn = page.getByRole('button', { name: 'List view' });
     await listBtn.click();
     await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
-    await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+    await page.getByRole('combobox', { name: 'Sort To See' }).selectOption('alphabetical');
     // Get show title headings from the watchlist cards (h4 inside card items, not the "Add" button)
     const headings = page.locator('[role="tabpanel"] h4');
     const titles = await headings.allTextContents();
@@ -305,13 +305,13 @@ test.describe('My Shows — Tabs', () => {
   test('switching back to Diary preserves sort', async ({ page }) => {
     await goToMock(page);
     // Change sort to Top Rated
-    await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
+    await page.getByRole('combobox', { name: 'Sort Seen' }).selectOption('rating-desc');
     // Switch to Watchlist
     await page.getByRole('tab', { name: /To See/ }).click();
     // Switch back to Diary
     await page.getByRole('tab', { name: 'Seen' }).click();
     // Sort should still be Top Rated
-    const sortValue = await page.getByRole('combobox', { name: 'Sort diary' }).inputValue();
+    const sortValue = await page.getByRole('combobox', { name: 'Sort Seen' }).inputValue();
     expect(sortValue).toBe('rating-desc');
   });
 });
@@ -429,7 +429,7 @@ test.describe('My Shows — Watchlist', () => {
     // only render as poster cards in the flat A-Z view (the default split
     // routes them to the To Be Rated band). It is hover-revealed at sm+, so
     // assert presence, not visibility.
-    await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+    await page.getByRole('combobox', { name: 'Sort To See' }).selectOption('alphabetical');
     const strips = page.locator('[role="tabpanel"] [role="radiogroup"][aria-label^="Rate "]');
     expect(await strips.count()).toBeGreaterThan(0);
     await expect(strips.first().getByRole('button', { name: '5 stars', includeHidden: true })).toBeAttached();

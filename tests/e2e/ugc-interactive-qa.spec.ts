@@ -26,7 +26,7 @@ async function goToMock(page: Page, tab: 'diary' | 'watchlist' = 'diary') {
  *  band with no inline stars, BRO-4558). */
 async function goToRateStars(page: Page) {
   await goToMock(page, 'watchlist');
-  await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+  await page.getByRole('combobox', { name: 'Sort To See' }).selectOption('alphabetical');
   await page.getByRole('button', { name: 'List view' }).click();
 }
 
