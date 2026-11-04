@@ -1,0 +1,124 @@
+{
+  "issueNumber": "bro-6860-b",
+  "planId": "98849622-9426-44ec-bf10-838159d6ed6f",
+  "status": "pending",
+  "createdAt": "2026-11-04T01:48:17.737Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6860: mark 5 legitimate cross-outlet bylines reviewed; re-credit the Peer Gynt Bob's Theater Blog post to Robert Sholiton",
+    "steps": [
+      "BRO-6860: byline checked, legitimate multi-outlet critic",
+      "BRO-6860: mark reviewed",
+      "BRO-6860: byline checked, legitimate multi-outlet critic",
+      "BRO-6860: mark reviewed",
+      "BRO-6860: byline checked, legitimate multi-outlet critic",
+      "BRO-6860: mark reviewed",
+      "BRO-6860: byline checked, legitimate multi-outlet critic",
+      "BRO-6860: mark reviewed",
+      "BRO-6860: byline checked, legitimate multi-outlet critic",
+      "BRO-6860: mark reviewed",
+      "BRO-6860: bobs-theater-blog.blogspot.com is Robert Sholiton's blog (dozens of files credited to him); the Peer Gynt post was credited to Samuel L. Leiter",
+      "review-file-op"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-streetcar-named-desire-2012/washpost--mark-kennedy.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6860: The review URL is on washingtonpost.com, the outlet it is credited to; Mark Kennedy's AP review carried there.",
+        "description": "BRO-6860: byline checked, legitimate multi-outlet critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-streetcar-named-desire-2012/washpost--mark-kennedy.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6860: mark reviewed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "attack-of-the-elvis-impersonators-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).",
+        "description": "BRO-6860: byline checked, legitimate multi-outlet critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "attack-of-the-elvis-impersonators-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6860: mark reviewed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-to-transcend-a-happy-marriage-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).",
+        "description": "BRO-6860: byline checked, legitimate multi-outlet critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-to-transcend-a-happy-marriage-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6860: mark reviewed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marry-harry-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).",
+        "description": "BRO-6860: byline checked, legitimate multi-outlet critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "marry-harry-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6860: mark reviewed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweetee-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerifiedNote",
+        "oldValue": null,
+        "newValue": "BRO-6860: The review URL is on curtainup.com and Elizabeth Ahlfors is a CurtainUp critic (4 files in corpus).",
+        "description": "BRO-6860: byline checked, legitimate multi-outlet critic"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sweetee-off-broadway-2017/curtainup--elizabeth-ahlfors.json",
+        "field": "crossOutletVerified",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-6860: mark reviewed"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "peer-gynt-off-broadway-2016/bobs-theater-blog--samuel-l-leiter.json",
+        "field": "criticName",
+        "oldValue": "Samuel L. Leiter",
+        "newValue": "Robert Sholiton",
+        "description": "BRO-6860: bobs-theater-blog.blogspot.com is Robert Sholiton's blog (dozens of files credited to him); the Peer Gynt post was credited to Samuel L. Leiter"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "peer-gynt-off-broadway-2016/bobs-theater-blog--samuel-l-leiter.json",
+        "destPath": "peer-gynt-off-broadway-2016/bobs-theater-blog--robert-sholiton.json"
+      }
+    ]
+  }
+}
