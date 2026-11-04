@@ -993,5 +993,36 @@
       }
     ],
     "queuedAt": "2026-11-04T00:09:39.054Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6932-recheck",
+    "title": "Landing blocked: lint-workflows red on land/bro-6932-recheck",
+    "description": "land.yml did not land land/bro-6932-recheck: the lint-workflows gate went red at ca5fb4fd56. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/41742751940",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6932-recheck"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "ca5fb4fd56b16b2b487798f6ebfdb125e08b21ce"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/41742751940"
+      }
+    ],
+    "queuedAt": "2026-11-04T00:15:20.599Z"
   }
 ]
